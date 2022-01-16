@@ -93,15 +93,6 @@ std::string get_key_debug_name(input::key mKey, input::key mModifier1, input::ke
     return sString + get_key_debug_name(mKey);
 }
 
-
-keybinder::keybinder(utils::control_block& mBlock, input::dispatcher& mInputDispatcher,
-    event_emitter& mEventEmitter) :
-    event_receiver(mBlock, mEventEmitter), mInputDispatcher_(mInputDispatcher),
-    mEventEmitter_(mEventEmitter)
-{
-    register_event("KEY_PRESSED");
-}
-
 void keybinder::set_key_binding(input::key mKey, sol::protected_function mHandler)
 {
     lKeyBindingList_[mKey][input::key::K_UNASSIGNED][input::key::K_UNASSIGNED] = std::move(mHandler);
@@ -143,7 +134,7 @@ void keybinder::remove_key_binding(input::key mKey, input::key mModifier1, input
 }
 
 std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
-    input::key mKey) const
+    input::key mKey, const input::dispatcher& mDispatcher) const
 {
     auto iter1 = lKeyBindingList_.find(mKey);
     if (iter1 == lKeyBindingList_.end())
@@ -151,15 +142,13 @@ std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
 
     for (const auto& iter2 : iter1->second)
     {
-        if (iter2.first == input::key::K_UNASSIGNED ||
-            !mInputDispatcher_.key_is_down(iter2.first))
+        if (iter2.first == input::key::K_UNASSIGNED || !mDispatcher.key_is_down(iter2.first))
             continue;
 
         // First try to get a match with the most complicated binding with two modifiers
         for (const auto& iter3 : iter2.second)
         {
-            if (iter3.first == input::key::K_UNASSIGNED ||
-                !mInputDispatcher_.key_is_down(iter3.first))
+            if (iter3.first == input::key::K_UNASSIGNED || !mDispatcher.key_is_down(iter3.first))
                 continue;
 
             return {&iter3.second, get_key_debug_name(mKey, iter2.first, iter3.first)};
@@ -188,30 +177,23 @@ std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
     return {nullptr, ""};
 }
 
-void keybinder::on_event(const event& mEvent)
+bool keybinder::on_key_down(input::key mKey, const input::dispatcher& mDispatcher)
 {
-    if (mEvent.get_name() != "KEY_PRESSED")
-        return;
-
-    const input::key mKey = mEvent.get<input::key>(0);
-    const auto mHandler = find_handler_(mKey);
+    const auto mHandler = find_handler_(mKey, mDispatcher);
     if (!mHandler.first)
-        return;
+        return false;
 
     try
     {
         (*mHandler.first)();
     }
-    catch (const sol::error& e)
+    catch (const std::exception& e)
     {
         std::string sError = "Bound action: " + mHandler.second + ": " + std::string(e.what());
-
-        gui::out << gui::error << sError << std::endl;
-
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        mEventEmitter_.fire_event(mEvent);
+        throw std::runtime_error(std::move(sError));
     }
+
+    return true;
 }
 
 }

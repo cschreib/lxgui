@@ -37,7 +37,6 @@ namespace gui
     class uiroot;
     class virtual_uiroot;
     class addon_registry;
-    class keybinder;
 
     /// Manages the user interface
     class manager : private event_emitter, public event_receiver
@@ -367,7 +366,6 @@ namespace gui
         utils::owner_ptr<uiroot>         pRoot_;
         utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
         std::unique_ptr<addon_registry>  pAddOnRegistry_;
-        utils::owner_ptr<keybinder>      pKeybinder_;
 
         bool bLoaded_ = false;
         bool bReloadUI_ = false;

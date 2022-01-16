@@ -29,13 +29,12 @@ namespace gui
     class event_emitter;
 
     /// Manages the user interface
-    class keybinder : public event_receiver
+    class keybinder
     {
     public :
 
         /// Constructor.
-        explicit keybinder(utils::control_block& mBlock, input::dispatcher& mInputDispatcher,
-            event_emitter& mEventEmitter);
+        keybinder() = default;
 
         keybinder(const keybinder&) = delete;
         keybinder(keybinder&&) = delete;
@@ -74,23 +73,22 @@ namespace gui
             input::key uiKey, input::key uiModifier1 = input::key::K_UNASSIGNED,
             input::key uiModifier2 = input::key::K_UNASSIGNED);
 
-        /// Called whenever an Event occurs.
-        /** \param mEvent The Event which has occured
+        /// Called when a key is pressed.
+        /** \param uiKey       The key that is pressed
+        *   \param mDispatcher The input dispatcher (to get the state of the keyboard)
         */
-        void on_event(const event& mEvent) override;
+        bool on_key_down(input::key mKey, const input::dispatcher& mDispatcher);
 
         /// Registers this class to the provided Lua state
         void register_on_lua(sol::state& mLua);
 
     private :
 
-        std::pair<const sol::protected_function*, std::string> find_handler_(input::key mKey) const;
+        std::pair<const sol::protected_function*, std::string> find_handler_(
+            input::key mKey, const input::dispatcher& mDispatcher) const;
 
         template<typename T>
         using key_map = std::unordered_map<input::key,T>;
-
-        input::dispatcher& mInputDispatcher_;
-        event_emitter& mEventEmitter_;
 
         key_map<key_map<key_map<sol::protected_function>>> lKeyBindingList_;
     };

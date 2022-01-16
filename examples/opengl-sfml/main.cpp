@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
                     bFocus = false;
                 else if (mEvent.type == sf::Event::GainedFocus)
                     bFocus = true;
-                else if (mEvent.type == sf::Event::KeyReleased)
+                else if (mEvent.type == sf::Event::KeyPressed)
                 {
                     // This uses events straight from SFML, but the GUI may want to
                     // capture some of them (for example: the user is typing in an edit_box).

@@ -31,6 +31,9 @@ uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
     register_event("MOUSE_RELEASED");
     register_event("MOUSE_DRAG_START");
     register_event("MOUSE_DRAG_STOP");
+    register_event("KEY_PRESSED");
+    register_event("KEY_RELEASED");
+    register_event("TEXT_ENTERED");
 }
 
 uiroot::~uiroot()
@@ -338,27 +341,27 @@ void uiroot::on_event(const event& mEvent)
             }
         );
 
-        if (pHoveredFrame)
+        if (!pHoveredFrame)
+            return;
+
+        if (auto* pRegion = pHoveredFrame->get_title_region().get();
+            pRegion && pRegion->is_in_region(mMousePos))
         {
-            if (auto* pRegion = pHoveredFrame->get_title_region().get();
-                pRegion && pRegion->is_in_region(mMousePos))
-            {
-                pHoveredFrame->start_moving();
-            }
+            pHoveredFrame->start_moving();
+        }
 
-            std::string sMouseButton = std::string(input::get_mouse_button_codename(
-                mEvent.get<input::mouse_button>(0)));
+        std::string sMouseButton = std::string(input::get_mouse_button_codename(
+            mEvent.get<input::mouse_button>(0)));
 
-            if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-            {
-                event_data mData;
-                mData.add(sMouseButton);
-                mData.add(mMousePos.x);
-                mData.add(mMousePos.y);
+        if (pHoveredFrame->is_registered_for_drag(sMouseButton))
+        {
+            event_data mData;
+            mData.add(sMouseButton);
+            mData.add(mMousePos.x);
+            mData.add(mMousePos.y);
 
-                pDraggedFrame_ = std::move(pHoveredFrame);
-                pDraggedFrame_->on_script("OnDragStart", mData);
-            }
+            pDraggedFrame_ = std::move(pHoveredFrame);
+            pDraggedFrame_->on_script("OnDragStart", mData);
         }
     }
     else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
@@ -380,20 +383,20 @@ void uiroot::on_event(const event& mEvent)
             }
         );
 
-        if (pHoveredFrame)
+        if (!pHoveredFrame)
+            return;
+
+        std::string sMouseButton = std::string(input::get_mouse_button_codename(
+            mEvent.get<input::mouse_button>(0)));
+
+        if (pHoveredFrame->is_registered_for_drag(sMouseButton))
         {
-            std::string sMouseButton = std::string(input::get_mouse_button_codename(
-                mEvent.get<input::mouse_button>(0)));
+            event_data mData;
+            mData.add(sMouseButton);
+            mData.add(mMousePos.x);
+            mData.add(mMousePos.y);
 
-            if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-            {
-                event_data mData;
-                mData.add(sMouseButton);
-                mData.add(mMousePos.x);
-                mData.add(mMousePos.y);
-
-                pHoveredFrame->on_script("OnReceiveDrag", mData);
-            }
+            pHoveredFrame->on_script("OnReceiveDrag", mData);
         }
     }
     else if (mEvent.get_name() == "MOUSE_PRESSED" || mEvent.get_name() == "MOUSE_RELEASED" ||
@@ -414,56 +417,94 @@ void uiroot::on_event(const event& mEvent)
                 clear_focus_();
         }
 
-        if (pHoveredFrame)
+        if (!pHoveredFrame)
+            return;
+
+        event_data mData;
+        mData.add(std::string(input::get_mouse_button_codename(
+            mEvent.get<input::mouse_button>(0))));
+        mData.add(mMousePos.x);
+        mData.add(mMousePos.y);
+
+        if (mEvent.get_name() == "MOUSE_PRESSED")
         {
-            if (mEvent.get_name() == "MOUSE_PRESSED")
-            {
-                if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
-                    pTopLevel->raise();
+            if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
+                pTopLevel->raise();
 
-                event_data mData;
-                mData.add(std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0))));
-                mData.add(mMousePos.x);
-                mData.add(mMousePos.y);
-
-                pHoveredFrame->on_script("OnMouseDown", mData);
-            }
-            else if (mEvent.get_name() == "MOUSE_RELEASED")
-            {
-                event_data mData;
-                mData.add(std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0))));
-                mData.add(mMousePos.x);
-                mData.add(mMousePos.y);
-
-                pHoveredFrame->on_script("OnMouseUp", mData);
-            }
-            else if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
-            {
-                event_data mData;
-                mData.add(std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0))));
-                mData.add(mMousePos.x);
-                mData.add(mMousePos.y);
-
-                pHoveredFrame->on_script("OnDoubleClicked", mData);
-            }
+            pHoveredFrame->on_script("OnMouseDown", mData);
+        }
+        else if (mEvent.get_name() == "MOUSE_RELEASED")
+        {
+            pHoveredFrame->on_script("OnMouseUp", mData);
+        }
+        else if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
+        {
+            pHoveredFrame->on_script("OnDoubleClicked", mData);
         }
     }
-    else if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED" ||
-        mEvent.get_name() == "TEXT_ENTERED")
+    else if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
     {
-        // TODO: This is nice because, if you make raise() give focus, then you can
-        // naturally press Esc, Esc, Esc to close a stack of frames.
-        // But issue: this blocks *all* keyboard input, even keys that are not used.
-        // We might want to catch Esc, but let other keys go through to the world.
-        // In WoWAPI, they give keyboard input to the topmost frame, and propagate it
-        // down until one frame marks this input as "consumed" using a frame method,
-        // then it stops. Can we do better?
+        input::key mKey = mEvent.get<input::key>(0);
+        std::string sKeyName = std::string(input::get_key_codename(mKey));
+
+        // First, give priority to the focussed frame
+        utils::observer_ptr<frame> pTopmostFrame = get_focus_();
+
+        // TODO:
+        // If no focussed frame, look top-down for a frame that captures this key
+        // if (!pTopmostFrame)
+        // {
+        //     pTopmostFrame = find_topmost_frame(
+        //         [&](const frame& mFrame)
+        //         {
+        //             return mFrame.is_key_captured(sKeyName);
+        //         }
+        //     );
+        // }
+
+        // If a frame is found, capture input and return
+        if (pTopmostFrame)
+        {
+            event_data mData;
+            mData.add(mEvent.get(0));
+            mData.add(sKeyName);
+
+            if (mEvent.get_name() == "KEY_PRESSED")
+                pTopmostFrame->on_script("OnKeyDown", mData);
+            else if (mEvent.get_name() == "KEY_RELEASED")
+                pTopmostFrame->on_script("OnKeyUp", mData);
+
+            return;
+        }
+
+        // If no frame is found, try the keybinder
+        // TODO: I don't like this design, too tightly coupled
+        try
+        {
+            if (get_keybinder().on_key_down(mKey, get_manager().get_input_dispatcher()))
+                return;
+        }
+        catch (const std::exception& e)
+        {
+            event mEvent("LUA_ERROR");
+            mEvent.add(e.what());
+            get_manager().get_event_emitter().fire_event(mEvent);
+            return;
+        }
+
+        // If no keybinding, just forward to the world
+        get_manager().get_world_event_emitter().fire_event(mEvent);
+    }
+    else if (mEvent.get_name() == "TEXT_ENTERED")
+    {
         if (auto pFocus = get_focus_())
         {
-            pFocus->on_event(mEvent);
+            std::uint32_t uiChar = mEvent.get<std::uint32_t>(0);
+            event_data mData;
+            mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
+            mData.add(uiChar);
+
+            pFocus->on_script("OnChar", mData);
         }
     }
 }

@@ -133,7 +133,7 @@ void main_loop(void* pTypeErasedData)
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                 mContext.bFocus = true;
         }
-        else if (mEvent.type == SDL_KEYUP)
+        else if (mEvent.type == SDL_KEYDOWN)
         {
             // This uses events straight from SDL, but the GUI may want to
             // capture some of them (for example: the user is typing in an edit_box).
@@ -201,7 +201,7 @@ void main_loop(void* pTypeErasedData)
             mContext.bFocus = false;
         else if (mEvent.type == sf::Event::GainedFocus)
             mContext.bFocus = true;
-        else if (mEvent.type == sf::Event::KeyReleased)
+        else if (mEvent.type == sf::Event::KeyPressed)
         {
             // This uses events straight from SFML, but the GUI may want to
             // capture some of them (for example: the user is typing in an edit_box).

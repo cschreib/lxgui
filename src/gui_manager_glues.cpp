@@ -94,18 +94,18 @@ void manager::create_lua_()
     {
         auto mKey = static_cast<input::key>(uiKey);
         if (mFunction.has_value())
-            pKeybinder_->set_key_binding(mKey, mFunction.value());
+            get_root().get_keybinder().set_key_binding(mKey, mFunction.value());
         else
-            pKeybinder_->remove_key_binding(mKey);
+            get_root().get_keybinder().remove_key_binding(mKey);
     },
     [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<sol::protected_function> mFunction)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier = static_cast<input::key>(uiModifier);
         if (mFunction.has_value())
-            pKeybinder_->set_key_binding(mKey, mModifier, mFunction.value());
+            get_root().get_keybinder().set_key_binding(mKey, mModifier, mFunction.value());
         else
-            pKeybinder_->remove_key_binding(mKey, mModifier);
+            get_root().get_keybinder().remove_key_binding(mKey, mModifier);
     },
     [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
         sol::optional<sol::protected_function> mFunction)
@@ -114,9 +114,9 @@ void manager::create_lua_()
         auto mModifier1 = static_cast<input::key>(uiModifier1);
         auto mModifier2 = static_cast<input::key>(uiModifier2);
         if (mFunction.has_value())
-            pKeybinder_->set_key_binding(mKey, mModifier1, mModifier2, mFunction.value());
+            get_root().get_keybinder().set_key_binding(mKey, mModifier1, mModifier2, mFunction.value());
         else
-            pKeybinder_->remove_key_binding(mKey, mModifier1, mModifier2);
+            get_root().get_keybinder().remove_key_binding(mKey, mModifier1, mModifier2);
     }));
 
     /** Closes the whole GUI and re-loads addons from files.

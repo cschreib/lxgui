@@ -6,6 +6,7 @@
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_frame_container.hpp"
 #include "lxgui/gui_registry.hpp"
+#include "lxgui/gui_keybinder.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_anchor.hpp"
 
@@ -205,6 +206,16 @@ namespace gui
         */
         const registry& get_registry() const { return mObjectRegistry_; }
 
+        /// Returns the keybinder object, which enables binding global actions to key presses.
+        /** \return The keybinder object
+        */
+        keybinder& get_keybinder() { return mKeybinder_; }
+
+        /// Returns the keybinder object, which enables binding global actions to key presses.
+        /** \return The keybinder object
+        */
+        const keybinder& get_keybinder() const { return mKeybinder_; }
+
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */
@@ -234,9 +245,10 @@ namespace gui
         void clear_focus_();
         utils::observer_ptr<frame> get_focus_() const;
 
-        manager& mManager_;
+        manager&  mManager_;
         renderer& mRenderer_;
-        registry mObjectRegistry_;
+        registry  mObjectRegistry_;
+        keybinder mKeybinder_;
 
         vector2ui mScreenDimensions_;
 
@@ -252,16 +264,16 @@ namespace gui
         utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
         vector2f                      mMouseMovement_;
 
-        anchor*    pMovedAnchor_ = nullptr;
-        vector2f   mMovementStartPosition_;
-        constraint mConstraint_ = constraint::NONE;
+        anchor*               pMovedAnchor_ = nullptr;
+        vector2f              mMovementStartPosition_;
+        constraint            mConstraint_ = constraint::NONE;
         std::function<void()> mApplyConstraintFunc_;
 
         vector2f mResizeStart_;
-        bool bResizeWidth_ = false;
-        bool bResizeHeight_ = false;
-        bool bResizeFromRight_ = false;
-        bool bResizeFromBottom_ = false;
+        bool     bResizeWidth_ = false;
+        bool     bResizeHeight_ = false;
+        bool     bResizeFromRight_ = false;
+        bool     bResizeFromBottom_ = false;
 
         std::vector<utils::observer_ptr<frame>> lFocusStack_;
     };

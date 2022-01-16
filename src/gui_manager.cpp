@@ -143,9 +143,6 @@ void manager::load_ui()
     pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
 
     create_lua_();
-
-    pKeybinder_ = utils::make_owned<keybinder>(get_input_dispatcher(), get_event_emitter());
-
     read_files_();
 
     bLoaded_ = true;
@@ -172,7 +169,6 @@ void manager::close_ui_now()
     pRoot_ = nullptr;
     pFactory_ = nullptr;
     pAddOnRegistry_ = nullptr;
-    pKeybinder_ = nullptr;
     pLua_ = nullptr;
 
     pLocalizer_->clear_translations();

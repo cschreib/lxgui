@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
                     else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         bFocus = true;
                 }
-                else if (mEvent.type == SDL_KEYUP)
+                else if (mEvent.type == SDL_KEYDOWN)
                 {
                     // This uses events straight from SDL, but the GUI may want to
                     // capture some of them (for example: the user is typing in an edit_box).

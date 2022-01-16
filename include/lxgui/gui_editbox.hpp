@@ -117,7 +117,7 @@ namespace gui
     *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
     *   is pressed while the edit box is focussed. This captures both
     *   the main keyboard key and the smaller one on the numpad.
-    *   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+    *   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
     *   while the edit box is focussed.
     *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
     *   while the edit box is focussed.
@@ -154,14 +154,6 @@ namespace gui
         *         the helper class alive_checker.
         */
         void update(float fDelta) override;
-
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
 
         /// Calls a script.
         /** \param sScriptName The name of the script

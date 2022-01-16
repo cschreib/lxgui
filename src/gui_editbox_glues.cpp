@@ -36,7 +36,7 @@
 *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
 *   is pressed while the edit box is focussed. This captures both
 *   the main keyboard key and the smaller one on the numpad.
-*   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+*   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
 *   while the edit box is focussed.
 *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
 *   while the edit box is focussed.

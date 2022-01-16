@@ -207,7 +207,8 @@ std::string frame::serialize(const std::string& sTab) const
 
 bool frame::can_use_script(const std::string& sScriptName) const
 {
-    if ((sScriptName == "OnDragStart") ||
+    if ((sScriptName == "OnChar") ||
+        (sScriptName == "OnDragStart") ||
         (sScriptName == "OnDragStop") ||
         (sScriptName == "OnDragMove") ||
         (sScriptName == "OnEnter") ||
@@ -1211,32 +1212,6 @@ void frame::on_event(const event& mEvent)
         on_script("OnEvent", mData);
         if (!mChecker.is_alive())
             return;
-    }
-
-    if (bIsVisible_)
-    {
-        if (mEvent.get_name() == "KEY_PRESSED")
-        {
-            event_data mData;
-            mData.add(mEvent.get(0));
-            mData.add(std::string(
-                input::get_key_codename(mEvent.get<input::key>(0))));
-
-            on_script("OnKeyDown", mData);
-            if (!mChecker.is_alive())
-                return;
-        }
-        else if (mEvent.get_name() == "KEY_RELEASED")
-        {
-            event_data mData;
-            mData.add(mEvent.get(0));
-            mData.add(std::string(
-                input::get_key_codename(mEvent.get<input::key>(0))));
-
-            on_script("OnKeyUp", mData);
-            if (!mChecker.is_alive())
-                return;
-        }
     }
 }
 

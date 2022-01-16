@@ -35,8 +35,7 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
 {
     if (base::can_use_script(sScriptName))
         return true;
-    else if ((sScriptName == "OnChar") ||
-        (sScriptName == "OnCursorChanged") ||
+    else if ((sScriptName == "OnCursorChanged") ||
         (sScriptName == "OnEnterPressed") ||
         (sScriptName == "OnEscapePressed") ||
         (sScriptName == "OnSpacePressed") ||
@@ -121,39 +120,27 @@ void edit_box::update(float fDelta)
     }
 }
 
-void edit_box::on_event(const event& mEvent)
+void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
 {
     alive_checker mChecker(*this);
 
-    base::on_event(mEvent);
-    if (!mChecker.is_alive())
-        return;
+    // Do not fire OnKeyUp/OnKeyDown events when typing
+    bool bBypassEvent = false;
+    if (has_focus() && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
+        bBypassEvent = true;
+    if (!has_focus() && (sScriptName == "OnChar"))
+        bBypassEvent = true;
 
-    if (!has_focus())
-        return;
-
-    if (mEvent.get_name() == "TEXT_ENTERED")
+    if (!bBypassEvent)
     {
-        std::uint32_t c = mEvent.get<std::uint32_t>(0);
-        if (add_char_(c))
-        {
-            event_data mKeyEvent;
-            mKeyEvent.add(utils::unicode_to_utf8(utils::ustring(1, c)));
-            on_script("OnChar", mKeyEvent);
-            if (!mChecker.is_alive())
-                return;
-
-            on_script("OnTextChanged");
-            if (!mChecker.is_alive())
-                return;
-        }
-
-        return;
+        base::on_script(sScriptName, mData);
+        if (!mChecker.is_alive())
+            return;
     }
 
-    if (mEvent.get_name() == "KEY_PRESSED")
+    if (sScriptName == "OnKeyDown" && has_focus())
     {
-        key mKey = utils::get<key>(mEvent.get(0));
+        key mKey = mData.get<key>(0);
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
             on_script("OnEnterPressed");
@@ -184,35 +171,28 @@ void edit_box::on_event(const event& mEvent)
             if (!mChecker.is_alive())
                 return;
         }
+        else if (mKey == key::K_ESCAPE)
+        {
+            on_script("OnEscapePressed");
+            if (!mChecker.is_alive())
+                return;
+        }
 
         process_key_(mKey);
         if (!mChecker.is_alive())
             return;
     }
-    else if (mEvent.get_name() == "KEY_RELEASED")
+    else if (sScriptName == "OnChar" && has_focus())
     {
-        key mKey = utils::get<key>(mEvent.get(0));
-
-        if (mKey == key::K_ESCAPE)
+        std::uint32_t c = mData.get<std::uint32_t>(1);
+        if (add_char_(c))
         {
-            on_script("OnEscapePressed");
-            return;
+            on_script("OnTextChanged");
+            if (!mChecker.is_alive())
+                return;
         }
     }
-}
-
-void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
-{
-    // Do not fire OnKeyUp/OnKeyDown events when typing
-    if (has_focus() && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
-        return;
-
-    alive_checker mChecker(*this);
-    base::on_script(sScriptName, mData);
-    if (!mChecker.is_alive())
-        return;
-
-    if (sScriptName == "OnSizeChanged")
+    else if (sScriptName == "OnSizeChanged")
     {
         update_displayed_text_();
         update_font_string_();
