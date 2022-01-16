@@ -492,6 +492,9 @@ void uiroot::on_event(const event& mEvent)
         }
 
         // If no keybinding, just forward to the world
+        // TODO: can we handle this better? Do we need the full generic world event emitter?
+        // TODO: since uiroot is now the only element taking input events directly from
+        //       the input dispatcher, can we review the design and cut some corners?
         get_manager().get_world_event_emitter().fire_event(mEvent);
     }
     else if (mEvent.get_name() == "TEXT_ENTERED")

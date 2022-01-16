@@ -42,39 +42,39 @@ namespace gui
         keybinder& operator= (keybinder&&) = delete;
 
         /// Binds some Lua code to a key.
-        /** \param uiKey      The key to bind
+        /** \param mKey       The key to bind
         *   \param mHandler   The Lua function that will be executed
         */
-        void set_key_binding(input::key uiKey, sol::protected_function mHandler);
+        void set_key_binding(input::key mKey, sol::protected_function mHandler);
 
         /// Binds some Lua code to a key.
-        /** \param uiKey      The key to bind
+        /** \param mKey       The key to bind
         *   \param uiModifier The modifier key (shift, ctrl, ...)
         *   \param mHandler   The Lua function that will be executed
         */
-        void set_key_binding(input::key uiKey, input::key uiModifier, sol::protected_function mHandler);
+        void set_key_binding(input::key mKey, input::key uiModifier, sol::protected_function mHandler);
 
         /// Binds some Lua code to a key.
-        /** \param uiKey       The key to bind
+        /** \param mKey        The key to bind
         *   \param uiModifier1 The first modifier key (shift, ctrl, ...)
         *   \param uiModifier2 The second modifier key (shift, ctrl, ...)
         *   \param mHandler    The Lua function that will be executed
         */
         void set_key_binding(
-            input::key uiKey, input::key uiModifier1, input::key uiModifier2,
+            input::key mKey, input::key uiModifier1, input::key uiModifier2,
             sol::protected_function mHandler);
 
         /// Unbinds a key.
-        /** \param uiKey       The key to unbind
+        /** \param mKey        The key to unbind
         *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
         *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
         */
         void remove_key_binding(
-            input::key uiKey, input::key uiModifier1 = input::key::K_UNASSIGNED,
+            input::key mKey, input::key uiModifier1 = input::key::K_UNASSIGNED,
             input::key uiModifier2 = input::key::K_UNASSIGNED);
 
         /// Called when a key is pressed.
-        /** \param uiKey       The key that is pressed
+        /** \param mKey        The key that is pressed
         *   \param mDispatcher The input dispatcher (to get the state of the keyboard)
         */
         bool on_key_down(input::key mKey, const input::dispatcher& mDispatcher);

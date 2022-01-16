@@ -119,7 +119,7 @@
 *   Inherits all methods from: none.
 *
 *   Child classes: @{Frame}, @{LayeredRegion}, @{FontString}, @{Texture},
-*   @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox}, @{ScrollFrame},
+*   @{Button}, @{CheckButton}, @{EditBox}, @{ScrollFrame},
 *   @{Slider}, @{StatusBar}.
 *   @classmod UIObject
 */

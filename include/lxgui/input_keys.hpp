@@ -185,10 +185,10 @@ namespace input
     std::string_view get_mouse_button_codename(mouse_button mID);
 
     /// Returns the localizable name of the provided mouse button.
-    /** \param mKey The ID code of the mouse button
+    /** \param mID The ID code of the mouse button
     *   \return The localizable name of the provided mouse button
     *   \note This will return localizable button names, e.g., "{mouse_left}" for the left mouse
-    *         button. Use a @ref localizer to transform this into a user-friendly name.
+    *         button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
     */
     std::string_view get_localizable_mouse_button_name(mouse_button mID);
 
@@ -205,7 +205,7 @@ namespace input
     /** \param mKey The key
     *   \return The localizable name of the provided key
     *   \note This will return localizable key names, e.g., "{key_enter}" for the Enter key.
-    *         Use a @ref localizer to transform this into a user-friendly name.
+    *         Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
     */
     std::string_view get_localizable_key_name(key mKey);
 

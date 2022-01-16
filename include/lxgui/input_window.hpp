@@ -16,8 +16,7 @@ namespace input
     public :
 
         /// Initializes this window with a chosen input source.
-        /** \param mBlock  The owner pointer control block
-        *   \param mSource The input source
+        /** \param mSource The input source
         */
         explicit window(source& mSource);
 

@@ -110,8 +110,6 @@ namespace gui
     *   __Events.__ Hard-coded events available to all edit_boxes,
     *   in addition to those from #frame:
     *
-    *   - `OnChar`: Triggered whenever a new character is added to the
-    *   edit box. Will always be preceeded by `OnTextChanged`.
     *   - `OnCursorChanged`: Triggered whenever the position of the edit
     *   cursor is changed (not yet implemented).
     *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
@@ -129,7 +127,7 @@ namespace gui
     *   while the edit box is focussed.
     *   - `OnTextChanged`: Triggered whenever the text contained in the
     *   edit box changes (character added or deleted, text set or pasted,
-    *   etc.).
+    *   etc.). Triggered after `OnChar`.
     *   - `OnTextSet`: Triggered by edit_box::set_text. Will always be
     *   followed by `OnTextChanged`.
     */

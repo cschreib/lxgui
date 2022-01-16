@@ -70,14 +70,14 @@ namespace gui
 
         /// Find the top-most frame matching the provided predicate
         /** \param mPredicate A function returning 'true' if the frame can be selected
-        *   \return The hovered frame, or nullptr if none
+        *   \return The topmost frame, or nullptr if none
         */
         utils::observer_ptr<const frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate) const;
 
         /// Find the top-most frame matching the provided predicate
-        /** \param mPosition The coordinates to look at
-        *   \return The hovered frame, or nullptr if none
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, or nullptr if none
         */
         utils::observer_ptr<frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate)

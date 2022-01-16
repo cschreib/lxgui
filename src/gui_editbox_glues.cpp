@@ -29,8 +29,6 @@
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
 *   in addition to those from @{Frame}:
 *
-*   - `OnChar`: Triggered whenever a new character is added to the
-*   edit box. Will always be preceeded by `OnTextChanged`.
 *   - `OnCursorChanged`: Triggered whenever the position of the edit
 *   cursor is changed (not yet implemented).
 *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
@@ -48,7 +46,7 @@
 *   while the edit box is focussed.
 *   - `OnTextChanged`: Triggered whenever the text contained in the
 *   edit box changes (character added or deleted, text set or pasted,
-*   etc.).
+*   etc.). Triggered after `OnChar`.
 *   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
 *   followed by `OnTextChanged`.
 *

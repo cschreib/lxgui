@@ -128,6 +128,8 @@ namespace gui
     *
     *   Hard-coded events available to all frames:
     *
+    *   - `OnChar`: Triggered whenever a character is typed into the frame, and
+    *   the frame has focus (see @ref frame::set_focus).
     *   - `OnDragStart`: Triggered when one of the mouse button registered for
     *   dragging (see frame::register_for_drag) has been pressed inside the
     *   area of the screen occupied by the frame, and a mouse movement is first

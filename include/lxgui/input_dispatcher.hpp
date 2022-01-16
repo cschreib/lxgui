@@ -66,11 +66,11 @@ namespace input
         bool is_mouse_blocked() const;
 
         /// Enable/disable keyboard inputs
-        /** \param bBlock 'true' to block keyboard input events from being generated, 'true' to allow all
-        *   \note This only blocks keyboard events; the state of the keyboard and keyboard can always be
-        *         queried using @ref key_is_down, @ref keyboard_is_down, etc. Use
-        *         @ref is_keyboard_blocked() before using direct state queries if you want to fully
-        *         honor keyboard input blocking.
+        /** \param bBlock 'true' to block keyboard events from being generated, 'true' to allow all
+        *   \note This only blocks keyboard events; the state of the keyboard and keyboard can
+        *         always be queried using @ref key_is_down, etc. Use @ref is_keyboard_blocked()
+        *         before using direct state queries if you want to fully honor keyboard input
+        *         blocking.
         */
         void block_keyboard_events(bool bBlock);
 

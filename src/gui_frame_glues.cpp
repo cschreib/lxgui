@@ -88,6 +88,8 @@
 *
 *   Hard-coded events available to all @{Frame}s:
 *
+*   - `OnChar`: Triggered whenever a character is typed into the frame, and
+*   the frame has focus (see @{Frame:set_focus}).
 *   - `OnDragStart`: Triggered when one of the mouse button registered for
 *   dragging (see @{Frame:register_for_drag}) has been pressed inside the
 *   area of the screen occupied by the frame, and a mouse movement is first
@@ -119,20 +121,20 @@
 *   frame is focussed, only the topmost frame with
 *   @{Frame:enable_key_capture} will receive the event. If no frame has
 *   captured the key, then the key is tested for existing key bindings (see
-*   @{set_key_binding}). This event provides two arguments to the registered
+*   @{Manager:set_key_binding}). This event provides two arguments to the registered
 *   callback: a number identifying the key, and the human-readable name of the
 *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-*   the @{set_key_binding}.
+*   the @{Manager:set_key_binding}.
 *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
 *   trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
 *   been registered for capture using @{Frame:enable_key_capture}. If no
 *   frame is focussed, only the topmost frame with
 *   @{Frame:enable_key_capture} will receive the event. If no frame has
 *   captured the key, then the key is tested for existing key bindings (see
-*   @{set_key_binding}). This event provides two arguments to the registered
+*   @{Manager:set_key_binding}). This event provides two arguments to the registered
 *   callback: a number identifying the key, and the human-readable name of the
 *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-*   the @{set_key_binding}.
+*   the @{Manager:set_key_binding}.
 *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
 *   screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
@@ -216,7 +218,7 @@
 *
 *   Inherits all methods from: @{UIObject}.
 *
-*   Child classes: @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox},
+*   Child classes: @{Button}, @{CheckButton}, @{EditBox},
 *   @{ScrollFrame}, @{Slider}, @{StatusBar}.
 *   @classmod Frame
 */
