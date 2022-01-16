@@ -120,7 +120,7 @@ void frame_renderer::notify_frame_level_changed(const utils::observer_ptr<frame>
     notify_strata_needs_redraw_(mStrata);
 }
 
-utils::observer_ptr<const frame> frame_renderer::find_hovered_frame(const vector2f& mPosition,
+utils::observer_ptr<const frame> frame_renderer::find_topmost_frame(
     const std::function<bool(const frame&)>& mPredicate) const
 {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
@@ -134,8 +134,8 @@ utils::observer_ptr<const frame> frame_renderer::find_hovered_frame(const vector
                 {
                     if (pRawPtr->is_visible())
                     {
-                        if (auto pHovered = pRawPtr->find_topmost_at_position(mPosition, mPredicate))
-                            return pHovered;
+                        if (auto pTopmost = pRawPtr->find_topmost_frame(mPredicate))
+                            return pTopmost;
                     }
                 }
             }

@@ -765,30 +765,28 @@ namespace gui
         */
         bool is_in_region(const vector2f& mPosition) const override;
 
-        /// Find the topmost frame matching the provided predicate at the provided position.
-        /** \param mPosition  The coordinates to test
-        *   \param mPredicate A function returning 'true' if the frame can be selected
+        /// Find the topmost frame matching the provided predicate.
+        /** \param mPredicate A function returning 'true' if the frame can be selected
         *   \return The topmost frame, if any, and nullptr otherwise.
         *   \note For most frames, this can either return 'this' or 'nullptr'. For
         *         frames responsible for rendering other frames (such as @ref scroll_frame),
         *         this can return other frames.
         */
-        virtual utils::observer_ptr<const frame> find_topmost_at_position(const vector2f& mPosition,
+        virtual utils::observer_ptr<const frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate) const;
 
-        /// Find the topmost frame matching the provided predicate at the provided position.
-        /** \param mPosition  The coordinates to test
-        *   \param mPredicate A function returning 'true' if the frame can be selected
+        /// Find the topmost frame matching the provided predicate.
+        /** \param mPredicate A function returning 'true' if the frame can be selected
         *   \return The topmost frame, if any, and nullptr otherwise.
         *   \note For most frames, this can either return 'this' or 'nullptr'. For
         *         frames responsible for rendering other frames (such as @ref scroll_frame),
         *         this can return other frames.
         */
-        utils::observer_ptr<frame> find_topmost_at_position(const vector2f& mPosition,
+        utils::observer_ptr<frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate)
         {
             return utils::const_pointer_cast<frame>(
-                const_cast<const frame*>(this)->find_topmost_at_position(mPosition, mPredicate));
+                const_cast<const frame*>(this)->find_topmost_frame(mPredicate));
         }
 
         /// Checks if this frame can receive mouse movement input.

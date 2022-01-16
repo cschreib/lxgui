@@ -118,9 +118,8 @@ namespace gui
         */
         float get_vertical_scroll_range() const;
 
-        /// Find the topmost frame matching the provided predicate at the provided position.
-        /** \param mPosition  The coordinates to test
-        *   \param mPredicate A function returning 'true' if the frame can be selected
+        /// Find the topmost frame matching the provided predicate
+        /** \param mPredicate A function returning 'true' if the frame can be selected
         *   \return The topmost frame, if any, and nullptr otherwise.
         *   \note For most frames, this can either return 'this' or 'nullptr'. For
         *         frames responsible for rendering other frames (such as @ref scroll_frame),
@@ -128,7 +127,7 @@ namespace gui
         *   \note For scroll children to receive input, the scroll_frame must be
         *         keyboard/mouse/wheel enabled.
         */
-        utils::observer_ptr<const frame> find_topmost_at_position(const vector2f& mPosition,
+        utils::observer_ptr<const frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate) const override;
 
         /// Tells this renderer that one of its widget requires redraw.

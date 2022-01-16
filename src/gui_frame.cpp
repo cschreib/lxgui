@@ -922,10 +922,10 @@ bool frame::is_in_region(const vector2f& mPosition) const
     return bIsInXRange && bIsInYRange;
 }
 
-utils::observer_ptr<const frame> frame::find_topmost_at_position(const vector2f& mPosition,
+utils::observer_ptr<const frame> frame::find_topmost_frame(
     const std::function<bool(const frame&)>& mPredicate) const
 {
-    if (is_in_region(mPosition) && mPredicate(*this))
+    if (mPredicate(*this))
         return observer_from(this);
 
     return nullptr;

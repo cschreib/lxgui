@@ -319,10 +319,10 @@ void uiroot::on_event(const event& mEvent)
     {
         const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mMousePos,
-            [](const frame& mFrame)
+        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+            [&](const frame& mFrame)
             {
-                return mFrame.is_mouse_wheel_enabled();
+                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_wheel_enabled();
             }
         );
 
@@ -334,10 +334,10 @@ void uiroot::on_event(const event& mEvent)
     {
         const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mMousePos,
-            [](const frame& mFrame)
+        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+            [&](const frame& mFrame)
             {
-                return mFrame.is_mouse_click_enabled();
+                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
             }
         );
 
@@ -376,10 +376,10 @@ void uiroot::on_event(const event& mEvent)
 
         const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mMousePos,
-            [](const frame& mFrame)
+        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+            [&](const frame& mFrame)
             {
-                return mFrame.is_mouse_click_enabled();
+                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
             }
         );
 
@@ -404,10 +404,10 @@ void uiroot::on_event(const event& mEvent)
     {
         const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mMousePos,
-            [](const frame& mFrame)
+        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+            [&](const frame& mFrame)
             {
-                return mFrame.is_mouse_click_enabled();
+                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
             }
         );
 
@@ -450,17 +450,17 @@ void uiroot::on_event(const event& mEvent)
         // First, give priority to the focussed frame
         utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
 
-        // TODO:
         // If no focussed frame, look top-down for a frame that captures this key
-        // if (!pTopmostFrame)
-        // {
-        //     pTopmostFrame = find_topmost_frame(
-        //         [&](const frame& mFrame)
-        //         {
-        //             return mFrame.is_key_captured(sKeyName);
-        //         }
-        //     );
-        // }
+        if (!pTopmostFrame)
+        {
+            pTopmostFrame = find_topmost_frame(
+                [&](const frame& mFrame)
+                {
+                    // return mFrame.is_key_captured(sKeyName);
+                    return true;
+                }
+            );
+        }
 
         // If a frame is found, capture input and return
         if (pTopmostFrame)
@@ -530,10 +530,10 @@ void uiroot::update_hovered_frame_()
 {
     const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-    utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mMousePos,
-        [](const frame& mFrame)
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+        [&](const frame& mFrame)
         {
-            return mFrame.is_mouse_move_enabled();
+            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_move_enabled();
         }
     );
 

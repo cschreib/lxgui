@@ -291,12 +291,12 @@ void scroll_frame::render_scroll_strata_list_()
     mRenderer.end();
 }
 
-utils::observer_ptr<const frame> scroll_frame::find_topmost_at_position(const vector2f& mPosition,
+utils::observer_ptr<const frame> scroll_frame::find_topmost_frame(
     const std::function<bool(const frame&)>& mPredicate) const
 {
-    if (is_in_region(mPosition) && mPredicate(*this))
+    if (base::find_topmost_frame(mPredicate))
     {
-        if (auto pHoveredFrame = find_hovered_frame(mPosition, mPredicate))
+        if (auto pHoveredFrame = frame_renderer::find_topmost_frame(mPredicate))
             return pHoveredFrame;
 
         return observer_from(this);
