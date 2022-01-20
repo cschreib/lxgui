@@ -42,8 +42,7 @@ frame::~frame()
     // Disable callbacks
     for (auto& lHandlerList : lScriptHandlerList_)
     {
-        for (auto& mHandler : *lHandlerList.second)
-            mHandler.bDisconnected = true;
+        lHandlerList.second.disconnect_all();
     }
 
     // Children must be destroyed first
@@ -243,10 +242,9 @@ void frame::copy_from(const uiobject& mObj)
 
     for (const auto& mItem : pFrame->lScriptHandlerList_)
     {
-        for (const auto& mHandler : *mItem.second)
+        for (const auto& mFunction : pFrame->get_script(mItem.first))
         {
-            if (!mHandler.bDisconnected)
-                this->add_script(mItem.first, mHandler.mCallback);
+            this->add_script(mItem.first, mFunction);
         }
     }
 
@@ -585,13 +583,7 @@ bool frame::has_script(const std::string& sScriptName) const
     if (mIter == lScriptHandlerList_.end())
         return false;
 
-    for (const auto& mHandler : *mIter->second)
-    {
-        if (!mHandler.bDisconnected)
-            return true;
-    }
-
-    return false;
+    return mIter->second.has_slot();
 }
 
 utils::observer_ptr<layered_region> frame::add_region(
@@ -1144,16 +1136,12 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
         // They will be deleted later, when we know it is safe.
-        for (auto& mPrevHandler : *lHandlerList)
-            mPrevHandler.bDisconnected = true;
+        lHandlerList.disconnect_all();
     }
-
-    if (lHandlerList == nullptr)
-        lHandlerList = std::make_shared<std::list<script_handler_slot>>();
 
     // TODO: add file/line info if the handler comes from C++
     // https://github.com/cschreib/lxgui/issues/96
-    lHandlerList->push_back({std::move(mHandler), false});
+    lHandlerList.connect(std::move(mHandler));
 
     if (!is_virtual())
     {
@@ -1179,13 +1167,13 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
     }
 }
 
-frame::script_list_view frame::get_script(const std::string& sScriptName) const
+script_list_view frame::get_script(const std::string& sScriptName) const
 {
     auto iterH = lScriptHandlerList_.find(sScriptName);
     if (iterH == lScriptHandlerList_.end())
         throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
 
-    return script_list_view(*iterH->second);
+    return iterH->second.slots();
 }
 
 void frame::remove_script(const std::string& sScriptName)
@@ -1196,8 +1184,7 @@ void frame::remove_script(const std::string& sScriptName)
     // Just disable existing scripts, it may not be safe to modify the handler list
     // if this script is being defined during a handler execution.
     // They will be deleted later, when we know it is safe.
-    for (auto& mHandler : *iterH->second)
-        mHandler.bDisconnected = true;
+    iterH->second.disconnect_all();
 
     if (!is_virtual())
     {
@@ -1247,16 +1234,8 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
 
     try
     {
-        // Make a shared-ownership copy of the handler list, so that the list
-        // survives even if this frame is destroyed midway during a handler.
-        const auto lHandlerList = iterH->second;
-
         // Call the handlers
-        for (const auto& mHandler : *lHandlerList)
-        {
-            if (!mHandler.bDisconnected)
-                mHandler.mCallback(*this, mData);
-        }
+        iterH->second(*this, mData);
     }
     catch (const std::exception& mException)
     {
@@ -1871,17 +1850,11 @@ void frame::update(float fDelta)
         lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
-    // Remove disabled handlers
+    // Remove empty handlers
     for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end(); ++mIterList)
     {
-        auto& lHandlerList = *mIterList->second;
-        auto mIterRemove = std::remove_if(lHandlerList.begin(), lHandlerList.end(),
-            [](const auto& mHandler) { return mHandler.bDisconnected; });
-
-        if (mIterRemove == lHandlerList.begin())
+        if (!mIterList->second.has_slot())
             mIterList = lScriptHandlerList_.erase(mIterList);
-        else
-            lHandlerList.erase(mIterRemove, lHandlerList.end());
     }
 
     vector2f mNewSize = get_apparent_dimensions();

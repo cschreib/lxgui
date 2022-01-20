@@ -11,6 +11,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_view.hpp>
+#include <lxgui/utils_signal.hpp>
 
 #include <sol/protected_function.hpp>
 
@@ -45,15 +46,17 @@ namespace gui
         std::size_t uiLineNbr = 0;
     };
 
-    /// C++ function type for UI script handlers.
-    using script_handler_function = std::function<void(frame&, const event_data&)>;
+    /// Signature of frame scripts.
+    using script_signature = void(frame&, const event_data&);
 
-    /// Disconnectable slot for script handlers (used internally).
-    struct script_handler_slot
-    {
-        script_handler_function mCallback;
-        bool bDisconnected = false;
-    };
+    /// Observable signal for script handlers (used internally).
+    using script_handler_signal = utils::signal<script_signature>;
+
+    /// C++ function type for UI script handlers.
+    using script_handler_function = script_handler_signal::function_type;
+
+    /// View into all the connected scripts for a given event.
+    using script_list_view = script_handler_signal::script_list_view;
 
     /// A #uiobject that can contain other objects and react to events.
     /** This class, which is at the core of the UI design, can contain
@@ -281,32 +284,6 @@ namespace gui
         using const_region_list_view = utils::view::adaptor<const region_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
-
-        template<typename BaseIterator>
-        struct script_handler_dereferencer
-        {
-            using data_type = const script_handler_function&;
-            static data_type dereference(const BaseIterator& mIter) { return mIter->mCallback; }
-        };
-
-        template<typename BaseIterator>
-        struct non_disconnected_filter
-        {
-            static bool is_included(const BaseIterator& mIter) { return !mIter->bDisconnected; }
-        };
-
-        /// Type of the script handler list (internal).
-        /** \note Constraints on the choice container type:
-        *          - must not invalidate iterators on back insertion
-        *          - must allow forward iteration
-        *          - iterators cannot be invalidated on removal
-        *          - most common use is iteration, not addition or removal
-        *          - ordering of elements is relevant
-        */
-        using script_handler_list = std::list<script_handler_slot>;
-        using script_list_view = utils::view::adaptor<script_handler_list,
-            script_handler_dereferencer,
-            non_disconnected_filter>;
 
         /// Constructor.
         explicit frame(utils::control_block& mBlock, manager& mManager);
@@ -1301,7 +1278,7 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, std::shared_ptr<script_handler_list>> lScriptHandlerList_;
+        std::unordered_map<std::string, utils::signal<script_signature>> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegDragList_;
