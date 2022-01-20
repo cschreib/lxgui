@@ -8,7 +8,6 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_window.hpp>
 #include <lxgui/utils_range.hpp>
 
@@ -141,6 +140,9 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
     if (sScriptName == "OnKeyDown" && has_focus())
     {
         key mKey = mData.get<key>(0);
+        bool bShiftIsPressed = mData.get<bool>(2);
+        bool bCtrlIsPressed = mData.get<bool>(3);
+
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
             on_script("OnEnterPressed");
@@ -178,7 +180,8 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
                 return;
         }
 
-        process_key_(mKey);
+        process_key_(mKey, bShiftIsPressed, bCtrlIsPressed);
+
         if (!mChecker.is_alive())
             return;
     }
@@ -1164,7 +1167,7 @@ bool edit_box::move_carret_vertically_(bool bDown)
     }
 }
 
-void edit_box::process_key_(key mKey)
+void edit_box::process_key_(key mKey, bool bShiftIsPressed, bool bCtrlIsPressed)
 {
     alive_checker mChecker(*this);
 
@@ -1191,7 +1194,7 @@ void edit_box::process_key_(key mKey)
         std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
-        if (get_manager().get_input_dispatcher().shift_is_pressed())
+        if (bShiftIsPressed)
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1208,7 +1211,7 @@ void edit_box::process_key_(key mKey)
         std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(0u);
 
-        if (get_manager().get_input_dispatcher().shift_is_pressed())
+        if (bShiftIsPressed)
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1239,7 +1242,7 @@ void edit_box::process_key_(key mKey)
 
             if (mKey == key::K_LEFT || mKey == key::K_RIGHT)
             {
-                if (bSelectedText_ && !get_manager().get_input_dispatcher().shift_is_pressed())
+                if (bSelectedText_ && !bShiftIsPressed)
                 {
                     std::size_t uiOffset = 0;
                     if (mKey == key::K_LEFT)
@@ -1259,7 +1262,7 @@ void edit_box::process_key_(key mKey)
                     move_carret_vertically_(mKey == key::K_DOWN);
             }
 
-            if (get_manager().get_input_dispatcher().shift_is_pressed())
+            if (bShiftIsPressed)
             {
                 if (bSelectedText_)
                 {
@@ -1313,7 +1316,7 @@ void edit_box::process_key_(key mKey)
             }
         }
     }
-    else if (mKey == key::K_C && get_manager().get_input_dispatcher().ctrl_is_pressed())
+    else if (mKey == key::K_C && bCtrlIsPressed)
     {
         if (uiSelectionEndPos_ != uiSelectionStartPos_)
         {
@@ -1323,7 +1326,7 @@ void edit_box::process_key_(key mKey)
             get_manager().get_window().set_clipboard_content(sSelected);
         }
     }
-    else if (mKey == key::K_V && get_manager().get_input_dispatcher().ctrl_is_pressed())
+    else if (mKey == key::K_V && bCtrlIsPressed)
     {
         for (char32_t cChar : get_manager().get_window().get_clipboard_content())
         {

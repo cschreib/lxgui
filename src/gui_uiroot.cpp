@@ -328,6 +328,8 @@ void uiroot::on_event(const event& mEvent)
 
         event_data mData;
         mData.add(mEvent.get(0));
+        mData.add(mMousePos.x);
+        mData.add(mMousePos.y);
         pHoveredFrame->on_script("OnMouseWheel", mData);
     }
     else if (mEvent.get_name() == "MOUSE_DRAG_START")
@@ -367,6 +369,7 @@ void uiroot::on_event(const event& mEvent)
     else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
     {
         stop_moving();
+        stop_sizing();
 
         if (pDraggedFrame_)
         {
@@ -467,6 +470,9 @@ void uiroot::on_event(const event& mEvent)
             event_data mData;
             mData.add(mEvent.get(0));
             mData.add(sKeyName);
+            mData.add(get_manager().get_input_dispatcher().shift_is_pressed());
+            mData.add(get_manager().get_input_dispatcher().ctrl_is_pressed());
+            mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
 
             if (mEvent.get_name() == "KEY_PRESSED")
                 pTopmostFrame->on_script("OnKeyDown", mData);
@@ -491,10 +497,13 @@ void uiroot::on_event(const event& mEvent)
             return;
         }
 
-        // If no keybinding, just forward to the world
-        // TODO: can we handle this better? Do we need the full generic world event emitter?
         // TODO: since uiroot is now the only element taking input events directly from
         //       the input dispatcher, can we review the design and cut some corners?
+        //       --> use signal/slot or just a single std::function
+
+        // If no keybinding, just forward to the world
+        // TODO: can we handle this better? Do we need the full generic world event emitter?
+        //       --> no, remove world event emitter, and just use the world input dispatcher
         get_manager().get_world_event_emitter().fire_event(mEvent);
     }
     else if (mEvent.get_name() == "TEXT_ENTERED")

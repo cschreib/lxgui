@@ -398,7 +398,7 @@ namespace gui
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
 
-        void process_key_(input::key uiKey);
+        void process_key_(input::key uiKey, bool bShiftIsPressed, bool bCtrlIsPressed);
 
         utils::ustring           sUnicodeText_;
         utils::ustring           sDisplayedText_;
