@@ -332,7 +332,8 @@ void frame::create_title_region()
 {
     if (pTitleRegion_)
     {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : \""+sName_+"\" already has a title region." << std::endl;
+        gui::out << gui::warning << "gui::" << lType_.back() <<
+            " : \""+sName_+"\" already has a title region." << std::endl;
         return;
     }
 
@@ -1150,6 +1151,8 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
     if (lHandlerList == nullptr)
         lHandlerList = std::make_shared<std::list<script_handler_slot>>();
 
+    // TODO: add file/line info if the handler comes from C++
+    // https://github.com/cschreib/lxgui/issues/96
     lHandlerList->push_back({std::move(mHandler), false});
 
     if (!is_virtual())
@@ -1257,7 +1260,6 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
     }
     catch (const std::exception& mException)
     {
-        // TODO: add file/line info
         std::string sError = mException.what();
 
         gui::out << gui::error << sError << std::endl;

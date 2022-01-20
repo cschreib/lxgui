@@ -78,7 +78,7 @@ namespace
 
     #if defined(LXGUI_PLATFORM_WINDOWS)
         // If LANGUAGE is not specified, on Windows, try OS-specific function.
-        // TODO
+        // TODO: https://github.com/cschreib/lxgui/issues/95
     #endif
 
         // If LANGUAGE is not specified or empty, try LANG.
@@ -148,6 +148,7 @@ void localizer::set_locale(const std::locale& mLocale)
 void localizer::set_preferred_languages(const std::vector<std::string>& lLanguages)
 {
     // TODO implement more generic input checks
+    // https://github.com/cschreib/lxgui/issues/98
     // for (const auto& sLanguage : lLanguages)
     // {
     //     if (sLanguage.size() != 4)

@@ -765,6 +765,7 @@ void edit_box::check_text_()
         sUnicodeText_.resize(uiMaxLetters_);
 
     // TODO: use localizer's locale for these checks
+    // https://github.com/cschreib/lxgui/issues/88
     if (bNumericOnly_ && !utils::is_number(sUnicodeText_))
     {
         sUnicodeText_.clear();
@@ -815,6 +816,7 @@ void edit_box::update_displayed_text_()
         else
         {
             // TODO: implement for multiline edit box
+            // https://github.com/cschreib/lxgui/issues/39
         }
     }
 }
@@ -957,6 +959,7 @@ bool edit_box::add_char_(char32_t sUnicode)
         return false;
 
     // TODO: use localizer for these checks, if possible
+    // https://github.com/cschreib/lxgui/issues/88
     if (bNumericOnly_)
     {
         if (sUnicode == U'.')
@@ -1064,7 +1067,8 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& mPosition)
         }
         else
         {
-            // TODO : Implement for multi line edit_box
+            // TODO: Implement for multi line edit_box
+            // https://github.com/cschreib/lxgui/issues/39
             return uiDisplayPos_;
         }
 
@@ -1130,7 +1134,8 @@ bool edit_box::move_carret_vertically_(bool bDown)
 {
     if (bMultiLine_)
     {
-        // TODO : Implement for multi line edit_box
+        // TODO: Implement for multi line edit_box
+        // https://github.com/cschreib/lxgui/issues/39
         return false;
     }
     else

@@ -250,8 +250,6 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, s
             lFontList_.erase(mIter);
     }
 
-    // TODO: forward lCodePoints to create_font_()
-
     std::shared_ptr<gui::font> pFont = create_font_(
         sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 
