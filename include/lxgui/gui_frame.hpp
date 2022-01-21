@@ -840,88 +840,94 @@ namespace gui
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note The script_info parameter is used only for displaying error messages.
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void add_script(const std::string& sScriptName, std::string sContent,
+        utils::connection add_script(const std::string& sScriptName, std::string sContent,
             script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, sContent, true, mInfo);
+            return define_script_(sScriptName, sContent, true, mInfo);
         }
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a Lua function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a Lua function to be called for the event specified in sScriptName.
         *         This provides more flexibility compared to using C++ function, but also has a
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void add_script(const std::string& sScriptName, sol::protected_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection add_script(const std::string& sScriptName,
+            sol::protected_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), true, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a C++ function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a C++ function to be called for the event specified in sScriptName.
         *         This provides the best performance, but lacks direct access to the Lua
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void add_script(const std::string& sScriptName, script_handler_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection add_script(const std::string& sScriptName,
+            script_handler_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), true, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note The script_info parameter is used only for displaying error messages.
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void set_script(const std::string& sScriptName, std::string sContent,
+        utils::connection set_script(const std::string& sScriptName, std::string sContent,
             script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, sContent, false, mInfo);
+            return define_script_(sScriptName, sContent, false, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a Lua function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a Lua function to be called for the event specified in sScriptName.
         *         This provides more flexibility compared to using C++ function, but also has a
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void set_script(const std::string& sScriptName, sol::protected_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection set_script(const std::string& sScriptName,
+            sol::protected_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), false, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a C++ function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a C++ function to be called for the event specified in sScriptName.
         *         This provides the best performance, but lacks direct access to the Lua
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void set_script(const std::string& sScriptName, script_handler_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection set_script(const std::string& sScriptName,
+            script_handler_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), false, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
 
         /// Return a view into this frame's handler scripts, registered for the given event.
@@ -1262,14 +1268,14 @@ namespace gui
 
         void update_borders_() override;
 
-        void define_script_(const std::string& sScriptName, const std::string& sContent,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            const std::string& sContent, bool bAppend, const script_info& mInfo);
 
-        void define_script_(const std::string& sScriptName, sol::protected_function mHandler,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            sol::protected_function mHandler, bool bAppend, const script_info& mInfo);
 
-        void define_script_(const std::string& sScriptName, script_handler_function mHandler,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            script_handler_function mHandler, bool bAppend, const script_info& mInfo);
 
         child_list  lChildList_;
         region_list lRegionList_;

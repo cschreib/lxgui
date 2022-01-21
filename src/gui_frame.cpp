@@ -583,7 +583,7 @@ bool frame::has_script(const std::string& sScriptName) const
     if (mIter == lScriptHandlerList_.end())
         return false;
 
-    return mIter->second.has_slot();
+    return !mIter->second.empty();
 }
 
 utils::observer_ptr<layered_region> frame::add_region(
@@ -1047,8 +1047,8 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
     return sNewError;
 }
 
-void frame::define_script_(const std::string& sScriptName, const std::string& sContent,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    const std::string& sContent, bool bAppend, const script_info& mInfo)
 {
     // Create the Lua function from the provided string
     sol::state& mLua = get_lua_();
@@ -1073,17 +1073,17 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
         get_manager().get_event_emitter().fire_event(mEvent);
-        return;
+        return {};
     }
 
     sol::protected_function mHandler = mResult;
 
     // Forward it as any other Lua function
-    define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
+    return define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
 }
 
-void frame::define_script_(const std::string& sScriptName, sol::protected_function mHandler,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    sol::protected_function mHandler, bool bAppend, const script_info& mInfo)
 {
     auto mWrappedHandler =
         [mHandler = std::move(mHandler), mInfo](frame& mSelf, const event_data& mArgs)
@@ -1124,11 +1124,11 @@ void frame::define_script_(const std::string& sScriptName, sol::protected_functi
         }
     };
 
-    define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
+    return define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
 }
 
-void frame::define_script_(const std::string& sScriptName, script_handler_function mHandler,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    script_handler_function mHandler, bool bAppend, const script_info& mInfo)
 {
     auto& lHandlerList = lScriptHandlerList_[sScriptName];
     if (!bAppend)
@@ -1141,7 +1141,7 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
 
     // TODO: add file/line info if the handler comes from C++
     // https://github.com/cschreib/lxgui/issues/96
-    lHandlerList.connect(std::move(mHandler));
+    auto mConnection = lHandlerList.connect(std::move(mHandler));
 
     if (!is_virtual())
     {
@@ -1165,6 +1165,8 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
             }
         );
     }
+
+    return mConnection;
 }
 
 script_list_view frame::get_script(const std::string& sScriptName) const
@@ -1851,10 +1853,12 @@ void frame::update(float fDelta)
     }
 
     // Remove empty handlers
-    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end(); ++mIterList)
+    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end();)
     {
-        if (!mIterList->second.has_slot())
+        if (mIterList->second.empty())
             mIterList = lScriptHandlerList_.erase(mIterList);
+        else
+            ++mIterList;
     }
 
     vector2f mNewSize = get_apparent_dimensions();
