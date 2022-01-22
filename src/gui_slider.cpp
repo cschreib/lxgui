@@ -59,10 +59,10 @@ bool slider::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void slider::on_script(const std::string& sScriptName, const event_data& mData)
+void slider::trigger(const std::string& sScriptName, const event_data& mData)
 {
     alive_checker mChecker(*this);
-    base::on_script(sScriptName, mData);
+    base::trigger(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -189,7 +189,7 @@ void slider::constrain_thumb_()
     }
 
     if (fValue_ != fOldValue)
-        on_script("OnValueChanged");
+        trigger("OnValueChanged");
 }
 
 void slider::set_min_value(float fMin)
@@ -203,7 +203,7 @@ void slider::set_min_value(float fMin)
         if (fValue_ < fMinValue_)
         {
             fValue_ = fMinValue_;
-            on_script("OnValueChanged");
+            trigger("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -221,7 +221,7 @@ void slider::set_max_value(float fMax)
         if (fValue_ > fMaxValue_)
         {
             fValue_ = fMaxValue_;
-            on_script("OnValueChanged");
+            trigger("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -240,7 +240,7 @@ void slider::set_min_max_values(float fMin, float fMax)
         if (fValue_ > fMaxValue_ || fValue_ < fMinValue_)
         {
             fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
-            on_script("OnValueChanged");
+            trigger("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -257,7 +257,7 @@ void slider::set_value(float fValue, bool bSilent)
         fValue_ = fValue;
 
         if (!bSilent)
-            on_script("OnValueChanged");
+            trigger("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }
@@ -277,7 +277,7 @@ void slider::set_value_step(float fValueStep)
         step_value(fValue_, fValueStep_);
 
         if (fValue_ != fOldValue)
-            on_script("OnValueChanged");
+            trigger("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }

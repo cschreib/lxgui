@@ -312,7 +312,7 @@ void uiroot::on_event(const event& mEvent)
             event_data mData;
             mData.add(mEvent.get(2));
             mData.add(mEvent.get(3));
-            pDraggedFrame_->on_script("OnDragMove", mData);
+            pDraggedFrame_->trigger("OnDragMove", mData);
         }
     }
     else if (mEvent.get_name() == "MOUSE_WHEEL")
@@ -330,7 +330,7 @@ void uiroot::on_event(const event& mEvent)
         mData.add(mEvent.get(0));
         mData.add(mMousePos.x);
         mData.add(mMousePos.y);
-        pHoveredFrame->on_script("OnMouseWheel", mData);
+        pHoveredFrame->trigger("OnMouseWheel", mData);
     }
     else if (mEvent.get_name() == "MOUSE_DRAG_START")
     {
@@ -363,7 +363,7 @@ void uiroot::on_event(const event& mEvent)
             mData.add(mMousePos.y);
 
             pDraggedFrame_ = std::move(pHoveredFrame);
-            pDraggedFrame_->on_script("OnDragStart", mData);
+            pDraggedFrame_->trigger("OnDragStart", mData);
         }
     }
     else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
@@ -373,7 +373,7 @@ void uiroot::on_event(const event& mEvent)
 
         if (pDraggedFrame_)
         {
-            pDraggedFrame_->on_script("OnDragStop");
+            pDraggedFrame_->trigger("OnDragStop");
             pDraggedFrame_ = nullptr;
         }
 
@@ -399,7 +399,7 @@ void uiroot::on_event(const event& mEvent)
             mData.add(mMousePos.x);
             mData.add(mMousePos.y);
 
-            pHoveredFrame->on_script("OnReceiveDrag", mData);
+            pHoveredFrame->trigger("OnReceiveDrag", mData);
         }
     }
     else if (mEvent.get_name() == "MOUSE_PRESSED" || mEvent.get_name() == "MOUSE_RELEASED" ||
@@ -434,15 +434,15 @@ void uiroot::on_event(const event& mEvent)
             if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
                 pTopLevel->raise();
 
-            pHoveredFrame->on_script("OnMouseDown", mData);
+            pHoveredFrame->trigger("OnMouseDown", mData);
         }
         else if (mEvent.get_name() == "MOUSE_RELEASED")
         {
-            pHoveredFrame->on_script("OnMouseUp", mData);
+            pHoveredFrame->trigger("OnMouseUp", mData);
         }
         else if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
         {
-            pHoveredFrame->on_script("OnDoubleClicked", mData);
+            pHoveredFrame->trigger("OnDoubleClicked", mData);
         }
     }
     else if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
@@ -475,9 +475,9 @@ void uiroot::on_event(const event& mEvent)
             mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
 
             if (mEvent.get_name() == "KEY_PRESSED")
-                pTopmostFrame->on_script("OnKeyDown", mData);
+                pTopmostFrame->trigger("OnKeyDown", mData);
             else if (mEvent.get_name() == "KEY_RELEASED")
-                pTopmostFrame->on_script("OnKeyUp", mData);
+                pTopmostFrame->trigger("OnKeyUp", mData);
 
             return;
         }
@@ -515,7 +515,7 @@ void uiroot::on_event(const event& mEvent)
             mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
             mData.add(uiChar);
 
-            pFocus->on_script("OnChar", mData);
+            pFocus->trigger("OnChar", mData);
         }
     }
 }

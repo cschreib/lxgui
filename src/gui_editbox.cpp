@@ -113,13 +113,13 @@ void edit_box::update(float fDelta)
     if (iterCarretPos_ != iterCarretPosOld_)
     {
         iterCarretPosOld_ = iterCarretPos_;
-        on_script("OnCursorChanged");
+        trigger("OnCursorChanged");
         if (!mChecker.is_alive())
             return;
     }
 }
 
-void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
+void edit_box::trigger(const std::string& sScriptName, const event_data& mData)
 {
     alive_checker mChecker(*this);
 
@@ -132,7 +132,7 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
 
     if (!bBypassEvent)
     {
-        base::on_script(sScriptName, mData);
+        base::trigger(sScriptName, mData);
         if (!mChecker.is_alive())
             return;
     }
@@ -145,37 +145,37 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
 
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
-            on_script("OnEnterPressed");
+            trigger("OnEnterPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_TAB)
         {
-            on_script("OnTabPressed");
+            trigger("OnTabPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_UP)
         {
-            on_script("OnUpPressed");
+            trigger("OnUpPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_DOWN)
         {
-            on_script("OnDownPressed");
+            trigger("OnDownPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_SPACE)
         {
-            on_script("OnSpacePressed");
+            trigger("OnSpacePressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_ESCAPE)
         {
-            on_script("OnEscapePressed");
+            trigger("OnEscapePressed");
             if (!mChecker.is_alive())
                 return;
         }
@@ -190,7 +190,7 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
         std::uint32_t c = mData.get<std::uint32_t>(1);
         if (add_char_(c))
         {
-            on_script("OnTextChanged");
+            trigger("OnTextChanged");
             if (!mChecker.is_alive())
                 return;
         }
@@ -258,11 +258,11 @@ void edit_box::set_text(const utils::ustring& sText)
 
         alive_checker mChecker(*this);
 
-        on_script("OnTextSet");
+        trigger("OnTextSet");
         if (!mChecker.is_alive())
             return;
 
-        on_script("OnTextChanged");
+        trigger("OnTextChanged");
         if (!mChecker.is_alive())
             return;
     }
@@ -1179,11 +1179,11 @@ void edit_box::process_key_(key mKey, bool bShiftIsPressed, bool bCtrlIsPressed)
             {
                 event_data mKeyEvent;
                 mKeyEvent.add(std::string("\n"));
-                on_script("OnChar", mKeyEvent);
+                trigger("OnChar", mKeyEvent);
                 if (!mChecker.is_alive())
                     return;
 
-                on_script("OnTextChanged");
+                trigger("OnTextChanged");
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1228,7 +1228,7 @@ void edit_box::process_key_(key mKey, bool bShiftIsPressed, bool bCtrlIsPressed)
         if (bSelectedText_ || mKey == key::K_DELETE || move_carret_horizontally_(false))
         {
             remove_char_();
-            on_script("OnTextChanged");
+            trigger("OnTextChanged");
             if (!mChecker.is_alive())
                 return;
         }

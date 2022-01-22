@@ -563,7 +563,7 @@ void frame::notify_loaded()
     if (!bVirtual_)
     {
         alive_checker mChecker(*this);
-        on_script("OnLoad");
+        trigger("OnLoad");
         if (!mChecker.is_alive())
             return;
     }
@@ -1145,7 +1145,7 @@ utils::connection frame::define_script_(const std::string& sScriptName,
                     mData.add(std::move(mVariant));
                 }
 
-                mSelf.on_script(sScriptName, mData);
+                mSelf.trigger(sScriptName, mData);
             }
         );
     }
@@ -1208,13 +1208,13 @@ void frame::on_event(const event& mEvent)
         for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
             mData.add(mEvent.get(i));
 
-        on_script("OnEvent", mData);
+        trigger("OnEvent", mData);
         if (!mChecker.is_alive())
             return;
     }
 }
 
-void frame::on_script(const std::string& sScriptName, const event_data& mData)
+void frame::trigger(const std::string& sScriptName, const event_data& mData)
 {
     if (!is_loaded())
         return;
@@ -1502,9 +1502,9 @@ void frame::notify_focus(bool bFocus)
     bFocus_ = bFocus;
 
     if (bFocus_)
-        on_script("OnFocusGained");
+        trigger("OnFocusGained");
     else
-        on_script("OnFocusLost");
+        trigger("OnFocusLost");
 }
 
 void frame::add_level_(int iAmount)
@@ -1721,7 +1721,7 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
     {
         if (!bMouseInFrame_)
         {
-            on_script("OnEnter");
+            trigger("OnEnter");
             if (!mChecker.is_alive())
                 return;
         }
@@ -1732,7 +1732,7 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
     {
         if (bMouseInFrame_)
         {
-            on_script("OnLeave");
+            trigger("OnLeave");
             if (!mChecker.is_alive())
                 return;
         }
@@ -1772,7 +1772,7 @@ void frame::update(float fDelta)
     for (const auto& sEvent : lQueuedEventList_)
     {
         DEBUG_LOG("   Event " + *iterEvent);
-        on_script(sEvent);
+        trigger(sEvent);
         if (!mChecker.is_alive())
             return;
     }
@@ -1807,7 +1807,7 @@ void frame::update(float fDelta)
         DEBUG_LOG("   On update");
         event_data mData;
         mData.add(fDelta);
-        on_script("OnUpdate", mData);
+        trigger("OnUpdate", mData);
         if (!mChecker.is_alive())
             return;
     }
@@ -1860,7 +1860,7 @@ void frame::update(float fDelta)
     if (mOldSize_ != mNewSize)
     {
         DEBUG_LOG("   On size changed");
-        on_script("OnSizeChanged");
+        trigger("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 
