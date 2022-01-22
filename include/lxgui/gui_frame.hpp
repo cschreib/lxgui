@@ -6,8 +6,8 @@
 #include "lxgui/gui_uiobject_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_event.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_view.hpp>
@@ -247,7 +247,7 @@ namespace gui
     *   the inheriting frame will copy all the registered callbacks, all the
     *   child frames, and all the layered regions of the virtual frame.
     */
-    class frame : public event_receiver, public region
+    class frame : public region
     {
         using base = region;
 
@@ -952,18 +952,15 @@ namespace gui
         */
         virtual void trigger(const std::string& sScriptName, const event_data& mData = event_data{});
 
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
-
         /// Tells this frame to react to a certain event.
         /** \param sEventName The name of the event
         */
-        void register_event(const std::string& sEventName) override;
+        void register_event(const std::string& sEventName);
+
+        /// Tells the frame not to react to a certain event.
+        /** \param sEventName The name of the event
+        */
+        void unregister_event(const std::string& sEventName);
 
         /// Tells this frame to react to mouse drag.
         /** \param lButtonList The list of mouse button allowed
@@ -1222,11 +1219,6 @@ namespace gui
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
-        /// Tells the frame not to react to a certain event.
-        /** \param sEventName The name of the event
-        */
-        void unregister_event(const std::string& sEventName) override;
-
         /// Creates the associated Lua glue.
         void create_glue() override;
 
@@ -1277,6 +1269,8 @@ namespace gui
         utils::connection define_script_(const std::string& sScriptName,
             script_function mHandler, bool bAppend, const script_info& mInfo);
 
+        void on_event_(const event& mEvent);
+
         child_list  lChildList_;
         region_list lRegionList_;
 
@@ -1284,7 +1278,8 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, utils::signal<script_signature>> lSignalList_;
+        std::unordered_map<std::string, script_signal> lSignalList_;
+        event_receiver                                 mEventReceiver_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegDragList_;

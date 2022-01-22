@@ -1,5 +1,4 @@
 #include "lxgui/impl/input_sfml_source.hpp"
-#include <lxgui/gui_event.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/gui_exception.hpp>
 
@@ -186,46 +185,30 @@ void source::on_sfml_event(const sf::Event& mEvent)
         auto c = mEvent.text.unicode;
         // Remove non printable characters (< 32) and Del. (127)
         if (c >= 32 && c != 127)
-        {
-            gui::event mCharEvent("TEXT_ENTERED");
-            mCharEvent.add(static_cast<std::uint32_t>(c));
-            fire_event(mCharEvent);
-        }
+            on_text_entered(c);
     }
     else if (mEvent.type == sf::Event::MouseWheelMoved)
     {
         mMouse_.fWheel += mEvent.mouseWheel.delta;
-
-        gui::event mWheelEvent("MOUSE_WHEEL");
-        mWheelEvent.add(static_cast<float>(mEvent.mouseWheel.delta));
-        fire_event(mWheelEvent);
+        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
+        on_mouse_wheel(mEvent.mouseWheel.delta, gui::vector2f(mMousePos.x, mMousePos.y));
     }
     else if (mEvent.type == sf::Event::Resized)
     {
         mWindowDimensions_ = gui::vector2ui(mEvent.size.width, mEvent.size.height);
-
-        gui::event mWindowResizedEvent("WINDOW_RESIZED");
-        mWindowResizedEvent.add(static_cast<std::uint32_t>(mEvent.size.width));
-        mWindowResizedEvent.add(static_cast<std::uint32_t>(mEvent.size.height));
-        fire_event(mWindowResizedEvent);
+        on_window_resized(mWindowDimensions_);
     }
     else if (mEvent.type == sf::Event::KeyPressed)
     {
         key mKey = from_sfml_(mEvent.key.code);
         mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = true;
-
-        gui::event mKeyboardEvent("KEY_PRESSED");
-        mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-        fire_event(mKeyboardEvent);
+        on_key_pressed(mKey);
     }
     else if (mEvent.type == sf::Event::KeyReleased)
     {
         key mKey = from_sfml_(mEvent.key.code);
         mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = false;
-
-        gui::event mKeyboardEvent("KEY_RELEASED");
-        mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-        fire_event(mKeyboardEvent);
+        on_key_released(mKey);
     }
     else if (mEvent.type == sf::Event::MouseButtonPressed)
     {
@@ -233,21 +216,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = true;
 
         const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-
-        gui::event mMouseEvent("MOUSE_PRESSED");
-        mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-        mMouseEvent.add(static_cast<float>(mMousePos.x));
-        mMouseEvent.add(static_cast<float>(mMousePos.y));
-        fire_event(mMouseEvent);
-
-        double dClickTime = lLastClickClock_[static_cast<std::size_t>(mButton)].getElapsedTime().asSeconds();
-        if (dClickTime < dDoubleClickTime_)
-        {
-            mMouseEvent.set_name("MOUSE_DOUBLE_CLICKED");
-            fire_event(mMouseEvent);
-        }
-
-        lLastClickClock_[static_cast<std::size_t>(mButton)].restart();
+        on_mouse_pressed(mButton, gui::vector2f(mMousePos.x, mMousePos.y));
     }
     else if (mEvent.type == sf::Event::MouseButtonReleased)
     {
@@ -255,12 +224,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = false;
 
         const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-
-        gui::event mMouseEvent("MOUSE_RELEASED");
-        mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-        mMouseEvent.add(static_cast<float>(mMousePos.x));
-        mMouseEvent.add(static_cast<float>(mMousePos.y));
-        fire_event(mMouseEvent);
+        on_mouse_released(mButton, gui::vector2f(mMousePos.x, mMousePos.y));
     }
     else if (mEvent.type == sf::Event::MouseMoved)
     {
@@ -275,13 +239,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         bFirstMouseMove_ = false;
 
         mMouse_.mPosition = gui::vector2f(mMousePos.x, mMousePos.y);
-
-        gui::event mMouseEvent("MOUSE_MOVED");
-        mMouseEvent.add(static_cast<float>(mMouseDelta.x));
-        mMouseEvent.add(static_cast<float>(mMouseDelta.y));
-        mMouseEvent.add(static_cast<float>(mMousePos.x));
-        mMouseEvent.add(static_cast<float>(mMousePos.y));
-        fire_event(mMouseEvent);
+        on_mouse_moved(gui::vector2f(mMouseDelta.x, mMouseDelta.y), mMouse_.mPosition);
     }
 }
 }

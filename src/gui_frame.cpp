@@ -32,7 +32,7 @@ layer::layer() : bDisabled(false)
 }
 
 frame::frame(utils::control_block& mBlock, manager& mManager) :
-    event_receiver(mBlock, mManager.get_event_emitter()), region(mBlock, mManager)
+    region(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -1190,7 +1190,7 @@ void frame::remove_script(const std::string& sScriptName)
     }
 }
 
-void frame::on_event(const event& mEvent)
+void frame::on_event_(const event& mEvent)
 {
     alive_checker mChecker(*this);
 
@@ -1253,7 +1253,15 @@ void frame::register_event(const std::string& sEvent)
     if (bVirtual_)
         return;
 
-    event_receiver::register_event(sEvent);
+    mEventReceiver_.register_event(sEvent, [&](const event& mEvent) { return on_event_(mEvent); });
+}
+
+void frame::unregister_event(const std::string& sEvent)
+{
+    if (bVirtual_)
+        return;
+
+    mEventReceiver_.unregister_event(sEvent);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)
@@ -1703,14 +1711,6 @@ void frame::hide()
 
     if (bWasVisible_)
         get_manager().get_root().notify_hovered_frame_dirty();
-}
-
-void frame::unregister_event(const std::string& sEvent)
-{
-    if (bVirtual_)
-        return;
-
-    event_receiver::unregister_event(sEvent);
 }
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)

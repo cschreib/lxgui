@@ -114,19 +114,12 @@ namespace gui
         *                        this type to be fired during the same
         *                        frame
         */
-        explicit event(const std::string& sName, bool bOncePerFrame = false);
+        explicit event(const std::string& sName);
 
         /// Sets this event's name.
         /** \param sName The name of this event
         */
         void set_name(const std::string& sName);
-
-        /// Sets whether this event can only be fired once per frame.
-        /** \param bOncePerFrame 'true' if you allow several events of
-        *                        this type to be fired during the same
-        *                        frame
-        */
-        void set_once_per_frame(bool bOncePerFrame);
 
         /// Returns the arguments of this event.
         /** \return the arguments of this event
@@ -142,11 +135,6 @@ namespace gui
         /** \return The name of this event
         */
         const std::string& get_name() const;
-
-        /// Checks if this event should only be fired once per frame.
-        /** \return 'true' if this should only be fired once per frame
-        */
-        bool is_once_per_frame() const;
 
         /// Adds a parameter to this event.
         /** \param mValue The value
@@ -187,7 +175,6 @@ namespace gui
     private :
 
         std::string sName_;
-        bool        bOncePerFrame_ = false;
         event_data  mData_;
     };
 }

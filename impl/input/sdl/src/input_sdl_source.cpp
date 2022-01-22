@@ -1,5 +1,4 @@
 #include "lxgui/impl/input_sdl_source.hpp"
-#include <lxgui/gui_event.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/gui_exception.hpp>
 
@@ -14,6 +13,7 @@ namespace lxgui {
 namespace input {
 namespace sdl
 {
+
 source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage) :
     pWindow_(pWindow), pRenderer_(pRenderer)
 {
@@ -225,173 +225,131 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
     switch (mEvent.type)
     {
-        case SDL_KEYDOWN:
-        {
-            key mKey = from_sdl_(mEvent.key.keysym.sym);
-            mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = true;
+    case SDL_KEYDOWN:
+    {
+        key mKey = from_sdl_(mEvent.key.keysym.sym);
+        mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = true;
 
-            gui::event mKeyboardEvent("KEY_PRESSED");
-            mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-            fire_event(mKeyboardEvent);
+        on_key_pressed(mKey);
+        break;
+    }
+    case SDL_KEYUP:
+    {
+        key mKey = from_sdl_(mEvent.key.keysym.sym);
+        mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = false;
+
+        on_key_released(mKey);
+        break;
+    }
+    case SDL_MOUSEBUTTONDOWN: [[fallthrough]];
+    case SDL_FINGERDOWN:
+    {
+        if (mEvent.type == SDL_MOUSEBUTTONDOWN && (
+            mEvent.button.which == SDL_TOUCH_MOUSEID ||
+            mEvent.button.button == SDL_BUTTON_X1 ||
+            mEvent.button.button == SDL_BUTTON_X2))
+        {
+            // Ignore these
             break;
         }
-        case SDL_KEYUP:
-        {
-            key mKey = from_sdl_(mEvent.key.keysym.sym);
-            mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = false;
 
-            gui::event mKeyboardEvent("KEY_RELEASED");
-            mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-            fire_event(mKeyboardEvent);
+        SDL_CaptureMouse(SDL_TRUE);
+
+        mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONDOWN ?
+            lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
+        mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = true;
+
+        gui::vector2f mMousePos;
+        if (mEvent.type == SDL_MOUSEBUTTONDOWN)
+        {
+            mMousePos = gui::vector2f(
+                mEvent.button.x*fPixelsPerUnit_, mEvent.button.y*fPixelsPerUnit_);
+        }
+        else
+        {
+            // Reset "previous" mouse position to avoid triggering incorrect
+            // drag events. With touch devices, the mouse position does not change
+            // until the finger is down on the screen.
+            mMousePos = gui::vector2f(
+                mEvent.tfinger.x*mWindowDimensions_.x, mEvent.tfinger.y*mWindowDimensions_.y);
+        }
+
+        on_mouse_pressed(mButton, mMousePos);
+        break;
+    }
+    case SDL_MOUSEBUTTONUP: [[fallthrough]];
+    case SDL_FINGERUP:
+    {
+        if (mEvent.type == SDL_MOUSEBUTTONUP && (
+            mEvent.button.which == SDL_TOUCH_MOUSEID ||
+            mEvent.button.button == SDL_BUTTON_X1 ||
+            mEvent.button.button == SDL_BUTTON_X2))
+        {
+            // Ignore these
             break;
         }
-        case SDL_MOUSEBUTTONDOWN: [[fallthrough]];
-        case SDL_FINGERDOWN:
+
+        SDL_CaptureMouse(SDL_FALSE);
+
+        mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONUP ?
+            lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
+
+        mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = false;
+
+        gui::vector2f mMousePos;
+        if (mEvent.type == SDL_MOUSEBUTTONUP)
         {
-            if (mEvent.type == SDL_MOUSEBUTTONDOWN && (
-                mEvent.button.which == SDL_TOUCH_MOUSEID ||
-                mEvent.button.button == SDL_BUTTON_X1 ||
-                mEvent.button.button == SDL_BUTTON_X2))
-            {
-                // Ignore these
-                break;
-            }
-
-            SDL_CaptureMouse(SDL_TRUE);
-
-            mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONDOWN ?
-                lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
-            mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = true;
-
-            gui::event mMouseEvent("MOUSE_PRESSED");
-            mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-
-            gui::vector2f mMousePos;
-            if (mEvent.type == SDL_MOUSEBUTTONDOWN)
-            {
-                mMousePos = gui::vector2f(
-                    mEvent.button.x*fPixelsPerUnit_, mEvent.button.y*fPixelsPerUnit_);
-            }
-            else
-            {
-                // Reset "previous" mouse position to avoid triggering incorrect
-                // drag events. With touch devices, the mouse position does not change
-                // until the finger is down on the screen.
-                mMousePos = gui::vector2f(
-                    mEvent.tfinger.x*mWindowDimensions_.x, mEvent.tfinger.y*mWindowDimensions_.y);
-            }
-
-            mMouseEvent.add(mMousePos.x);
-            mMouseEvent.add(mMousePos.y);
-
-            fire_event(mMouseEvent);
-
-            clock::time_point mPrev = lLastClickClock_[static_cast<std::size_t>(mButton)];
-            clock::time_point mNow = clock::now();
-            double dElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(mNow - mPrev).count()/1000.0;
-            if (dElapsed < dDoubleClickTime_)
-            {
-                mMouseEvent.set_name("MOUSE_DOUBLE_CLICKED");
-                fire_event(mMouseEvent);
-            }
-
-            lLastClickClock_[static_cast<std::size_t>(mButton)] = mNow;
-            break;
+            mMousePos = gui::vector2f(
+                mEvent.button.x*fPixelsPerUnit_, mEvent.button.y*fPixelsPerUnit_);
         }
-        case SDL_MOUSEBUTTONUP: [[fallthrough]];
-        case SDL_FINGERUP:
+        else
         {
-            if (mEvent.type == SDL_MOUSEBUTTONUP && (
-                mEvent.button.which == SDL_TOUCH_MOUSEID ||
-                mEvent.button.button == SDL_BUTTON_X1 ||
-                mEvent.button.button == SDL_BUTTON_X2))
-            {
-                // Ignore these
-                break;
-            }
-
-            SDL_CaptureMouse(SDL_FALSE);
-
-            mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONUP ?
-                lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
-            mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = false;
-
-            gui::event mMouseEvent("MOUSE_RELEASED");
-            mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-
-            float fMouseX, fMouseY;
-            if (mEvent.type == SDL_MOUSEBUTTONUP)
-            {
-                fMouseX = mEvent.button.x*fPixelsPerUnit_;
-                fMouseY = mEvent.button.y*fPixelsPerUnit_;
-            }
-            else
-            {
-                fMouseX = mEvent.tfinger.x*fPixelsPerUnit_;
-                fMouseY = mEvent.tfinger.y*fPixelsPerUnit_;
-            }
-
-            mMouseEvent.add(fMouseX);
-            mMouseEvent.add(fMouseY);
-
-            fire_event(mMouseEvent);
-            break;
+            mMousePos = gui::vector2f(
+                mEvent.tfinger.x*fPixelsPerUnit_, mEvent.tfinger.y*fPixelsPerUnit_);
         }
-        case SDL_MOUSEMOTION:
+
+        on_mouse_released(mButton, mMousePos);
+        break;
+    }
+    case SDL_MOUSEMOTION:
+    {
+        mMouse_.mPosition = gui::vector2f(mEvent.motion.x, mEvent.motion.y);
+        on_mouse_moved(gui::vector2f(mEvent.motion.xrel, mEvent.motion.yrel), mMouse_.mPosition);
+        break;
+    }
+    case SDL_MOUSEWHEEL:
+    {
+        float fDelta = (mEvent.wheel.direction == SDL_MOUSEWHEEL_NORMAL ?
+            mEvent.wheel.y : -mEvent.wheel.y);
+        mMouse_.fWheel += fDelta;
+
+        on_mouse_wheel(fDelta, mMouse_.mPosition);
+        break;
+    }
+    case SDL_TEXTINPUT:
+    {
+        for (auto c : utils::utf8_to_unicode(mEvent.text.text))
         {
-            mMouse_.mPosition = gui::vector2f(mEvent.motion.x, mEvent.motion.y);
-
-            gui::event mMouseEvent("MOUSE_MOVED");
-            mMouseEvent.add(static_cast<float>(mEvent.motion.xrel));
-            mMouseEvent.add(static_cast<float>(mEvent.motion.yrel));
-            mMouseEvent.add(static_cast<float>(mEvent.motion.x));
-            mMouseEvent.add(static_cast<float>(mEvent.motion.y));
-            fire_event(mMouseEvent);
-            break;
+            // Remove non printable characters (< 32) and Del. (127)
+            if (c >= 32 && c != 127)
+                on_text_entered(c);
         }
-        case SDL_MOUSEWHEEL:
+        break;
+    }
+    case SDL_WINDOWEVENT:
+    {
+        if (mEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED &&
+            mEvent.window.windowID == SDL_GetWindowID(pWindow_))
         {
-            float fDelta = (mEvent.wheel.direction == SDL_MOUSEWHEEL_NORMAL ?
-                mEvent.wheel.y : -mEvent.wheel.y);
-            mMouse_.fWheel += fDelta;
-
-            gui::event mWheelEvent("MOUSE_WHEEL");
-            mWheelEvent.add(fDelta);
-            fire_event(mWheelEvent);
-            break;
+            mWindowDimensions_ = get_window_pixel_size_();
+            update_pixel_per_unit_();
+            on_window_resized(mWindowDimensions_);
         }
-        case SDL_TEXTINPUT:
-        {
-            gui::event mCharEvent("TEXT_ENTERED");
-            mCharEvent.add(static_cast<std::uint32_t>(0));
-            for (auto c : utils::utf8_to_unicode(mEvent.text.text))
-            {
-                // Remove non printable characters (< 32) and Del. (127)
-                if (c >= 32 && c != 127)
-                {
-                    mCharEvent.get(0) = c;
-                    fire_event(mCharEvent);
-                }
-            }
-            break;
-        }
-        case SDL_WINDOWEVENT:
-        {
-            if (mEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED &&
-                mEvent.window.windowID == SDL_GetWindowID(pWindow_))
-            {
-                mWindowDimensions_ = get_window_pixel_size_();
-                update_pixel_per_unit_();
-
-                gui::event mWindowResizedEvent("WINDOW_RESIZED");
-                mWindowResizedEvent.add(static_cast<std::uint32_t>(mWindowDimensions_.x));
-                mWindowResizedEvent.add(static_cast<std::uint32_t>(mWindowDimensions_.y));
-                fire_event(mWindowResizedEvent);
-            }
-            break;
-        }
+        break;
+    }
     }
 }
+
 }
 }
 }

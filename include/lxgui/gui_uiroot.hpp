@@ -2,7 +2,6 @@
 #define LXGUI_GUI_UIROOT_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_frame_container.hpp"
 #include "lxgui/gui_registry.hpp"
@@ -28,7 +27,8 @@ namespace gui
     /** This class contains and owns all "root" frames (frames with no parents)
     *   and is responsible for their lifetime, update, and rendering.
     */
-    class uiroot: public frame_renderer, public event_receiver, public frame_container
+    class uiroot: public frame_renderer, public frame_container,
+                  public utils::enable_observer_from_this<uiroot>
     {
     public :
 
@@ -78,11 +78,6 @@ namespace gui
         /** \param fDelta The time elapsed since the last call
         */
         void update(float fDelta);
-
-        /// Called whenever an Event occurs.
-        /** \param mEvent The Event which has occured
-        */
-        void on_event(const event& mEvent) override;
 
         /// Tells this object that the global interface scaling factor has changed.
         void notify_scaling_factor_updated();
@@ -233,22 +228,6 @@ namespace gui
         */
         const keybinder& get_keybinder() const { return mKeybinder_; }
 
-        /// Return an observer pointer to 'this'.
-        /** \return A new observer pointer pointing to 'this'.
-        */
-        utils::observer_ptr<const uiroot> observer_from_this() const
-        {
-            return utils::static_pointer_cast<const uiroot>(event_receiver::observer_from_this());
-        }
-
-        /// Return an observer pointer to 'this'.
-        /** \return A new observer pointer pointing to 'this'.
-        */
-        utils::observer_ptr<uiroot> observer_from_this()
-        {
-            return utils::static_pointer_cast<uiroot>(event_receiver::observer_from_this());
-        }
-
     private :
 
         void create_caching_render_target_();
@@ -259,10 +238,20 @@ namespace gui
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
             const vector2f& mMousePos = vector2f::ZERO);
 
-        manager&  mManager_;
-        renderer& mRenderer_;
-        registry  mObjectRegistry_;
-        keybinder mKeybinder_;
+        void on_window_resized_(const vector2ui& mDimensions);
+        void on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos);
+        void on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos);
+        void on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos);
+        void on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos);
+        void on_text_entered_(std::uint32_t uiChar);
+        void on_key_state_changed_(input::key mKey, bool bIsDown);
+        void on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
+            bool bIsDoubleClick, const vector2f& mMousePos);
+
+        manager&       mManager_;
+        renderer&      mRenderer_;
+        registry       mObjectRegistry_;
+        keybinder      mKeybinder_;
 
         vector2ui mScreenDimensions_;
 

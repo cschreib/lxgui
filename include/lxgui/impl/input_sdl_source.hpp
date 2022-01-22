@@ -53,9 +53,6 @@ namespace sdl
 
         float fPixelsPerUnit_ = 1.0f;
 
-        using clock = std::chrono::high_resolution_clock;
-        std::array<clock::time_point, MOUSE_BUTTON_NUMBER> lLastClickClock_;
-
         using wrapped_cursor = std::unique_ptr<SDL_Cursor, void(*)(SDL_Cursor*)>;
         std::unordered_map<std::string,wrapped_cursor> lCursorMap_;
     };

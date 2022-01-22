@@ -4,7 +4,6 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/input_source.hpp>
 #include <lxgui/gui_vector2.hpp>
-#include <SFML/System/Clock.hpp>
 #include <SFML/Window/Cursor.hpp>
 
 #include <unordered_map>
@@ -51,8 +50,6 @@ namespace sfml
 
         gui::vector2i mOldMousePos_;
         bool bFirstMouseMove_ = true;
-
-        std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
 
         std::unordered_map<std::string,std::unique_ptr<sf::Cursor>> lCursorMap_;
     };

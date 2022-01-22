@@ -2,13 +2,12 @@
 #define LXGUI_INPUT_SOURCE_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/gui_vector2.hpp"
 
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_string.hpp"
+#include "lxgui/utils_signal.hpp"
 
 #include <string>
 #include <vector>
@@ -20,20 +19,17 @@ namespace input
     /// The base class for input source implementation
     /** \note The implementation is responsible for generating the
     *         following events:
-    *          - MOUSE_MOVED:
-    *              float: dx, float: dy, float: x, float: y
-    *          - MOUSE_WHEEL:
-    *              float: dx
-    *          - MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_DOUBLE_CLICKED:
-    *              uint32: button, float: x, float: y
-    *          - KEY_PRESSED, KEY_RELEASED:
-    *              uint32: button
-    *          - TEXT_ENTERED:
-    *              uint32: character
-    *          - WINDOW_RESIZED:
-    *              uint32: width, uint32: height
+    *          - @ref on_mouse_moved
+    *          - @ref on_mouse_wheel
+    *          - @ref on_mouse_pressed
+    *          - @ref on_mouse_released
+    *          - @ref on_mouse_double_clicked
+    *          - @ref on_key_pressed
+    *          - @ref on_key_released
+    *          - @ref on_text_entered
+    *          - @ref on_window_resized
     */
-    class source : public gui::event_emitter
+    class source
     {
     public :
 
@@ -72,16 +68,6 @@ namespace input
         */
         const gui::vector2ui& get_window_dimensions() const;
 
-        /// Sets the double click maximum time.
-        /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
-        */
-        void set_doubleclick_time(double dDoubleClickTime);
-
-        /// Returns the double click maximum time.
-        /** \return The double click maximum time
-        */
-        double get_doubleclick_time() const;
-
         /// Retrieve a copy of the clipboard content.
         /** \return A copy of the clipboard content (empty string if clipboard is empty).
         */
@@ -112,14 +98,21 @@ namespace input
         */
         virtual float get_interface_scaling_factor_hint() const;
 
+        utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
+        utils::signal<void(float, const gui::vector2f&)>                on_mouse_wheel;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_pressed;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_released;
+        utils::signal<void(input::key)>                                 on_key_pressed;
+        utils::signal<void(input::key)>                                 on_key_released;
+        utils::signal<void(std::uint32_t)>                              on_text_entered;
+        utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
+
     protected:
 
         key_state   mKeyboard_;
         mouse_state mMouse_;
 
         gui::vector2ui mWindowDimensions_;
-
-        double dDoubleClickTime_ = 0.25;
     };
 }
 }

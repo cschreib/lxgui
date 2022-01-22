@@ -19,16 +19,6 @@ const gui::vector2ui& source::get_window_dimensions() const
     return mWindowDimensions_;
 }
 
-void source::set_doubleclick_time(double dDoubleClickTime)
-{
-    dDoubleClickTime_ = dDoubleClickTime;
-}
-
-double source::get_doubleclick_time() const
-{
-    return dDoubleClickTime_;
-}
-
 float source::get_interface_scaling_factor_hint() const
 {
     return 1.0f;

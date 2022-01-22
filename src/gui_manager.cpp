@@ -38,19 +38,27 @@ namespace gui
 
 manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
-    event_emitter(),
-    event_receiver(mBlock, static_cast<event_emitter&>(*this)),
+    utils::enable_observer_from_this<manager>(mBlock),
     pInputSource_(std::move(pInputSource)),
     pRenderer_(std::move(pRenderer)),
     pWindow_(std::make_unique<input::window>(*pInputSource_)),
-    pInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_, static_cast<event_emitter&>(*this))),
+    pEventEmitter_(std::make_unique<gui::event_emitter>()),
+    pInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
     pWorldEventEmitter_(std::make_unique<gui::event_emitter>()),
-    pWorldInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_, *pWorldEventEmitter_)),
+    pWorldInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
     pLocalizer_(std::make_unique<localizer>())
 {
     set_interface_scaling_factor(1.0f);
 
-    register_event("WINDOW_RESIZED");
+    pInputDispatcher_->on_window_resized.connect([&](const vector2ui& mDimensions)
+    {
+        // Update the scaling factor; on mobile platforms, rotating the screen will
+        // trigger a change of window size and resolution, which the scaling factor "hint"
+        // will pick up.
+        set_interface_scaling_factor(fBaseScalingFactor_);
+
+        pRenderer_->notify_window_resized(mDimensions);
+    });
 }
 
 manager::~manager()
@@ -220,13 +228,11 @@ void manager::update_ui(float fDelta)
     if (bFirstIteration_)
     {
         DEBUG_LOG(" Entering world...");
-        fire_event(event("ENTERING_WORLD"));
+        get_event_emitter().fire_event(event("ENTERING_WORLD"));
         bFirstIteration_ = false;
 
         pRoot_->notify_hovered_frame_dirty();
     }
-
-    frame_ended();
 
     bUpdating_ = false;
 
@@ -234,20 +240,6 @@ void manager::update_ui(float fDelta)
         reload_ui_now();
     if (bCloseUI_)
         close_ui_now();
-}
-
-void manager::on_event(const event& mEvent)
-{
-    if (mEvent.get_name() == "WINDOW_RESIZED")
-    {
-        // Update the scaling factor; on mobile platforms, rotating the screen will
-        // trigger a change of window size and resolution, which the scaling factor "hint"
-        // will pick up.
-        set_interface_scaling_factor(fBaseScalingFactor_);
-
-        pRenderer_->notify_window_resized(vector2ui(
-            mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1)));
-    }
 }
 
 std::string manager::print_ui() const

@@ -2,8 +2,6 @@
 #define LXGUI_GUI_MANAGER_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_eventemitter.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_observer.hpp>
@@ -37,9 +35,11 @@ namespace gui
     class uiroot;
     class virtual_uiroot;
     class addon_registry;
+    class event_emitter;
+    class event_receiver;
 
     /// Manages the user interface
-    class manager : private event_emitter, public event_receiver
+    class manager : utils::enable_observer_from_this<manager>
     {
     public :
 
@@ -183,11 +183,6 @@ namespace gui
         */
         void update_ui(float fDelta);
 
-        /// Called whenever an Event occurs.
-        /** \param mEvent The Event which has occured
-        */
-        void on_event(const event& mEvent) override;
-
         /// Returns the GUI Lua state (sol wrapper).
         /** \return The GUI Lua state
         */
@@ -211,12 +206,12 @@ namespace gui
         /// Returns the gui event emitter.
         /** \return The gui event emitter
         */
-        const event_emitter& get_event_emitter() const { return *this; }
+        const event_emitter& get_event_emitter() const { return *pEventEmitter_; }
 
         /// Returns the gui event emitter.
         /** \return The gui event emitter
         */
-        event_emitter& get_event_emitter() { return *this; }
+        event_emitter& get_event_emitter() { return *pEventEmitter_; }
 
         /// Returns the gui event emitter.
         /** \return The gui event emitter
@@ -308,22 +303,6 @@ namespace gui
         */
         const addon_registry* get_addon_registry() const { return pAddOnRegistry_.get(); }
 
-        /// Return an observer pointer to 'this'.
-        /** \return A new observer pointer pointing to 'this'.
-        */
-        utils::observer_ptr<const manager> observer_from_this() const
-        {
-            return utils::static_pointer_cast<const manager>(event_receiver::observer_from_this());
-        }
-
-        /// Return an observer pointer to 'this'.
-        /** \return A new observer pointer pointing to 'this'.
-        */
-        utils::observer_ptr<manager> observer_from_this()
-        {
-            return utils::static_pointer_cast<manager>(event_receiver::observer_from_this());
-        }
-
     private :
 
         /// Creates the lua::state that will be used to communicate with the GUI.
@@ -355,6 +334,7 @@ namespace gui
 
         // IO
         std::unique_ptr<input::window>      pWindow_;
+        std::unique_ptr<event_emitter>      pEventEmitter_;
         utils::owner_ptr<input::dispatcher> pInputDispatcher_;
         std::unique_ptr<event_emitter>      pWorldEventEmitter_;
         utils::owner_ptr<input::dispatcher> pWorldInputDispatcher_;

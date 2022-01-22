@@ -4,9 +4,8 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/input_keys.hpp"
 #include "lxgui/gui_vector2.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
 
-#include <lxgui/utils_observer.hpp>
+#include <lxgui/utils_signal.hpp>
 
 #include <string>
 #include <vector>
@@ -25,30 +24,34 @@ namespace input
     class source;
 
     /// Handles inputs (keyboard and mouse)
-    class dispatcher : public gui::event_receiver
+    /** \note The implementation is responsible for generating the
+    *         following events:
+    *          - @ref on_mouse_moved
+    *          - @ref on_mouse_wheel
+    *          - @ref on_mouse_pressed
+    *          - @ref on_mouse_released
+    *          - @ref on_mouse_double_clicked
+    *          - @ref on_mouse_drag_start
+    *          - @ref on_mouse_drag_stop
+    *          - @ref on_key_pressed
+    *          - @ref on_key_released
+    *          - @ref on_text_entered
+    *          - @ref on_window_resized
+    */
+    class dispatcher
     {
     public :
 
         /// Initializes this dispatcher with a chosen input source.
-        /** \param mBlock        The owner pointer control block
-        *   \param mSource       The input source
-        *   \param mEventEmitter The event emitter that will generate input events
+        /** \param mSource The input source
         */
-        explicit dispatcher(utils::control_block& mBlock, source& mSource,
-            gui::event_emitter& mEventEmitter);
+        explicit dispatcher(source& mSource);
 
         // Non-copiable, non-movable
         dispatcher(const dispatcher&) = delete;
         dispatcher(dispatcher&&) = delete;
         dispatcher& operator=(const dispatcher&) = delete;
         dispatcher& operator=(dispatcher&&) = delete;
-
-        /// Called whenever an event occurs.
-        /** \param mEvent The event which has occured
-        *   \note Only registered events will cause this
-        *         function to be called.
-        */
-        void on_event(const gui::event& mEvent) override;
 
         /// Enable/disable mouse inputs
         /** \param bBlock 'true' to block mouse input events from being generated, 'true' to allow all
@@ -185,11 +188,21 @@ namespace input
         */
         source& get_source();
 
+        utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
+        utils::signal<void(float, const gui::vector2f&)>                on_mouse_wheel;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_pressed;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_released;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_double_clicked;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_start;
+        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_stop;
+        utils::signal<void(input::key)>                                 on_key_pressed;
+        utils::signal<void(input::key)>                                 on_key_released;
+        utils::signal<void(std::uint32_t)>                              on_text_entered;
+        utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
+
     private :
 
-        void fire_event_(const gui::event& mEvent);
-
-        gui::event_emitter& mEventEmitter_;
+        std::vector<utils::scoped_connection> lConnections_;
 
         using timer = std::chrono::high_resolution_clock;
         using time_point = timer::time_point;
@@ -197,7 +210,9 @@ namespace input
         std::array<time_point, KEY_NUMBER>          lKeyPressedTime_ = {};
         std::array<time_point, MOUSE_BUTTON_NUMBER> lMousePressedTime_ = {};
 
-        float         fScalingFactor_ = 1.0f;
+        float fScalingFactor_ = 1.0f;
+
+        double dDoubleClickTime_ = 0.25;
 
         bool          bMouseDragged_ = false;
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;

@@ -2,9 +2,9 @@
 #define LXGUI_GUI_EVENTRECEIVER_HPP
 
 #include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_observer.hpp>
+#include <lxgui/gui_eventemitter.hpp>
 
+#include <vector>
 #include <string>
 
 namespace lxgui {
@@ -17,7 +17,7 @@ namespace gui
     /** Any class needing to listen to events from an event_emitter
     *   must inherit from this class and implement @ref on_event().
     */
-    class event_receiver : public utils::enable_observer_from_this<event_receiver>
+    class event_receiver
     {
     public :
 
@@ -25,42 +25,36 @@ namespace gui
         /** \param mBlock   The owner pointer control block
         *   \param mEmitter The event emitter to listen to
         */
-        explicit event_receiver(utils::control_block& mBlock, event_emitter& mEmitter);
+        explicit event_receiver(event_emitter& mEmitter);
 
-        /// Non-copiable
+        // Non-copiable, non-movable
         event_receiver(const event_receiver&) = delete;
-
-        /// Non-movable
         event_receiver(event_receiver&&) = delete;
-
-        /// Non-copiable
         event_receiver& operator=(const event_receiver&) = delete;
-
-        /// Non-movable
         event_receiver& operator=(event_receiver&&) = delete;
 
-        /// Called whenever an Event occurs.
-        /** \param mEvent The Event which has occured
-        *   \note Only registered events will cause this
-        *         function to be called.
-        */
-        virtual void on_event(const event& mEvent) = 0;
-
-        /// Enables reaction to an Event.
-        /** \param sEventName The name of the Event this class should
+        /// Enables reaction to an event.
+        /** \param sEventName The name of the event this class should
         *                     react to
         */
-        virtual void register_event(const std::string& sEventName);
+        void register_event(const std::string& sEventName, event_handler_function mCallback);
 
-        /// Disables reaction to an Event.
-        /** \param sEventName The name of the Event this class shouldn't
+        /// Disables reaction to an event.
+        /** \param sEventName The name of the event this class shouldn't
         *                     react to anymore
         */
-        virtual void unregister_event(const std::string& sEventName);
+        void unregister_event(const std::string& sEventName);
 
     private :
 
-        event_emitter& mEventEmitter_;
+        struct event_connection
+        {
+            std::string              sName;
+            utils::scoped_connection mConnection;
+        };
+
+        event_emitter&                mEventEmitter_;
+        std::vector<event_connection> lRegisteredEvents_;
     };
 }
 }

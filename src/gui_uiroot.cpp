@@ -18,22 +18,48 @@ namespace gui
 {
 
 uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
-    event_receiver(mBlock, mManager.get_event_emitter()),
     frame_container(mManager, mObjectRegistry_, this),
+    utils::enable_observer_from_this<uiroot>(mBlock),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = get_manager().get_window().get_dimensions();
 
-    register_event("WINDOW_RESIZED");
-    register_event("MOUSE_MOVED");
-    register_event("MOUSE_WHEEL");
-    register_event("MOUSE_PRESSED");
-    register_event("MOUSE_RELEASED");
-    register_event("MOUSE_DRAG_START");
-    register_event("MOUSE_DRAG_STOP");
-    register_event("KEY_PRESSED");
-    register_event("KEY_RELEASED");
-    register_event("TEXT_ENTERED");
+    auto& mInputDispatcher = get_manager().get_input_dispatcher();
+
+    mInputDispatcher.on_window_resized.connect([&](auto... mArgs) { on_window_resized_(mArgs...); });
+    mInputDispatcher.on_mouse_moved.connect([&](auto... mArgs) { on_mouse_moved_(mArgs...); });
+    mInputDispatcher.on_mouse_wheel.connect([&](auto... mArgs) { on_mouse_wheel_(mArgs...); });
+    mInputDispatcher.on_mouse_drag_start.connect([&](auto... mArgs) { on_drag_start_(mArgs...); });
+    mInputDispatcher.on_mouse_drag_stop.connect([&](auto... mArgs) { on_drag_stop_(mArgs...); });
+    mInputDispatcher.on_text_entered.connect([&](auto... mArgs) { on_text_entered_(mArgs...); });
+
+    mInputDispatcher.on_mouse_pressed.connect(
+        [&](input::mouse_button mButton, const vector2f& mMousePos)
+    {
+        on_mouse_button_state_changed_(mButton, true, false, mMousePos);
+    });
+
+    mInputDispatcher.on_mouse_released.connect(
+        [&](input::mouse_button mButton, const vector2f& mMousePos)
+    {
+        on_mouse_button_state_changed_(mButton, false, false, mMousePos);
+    });
+
+    mInputDispatcher.on_mouse_double_clicked.connect(
+        [&](input::mouse_button mButton, const vector2f& mMousePos)
+    {
+        on_mouse_button_state_changed_(mButton, true, true, mMousePos);
+    });
+
+    mInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+    {
+        on_key_state_changed_(mKey, true);
+    });
+
+    mInputDispatcher.on_key_released.connect([&](input::key mKey)
+    {
+        on_key_state_changed_(mKey, false);
+    });
 }
 
 uiroot::~uiroot()
@@ -221,303 +247,6 @@ void uiroot::enable_caching(bool bEnable)
 bool uiroot::is_caching_enabled() const
 {
     return bEnableCaching_;
-}
-
-void uiroot::on_event(const event& mEvent)
-{
-    if (mEvent.get_name() == "WINDOW_RESIZED")
-    {
-        // Update internal window size
-        mScreenDimensions_ = vector2ui(mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1));
-
-        // Notify all frames anchored to the window edges
-        for (auto& mFrame : get_root_frames())
-        {
-            mFrame.notify_borders_need_update();
-            mFrame.notify_renderer_need_redraw();
-        }
-
-        // Resize caching render targets
-        if (pRenderTarget_)
-            create_caching_render_target_();
-
-        for (auto& mStrata : lStrataList_)
-        {
-            if (mStrata.pRenderTarget)
-                create_strata_cache_render_target_(mStrata);
-        }
-
-        notify_hovered_frame_dirty();
-    }
-    else if (mEvent.get_name() == "MOUSE_MOVED")
-    {
-        notify_hovered_frame_dirty();
-
-        if (pMovedObject_ || pSizedObject_)
-        {
-            DEBUG_LOG(" Moved object...");
-            mMouseMovement_ += vector2f(mEvent.get<float>(0), mEvent.get<float>(1));
-        }
-
-        if (pMovedObject_)
-        {
-            switch (mConstraint_)
-            {
-                case constraint::NONE :
-                    pMovedAnchor_->mOffset = mMovementStartPosition_ + mMouseMovement_;
-                    break;
-                case constraint::X :
-                    pMovedAnchor_->mOffset = mMovementStartPosition_ +
-                        vector2f(mMouseMovement_.x, 0.0f);
-                    break;
-                case constraint::Y :
-                    pMovedAnchor_->mOffset = mMovementStartPosition_ +
-                        vector2f(0.0f, mMouseMovement_.y);
-                    break;
-                default : break;
-            }
-
-            if (mApplyConstraintFunc_)
-                mApplyConstraintFunc_();
-
-            // As a result of applying constraints, object may have been deleted,
-            // so check again before use
-            if (pMovedObject_)
-                pMovedObject_->notify_borders_need_update();
-        }
-        else if (pSizedObject_)
-        {
-            float fWidth;
-            if (bResizeFromRight_)
-                fWidth = std::max(0.0f, mResizeStart_.x + mMouseMovement_.x);
-            else
-                fWidth = std::max(0.0f, mResizeStart_.x - mMouseMovement_.x);
-
-            float fHeight;
-            if (bResizeFromBottom_)
-                fHeight = std::max(0.0f, mResizeStart_.y + mMouseMovement_.y);
-            else
-                fHeight = std::max(0.0f, mResizeStart_.y - mMouseMovement_.y);
-
-            if (bResizeWidth_ && bResizeHeight_)
-                pSizedObject_->set_dimensions(vector2f(fWidth, fHeight));
-            else if (bResizeWidth_)
-                pSizedObject_->set_width(fWidth);
-            else if (bResizeHeight_)
-                pSizedObject_->set_height(fHeight);
-        }
-
-        if (pDraggedFrame_)
-        {
-            event_data mData;
-            mData.add(mEvent.get(2));
-            mData.add(mEvent.get(3));
-            pDraggedFrame_->trigger("OnDragMove", mData);
-        }
-    }
-    else if (mEvent.get_name() == "MOUSE_WHEEL")
-    {
-        const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
-
-        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-            [&](const frame& mFrame)
-            {
-                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_wheel_enabled();
-            }
-        );
-
-        event_data mData;
-        mData.add(mEvent.get(0));
-        mData.add(mMousePos.x);
-        mData.add(mMousePos.y);
-        pHoveredFrame->trigger("OnMouseWheel", mData);
-    }
-    else if (mEvent.get_name() == "MOUSE_DRAG_START")
-    {
-        const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
-
-        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-            [&](const frame& mFrame)
-            {
-                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-            }
-        );
-
-        if (!pHoveredFrame)
-            return;
-
-        if (auto* pRegion = pHoveredFrame->get_title_region().get();
-            pRegion && pRegion->is_in_region(mMousePos))
-        {
-            pHoveredFrame->start_moving();
-        }
-
-        std::string sMouseButton = std::string(input::get_mouse_button_codename(
-            mEvent.get<input::mouse_button>(0)));
-
-        if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-        {
-            event_data mData;
-            mData.add(sMouseButton);
-            mData.add(mMousePos.x);
-            mData.add(mMousePos.y);
-
-            pDraggedFrame_ = std::move(pHoveredFrame);
-            pDraggedFrame_->trigger("OnDragStart", mData);
-        }
-    }
-    else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
-    {
-        stop_moving();
-        stop_sizing();
-
-        if (pDraggedFrame_)
-        {
-            pDraggedFrame_->trigger("OnDragStop");
-            pDraggedFrame_ = nullptr;
-        }
-
-        const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
-
-        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-            [&](const frame& mFrame)
-            {
-                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-            }
-        );
-
-        if (!pHoveredFrame)
-            return;
-
-        std::string sMouseButton = std::string(input::get_mouse_button_codename(
-            mEvent.get<input::mouse_button>(0)));
-
-        if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-        {
-            event_data mData;
-            mData.add(sMouseButton);
-            mData.add(mMousePos.x);
-            mData.add(mMousePos.y);
-
-            pHoveredFrame->trigger("OnReceiveDrag", mData);
-        }
-    }
-    else if (mEvent.get_name() == "MOUSE_PRESSED" || mEvent.get_name() == "MOUSE_RELEASED" ||
-        mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
-    {
-        const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
-
-        utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-            [&](const frame& mFrame)
-            {
-                return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-            }
-        );
-
-        if (mEvent.get_name() == "MOUSE_PRESSED")
-        {
-            if (!pHoveredFrame || pHoveredFrame != get_focussed_frame())
-                clear_focus();
-        }
-
-        if (!pHoveredFrame)
-            return;
-
-        event_data mData;
-        mData.add(std::string(input::get_mouse_button_codename(
-            mEvent.get<input::mouse_button>(0))));
-        mData.add(mMousePos.x);
-        mData.add(mMousePos.y);
-
-        if (mEvent.get_name() == "MOUSE_PRESSED")
-        {
-            if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
-                pTopLevel->raise();
-
-            pHoveredFrame->trigger("OnMouseDown", mData);
-        }
-        else if (mEvent.get_name() == "MOUSE_RELEASED")
-        {
-            pHoveredFrame->trigger("OnMouseUp", mData);
-        }
-        else if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
-        {
-            pHoveredFrame->trigger("OnDoubleClicked", mData);
-        }
-    }
-    else if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
-    {
-        input::key mKey = mEvent.get<input::key>(0);
-        std::string sKeyName = std::string(input::get_key_codename(mKey));
-
-        // First, give priority to the focussed frame
-        utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
-
-        // If no focussed frame, look top-down for a frame that captures this key
-        if (!pTopmostFrame)
-        {
-            pTopmostFrame = find_topmost_frame(
-                [&](const frame& mFrame)
-                {
-                    return mFrame.is_key_capture_enabled(sKeyName);
-                }
-            );
-        }
-
-        // If a frame is found, capture input and return
-        if (pTopmostFrame)
-        {
-            event_data mData;
-            mData.add(mEvent.get(0));
-            mData.add(sKeyName);
-            mData.add(get_manager().get_input_dispatcher().shift_is_pressed());
-            mData.add(get_manager().get_input_dispatcher().ctrl_is_pressed());
-            mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
-
-            if (mEvent.get_name() == "KEY_PRESSED")
-                pTopmostFrame->trigger("OnKeyDown", mData);
-            else if (mEvent.get_name() == "KEY_RELEASED")
-                pTopmostFrame->trigger("OnKeyUp", mData);
-
-            return;
-        }
-
-        // If no frame is found, try the keybinder
-        // TODO: I don't like this design, too tightly coupled
-        try
-        {
-            if (get_keybinder().on_key_down(mKey, get_manager().get_input_dispatcher()))
-                return;
-        }
-        catch (const std::exception& e)
-        {
-            event mEvent("LUA_ERROR");
-            mEvent.add(e.what());
-            get_manager().get_event_emitter().fire_event(mEvent);
-            return;
-        }
-
-        // TODO: since uiroot is now the only element taking input events directly from
-        //       the input dispatcher, can we review the design and cut some corners?
-        //       --> use signal/slot or just a single std::function
-
-        // If no keybinding, just forward to the world
-        // TODO: can we handle this better? Do we need the full generic world event emitter?
-        //       --> no, remove world event emitter, and just use the world input dispatcher
-        get_manager().get_world_event_emitter().fire_event(mEvent);
-    }
-    else if (mEvent.get_name() == "TEXT_ENTERED")
-    {
-        if (auto pFocus = get_focussed_frame())
-        {
-            std::uint32_t uiChar = mEvent.get<std::uint32_t>(0);
-            event_data mData;
-            mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
-            mData.add(uiChar);
-
-            pFocus->trigger("OnChar", mData);
-        }
-    }
 }
 
 void uiroot::notify_scaling_factor_updated()
@@ -805,6 +534,296 @@ void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2
     }
     else
         clear_hovered_frame_();
+}
+
+void uiroot::on_window_resized_(const vector2ui& mDimensions)
+{
+    // Update internal window size
+    mScreenDimensions_ = mDimensions;
+
+    // Notify all frames anchored to the window edges
+    for (auto& mFrame : get_root_frames())
+    {
+        mFrame.notify_borders_need_update();
+        mFrame.notify_renderer_need_redraw();
+    }
+
+    // Resize caching render targets
+    if (pRenderTarget_)
+        create_caching_render_target_();
+
+    for (auto& mStrata : lStrataList_)
+    {
+        if (mStrata.pRenderTarget)
+            create_strata_cache_render_target_(mStrata);
+    }
+
+    notify_hovered_frame_dirty();
+}
+
+void uiroot::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
+{
+    notify_hovered_frame_dirty();
+
+    if (pMovedObject_ || pSizedObject_)
+    {
+        DEBUG_LOG(" Moved object...");
+        mMouseMovement_ += mMovement;
+    }
+
+    if (pMovedObject_)
+    {
+        switch (mConstraint_)
+        {
+            case constraint::NONE :
+                pMovedAnchor_->mOffset = mMovementStartPosition_ + mMouseMovement_;
+                break;
+            case constraint::X :
+                pMovedAnchor_->mOffset = mMovementStartPosition_ +
+                    vector2f(mMouseMovement_.x, 0.0f);
+                break;
+            case constraint::Y :
+                pMovedAnchor_->mOffset = mMovementStartPosition_ +
+                    vector2f(0.0f, mMouseMovement_.y);
+                break;
+            default : break;
+        }
+
+        if (mApplyConstraintFunc_)
+            mApplyConstraintFunc_();
+
+        // As a result of applying constraints, object may have been deleted,
+        // so check again before use
+        if (pMovedObject_)
+            pMovedObject_->notify_borders_need_update();
+    }
+    else if (pSizedObject_)
+    {
+        float fWidth;
+        if (bResizeFromRight_)
+            fWidth = std::max(0.0f, mResizeStart_.x + mMouseMovement_.x);
+        else
+            fWidth = std::max(0.0f, mResizeStart_.x - mMouseMovement_.x);
+
+        float fHeight;
+        if (bResizeFromBottom_)
+            fHeight = std::max(0.0f, mResizeStart_.y + mMouseMovement_.y);
+        else
+            fHeight = std::max(0.0f, mResizeStart_.y - mMouseMovement_.y);
+
+        if (bResizeWidth_ && bResizeHeight_)
+            pSizedObject_->set_dimensions(vector2f(fWidth, fHeight));
+        else if (bResizeWidth_)
+            pSizedObject_->set_width(fWidth);
+        else if (bResizeHeight_)
+            pSizedObject_->set_height(fHeight);
+    }
+
+    if (pDraggedFrame_)
+    {
+        event_data mData;
+        mData.add(mMousePos.x);
+        mData.add(mMousePos.y);
+        pDraggedFrame_->trigger("OnDragMove", mData);
+    }
+}
+
+void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
+{
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+        [&](const frame& mFrame)
+        {
+            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_wheel_enabled();
+        }
+    );
+
+    if (!pHoveredFrame)
+        return;
+
+    event_data mData;
+    mData.add(fWheelScroll);
+    mData.add(mMousePos.x);
+    mData.add(mMousePos.y);
+    pHoveredFrame->trigger("OnMouseWheel", mData);
+}
+
+void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos)
+{
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+        [&](const frame& mFrame)
+        {
+            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+        }
+    );
+
+    if (!pHoveredFrame)
+        return;
+
+    if (auto* pRegion = pHoveredFrame->get_title_region().get();
+        pRegion && pRegion->is_in_region(mMousePos))
+    {
+        pHoveredFrame->start_moving();
+    }
+
+    std::string sMouseButton = std::string(input::get_mouse_button_codename(mButton));
+
+    if (pHoveredFrame->is_registered_for_drag(sMouseButton))
+    {
+        event_data mData;
+        mData.add(sMouseButton);
+        mData.add(mMousePos.x);
+        mData.add(mMousePos.y);
+
+        pDraggedFrame_ = std::move(pHoveredFrame);
+        pDraggedFrame_->trigger("OnDragStart", mData);
+    }
+}
+
+void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
+{
+    stop_moving();
+    stop_sizing();
+
+    if (pDraggedFrame_)
+    {
+        pDraggedFrame_->trigger("OnDragStop");
+        pDraggedFrame_ = nullptr;
+    }
+
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+        [&](const frame& mFrame)
+        {
+            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+        }
+    );
+
+    if (!pHoveredFrame)
+        return;
+
+    std::string sMouseButton = std::string(input::get_mouse_button_codename(mButton));
+
+    if (pHoveredFrame->is_registered_for_drag(sMouseButton))
+    {
+        event_data mData;
+        mData.add(sMouseButton);
+        mData.add(mMousePos.x);
+        mData.add(mMousePos.y);
+
+        pHoveredFrame->trigger("OnReceiveDrag", mData);
+    }
+}
+
+void uiroot::on_text_entered_(std::uint32_t uiChar)
+{
+    if (auto pFocus = get_focussed_frame())
+    {
+        event_data mData;
+        mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
+        mData.add(uiChar);
+
+        pFocus->trigger("OnChar", mData);
+    }
+}
+
+void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
+{
+    std::string sKeyName = std::string(input::get_key_codename(mKey));
+
+    // First, give priority to the focussed frame
+    utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
+
+    // If no focussed frame, look top-down for a frame that captures this key
+    if (!pTopmostFrame)
+    {
+        pTopmostFrame = find_topmost_frame(
+            [&](const frame& mFrame)
+            {
+                return mFrame.is_key_capture_enabled(sKeyName);
+            }
+        );
+    }
+
+    // If a frame is found, capture input and return
+    if (pTopmostFrame)
+    {
+        event_data mData;
+        mData.add(static_cast<std::underlying_type_t<input::key>>(mKey));
+        mData.add(sKeyName);
+        mData.add(get_manager().get_input_dispatcher().shift_is_pressed());
+        mData.add(get_manager().get_input_dispatcher().ctrl_is_pressed());
+        mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
+
+        if (bIsDown)
+            pTopmostFrame->trigger("OnKeyDown", mData);
+        else
+            pTopmostFrame->trigger("OnKeyUp", mData);
+
+        return;
+    }
+
+    if (bIsDown)
+    {
+        // If no frame is found, try the keybinder
+        // TODO: I don't like this design, too tightly coupled
+        try
+        {
+            if (get_keybinder().on_key_down(mKey, get_manager().get_input_dispatcher()))
+                return;
+        }
+        catch (const std::exception& e)
+        {
+            event mEvent("LUA_ERROR");
+            mEvent.add(e.what());
+            get_manager().get_event_emitter().fire_event(mEvent);
+            return;
+        }
+    }
+
+    // Key was not captured, just forward to the world
+    // TODO: can we handle this better? Do we need the full generic world event emitter?
+    //       --> no, remove world event emitter, and just use the world input dispatcher
+    // get_manager().get_world_event_emitter().fire_event(mEvent);
+}
+
+void uiroot::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
+    bool bIsDoubleClick, const vector2f& mMousePos)
+{
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
+        [&](const frame& mFrame)
+        {
+            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+        }
+    );
+
+    if (bIsDown && !bIsDoubleClick)
+    {
+        if (!pHoveredFrame || pHoveredFrame != get_focussed_frame())
+            clear_focus();
+    }
+
+    if (!pHoveredFrame)
+        return;
+
+    event_data mData;
+    mData.add(std::string(input::get_mouse_button_codename(mButton)));
+    mData.add(mMousePos.x);
+    mData.add(mMousePos.y);
+
+    if (bIsDoubleClick)
+    {
+        pHoveredFrame->trigger("OnDoubleClicked", mData);
+    }
+    else if (bIsDown)
+    {
+        if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
+            pTopLevel->raise();
+
+        pHoveredFrame->trigger("OnMouseDown", mData);
+    }
+    else
+    {
+        pHoveredFrame->trigger("OnMouseUp", mData);
+    }
 }
 
 }
