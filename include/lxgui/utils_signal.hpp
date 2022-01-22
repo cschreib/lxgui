@@ -19,7 +19,7 @@ namespace utils
     {
         struct slot_base
         {
-            bool bDisconnected = false;
+            bool disconnected = false;
         };
     }
     /** \endcond
@@ -31,8 +31,8 @@ namespace utils
         template<typename T>
         friend class signal;
 
-        explicit connection(utils::observer_ptr<signal_impl::slot_base> pSlot) noexcept :
-            pSlot_(std::move(pSlot)) {}
+        explicit connection(utils::observer_ptr<signal_impl::slot_base> slot) noexcept :
+            slot_(std::move(slot)) {}
 
     public:
         /// Default constructor, no connection.
@@ -47,24 +47,24 @@ namespace utils
         /// Disconnect the slot.
         void disconnect() noexcept
         {
-            if (auto* pRaw = pSlot_.get())
+            if (auto* raw = slot_.get())
             {
-                pRaw->bDisconnected = true;
-                pSlot_ = nullptr;
+                raw->disconnected = true;
+                slot_ = nullptr;
             }
         }
 
         /// Check if this slot is still connected.
         [[nodiscard]] bool connected() const noexcept
         {
-            if (auto* pRaw = pSlot_.get())
-                return !pRaw->bDisconnected;
+            if (auto* raw = slot_.get())
+                return !raw->disconnected;
             else
                 return false;
         }
 
     private:
-        utils::observer_ptr<signal_impl::slot_base> pSlot_;
+        utils::observer_ptr<signal_impl::slot_base> slot_;
     };
 
     /// A @ref connection that automatically disconnects when going out of scope.
@@ -107,9 +107,9 @@ namespace utils
     private:
         struct slot : signal_impl::slot_base
         {
-            explicit slot(function_type mFunc) noexcept : mCallback(std::move(mFunc)) {}
+            explicit slot(function_type func) noexcept : callback(std::move(func)) {}
 
-            function_type mCallback;
+            function_type callback;
         };
 
         /// Type of the slot list (internal).
@@ -129,18 +129,18 @@ namespace utils
         struct slot_dereferencer
         {
             using data_type = const function_type&;
-            static data_type dereference(const BaseIterator& mIter) noexcept
+            static data_type dereference(const BaseIterator& iter) noexcept
             {
-                return (*mIter)->mCallback;
+                return (*iter)->callback;
             }
         };
 
         template<typename BaseIterator>
         struct non_disconnected_filter
         {
-            static bool is_included(const BaseIterator& mIter) noexcept
+            static bool is_included(const BaseIterator& iter) noexcept
             {
-                return !(*mIter)->bDisconnected;
+                return !(*iter)->disconnected;
             }
         };
 
@@ -152,8 +152,15 @@ namespace utils
             non_disconnected_filter>;
 
         /// Default constructor (no slot).
-        signal() : pSlots_(std::make_shared<slot_list>())
+        signal() : slots_(std::make_shared<slot_list>())
         {
+        }
+
+        ~signal()
+        {
+            // Mark all slots as disconnected, in case the destructor
+            // is called midway through the signal being emitted.
+            disconnect_all();
         }
 
         // Non-copiable, movable.
@@ -165,9 +172,9 @@ namespace utils
         /// Disconnects all slots.
         void disconnect_all() noexcept
         {
-            if (uiRecursion_ == 0u)
+            if (recursion_ == 0u)
             {
-                pSlots_->clear();
+                slots_->clear();
                 return;
             }
 
@@ -177,8 +184,8 @@ namespace utils
             // iterators while iterating over the slot list, if one of the
             // slot happens to disconnect itself. The memory will be cleared
             // up when the signal is no longer being iterated on.
-            for (auto& pSlot : *pSlots_)
-                pSlot->bDisconnected = true;
+            for (auto& slot : *slots_)
+                slot->disconnected = true;
         }
 
         /// Check if this signal contains any slot.
@@ -186,9 +193,9 @@ namespace utils
         */
         [[nodiscard]] bool empty() const noexcept
         {
-            for (const auto& pSlot : *pSlots_)
+            for (const auto& slot : *slots_)
             {
-                if (!pSlot->bDisconnected)
+                if (!slot->disconnected)
                     return false;
             }
 
@@ -200,7 +207,7 @@ namespace utils
         */
         [[nodiscard]] script_list_view slots() const noexcept
         {
-            return script_list_view(*pSlots_);
+            return script_list_view(*slots_);
         }
 
         /// Connect a new slot to this signal.
@@ -208,8 +215,8 @@ namespace utils
         */
         connection connect(function_type mFunction)
         {
-            pSlots_->push_back(utils::make_owned<slot>(std::move(mFunction)));
-            return connection(pSlots_->back());
+            slots_->push_back(utils::make_owned<slot>(std::move(mFunction)));
+            return connection(slots_->back());
         }
 
         /// Trigger the signal.
@@ -218,40 +225,40 @@ namespace utils
         template<typename ... Args>
         void operator()(Args&& ... mArgs)
         {
-            // Make a shared-ownership copy of the handler list, so that the list
-            // survives even if our owner is destroyed midway during a handler.
-            const auto pSlotsCopy = pSlots_;
+            // Make a shared-ownership copy of the slot list, so that the list
+            // survives even if this signal is destroyed midway during a slot.
+            const auto slots_copy = slots_;
 
-            ++uiRecursion_;
+            ++recursion_;
 
             // Call the slots
-            const auto& lSlotsCopy = *pSlotsCopy;
+            const auto& lSlotsCopy = *slots_copy;
             // NB: Cache the size here, so new slots connected will not trigger
             // NB: Use integer-based iteration since iterators may be invalidated on insertion
             const std::size_t uiNumSlots = lSlotsCopy.size();
             for (std::size_t i = 0; i < uiNumSlots; ++i)
             {
-                if (!lSlotsCopy[i]->bDisconnected)
-                    lSlotsCopy[i]->mCallback(mArgs...);
+                if (!lSlotsCopy[i]->disconnected)
+                    lSlotsCopy[i]->callback(mArgs...);
             }
 
-            --uiRecursion_;
+            --recursion_;
 
-            if (uiRecursion_ == 0u)
+            if (recursion_ == 0u)
                 garbage_collect_();
         }
 
     private:
         void garbage_collect_() noexcept
         {
-            auto mIterRemove = std::remove_if(pSlots_->begin(), pSlots_->end(),
-                [](const auto& pSlot) { return pSlot->bDisconnected; });
+            auto iter = std::remove_if(slots_->begin(), slots_->end(),
+                [](const auto& slot) { return slot->disconnected; });
 
-            pSlots_->erase(mIterRemove, pSlots_->end());
+            slots_->erase(iter, slots_->end());
         }
 
-        std::shared_ptr<slot_list> pSlots_;
-        std::size_t                uiRecursion_ = 0u;
+        std::shared_ptr<slot_list> slots_;
+        std::size_t                recursion_ = 0u;
     };
 }
 }

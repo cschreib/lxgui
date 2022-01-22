@@ -40,10 +40,7 @@ frame::frame(utils::control_block& mBlock, manager& mManager) :
 frame::~frame()
 {
     // Disable callbacks
-    for (auto& lHandlerList : lScriptHandlerList_)
-    {
-        lHandlerList.second.disconnect_all();
-    }
+    lScriptHandlerList_.clear();
 
     // Children must be destroyed first
     lChildList_.clear();
