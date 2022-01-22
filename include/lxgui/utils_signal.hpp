@@ -147,7 +147,7 @@ namespace utils
     public:
 
         /// Type of the view returned by slots().
-        using script_list_view = utils::view::adaptor<slot_list,
+        using slot_list_view = utils::view::adaptor<slot_list,
             slot_dereferencer,
             non_disconnected_filter>;
 
@@ -205,9 +205,9 @@ namespace utils
         /// Return a view onto the connected slots.
         /** \return A view onto the connected slots
         */
-        [[nodiscard]] script_list_view slots() const noexcept
+        [[nodiscard]] slot_list_view slots() const noexcept
         {
-            return script_list_view(*slots_);
+            return slot_list_view(*slots_);
         }
 
         /// Connect a new slot to this signal.

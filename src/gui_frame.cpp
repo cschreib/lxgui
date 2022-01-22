@@ -40,7 +40,7 @@ frame::frame(utils::control_block& mBlock, manager& mManager) :
 frame::~frame()
 {
     // Disable callbacks
-    lScriptHandlerList_.clear();
+    lSignalList_.clear();
 
     // Children must be destroyed first
     lChildList_.clear();
@@ -237,7 +237,7 @@ void frame::copy_from(const uiobject& mObj)
     if (!pFrame)
         return;
 
-    for (const auto& mItem : pFrame->lScriptHandlerList_)
+    for (const auto& mItem : pFrame->lSignalList_)
     {
         for (const auto& mFunction : pFrame->get_script(mItem.first))
         {
@@ -576,8 +576,8 @@ void frame::notify_layers_need_update()
 
 bool frame::has_script(const std::string& sScriptName) const
 {
-    const auto mIter = lScriptHandlerList_.find(sScriptName);
-    if (mIter == lScriptHandlerList_.end())
+    const auto mIter = lSignalList_.find(sScriptName);
+    if (mIter == lSignalList_.end())
         return false;
 
     return !mIter->second.empty();
@@ -1125,21 +1125,8 @@ utils::connection frame::define_script_(const std::string& sScriptName,
 }
 
 utils::connection frame::define_script_(const std::string& sScriptName,
-    script_handler_function mHandler, bool bAppend, const script_info& mInfo)
+    script_function mHandler, bool bAppend, const script_info& mInfo)
 {
-    auto& lHandlerList = lScriptHandlerList_[sScriptName];
-    if (!bAppend)
-    {
-        // Just disable existing scripts, it may not be safe to modify the handler list
-        // if this script is being defined during a handler execution.
-        // They will be deleted later, when we know it is safe.
-        lHandlerList.disconnect_all();
-    }
-
-    // TODO: add file/line info if the handler comes from C++
-    // https://github.com/cschreib/lxgui/issues/96
-    auto mConnection = lHandlerList.connect(std::move(mHandler));
-
     if (!is_virtual())
     {
         // Register the function so it can be called directly from Lua
@@ -1163,13 +1150,24 @@ utils::connection frame::define_script_(const std::string& sScriptName,
         );
     }
 
-    return mConnection;
+    auto& lHandlerList = lSignalList_[sScriptName];
+    if (!bAppend)
+    {
+        // Just disable existing scripts, it may not be safe to modify the handler list
+        // if this script is being defined during a handler execution.
+        // They will be deleted later, when we know it is safe.
+        lHandlerList.disconnect_all();
+    }
+
+    // TODO: add file/line info if the handler comes from C++
+    // https://github.com/cschreib/lxgui/issues/96
+    return lHandlerList.connect(std::move(mHandler));
 }
 
 script_list_view frame::get_script(const std::string& sScriptName) const
 {
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end())
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end())
         throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
 
     return iterH->second.slots();
@@ -1177,8 +1175,8 @@ script_list_view frame::get_script(const std::string& sScriptName) const
 
 void frame::remove_script(const std::string& sScriptName)
 {
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end()) return;
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end()) return;
 
     // Just disable existing scripts, it may not be safe to modify the handler list
     // if this script is being defined during a handler execution.
@@ -1221,8 +1219,8 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
     if (!is_loaded())
         return;
 
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end())
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end())
         return;
 
     // Make a copy of useful pointers: in case the frame is deleted, we will need this
@@ -1850,10 +1848,10 @@ void frame::update(float fDelta)
     }
 
     // Remove empty handlers
-    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end();)
+    for (auto mIterList = lSignalList_.begin(); mIterList != lSignalList_.end();)
     {
         if (mIterList->second.empty())
-            mIterList = lScriptHandlerList_.erase(mIterList);
+            mIterList = lSignalList_.erase(mIterList);
         else
             ++mIterList;
     }

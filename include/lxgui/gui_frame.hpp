@@ -49,14 +49,14 @@ namespace gui
     /// Signature of frame scripts.
     using script_signature = void(frame&, const event_data&);
 
-    /// Observable signal for script handlers (used internally).
-    using script_handler_signal = utils::signal<script_signature>;
+    /// Signal type for scripts (used internally).
+    using script_signal = utils::signal<script_signature>;
 
     /// C++ function type for UI script handlers.
-    using script_handler_function = script_handler_signal::function_type;
+    using script_function = script_signal::function_type;
 
     /// View into all the connected scripts for a given event.
-    using script_list_view = script_handler_signal::script_list_view;
+    using script_list_view = script_signal::slot_list_view;
 
     /// A #uiobject that can contain other objects and react to events.
     /** This class, which is at the core of the UI design, can contain
@@ -878,7 +878,7 @@ namespace gui
         *         instead.
         */
         utils::connection add_script(const std::string& sScriptName,
-            script_handler_function mHandler, script_info mInfo = script_info{})
+            script_function mHandler, script_info mInfo = script_info{})
         {
             return define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
@@ -925,7 +925,7 @@ namespace gui
         *         instead.
         */
         utils::connection set_script(const std::string& sScriptName,
-            script_handler_function mHandler, script_info mInfo = script_info{})
+            script_function mHandler, script_info mInfo = script_info{})
         {
             return define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
@@ -1275,7 +1275,7 @@ namespace gui
             sol::protected_function mHandler, bool bAppend, const script_info& mInfo);
 
         utils::connection define_script_(const std::string& sScriptName,
-            script_handler_function mHandler, bool bAppend, const script_info& mInfo);
+            script_function mHandler, bool bAppend, const script_info& mInfo);
 
         child_list  lChildList_;
         region_list lRegionList_;
@@ -1284,7 +1284,7 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, utils::signal<script_signature>> lScriptHandlerList_;
+        std::unordered_map<std::string, utils::signal<script_signature>> lSignalList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegDragList_;
