@@ -10,6 +10,23 @@ namespace lxgui {
 namespace input
 {
     /// Generates input events for the world, after filtering by the UI.
+    /** The implementation is responsible for generating the
+    *   following events:
+    *    - @ref on_mouse_moved
+    *    - @ref on_mouse_wheel
+    *    - @ref on_mouse_pressed
+    *    - @ref on_mouse_released
+    *    - @ref on_mouse_double_clicked
+    *    - @ref on_mouse_drag_start
+    *    - @ref on_mouse_drag_stop
+    *    - @ref on_key_pressed
+    *    - @ref on_key_released
+    *
+    *   These events will only trigger if not captured by any UI element,
+    *   and are therefore suitable for "world" input (i.e., input for the game
+    *   elements rendered below the UI). These events are triggered by @ref gui::uiroot,
+    *   which takes care of filtering global inputs from the @ref input::dispatcher.
+    */
     class world_dispatcher
     {
     public :

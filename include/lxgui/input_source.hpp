@@ -17,24 +17,24 @@ namespace lxgui {
 namespace input
 {
     /// The base class for input source implementation
-    /** \note The implementation is responsible for generating the
-    *         following low-level events:
-    *          - @ref on_mouse_moved
-    *          - @ref on_mouse_wheel
-    *          - @ref on_mouse_pressed
-    *          - @ref on_mouse_released
-    *          - @ref on_key_pressed
-    *          - @ref on_key_released
-    *          - @ref on_text_entered
-    *          - @ref on_window_resized
+    /** The implementation is responsible for generating the
+    *   following low-level events:
+    *    - @ref on_mouse_moved
+    *    - @ref on_mouse_wheel
+    *    - @ref on_mouse_pressed
+    *    - @ref on_mouse_released
+    *    - @ref on_key_pressed
+    *    - @ref on_key_released
+    *    - @ref on_text_entered
+    *    - @ref on_window_resized
     *
-    *         These events are "raw", straight from the input implementation.
-    *         They are meant to be consumed by the @ref input::dispatcher, which
-    *         takes care of transforming them (apply scaling factors, etc.),
-    *         and generating more complex events (drag, double-click, etc.).
-    *         Therefore, do not use these events directly unless you are really
-    *         after the raw input events, and prefer using @ref input::dispatcher
-    *         instead.
+    *   These events are "raw", straight from the input implementation.
+    *   They are meant to be consumed by the @ref input::dispatcher, which
+    *   takes care of transforming them (apply scaling factors, etc.),
+    *   and generating more complex events (drag, double-click, etc.).
+    *   Therefore, do not use these events directly unless you are really
+    *   after the raw input events, and prefer using @ref input::dispatcher
+    *   instead.
     */
     class source
     {

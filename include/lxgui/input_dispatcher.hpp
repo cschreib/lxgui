@@ -24,29 +24,29 @@ namespace input
     class source;
 
     /// Handles inputs (keyboard and mouse)
-    /** \note The implementation is responsible for generating the
-    *         following events:
-    *          - @ref on_mouse_moved
-    *          - @ref on_mouse_wheel
-    *          - @ref on_mouse_pressed
-    *          - @ref on_mouse_released
-    *          - @ref on_mouse_double_clicked
-    *          - @ref on_mouse_drag_start
-    *          - @ref on_mouse_drag_stop
-    *          - @ref on_key_pressed
-    *          - @ref on_key_released
-    *          - @ref on_text_entered
+    /** The implementation is responsible for generating the
+    *   following events:
+    *    - @ref on_mouse_moved
+    *    - @ref on_mouse_wheel
+    *    - @ref on_mouse_pressed
+    *    - @ref on_mouse_released
+    *    - @ref on_mouse_double_clicked
+    *    - @ref on_mouse_drag_start
+    *    - @ref on_mouse_drag_stop
+    *    - @ref on_key_pressed
+    *    - @ref on_key_released
+    *    - @ref on_text_entered
     *
-    *         These events are "global" and are not restricted by the UI.
-    *         For example, @ref on_mouse_pressed will trigger whenever a mouse
-    *         button is pressed, even if the mouse pointer is currently over
-    *         a UI element that should capture mouse input. Likewise, @ref
-    *         on_key_pressed will trigger even if a UI element has focus.
-    *         These global events are meant to be consumed by the @ref gui::uiroot,
-    *         which takes care of forwarding them to UI elements, and determining
-    *         if a particular event is allowed to propagate to the elements below
-    *         the UI. If you need to react only to events that are not captured by
-    *         the UI, use events from @ref input::world_dispatcher instead.
+    *   These events are "global" and are not restricted by the UI.
+    *   For example, @ref on_mouse_pressed will trigger whenever a mouse
+    *   button is pressed, even if the mouse pointer is currently over
+    *   a UI element that should capture mouse input. Likewise, @ref
+    *   on_key_pressed will trigger even if a UI element has focus.
+    *   These global events are meant to be consumed by the @ref gui::uiroot,
+    *   which takes care of forwarding them to UI elements, and determining
+    *   if a particular event is allowed to propagate to the elements below
+    *   the UI. If you need to react only to events that are not captured by
+    *   the UI, use events from @ref input::world_dispatcher instead.
     */
     class dispatcher
     {
@@ -64,75 +64,56 @@ namespace input
         dispatcher& operator=(dispatcher&&) = delete;
 
         /// Checks if any key is being pressed.
-        /** \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if any key is being pressed
+        /** \return 'true' if any key is being pressed
         */
         bool any_key_is_down() const;
 
         /// Checks if a key is being pressed.
         /** \param mKey   The ID code of the key you are interested in
         *   \return 'true' if the key is being pressed
-        *   \note This will report the keyboard state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         bool key_is_down(key mKey) const;
 
         /// Returns elapsed time since the key has been pressed.
         /** \param mKey The ID code of the key you are interested in
         *   \return Elapsed time since the key has been pressed
-        *   \note This will report the keyboard state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         double get_key_down_duration(key mKey) const;
 
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
-        *   \note This will report the keyboard state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         bool alt_is_pressed() const;
 
         /// Checks if Shift is beeing pressed.
         /** \return 'true' if Shift is beeing pressed
-        *   \note This will report the keyboard state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         bool shift_is_pressed() const;
 
         /// Checks if Control (Ctrl) is beeing pressed.
         /** \return 'true' if Control (Ctrl) is beeing pressed
-        *   \note This will report the keyboard state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         bool ctrl_is_pressed() const;
 
         /// Checks if a mouse button is being pressed.
         /** \param mID The ID code of the mouse button you are interested in
         *   \return 'true' if the mouse button is being pressed
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         bool mouse_is_down(mouse_button mID) const;
 
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you are interested in
         *   \return Elapsed time since the mouse button has been pressed
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         double get_mouse_down_duration(mouse_button mKey) const;
 
         /// Returns the position of the mouse in pixels.
         /** \return The position of the mouse in pixels
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         gui::vector2f get_mouse_position() const;
 
         /// Returns the accumulated rolling ammount of the mouse wheel.
         /** \return The accumulated rolling ammount of the mouse wheel
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
         */
         float get_mouse_wheel() const;
 
