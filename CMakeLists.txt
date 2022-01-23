@@ -245,7 +245,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_addon_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_addon_registry_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_anchor.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_alive_checker.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_atlas.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_backdrop.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_button.cpp

@@ -25,24 +25,18 @@ namespace gui
     public :
 
         /// Contructor.
-        explicit alive_checker(uiobject& mObject);
+        explicit alive_checker(uiobject& mObject) : pObject_(mObject.observer_from_this()) {}
 
-        /// Non-copiable
+        // Non-copiable, non-movable
         alive_checker(const alive_checker&) = delete;
-
-        /// Non-movable
         alive_checker(alive_checker&&) = delete;
-
-        /// Non-copiable
         alive_checker& operator=(const alive_checker&) = delete;
-
-        /// Non-movable
         alive_checker& operator=(alive_checker&&) = delete;
 
         /// Check if the wrapper widget is still alive
         /** \return 'true' if the widget is alive, 'false' otherwise
         */
-        bool is_alive() const;
+        bool is_alive() const { return !pObject_.expired(); }
 
     private :
 
