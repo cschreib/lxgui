@@ -284,9 +284,9 @@ sf::RenderWindow window;
 // Initialize the GUI using the SFML back-end
 utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
-// Grab a pointer to the SFML input manager so we can feed events to it later
+// Grab a pointer to the SFML input source so we can feed events to it later
 input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
-    manager->get_input_manager().get_source()
+    manager->get_input_dispatcher().get_source()
 );
 
 // Load GUI addons:
@@ -326,10 +326,12 @@ while (true)
     sf::Event event;
     while (window.pollEvent(event))
     {
-        // ...
-
-        // Send these to the input manager
+        // Send these to the input source.
         sfml_source.on_sfml_event(event);
+
+        // NB: Do not react these raw events directly. Some of them should be
+        // captured by the GUI, and must not propagate to the world rendered below.
+        // Use the input signals from manager->get_world_input_dispatcher() instead.
     }
 
     // Compute time spent since last GUI update
@@ -428,7 +430,7 @@ We named our FontString `$parentText`. In names, `$parent` gets automatically re
 
 Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `justifyH` and `justifyV` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
 
-NB: the GUI positioning is done in "points". By default, on traditional displays a point is equivalent to a pixel, but it can be equivalent to two or more pixels on modern hi-DPI displays. In addition, the GUI can always be rescaled by an abitrary scaling factor (in the same way that you can zoom on a web page in your browser). This rescaling factor is set to `1.0` by default, but changing its value also changes the number of pixels per points.
+NB: the GUI positioning is done in "points". By default, on traditional displays a point is equivalent to a pixel, but it can be equivalent to two or more pixels on modern hi-DPI displays. In addition, the GUI can always be rescaled by an arbitrary scaling factor (in the same way that you can zoom on a web page in your browser). This rescaling factor is set to `1.0` by default, but changing its value also changes the number of pixels per points.
 
 Now that the GUI structure is in place, we still need to display the number of frame per second. To do so, we will define two "scripts" for the `FPSCounter` Frame:
 
@@ -571,16 +573,20 @@ ui:
 Re-creating the above addon in pure C++ is perfectly possible. This can be done with the following code:
 
 ```c++
-// Create the Frame
-utils::observer_ptr<gui::frame> frame;
-frame = manager->get_root().create_root_frame<gui::frame>("FPSCounter");
-frame->set_point(gui::anchor_point::TOPLEFT);
-frame->set_point(gui::anchor_point::BOTTOMRIGHT);
+// Root frames (with no parents) are owned by the "uiroot".
+gui::uiroot& root = manager->get_root();
 
-// Create the FontString
+// Create the Frame.
+// NB: observer_ptr is a non-owning smart pointer similar to std::weak_ptr.
+utils::observer_ptr<gui::frame> frame;
+frame = root.create_root_frame<gui::frame>("FPSCounter");
+frame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
+frame->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT));
+
+// Create the FontString as a child region of the frame.
 utils::observer_ptr<gui::font_string> text;
 text = frame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
-text->set_point(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5});
+text->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5}));
 text->set_font("interface/fonts/main.ttf", 12);
 text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
 text->set_justify_h(gui::text::alignment::RIGHT);
@@ -588,10 +594,10 @@ text->set_outlined(true);
 text->set_text_color(gui::color::GREEN);
 text->notify_loaded(); // must be called on all objects when they are fully set up
 
-// Create the scripts in C++ (one can also provide a string containing some Lua code)
+// Create the scripts in C++ (one can also provide a string containing some Lua code).
 float update_time = 0.5f, timer = 1.0f;
 int frames = 0;
-frame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) mutable
+frame->add_script("OnUpdate", [=](gui::frame& self, const event_data& args) mutable
 {
     float delta = args.get<float>(0);
     timer += delta;
