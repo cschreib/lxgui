@@ -228,7 +228,7 @@ void manager::update_ui(float fDelta)
     if (bFirstIteration_)
     {
         DEBUG_LOG(" Entering world...");
-        get_event_emitter().fire_event(event("ENTERING_WORLD"));
+        get_event_emitter().fire_event("ENTERING_WORLD");
         bFirstIteration_ = false;
 
         pRoot_->notify_hovered_frame_dirty();

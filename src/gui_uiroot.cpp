@@ -772,9 +772,7 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
         }
         catch (const std::exception& e)
         {
-            event mEvent("LUA_ERROR");
-            mEvent.add(e.what());
-            get_manager().get_event_emitter().fire_event(mEvent);
+            get_manager().get_event_emitter().fire_event("LUA_ERROR", {std::string(e.what())});
             return;
         }
     }

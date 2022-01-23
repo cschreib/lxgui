@@ -1067,9 +1067,7 @@ utils::connection frame::define_script_(const std::string& sScriptName,
 
         gui::out << gui::error << sError << std::endl;
 
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        get_manager().get_event_emitter().fire_event(mEvent);
+        get_manager().get_event_emitter().fire_event("LUA_ERROR", {sError});
         return {};
     }
 
@@ -1190,21 +1188,21 @@ void frame::remove_script(const std::string& sScriptName)
     }
 }
 
-void frame::on_event_(const event& mEvent)
+void frame::on_event_(std::string_view sEventName, const event_data& mEvent)
 {
     alive_checker mChecker(*this);
 
     if (has_script("OnEvent"))
     {
         // ADDON_LOADED should only be fired if it's this frame's addon
-        if (mEvent.get_name() == "ADDON_LOADED")
+        if (sEventName == "ADDON_LOADED")
         {
             if (!pAddOn_ || pAddOn_->sName != mEvent.get<std::string>(0))
                 return;
         }
 
         event_data mData;
-        mData.add(mEvent.get_name());
+        mData.add(std::string(sEventName));
         for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
             mData.add(mEvent.get(i));
 
@@ -1240,28 +1238,31 @@ void frame::trigger(const std::string& sScriptName, const event_data& mData)
 
         gui::out << gui::error << sError << std::endl;
 
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        mEventEmitter.fire_event(mEvent);
+        mEventEmitter.fire_event("LUA_ERROR", {sError});
     }
 
     mAddonRegistry.set_current_addon(pOldAddOn);
 }
 
-void frame::register_event(const std::string& sEvent)
+void frame::register_event(const std::string& sEventName)
 {
     if (bVirtual_)
         return;
 
-    mEventReceiver_.register_event(sEvent, [&](const event& mEvent) { return on_event_(mEvent); });
+    mEventReceiver_.register_event(sEventName,
+        [=](const event_data& mEvent)
+        {
+            return on_event_(sEventName, mEvent);
+        }
+    );
 }
 
-void frame::unregister_event(const std::string& sEvent)
+void frame::unregister_event(const std::string& sEventName)
 {
     if (bVirtual_)
         return;
 
-    mEventReceiver_.unregister_event(sEvent);
+    mEventReceiver_.unregister_event(sEventName);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)

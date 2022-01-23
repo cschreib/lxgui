@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils_signal.hpp>
+#include <lxgui/gui_event.hpp>
 
 #include <unordered_map>
 #include <string>
@@ -13,7 +14,7 @@ namespace gui
     class event;
 
     /// Signature of event handler.
-    using event_handler_signature = void(const event&);
+    using event_handler_signature = void(const event_data&);
 
     /// Signal type for scripts (used internally).
     using event_signal = utils::signal<event_handler_signature>;
@@ -35,8 +36,8 @@ namespace gui
         event_emitter& operator=(event_emitter&&) = delete;
 
         /// Registers a callback to an event.
-        /** \param sEvent    The name of the event to listen to
-        *   \param mCallback The function to execute when the event is triggered
+        /** \param sEventName The name of the event to listen to
+        *   \param mCallback  The function to execute when the event is triggered
         *   \return A object representing the connection between this emitter and the callback.
         *   \note To avoid dangling references, the caller should store the returned connection
         *         object, and use it to terminate the connection when the owner of the callback is
@@ -44,13 +45,14 @@ namespace gui
         *         class.
         *   \see fire_event
         */
-        utils::connection register_event(const std::string& sEvent,
+        utils::connection register_event(const std::string& sEventName,
             event_handler_function mCallback);
 
         /// Emmit a new event.
-        /** \param mEvent The event which has occurred
+        /** \param sEventName The ID of the event which has occurred
+        *   \param mData      The payload of the event
         */
-        void fire_event(const event& mEvent);
+        void fire_event(const std::string& sEventName, event_data mEvent = event_data{});
 
     private :
 

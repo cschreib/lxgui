@@ -6,14 +6,14 @@ namespace gui
 {
 
 utils::connection event_emitter::register_event(const std::string& sEventName,
-    event_handler_function mFunction)
+    event_handler_function mCallback)
 {
-    return lRegisteredEventList_[sEventName].connect(std::move(mFunction));
+    return lRegisteredEventList_[sEventName].connect(std::move(mCallback));
 }
 
-void event_emitter::fire_event(const event& mEvent)
+void event_emitter::fire_event(const std::string& sEventName, event_data mData)
 {
-    lRegisteredEventList_[mEvent.get_name()](mEvent);
+    lRegisteredEventList_[sEventName](std::move(mData));
 }
 
 }

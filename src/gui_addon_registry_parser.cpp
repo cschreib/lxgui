@@ -281,9 +281,7 @@ void addon_registry::parse_layout_file_(const std::string& sFile, const addon& m
 
                 gui::out << gui::error << sError << std::endl;
 
-                event mEvent("LUA_ERROR");
-                mEvent.add(sError);
-                mEventEmitter_.fire_event(mEvent);
+                mEventEmitter_.fire_event("LUA_ERROR", {sError});
             }
         }
         else if (mNode.get_name() == "Include")

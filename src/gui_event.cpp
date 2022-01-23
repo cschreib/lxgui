@@ -4,19 +4,10 @@ namespace lxgui {
 namespace gui
 {
 
-event::event(const std::string& sName) :
-    sName_(sName)
+event_data::event_data(std::initializer_list<utils::variant> lData)
 {
-}
-
-void event::set_name(const std::string& sName)
-{
-    sName_ = sName;
-}
-
-const std::string& event::get_name() const
-{
-    return sName_;
+    for (auto& mElement : lData)
+        lArgList_.push_back(std::move(mElement));
 }
 
 

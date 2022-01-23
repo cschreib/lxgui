@@ -1269,7 +1269,7 @@ namespace gui
         utils::connection define_script_(const std::string& sScriptName,
             script_function mHandler, bool bAppend, const script_info& mInfo);
 
-        void on_event_(const event& mEvent);
+        void on_event_(std::string_view sEventName, const event_data& mEvent);
 
         child_list  lChildList_;
         region_list lRegionList_;

@@ -132,9 +132,7 @@ void addon_registry::load_addon_files_(const addon& mAddOn)
 
                 gui::out << gui::error << sError << std::endl;
 
-                event mEvent("LUA_ERROR");
-                mEvent.add(sError);
-                mEventEmitter_.fire_event(mEvent);
+                mEventEmitter_.fire_event("LUA_ERROR", {sError});
             }
         }
         else
@@ -156,15 +154,11 @@ void addon_registry::load_addon_files_(const addon& mAddOn)
 
             gui::out << gui::error << sError << std::endl;
 
-            event mEvent("LUA_ERROR");
-            mEvent.add(sError);
-            mEventEmitter_.fire_event(mEvent);
+            mEventEmitter_.fire_event("LUA_ERROR", {sError});
        }
     }
 
-    event mEvent("ADDON_LOADED");
-    mEvent.add(mAddOn.sName);
-    mEventEmitter_.fire_event(mEvent);
+    mEventEmitter_.fire_event("ADDON_LOADED", {mAddOn.sName});
 }
 
 void addon_registry::load_addon_directory(const std::string& sDirectory)
