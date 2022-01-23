@@ -399,7 +399,7 @@ utils::owner_ptr<uiobject> uiobject::release_from_parent()
 
 void uiobject::destroy()
 {
-    // Gracefully disappear (fire_script events, etc).
+    // Gracefully disappear (triggers events, etc).
     hide();
 
     // Ignoring the return value destroys the object.

@@ -37,7 +37,7 @@ namespace gui
 
         /// Registers a callback to an event.
         /** \param sEventName The name of the event to listen to
-        *   \param mCallback  The function to execute when the event is fire_scripted
+        *   \param mCallback  The function to execute when the event is triggered
         *   \return A object representing the connection between this emitter and the callback.
         *   \note To avoid dangling references, the caller should store the returned connection
         *         object, and use it to terminate the connection when the owner of the callback is

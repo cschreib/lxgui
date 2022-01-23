@@ -53,7 +53,7 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pI
     pWindow_->on_window_resized.connect([&](const vector2ui& mDimensions)
     {
         // Update the scaling factor; on mobile platforms, rotating the screen will
-        // fire_script a change of window size and resolution, which the scaling factor "hint"
+        // trigger a change of window size and resolution, which the scaling factor "hint"
         // will pick up.
         set_interface_scaling_factor(fBaseScalingFactor_);
 

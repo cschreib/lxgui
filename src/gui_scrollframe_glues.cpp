@@ -15,7 +15,7 @@
 *   displayed portion is controlled by the scroll value, which can be
 *   changed in both the vertical and horizontal directions.
 *
-*   By default, the mouse wheel movement will not fire_script any scrolling;
+*   By default, the mouse wheel movement will not trigger any scrolling;
 *   this has to be explicitly implemented using the `OnMouseWheel` callback
 *   and the @{ScrollFrame:set_horizontal_scroll} function.
 *

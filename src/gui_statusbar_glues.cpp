@@ -19,8 +19,8 @@
 *   in addition to those from @{Frame}:
 *
 *   - `OnValueChanged`: Triggered whenever the value represented by
-*   the status bar changes. This is fire_scripted by @{StatusBar:set_value}.
-*   This can also be fire_scripted by @{StatusBar:set_min_max_values} if
+*   the status bar changes. This is triggered by @{StatusBar:set_value}.
+*   This can also be triggered by @{StatusBar:set_min_max_values} if
 *   the previous value would not satisfy the new constraints.
 *
 *   Inherits all methods from: @{UIObject}, @{Frame}.

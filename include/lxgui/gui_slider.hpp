@@ -20,9 +20,9 @@ namespace gui
     *   in addition to those from #frame:
     *
     *   - `OnValueChanged`: Triggered whenever the value controlled by
-    *   the slider changes. This is fire_scripted whenever the user moves
+    *   the slider changes. This is triggered whenever the user moves
     *   the slider thumb, and by slider::set_value. This can also be
-    *   fire_scripted by slider::set_min_value, slider::set_max_value,
+    *   triggered by slider::set_min_value, slider::set_max_value,
     *   slider::set_min_max_values, and slider::set_value_step if the
     *   previous value would not satisfy the new constraints.
     */

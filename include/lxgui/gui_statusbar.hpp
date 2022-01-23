@@ -24,8 +24,8 @@ namespace gui
     *   in addition to those from #frame:
     *
     *   - `OnValueChanged`: Triggered whenever the value represented by
-    *   the status bar changes. This is fire_scripted by status_bar::set_value.
-    *   This can also be fire_scripted by status_bar::set_min_max_values if
+    *   the status bar changes. This is triggered by status_bar::set_value.
+    *   This can also be triggered by status_bar::set_min_max_values if
     *   the previous value would not satisfy the new constraints.
     */
     class status_bar : public frame
