@@ -221,18 +221,6 @@
 					"shell_cmd": "make -j12 src/gui_addon_registry_parser.s",
 				},
 				{
-					"name": "src/gui_alive_checker.o",
-					"shell_cmd": "make -j12 src/gui_alive_checker.o",
-				},
-				{
-					"name": "src/gui_alive_checker.i",
-					"shell_cmd": "make -j12 src/gui_alive_checker.i",
-				},
-				{
-					"name": "src/gui_alive_checker.s",
-					"shell_cmd": "make -j12 src/gui_alive_checker.s",
-				},
-				{
 					"name": "src/gui_anchor.o",
 					"shell_cmd": "make -j12 src/gui_anchor.o",
 				},
