@@ -15,6 +15,7 @@
 #include "lxgui/gui_keybinder.hpp"
 #include "lxgui/input_source.hpp"
 #include "lxgui/input_dispatcher.hpp"
+#include "lxgui/input_world_dispatcher.hpp"
 #include "lxgui/input_window.hpp"
 
 #include <lxgui/utils_std.hpp>
@@ -42,15 +43,14 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pI
     pInputSource_(std::move(pInputSource)),
     pRenderer_(std::move(pRenderer)),
     pWindow_(std::make_unique<input::window>(*pInputSource_)),
+    pInputDispatcher_(std::make_unique<input::dispatcher>(*pInputSource_)),
+    pWorldInputDispatcher_(std::make_unique<input::world_dispatcher>()),
     pEventEmitter_(std::make_unique<gui::event_emitter>()),
-    pInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
-    pWorldEventEmitter_(std::make_unique<gui::event_emitter>()),
-    pWorldInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
     pLocalizer_(std::make_unique<localizer>())
 {
     set_interface_scaling_factor(1.0f);
 
-    pInputDispatcher_->on_window_resized.connect([&](const vector2ui& mDimensions)
+    pWindow_->on_window_resized.connect([&](const vector2ui& mDimensions)
     {
         // Update the scaling factor; on mobile platforms, rotating the screen will
         // fire_script a change of window size and resolution, which the scaling factor "hint"
@@ -76,7 +76,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
     fScalingFactor_ = fFullScalingFactor;
 
     pInputDispatcher_->set_interface_scaling_factor(fScalingFactor_);
-    pWorldInputDispatcher_->set_interface_scaling_factor(fScalingFactor_);
+
     pRoot_->notify_scaling_factor_updated();
     pRoot_->notify_hovered_frame_dirty();
 }

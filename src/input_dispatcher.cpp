@@ -22,28 +22,19 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
         // Record press time
         lKeyPressedTime_[static_cast<std::size_t>(mKey)] = timer::now();
         // Forward
-        if (!bKeyboardBlocked_)
-            on_key_pressed(mKey);
+        on_key_pressed(mKey);
     }));
 
     lConnections_.push_back(mSource.on_key_released.connect([&](input::key mKey)
     {
         // Forward
-        if (!bKeyboardBlocked_)
-            on_key_released(mKey);
+        on_key_released(mKey);
     }));
 
     lConnections_.push_back(mSource.on_text_entered.connect([&](std::uint32_t uiChar)
     {
         // Forward
-        if (!bKeyboardBlocked_)
-            on_text_entered(uiChar);
-    }));
-
-    lConnections_.push_back(mSource.on_window_resized.connect([&](const gui::vector2ui& mDimensions)
-    {
-        // Forward
-        on_window_resized(mDimensions);
+        on_text_entered(uiChar);
     }));
 
     lConnections_.push_back(mSource.on_mouse_pressed.connect(
@@ -59,10 +50,9 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
             double dClickTime = std::chrono::duration<double>(mTimeNow - mTimeLast).count();
 
             // Forward
-            if (!bMouseBlocked_)
-                on_mouse_pressed(mButton, mMousePos);
+            on_mouse_pressed(mButton, mMousePos);
 
-            if (dClickTime < dDoubleClickTime_ && !bMouseBlocked_)
+            if (dClickTime < dDoubleClickTime_)
                 on_mouse_double_clicked(mButton, mMousePos);
         }
     ));
@@ -74,14 +64,12 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
             mMousePos /= fScalingFactor_;
 
             // Forward
-            if (!bMouseBlocked_)
-                on_mouse_released(mButton, mMousePos);
+            on_mouse_released(mButton, mMousePos);
 
             if (bMouseDragged_ && mButton == mMouseDragButton_)
             {
                 bMouseDragged_ = false;
-                if (!bMouseBlocked_)
-                    on_mouse_drag_stop(mButton, mMousePos);
+                on_mouse_drag_stop(mButton, mMousePos);
             }
         }
     ));
@@ -92,8 +80,7 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
             // Apply scaling factor to mouse coordinates
             mMousePos /= fScalingFactor_;
             // Forward
-            if (!bMouseBlocked_)
-                on_mouse_wheel(fWheel, mMousePos);
+            on_mouse_wheel(fWheel, mMousePos);
         }
     ));
 
@@ -105,8 +92,7 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
             mMousePos /= fScalingFactor_;
 
             // Forward
-            if (!bMouseBlocked_)
-                on_mouse_moved(mMovement, mMousePos);
+            on_mouse_moved(mMovement, mMousePos);
 
             if (!bMouseDragged_)
             {
@@ -124,32 +110,11 @@ dispatcher::dispatcher(source& mSource) : mSource_(mSource)
                 {
                     bMouseDragged_ = true;
                     mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
-                    if (!bMouseBlocked_)
-                        on_mouse_drag_start(mMouseDragButton_, mMousePos);
+                    on_mouse_drag_start(mMouseDragButton_, mMousePos);
                 }
             }
         }
     ));
-}
-
-void dispatcher::block_mouse_events(bool bBlock)
-{
-    bMouseBlocked_ = bBlock;
-}
-
-bool dispatcher::is_mouse_blocked() const
-{
-    return bMouseBlocked_;
-}
-
-void dispatcher::block_keyboard_events(bool bBlock)
-{
-    bKeyboardBlocked_ = bBlock;
-}
-
-bool dispatcher::is_keyboard_blocked() const
-{
-    return bKeyboardBlocked_;
 }
 
 bool dispatcher::any_key_is_down() const

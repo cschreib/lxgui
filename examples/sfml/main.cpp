@@ -1,6 +1,7 @@
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX
@@ -53,7 +54,15 @@ int main(int argc, char* argv[])
         float fDelta = 0.0f;
         timing_clock::time_point mPrevTime = timing_clock::now();
         input::dispatcher& mInputDispatcher = pManager->get_input_dispatcher();
-        input::dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+
+        // Register a callback on Escape to terminate the program.
+        // Doing it this way, we only react to keyboard input that is not captured by the GUI.
+        mWorldInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+        {
+            if (mKey == input::key::K_ESCAPE)
+                bRunning = false;
+        });
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -69,37 +78,10 @@ int main(int argc, char* argv[])
                     bFocus = false;
                 else if (mEvent.type == sf::Event::GainedFocus)
                     bFocus = true;
-                else if (mEvent.type == sf::Event::KeyPressed)
-                {
-                    // This uses events straight from SFML, but the GUI may want to
-                    // capture some of them (for example: the user is typing in an edit_box).
-                    // Therefore, before we can react to these events, we must check that
-                    // the input isn't being "blocked" to the world into the GUI:
-                    if (!mInputDispatcher.is_keyboard_blocked())
-                    {
-                        switch (mEvent.key.code)
-                        {
-                            case sf::Keyboard::Key::Escape:
-                                // Escape pressed: stop the program
-                                bRunning = false;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
 
+                // Feed events to the GUI.
+                // NB: Do not use raw keyboard/mouse events from SFML directly. See examples_common.cpp.
                 static_cast<input::sfml::source&>(mInputDispatcher.get_source()).on_sfml_event(mEvent);
-            }
-
-            // Check if "world" mouse input is blocked (the "world" is whatever is displayed below
-            // the UI, which typically consists of objects that belong to the game world).
-            // This happens if the mouse is over a UI frame that captures mouse input.
-            // The world input dispatcher will not generate input events in this instance, however
-            // you are still able to query the mouse state.
-            if (!mWorldInputDispatcher.is_mouse_blocked())
-            {
-                // Process mouse inputs for the game...
             }
 
             // If the window is not focussed, do nothing and wait until focus comes back

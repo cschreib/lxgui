@@ -25,6 +25,7 @@ namespace input {
     class source;
     class window;
     class dispatcher;
+    class world_dispatcher;
 }
 
 namespace gui
@@ -36,7 +37,6 @@ namespace gui
     class virtual_uiroot;
     class addon_registry;
     class event_emitter;
-    class event_receiver;
 
     /// Manages the user interface
     class manager : utils::enable_observer_from_this<manager>
@@ -203,26 +203,6 @@ namespace gui
         */
         renderer& get_renderer() { return *pRenderer_; }
 
-        /// Returns the gui event emitter.
-        /** \return The gui event emitter
-        */
-        const event_emitter& get_event_emitter() const { return *pEventEmitter_; }
-
-        /// Returns the gui event emitter.
-        /** \return The gui event emitter
-        */
-        event_emitter& get_event_emitter() { return *pEventEmitter_; }
-
-        /// Returns the gui event emitter.
-        /** \return The gui event emitter
-        */
-        const event_emitter& get_world_event_emitter() const { return *pWorldEventEmitter_; }
-
-        /// Returns the gui event emitter.
-        /** \return The gui event emitter
-        */
-        event_emitter& get_world_event_emitter() { return *pWorldEventEmitter_; }
-
         /// Returns the window in which this gui is being displayed.
         /** \return The window in which this gui is being displayed
         */
@@ -246,12 +226,22 @@ namespace gui
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        const input::dispatcher& get_world_input_dispatcher() const { return *pWorldInputDispatcher_; }
+        const input::world_dispatcher& get_world_input_dispatcher() const { return *pWorldInputDispatcher_; }
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        input::dispatcher& get_world_input_dispatcher() { return *pWorldInputDispatcher_; }
+        input::world_dispatcher& get_world_input_dispatcher() { return *pWorldInputDispatcher_; }
+
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
+        */
+        const event_emitter& get_event_emitter() const { return *pEventEmitter_; }
+
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
+        */
+        event_emitter& get_event_emitter() { return *pEventEmitter_; }
 
         /// Returns the object used for localizing strings.
         /** \return The current localizer
@@ -333,11 +323,10 @@ namespace gui
         std::unique_ptr<renderer>        pRenderer_;
 
         // IO
-        std::unique_ptr<input::window>      pWindow_;
-        std::unique_ptr<event_emitter>      pEventEmitter_;
-        utils::owner_ptr<input::dispatcher> pInputDispatcher_;
-        std::unique_ptr<event_emitter>      pWorldEventEmitter_;
-        utils::owner_ptr<input::dispatcher> pWorldInputDispatcher_;
+        std::unique_ptr<input::window>           pWindow_;
+        std::unique_ptr<input::dispatcher>       pInputDispatcher_;
+        std::unique_ptr<input::world_dispatcher> pWorldInputDispatcher_;
+        std::unique_ptr<event_emitter>           pEventEmitter_;
 
         // UI state
         std::unique_ptr<factory>         pFactory_;

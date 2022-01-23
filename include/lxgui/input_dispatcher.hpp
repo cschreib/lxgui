@@ -36,7 +36,17 @@ namespace input
     *          - @ref on_key_pressed
     *          - @ref on_key_released
     *          - @ref on_text_entered
-    *          - @ref on_window_resized
+    *
+    *         These events are "global" and are not restricted by the UI.
+    *         For example, @ref on_mouse_pressed will trigger whenever a mouse
+    *         button is pressed, even if the mouse pointer is currently over
+    *         a UI element that should capture mouse input. Likewise, @ref
+    *         on_key_pressed will trigger even if a UI element has focus.
+    *         These global events are meant to be consumed by the @ref gui::uiroot,
+    *         which takes care of forwarding them to UI elements, and determining
+    *         if a particular event is allowed to propagate to the elements below
+    *         the UI. If you need to react only to events that are not captured by
+    *         the UI, use events from @ref input::world_dispatcher instead.
     */
     class dispatcher
     {
@@ -52,36 +62,6 @@ namespace input
         dispatcher(dispatcher&&) = delete;
         dispatcher& operator=(const dispatcher&) = delete;
         dispatcher& operator=(dispatcher&&) = delete;
-
-        /// Enable/disable mouse inputs
-        /** \param bBlock 'true' to block mouse input events from being generated, 'true' to allow all
-        *   \note This only blocks mouse events; the state of the keyboard and mouse can always be
-        *         queried using @ref key_is_down, @ref mouse_is_down, etc. Use
-        *         @ref is_mouse_blocked() before using direct state queries if you want to fully
-        *         honor mouse input blocking.
-        */
-        void block_mouse_events(bool bBlock);
-
-        /// Check if mouse events are blocked
-        /** \return 'true' if blocked, 'false' otherwise
-        *   \see block_events
-        */
-        bool is_mouse_blocked() const;
-
-        /// Enable/disable keyboard inputs
-        /** \param bBlock 'true' to block keyboard events from being generated, 'true' to allow all
-        *   \note This only blocks keyboard events; the state of the keyboard and keyboard can
-        *         always be queried using @ref key_is_down, etc. Use @ref is_keyboard_blocked()
-        *         before using direct state queries if you want to fully honor keyboard input
-        *         blocking.
-        */
-        void block_keyboard_events(bool bBlock);
-
-        /// Check if keyboard events are blocked
-        /** \return 'true' if blocked, 'false' otherwise
-        *   \see block_events
-        */
-        bool is_keyboard_blocked() const;
 
         /// Checks if any key is being pressed.
         /** \param bForce 'true' to bypass focus (see set_focus())
@@ -188,17 +168,26 @@ namespace input
         */
         source& get_source();
 
+        /// Signal triggered when the mouse moves
         utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
+        /// Signal triggered when the mouse wheel is moved
         utils::signal<void(float, const gui::vector2f&)>                on_mouse_wheel;
+        /// Signal triggered when a mouse button is pressed
         utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_pressed;
+        /// Signal triggered when a mouse button is released
         utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_released;
+        /// Signal triggered when a mouse button is double clicked
         utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_double_clicked;
+        /// Signal triggered when the mouse starts a drag operation
         utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_start;
+        /// Signal triggered when the mouse ends a drag operation
         utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_stop;
+        /// Signal triggered when a keyboard key is pressed
         utils::signal<void(input::key)>                                 on_key_pressed;
+        /// Signal triggered when a keyboard key is released
         utils::signal<void(input::key)>                                 on_key_released;
+        /// Signal triggered when text is entered
         utils::signal<void(std::uint32_t)>                              on_text_entered;
-        utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
 
     private :
 
@@ -218,9 +207,6 @@ namespace input
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;
 
         source& mSource_;
-
-        bool bMouseBlocked_ = false;
-        bool bKeyboardBlocked_ = false;
     };
 }
 }

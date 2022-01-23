@@ -4,6 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/utils_string.hpp"
+#include "lxgui/utils_signal.hpp"
 
 namespace lxgui {
 namespace input
@@ -70,9 +71,13 @@ namespace input
         */
         source& get_source();
 
+        /// Signal triggered whenever the window is resized or changes resolution.
+        utils::signal<void(const gui::vector2ui&)> on_window_resized;
+
     private :
 
-        source& mSource_;
+        source&                  mSource_;
+        utils::scoped_connection mConnection_;
     };
 }
 }

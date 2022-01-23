@@ -12,6 +12,7 @@
 #include <lxgui/gui_uiroot.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
 
@@ -109,7 +110,6 @@ void main_loop(void* pTypeErasedData)
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
 
     input::dispatcher& mInputDispatcher = mContext.pManager->get_input_dispatcher();
-    input::dispatcher& mWorldInputDispatcher = mContext.pManager->get_world_input_dispatcher();
 
 #if defined(SDL_GUI) || defined(GLSDL_GUI)
     // Get events from SDL
@@ -133,53 +133,9 @@ void main_loop(void* pTypeErasedData)
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                 mContext.bFocus = true;
         }
-        else if (mEvent.type == SDL_KEYDOWN)
-        {
-            // This uses events straight from SDL, but the GUI may want to
-            // capture some of them (for example: the user is typing in an edit_box).
-            // Therefore, before we can react to these events, we must check that
-            // the input isn't being "blocked" to the world:
-            if (!mInputDispatcher.is_keyboard_blocked())
-            {
-                switch (mEvent.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
-                    {
-                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
-                        emscripten_cancel_main_loop();
-                        return;
-                    #else
-                        mContext.bRunning = false;
-                        return;
-                    #endif
-                    }
-                    case SDLK_p:
-                        gui::out << mContext.pManager->print_ui() << std::endl;
-                        break;
-                    case SDLK_k:
-                        gui::out << "###" << std::endl;
-                        break;
-                    case SDLK_c:
-                        mContext.pManager->get_root().toggle_caching();
-                        break;
-                    case SDLK_r:
-                        mContext.pManager->reload_ui();
-                        break;
-                    case SDLK_b:
-                        mContext.pManager->get_renderer().set_quad_batching_enabled(
-                            !mContext.pManager->get_renderer().is_quad_batching_enabled());
-                        break;
-                    case SDLK_a:
-                        mContext.pManager->get_renderer().set_texture_atlas_enabled(
-                            !mContext.pManager->get_renderer().is_texture_atlas_enabled());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
 
-        // Feed events to the GUI
+        // Feed events to the GUI.
+        // NB: Do not use raw keyboard/mouse events from SDL directly. See below.
         static_cast<input::sdl::source&>(mInputDispatcher.get_source()).on_sdl_event(mEvent);
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
@@ -201,65 +157,12 @@ void main_loop(void* pTypeErasedData)
             mContext.bFocus = false;
         else if (mEvent.type == sf::Event::GainedFocus)
             mContext.bFocus = true;
-        else if (mEvent.type == sf::Event::KeyPressed)
-        {
-            // This uses events straight from SFML, but the GUI may want to
-            // capture some of them (for example: the user is typing in an edit_box).
-            // Therefore, before we can react to these events, we must check that
-            // the input isn't being "blocked" to the world:
-            if (!mWorldInputDispatcher.is_keyboard_blocked())
-            {
-                switch (mEvent.key.code)
-                {
-                    case sf::Keyboard::Key::Escape:
-                    {
-                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
-                        emscripten_cancel_main_loop();
-                        return;
-                    #else
-                        mContext.bRunning = false;
-                        return;
-                    #endif
-                    }
-                    case sf::Keyboard::Key::P:
-                        gui::out << mContext.pManager->print_ui() << std::endl;
-                        break;
-                    case sf::Keyboard::Key::K:
-                        gui::out << "###" << std::endl;
-                        break;
-                    case sf::Keyboard::Key::C:
-                        mContext.pManager->get_root().toggle_caching();
-                        break;
-                    case sf::Keyboard::Key::R:
-                        mContext.pManager->reload_ui();
-                        break;
-                    case sf::Keyboard::Key::B:
-                        mContext.pManager->get_renderer().set_quad_batching_enabled(
-                            !mContext.pManager->get_renderer().is_quad_batching_enabled());
-                        break;
-                    case sf::Keyboard::Key::A:
-                        mContext.pManager->get_renderer().set_texture_atlas_enabled(
-                            !mContext.pManager->get_renderer().is_texture_atlas_enabled());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
 
+        // Feed events to the GUI.
+        // NB: Do not use raw keyboard/mouse events from SFML directly. See below.
         static_cast<input::sfml::source&>(mInputDispatcher.get_source()).on_sfml_event(mEvent);
     }
 #endif
-
-    // Check if "world" mouse input is blocked (the "world" is whatever is displayed below the UI,
-    // which typically consists of objects that belong to the game world).
-    // This happens if the mouse is over a UI frame that captures mouse input.
-    // The world input dispatcher will not generate input events in this instance, however you
-    // are still able to query the mouse state.
-    if (!mWorldInputDispatcher.is_mouse_blocked())
-    {
-        // Process mouse inputs for the game...
-    }
 
     if (!mContext.bFocus)
     {
@@ -331,6 +234,10 @@ int main(int argc, char* argv[])
 
     try
     {
+        // -------------------------------------------------
+        // Read test configuration
+        // -------------------------------------------------
+
         std::size_t uiWindowWidth  = 800u;
         std::size_t uiWindowHeight = 600u;
         bool        bFullScreen    = false;
@@ -373,7 +280,10 @@ int main(int argc, char* argv[])
             gui::out.rdbuf(mGUI.rdbuf());
         }
 
+        // -------------------------------------------------
         // Create a window
+        // -------------------------------------------------
+
         std::cout << "Creating window..." << std::endl;
         const std::string sWindowTitle = "test";
 
@@ -450,7 +360,10 @@ int main(int argc, char* argv[])
             mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), sWindowTitle);
     #endif
 
-        // Initialize the gui
+        // -------------------------------------------------
+        // Initialise the GUI
+        // -------------------------------------------------
+
         std::cout << "Creating gui manager..." << std::endl;
         utils::owner_ptr<gui::manager> pManager;
 
@@ -561,7 +474,9 @@ int main(int argc, char* argv[])
         mContext.pWindow = &mWindow;
     #endif
 
-        // Create GUI by code:
+        // -------------------------------------------------
+        // Create GUI elements in C++
+        // -------------------------------------------------
 
         // Create the Frame
         // A "root" frame has no parent and is directly owned by the gui::manager.
@@ -635,7 +550,76 @@ int main(int argc, char* argv[])
         // Tell the Frame is has been fully loaded, and call "OnLoad"
         pFrame->notify_loaded();
 
+        // -------------------------------------------------
+        // Reacting to inputs in your game
+        // -------------------------------------------------
+
+        // Register callbacks for input to the world.
+        // Lxgui offers multiple layers to react to events:
+        //  - input::world_dispatcher: processed and filtered events. Use this if you want
+        //    to react to events that the UI allows (e.g., no UI element is blocking the mouse,
+        //    and no UI element is capturing keyboard input for entering text). This is the
+        //    recommended method, and it is illustrated below.
+        //  - input::dispatcher: processed and higher level events (double click, drag, etc.),
+        //    but with no filtering applied. Use this if you need global events, unfiltered by UI
+        //    elements. Usage: pManager->get_input_dispatcher().
+        //  - input::source: simple raw events, with no processing or filtering applied.
+        //    Use this if you need the raw inputs. Usage:
+        //    Usage: pManager->get_input_dispatcher().get_source().
+        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+        mWorldInputDispatcher.on_key_pressed.connect(
+            [&](input::key mKey)
+            {
+                // Process keyboard inputs for the game...
+                switch (mKey)
+                {
+                case input::key::K_ESCAPE:
+                {
+                #if defined(LXGUI_COMPILER_EMSCRIPTEN)
+                    emscripten_cancel_main_loop();
+                    return;
+                #else
+                    mContext.bRunning = false;
+                    return;
+                #endif
+                }
+                case input::key::K_P:
+                    gui::out << mContext.pManager->print_ui() << std::endl;
+                    break;
+                case input::key::K_K:
+                    gui::out << "###" << std::endl;
+                    break;
+                case input::key::K_C:
+                    mContext.pManager->get_root().toggle_caching();
+                    break;
+                case input::key::K_R:
+                    mContext.pManager->reload_ui();
+                    break;
+                case input::key::K_B:
+                    mContext.pManager->get_renderer().set_quad_batching_enabled(
+                        !mContext.pManager->get_renderer().is_quad_batching_enabled());
+                    break;
+                case input::key::K_A:
+                    mContext.pManager->get_renderer().set_texture_atlas_enabled(
+                        !mContext.pManager->get_renderer().is_texture_atlas_enabled());
+                    break;
+                default:
+                    break;
+                }
+            }
+        );
+
+        mWorldInputDispatcher.on_mouse_pressed.connect(
+            [&](input::mouse_button mButton, const gui::vector2f& mMousePos)
+            {
+                // Process mouse inputs for the game...
+            }
+        );
+
+        // -------------------------------------------------
         // Start the main loop
+        // -------------------------------------------------
+
         mContext.mPrevTime = timing_clock::now();
 
         std::cout << "Entering loop..." << std::endl;

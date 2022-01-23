@@ -6,6 +6,7 @@
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/input_window.hpp"
 #include "lxgui/input_dispatcher.hpp"
+#include "lxgui/input_world_dispatcher.hpp"
 #include "lxgui/utils_range.hpp"
 
 #include <lxgui/utils_std.hpp>
@@ -20,13 +21,14 @@ namespace gui
 uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
     frame_container(mManager, mObjectRegistry_, this),
     utils::enable_observer_from_this<uiroot>(mBlock),
-    mManager_(mManager), mRenderer_(mManager.get_renderer())
+    mManager_(mManager), mRenderer_(mManager.get_renderer()),
+    mWorldInputDispatcher_(mManager.get_world_input_dispatcher())
 {
-    mScreenDimensions_ = get_manager().get_window().get_dimensions();
+    auto& mWindow = get_manager().get_window();
+    mScreenDimensions_ = mWindow.get_dimensions();
+    mWindow.on_window_resized.connect([&](auto... mArgs) { on_window_resized_(mArgs...); });
 
     auto& mInputDispatcher = get_manager().get_input_dispatcher();
-
-    mInputDispatcher.on_window_resized.connect([&](auto... mArgs) { on_window_resized_(mArgs...); });
     mInputDispatcher.on_mouse_moved.connect([&](auto... mArgs) { on_mouse_moved_(mArgs...); });
     mInputDispatcher.on_mouse_wheel.connect([&](auto... mArgs) { on_mouse_wheel_(mArgs...); });
     mInputDispatcher.on_mouse_drag_start.connect([&](auto... mArgs) { on_drag_start_(mArgs...); });
@@ -466,8 +468,6 @@ void uiroot::request_focus(utils::observer_ptr<frame> pReceiver)
         if (pNewFocus)
             pNewFocus->notify_focus(true);
     }
-
-    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focussed_frame() != nullptr);
 }
 
 void uiroot::release_focus(const frame& mReceiver)
@@ -484,8 +484,6 @@ void uiroot::release_focus(const frame& mReceiver)
         if (pNewFocus)
             pNewFocus->notify_focus(true);
     }
-
-    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focussed_frame() != nullptr);
 }
 
 void uiroot::clear_focus()
@@ -495,8 +493,6 @@ void uiroot::clear_focus()
 
     if (pOldFocus)
         pOldFocus->notify_focus(false);
-
-    get_manager().get_world_input_dispatcher().block_keyboard_events(false);
 }
 
 bool uiroot::is_focused() const
@@ -518,7 +514,6 @@ utils::observer_ptr<const frame> uiroot::get_focussed_frame() const
 void uiroot::clear_hovered_frame_()
 {
     pHoveredFrame_ = nullptr;
-    get_manager().get_world_input_dispatcher().block_mouse_events(false);
 }
 
 void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
@@ -530,7 +525,6 @@ void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2
     {
         pHoveredFrame_ = pFrame;
         pHoveredFrame_->notify_mouse_in_frame(true, mMousePos);
-        get_manager().get_world_input_dispatcher().block_mouse_events(true);
     }
     else
         clear_hovered_frame_();
@@ -626,6 +620,12 @@ void uiroot::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePo
         mData.add(mMousePos.y);
         pDraggedFrame_->fire_script("OnDragMove", mData);
     }
+
+    if (!pHoveredFrame_)
+    {
+        // Forward to the world
+        mWorldInputDispatcher_.on_mouse_moved(mMovement, mMousePos);
+    }
 }
 
 void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
@@ -638,7 +638,11 @@ void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
     );
 
     if (!pHoveredFrame)
+    {
+        // Forward to the world
+        mWorldInputDispatcher_.on_mouse_wheel(fWheelScroll, mMousePos);
         return;
+    }
 
     event_data mData;
     mData.add(fWheelScroll);
@@ -657,7 +661,11 @@ void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMouseP
     );
 
     if (!pHoveredFrame)
+    {
+        // Forward to the world
+        mWorldInputDispatcher_.on_mouse_drag_start(mButton, mMousePos);
         return;
+    }
 
     if (auto* pRegion = pHoveredFrame->get_title_region().get();
         pRegion && pRegion->is_in_region(mMousePos))
@@ -698,7 +706,11 @@ void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePo
     );
 
     if (!pHoveredFrame)
+    {
+        // Forward to the world
+        mWorldInputDispatcher_.on_mouse_drag_stop(mButton, mMousePos);
         return;
+    }
 
     std::string sMouseButton = std::string(input::get_mouse_button_codename(mButton));
 
@@ -777,10 +789,11 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
         }
     }
 
-    // Key was not captured, just forward to the world
-    // TODO: can we handle this better? Do we need the full generic world event emitter?
-    //       --> no, remove world event emitter, and just use the world input dispatcher
-    // get_manager().get_world_event_emitter().fire_event(mEvent);
+    // Forward to the world
+    if (bIsDown)
+        mWorldInputDispatcher_.on_key_pressed(mKey);
+    else
+        mWorldInputDispatcher_.on_key_released(mKey);
 }
 
 void uiroot::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
@@ -800,7 +813,16 @@ void uiroot::on_mouse_button_state_changed_(input::mouse_button mButton, bool bI
     }
 
     if (!pHoveredFrame)
+    {
+        // Forward to the world
+        if (bIsDoubleClick)
+            mWorldInputDispatcher_.on_mouse_double_clicked(mButton, mMousePos);
+        else if (bIsDown)
+            mWorldInputDispatcher_.on_mouse_pressed(mButton, mMousePos);
+        else
+            mWorldInputDispatcher_.on_mouse_released(mButton, mMousePos);
         return;
+    }
 
     event_data mData;
     mData.add(std::string(input::get_mouse_button_codename(mButton)));

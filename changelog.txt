@@ -26,7 +26,7 @@ Major changes:
     - the regions are created, in order of declaration in the XML file
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
- - gui: scripts are now handled with signals and slots, for better control of lifetime
+ - gui: scripts are now handled with signals and slots in C++, for better control of lifetime
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
  - gui: focus is now handled as a stack rather than binary
  - gui: keyboard input is now given to topmost frame registered for the pressed key
@@ -50,15 +50,22 @@ Other changes:
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
  - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
+ - utils: string conversion functions are now locale-independent; use localizer class otherwise
+ - utils: added observer/owner smart pointers
+ - utils: added signal
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
  - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
- - input: get_key_name() is now platform-independent, and only returns English
+ - input: renamed input::manager into input::dispatcher
+ - input: get_key_name() is now a free function renamed to get_key_code_name()
+ - input: get_key_code_name() is now platform-independent, and only returns English
  - input: added set_mouse_cursor() and reset_mouse_cursor()
  - input: added get_interface_scaling_factor_hint()
  - input: added set_interface_scaling_factor()
  - input: removed key_is_down_long() and mouse_is_down_long()
+ - input: added world_dispatcher
+ - input: added window
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: added renderer::set_view() to allow arbitrary view transforms
@@ -196,7 +203,6 @@ Other changes:
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
  - gui: fixed missing 'const' for uiobject::render()
- - utils: string conversion functions are now locale-independent; use localizer class otherwise
 
 v1.2.0:
  - added support for MSVC 2010

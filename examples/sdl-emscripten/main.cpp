@@ -2,6 +2,7 @@
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 
 #include <emscripten.h>
 
@@ -35,7 +36,6 @@ try
 {
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
     input::dispatcher& mInputDispatcher = mContext.pManager->get_input_dispatcher();
-    input::dispatcher& mWorldInputDispatcher = mContext.pManager->get_world_input_dispatcher();
 
     // Get events from SDL
     SDL_Event mEvent;
@@ -53,38 +53,10 @@ try
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                 mContext.bFocus = true;
         }
-        else if (mEvent.type == SDL_KEYDOWN)
-        {
-            // This uses events straight from SDL, but the GUI may want to
-            // capture some of them (for example: the user is typing in an edit_box).
-            // Therefore, before we can react to these events, we must check that
-            // the input isn't being "blocked" to the world:
-            if (!mInputDispatcher.is_keyboard_blocked())
-            {
-                switch (mEvent.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
-                        // Escape pressed: stop the program
-                        emscripten_cancel_main_loop();
-                        return;
-                    default:
-                        break;
-                }
-            }
-        }
 
-        // Feed events to the GUI
+        // Feed events to the GUI.
+        // NB: Do not use raw keyboard/mouse events from SDL directly. See below.
         static_cast<input::sdl::source&>(mInputDispatcher.get_source()).on_sdl_event(mEvent);
-    }
-
-    // Check if "world" mouse input is blocked (the "world" is whatever is displayed below
-    // the UI, which typically consists of objects that belong to the game world).
-    // This happens if the mouse is over a UI frame that captures mouse input.
-    // The world input dispatcher will not generate input events in this instance, however
-    // you are still able to query the mouse state.
-    if (!mWorldInputDispatcher.is_mouse_blocked())
-    {
-        // Process mouse inputs for the game...
     }
 
     // If the window is not focussed, do nothing and wait until focus comes back
@@ -195,6 +167,15 @@ int main(int argc, char* argv[])
         mContext.mPrevTime = timing_clock::now();
         mContext.pManager = pManager.get();
         mContext.pRenderer = pRenderer.get();
+
+        // Register a callback on Escape to terminate the program.
+        // Doing it this way, we only react to keyboard input that is not captured by the GUI.
+        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+        mWorldInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+        {
+            if (mKey == input::key::K_ESCAPE)
+                emscripten_cancel_main_loop();
+        });
 
         std::cout << "Entering loop..." << std::endl;
 

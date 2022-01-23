@@ -16,6 +16,11 @@
 
 namespace lxgui {
 
+namespace input
+{
+    class world_dispatcher;
+}
+
 namespace gui
 {
     class uiobject;
@@ -248,11 +253,13 @@ namespace gui
         void on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
             bool bIsDoubleClick, const vector2f& mMousePos);
 
-        manager&       mManager_;
-        renderer&      mRenderer_;
-        registry       mObjectRegistry_;
-        keybinder      mKeybinder_;
+        manager&                 mManager_;
+        renderer&                mRenderer_;
+        registry                 mObjectRegistry_;
+        keybinder                mKeybinder_;
+        input::world_dispatcher& mWorldInputDispatcher_;
 
+        // Rendering
         vector2ui mScreenDimensions_;
 
         bool bEnableCaching_= false;
@@ -260,6 +267,7 @@ namespace gui
         std::shared_ptr<render_target> pRenderTarget_;
         quad                           mScreenQuad_;
 
+        // Mouse IO
         utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
         utils::observer_ptr<frame> pDraggedFrame_ = nullptr;
 
@@ -278,6 +286,7 @@ namespace gui
         bool     bResizeFromRight_ = false;
         bool     bResizeFromBottom_ = false;
 
+        // Keyboard IO
         std::vector<utils::observer_ptr<frame>> lFocusStack_;
     };
 }

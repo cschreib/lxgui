@@ -7,6 +7,11 @@ namespace input
 
 window::window(source& mSource) : mSource_(mSource)
 {
+    mConnection_ = mSource.on_window_resized.connect([&](const gui::vector2ui& mDimensions)
+    {
+        // Forward
+        on_window_resized(mDimensions);
+    });
 }
 
 utils::ustring window::get_clipboard_content()
