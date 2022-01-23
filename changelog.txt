@@ -81,7 +81,7 @@ Other changes:
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
- - gui: renamed frame::on into frame::trigger
+ - gui: renamed frame::on into frame::fire_script
  - gui: renamed frame::fire_build_layer_list into frame::notify_layers_need_update
  - gui: renamed frame_renderer::fire_redraw into notify_strata_needs_redraw
  - gui: renamed uiobject::fire_udpate_borders to uiobject::notify_borders_need_update

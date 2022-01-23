@@ -624,7 +624,7 @@ void uiroot::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePo
         event_data mData;
         mData.add(mMousePos.x);
         mData.add(mMousePos.y);
-        pDraggedFrame_->trigger("OnDragMove", mData);
+        pDraggedFrame_->fire_script("OnDragMove", mData);
     }
 }
 
@@ -644,7 +644,7 @@ void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
     mData.add(fWheelScroll);
     mData.add(mMousePos.x);
     mData.add(mMousePos.y);
-    pHoveredFrame->trigger("OnMouseWheel", mData);
+    pHoveredFrame->fire_script("OnMouseWheel", mData);
 }
 
 void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos)
@@ -675,7 +675,7 @@ void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMouseP
         mData.add(mMousePos.y);
 
         pDraggedFrame_ = std::move(pHoveredFrame);
-        pDraggedFrame_->trigger("OnDragStart", mData);
+        pDraggedFrame_->fire_script("OnDragStart", mData);
     }
 }
 
@@ -686,7 +686,7 @@ void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePo
 
     if (pDraggedFrame_)
     {
-        pDraggedFrame_->trigger("OnDragStop");
+        pDraggedFrame_->fire_script("OnDragStop");
         pDraggedFrame_ = nullptr;
     }
 
@@ -709,7 +709,7 @@ void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePo
         mData.add(mMousePos.x);
         mData.add(mMousePos.y);
 
-        pHoveredFrame->trigger("OnReceiveDrag", mData);
+        pHoveredFrame->fire_script("OnReceiveDrag", mData);
     }
 }
 
@@ -721,7 +721,7 @@ void uiroot::on_text_entered_(std::uint32_t uiChar)
         mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
         mData.add(uiChar);
 
-        pFocus->trigger("OnChar", mData);
+        pFocus->fire_script("OnChar", mData);
     }
 }
 
@@ -754,9 +754,9 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
         mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
 
         if (bIsDown)
-            pTopmostFrame->trigger("OnKeyDown", mData);
+            pTopmostFrame->fire_script("OnKeyDown", mData);
         else
-            pTopmostFrame->trigger("OnKeyUp", mData);
+            pTopmostFrame->fire_script("OnKeyUp", mData);
 
         return;
     }
@@ -809,18 +809,18 @@ void uiroot::on_mouse_button_state_changed_(input::mouse_button mButton, bool bI
 
     if (bIsDoubleClick)
     {
-        pHoveredFrame->trigger("OnDoubleClicked", mData);
+        pHoveredFrame->fire_script("OnDoubleClicked", mData);
     }
     else if (bIsDown)
     {
         if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
             pTopLevel->raise();
 
-        pHoveredFrame->trigger("OnMouseDown", mData);
+        pHoveredFrame->fire_script("OnMouseDown", mData);
     }
     else
     {
-        pHoveredFrame->trigger("OnMouseUp", mData);
+        pHoveredFrame->fire_script("OnMouseUp", mData);
     }
 }
 

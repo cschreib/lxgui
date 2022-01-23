@@ -78,7 +78,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void trigger(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+        void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Copies an uiobject's parameters into this Button (inheritance).
         /** \param mObj The uiobject to copy

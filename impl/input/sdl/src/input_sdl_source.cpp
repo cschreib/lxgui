@@ -267,7 +267,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         }
         else
         {
-            // Reset "previous" mouse position to avoid triggering incorrect
+            // Reset "previous" mouse position to avoid fire_scripting incorrect
             // drag events. With touch devices, the mouse position does not change
             // until the finger is down on the screen.
             mMousePos = gui::vector2f(

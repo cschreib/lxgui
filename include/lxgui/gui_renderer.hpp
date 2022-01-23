@@ -226,7 +226,7 @@ namespace gui
         *         is also more efficient than render_quads(), as the vertex data is
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See is_vertex_cache_supported().
-        *         Note finally that rendering a vertex cache always triggers a draw
+        *         Note finally that rendering a vertex cache always fire_scripts a draw
         *         call, no matter what, even when quad batching is enabled. For this reason,
         *         if quad batching is enabled, only use vertex caches for large vertex arrays
         *         and not for just a handful of quads. Benchmark when in doubt.
@@ -394,7 +394,7 @@ namespace gui
         *         is also more efficient than render_quads(), as the vertex data is
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See is_vertex_cache_supported().
-        *         Note finally that rendering a vertex cache always triggers a draw
+        *         Note finally that rendering a vertex cache always fire_scripts a draw
         *         call, no matter what, even when quad batching is enabled. For this reason,
         *         if quad batching is enabled, only use vertex caches for large vertex arrays
         *         and not for just a handful of quads. Benchmark when in doubt.

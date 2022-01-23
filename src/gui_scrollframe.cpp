@@ -40,13 +40,13 @@ bool scroll_frame::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void scroll_frame::trigger(const std::string& sScriptName, const event_data& mData)
+void scroll_frame::fire_script(const std::string& sScriptName, const event_data& mData)
 {
     if (!is_loaded())
         return;
 
     alive_checker mChecker(*this);
-    base::trigger(sScriptName, mData);
+    base::fire_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -230,7 +230,7 @@ void scroll_frame::update_scroll_range_()
     if (!is_virtual())
     {
         alive_checker mChecker(*this);
-        trigger("OnScrollRangeChanged");
+        fire_script("OnScrollRangeChanged");
         if (!mChecker.is_alive())
             return;
     }

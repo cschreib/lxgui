@@ -96,7 +96,7 @@ namespace utils
         using connection::connected;
     };
 
-    /// Generic class for observing and triggering events.
+    /// Generic class for observing and fire_scripting events.
     template<typename T>
     class signal
     {
@@ -233,7 +233,7 @@ namespace utils
 
             // Call the slots
             const auto& lSlotsCopy = *slots_copy;
-            // NB: Cache the size here, so new slots connected will not trigger
+            // NB: Cache the size here, so new slots connected will not fire_script
             // NB: Use integer-based iteration since iterators may be invalidated on insertion
             const std::size_t uiNumSlots = lSlotsCopy.size();
             for (std::size_t i = 0; i < uiNumSlots; ++i)

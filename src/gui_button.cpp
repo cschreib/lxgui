@@ -39,10 +39,10 @@ bool button::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void button::trigger(const std::string& sScriptName, const event_data& mData)
+void button::fire_script(const std::string& sScriptName, const event_data& mData)
 {
     alive_checker mChecker(*this);
-    base::trigger(sScriptName, mData);
+    base::fire_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -65,7 +65,7 @@ void button::trigger(const std::string& sScriptName, const event_data& mData)
         if (sScriptName == "OnMouseUp")
         {
             release();
-            trigger("OnClick");
+            fire_script("OnClick");
             if (!mChecker.is_alive())
                 return;
         }
@@ -342,7 +342,7 @@ void button::disable()
         unlight();
 
         alive_checker mChecker(*this);
-        trigger("OnDisable");
+        fire_script("OnDisable");
         if (!mChecker.is_alive())
             return;
     }
@@ -379,7 +379,7 @@ void button::enable()
             pDisabledText_->hide();
 
         alive_checker mChecker(*this);
-        trigger("OnEnable");
+        fire_script("OnEnable");
         if (!mChecker.is_alive())
             return;
     }

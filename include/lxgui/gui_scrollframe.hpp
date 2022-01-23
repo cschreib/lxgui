@@ -19,7 +19,7 @@ namespace gui
     *   displayed portion is controlled by the scroll value, which can be
     *   changed in both the vertical and horizontal directions.
     *
-    *   By default, the mouse wheel movement will not trigger any scrolling;
+    *   By default, the mouse wheel movement will not fire_script any scrolling;
     *   this has to be explicitly implemented using the `OnMouseWheel` callback
     *   and the scroll_frame::set_horizontal_scroll function.
     *
@@ -70,7 +70,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void trigger(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+        void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child

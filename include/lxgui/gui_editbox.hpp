@@ -160,7 +160,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void trigger(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+        void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script

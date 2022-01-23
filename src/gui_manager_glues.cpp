@@ -120,7 +120,7 @@ void manager::create_lua_()
     }));
 
     /** Closes the whole GUI and re-loads addons from files.
-    * For safety reasons, the re-loading operation will not be triggered instantaneously.
+    * For safety reasons, the re-loading operation will not be fire_scripted instantaneously.
     * The GUI will be reloaded at the end of the current update tick, when it is safe to do so.
     * @function reload_ui
     */

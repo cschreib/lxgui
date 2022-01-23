@@ -57,7 +57,7 @@ void button::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("click", [](button& mSelf)
     {
-        mSelf.trigger("OnClick");
+        mSelf.fire_script("OnClick");
     });
 
     /** @function disable
