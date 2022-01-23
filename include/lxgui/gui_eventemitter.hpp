@@ -52,7 +52,7 @@ namespace gui
         /** \param sEventName The ID of the event which has occurred
         *   \param mData      The payload of the event
         */
-        void fire_event(const std::string& sEventName, event_data mEvent = event_data{});
+        void fire_event(const std::string& sEventName, event_data mData = event_data{});
 
     private :
 
