@@ -329,7 +329,7 @@ while (true)
         // Send these to the input source.
         sfml_source.on_sfml_event(event);
 
-        // NB: Do not react these raw events directly. Some of them should be
+        // NB: Do not react to these raw events directly. Some of them should be
         // captured by the GUI, and must not propagate to the world rendered below.
         // Use the input signals from manager->get_world_input_dispatcher() instead.
     }
