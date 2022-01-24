@@ -12,6 +12,7 @@
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_uiroot.hpp>
+#include <lxgui/gui_out.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/utils_filesystem.hpp>
