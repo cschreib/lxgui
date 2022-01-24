@@ -735,6 +735,11 @@ void uiroot::on_text_entered_(std::uint32_t uiChar)
 
         pFocus->fire_script("OnChar", mData);
     }
+    else
+    {
+        // Forward to the world
+        mWorldInputDispatcher_.on_text_entered(uiChar);
+    }
 }
 
 void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)

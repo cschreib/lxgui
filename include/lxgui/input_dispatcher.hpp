@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/input_keys.hpp"
+#include "lxgui/input_signals.hpp"
 #include "lxgui/gui_vector2.hpp"
 
 #include <lxgui/utils_signal.hpp>
@@ -48,7 +49,7 @@ namespace input
     *   the UI. If you need to react only to events that are not captured by
     *   the UI, use events from @ref input::world_dispatcher instead.
     */
-    class dispatcher
+    class dispatcher : public signals
     {
     public :
 
@@ -148,27 +149,6 @@ namespace input
         /** \return The input source
         */
         source& get_source();
-
-        /// Signal triggered when the mouse moves
-        utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
-        /// Signal triggered when the mouse wheel is moved
-        utils::signal<void(float, const gui::vector2f&)>                on_mouse_wheel;
-        /// Signal triggered when a mouse button is pressed
-        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_pressed;
-        /// Signal triggered when a mouse button is released
-        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_released;
-        /// Signal triggered when a mouse button is double clicked
-        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_double_clicked;
-        /// Signal triggered when the mouse starts a drag operation
-        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_start;
-        /// Signal triggered when the mouse ends a drag operation
-        utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_drag_stop;
-        /// Signal triggered when a keyboard key is pressed
-        utils::signal<void(input::key)>                                 on_key_pressed;
-        /// Signal triggered when a keyboard key is released
-        utils::signal<void(input::key)>                                 on_key_released;
-        /// Signal triggered when text is entered
-        utils::signal<void(std::uint32_t)>                              on_text_entered;
 
     private :
 
