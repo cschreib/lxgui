@@ -147,7 +147,7 @@ namespace gui
         /// Sets the draw layer of this slider's thumb texture.
         /** \param mThumbLayer The layer
         */
-        void set_thumb_draw_layer(layer_type mThumbLayer);
+        void set_thumb_draw_layer(layer mThumbLayer);
 
         /// Sets the draw layer of this slider's thumb texture.
         /** \param sBarLayer The layer
@@ -157,7 +157,7 @@ namespace gui
         /// Returns the draw layer of this slider's thumb texture.
         /** \return The draw layer of this slider's thumb texture
         */
-        layer_type get_thumb_draw_layer() const;
+        layer get_thumb_draw_layer() const;
 
         /// Allows the user to click anywhere in the slider to relocate the thumb.
         /** \param bAllow 'true' to allow it, 'false' to allow clicks on the thumb only
@@ -207,7 +207,7 @@ namespace gui
 
         bool bAllowClicksOutsideThumb_ = true;
 
-        layer_type mThumbLayer_ = layer_type::OVERLAY;
+        layer mThumbLayer_ = layer::OVERLAY;
         utils::observer_ptr<texture> pThumbTexture_ = nullptr;
 
         bool bThumbMoved_ = false;

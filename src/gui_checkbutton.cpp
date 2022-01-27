@@ -32,7 +32,7 @@ void check_button::copy_from(const region& mObj)
         mAttr.sName = pCheckedTexture->get_name();
         mAttr.lInheritance = {pButton->get_checked_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pCheckedTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
@@ -49,7 +49,7 @@ void check_button::copy_from(const region& mObj)
         mAttr.sName = pDisabledTexture->get_name();
         mAttr.lInheritance = {pButton->get_disabled_checked_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pDisabledTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)

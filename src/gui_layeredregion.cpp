@@ -26,12 +26,12 @@ std::string layered_region::serialize(const std::string& sTab) const
     sStr << sTab << "  # Layer       : ";
     switch (mLayer_)
     {
-        case layer_type::BACKGROUND : sStr << "BACKGROUND\n"; break;
-        case layer_type::BORDER : sStr << "BORDER\n"; break;
-        case layer_type::ARTWORK : sStr << "ARTWORK\n"; break;
-        case layer_type::OVERLAY : sStr << "OVERLAY\n"; break;
-        case layer_type::HIGHLIGHT : sStr << "HIGHLIGHT\n"; break;
-        case layer_type::SPECIALHIGH : sStr << "SPECIALHIGH\n"; break;
+        case layer::BACKGROUND : sStr << "BACKGROUND\n"; break;
+        case layer::BORDER : sStr << "BORDER\n"; break;
+        case layer::ARTWORK : sStr << "ARTWORK\n"; break;
+        case layer::OVERLAY : sStr << "OVERLAY\n"; break;
+        case layer::HIGHLIGHT : sStr << "HIGHLIGHT\n"; break;
+        case layer::SPECIALHIGH : sStr << "SPECIALHIGH\n"; break;
         default : sStr << "<error>\n"; break;
     }
 
@@ -74,12 +74,12 @@ bool layered_region::is_visible() const
     return pParent_->is_visible() && bIsShown_;
 }
 
-layer_type layered_region::get_draw_layer() const
+layer layered_region::get_draw_layer() const
 {
     return mLayer_;
 }
 
-void layered_region::set_draw_layer(layer_type mLayer)
+void layered_region::set_draw_layer(layer mLayer)
 {
     if (mLayer_ != mLayer)
     {
@@ -103,25 +103,25 @@ void layered_region::notify_renderer_need_redraw()
         pParent_->notify_renderer_need_redraw();
 }
 
-layer_type parse_layer_type(const std::string& sLayer)
+layer parse_layer_type(const std::string& sLayer)
 {
-    layer_type mLayer;
+    layer mLayer;
     if (sLayer == "ARTWORK")
-        mLayer = layer_type::ARTWORK;
+        mLayer = layer::ARTWORK;
     else if (sLayer == "BACKGROUND")
-        mLayer = layer_type::BACKGROUND;
+        mLayer = layer::BACKGROUND;
     else if (sLayer == "BORDER")
-        mLayer = layer_type::BORDER;
+        mLayer = layer::BORDER;
     else if (sLayer == "HIGHLIGHT")
-        mLayer = layer_type::HIGHLIGHT;
+        mLayer = layer::HIGHLIGHT;
     else if (sLayer == "OVERLAY")
-        mLayer = layer_type::OVERLAY;
+        mLayer = layer::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::parse_layer_type : "
             << "Unknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
-        mLayer = layer_type::ARTWORK;
+        mLayer = layer::ARTWORK;
     }
 
     return mLayer;

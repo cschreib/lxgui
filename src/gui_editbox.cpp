@@ -72,7 +72,8 @@ void edit_box::copy_from(const region& mObj)
         mAttr.sName = pFS->get_name();
         mAttr.lInheritance = {pEditBox->get_font_string()};
 
-        auto pFont = this->create_region<font_string>(pFS->get_draw_layer(), std::move(mAttr));
+        auto pFont = this->create_layered_region<font_string>(
+            pFS->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -704,7 +705,7 @@ void edit_box::create_font_string_()
     if (pFontString_)
         return;
 
-    auto pFont = create_region<font_string>(layer_type::ARTWORK, "$parentFontString");
+    auto pFont = create_layered_region<font_string>(layer::ARTWORK, "$parentFontString");
     if (!pFont)
         return;
 
@@ -718,7 +719,7 @@ void edit_box::create_highlight_()
     if (pHighlight_ || is_virtual())
         return;
 
-    auto pHighlight = create_region<texture>(layer_type::HIGHLIGHT, "$parentHighlight");
+    auto pHighlight = create_layered_region<texture>(layer::HIGHLIGHT, "$parentHighlight");
     if (!pHighlight)
         return;
 
@@ -740,7 +741,7 @@ void edit_box::create_carret_()
 
     if (!pCarret_)
     {
-        auto pCarret = create_region<texture>(layer_type::HIGHLIGHT, "$parentCarret");
+        auto pCarret = create_layered_region<texture>(layer::HIGHLIGHT, "$parentCarret");
         if (!pCarret)
             return;
 

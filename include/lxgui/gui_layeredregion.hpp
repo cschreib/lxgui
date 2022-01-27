@@ -9,7 +9,7 @@ namespace lxgui {
 namespace gui
 {
     /// ID of a layer for rendering inside a frame.
-    enum class layer_type
+    enum class layer
     {
         BACKGROUND = 0,
         BORDER = 1,
@@ -24,7 +24,7 @@ namespace gui
     /** \param sLayer The layer string (e.g., "ARTWORK")
     *   \return The corresponding enumerator, or "ARTWORK" if parsing failed
     */
-    layer_type parse_layer_type(const std::string& sLayer);
+    layer parse_layer_type(const std::string& sLayer);
 
     /// A #region that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
@@ -78,12 +78,12 @@ namespace gui
         /// Returns this layered_region's draw layer.
         /** \return this layered_region's draw layer
         */
-        layer_type get_draw_layer() const;
+        layer get_draw_layer() const;
 
         /// Sets this layered_region's draw layer.
         /** \param mLayer The new layer
         */
-        virtual void set_draw_layer(layer_type mLayer);
+        virtual void set_draw_layer(layer mLayer);
 
         /// Sets this layered_region's draw layer.
         /** \param sLayer The new layer
@@ -109,7 +109,7 @@ namespace gui
 
         void parse_attributes_(const layout_node& mNode) override;
 
-        layer_type mLayer_ = layer_type::ARTWORK;
+        layer mLayer_ = layer::ARTWORK;
     };
 }
 }

@@ -93,7 +93,9 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // Create the scroll texture
-        auto pScrollTexture = create_region<texture>(layer_type::ARTWORK, "$parentScrollTexture");
+        auto pScrollTexture = create_layered_region<texture>(
+            layer::ARTWORK, "$parentScrollTexture");
+
         if (!pScrollTexture)
             return;
 

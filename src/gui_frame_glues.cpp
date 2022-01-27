@@ -255,16 +255,16 @@ void frame::register_on_lua(sol::state& mLua)
     mClass.set_function("create_font_string", [](frame& mSelf, const std::string& sName,
         sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        layer_type mLayer = layer_type::ARTWORK;
+        layer mLayer = layer::ARTWORK;
         if (sLayer.has_value())
-            mLayer = layer::get_layer_type(sLayer.value());
+            mLayer = parse_layer_type(sLayer.value());
 
         region_core_attributes mAttr;
         mAttr.sName = sName;
         mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
             sInheritance.value_or(""));
 
-        return mSelf.create_region<font_string>(mLayer, std::move(mAttr));
+        return mSelf.create_layered_region<font_string>(mLayer, std::move(mAttr));
     });
 
     /** @function create_texture
@@ -272,16 +272,16 @@ void frame::register_on_lua(sol::state& mLua)
     mClass.set_function("create_texture", [](frame& mSelf, const std::string& sName,
         sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        layer_type mLayer = layer_type::ARTWORK;
+        layer mLayer = layer::ARTWORK;
         if (sLayer.has_value())
-            mLayer = layer::get_layer_type(sLayer.value());
+            mLayer = parse_layer_type(sLayer.value());
 
         region_core_attributes mAttr;
         mAttr.sName = sName;
         mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
             sInheritance.value_or(""));
 
-        return mSelf.create_region<texture>(mLayer, std::move(mAttr));
+        return mSelf.create_layered_region<texture>(mLayer, std::move(mAttr));
     });
 
     /** @function create_title_region
@@ -292,14 +292,14 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("disable_draw_layer", [](frame& mSelf, const std::string& sLayer)
     {
-        mSelf.disable_draw_layer(layer::get_layer_type(sLayer));
+        mSelf.disable_draw_layer(parse_layer_type(sLayer));
     });
 
     /** @function enable_draw_layer
     */
     mClass.set_function("enable_draw_layer", [](frame& mSelf, const std::string& sLayer)
     {
-        mSelf.enable_draw_layer(layer::get_layer_type(sLayer));
+        mSelf.enable_draw_layer(parse_layer_type(sLayer));
     });
 
     /** @function enable_mouse

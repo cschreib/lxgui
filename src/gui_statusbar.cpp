@@ -72,7 +72,8 @@ void status_bar::copy_from(const region& mObj)
         mAttr.sName = pBar->get_name();
         mAttr.lInheritance = {pStatusBar->get_bar_texture()};
 
-        auto pBarTexture = this->create_region<texture>(pBar->get_draw_layer(), std::move(mAttr));
+        auto pBarTexture = this->create_layered_region<texture>(
+            pBar->get_draw_layer(), std::move(mAttr));
 
         if (pBarTexture)
         {
@@ -126,7 +127,7 @@ void status_bar::set_value(float fValue)
     }
 }
 
-void status_bar::set_bar_draw_layer(layer_type mBarLayer)
+void status_bar::set_bar_draw_layer(layer mBarLayer)
 {
     mBarLayer_ = mBarLayer;
     if (pBarTexture_)
@@ -136,21 +137,21 @@ void status_bar::set_bar_draw_layer(layer_type mBarLayer)
 void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
 {
     if (sBarLayer == "ARTWORK")
-        mBarLayer_ = layer_type::ARTWORK;
+        mBarLayer_ = layer::ARTWORK;
     else if (sBarLayer == "BACKGROUND")
-        mBarLayer_ = layer_type::BACKGROUND;
+        mBarLayer_ = layer::BACKGROUND;
     else if (sBarLayer == "BORDER")
-        mBarLayer_ = layer_type::BORDER;
+        mBarLayer_ = layer::BORDER;
     else if (sBarLayer == "HIGHLIGHT")
-        mBarLayer_ = layer_type::HIGHLIGHT;
+        mBarLayer_ = layer::HIGHLIGHT;
     else if (sBarLayer == "OVERLAY")
-        mBarLayer_ = layer_type::OVERLAY;
+        mBarLayer_ = layer::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Unknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
 
-        mBarLayer_ = layer_type::ARTWORK;
+        mBarLayer_ = layer::ARTWORK;
     }
 
     if (pBarTexture_)
@@ -244,7 +245,7 @@ float status_bar::get_value() const
     return fValue_;
 }
 
-layer_type status_bar::get_bar_draw_layer() const
+layer status_bar::get_bar_draw_layer() const
 {
     return mBarLayer_;
 }
@@ -269,7 +270,7 @@ void status_bar::create_bar_texture_()
     if (pBarTexture_)
         return;
 
-    auto pBarTexture = create_region<texture>(mBarLayer_, "$parentBarTexture");
+    auto pBarTexture = create_layered_region<texture>(mBarLayer_, "$parentBarTexture");
     if (!pBarTexture)
         return;
 
@@ -285,7 +286,6 @@ void status_bar::create_glue()
 
 void status_bar::update(float fDelta)
 {
-
     if (bUpdateBarTexture_ && pBarTexture_)
     {
         float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);

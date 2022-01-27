@@ -136,7 +136,8 @@ void slider::copy_from(const region& mObj)
         mAttr.sName = pThumb->get_name();
         mAttr.lInheritance = {pSlider->get_thumb_texture()};
 
-        auto pTexture = this->create_region<texture>(pThumb->get_draw_layer(), std::move(mAttr));
+        auto pTexture = this->create_layered_region<texture>(
+            pThumb->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -332,7 +333,7 @@ void slider::set_orientation(const std::string& sOrientation)
     set_orientation(mOrientation);
 }
 
-void slider::set_thumb_draw_layer(layer_type mThumbLayer)
+void slider::set_thumb_draw_layer(layer mThumbLayer)
 {
     mThumbLayer_ = mThumbLayer;
     if (pThumbTexture_)
@@ -342,20 +343,20 @@ void slider::set_thumb_draw_layer(layer_type mThumbLayer)
 void slider::set_thumb_draw_layer(const std::string& sThumbLayer)
 {
     if (sThumbLayer == "ARTWORK")
-        mThumbLayer_ = layer_type::ARTWORK;
+        mThumbLayer_ = layer::ARTWORK;
     else if (sThumbLayer == "BACKGROUND")
-        mThumbLayer_ = layer_type::BACKGROUND;
+        mThumbLayer_ = layer::BACKGROUND;
     else if (sThumbLayer == "BORDER")
-        mThumbLayer_ = layer_type::BORDER;
+        mThumbLayer_ = layer::BORDER;
     else if (sThumbLayer == "HIGHLIGHT")
-        mThumbLayer_ = layer_type::HIGHLIGHT;
+        mThumbLayer_ = layer::HIGHLIGHT;
     else if (sThumbLayer == "OVERLAY")
-        mThumbLayer_ = layer_type::OVERLAY;
+        mThumbLayer_ = layer::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Unknown layer type : \""+sThumbLayer+"\". Using \"OVERLAY\"." << std::endl;
-        mThumbLayer_ = layer_type::OVERLAY;
+        mThumbLayer_ = layer::OVERLAY;
     }
 
     if (pThumbTexture_)
@@ -387,7 +388,7 @@ slider::orientation slider::get_orientation() const
     return mOrientation_;
 }
 
-layer_type slider::get_thumb_draw_layer() const
+layer slider::get_thumb_draw_layer() const
 {
     return mThumbLayer_;
 }

@@ -27,10 +27,6 @@ namespace lxgui {
 namespace gui
 {
 
-layer::layer() : bDisabled(false)
-{
-}
-
 frame::frame(utils::control_block& mBlock, manager& mManager) :
     base(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
 {
@@ -283,7 +279,7 @@ void frame::copy_from(const region& mObj)
         mAttr.sName = pArt->get_raw_name();
         mAttr.lInheritance = {pArt};
 
-        auto pNewArt = create_region(pArt->get_draw_layer(), std::move(mAttr));
+        auto pNewArt = create_layered_region(pArt->get_draw_layer(), std::move(mAttr));
         if (!pNewArt) continue;
 
         pNewArt->notify_loaded();
@@ -503,9 +499,9 @@ void frame::check_position_()
     }
 }
 
-void frame::disable_draw_layer(layer_type mLayerID)
+void frame::disable_draw_layer(layer mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
+    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = true;
@@ -513,9 +509,9 @@ void frame::disable_draw_layer(layer_type mLayerID)
     }
 }
 
-void frame::enable_draw_layer(layer_type mLayerID)
+void frame::enable_draw_layer(layer mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
+    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = false;
@@ -650,7 +646,7 @@ utils::owner_ptr<layered_region> frame::remove_region(
     return pRemovedRegion;
 }
 
-utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
+utils::observer_ptr<layered_region> frame::create_layered_region(layer mLayer,
     region_core_attributes mAttr)
 {
     mAttr.bVirtual = is_virtual();
@@ -1865,25 +1861,5 @@ void frame::update(float fDelta)
     DEBUG_LOG("   .");
 }
 
-layer_type layer::get_layer_type(const std::string& sLayer)
-{
-    if (sLayer == "ARTWORK")
-        return layer_type::ARTWORK;
-    else if (sLayer == "BACKGROUND")
-        return layer_type::BACKGROUND;
-    else if (sLayer == "BORDER")
-        return layer_type::BORDER;
-    else if (sLayer == "HIGHLIGHT")
-        return layer_type::HIGHLIGHT;
-    else if (sLayer == "OVERLAY")
-        return layer_type::OVERLAY;
-    else
-    {
-        gui::out << gui::warning << "layer : Unknown layer type : \""
-            << sLayer << "\". Using \"ARTWORK\"." << std::endl;
-
-        return layer_type::ARTWORK;
-    }
-}
 }
 }

@@ -44,12 +44,12 @@ void layered_region::register_on_lua(sol::state& mLua)
     {
         switch (mSelf.get_draw_layer())
         {
-            case layer_type::BACKGROUND :  return std::string("BACKGROUND");
-            case layer_type::BORDER :      return std::string("BORDER");
-            case layer_type::ARTWORK :     return std::string("ARTWORK");
-            case layer_type::OVERLAY :     return std::string("OVERLAY");
-            case layer_type::HIGHLIGHT :   return std::string("HIGHLIGHT");
-            case layer_type::SPECIALHIGH : return std::string("SPECIALHIGH");
+            case layer::BACKGROUND :  return std::string("BACKGROUND");
+            case layer::BORDER :      return std::string("BORDER");
+            case layer::ARTWORK :     return std::string("ARTWORK");
+            case layer::OVERLAY :     return std::string("OVERLAY");
+            case layer::HIGHLIGHT :   return std::string("HIGHLIGHT");
+            case layer::SPECIALHIGH : return std::string("SPECIALHIGH");
             default:                       throw sol::error("unreachable");
         }
     });

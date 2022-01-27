@@ -84,7 +84,7 @@ namespace gui
         /// Sets the draw layer of this status_bar's bar texture.
         /** \param mBarLayer The layer
         */
-        void set_bar_draw_layer(layer_type mBarLayer);
+        void set_bar_draw_layer(layer mBarLayer);
 
         /// Sets the draw layer of this status_bar's bar texture.
         /** \param sBarLayer The layer
@@ -138,7 +138,7 @@ namespace gui
         /// Returns the draw layer of status_bar's bar texture.
         /** \return The draw layer of status_bar's bar texture
         */
-        layer_type get_bar_draw_layer() const;
+        layer get_bar_draw_layer() const;
 
         /// Returns this status_bar's bar texture.
         /** \return This status_bar's bar texture
@@ -199,7 +199,7 @@ namespace gui
         float fMaxValue_ = 1.0f;
 
         color      mBarColor_ = color::WHITE;
-        layer_type mBarLayer_ = layer_type::ARTWORK;
+        layer mBarLayer_ = layer::ARTWORK;
         utils::observer_ptr<texture> pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };

@@ -352,7 +352,7 @@ utils::observer_ptr<layered_region> frame::parse_region_(const layout_node& mNod
         if (!sType.empty())
             mAttr.sObjectType = sType;
 
-        auto pRegion = create_region(parse_layer_type(sLayer), mAttr);
+        auto pRegion = create_layered_region(parse_layer_type(sLayer), mAttr);
         if (!pRegion)
             return nullptr;
 

@@ -489,7 +489,7 @@ int main(int argc, char* argv[])
 
         // Create the FontString
         utils::observer_ptr<gui::font_string> pFont;
-        pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
+        pFont = pFrame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
         pFont->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f(0, -5)));
         pFont->set_font("interface/fonts/main.ttf", 15);
         pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);

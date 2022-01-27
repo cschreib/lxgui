@@ -29,14 +29,10 @@ namespace gui
     class frame;
 
     /// Contains gui::layered_region
-    struct layer
+    struct layer_container
     {
-        layer();
-
-        bool bDisabled;
+        bool bDisabled = false;
         std::vector<utils::observer_ptr<layered_region>> lRegionList;
-
-        static layer_type get_layer_type(const std::string& sLayer);
     };
 
     /// Holds file/line information for a script.
@@ -327,12 +323,12 @@ namespace gui
         /// Disables a layer.
         /** \param mLayerID The id of the layer to disable
         */
-        void disable_draw_layer(layer_type mLayerID);
+        void disable_draw_layer(layer mLayerID);
 
         /// Enables a layer.
         /** \param mLayerID The id of the layer to enable
         */
-        void enable_draw_layer(layer_type mLayerID);
+        void enable_draw_layer(layer mLayerID);
 
         /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
@@ -404,7 +400,7 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        utils::observer_ptr<layered_region> create_region(layer_type mLayer,
+        utils::observer_ptr<layered_region> create_layered_region(layer mLayer,
             region_core_attributes mAttr);
 
         /// Creates a new region as child of this frame.
@@ -418,12 +414,13 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer,
+        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
             region_core_attributes mAttr)
         {
             mAttr.sObjectType = region_type::CLASS_NAME;
 
-            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+            return utils::static_pointer_cast<region_type>(
+                create_layered_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new region as child of this frame.
@@ -437,13 +434,15 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName)
+        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
+            const std::string& sName)
         {
             region_core_attributes mAttr;
             mAttr.sName = sName;
             mAttr.sObjectType = region_type::CLASS_NAME;
 
-            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+            return utils::static_pointer_cast<region_type>(
+                create_layered_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new frame as child of this frame.
@@ -1279,9 +1278,9 @@ namespace gui
         child_list  lChildList_;
         region_list lRegionList_;
 
-        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer_type::ENUM_SIZE);
+        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::ENUM_SIZE);
 
-        std::array<layer,num_layers> lLayerList_;
+        std::array<layer_container,num_layers> lLayerList_;
 
         std::unordered_map<std::string, script_signal> lSignalList_;
         event_receiver                                 mEventReceiver_;
