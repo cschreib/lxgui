@@ -328,10 +328,9 @@ void edit_box::highlight_text(std::size_t uiStart, std::size_t uiEnd, bool bForc
                         fRightPos += pText->get_letter_quad(uiRight)[2].pos.x;
                 }
 
-                pHighlight_->set_point(anchor_data(
-                    anchor_point::LEFT,  sName_, vector2f(fLeftPos,  0)));
-                pHighlight_->set_point(anchor_data(
-                    anchor_point::RIGHT, sName_, anchor_point::LEFT, vector2f(fRightPos, 0)));
+                pHighlight_->set_point(anchor_point::LEFT,  sName_, vector2f(fLeftPos,  0));
+                pHighlight_->set_point(anchor_point::RIGHT, sName_,
+                    anchor_point::LEFT, vector2f(fRightPos, 0));
 
                 pHighlight_->show();
             }
@@ -621,8 +620,8 @@ void edit_box::set_text_insets(const bounds2f& lInsets)
     if (pFontString_)
     {
         pFontString_->clear_all_points();
-        pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
-        pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
+        pFontString_->set_point(anchor_point::TOPLEFT, lTextInsets_.top_left());
+        pFontString_->set_point(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right());
 
         update_displayed_text_();
         update_font_string_();
@@ -683,8 +682,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
     pFontString_->set_dimensions(vector2f(0, 0));
     pFontString_->clear_all_points();
 
-    pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
-    pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
+    pFontString_->set_point(anchor_point::TOPLEFT, lTextInsets_.top_left());
+    pFontString_->set_point(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right());
 
     pFontString_->enable_formatting(false);
 
@@ -725,8 +724,8 @@ void edit_box::create_highlight_()
 
     pHighlight->set_special();
 
-    pHighlight->set_point(anchor_data(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top)));
-    pHighlight->set_point(anchor_data(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom)));
+    pHighlight->set_point(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top));
+    pHighlight->set_point(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom));
 
     pHighlight->set_solid_color(mHighlightColor_);
 
@@ -747,8 +746,8 @@ void edit_box::create_carret_()
 
         pCarret->set_special();
 
-        pCarret->set_point(anchor_data(
-            anchor_point::CENTER, anchor_point::LEFT, vector2f(lTextInsets_.left - 1, 0)));
+        pCarret->set_point(anchor_point::CENTER, anchor_point::LEFT,
+            vector2f(lTextInsets_.left - 1.0f, 0.0f));
 
         pCarret->notify_loaded();
         pCarret_ = pCarret;
@@ -861,7 +860,7 @@ void edit_box::update_carret_position_()
             default : mPoint = anchor_point::LEFT; break;
         }
 
-        pCarret_->set_point(anchor_data(anchor_point::CENTER, mPoint, vector2f(fOffset, 0)));
+        pCarret_->set_point(anchor_point::CENTER, mPoint, vector2f(fOffset, 0.0f));
     }
     else
     {
@@ -943,8 +942,7 @@ void edit_box::update_carret_position_()
                 fXOffset += pText->get_letter_quad(uiIndex)[2].pos.x;
         }
 
-        pCarret_->set_point(anchor_data(
-            anchor_point::CENTER, anchor_point::LEFT, vector2f(fXOffset, fYOffset)));
+        pCarret_->set_point(anchor_point::CENTER, anchor_point::LEFT, vector2f(fXOffset, fYOffset));
     }
 
     mCarretTimer_.zero();

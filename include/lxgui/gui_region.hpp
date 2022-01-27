@@ -439,6 +439,12 @@ namespace gui
         */
         void set_point(const anchor_data& mAnchor);
 
+        /// Adds/replaces an anchor.
+        /** \param mArgs Argument to construct a new anchor_data
+        */
+        template<typename ... Args>
+        void set_point(Args&& ... mArgs) { set_point(std::forward<Args>(mArgs)...); }
+
         /// Checks if this region depends on another.
         /** \param mObj The region to test
         *   \note Usefull to detect circular refences.

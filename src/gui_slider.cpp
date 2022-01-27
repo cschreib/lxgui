@@ -292,10 +292,10 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture)
 
     pThumbTexture_->set_draw_layer(mThumbLayer_);
     pThumbTexture_->clear_all_points();
-    pThumbTexture_->set_point(anchor_data(
+    pThumbTexture_->set_point(
         anchor_point::CENTER, pThumbTexture_->get_parent().get() == this ? "$parent" : sName_,
         mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
-    ));
+    );
 
     notify_thumb_texture_needs_update_();
 }
@@ -307,10 +307,10 @@ void slider::set_orientation(orientation mOrientation)
         mOrientation_ = mOrientation;
         if (pThumbTexture_)
         {
-            pThumbTexture_->set_point(anchor_data(
+            pThumbTexture_->set_point(
                 anchor_point::CENTER, sName_,
                 mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
-            ));
+            );
         }
 
         notify_thumb_texture_needs_update_();

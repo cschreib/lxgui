@@ -320,7 +320,7 @@ void root::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
             const bounds2f lBorders = pMovedObject_->get_borders();
 
             pMovedObject_->clear_all_points();
-            pMovedObject_->set_point(anchor_data(anchor_point::TOPLEFT, "", lBorders.top_left()));
+            pMovedObject_->set_point(anchor_point::TOPLEFT, "", lBorders.top_left());
 
             pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
@@ -392,7 +392,7 @@ void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
         }
 
         pSizedObject_->clear_all_points();
-        pSizedObject_->set_point(anchor_data(mOppositePoint, "", anchor_point::TOPLEFT, mOffset));
+        pSizedObject_->set_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
 
         mResizeStart_ = pSizedObject_->get_apparent_dimensions();
 

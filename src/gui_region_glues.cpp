@@ -342,8 +342,9 @@ void region::register_on_lua(sol::state& mLua)
         float fAbsX = fXOffset.value_or(0.0f);
         float fAbsY = fYOffset.value_or(0.0f);
 
-        mSelf.set_point(anchor_data(
-            mPoint, pParent ? pParent->get_name() : "", mParentPoint, vector2f(fAbsX, fAbsY)));
+        mSelf.set_point(
+            mPoint, pParent ? pParent->get_name() : "", mParentPoint,
+            vector2f(fAbsX, fAbsY));
     });
 
     /** @function set_rel_point
@@ -380,9 +381,9 @@ void region::register_on_lua(sol::state& mLua)
         float fRelX = fXOffset.value_or(0.0f);
         float fRelY = fYOffset.value_or(0.0f);
 
-        mSelf.set_point(anchor_data(
+        mSelf.set_point(
             mPoint, pParent ? pParent->get_name() : "", mParentPoint,
-            vector2f(fRelX, fRelY), anchor_type::REL));
+            vector2f(fRelX, fRelY), anchor_type::REL);
     });
 
     /** @function set_width

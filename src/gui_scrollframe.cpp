@@ -122,7 +122,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
             pScrollChild_->set_renderer(observer_from(this));
 
         pScrollChild_->clear_all_points();
-        pScrollChild_->set_point(anchor_data(anchor_point::TOPLEFT, get_name(), -mScroll_));
+        pScrollChild_->set_point(anchor_point::TOPLEFT, get_name(), -mScroll_);
 
         update_scroll_range_();
         bUpdateScrollRange_ = false;
