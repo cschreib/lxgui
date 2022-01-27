@@ -7,6 +7,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sol/state.hpp>
@@ -63,10 +65,13 @@
 *   enabling. In particular:
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-*   @{Frame:enable_keyboard}.
-*   - Events related to mouse input (`OnDragStart`, `OnDragStop`,`OnEnter`,
-*   `OnLeave`, `OnMouseUp`, `OnMouseDown`, `OnMouseWheel`, `OnReceiveDrag`)
-*   require @{Frame:enable_mouse}.
+*   focus, see @{Frame:set_focus}, or @{Frame:enable_key_capture}.
+*   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
+*   `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
+*   - Events related to mouse move input (`OnEnter`, `OnLeave`)
+*   require @{Frame:enable_mouse_move}.
+*   - Events related to mouse wheel input (`OnMouseWheel`) require
+*   @{Frame:enable_mouse_wheel}.
 *
 *   To use the second type of events (generic events), you have to register
 *   a callback for `OnEvent` _and_ register the frame for each generic event
@@ -83,10 +88,16 @@
 *
 *   Hard-coded events available to all @{Frame}s:
 *
+*   - `OnChar`: Triggered whenever a character is typed into the frame, and
+*   the frame has focus (see @{Frame:set_focus}).
 *   - `OnDragStart`: Triggered when one of the mouse button registered for
 *   dragging (see @{Frame:register_for_drag}) has been pressed inside the
 *   area of the screen occupied by the frame, and a mouse movement is first
 *   recorded.
+*   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
+*   until `OnDragStop` is triggered.
+*   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
+*   released.
 *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
 *   the screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
@@ -97,23 +108,41 @@
 *   been fired, the registered callback function is always provided with a
 *   first argument that is set to a string matching the event name. Further
 *   arguments can be passed to the callback and are handled as for other events.
+*   - `OnFocusGained`: Triggered when the frame gains focus, see
+*   @{Frame:set_focus}.
+*   - `OnFocusLost`: Triggered when the frame looses focus, see
+*   @{Frame:set_focus}.
 *   - `OnHide`: Triggered when @{UIObject:hide} is called, or when the frame
 *   is hidden indirectly (for example if its parent is itself hidden). This
 *   will only fire if the frame was previously shown.
-*   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will not
-*   trigger if the frame is hidden. This event provides two arguments to
-*   the registered callback: a number identifying the key, and the
-*   human-readable name of the key.
-*   - `OnKeyUp`: Triggered when any keyboard key is released. Will not
-*   trigger if the frame is hidden. This event provides two arguments to
-*   the registered callback: a number identifying the key, and the
-*   human-readable name of the key.
+*   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+*   trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+*   been registered for capture using @{Frame:enable_key_capture}. If no
+*   frame is focussed, only the topmost frame with
+*   @{Frame:enable_key_capture} will receive the event. If no frame has
+*   captured the key, then the key is tested for existing key bindings (see
+*   @{Manager:set_key_binding}). This event provides two arguments to the registered
+*   callback: a number identifying the key, and the human-readable name of the
+*   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+*   the @{Manager:set_key_binding}.
+*   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
+*   trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+*   been registered for capture using @{Frame:enable_key_capture}. If no
+*   frame is focussed, only the topmost frame with
+*   @{Frame:enable_key_capture} will receive the event. If no frame has
+*   captured the key, then the key is tested for existing key bindings (see
+*   @{Manager:set_key_binding}). This event provides two arguments to the registered
+*   callback: a number identifying the key, and the human-readable name of the
+*   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+*   the @{Manager:set_key_binding}.
 *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
 *   screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
 *   occupied by its children or layered regions. Will not trigger if the
 *   frame is hidden, unless the frame was just hidden with the mouse
-*   previously inside the frame.
+*   previously inside the frame. Finally, this _will_ trigger whenever
+*   the mouse enters another mouse-enabled frame with a higher level/strata,
+*   even if the mouse is still technically within this frame's region.
 *   - `OnLoad`: Triggered just after the frame is created. This is where
 *   you would normally register for events and specific inputs, set up
 *   initial states for extra logic, or do localization. When this event is
@@ -124,15 +153,18 @@
 *   'addons.txt' file. In all other cases, frames or regions will not yet
 *   be loaded when `OnLoad` is called, hence they cannot be refered to
 *   (directly or indirectly).
-*   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
+*   - `OnMouseDown`: Triggered when any mouse button is pressedand this frame is
+*   the topmost mouse-click-enabled frame under the mouse pointer. Will not
 *   trigger if the frame is hidden. This event provides one argument to
 *   the registered callback: a string identifying the mouse button
 *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-*   - `OnMouseUp`: Triggered when any mouse button is released. Will not
+*   - `OnMouseUp`: Triggered when any mouse button is releasedand this frame is
+*   the topmost mouse-click-enabled frame under the mouse pointer. Will not
 *   trigger if the frame is hidden. This event provides one argument to
 *   the registered callback: a string identifying the mouse button
 *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-*   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
+*   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
+*   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
 *   provides one argument to the registered callback: a number indicating by
 *   how many "notches" the wheel has turned in this event. A positive value
 *   means the wheel has been moved "away" from the user (this would normally
@@ -186,7 +218,7 @@
 *
 *   Inherits all methods from: @{UIObject}.
 *
-*   Child classes: @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox},
+*   Child classes: @{Button}, @{CheckButton}, @{EditBox},
 *   @{ScrollFrame}, @{Slider}, @{StatusBar}.
 *   @classmod Frame
 */
@@ -212,6 +244,13 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.add_script(sName, std::move(mFunc));
     });
 
+    /** @function clear_focus
+    */
+    mClass.set_function("clear_focus", [](frame& mSelf)
+    {
+        mSelf.set_focus(false);
+    });
+
     /** @function create_font_string
     */
     mClass.set_function("create_font_string", [](frame& mSelf, const std::string& sName,
@@ -221,10 +260,12 @@ void frame::register_on_lua(sol::state& mLua)
         if (sLayer.has_value())
             mLayer = layer::get_layer_type(sLayer.value());
 
-        return mSelf.create_region<font_string>(
-            mLayer, sName,
-            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
-        );
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
+            sInheritance.value_or(""));
+
+        return mSelf.create_region<font_string>(mLayer, std::move(mAttr));
     });
 
     /** @function create_texture
@@ -236,10 +277,12 @@ void frame::register_on_lua(sol::state& mLua)
         if (sLayer.has_value())
             mLayer = layer::get_layer_type(sLayer.value());
 
-        return mSelf.create_region<texture>(
-            mLayer, sName,
-            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
-        );
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
+            sInheritance.value_or(""));
+
+        return mSelf.create_region<texture>(mLayer, std::move(mAttr));
     });
 
     /** @function create_title_region
@@ -260,21 +303,25 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.enable_draw_layer(layer::get_layer_type(sLayer));
     });
 
-    /** @function enable_keyboard
-    */
-    mClass.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
-
     /** @function enable_mouse
     */
-    mClass.set_function("enable_mouse", [](frame& mSelf, bool bEnable,
-        sol::optional<bool> bWorldAllowed)
-    {
-        mSelf.enable_mouse(bEnable, bWorldAllowed.value_or(false));
-    });
+    mClass.set_function("enable_mouse", member_function<&frame::enable_mouse>());
+
+    /** @function enable_mouse_click
+    */
+    mClass.set_function("enable_mouse_click", member_function<&frame::enable_mouse_click>());
+
+    /** @function enable_mouse_move
+    */
+    mClass.set_function("enable_mouse_move", member_function<&frame::enable_mouse_move>());
 
     /** @function enable_mouse_wheel
     */
     mClass.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
+
+    /** @function enable_key_capture
+    */
+    mClass.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
 
     /** @function get_backdrop
     */
@@ -441,6 +488,10 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("has_script", member_function<&frame::has_script>());
 
+    /** @function is_auto_focus
+    */
+    mClass.set_function("is_auto_focus", member_function<&frame::is_auto_focus_enabled>());
+
     /** @function is_clamped_to_screen
     */
     mClass.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
@@ -452,17 +503,21 @@ void frame::register_on_lua(sol::state& mLua)
         return mSelf.get_frame_type() == sType;
     });
 
-    /** @function is_keyboard_enabled
+    /** @function is_mouse_click_enabled
     */
-    mClass.set_function("is_keyboard_enabled", member_function<&frame::is_keyboard_enabled>());
+    mClass.set_function("is_mouse_click_enabled", member_function<&frame::is_mouse_click_enabled>());
 
-    /** @function is_mouse_enabled
+    /** @function is_mouse_move_enabled
     */
-    mClass.set_function("is_mouse_enabled", member_function<&frame::is_mouse_enabled>());
+    mClass.set_function("is_mouse_move_enabled", member_function<&frame::is_mouse_move_enabled>());
 
     /** @function is_mouse_wheel_enabled
     */
     mClass.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
+
+    /** @function is_key_capture_enabled
+    */
+    mClass.set_function("is_key_capture_enabled", member_function<&frame::is_key_capture_enabled>());
 
     /** @function is_movable
     */
@@ -484,10 +539,6 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("raise", member_function<&frame::raise>());
 
-    /** @function register_all_events
-    */
-    mClass.set_function("register_all_events", member_function<&frame::register_all_events>());
-
     /** @function register_event
     */
     mClass.set_function("register_event", member_function<&frame::register_event>());
@@ -508,6 +559,10 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.register_for_drag(lButtonList);
     });
 
+    /** @function set_auto_focus
+    */
+    mClass.set_function("set_auto_focus", member_function<&frame::enable_auto_focus>());
+
     /** @function set_backdrop
     */
     mClass.set_function("set_backdrop", [](frame& mSelf, sol::optional<sol::table> mTableOpt)
@@ -521,10 +576,9 @@ void frame::register_on_lua(sol::state& mLua)
         std::unique_ptr<backdrop> pBackdrop(new backdrop(mSelf));
 
         sol::table& mTable = mTableOpt.value();
-        manager& mManager = mSelf.get_manager();
 
-        pBackdrop->set_background(mManager.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
-        pBackdrop->set_edge(mManager.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
+        pBackdrop->set_background(mSelf.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
+        pBackdrop->set_edge(mSelf.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
         pBackdrop->set_background_tilling(mTable["tile"].get_or(false));
 
         float fTileSize = mTable["tileSize"].get_or<float>(0.0);
@@ -575,6 +629,13 @@ void frame::register_on_lua(sol::state& mLua)
     /** @function set_clamped_to_screen
     */
     mClass.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
+
+    /** @function set_focus
+    */
+    mClass.set_function("set_focus", [](frame& mSelf)
+    {
+        mSelf.set_focus(true);
+    });
 
     /** @function set_frame_level
     */
@@ -680,10 +741,6 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.stop_moving();
         mSelf.stop_sizing();
     });
-
-    /** @function unregister_all_events
-    */
-    mClass.set_function("unregister_all_events", member_function<&frame::unregister_all_events>());
 
     /** @function unregister_event
     */

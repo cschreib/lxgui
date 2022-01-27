@@ -9,7 +9,6 @@ file = {
     '../src/gui_frame_glues.cpp',
     '../src/gui_button_glues.cpp',
     '../src/gui_checkbutton_glues.cpp',
-    '../src/gui_focusframe_glues.cpp',
     '../src/gui_editbox_glues.cpp',
     '../src/gui_scrollframe_glues.cpp',
     '../src/gui_slider_glues.cpp',

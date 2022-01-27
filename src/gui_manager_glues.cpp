@@ -2,10 +2,15 @@
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
-#include "lxgui/input.hpp"
+#include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
+#include "lxgui/gui_addon_registry.hpp"
+#include "lxgui/gui_keybinder.hpp"
+#include "lxgui/input_keys.hpp"
 
 #include <sol/state.hpp>
 
@@ -23,27 +28,20 @@ namespace lxgui {
 namespace gui
 {
 
-void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
+void manager::register_lua_glues(std::function<void(gui::manager&)> pLuaRegs)
+{
+    pLuaRegs_ = std::move(pLuaRegs);
+}
+
+void manager::create_lua_()
 {
     if (pLua_) return;
-
-    // TODO: find a better place to put this
-    register_event("KEY_PRESSED");
-    register_event("MOUSE_MOVED");
-    register_event("WINDOW_RESIZED");
 
     pLua_ = std::unique_ptr<sol::state>(new sol::state());
     pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
         sol::lib::os, sol::lib::string, sol::lib::debug);
 
-    pLuaRegs_ = std::move(pLuaRegs);
-
     auto& mLua = *pLua_;
-
-    uiobject::register_on_lua(mLua);
-    frame::register_on_lua(mLua);
-    focus_frame::register_on_lua(mLua);
-    layered_region::register_on_lua(mLua);
 
     /** @function log
     */
@@ -57,19 +55,24 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     mLua.set_function("create_frame", [&](const std::string& sType, const std::string& sName,
         sol::optional<frame&> pParent, sol::optional<std::string> sInheritance) -> sol::object
     {
-        std::vector<utils::observer_ptr<const uiobject>> lInheritance;
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.sObjectType = sType;
         if (sInheritance.has_value())
-            lInheritance = get_virtual_uiobject_list(sInheritance.value());
+        {
+            mAttr.lInheritance = get_virtual_root().get_registry().get_virtual_uiobject_list(
+                sInheritance.value());
+        }
 
         utils::observer_ptr<frame> pNewFrame;
         if (pParent.has_value())
-            pNewFrame = pParent.value().create_child(sType, sName, lInheritance);
+            pNewFrame = pParent.value().create_child(std::move(mAttr));
         else
-            pNewFrame = create_root_frame(sType, sName, lInheritance);
+            pNewFrame = pRoot_->create_root_frame(std::move(mAttr));
 
         if (pNewFrame)
         {
-            pNewFrame->set_addon(get_current_addon());
+            pNewFrame->set_addon(get_addon_registry()->get_current_addon());
             pNewFrame->notify_loaded();
             return get_lua()[pNewFrame->get_lua_name()];
         }
@@ -84,37 +87,23 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         mFrame.destroy();
     });
 
+    /** @function register_key_binding
+    */
+    mLua.set_function("register_key_binding",
+    [&](std::string sID, sol::protected_function mFunction)
+    {
+        get_root().get_keybinder().register_key_binding(sID, mFunction);
+    });
+
     /** @function set_key_binding
     */
-    mLua.set_function("set_key_binding", sol::overload(
-    [&](std::size_t uiKey, sol::optional<std::string> sCode)
+    mLua.set_function("set_key_binding", [&](std::string sID, sol::optional<std::string> sKey)
     {
-        auto mKey = static_cast<input::key>(uiKey);
-        if (sCode.has_value())
-            set_key_binding(mKey, sCode.value());
+        if (sKey.has_value())
+            get_root().get_keybinder().set_key_binding(sID, sKey.value());
         else
-            remove_key_binding(mKey);
-    },
-    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<std::string> sCode)
-    {
-        auto mKey = static_cast<input::key>(uiKey);
-        auto mModifier = static_cast<input::key>(uiModifier);
-        if (sCode.has_value())
-            set_key_binding(mKey, mModifier, sCode.value());
-        else
-            remove_key_binding(mKey, mModifier);
-    },
-    [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
-        sol::optional<std::string> sCode)
-    {
-        auto mKey = static_cast<input::key>(uiKey);
-        auto mModifier1 = static_cast<input::key>(uiModifier1);
-        auto mModifier2 = static_cast<input::key>(uiModifier2);
-        if (sCode.has_value())
-            set_key_binding(mKey, mModifier1, mModifier2, sCode.value());
-        else
-            remove_key_binding(mKey, mModifier1, mModifier2);
-    }));
+            get_root().get_keybinder().remove_key_binding(sID);
+    });
 
     /** Closes the whole GUI and re-loads addons from files.
     * For safety reasons, the re-loading operation will not be triggered instantaneously.
@@ -144,53 +133,18 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         return get_interface_scaling_factor();
     });
 
-    pLocalizer_->register_on_lua(*pLua_);
+    pLocalizer_->register_on_lua(mLua);
+
+    // Base types
+    pFactory_->register_uiobject_type<frame>();
+    pFactory_->register_uiobject_type<region>();
+    pFactory_->register_uiobject_type<layered_region>();
+
+    // Abstract types
+    uiobject::register_on_lua(mLua);
 
     if (pLuaRegs_)
         pLuaRegs_(*this);
-}
-
-std::string serialize(const std::string& sTab, const sol::object& mValue)
-{
-    if (mValue.is<double>())
-    {
-        return utils::to_string(mValue.as<double>());
-    }
-    else if (mValue.is<int>())
-    {
-        return utils::to_string(mValue.as<int>());
-    }
-    else if (mValue.is<std::string>())
-    {
-        return "\"" + utils::to_string(mValue.as<std::string>()) + "\"";
-    }
-    else if (mValue.is<sol::table>())
-    {
-        std::string sResult;
-        sResult += "{";
-
-        std::string sContent;
-        sol::table mTable = mValue.as<sol::table>();
-        for (const auto& mKeyValue : mTable)
-        {
-            sContent += sTab + "    [" + serialize("", mKeyValue.first) + "] = "
-                + serialize(sTab + "    ", mKeyValue.second) + ",\n";
-        }
-
-        if (!sContent.empty())
-            sResult += "\n" + sContent + sTab;
-
-        sResult += "}";
-        return sResult;
-    }
-
-    return "nil";
-}
-
-std::string manager::serialize_global_(const std::string& sVariable) const
-{
-    sol::object mValue = pLua_->globals()[sVariable];
-    return serialize("", mValue);
 }
 
 }

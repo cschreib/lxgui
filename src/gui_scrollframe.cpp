@@ -11,7 +11,8 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager& mManager) : frame(mManager)
+scroll_frame::scroll_frame(utils::control_block& mBlock, manager& mManager) :
+    frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -39,10 +40,13 @@ bool scroll_frame::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void scroll_frame::on_script(const std::string& sScriptName, const event_data& mData)
+void scroll_frame::fire_script(const std::string& sScriptName, const event_data& mData)
 {
+    if (!is_loaded())
+        return;
+
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+    base::fire_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -52,7 +56,7 @@ void scroll_frame::on_script(const std::string& sScriptName, const event_data& m
 
 void scroll_frame::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const scroll_frame* pScrollFrame = down_cast<scroll_frame>(&mObj);
     if (!pScrollFrame)
@@ -63,8 +67,12 @@ void scroll_frame::copy_from(const uiobject& mObj)
 
     if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
     {
-        utils::observer_ptr<frame> pScrollChild = create_child(pOtherChild->get_object_type(),
-                pOtherChild->get_raw_name(), {pScrollFrame->get_scroll_child()});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pOtherChild->get_object_type();
+        mAttr.sName = pOtherChild->get_raw_name();
+        mAttr.lInheritance = {pScrollFrame->get_scroll_child()};
+
+        utils::observer_ptr<frame> pScrollChild = create_child(std::move(mAttr));
 
         if (pScrollChild)
         {
@@ -80,10 +88,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     if (pScrollChild_)
     {
         pScrollChild_->set_renderer(nullptr);
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = vector2f(
-            lBorderList_.top_left() - vector2f(fHorizontalScroll_, fVerticalScroll_)
-        );
-
         clear_strata_list_();
     }
     else if (!is_virtual() && !pScrollTexture_)
@@ -116,9 +120,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
             pScrollChild_->set_renderer(observer_from(this));
 
         pScrollChild_->clear_all_points();
-
-        pScrollChild_->set_point(anchor_data(
-            anchor_point::TOPLEFT, "", vector2f(-fHorizontalScroll_, -fVerticalScroll_)));
+        pScrollChild_->set_point(anchor_data(anchor_point::TOPLEFT, get_name(), -mScroll_));
 
         update_scroll_range_();
         bUpdateScrollRange_ = false;
@@ -129,48 +131,50 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
 
 void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
 {
-    if (fHorizontalScroll_ != fHorizontalScroll)
+    if (mScroll_.x != fHorizontalScroll)
     {
-        fHorizontalScroll_ = fHorizontalScroll;
+        mScroll_.x = fHorizontalScroll;
         lQueuedEventList_.push_back("OnHorizontalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
-            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
+        pScrollChild_->notify_borders_need_update();
+
         bRedrawScrollRenderTarget_ = true;
     }
 }
 
 float scroll_frame::get_horizontal_scroll() const
 {
-    return fHorizontalScroll_;
+    return mScroll_.x;
 }
 
 float scroll_frame::get_horizontal_scroll_range() const
 {
-    return fHorizontalScrollRange_;
+    return mScrollRange_.x;
 }
 
 void scroll_frame::set_vertical_scroll(float fVerticalScroll)
 {
-    if (fVerticalScroll_ != fVerticalScroll)
+    if (mScroll_.y != fVerticalScroll)
     {
-        fVerticalScroll_ = fVerticalScroll;
+        mScroll_.y = fVerticalScroll;
         lQueuedEventList_.push_back("OnVerticalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
-            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
+        pScrollChild_->notify_borders_need_update();
+
         bRedrawScrollRenderTarget_ = true;
     }
 }
 
 float scroll_frame::get_vertical_scroll() const
 {
-    return fVerticalScroll_;
+    return mScroll_.y;
 }
 
 float scroll_frame::get_vertical_scroll_range() const
 {
-    return fVerticalScrollRange_;
+    return mScrollRange_.y;
 }
 
 void scroll_frame::update(float fDelta)
@@ -180,7 +184,7 @@ void scroll_frame::update(float fDelta)
         mOldChildSize = pScrollChild_->get_apparent_dimensions();
 
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
 
@@ -205,9 +209,6 @@ void scroll_frame::update(float fDelta)
             bUpdateScrollRange_ = false;
         }
 
-        if (pScrollChild_)
-            update_scroll_child_input_();
-
         if (pScrollChild_ && pScrollRenderTarget_ && bRedrawScrollRenderTarget_)
         {
             render_scroll_strata_list_();
@@ -221,51 +222,23 @@ void scroll_frame::update_scroll_range_()
     const vector2f mApparentSize = get_apparent_dimensions();
     const vector2f mChildApparentSize = pScrollChild_->get_apparent_dimensions();
 
-    fHorizontalScrollRange_ = mChildApparentSize.x - mApparentSize.x;
-    fVerticalScrollRange_ = mChildApparentSize.y - mApparentSize.y;
+    mScrollRange_ = mChildApparentSize - mApparentSize;
 
-    if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
-    if (fVerticalScrollRange_ < 0) fVerticalScrollRange_ = 0;
+    if (mScrollRange_.x < 0) mScrollRange_.x = 0;
+    if (mScrollRange_.y < 0) mScrollRange_.y = 0;
 
     if (!is_virtual())
     {
         alive_checker mChecker(*this);
-        on_script("OnScrollRangeChanged");
+        fire_script("OnScrollRangeChanged");
         if (!mChecker.is_alive())
             return;
     }
 }
 
-void scroll_frame::update_scroll_child_input_()
-{
-    const vector2f mOffset = mMousePos_ - lBorderList_.top_left();
-
-    update_mouse_in_frame_();
-    if (bMouseInScrollTexture_)
-    {
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(mOffset);
-
-        if (pHoveredFrame != pHoveredScrollChild_)
-        {
-            if (pHoveredScrollChild_)
-                pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
-
-            pHoveredScrollChild_ = pHoveredFrame;
-        }
-
-        if (pHoveredScrollChild_)
-            pHoveredScrollChild_->notify_mouse_in_frame(true, mOffset);
-    }
-    else if (pHoveredScrollChild_)
-    {
-        pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
-        pHoveredScrollChild_ = nullptr;
-    }
-}
-
 void scroll_frame::notify_scaling_factor_updated()
 {
-    frame::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     bRebuildScrollRenderTarget_ = true;
 }
@@ -299,7 +272,15 @@ void scroll_frame::rebuild_scroll_render_target_()
 
 void scroll_frame::render_scroll_strata_list_()
 {
-    get_manager().begin(pScrollRenderTarget_);
+    renderer& mRenderer = get_manager().get_renderer();
+
+    mRenderer.begin(pScrollRenderTarget_);
+
+    vector2f mView = vector2f(pScrollRenderTarget_->get_canvas_dimensions())/
+        get_manager().get_interface_scaling_factor();
+
+    mRenderer.set_view(matrix4f::translation(-get_borders().top_left()) * matrix4f::view(mView));
+
     pScrollRenderTarget_->clear(color::EMPTY);
 
     for (const auto& mStrata : lStrataList_)
@@ -307,24 +288,24 @@ void scroll_frame::render_scroll_strata_list_()
         render_strata_(mStrata);
     }
 
-    get_manager().end();
+    mRenderer.end();
 }
 
-bool scroll_frame::is_in_frame(const vector2f& mPosition) const
+utils::observer_ptr<const frame> scroll_frame::find_topmost_frame(
+    const std::function<bool(const frame&)>& mPredicate) const
 {
-    if (pScrollTexture_)
-        return frame::is_in_frame(mPosition) || pScrollTexture_->is_in_region(mPosition);
-    else
-        return frame::is_in_frame(mPosition);
+    if (base::find_topmost_frame(mPredicate))
+    {
+        if (auto pHoveredFrame = frame_renderer::find_topmost_frame(mPredicate))
+            return pHoveredFrame;
+
+        return observer_from(this);
+    }
+
+    return nullptr;
 }
 
-void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
-{
-    frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);
-    bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(mMousePos));
-}
-
-void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata) const
+void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata)
 {
     frame_renderer::notify_strata_needs_redraw(mStrata);
 
@@ -344,30 +325,12 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFram
 
     frame_renderer::notify_rendered_frame(pFrame, bRendered);
 
-    if (!bRendered)
-    {
-        if (pFrame == pHoveredScrollChild_)
-        {
-            pHoveredScrollChild_->notify_mouse_in_frame(false, vector2f::ZERO);
-            pHoveredScrollChild_ = nullptr;
-        }
-    }
-
     bRedrawScrollRenderTarget_ = true;
 }
 
 vector2f scroll_frame::get_target_dimensions() const
 {
     return get_apparent_dimensions();
-}
-
-void scroll_frame::update_borders_() const
-{
-    bool bPositionUpdated = bUpdateBorders_;
-    frame::update_borders_();
-
-    if (bPositionUpdated && pScrollChild_)
-        pScrollChild_->notify_borders_need_update();
 }
 
 }

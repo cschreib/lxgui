@@ -20,6 +20,8 @@ namespace lxgui {
 namespace gui
 {
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace parser
 {
     enum class color_action
@@ -51,7 +53,7 @@ namespace parser
         float             fWidth = 0.0f;
     };
 
-    std::vector<item> parse_string(const text& mText, const utils::ustring& sCaption,
+    std::vector<item> parse_string(renderer& mRenderer, const utils::ustring_view& sCaption,
         bool bFormattingEnabled)
     {
         std::vector<item> lContent;
@@ -111,7 +113,7 @@ namespace parser
                         if (!lWords.empty())
                         {
                             texture mTexture;
-                            mTexture.pMaterial = mText.get_renderer().create_material(lWords[0]);
+                            mTexture.pMaterial = mRenderer.create_material(std::string{lWords[0]});
                             mTexture.fWidth = mTexture.fHeight =
                                 std::numeric_limits<float>::quiet_NaN();
 
@@ -315,8 +317,10 @@ namespace parser
         return fMaxWidth;
     }
 }
+/** \endcond
+*/
 
-text::text(const renderer& mRenderer, std::shared_ptr<gui::font> pFont,
+text::text(renderer& mRenderer, std::shared_ptr<gui::font> pFont,
     std::shared_ptr<gui::font> pOutlineFont) :
     mRenderer_(mRenderer), pFont_(std::move(pFont)), pOutlineFont_(std::move(pOutlineFont))
 {
@@ -475,7 +479,7 @@ float text::get_string_width(const utils::ustring& sString) const
         return 0.0f;
 
     return parser::get_string_width(*this,
-        parser::parse_string(*this, sString, bFormattingEnabled_));
+        parser::parse_string(mRenderer_, sString, bFormattingEnabled_));
 }
 
 float text::get_character_width(char32_t uiChar) const
@@ -702,14 +706,14 @@ void text::update_() const
 
     if (uiMaxLineNbr != 0)
     {
-        std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
+        auto lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
         for (auto iterManual : utils::range::iterator(lManualLineList))
         {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
             std::vector<parser::item> lParsedContent =
-                parser::parse_string(*this, *iterManual, bFormattingEnabled_);
+                parser::parse_string(mRenderer_, *iterManual, bFormattingEnabled_);
 
             // Make a temporary line array
             std::vector<parser::line> lLines;

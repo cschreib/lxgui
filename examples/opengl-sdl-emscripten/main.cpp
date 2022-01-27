@@ -1,7 +1,8 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 
 #include <emscripten.h>
 
@@ -36,7 +37,7 @@ void main_loop(void* pTypeErasedData)
 try
 {
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
-    input::manager& mInputMgr = mContext.pManager->get_input_manager();
+    input::dispatcher& mInputDispatcher = mContext.pManager->get_input_dispatcher();
 
     // Get events from SDL
     SDL_Event mEvent;
@@ -54,34 +55,10 @@ try
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                 mContext.bFocus = true;
         }
-        else if (mEvent.type == SDL_KEYUP)
-        {
-            // This uses events straight from SDL, but the GUI may want to
-            // capture some of them (for example: the user is typing in an edit_box).
-            // Therefore, before we can react to these events, we must check that
-            // the input isn't being "focussed":
-            if (!mInputMgr.is_keyboard_focused())
-            {
-                switch (mEvent.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
-                        // Escape pressed: stop the program
-                        emscripten_cancel_main_loop();
-                        return;
-                    default:
-                        break;
-                }
-            }
-        }
 
-        // Feed events to the GUI
-        static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
-    }
-
-    // Check if WORLD input is allowed
-    if (mInputMgr.can_receive_input("WORLD"))
-    {
-        // Process mouse and click events in the game...
+        // Feed events to the GUI.
+        // NB: Do not use raw keyboard/mouse events from SDL directly. See below.
+        static_cast<input::sdl::source&>(mInputDispatcher.get_source()).on_sdl_event(mEvent);
     }
 
     // If the window is not focussed, do nothing and wait until focus comes back
@@ -93,7 +70,7 @@ try
 
     // Update the gui
     SDL_GL_MakeCurrent(mContext.pWindow, mContext.pGLContext);
-    mContext.pManager->update(mContext.fDelta);
+    mContext.pManager->update_ui(mContext.fDelta);
 
     // Your own rendering would go here!
     // For this example, we just clear the window
@@ -204,8 +181,6 @@ int main(int argc, char* argv[])
             std::move(pRenderer)
         );
 
-        pManager->enable_caching(false);
-
         // Setup the GUI (see examples_common.cpp)
         examples_setup_gui(*pManager);
 
@@ -215,6 +190,15 @@ int main(int argc, char* argv[])
         mContext.pManager = pManager.get();
         mContext.pWindow = pWindow.get();
         mContext.pGLContext = mGLContext.pContext;
+
+        // Register a callback on Escape to terminate the program.
+        // Doing it this way, we only react to keyboard input that is not captured by the GUI.
+        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+        mWorldInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+        {
+            if (mKey == input::key::K_ESCAPE)
+                emscripten_cancel_main_loop();
+        });
 
         std::cout << "Entering loop..." << std::endl;
 

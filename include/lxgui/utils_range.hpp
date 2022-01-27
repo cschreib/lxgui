@@ -10,7 +10,7 @@ namespace utils
 {
     namespace range
     {
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -47,7 +47,7 @@ namespace utils
             return range_impl::reverse_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -96,7 +96,7 @@ namespace utils
             return range_impl::iterator_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -134,7 +134,7 @@ namespace utils
             return range_impl::reverse_iterator_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -185,7 +185,7 @@ namespace utils
             return range_impl::value_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -225,7 +225,7 @@ namespace utils
             return range_impl::reverse_value_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {
@@ -275,7 +275,7 @@ namespace utils
             return range_impl::key_range<T>(lContainer);
         }
 
-        /** \cond NOT_REMOVE_FROM_DOC
+        /** \cond INCLUDE_INTERNALS_IN_DOC
         */
         namespace range_impl
         {

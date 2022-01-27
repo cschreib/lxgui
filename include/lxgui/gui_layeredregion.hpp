@@ -37,10 +37,12 @@ namespace gui
     */
     class layered_region : public region
     {
+        using base = region;
+
     public :
 
         /// Constructor.
-        explicit layered_region(manager& mManager);
+        explicit layered_region(utils::control_block& mBlock, manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -91,7 +93,7 @@ namespace gui
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
-        void notify_renderer_need_redraw() const override;
+        void notify_renderer_need_redraw() override;
 
         /// Parses data from a layout_node.
         /** \param mNode The layout node

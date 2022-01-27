@@ -5,6 +5,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
 
 namespace lxgui {
 namespace gui
@@ -68,10 +70,10 @@ void frame::parse_attributes_(const layout_node& mNode)
         enable_mouse(pAttr->get_value<bool>());
     if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouseWheel"))
         enable_mouse_wheel(pAttr->get_value<bool>());
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("enableKeyboard"))
-        enable_keyboard(pAttr->get_value<bool>());
     if (const layout_attribute* pAttr = mNode.try_get_attribute("clampedToScreen"))
         set_clamped_to_screen(pAttr->get_value<bool>());
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("autoFocus"))
+        enable_auto_focus(pAttr->get_value<bool>());
 }
 
 void frame::parse_resize_bounds_node_(const layout_node& mNode)
@@ -147,10 +149,10 @@ void frame::parse_backdrop_node_(const layout_node& mNode)
     {
         std::unique_ptr<backdrop> pBackdrop(new backdrop(*this));
 
-        pBackdrop->set_background(get_manager().parse_file_name(
+        pBackdrop->set_background(parse_file_name(
             pBackdropNode->get_attribute_value_or<std::string>("bgFile", "")));
 
-        pBackdrop->set_edge(get_manager().parse_file_name(
+        pBackdrop->set_edge(parse_file_name(
             pBackdropNode->get_attribute_value_or<std::string>("edgeFile", "")));
 
         pBackdrop->set_background_tilling(pBackdropNode->get_attribute_value_or<bool>("tile", false));
@@ -342,15 +344,15 @@ utils::observer_ptr<layered_region> frame::parse_region_(const layout_node& mNod
 {
     try
     {
-        auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
+        auto mAttr = parse_core_attributes(
+            get_manager().get_root().get_registry(),
+            get_manager().get_virtual_root().get_registry(),
+            mNode, observer_from(this));
 
-        std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
-            sObjectType = sType;
+            mAttr.sObjectType = sType;
 
-        auto pRegion = create_region(
-            parse_layer_type(sLayer), sObjectType, mAttr.sName, mAttr.lInheritance);
-
+        auto pRegion = create_region(parse_layer_type(sLayer), mAttr);
         if (!pRegion)
             return nullptr;
 
@@ -401,21 +403,21 @@ utils::observer_ptr<frame> frame::parse_child_(const layout_node& mNode,
 {
     try
     {
-        auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
+        auto mAttr = parse_core_attributes(
+            get_manager().get_root().get_registry(),
+            get_manager().get_virtual_root().get_registry(),
+            mNode, observer_from(this));
 
-        std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
-            sObjectType = sType;
+            mAttr.sObjectType = sType;
 
-        utils::observer_ptr<frame> pFrame = create_child(
-            sObjectType, mAttr.sName, mAttr.lInheritance);
-
+        auto pFrame = create_child(mAttr);
         if (!pFrame)
             return nullptr;
 
         try
         {
-            pFrame->set_addon(get_manager().get_current_addon());
+            pFrame->set_addon(get_addon());
             pFrame->parse_layout(mNode);
             pFrame->notify_loaded();
             return pFrame;

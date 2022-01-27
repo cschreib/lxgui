@@ -34,10 +34,12 @@ namespace gui
     */
     class scroll_frame : public frame, public frame_renderer
     {
+        using base = frame;
+
     public :
 
         /// Constructor.
-        explicit scroll_frame(manager& mManager);
+        explicit scroll_frame(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~scroll_frame() override;
@@ -68,7 +70,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+        void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child
@@ -116,25 +118,20 @@ namespace gui
         */
         float get_vertical_scroll_range() const;
 
-        /// Checks if the provided coordinates are in the scroll_frame.
-        /** \param mPosition The coordinates to test
-        *   \return 'true' if the provided coordinates are in the scroll_frame
-        *   \note The scroll_frame version of this function also checks if the
-        *         mouse is over the scroll texture (which means this function
-        *         ignores positive hit rect insets).
+        /// Find the topmost frame matching the provided predicate
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, if any, and nullptr otherwise.
+        *   \note For most frames, this can either return 'this' or 'nullptr'. For
+        *         frames responsible for rendering other frames (such as @ref scroll_frame),
+        *         this can return other frames.
         *   \note For scroll children to receive input, the scroll_frame must be
         *         keyboard/mouse/wheel enabled.
         */
-        bool is_in_frame(const vector2f& mPosition) const override;
-
-        /// Tells this scroll_frame it is being overed by the mouse.
-        /** \param bMouseInFrame 'true' if the mouse is above this scroll_frame
-        *   \param mMousePos     The mouse coordinates
-        */
-        void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos) override;
+        utils::observer_ptr<const frame> find_topmost_frame(
+            const std::function<bool(const frame&)>& mPredicate) const override;
 
         /// Tells this renderer that one of its widget requires redraw.
-        void notify_strata_needs_redraw(frame_strata mStrata) const override;
+        void notify_strata_needs_redraw(frame_strata mStrata) override;
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render
@@ -164,27 +161,20 @@ namespace gui
         virtual void parse_scroll_child_node_(const layout_node& mNode);
 
         void update_scroll_range_();
-        void update_scroll_child_input_();
         void rebuild_scroll_render_target_();
         void render_scroll_strata_list_();
-        void update_borders_() const override;
 
-        float fHorizontalScroll_ = 0;
-        float fHorizontalScrollRange_ = 0;
-        float fVerticalScroll_ = 0;
-        float fVerticalScrollRange_ = 0;
+        vector2f mScroll_;
+        vector2f mScrollRange_;
 
         utils::observer_ptr<frame> pScrollChild_ = nullptr;
 
-        mutable bool bRebuildScrollRenderTarget_ = false;
-        mutable bool bRedrawScrollRenderTarget_ = false;
-        mutable bool bUpdateScrollRange_ = false;
+        bool bRebuildScrollRenderTarget_ = false;
+        bool bRedrawScrollRenderTarget_ = false;
+        bool bUpdateScrollRange_ = false;
         std::shared_ptr<render_target> pScrollRenderTarget_;
 
         utils::observer_ptr<texture> pScrollTexture_ = nullptr;
-
-        bool bMouseInScrollTexture_ = false;
-        utils::observer_ptr<frame> pHoveredScrollChild_ = nullptr;
     };
 }
 }

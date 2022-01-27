@@ -22,7 +22,7 @@ void font_string::parse_attributes_(const layout_node& mNode)
     layered_region::parse_attributes_(mNode);
 
     set_font(
-        get_manager().parse_file_name(mNode.get_attribute_value_or<std::string>("font", "")),
+        mNode.get_attribute_value_or<std::string>("font", ""),
         mNode.get_attribute_value_or<float>("fontHeight", 0.0f)
     );
 

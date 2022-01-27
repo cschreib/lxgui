@@ -242,8 +242,9 @@ endif()
 ##############################################################################
 
 add_library(lxgui
+    ${PROJECT_SOURCE_DIR}/src/gui_addon_registry.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_addon_registry_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_anchor.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_alive_checker.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_atlas.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_backdrop.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_button.cpp
@@ -257,11 +258,9 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_editbox_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_editbox_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_eventmanager.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_eventemitter.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_eventreceiver.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_factory.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring_parser.cpp
@@ -269,7 +268,9 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_frame_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_framerenderer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_frame_container.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_gradient.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_keybinder.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_parser.cpp
@@ -277,13 +278,13 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_localizer_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_manager.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_manager_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_manager_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_material.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_matrix4.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_out.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_parser_common.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_region.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_region_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_glues.cpp
@@ -301,9 +302,14 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_uiobject.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_uiobject_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_uiobject_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_uiroot.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
-    ${PROJECT_SOURCE_DIR}/src/input.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_virtual_uiroot.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_dispatcher.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_keys.cpp
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_window.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp

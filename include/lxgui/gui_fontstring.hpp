@@ -33,10 +33,12 @@ namespace gui
     */
     class font_string : public layered_region
     {
+        using base = layered_region;
+
     public :
 
         /// Constructor.
-        explicit font_string(manager& mManager);
+        explicit font_string(utils::control_block& mBlock, manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -275,9 +277,9 @@ namespace gui
 
         void create_text_object_();
 
-        void update_borders_() const override;
+        void update_borders_() override;
 
-        mutable std::unique_ptr<text> pText_;
+        std::unique_ptr<text> pText_;
 
         utils::ustring sText_;
         std::string    sFontName_;

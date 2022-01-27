@@ -29,7 +29,7 @@ std::string renderer::get_name() const
     return "SFML";
 }
 
-void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget)
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)
         throw gui::exception("gui::sfml::renderer", "Missing call to end()");
@@ -48,7 +48,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     }
 }
 
-void renderer::end_() const
+void renderer::end_()
 {
     if (pCurrentTarget_)
         pCurrentTarget_->end();
@@ -57,7 +57,7 @@ void renderer::end_() const
     pCurrentSFMLTarget_ = nullptr;
 }
 
-void renderer::set_view_(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix)
 {
     static const float RAD_TO_DEG = 180.0f/std::acos(-1.0f);
 
@@ -86,7 +86,8 @@ matrix4f renderer::get_view() const
     return mCurrentViewMatrix;
 }
 
-void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial,
+    const std::vector<std::array<vertex,4>>& lQuadList)
 {
     static const std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
     static const std::size_t uiNumVertices = lIDs.size();
@@ -136,7 +137,7 @@ sf::Transform to_sfml(const matrix4f& mMatrix)
 }
 
 void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
-    const matrix4f& mModelTransform) const
+    const matrix4f& mModelTransform)
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 
@@ -156,12 +157,13 @@ void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_c
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName,
+    material::filter mFilter)
 {
     return std::make_shared<sfml::material>(sFileName, material::wrap::REPEAT, mFilter);
 }
 
-std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter)
 {
     return std::make_shared<sfml::atlas>(*this, mFilter);
 }
@@ -182,7 +184,7 @@ bool renderer::is_texture_vertex_color_supported() const
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
-    const ub32color* pPixelData, material::filter mFilter) const
+    const ub32color* pPixelData, material::filter mFilter)
 {
     std::shared_ptr<sfml::material> pTex = std::make_shared<sfml::material>(
         mDimensions, false, material::wrap::REPEAT, mFilter);
@@ -193,7 +195,7 @@ std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimen
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) const
+    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation)
 {
     auto pTex = std::static_pointer_cast<sfml::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())
@@ -208,14 +210,14 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    const vector2ui& mDimensions, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter)
 {
     return std::make_shared<sfml::render_target>(mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
     std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-    char32_t uiDefaultCodePoint) const
+    char32_t uiDefaultCodePoint)
 {
     return std::make_shared<sfml::font>(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 }
@@ -230,7 +232,7 @@ bool renderer::is_vertex_cache_supported() const
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType)
 {
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
     // Requires https://github.com/SFML/SFML/pull/1807

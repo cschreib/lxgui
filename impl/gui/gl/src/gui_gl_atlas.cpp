@@ -37,7 +37,7 @@ namespace gui {
 namespace gl
 {
 
-atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
+atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
 {
     uiSize_ = mRenderer.get_texture_atlas_page_size();
 
@@ -128,9 +128,9 @@ float atlas_page::get_height() const
     return uiSize_;
 }
 
-atlas::atlas(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
+atlas::atlas(renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
-std::unique_ptr<gui::atlas_page> atlas::create_page_() const
+std::unique_ptr<gui::atlas_page> atlas::create_page_()
 {
     return std::make_unique<gl::atlas_page>(mRenderer_, mFilter_);
 }

@@ -8,7 +8,7 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/input.hpp>
+#include <lxgui/input_window.hpp>
 #include <lxgui/utils_range.hpp>
 
 #include <sol/state.hpp>
@@ -18,25 +18,23 @@ using namespace lxgui::input;
 namespace lxgui {
 namespace gui
 {
-edit_box::edit_box(manager& mManager) : focus_frame(mManager),
-    mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
-    mLastKeyPressed_(key::K_UNASSIGNED),
-    mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
+edit_box::edit_box(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager),
+    mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false)
 {
     lType_.push_back(CLASS_NAME);
 
     iterCarretPos_ = sUnicodeText_.begin();
     iterCarretPosOld_ = sUnicodeText_.begin();
+
+    enable_mouse(true);
+    register_for_drag({"LeftButton"});
 }
 
 bool edit_box::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
-    else if ((sScriptName == "OnChar") ||
-        (sScriptName == "OnCursorChanged") ||
-        (sScriptName == "OnEditFocusGained") ||
-        (sScriptName == "OnEditFocusLost") ||
+    else if ((sScriptName == "OnCursorChanged") ||
         (sScriptName == "OnEnterPressed") ||
         (sScriptName == "OnEscapePressed") ||
         (sScriptName == "OnSpacePressed") ||
@@ -52,7 +50,7 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
 
 void edit_box::copy_from(const uiobject& mObj)
 {
-    focus_frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const edit_box* pEditBox = down_cast<edit_box>(&mObj);
     if (!pEditBox)
@@ -70,8 +68,11 @@ void edit_box::copy_from(const uiobject& mObj)
 
     if (const font_string* pFS = pEditBox->get_font_string().get())
     {
-        auto pFont = this->create_region<font_string>(
-            pFS->get_draw_layer(), pFS->get_name(), {pEditBox->get_font_string()});
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pFS->get_name();
+        mAttr.lInheritance = {pEditBox->get_font_string()};
+
+        auto pFont = this->create_region<font_string>(pFS->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -85,31 +86,10 @@ void edit_box::copy_from(const uiobject& mObj)
 void edit_box::update(float fDelta)
 {
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
-
-    if (bMouseDraggedInFrame_)
-    {
-        std::size_t uiPos = get_letter_id_at_(mMousePos_);
-        if (uiPos != uiSelectionEndPos_)
-        {
-            if (uiPos != std::numeric_limits<std::size_t>::max())
-            {
-                highlight_text(uiSelectionStartPos_, uiPos);
-                iterCarretPos_ = sUnicodeText_.begin() + uiPos;
-                update_carret_position_();
-            }
-            else
-            {
-                std::size_t uiTemp = uiSelectionStartPos_;
-                unlight_text();
-                uiSelectionStartPos_ = uiTemp;
-                iterCarretPos_ = sUnicodeText_.begin() + uiSelectionStartPos_;
-                update_carret_position_();
-            }
-        }
-    }
 
     if (bFocus_)
     {
@@ -130,173 +110,133 @@ void edit_box::update(float fDelta)
         }
     }
 
-    if (bFocus_ && mLastKeyPressed_ != key::K_UNASSIGNED &&
-        get_manager().get_input_manager().key_is_down_long(mLastKeyPressed_, true))
-    {
-        if (mKeyRepeatTimer_.is_paused())
-            mKeyRepeatTimer_.start();
-
-        mKeyRepeatTimer_.update(fDelta);
-
-        if (mKeyRepeatTimer_.ticks())
-        {
-            process_key_(mLastKeyPressed_);
-            if (!mChecker.is_alive())
-                return;
-        }
-    }
-
     if (iterCarretPos_ != iterCarretPosOld_)
     {
         iterCarretPosOld_ = iterCarretPos_;
-        on_script("OnCursorChanged");
+        fire_script("OnCursorChanged");
         if (!mChecker.is_alive())
             return;
     }
 }
 
-void edit_box::on_event(const event& mEvent)
+void edit_box::fire_script(const std::string& sScriptName, const event_data& mData)
 {
     alive_checker mChecker(*this);
 
-    frame::on_event(mEvent);
-    if (!mChecker.is_alive())
-        return;
+    // Do not fire OnKeyUp/OnKeyDown events when typing
+    bool bBypassEvent = false;
+    if (has_focus() && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
+        bBypassEvent = true;
+    if (!has_focus() && (sScriptName == "OnChar"))
+        bBypassEvent = true;
 
-    if (!get_manager().is_input_enabled())
-        return;
-
-    if (mEvent.get_name() == "TEXT_ENTERED" && bFocus_)
+    if (!bBypassEvent)
     {
-        std::uint32_t c = mEvent.get<std::uint32_t>(0);
-        if (add_char_(c))
-        {
-            on_script("OnTextChanged");
-            if (!mChecker.is_alive())
-                return;
-
-            event_data mKeyEvent;
-            mKeyEvent.add(utils::unicode_to_utf8(utils::ustring(1, c)));
-            on_script("OnChar", mKeyEvent);
-            if (!mChecker.is_alive())
-                return;
-        }
-
-        return;
+        base::fire_script(sScriptName, mData);
+        if (!mChecker.is_alive())
+            return;
     }
 
-    if (mEvent.get_name() == "MOUSE_PRESSED")
+    if (sScriptName == "OnKeyDown" && has_focus())
     {
-        update_mouse_in_frame_();
-        if (bMouseInFrame_)
-        {
-            set_focus(true);
-            unlight_text();
+        key mKey = mData.get<key>(0);
+        bool bShiftIsPressed = mData.get<bool>(2);
+        bool bCtrlIsPressed = mData.get<bool>(3);
 
-            move_carret_at_(mMousePos_);
-        }
-        else
-            set_focus(false);
-
-        return;
-    }
-
-    if (mEvent.get_name() == "KEY_PRESSED" && bFocus_)
-    {
-        key mKey = utils::get<key>(mEvent.get(0));
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
-            on_script("OnEnterPressed");
+            fire_script("OnEnterPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_TAB)
         {
-            on_script("OnTabPressed");
+            fire_script("OnTabPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_UP)
         {
-            on_script("OnUpPressed");
+            fire_script("OnUpPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_DOWN)
         {
-            on_script("OnDownPressed");
+            fire_script("OnDownPressed");
             if (!mChecker.is_alive())
                 return;
         }
         else if (mKey == key::K_SPACE)
         {
-            on_script("OnSpacePressed");
+            fire_script("OnSpacePressed");
+            if (!mChecker.is_alive())
+                return;
+        }
+        else if (mKey == key::K_ESCAPE)
+        {
+            fire_script("OnEscapePressed");
             if (!mChecker.is_alive())
                 return;
         }
 
-        mLastKeyPressed_ = mKey;
+        process_key_(mKey, bShiftIsPressed, bCtrlIsPressed);
 
-        process_key_(mKey);
         if (!mChecker.is_alive())
             return;
     }
-    else if (mEvent.get_name() == "KEY_RELEASED" && bFocus_)
+    else if (sScriptName == "OnChar" && has_focus())
     {
-        key mKey = utils::get<key>(mEvent.get(0));
-
-        if (mKey == key::K_ESCAPE)
+        std::uint32_t c = mData.get<std::uint32_t>(1);
+        if (add_char_(c))
         {
-            on_script("OnEscapePressed");
-            return;
-        }
-
-        if (mKey == mLastKeyPressed_)
-        {
-            mLastKeyPressed_ = key::K_UNASSIGNED;
-            mKeyRepeatTimer_.stop();
+            fire_script("OnTextChanged");
+            if (!mChecker.is_alive())
+                return;
         }
     }
-}
-
-void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
-{
-    if (!bVirtual_)
-    {
-        if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
-            register_event("TEXT_ENTERED");
-        else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
-            unregister_event("TEXT_ENTERED");
-    }
-
-    frame::enable_keyboard(bIsKeyboardEnabled);
-}
-
-void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
-{
-    if (bFocus_ && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
-        return;
-
-    if (sScriptName == "OnLoad")
-    {
-        enable_mouse(true);
-        register_for_drag({"LeftButton"});
-    }
-
-    alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
-    if (!mChecker.is_alive())
-        return;
-
-    if (sScriptName == "OnSizeChanged")
+    else if (sScriptName == "OnSizeChanged")
     {
         update_displayed_text_();
         update_font_string_();
         update_carret_position_();
     }
+    else if (sScriptName == "OnDragStart")
+    {
+        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(
+            vector2f(mData.get<float>(1), mData.get<float>(2)));
+    }
+    else if (sScriptName == "OnDragMove")
+    {
+        std::size_t uiPos = get_letter_id_at_(vector2f(mData.get<float>(0), mData.get<float>(1)));
+        if (uiPos != uiSelectionEndPos_)
+        {
+            if (uiPos != std::numeric_limits<std::size_t>::max())
+            {
+                highlight_text(uiSelectionStartPos_, uiPos);
+                iterCarretPos_ = sUnicodeText_.begin() + uiPos;
+                update_carret_position_();
+            }
+            else
+            {
+                std::size_t uiTemp = uiSelectionStartPos_;
+                unlight_text();
+                uiSelectionStartPos_ = uiTemp;
+                iterCarretPos_ = sUnicodeText_.begin() + uiSelectionStartPos_;
+                update_carret_position_();
+            }
+        }
+    }
+    else if (sScriptName == "OnMouseDown")
+    {
+        set_focus(true);
+        if (!mChecker.is_alive())
+            return;
 
-    if (sScriptName == "OnDragStart")
-        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(mMousePos_);
+        unlight_text();
+
+        move_carret_at_({mData.get<float>(1), mData.get<float>(2)});
+    }
 }
 
 void edit_box::create_glue()
@@ -318,11 +258,11 @@ void edit_box::set_text(const utils::ustring& sText)
 
         alive_checker mChecker(*this);
 
-        on_script("OnTextSet");
+        fire_script("OnTextSet");
         if (!mChecker.is_alive())
             return;
 
-        on_script("OnTextChanged");
+        fire_script("OnTextChanged");
         if (!mChecker.is_alive())
             return;
     }
@@ -698,8 +638,7 @@ void edit_box::notify_focus(bool bFocus)
 {
     if (bFocus_ != bFocus)
     {
-        bFocus_ = bFocus;
-        if (bFocus_)
+        if (bFocus)
         {
             if (!pCarret_)
                 create_carret_();
@@ -708,8 +647,6 @@ void edit_box::notify_focus(bool bFocus)
                 pCarret_->show();
 
             mCarretTimer_.zero();
-
-            lQueuedEventList_.push_back("OnEditFocusGained");
         }
         else
         {
@@ -717,15 +654,15 @@ void edit_box::notify_focus(bool bFocus)
                 pCarret_->hide();
 
             unlight_text();
-
-            lQueuedEventList_.push_back("OnEditFocusLost");
         }
     }
+
+    base::notify_focus(bFocus);
 }
 
 void edit_box::notify_scaling_factor_updated()
 {
-    frame::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pFontString_)
     {
@@ -831,6 +768,7 @@ void edit_box::check_text_()
         sUnicodeText_.resize(uiMaxLetters_);
 
     // TODO: use localizer's locale for these checks
+    // https://github.com/cschreib/lxgui/issues/88
     if (bNumericOnly_ && !utils::is_number(sUnicodeText_))
     {
         sUnicodeText_.clear();
@@ -881,6 +819,7 @@ void edit_box::update_displayed_text_()
         else
         {
             // TODO: implement for multiline edit box
+            // https://github.com/cschreib/lxgui/issues/39
         }
     }
 }
@@ -985,8 +924,8 @@ void edit_box::update_carret_position_()
                 (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
         }
 
-        float fYOffset = static_cast<float>(
-            (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing()));
+        float fYOffset = static_cast<float>((pText->get_num_lines() - 1)) *
+            (pText->get_line_height() * pText->get_line_spacing());
 
         std::size_t uiIndex = iterDisplayCarret - sDisplayedText_.begin();
 
@@ -1023,6 +962,7 @@ bool edit_box::add_char_(char32_t sUnicode)
         return false;
 
     // TODO: use localizer for these checks, if possible
+    // https://github.com/cschreib/lxgui/issues/88
     if (bNumericOnly_)
     {
         if (sUnicode == U'.')
@@ -1130,7 +1070,8 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& mPosition)
         }
         else
         {
-            // TODO : Implement for multi line edit_box
+            // TODO: Implement for multi line edit_box
+            // https://github.com/cschreib/lxgui/issues/39
             return uiDisplayPos_;
         }
 
@@ -1196,7 +1137,8 @@ bool edit_box::move_carret_vertically_(bool bDown)
 {
     if (bMultiLine_)
     {
-        // TODO : Implement for multi line edit_box
+        // TODO: Implement for multi line edit_box
+        // https://github.com/cschreib/lxgui/issues/39
         return false;
     }
     else
@@ -1225,7 +1167,7 @@ bool edit_box::move_carret_vertically_(bool bDown)
     }
 }
 
-void edit_box::process_key_(key mKey)
+void edit_box::process_key_(key mKey, bool bShiftIsPressed, bool bCtrlIsPressed)
 {
     alive_checker mChecker(*this);
 
@@ -1235,13 +1177,13 @@ void edit_box::process_key_(key mKey)
         {
             if (add_char_(U'\n'))
             {
-                on_script("OnTextChanged");
+                event_data mKeyEvent;
+                mKeyEvent.add(std::string("\n"));
+                fire_script("OnChar", mKeyEvent);
                 if (!mChecker.is_alive())
                     return;
 
-                event_data mKeyEvent;
-                mKeyEvent.add(std::string("\n"));
-                on_script("OnChar", mKeyEvent);
+                fire_script("OnTextChanged");
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1252,7 +1194,7 @@ void edit_box::process_key_(key mKey)
         std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
-        if (get_manager().get_input_manager().shift_is_pressed())
+        if (bShiftIsPressed)
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1269,7 +1211,7 @@ void edit_box::process_key_(key mKey)
         std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(0u);
 
-        if (get_manager().get_input_manager().shift_is_pressed())
+        if (bShiftIsPressed)
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1286,7 +1228,7 @@ void edit_box::process_key_(key mKey)
         if (bSelectedText_ || mKey == key::K_DELETE || move_carret_horizontally_(false))
         {
             remove_char_();
-            on_script("OnTextChanged");
+            fire_script("OnTextChanged");
             if (!mChecker.is_alive())
                 return;
         }
@@ -1300,7 +1242,7 @@ void edit_box::process_key_(key mKey)
 
             if (mKey == key::K_LEFT || mKey == key::K_RIGHT)
             {
-                if (bSelectedText_ && !get_manager().get_input_manager().shift_is_pressed())
+                if (bSelectedText_ && !bShiftIsPressed)
                 {
                     std::size_t uiOffset = 0;
                     if (mKey == key::K_LEFT)
@@ -1320,7 +1262,7 @@ void edit_box::process_key_(key mKey)
                     move_carret_vertically_(mKey == key::K_DOWN);
             }
 
-            if (get_manager().get_input_manager().shift_is_pressed())
+            if (bShiftIsPressed)
             {
                 if (bSelectedText_)
                 {
@@ -1374,19 +1316,19 @@ void edit_box::process_key_(key mKey)
             }
         }
     }
-    else if (mKey == key::K_C && get_manager().get_input_manager().ctrl_is_pressed())
+    else if (mKey == key::K_C && bCtrlIsPressed)
     {
         if (uiSelectionEndPos_ != uiSelectionStartPos_)
         {
             std::size_t uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
             std::size_t uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
             utils::ustring sSelected = sUnicodeText_.substr(uiMinPos, uiMaxPos - uiMinPos);
-            get_manager().get_input_manager().set_clipboard_content(sSelected);
+            get_manager().get_window().set_clipboard_content(sSelected);
         }
     }
-    else if (mKey == key::K_V && get_manager().get_input_manager().ctrl_is_pressed())
+    else if (mKey == key::K_V && bCtrlIsPressed)
     {
-        for (char32_t cChar : get_manager().get_input_manager().get_clipboard_content())
+        for (char32_t cChar : get_manager().get_window().get_clipboard_content())
         {
             if (!add_char_(cChar))
                 break;

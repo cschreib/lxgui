@@ -16,7 +16,7 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
-status_bar::status_bar(manager& mManager) : frame(mManager)
+status_bar::status_bar(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -25,7 +25,7 @@ std::string status_bar::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << frame::serialize(sTab);
+    sStr << base::serialize(sTab);
     sStr << sTab << "  # Orientation: ";
     switch (mOrientation_)
     {
@@ -43,7 +43,7 @@ std::string status_bar::serialize(const std::string& sTab) const
 
 bool status_bar::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if (sScriptName == "OnValueChanged")
         return true;
@@ -53,7 +53,7 @@ bool status_bar::can_use_script(const std::string& sScriptName) const
 
 void status_bar::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const status_bar* pStatusBar = down_cast<status_bar>(&mObj);
     if (!pStatusBar)
@@ -68,9 +68,11 @@ void status_bar::copy_from(const uiobject& mObj)
 
     if (const texture* pBar = pStatusBar->get_bar_texture().get())
     {
-        auto pBarTexture = this->create_region<texture>(
-            pBar->get_draw_layer(), pBar->get_name(),
-            {pStatusBar->get_bar_texture()});
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pBar->get_name();
+        mAttr.lInheritance = {pStatusBar->get_bar_texture()};
+
+        auto pBarTexture = this->create_region<texture>(pBar->get_draw_layer(), std::move(mAttr));
 
         if (pBarTexture)
         {
@@ -268,6 +270,9 @@ void status_bar::create_bar_texture_()
         return;
 
     auto pBarTexture = create_region<texture>(mBarLayer_, "$parentBarTexture");
+    if (!pBarTexture)
+        return;
+
     pBarTexture->set_special();
     pBarTexture->notify_loaded();
     set_bar_texture(pBarTexture);
@@ -312,7 +317,7 @@ void status_bar::update(float fDelta)
     }
 
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
 }

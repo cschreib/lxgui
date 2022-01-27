@@ -14,7 +14,8 @@
 namespace lxgui {
 namespace gui
 {
-texture::texture(manager& mManager) : layered_region(mManager)
+texture::texture(utils::control_block& mBlock, manager& mManager) :
+    layered_region(mBlock, mManager), mRenderer_(mManager.get_renderer())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -22,7 +23,7 @@ texture::texture(manager& mManager) : layered_region(mManager)
 std::string texture::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
-    sStr << layered_region::serialize(sTab);
+    sStr << base::serialize(sTab);
 
     std::visit([&](const auto& mData)
     {
@@ -88,23 +89,22 @@ std::string texture::serialize(const std::string& sTab) const
 
 void texture::render() const
 {
-    if (is_visible())
+    if (!is_visible())
+        return;
+
+    float fAlpha = get_effective_alpha();
+
+    if (fAlpha != 1.0f)
     {
-        const auto& mRenderer = get_manager().get_renderer();
-        float fAlpha = get_effective_alpha();
+        quad mBlendedQuad = mQuad_;
+        for (std::size_t i = 0; i < 4; ++i)
+            mBlendedQuad.v[i].col.a *= fAlpha;
 
-        if (fAlpha != 1.0f)
-        {
-            quad mBlendedQuad = mQuad_;
-            for (std::size_t i = 0; i < 4; ++i)
-                mBlendedQuad.v[i].col.a *= fAlpha;
-
-            mRenderer.render_quad(mBlendedQuad);
-        }
-        else
-        {
-            mRenderer.render_quad(mQuad_);
-        }
+        mRenderer_.render_quad(mBlendedQuad);
+    }
+    else
+    {
+        mRenderer_.render_quad(mQuad_);
     }
 }
 
@@ -115,7 +115,7 @@ void texture::create_glue()
 
 void texture::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const texture* pTexture = down_cast<texture>(&mObj);
     if (!pTexture)
@@ -398,16 +398,17 @@ void texture::update_dimensions_from_tex_coord_()
 
 void texture::set_texture(const std::string& sFile)
 {
-    mContent_ = sFile;
+    std::string sParsedFile = parse_file_name(sFile);
+    mContent_ = sParsedFile;
 
-    if (sFile.empty())
+    if (sParsedFile.empty())
         return;
 
     auto& mRenderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> pMat;
-    if (utils::file_exists(sFile))
-        pMat = mRenderer.create_atlas_material("GUI", sFile, mFilter_);
+    if (utils::file_exists(sParsedFile))
+        pMat = mRenderer.create_atlas_material("GUI", sParsedFile, mFilter_);
 
     mQuad_.mat = pMat;
 
@@ -427,7 +428,7 @@ void texture::set_texture(const std::string& sFile)
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Cannot load file \"" << sFile << "\" for \"" << sName_
+            << "Cannot load file \"" << sParsedFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
     }
 
@@ -442,7 +443,7 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
 
     std::shared_ptr<gui::material> pMat;
     if (pRenderTarget)
-        pMat = mRenderer.create_material(pRenderTarget);
+        pMat = mRenderer.create_material(std::move(pRenderTarget));
 
     mQuad_.mat = pMat;
 
@@ -516,18 +517,14 @@ void texture::set_vertex_color(const color& mColor, std::size_t uiIndex)
     notify_renderer_need_redraw();
 }
 
-void texture::update_borders_() const
+void texture::update_borders_()
 {
-    bool bBordersUpdated = bUpdateBorders_;
-    layered_region::update_borders_();
+    base::update_borders_();
 
-    if (bBordersUpdated)
-    {
-        mQuad_.v[0].pos = lBorderList_.top_left();
-        mQuad_.v[1].pos = lBorderList_.top_right();
-        mQuad_.v[2].pos = lBorderList_.bottom_right();
-        mQuad_.v[3].pos = lBorderList_.bottom_left();
-    }
+    mQuad_.v[0].pos = lBorderList_.top_left();
+    mQuad_.v[1].pos = lBorderList_.top_right();
+    mQuad_.v[2].pos = lBorderList_.bottom_right();
+    mQuad_.v[3].pos = lBorderList_.bottom_left();
 }
 
 }

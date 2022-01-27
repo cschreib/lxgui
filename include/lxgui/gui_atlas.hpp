@@ -106,8 +106,8 @@ namespace gui
         */
         std::optional<bounds2f> find_location_(float fWidth, float fHeight) const;
 
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
+        std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
     };
 
     /// A class that holds multiple materials for efficient rendering
@@ -119,7 +119,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit atlas(const renderer& mRenderer, material::filter mFilter);
+        explicit atlas(renderer& mRenderer, material::filter mFilter);
 
         /// Destructor.
         virtual ~atlas() = default;
@@ -147,7 +147,7 @@ namespace gui
         *   \param mMat      The material to add to this atlas
         *   \return The new material
         */
-        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat) const;
+        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat);
 
         /// Find a font in this atlas (nullptr if not found).
         /** \param sFontName The name of the font+size
@@ -160,7 +160,7 @@ namespace gui
         *   \param pFont     The font to add to this atlas
         *   \return 'true' if the font was added to this atlas, 'false' otherwise
         */
-        bool add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) const;
+        bool add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont);
 
         /// Return the number of pages in this atlas.
         /** \return The number of pages in this atlas
@@ -172,9 +172,9 @@ namespace gui
         /// Create a new page in this atlas.
         /** \return The new page, added at the back of the page list
         */
-        virtual std::unique_ptr<atlas_page> create_page_() const = 0;
+        virtual std::unique_ptr<atlas_page> create_page_() = 0;
 
-        const renderer&  mRenderer_;
+        renderer& mRenderer_;
         material::filter mFilter_ = material::filter::NONE;
 
     private :
@@ -182,7 +182,7 @@ namespace gui
         /// Create a new page in this atlas.
         /** \return The new page, added at the back of the page list
         */
-        void add_page_() const;
+        void add_page_();
 
         struct page_item
         {
@@ -190,7 +190,7 @@ namespace gui
             std::shared_ptr<material>   pNoTextureMat;
         };
 
-        mutable std::vector<page_item> lPageList_;
+        std::vector<page_item> lPageList_;
     };
 }
 }

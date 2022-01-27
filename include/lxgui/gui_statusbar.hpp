@@ -30,6 +30,8 @@ namespace gui
     */
     class status_bar : public frame
     {
+        using base = frame;
+
     public :
 
         enum class orientation
@@ -39,7 +41,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit status_bar(manager& mManager);
+        explicit status_bar(utils::control_block& mBlock, manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines

@@ -42,10 +42,9 @@ namespace gui
     struct strata
     {
         std::map<int, level>           lLevelList;
-        mutable bool                   bRedraw = true;
+        bool                           bRedraw = true;
         std::shared_ptr<render_target> pRenderTarget;
         quad                           mQuad;
-        mutable std::size_t            uiRedrawCount = 0u;
     };
 }
 }

@@ -4,10 +4,12 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_alive_checker.hpp"
+#include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -29,7 +31,8 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager& mManager) : event_receiver(mManager.get_event_manager()), region(mManager)
+frame::frame(utils::control_block& mBlock, manager& mManager) :
+    region(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -37,11 +40,7 @@ frame::frame(manager& mManager) : event_receiver(mManager.get_event_manager()), 
 frame::~frame()
 {
     // Disable callbacks
-    for (auto& lHandlerList : lScriptHandlerList_)
-    {
-        for (auto& mHandler : *lHandlerList.second)
-            mHandler.bDisconnected = true;
-    }
+    lSignalList_.clear();
 
     // Children must be destroyed first
     lChildList_.clear();
@@ -54,8 +53,9 @@ frame::~frame()
         pRenderer_ = nullptr;
     }
 
-    // Unregister this frame from the GUI manager
-    get_manager().remove_frame(observer_from(this));
+    get_manager().get_root().notify_hovered_frame_dirty();
+
+    set_focus(false);
 }
 
 void frame::render() const
@@ -66,13 +66,13 @@ void frame::render() const
             pBackdrop_->render();
 
         // Render child regions
-        for (auto& mLayer : lLayerList_)
+        for (const auto& mLayer : lLayerList_)
         {
             if (mLayer.bDisabled) continue;
 
             for (const auto& pRegion : mLayer.lRegionList)
             {
-                if (pRegion->is_shown() && !pRegion->is_newly_created())
+                if (pRegion->is_shown())
                     pRegion->render();
             }
         }
@@ -106,20 +106,20 @@ std::string frame::serialize(const std::string& sTab) const
     }
     sStr << sTab << "  # Level       : " << iLevel_ << "\n";
     sStr << sTab << "  # TopLevel    : " << bIsTopLevel_;
-    if (!bIsTopLevel_ && pTopLevelParent_)
-        sStr << " (" << pTopLevelParent_->get_name() << ")\n";
+    if (!bIsTopLevel_ && get_top_level_parent())
+        sStr << " (" << get_top_level_parent()->get_name() << ")\n";
     else
         sStr << "\n";
-    if (!bIsMouseEnabled_ && !bIsKeyboardEnabled_ && !bIsMouseWheelEnabled_)
+    if (!bIsMouseClickEnabled_ && !bIsMouseMoveEnabled_ && ! !bIsMouseWheelEnabled_)
         sStr << sTab << "  # Inputs      : none\n";
     else
     {
         sStr << sTab << "  # Inputs      :\n";
         sStr << sTab << "  |-###\n";
-        if (bIsMouseEnabled_)
-            sStr << sTab << "  |   # mouse\n";
-        if (bIsKeyboardEnabled_)
-            sStr << sTab << "  |   # keyboard\n";
+        if (bIsMouseClickEnabled_)
+            sStr << sTab << "  |   # mouse click\n";
+        if (bIsMouseMoveEnabled_)
+            sStr << sTab << "  |   # mouse move\n";
         if (bIsMouseWheelEnabled_)
             sStr << sTab << "  |   # mouse wheel\n";
         sStr << sTab << "  |-###\n";
@@ -203,10 +203,14 @@ std::string frame::serialize(const std::string& sTab) const
 
 bool frame::can_use_script(const std::string& sScriptName) const
 {
-    if ((sScriptName == "OnDragStart") ||
+    return (sScriptName == "OnChar") ||
+        (sScriptName == "OnDragStart") ||
         (sScriptName == "OnDragStop") ||
+        (sScriptName == "OnDragMove") ||
         (sScriptName == "OnEnter") ||
         (sScriptName == "OnEvent") ||
+        (sScriptName == "OnFocusGained") ||
+        (sScriptName == "OnFocusLost") ||
         (sScriptName == "OnHide") ||
         (sScriptName == "OnKeyDown") ||
         (sScriptName == "OnKeyUp") ||
@@ -214,30 +218,27 @@ bool frame::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnLoad") ||
         (sScriptName == "OnMouseDown") ||
         (sScriptName == "OnMouseUp") ||
+        (sScriptName == "OnDoubleClick") ||
         (sScriptName == "OnMouseWheel") ||
         (sScriptName == "OnReceiveDrag") ||
         (sScriptName == "OnShow") ||
         (sScriptName == "OnSizeChanged") ||
-        (sScriptName == "OnUpdate"))
-        return true;
-    else
-        return false;
+        (sScriptName == "OnUpdate");
 }
 
 void frame::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const frame* pFrame = down_cast<frame>(&mObj);
     if (!pFrame)
         return;
 
-    for (const auto& mItem : pFrame->lScriptHandlerList_)
+    for (const auto& mItem : pFrame->lSignalList_)
     {
-        for (const auto& mHandler : *mItem.second)
+        for (const auto& mFunction : pFrame->get_script(mItem.first))
         {
-            if (!mHandler.bDisconnected)
-                this->add_script(mItem.first, mHandler.mCallback);
+            this->add_script(mItem.first, mFunction);
         }
     }
 
@@ -257,8 +258,8 @@ void frame::copy_from(const uiobject& mObj)
 
     this->set_top_level(pFrame->is_top_level());
 
-    this->enable_keyboard(pFrame->is_keyboard_enabled());
-    this->enable_mouse(pFrame->is_mouse_enabled(), pFrame->is_world_input_allowed());
+    this->enable_mouse_click(pFrame->is_mouse_click_enabled());
+    this->enable_mouse_move(pFrame->is_mouse_move_enabled());
     this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
 
     this->set_movable(pFrame->is_movable());
@@ -277,10 +278,12 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pArt || pArt->is_special()) continue;
 
-        utils::observer_ptr<layered_region> pNewArt = create_region(
-            pArt->get_draw_layer(), pArt->get_object_type(), pArt->get_raw_name(),
-            {pArt});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pArt->get_object_type();
+        mAttr.sName = pArt->get_raw_name();
+        mAttr.lInheritance = {pArt};
 
+        auto pNewArt = create_region(pArt->get_draw_layer(), std::move(mAttr));
         if (!pNewArt) continue;
 
         pNewArt->notify_loaded();
@@ -305,9 +308,12 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pChild || pChild->is_special()) continue;
 
-        utils::observer_ptr<frame> pNewChild = create_child(
-            pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pChild->get_object_type();
+        mAttr.sName = pChild->get_raw_name();
+        mAttr.lInheritance = {pChild};
 
+        auto pNewChild = create_child(std::move(mAttr));
         if (!pNewChild) continue;
 
         pNewChild->notify_loaded();
@@ -318,30 +324,27 @@ void frame::create_title_region()
 {
     if (pTitleRegion_)
     {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : \""+sName_+"\" already has a title region." << std::endl;
+        gui::out << gui::warning << "gui::" << lType_.back() <<
+            " : \""+sName_+"\" already has a title region." << std::endl;
         return;
     }
 
-    auto pTitleRegion = utils::make_owned<region>(get_manager());
+    uiobject_core_attributes mAttr;
+    mAttr.sObjectType = "Region";
+    mAttr.bVirtual = is_virtual();
+    mAttr.sName = "$parentTitleRegion";
+    mAttr.pParent = observer_from(this);
 
-    if (this->is_virtual())
-        pTitleRegion->set_virtual();
+    auto pTitleRegion = utils::static_pointer_cast<region>(
+        get_manager().get_factory().create_uiobject(get_registry(), mAttr));
+
+    if (!pTitleRegion)
+        return;
 
     pTitleRegion->set_special();
-    pTitleRegion->set_name_and_parent_("$parentTitleRegion", observer_from(this));
-
-    if (!get_manager().add_uiobject(pTitleRegion))
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-            "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
-        return;
-    }
 
     if (!pTitleRegion->is_virtual())
     {
-        pTitleRegion->create_glue();
-
         // Add shortcut to region as entry in Lua table
         auto& mLua = get_lua_();
         mLua[get_lua_name()]["TitleRegion"] = mLua[pTitleRegion->get_lua_name()];
@@ -399,7 +402,7 @@ utils::observer_ptr<const layered_region> frame::get_region(const std::string& s
 
 void frame::set_dimensions(const vector2f& mDimensions)
 {
-    uiobject::set_dimensions(vector2f(
+    base::set_dimensions(vector2f(
         std::min(std::max(mDimensions.x,  fMinWidth_),  fMaxWidth_),
         std::min(std::max(mDimensions.y, fMinHeight_), fMaxHeight_)
     ));
@@ -407,15 +410,15 @@ void frame::set_dimensions(const vector2f& mDimensions)
 
 void frame::set_width(float fAbsWidth)
 {
-    uiobject::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
+    base::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
 }
 
 void frame::set_height(float fAbsHeight)
 {
-    uiobject::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
+    base::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
 }
 
-void frame::check_position() const
+void frame::check_position_()
 {
     if (lBorderList_.right - lBorderList_.left < fMinWidth_)
     {
@@ -521,74 +524,43 @@ void frame::enable_draw_layer(layer_type mLayerID)
     }
 }
 
-void frame::enable_keyboard(bool bIsKeyboardEnabled)
+void frame::enable_mouse(bool bIsMouseEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
-        {
-            register_event("KEY_PRESSED");
-            register_event("KEY_RELEASED");
-        }
-        else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
-        {
-            unregister_event("KEY_PRESSED");
-            unregister_event("KEY_RELEASED");
-        }
-    }
-
-    bIsKeyboardEnabled_ = bIsKeyboardEnabled;
+    enable_mouse_click(bIsMouseEnabled);
+    enable_mouse_move(bIsMouseEnabled);
 }
 
-void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
+void frame::enable_mouse_click(bool bIsMouseEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsMouseEnabled && !bIsMouseEnabled_)
-        {
-            register_event("MOUSE_MOVED");
-            register_event("MOUSE_PRESSED");
-            register_event("MOUSE_DOUBLE_CLICKED");
-            register_event("MOUSE_RELEASED");
-            register_event("MOUSE_DRAG_START");
-            register_event("MOUSE_DRAG_STOP");
-        }
-        else if (!bIsMouseEnabled && bIsMouseEnabled_)
-        {
-            unregister_event("MOUSE_MOVED");
-            unregister_event("MOUSE_PRESSED");
-            unregister_event("MOUSE_DOUBLE_CLICKED");
-            unregister_event("MOUSE_RELEASED");
-            unregister_event("MOUSE_DRAG_START");
-            unregister_event("MOUSE_DRAG_STOP");
-        }
-    }
+    bIsMouseClickEnabled_ = bIsMouseEnabled;
+}
 
-    bAllowWorldInput_ = bAllowWorldInput;
-    bIsMouseEnabled_ = bIsMouseEnabled;
+void frame::enable_mouse_move(bool bIsMouseEnabled)
+{
+    bIsMouseMoveEnabled_ = bIsMouseEnabled;
 }
 
 void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsMouseWheelEnabled && !bIsMouseWheelEnabled_)
-            register_event("MOUSE_WHEEL");
-        else if (!bIsMouseWheelEnabled && bIsMouseWheelEnabled_)
-            unregister_event("MOUSE_WHEEL");
-    }
-
     bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
+}
+
+void frame::enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled)
+{
+    if (bIsCaptureEnabled)
+        lRegKeyList_.erase(sKey);
+    else
+        lRegKeyList_.insert(sKey);
 }
 
 void frame::notify_loaded()
 {
-    uiobject::notify_loaded();
+    base::notify_loaded();
 
     if (!bVirtual_)
     {
         alive_checker mChecker(*this);
-        on_script("OnLoad");
+        fire_script("OnLoad");
         if (!mChecker.is_alive())
             return;
     }
@@ -601,17 +573,11 @@ void frame::notify_layers_need_update()
 
 bool frame::has_script(const std::string& sScriptName) const
 {
-    const auto mIter = lScriptHandlerList_.find(sScriptName);
-    if (mIter == lScriptHandlerList_.end())
+    const auto mIter = lSignalList_.find(sScriptName);
+    if (mIter == lSignalList_.end())
         return false;
 
-    for (const auto& mHandler : *mIter->second)
-    {
-        if (!mHandler.bDisconnected)
-            return true;
-    }
-
-    return false;
+    return !mIter->second.empty();
 }
 
 utils::observer_ptr<layered_region> frame::add_region(
@@ -685,88 +651,34 @@ utils::owner_ptr<layered_region> frame::remove_region(
     return pRemovedRegion;
 }
 
-utils::observer_ptr<layered_region> frame::create_region(
-    layer_type mLayer, const std::string& sClassName, const std::string& sName,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
+    uiobject_core_attributes mAttr)
 {
-    auto pRegion = get_manager().create_layered_region(sClassName);
+    mAttr.bVirtual = is_virtual();
+    mAttr.pParent = observer_from(this);
+
+    auto pRegion = get_manager().get_factory().create_layered_region(get_registry(), mAttr);
+
     if (!pRegion)
-        return nullptr;
-
-    if (this->is_virtual())
-        pRegion->set_virtual();
-
-    pRegion->set_name_and_parent_(sName, observer_from(this));
-
-    if (!get_manager().add_uiobject(pRegion))
         return nullptr;
 
     pRegion->set_draw_layer(mLayer);
 
-    if (!pRegion->is_virtual())
-        pRegion->create_glue();
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pRegion->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "\"" << pRegion->get_name() << "\" (" << pRegion->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other region
-        pRegion->copy_from(*pObj);
-    }
-
     return add_region(std::move(pRegion));
 }
 
-utils::observer_ptr<frame> frame::create_child(
-    const std::string& sClassName, const std::string& sName,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+utils::observer_ptr<frame> frame::create_child(uiobject_core_attributes mAttr)
 {
-    if (!get_manager().check_uiobject_name(sName))
-        return nullptr;
+    mAttr.bVirtual = is_virtual();
+    mAttr.pParent = observer_from(this);
 
-    auto pNewFrame = get_manager().create_frame(sClassName);
+    auto pNewFrame = get_manager().get_factory().create_frame(
+        get_registry(), get_top_level_renderer().get(), mAttr);
+
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name_and_parent_(sName, observer_from(this));
-
-    if (this->is_virtual())
-        pNewFrame->set_virtual();
-
-    if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
-
     pNewFrame->set_level(get_level() + 1);
-
-    if (!get_manager().add_uiobject(pNewFrame))
-        return nullptr;
-
-    if (!pNewFrame->is_virtual())
-        pNewFrame->create_glue();
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pNewFrame->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::manager : "
-                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other frame
-        pNewFrame->copy_from(*pObj);
-    }
-
-    pNewFrame->set_newly_created();
 
     return add_child(std::move(pNewFrame));
 }
@@ -778,16 +690,10 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
 
     pChild->set_parent_(observer_from(this));
 
-    if (bIsTopLevel_)
-        pChild->notify_top_level_parent_(true, observer_from(this));
-
-    if (pTopLevelParent_)
-        pChild->notify_top_level_parent_(true, pTopLevelParent_);
-
     if (is_visible() && pChild->is_shown())
-        pChild->notify_visible(!get_manager().is_loading_ui());
+        pChild->notify_visible();
     else
-        pChild->notify_invisible(!get_manager().is_loading_ui());
+        pChild->notify_invisible();
 
     utils::observer_ptr<frame> pAddedChild = pChild;
     lChildList_.push_back(std::move(pChild));
@@ -841,7 +747,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     if (!bVirtual_)
     {
         utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
-        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
+        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager().get_root();
         if (bNotifyRenderer)
         {
             pTopLevelRenderer->notify_rendered_frame(pChild, false);
@@ -855,7 +761,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     {
         if (bNotifyRenderer)
         {
-            get_manager().notify_rendered_frame(pChild, true);
+            get_manager().get_root().notify_rendered_frame(pChild, true);
             pChild->propagate_renderer_(true);
         }
 
@@ -906,6 +812,21 @@ int frame::get_level() const
 frame_strata frame::get_frame_strata() const
 {
     return mStrata_;
+}
+
+utils::observer_ptr<const frame> frame::get_top_level_parent() const
+{
+    auto pFrame = observer_from(this);
+    do
+    {
+        if (pFrame->is_top_level())
+            return pFrame;
+
+        pFrame = pFrame->get_parent();
+    }
+    while (pFrame);
+
+    return nullptr;
 }
 
 const backdrop* frame::get_backdrop() const
@@ -983,7 +904,7 @@ bool frame::is_clamped_to_screen() const
     return bIsClampedToScreen_;
 }
 
-bool frame::is_in_frame(const vector2f& mPosition) const
+bool frame::is_in_region(const vector2f& mPosition) const
 {
     if (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition))
         return true;
@@ -996,24 +917,38 @@ bool frame::is_in_frame(const vector2f& mPosition) const
     return bIsInXRange && bIsInYRange;
 }
 
-bool frame::is_keyboard_enabled() const
+utils::observer_ptr<const frame> frame::find_topmost_frame(
+    const std::function<bool(const frame&)>& mPredicate) const
 {
-    return bIsKeyboardEnabled_;
+    if (mPredicate(*this))
+        return observer_from(this);
+
+    return nullptr;
 }
 
-bool frame::is_mouse_enabled() const
+bool frame::is_mouse_click_enabled() const
 {
-    return bIsMouseEnabled_;
+    return bIsMouseClickEnabled_;
 }
 
-bool frame::is_world_input_allowed() const
+bool frame::is_mouse_move_enabled() const
 {
-    return bAllowWorldInput_;
+    return bIsMouseMoveEnabled_;
 }
 
 bool frame::is_mouse_wheel_enabled() const
 {
     return bIsMouseWheelEnabled_;
+}
+
+bool frame::is_registered_for_drag(const std::string& sButton) const
+{
+    return lRegDragList_.find(sButton) != lRegDragList_.end();
+}
+
+bool frame::is_key_capture_enabled(const std::string& sKey) const
+{
+    return lRegKeyList_.find(sKey) != lRegKeyList_.end();
 }
 
 bool frame::is_movable() const
@@ -1092,7 +1027,7 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     return sOriginalMessage;
 }
 
-std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
+std::string hijack_sol_error_message(std::string_view sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
 {
     std::string sNewError;
     for (auto sLine : utils::cut(sOriginalMessage, "\n"))
@@ -1100,14 +1035,14 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
         if (!sNewError.empty())
             sNewError += '\n';
 
-        sNewError += hijack_sol_error_line(sLine, sFile, uiLineNbr);
+        sNewError += hijack_sol_error_line(std::string{sLine}, sFile, uiLineNbr);
     }
 
     return sNewError;
 }
 
-void frame::define_script_(const std::string& sScriptName, const std::string& sContent,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    const std::string& sContent, bool bAppend, const script_info& mInfo)
 {
     // Create the Lua function from the provided string
     sol::state& mLua = get_lua_();
@@ -1129,20 +1064,18 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 
         gui::out << gui::error << sError << std::endl;
 
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        get_manager().get_event_manager().fire_event(mEvent);
-        return;
+        get_manager().get_event_emitter().fire_event("LUA_ERROR", {sError});
+        return {};
     }
 
     sol::protected_function mHandler = mResult;
 
     // Forward it as any other Lua function
-    define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
+    return define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
 }
 
-void frame::define_script_(const std::string& sScriptName, sol::protected_function mHandler,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    sol::protected_function mHandler, bool bAppend, const script_info& mInfo)
 {
     auto mWrappedHandler =
         [mHandler = std::move(mHandler), mInfo](frame& mSelf, const event_data& mArgs)
@@ -1183,27 +1116,12 @@ void frame::define_script_(const std::string& sScriptName, sol::protected_functi
         }
     };
 
-    define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
+    return define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
 }
 
-void frame::define_script_(const std::string& sScriptName, script_handler_function mHandler,
-    bool bAppend, const script_info& mInfo)
+utils::connection frame::define_script_(const std::string& sScriptName,
+    script_function mHandler, bool bAppend, const script_info& /*mInfo*/)
 {
-    auto& lHandlerList = lScriptHandlerList_[sScriptName];
-    if (!bAppend)
-    {
-        // Just disable existing scripts, it may not be safe to modify the handler list
-        // if this script is being defined during a handler execution.
-        // They will be deleted later, when we know it is safe.
-        for (auto& mPrevHandler : *lHandlerList)
-            mPrevHandler.bDisconnected = true;
-    }
-
-    if (lHandlerList == nullptr)
-        lHandlerList = std::make_shared<std::list<script_handler_slot>>();
-
-    lHandlerList->push_back({std::move(mHandler), false});
-
     if (!is_virtual())
     {
         // Register the function so it can be called directly from Lua
@@ -1222,31 +1140,43 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
                     mData.add(std::move(mVariant));
                 }
 
-                mSelf.on_script(sScriptName, mData);
+                mSelf.fire_script(sScriptName, mData);
             }
         );
     }
+
+    auto& lHandlerList = lSignalList_[sScriptName];
+    if (!bAppend)
+    {
+        // Just disable existing scripts, it may not be safe to modify the handler list
+        // if this script is being defined during a handler execution.
+        // They will be deleted later, when we know it is safe.
+        lHandlerList.disconnect_all();
+    }
+
+    // TODO: add file/line info if the handler comes from C++
+    // https://github.com/cschreib/lxgui/issues/96
+    return lHandlerList.connect(std::move(mHandler));
 }
 
-frame::script_list_view frame::get_script(const std::string& sScriptName) const
+script_list_view frame::get_script(const std::string& sScriptName) const
 {
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end())
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end())
         throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
 
-    return script_list_view(*iterH->second);
+    return iterH->second.slots();
 }
 
 void frame::remove_script(const std::string& sScriptName)
 {
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end()) return;
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end()) return;
 
     // Just disable existing scripts, it may not be safe to modify the handler list
     // if this script is being defined during a handler execution.
     // They will be deleted later, when we know it is safe.
-    for (auto& mHandler : *iterH->second)
-        mHandler.bDisconnected = true;
+    iterH->second.disconnect_all();
 
     if (!is_virtual())
     {
@@ -1255,197 +1185,79 @@ void frame::remove_script(const std::string& sScriptName)
     }
 }
 
-void frame::on_event(const event& mEvent)
+void frame::on_event_(std::string_view sEventName, const event_data& mEvent)
 {
     alive_checker mChecker(*this);
 
-    if (has_script("OnEvent") &&
-        (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
+    if (has_script("OnEvent"))
     {
         // ADDON_LOADED should only be fired if it's this frame's addon
-        if (mEvent.get_name() == "ADDON_LOADED")
+        if (sEventName == "ADDON_LOADED")
         {
             if (!pAddOn_ || pAddOn_->sName != mEvent.get<std::string>(0))
                 return;
         }
 
         event_data mData;
-        mData.add(mEvent.get_name());
+        mData.add(std::string(sEventName));
         for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
             mData.add(mEvent.get(i));
 
-        on_script("OnEvent", mData);
+        fire_script("OnEvent", mData);
         if (!mChecker.is_alive())
             return;
     }
-
-    if (!get_manager().is_input_enabled())
-        return;
-
-    if (bIsMouseEnabled_ && bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
-    {
-        update_mouse_in_frame_();
-
-        if (mEvent.get_name() == "MOUSE_DRAG_START")
-        {
-            if (bMouseInTitleRegion_)
-                start_moving();
-
-            if (bMouseInFrame_)
-            {
-                std::string sMouseButton = mEvent.get<std::string>(3);
-                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
-                {
-                    bMouseDraggedInFrame_ = true;
-                    on_script("OnDragStart");
-                    if (!mChecker.is_alive())
-                        return;
-                }
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
-        {
-            stop_moving();
-
-            if (bMouseDraggedInFrame_)
-            {
-                bMouseDraggedInFrame_ = false;
-                on_script("OnDragStop");
-                if (!mChecker.is_alive())
-                    return;
-            }
-
-            if (bMouseInFrame_)
-            {
-                std::string sMouseButton = mEvent.get<std::string>(3);
-                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
-                {
-                    on_script("OnReceiveDrag");
-                    if (!mChecker.is_alive())
-                        return;
-                }
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_PRESSED")
-        {
-            if (bMouseInFrame_)
-            {
-                if (bIsTopLevel_)
-                    raise();
-
-                if (pTopLevelParent_)
-                    pTopLevelParent_->raise();
-
-                event_data mData;
-                mData.add(mEvent.get(3));
-                on_script("OnMouseDown", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_RELEASED")
-        {
-            if (bMouseInFrame_)
-            {
-                event_data mData;
-                mData.add(mEvent.get(3));
-                on_script("OnMouseUp", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_WHEEL")
-        {
-            if (bMouseInFrame_)
-            {
-                event_data mData;
-                mData.add(mEvent.get(0));
-                on_script("OnMouseWheel", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-    }
-
-    if (bIsKeyboardEnabled_ && bIsVisible_)
-    {
-        if (mEvent.get_name() == "KEY_PRESSED")
-        {
-            event_data mData;
-            mData.add(mEvent.get(0));
-            mData.add(mEvent.get(1));
-
-            on_script("OnKeyDown", mData);
-            if (!mChecker.is_alive())
-                return;
-        }
-        else if (mEvent.get_name() == "KEY_RELEASED")
-        {
-            event_data mData;
-            mData.add(mEvent.get(0));
-            mData.add(mEvent.get(1));
-
-            on_script("OnKeyUp", mData);
-            if (!mChecker.is_alive())
-                return;
-        }
-    }
 }
 
-void frame::on_script(const std::string& sScriptName, const event_data& mData)
+void frame::fire_script(const std::string& sScriptName, const event_data& mData)
 {
-    auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH == lScriptHandlerList_.end())
+    if (!is_loaded())
         return;
 
-    // Make a copy of the manager pointer: in case the frame is deleted, we will need this
-    auto& mManager = get_manager();
-    auto* pOldAddOn = mManager.get_current_addon();
-    mManager.set_current_addon(get_addon());
+    auto iterH = lSignalList_.find(sScriptName);
+    if (iterH == lSignalList_.end())
+        return;
+
+    // Make a copy of useful pointers: in case the frame is deleted, we will need this
+    auto& mEventEmitter = get_manager().get_event_emitter();
+    auto& mAddonRegistry = *get_manager().get_addon_registry();
+    const auto* pOldAddOn = mAddonRegistry.get_current_addon();
+    mAddonRegistry.set_current_addon(get_addon());
 
     try
     {
-        // Make a shared-ownership copy of the handler list, so that the list
-        // survives even if this frame is destroyed midway during a handler.
-        const auto lHandlerList = iterH->second;
-
         // Call the handlers
-        for (const auto& mHandler : *lHandlerList)
-        {
-            if (!mHandler.bDisconnected)
-                mHandler.mCallback(*this, mData);
-        }
+        iterH->second(*this, mData);
     }
     catch (const std::exception& mException)
     {
-        // TODO: add file/line info
         std::string sError = mException.what();
-
         gui::out << gui::error << sError << std::endl;
-
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        mManager.get_event_manager().fire_event(mEvent);
+        mEventEmitter.fire_event("LUA_ERROR", {sError});
     }
 
-    mManager.set_current_addon(pOldAddOn);
+    mAddonRegistry.set_current_addon(pOldAddOn);
 }
 
-void frame::register_all_events()
+void frame::register_event(const std::string& sEventName)
 {
-    bHasAllEventsRegistred_ = true;
-    lRegEventList_.clear();
-}
-
-void frame::register_event(const std::string& sEvent)
-{
-    if (bHasAllEventsRegistred_)
+    if (bVirtual_)
         return;
 
-    auto mInserted = lRegEventList_.insert(sEvent);
+    mEventReceiver_.register_event(sEventName,
+        [=](const event_data& mEvent)
+        {
+            return on_event_(sEventName, mEvent);
+        }
+    );
+}
 
-    if (!bVirtual_ && mInserted.second)
-        event_receiver::register_event(sEvent);
+void frame::unregister_event(const std::string& sEventName)
+{
+    if (bVirtual_)
+        return;
+
+    mEventReceiver_.unregister_event(sEventName);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)
@@ -1616,7 +1428,7 @@ utils::owner_ptr<uiobject> frame::release_from_parent()
     if (pParent_)
         return pParent_->remove_child(pSelf);
     else
-        return get_manager().remove_root_frame(pSelf);
+        return get_manager().get_root().remove_root_frame(pSelf);
 }
 
 void frame::set_resizable(bool bIsResizable)
@@ -1633,15 +1445,7 @@ void frame::set_scale(float fScale)
 
 void frame::set_top_level(bool bIsTopLevel)
 {
-    if (bIsTopLevel_ == bIsTopLevel)
-        return;
-
     bIsTopLevel_ = bIsTopLevel;
-
-    for (auto& mChild : get_children())
-    {
-        mChild.notify_top_level_parent_(bIsTopLevel_, observer_from(this));
-    }
 }
 
 void frame::raise()
@@ -1650,13 +1454,14 @@ void frame::raise()
         return;
 
     int iOldLevel = iLevel_;
-    iLevel_ = get_manager().get_highest_level(mStrata_) + 1;
+    auto pTopLevelRenderer = get_top_level_renderer();
+    iLevel_ = pTopLevelRenderer->get_highest_level(mStrata_) + 1;
 
     if (iLevel_ > iOldLevel)
     {
         if (!is_virtual())
         {
-            get_top_level_renderer()->notify_frame_level_changed(
+            pTopLevelRenderer->notify_frame_level_changed(
                 observer_from(this), iOldLevel, iLevel_);
         }
 
@@ -1667,6 +1472,43 @@ void frame::raise()
     }
     else
         iLevel_ = iOldLevel;
+}
+
+void frame::enable_auto_focus(bool bEnable)
+{
+    bAutoFocus_ = bEnable;
+}
+
+bool frame::is_auto_focus_enabled() const
+{
+    return bAutoFocus_;
+}
+
+void frame::set_focus(bool bFocus)
+{
+    auto& mRoot = get_manager().get_root();
+    if (bFocus)
+        mRoot.request_focus(observer_from(this));
+    else
+        mRoot.release_focus(*this);
+}
+
+bool frame::has_focus() const
+{
+    return bFocus_;
+}
+
+void frame::notify_focus(bool bFocus)
+{
+    if (bFocus_ == bFocus)
+        return;
+
+    bFocus_ = bFocus;
+
+    if (bFocus_)
+        fire_script("OnFocusGained");
+    else
+        fire_script("OnFocusLost");
 }
 
 void frame::add_level_(int iAmount)
@@ -1694,14 +1536,14 @@ void frame::start_moving()
     if (bIsMovable_)
     {
         set_user_placed(true);
-        get_manager().start_moving(observer_from(this));
+        get_manager().get_root().start_moving(observer_from(this));
     }
 }
 
 void frame::stop_moving()
 {
-    if (bIsMovable_)
-        get_manager().stop_moving(*this);
+    if (get_manager().get_root().is_moving(*this))
+        get_manager().get_root().stop_moving();
 }
 
 void frame::start_sizing(const anchor_point& mPoint)
@@ -1709,13 +1551,14 @@ void frame::start_sizing(const anchor_point& mPoint)
     if (bIsResizable_)
     {
         set_user_placed(true);
-        get_manager().start_sizing(observer_from(this), mPoint);
+        get_manager().get_root().start_sizing(observer_from(this), mPoint);
     }
 }
 
 void frame::stop_sizing()
 {
-    get_manager().stop_sizing(*this);
+    if (get_manager().get_root().is_sizing(*this))
+        get_manager().get_root().stop_sizing();
 }
 
 void frame::propagate_renderer_(bool bRendered)
@@ -1756,61 +1599,71 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return get_manager().observer_from_this();
+        return get_manager().get_root().observer_from_this();
 }
 
-void frame::notify_visible(bool bTriggerEvents)
+void frame::notify_visible()
 {
-    uiobject::notify_visible(bTriggerEvents);
+    alive_checker mChecker(*this);
+
+    if (bAutoFocus_)
+    {
+        set_focus(true);
+        if (!mChecker.is_alive())
+            return;
+    }
+
+    base::notify_visible();
 
     for (auto& mRegion : get_regions())
     {
         if (mRegion.is_shown())
-            mRegion.notify_visible(bTriggerEvents);
+        {
+            mRegion.notify_visible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
-            mChild.notify_visible(bTriggerEvents);
+        {
+            mChild.notify_visible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
-    if (bTriggerEvents)
-    {
-        lQueuedEventList_.push_back("OnShow");
-        notify_renderer_need_redraw();
-    }
+    lQueuedEventList_.push_back("OnShow");
+    notify_renderer_need_redraw();
 }
 
-void frame::notify_invisible(bool bTriggerEvents)
+void frame::notify_invisible()
 {
-    uiobject::notify_invisible(bTriggerEvents);
+    alive_checker mChecker(*this);
+
+    set_focus(false);
+    if (!mChecker.is_alive())
+        return;
+
+    base::notify_invisible();
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
-            mChild.notify_invisible(bTriggerEvents);
+        {
+            mChild.notify_invisible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
-    if (bTriggerEvents)
-    {
-        lQueuedEventList_.push_back("OnHide");
-        notify_renderer_need_redraw();
-    }
+    lQueuedEventList_.push_back("OnHide");
+    notify_renderer_need_redraw();
 }
 
-void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<frame>& pParent)
-{
-    if (bTopLevel)
-        pTopLevelParent_ = pParent;
-    else
-        pTopLevelParent_ = nullptr;
-
-    for (auto& mChild : get_children())
-        mChild.notify_top_level_parent_(bTopLevel, pParent);
-}
-
-void frame::notify_renderer_need_redraw() const
+void frame::notify_renderer_need_redraw()
 {
     if (bVirtual_)
         return;
@@ -1820,7 +1673,7 @@ void frame::notify_renderer_need_redraw() const
 
 void frame::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pTitleRegion_)
         pTitleRegion_->notify_scaling_factor_updated();
@@ -1838,13 +1691,10 @@ void frame::show()
         return;
 
     bool bWasVisible_ = bIsVisible_;
-    uiobject::show();
+    base::show();
 
     if (!bWasVisible_)
-    {
-        get_manager().notify_hovered_frame_dirty();
-        update_mouse_in_frame_();
-    }
+        get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::hide()
@@ -1853,68 +1703,13 @@ void frame::hide()
         return;
 
     bool bWasVisible_ = bIsVisible_;
-    uiobject::hide();
+    base::hide();
 
     if (bWasVisible_)
-    {
-        get_manager().notify_hovered_frame_dirty();
-        update_mouse_in_frame_();
-    }
+        get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::set_shown(bool bIsShown)
-{
-    if (bIsShown_ == bIsShown)
-        return;
-
-    bIsShown_ = bIsShown;
-
-    if (!bIsShown_)
-        notify_invisible(false);
-}
-
-void frame::unregister_all_events()
-{
-    bHasAllEventsRegistred_ = false;
-    lRegEventList_.clear();
-}
-
-void frame::unregister_event(const std::string& sEvent)
-{
-    if (bHasAllEventsRegistred_)
-        return;
-
-    auto mIter = lRegEventList_.find(sEvent);
-    if (mIter == lRegEventList_.end())
-        return;
-
-    lRegEventList_.erase(sEvent);
-
-    if (!bVirtual_)
-        event_receiver::unregister_event(sEvent);
-}
-
-void frame::set_addon(const addon* pAddOn)
-{
-    if (!pAddOn_)
-    {
-        pAddOn_ = pAddOn;
-        for (auto& mChild : get_children())
-            mChild.set_addon(pAddOn);
-    }
-    else
-        gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
-}
-
-const addon* frame::get_addon() const
-{
-    if (!pAddOn_ && pParent_)
-        return pParent_->get_addon();
-    else
-        return pAddOn_;
-}
-
-void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
+void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& /*mPosition*/)
 {
     alive_checker mChecker(*this);
 
@@ -1922,47 +1717,41 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
     {
         if (!bMouseInFrame_)
         {
-            on_script("OnEnter");
+            fire_script("OnEnter");
             if (!mChecker.is_alive())
                 return;
         }
 
         bMouseInFrame_ = true;
-        mMousePos_ = mPosition;
-        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition));
     }
     else
     {
         if (bMouseInFrame_)
         {
-            on_script("OnLeave");
+            fire_script("OnLeave");
             if (!mChecker.is_alive())
                 return;
         }
 
-        bMouseInTitleRegion_ = false;
         bMouseInFrame_ = false;
     }
 }
 
-void frame::update_borders_() const
+void frame::update_borders_()
 {
-    bool bPositionUpdated = bUpdateBorders_;
-    uiobject::update_borders_();
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
 
-    if (bPositionUpdated)
+    base::update_borders_();
+
+    check_position_();
+
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
-        check_position();
-        get_manager().notify_hovered_frame_dirty();
+        get_manager().get_root().notify_hovered_frame_dirty();
         if (pBackdrop_)
             pBackdrop_->notify_borders_updated();
     }
-}
-
-void frame::update_mouse_in_frame_()
-{
-    update_borders_();
-    get_manager().get_hovered_frame();
 }
 
 void frame::update(float fDelta)
@@ -1973,13 +1762,13 @@ void frame::update(float fDelta)
     alive_checker mChecker(*this);
 
     DEBUG_LOG("  ~");
-    uiobject::update(fDelta);
+    base::update(fDelta);
     DEBUG_LOG("   #");
 
     for (const auto& sEvent : lQueuedEventList_)
     {
         DEBUG_LOG("   Event " + *iterEvent);
-        on_script(sEvent);
+        fire_script(sEvent);
         if (!mChecker.is_alive())
             return;
     }
@@ -2014,7 +1803,7 @@ void frame::update(float fDelta)
         DEBUG_LOG("   On update");
         event_data mData;
         mData.add(fDelta);
-        on_script("OnUpdate", mData);
+        fire_script("OnUpdate", mData);
         if (!mChecker.is_alive())
             return;
     }
@@ -2054,24 +1843,20 @@ void frame::update(float fDelta)
         lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
-    // Remove disabled handlers
-    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end(); ++mIterList)
+    // Remove empty handlers
+    for (auto mIterList = lSignalList_.begin(); mIterList != lSignalList_.end();)
     {
-        auto& lHandlerList = *mIterList->second;
-        auto mIterRemove = std::remove_if(lHandlerList.begin(), lHandlerList.end(),
-            [](const auto& mHandler) { return mHandler.bDisconnected; });
-
-        if (mIterRemove == lHandlerList.begin())
-            mIterList = lScriptHandlerList_.erase(mIterList);
+        if (mIterList->second.empty())
+            mIterList = lSignalList_.erase(mIterList);
         else
-            lHandlerList.erase(mIterRemove, lHandlerList.end());
+            ++mIterList;
     }
 
     vector2f mNewSize = get_apparent_dimensions();
     if (mOldSize_ != mNewSize)
     {
         DEBUG_LOG("   On size changed");
-        on_script("OnSizeChanged");
+        fire_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 

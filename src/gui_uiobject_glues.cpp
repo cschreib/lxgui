@@ -5,6 +5,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -118,7 +119,7 @@
 *   Inherits all methods from: none.
 *
 *   Child classes: @{Frame}, @{LayeredRegion}, @{FontString}, @{Texture},
-*   @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox}, @{ScrollFrame},
+*   @{Button}, @{CheckButton}, @{EditBox}, @{ScrollFrame},
 *   @{Slider}, @{StatusBar}.
 *   @classmod UIObject
 */
@@ -271,19 +272,13 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_all_points
     */
-    mClass.set_function("set_all_points", sol::overload(
-    [](uiobject& mSelf)
+    mClass.set_function("set_all_points", [](uiobject& mSelf,
+        sol::optional<std::variant<std::string,uiobject*>> mTarget)
     {
-        mSelf.set_all_points(utils::observer_ptr<uiobject>(nullptr));
-    },
-    [](uiobject& mSelf, const std::string& sTargetName)
-    {
-        mSelf.set_all_points(mSelf.get_manager().get_uiobject_by_name(sTargetName));
-    },
-    [](uiobject& mSelf, const utils::observer_ptr<uiobject>& pTarget)
-    {
-        mSelf.set_all_points(pTarget);
-    }));
+        mSelf.set_all_points(mTarget.has_value() ?
+            get_object<uiobject>(mSelf.get_manager(), mTarget.value()) :
+            nullptr);
+    });
 
     /** @function set_height
     */
@@ -306,7 +301,7 @@ void uiobject::register_on_lua(sol::state& mLua)
         {
             if (mSelf.is_object_type<frame>())
             {
-                mSelf.get_manager().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
+                mSelf.get_manager().get_root().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             }
             else
                 throw sol::error("set_parent(nil) can only be called on frames");

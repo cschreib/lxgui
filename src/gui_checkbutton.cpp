@@ -8,19 +8,19 @@
 namespace lxgui {
 namespace gui
 {
-check_button::check_button(manager& mManager) : button(mManager)
+check_button::check_button(utils::control_block& mBlock, manager& mManager) : button(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
 
 std::string check_button::serialize(const std::string& sTab) const
 {
-    return button::serialize(sTab);
+    return base::serialize(sTab);
 }
 
 void check_button::copy_from(const uiobject& mObj)
 {
-    button::copy_from(mObj);
+    base::copy_from(mObj);
 
     const check_button* pButton = down_cast<check_button>(&mObj);
     if (!pButton)
@@ -28,9 +28,12 @@ void check_button::copy_from(const uiobject& mObj)
 
     if (const texture* pCheckedTexture = pButton->get_checked_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pCheckedTexture->get_name();
+        mAttr.lInheritance = {pButton->get_checked_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pCheckedTexture->get_draw_layer(), pCheckedTexture->get_name(),
-            {pButton->get_checked_texture()});
+            pCheckedTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -42,9 +45,12 @@ void check_button::copy_from(const uiobject& mObj)
 
     if (const texture* pDisabledTexture = pButton->get_disabled_checked_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pDisabledTexture->get_name();
+        mAttr.lInheritance = {pButton->get_disabled_checked_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pDisabledTexture->get_draw_layer(), pDisabledTexture->get_name(),
-            {pButton->get_disabled_checked_texture()});
+            pDisabledTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -92,7 +98,7 @@ void check_button::uncheck()
 
 void check_button::disable()
 {
-    button::disable();
+    base::disable();
 
     if (is_enabled() && is_checked() && pDisabledCheckedTexture_)
     {
@@ -105,7 +111,7 @@ void check_button::disable()
 
 void check_button::enable()
 {
-    button::enable();
+    base::enable();
 
     if (!is_enabled() && is_checked() && pDisabledCheckedTexture_)
     {
@@ -118,7 +124,7 @@ void check_button::enable()
 
 void check_button::release()
 {
-    button::release();
+    base::release();
 
     if (is_checked())
         uncheck();

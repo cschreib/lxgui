@@ -49,7 +49,7 @@ namespace gui
         *   \param pFont        The font to use for rendering
         *   \param pOutlineFont The font to use for outlines
         */
-        explicit text(const renderer& mRenderer, std::shared_ptr<gui::font> pFont,
+        explicit text(renderer& mRenderer, std::shared_ptr<gui::font> pFont,
             std::shared_ptr<gui::font> pOutlineFont);
 
         /// Non-copiable
@@ -326,6 +326,11 @@ namespace gui
         */
         const renderer& get_renderer() const { return mRenderer_; }
 
+        /// Returns the renderer used to render this text.
+        /** \return The renderer used to render this text
+        */
+        renderer& get_renderer() { return mRenderer_; }
+
     private :
 
         void update_() const;
@@ -336,7 +341,7 @@ namespace gui
         std::array<vertex,4> create_letter_quad_(char32_t uiChar) const;
         std::array<vertex,4> create_outline_letter_quad_(char32_t uiChar) const;
 
-        const renderer& mRenderer_;
+        renderer& mRenderer_;
 
         bool  bReady_ = false;
         float fScalingFactor_ = 1.0f;

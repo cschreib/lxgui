@@ -5,8 +5,8 @@
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_variant.hpp>
 
-#include <string>
 #include <vector>
+#include <initializer_list>
 
 namespace lxgui {
 namespace gui
@@ -19,22 +19,20 @@ namespace gui
         /// Default constructor.
         event_data() = default;
 
-        /// Copiable
+        /// List constructor.
+        event_data(std::initializer_list<utils::variant> lData);
+
+        // Copiable, movable
         event_data(const event_data&) = default;
-
-        /// Movable
         event_data(event_data&&) = default;
-
-        /// Copiable
         event_data& operator=(const event_data&) = default;
-
-        /// Movable
         event_data& operator=(event_data&&) = default;
 
         /// Adds a parameter to this event.
         /** \param mValue The value
         */
-        void add(const utils::variant& mValue) { lArgList_.push_back(mValue); }
+        template<typename T>
+        void add(T&& mValue) { lArgList_.push_back(std::forward<T>(mValue)); }
 
         /// Returns a parameter of this event.
         /** \param uiIndex The index of the parameter (see get_num_param())
@@ -86,109 +84,6 @@ namespace gui
     private :
 
         std::vector<utils::variant> lArgList_;
-    };
-
-    /// Represents a generic event and associated information
-    class event
-    {
-    public :
-
-        /// Default constructor.
-        event() = default;
-
-        /// Copiable
-        event(const event&) = default;
-
-        /// Movable
-        event(event&&) = default;
-
-        /// Copiable
-        event& operator=(const event&) = default;
-
-        /// Movable
-        event& operator=(event&&) = default;
-
-        /// Constructor.
-        /** \param sName         The name of this event
-        *   \param bOncePerFrame 'true' if you allow several events of
-        *                        this type to be fired during the same
-        *                        frame
-        */
-        explicit event(const std::string& sName, bool bOncePerFrame = false);
-
-        /// Sets this event's name.
-        /** \param sName The name of this event
-        */
-        void set_name(const std::string& sName);
-
-        /// Sets whether this event can only be fired once per frame.
-        /** \param bOncePerFrame 'true' if you allow several events of
-        *                        this type to be fired during the same
-        *                        frame
-        */
-        void set_once_per_frame(bool bOncePerFrame);
-
-        /// Returns the arguments of this event.
-        /** \return the arguments of this event
-        */
-        const event_data& data() const { return mData_; }
-
-        /// Returns the arguments of this event.
-        /** \return the arguments of this event
-        */
-        event_data& data() { return mData_; }
-
-        /// Returns the name of this event.
-        /** \return The name of this event
-        */
-        const std::string& get_name() const;
-
-        /// Checks if this event should only be fired once per frame.
-        /** \return 'true' if this should only be fired once per frame
-        */
-        bool is_once_per_frame() const;
-
-        /// Adds a parameter to this event.
-        /** \param mValue The value
-        */
-        void add(const utils::variant& mValue) { mData_.add(mValue); }
-
-        /// Returns a parameter of this event.
-        /** \param uiIndex The index of the parameter (see get_num_param())
-        *   \return A parameter of this event
-        */
-        const utils::variant& get(std::size_t uiIndex) const { return mData_.get(uiIndex); }
-
-        /// Returns a parameter of this event.
-        /** \param uiIndex The index of the parameter (see get_num_param())
-        *   \return A parameter of this event
-        */
-        utils::variant& get(std::size_t uiIndex) { return mData_.get(uiIndex); }
-
-        /// Returns a parameter of this event.
-        /** \param uiIndex The index of the parameter (see get_num_param())
-        *   \return A parameter of this event
-        */
-        template<typename T>
-        const T& get(std::size_t uiIndex) const { return mData_.get<T>(uiIndex); }
-
-        /// Returns a parameter of this event.
-        /** \param uiIndex The index of the parameter (see get_num_param())
-        *   \return A parameter of this event
-        */
-        template<typename T>
-        T& get(std::size_t uiIndex) { return mData_.get<T>(uiIndex); }
-
-        /// Returns the number of parameters.
-        /** \return The number of parameters
-        */
-        std::size_t get_num_param() const { return mData_.get_num_param(); }
-
-    private :
-
-        std::string sName_;
-        bool        bOncePerFrame_ = false;
-        event_data  mData_;
     };
 }
 }

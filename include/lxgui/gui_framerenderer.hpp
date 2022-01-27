@@ -6,6 +6,8 @@
 #include <lxgui/utils_observer.hpp>
 #include "lxgui/gui_strata.hpp"
 
+#include <functional>
+
 namespace lxgui {
 namespace gui
 {
@@ -37,7 +39,7 @@ namespace gui
         frame_renderer& operator=(frame_renderer&&) = delete;
 
         /// Tells this renderer that one of its widget requires redraw.
-        virtual void notify_strata_needs_redraw(frame_strata mStrata) const;
+        virtual void notify_strata_needs_redraw(frame_strata mStrata);
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render
@@ -66,6 +68,30 @@ namespace gui
         */
         virtual vector2f get_target_dimensions() const = 0;
 
+        /// Find the top-most frame matching the provided predicate
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, or nullptr if none
+        */
+        utils::observer_ptr<const frame> find_topmost_frame(
+            const std::function<bool(const frame&)>& mPredicate) const;
+
+        /// Find the top-most frame matching the provided predicate
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, or nullptr if none
+        */
+        utils::observer_ptr<frame> find_topmost_frame(
+            const std::function<bool(const frame&)>& mPredicate)
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame_renderer*>(this)->find_topmost_frame(mPredicate));
+        }
+
+        /// Returns the highest level on the provided strata.
+        /** \param mframe_strata The strata to inspect
+        *   \return The highest level on the provided strata
+        */
+        int get_highest_level(frame_strata mframe_strata) const;
+
     protected :
 
         void add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
@@ -75,11 +101,9 @@ namespace gui
         void clear_strata_list_();
         bool has_strata_list_changed_() const;
         void reset_strata_list_changed_flag_();
-        void notify_strata_needs_redraw_(const strata& mStrata) const;
+        void notify_strata_needs_redraw_(strata& mStrata);
 
         void render_strata_(const strata& mStrata) const;
-
-        utils::observer_ptr<frame> find_hovered_frame_(const vector2f& mPosition);
 
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;

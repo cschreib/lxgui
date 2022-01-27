@@ -44,9 +44,9 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath)
 
 string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const std::string& sExtensions)
 {
-    string_vector lExtensions = utils::cut(sExtensions, ",");
+    auto lExtensions = utils::cut(sExtensions, ",");
     for (auto& sExtension : lExtensions)
-        utils::trim(sExtension, ' ');
+        sExtension = utils::trim(sExtension, ' ');
 
     string_vector lFileList;
     for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))

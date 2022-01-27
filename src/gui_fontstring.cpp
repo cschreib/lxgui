@@ -13,15 +13,14 @@ namespace lxgui {
 namespace gui
 {
 
-font_string::font_string(manager& mManager) : layered_region(mManager)
+font_string::font_string(utils::control_block& mBlock, manager& mManager) :
+    layered_region(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
 
 void font_string::render() const
 {
-    update_borders_();
-
     if (!pText_ || !bReady_ || !is_visible())
         return;
 
@@ -71,7 +70,7 @@ std::string font_string::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << layered_region::serialize(sTab);
+    sStr << base::serialize(sTab);
 
     sStr << sTab << "  # Font name   : " << sFontName_ << "\n";
     sStr << sTab << "  # Font height : " << fHeight_ << "\n";
@@ -116,7 +115,7 @@ void font_string::create_glue()
 
 void font_string::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const font_string* pFontString = down_cast<font_string>(&mObj);
     if (!pFontString)
@@ -212,7 +211,7 @@ const color& font_string::get_text_color() const
 
 void font_string::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pText_)
         set_font(sFontName_, fHeight_);
@@ -225,7 +224,7 @@ void font_string::create_text_object_()
     std::size_t uiPixelHeight = static_cast<std::size_t>(
         std::round(get_manager().get_interface_scaling_factor()*fHeight_));
 
-    const auto& mRenderer = get_manager().get_renderer();
+    auto& mRenderer = get_manager().get_renderer();
     const auto& mLocalizer = get_manager().get_localizer();
 
     const auto& lCodePoints = mLocalizer.get_allowed_code_points();
@@ -258,7 +257,7 @@ void font_string::create_text_object_()
 
 void font_string::set_font(const std::string& sFontName, float fHeight)
 {
-    sFontName_ = sFontName;
+    sFontName_ = parse_file_name(sFontName);
     fHeight_ = fHeight;
 
     create_text_object_();
@@ -476,18 +475,16 @@ const text* font_string::get_text_object() const
     return pText_.get();
 }
 
-void font_string::update_borders_() const
+void font_string::update_borders_()
 {
     if (!pText_)
-        return uiobject::update_borders_();
-
-    if (!bUpdateBorders_)
-        return;
+        return base::update_borders_();
 
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
-    bool bOldReady = bReady_;
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
     bReady_ = true;
 
     if (!lAnchorList_.empty())
@@ -521,8 +518,10 @@ void font_string::update_borders_() const
         if (std::isinf(fBoxWidth))
             fBoxWidth = pText_->get_width();
 
-        make_borders_(fTop, fBottom, fYCenter, fBoxHeight);
-        make_borders_(fLeft, fRight, fXCenter, fBoxWidth);
+        if (!make_borders_(fTop, fBottom, fYCenter, fBoxHeight))
+            bReady_ = false;
+        if (!make_borders_(fLeft, fRight, fXCenter, fBoxWidth))
+            bReady_ = false;
 
         if (bReady_)
         {
@@ -538,8 +537,6 @@ void font_string::update_borders_() const
         }
         else
             lBorderList_ = bounds2f::ZERO;
-
-        bUpdateBorders_ = false;
     }
     else
     {
@@ -555,12 +552,12 @@ void font_string::update_borders_() const
         bReady_ = false;
     }
 
-    lBorderList_.left = round_to_pixel(lBorderList_.left);
-    lBorderList_.right = round_to_pixel(lBorderList_.right);
-    lBorderList_.top = round_to_pixel(lBorderList_.top);
+    lBorderList_.left   = round_to_pixel(lBorderList_.left);
+    lBorderList_.right  = round_to_pixel(lBorderList_.right);
+    lBorderList_.top    = round_to_pixel(lBorderList_.top);
     lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
-    if (bReady_ || (!bReady_ && bOldReady))
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();

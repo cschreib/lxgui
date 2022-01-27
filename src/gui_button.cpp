@@ -11,14 +11,15 @@
 namespace lxgui {
 namespace gui
 {
-button::button(manager& mManager) : frame(mManager)
+button::button(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
+    enable_mouse(true);
 }
 
 std::string button::serialize(const std::string& sTab) const
 {
-    return frame::serialize(sTab);
+    return base::serialize(sTab);
 }
 
 void button::create_glue()
@@ -28,10 +29,9 @@ void button::create_glue()
 
 bool button::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if ((sScriptName == "OnClick") ||
-        (sScriptName == "OnDoubleClick") ||
         (sScriptName == "OnEnable") ||
         (sScriptName == "OnDisable"))
         return true;
@@ -39,13 +39,10 @@ bool button::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void button::on_script(const std::string& sScriptName, const event_data& mData)
+void button::fire_script(const std::string& sScriptName, const event_data& mData)
 {
-    if (sScriptName == "OnLoad")
-        enable_mouse(true);
-
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+    base::fire_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -68,30 +65,7 @@ void button::on_script(const std::string& sScriptName, const event_data& mData)
         if (sScriptName == "OnMouseUp")
         {
             release();
-            on_script("OnClick");
-            if (!mChecker.is_alive())
-                return;
-        }
-    }
-}
-
-void button::on_event(const event& mEvent)
-{
-    alive_checker mChecker(*this);
-
-    frame::on_event(mEvent);
-    if (!mChecker.is_alive())
-        return;
-
-    if (!get_manager().is_input_enabled())
-        return;
-
-    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
-    {
-        update_mouse_in_frame_();
-        if (bMouseInFrame_)
-        {
-            on_script("OnDoubleClicked");
+            fire_script("OnClick");
             if (!mChecker.is_alive())
                 return;
         }
@@ -100,7 +74,7 @@ void button::on_event(const event& mEvent)
 
 void button::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const button* pButton = down_cast<button>(&mObj);
     if (!pButton)
@@ -110,9 +84,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_normal_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_normal_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_normal_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -124,9 +101,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_pushed_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_pushed_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -138,9 +118,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_highlight_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_highlight_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -152,9 +135,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_disabled_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_disabled_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -166,9 +152,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_normal_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_normal_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_normal_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -180,9 +169,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_highlight_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_highlight_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_highlight_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -194,9 +186,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_disabled_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_disabled_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_disabled_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -347,7 +342,7 @@ void button::disable()
         unlight();
 
         alive_checker mChecker(*this);
-        on_script("OnDisable");
+        fire_script("OnDisable");
         if (!mChecker.is_alive())
             return;
     }
@@ -384,7 +379,7 @@ void button::enable()
             pDisabledText_->hide();
 
         alive_checker mChecker(*this);
-        on_script("OnEnable");
+        fire_script("OnEnable");
         if (!mChecker.is_alive())
             return;
     }
@@ -499,7 +494,6 @@ void button::lock_highlight()
 
 void button::unlock_highlight()
 {
-    update_mouse_in_frame_();
     if (!bMouseInFrame_)
         unlight();
 

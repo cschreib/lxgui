@@ -18,14 +18,6 @@ namespace gui
 
 namespace
 {
-    std::string to_upper(std::string sStr)
-    {
-        for (char& cChar : sStr)
-            cChar = static_cast<char>(std::toupper(cChar));
-
-        return sStr;
-    }
-
     std::string to_lower(std::string sStr)
     {
         for (char& cChar : sStr)
@@ -63,13 +55,13 @@ namespace
         const std::string sLanguageVar = get_environment_variable("LANGUAGE");
         if (!sLanguageVar.empty())
         {
-            std::vector<std::string> lLanguages = utils::cut(sLanguageVar, ":");
             std::vector<std::string> lOutput;
-            for (auto& sLanguage : lLanguages)
+            for (auto sLanguage : utils::cut(sLanguageVar, ":"))
             {
-                utils::replace(sLanguage, "_", "");
-                if (sLanguage.size() == 4)
-                    lOutput.push_back(sLanguage);
+                std::string sLanguageNormalized{sLanguage};
+                utils::replace(sLanguageNormalized, "_", "");
+                if (sLanguageNormalized.size() == 4)
+                    lOutput.push_back(sLanguageNormalized);
             }
 
             if (!lOutput.empty())
@@ -78,7 +70,7 @@ namespace
 
     #if defined(LXGUI_PLATFORM_WINDOWS)
         // If LANGUAGE is not specified, on Windows, try OS-specific function.
-        // TODO
+        // TODO: https://github.com/cschreib/lxgui/issues/95
     #endif
 
         // If LANGUAGE is not specified or empty, try LANG.
@@ -148,6 +140,7 @@ void localizer::set_locale(const std::locale& mLocale)
 void localizer::set_preferred_languages(const std::vector<std::string>& lLanguages)
 {
     // TODO implement more generic input checks
+    // https://github.com/cschreib/lxgui/issues/98
     // for (const auto& sLanguage : lLanguages)
     // {
     //     if (sLanguage.size() != 4)

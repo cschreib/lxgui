@@ -197,16 +197,28 @@
 					"shell_cmd": "make -j12 ryml",
 				},
 				{
-					"name": "src/gui_alive_checker.o",
-					"shell_cmd": "make -j12 src/gui_alive_checker.o",
+					"name": "src/gui_addon_registry.o",
+					"shell_cmd": "make -j12 src/gui_addon_registry.o",
 				},
 				{
-					"name": "src/gui_alive_checker.i",
-					"shell_cmd": "make -j12 src/gui_alive_checker.i",
+					"name": "src/gui_addon_registry.i",
+					"shell_cmd": "make -j12 src/gui_addon_registry.i",
 				},
 				{
-					"name": "src/gui_alive_checker.s",
-					"shell_cmd": "make -j12 src/gui_alive_checker.s",
+					"name": "src/gui_addon_registry.s",
+					"shell_cmd": "make -j12 src/gui_addon_registry.s",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.o",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.o",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.i",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.i",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.s",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.s",
 				},
 				{
 					"name": "src/gui_anchor.o",
@@ -377,16 +389,16 @@
 					"shell_cmd": "make -j12 src/gui_event.s",
 				},
 				{
-					"name": "src/gui_eventmanager.o",
-					"shell_cmd": "make -j12 src/gui_eventmanager.o",
+					"name": "src/gui_eventemitter.o",
+					"shell_cmd": "make -j12 src/gui_eventemitter.o",
 				},
 				{
-					"name": "src/gui_eventmanager.i",
-					"shell_cmd": "make -j12 src/gui_eventmanager.i",
+					"name": "src/gui_eventemitter.i",
+					"shell_cmd": "make -j12 src/gui_eventemitter.i",
 				},
 				{
-					"name": "src/gui_eventmanager.s",
-					"shell_cmd": "make -j12 src/gui_eventmanager.s",
+					"name": "src/gui_eventemitter.s",
+					"shell_cmd": "make -j12 src/gui_eventemitter.s",
 				},
 				{
 					"name": "src/gui_eventreceiver.o",
@@ -401,40 +413,16 @@
 					"shell_cmd": "make -j12 src/gui_eventreceiver.s",
 				},
 				{
-					"name": "src/gui_focusframe.o",
-					"shell_cmd": "make -j12 src/gui_focusframe.o",
+					"name": "src/gui_factory.o",
+					"shell_cmd": "make -j12 src/gui_factory.o",
 				},
 				{
-					"name": "src/gui_focusframe.i",
-					"shell_cmd": "make -j12 src/gui_focusframe.i",
+					"name": "src/gui_factory.i",
+					"shell_cmd": "make -j12 src/gui_factory.i",
 				},
 				{
-					"name": "src/gui_focusframe.s",
-					"shell_cmd": "make -j12 src/gui_focusframe.s",
-				},
-				{
-					"name": "src/gui_focusframe_glues.o",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.o",
-				},
-				{
-					"name": "src/gui_focusframe_glues.i",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.i",
-				},
-				{
-					"name": "src/gui_focusframe_glues.s",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.s",
-				},
-				{
-					"name": "src/gui_focusframe_parser.o",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.o",
-				},
-				{
-					"name": "src/gui_focusframe_parser.i",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.i",
-				},
-				{
-					"name": "src/gui_focusframe_parser.s",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.s",
+					"name": "src/gui_factory.s",
+					"shell_cmd": "make -j12 src/gui_factory.s",
 				},
 				{
 					"name": "src/gui_fontstring.o",
@@ -485,6 +473,18 @@
 					"shell_cmd": "make -j12 src/gui_frame.s",
 				},
 				{
+					"name": "src/gui_frame_container.o",
+					"shell_cmd": "make -j12 src/gui_frame_container.o",
+				},
+				{
+					"name": "src/gui_frame_container.i",
+					"shell_cmd": "make -j12 src/gui_frame_container.i",
+				},
+				{
+					"name": "src/gui_frame_container.s",
+					"shell_cmd": "make -j12 src/gui_frame_container.s",
+				},
+				{
 					"name": "src/gui_frame_glues.o",
 					"shell_cmd": "make -j12 src/gui_frame_glues.o",
 				},
@@ -531,6 +531,18 @@
 				{
 					"name": "src/gui_gradient.s",
 					"shell_cmd": "make -j12 src/gui_gradient.s",
+				},
+				{
+					"name": "src/gui_keybinder.o",
+					"shell_cmd": "make -j12 src/gui_keybinder.o",
+				},
+				{
+					"name": "src/gui_keybinder.i",
+					"shell_cmd": "make -j12 src/gui_keybinder.i",
+				},
+				{
+					"name": "src/gui_keybinder.s",
+					"shell_cmd": "make -j12 src/gui_keybinder.s",
 				},
 				{
 					"name": "src/gui_layeredregion.o",
@@ -617,18 +629,6 @@
 					"shell_cmd": "make -j12 src/gui_manager_glues.s",
 				},
 				{
-					"name": "src/gui_manager_parser.o",
-					"shell_cmd": "make -j12 src/gui_manager_parser.o",
-				},
-				{
-					"name": "src/gui_manager_parser.i",
-					"shell_cmd": "make -j12 src/gui_manager_parser.i",
-				},
-				{
-					"name": "src/gui_manager_parser.s",
-					"shell_cmd": "make -j12 src/gui_manager_parser.s",
-				},
-				{
 					"name": "src/gui_material.o",
 					"shell_cmd": "make -j12 src/gui_material.o",
 				},
@@ -699,6 +699,18 @@
 				{
 					"name": "src/gui_region_parser.s",
 					"shell_cmd": "make -j12 src/gui_region_parser.s",
+				},
+				{
+					"name": "src/gui_registry.o",
+					"shell_cmd": "make -j12 src/gui_registry.o",
+				},
+				{
+					"name": "src/gui_registry.i",
+					"shell_cmd": "make -j12 src/gui_registry.i",
+				},
+				{
+					"name": "src/gui_registry.s",
+					"shell_cmd": "make -j12 src/gui_registry.s",
 				},
 				{
 					"name": "src/gui_renderer.o",
@@ -905,6 +917,18 @@
 					"shell_cmd": "make -j12 src/gui_uiobject_parser.s",
 				},
 				{
+					"name": "src/gui_uiroot.o",
+					"shell_cmd": "make -j12 src/gui_uiroot.o",
+				},
+				{
+					"name": "src/gui_uiroot.i",
+					"shell_cmd": "make -j12 src/gui_uiroot.i",
+				},
+				{
+					"name": "src/gui_uiroot.s",
+					"shell_cmd": "make -j12 src/gui_uiroot.s",
+				},
+				{
 					"name": "src/gui_vertexcache.o",
 					"shell_cmd": "make -j12 src/gui_vertexcache.o",
 				},
@@ -917,16 +941,52 @@
 					"shell_cmd": "make -j12 src/gui_vertexcache.s",
 				},
 				{
-					"name": "src/input.o",
-					"shell_cmd": "make -j12 src/input.o",
+					"name": "src/gui_virtual_registry.o",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.o",
 				},
 				{
-					"name": "src/input.i",
-					"shell_cmd": "make -j12 src/input.i",
+					"name": "src/gui_virtual_registry.i",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.i",
 				},
 				{
-					"name": "src/input.s",
-					"shell_cmd": "make -j12 src/input.s",
+					"name": "src/gui_virtual_registry.s",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.s",
+				},
+				{
+					"name": "src/gui_virtual_uiroot.o",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.o",
+				},
+				{
+					"name": "src/gui_virtual_uiroot.i",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.i",
+				},
+				{
+					"name": "src/gui_virtual_uiroot.s",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.s",
+				},
+				{
+					"name": "src/input_dispatcher.o",
+					"shell_cmd": "make -j12 src/input_dispatcher.o",
+				},
+				{
+					"name": "src/input_dispatcher.i",
+					"shell_cmd": "make -j12 src/input_dispatcher.i",
+				},
+				{
+					"name": "src/input_dispatcher.s",
+					"shell_cmd": "make -j12 src/input_dispatcher.s",
+				},
+				{
+					"name": "src/input_keys.o",
+					"shell_cmd": "make -j12 src/input_keys.o",
+				},
+				{
+					"name": "src/input_keys.i",
+					"shell_cmd": "make -j12 src/input_keys.i",
+				},
+				{
+					"name": "src/input_keys.s",
+					"shell_cmd": "make -j12 src/input_keys.s",
 				},
 				{
 					"name": "src/input_source.o",
@@ -939,6 +999,18 @@
 				{
 					"name": "src/input_source.s",
 					"shell_cmd": "make -j12 src/input_source.s",
+				},
+				{
+					"name": "src/input_window.o",
+					"shell_cmd": "make -j12 src/input_window.o",
+				},
+				{
+					"name": "src/input_window.i",
+					"shell_cmd": "make -j12 src/input_window.i",
+				},
+				{
+					"name": "src/input_window.s",
+					"shell_cmd": "make -j12 src/input_window.s",
 				},
 				{
 					"name": "src/utils_exception.o",

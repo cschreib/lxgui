@@ -29,18 +29,12 @@
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
 *   in addition to those from @{Frame}:
 *
-*   - `OnChar`: Triggered whenever a new character is added to the
-*   edit box. Will always be preceeded by `OnTextChanged`.
 *   - `OnCursorChanged`: Triggered whenever the position of the edit
 *   cursor is changed (not yet implemented).
-*   - `OnEditFocusGained`: Triggered when the edit box gains focus,
-*   see @{FocusFrame:set_focus}.
-*   - `OnEditFocusLost`: Triggered when the edit box looses focus,
-*   see @{FocusFrame:set_focus}.
 *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
 *   is pressed while the edit box is focussed. This captures both
 *   the main keyboard key and the smaller one on the numpad.
-*   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+*   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
 *   while the edit box is focussed.
 *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
 *   while the edit box is focussed.
@@ -52,11 +46,11 @@
 *   while the edit box is focussed.
 *   - `OnTextChanged`: Triggered whenever the text contained in the
 *   edit box changes (character added or deleted, text set or pasted,
-*   etc.).
+*   etc.). Triggered after `OnChar`.
 *   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
 *   followed by `OnTextChanged`.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}, @{FocusFrame}.
+*   Inherits all methods from: @{UIObject}, @{Frame}.
 *
 *   Child classes: none.
 *   @classmod EditBox
@@ -68,7 +62,7 @@ namespace gui
 void edit_box::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<edit_box>("EditBox",
-        sol::base_classes, sol::bases<uiobject, frame, focus_frame>(),
+        sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
         member_function<&edit_box::get_lua_member_>(),
         sol::meta_function::new_index,
@@ -113,6 +107,7 @@ void edit_box::register_on_lua(sol::state& mLua)
     mClass.set_function("get_number", [](const edit_box& mSelf)
     {
         // TODO: use localizer's locale for that
+        // https://github.com/cschreib/lxgui/issues/88
         double dNumber = 0.0;
         utils::from_string(mSelf.get_text(), dNumber);
         return dNumber;

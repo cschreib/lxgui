@@ -22,7 +22,7 @@ namespace sfml
     public :
 
         /// Constructor.
-        explicit atlas_page(const gui::renderer& mRenderer, material::filter mFilter);
+        explicit atlas_page(gui::renderer& mRenderer, material::filter mFilter);
 
     protected :
 
@@ -62,7 +62,7 @@ namespace sfml
         /** \param mRenderer The renderer with witch to create this atlas
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        explicit atlas(const renderer& mRenderer, material::filter mFilter);
+        explicit atlas(renderer& mRenderer, material::filter mFilter);
 
         atlas(const atlas& tex) = delete;
         atlas(atlas&& tex) = delete;
@@ -74,7 +74,7 @@ namespace sfml
         /// Create a new page in this atlas.
         /** \return The new page, added at the back of the page list
         */
-        std::unique_ptr<gui::atlas_page> create_page_() const override;
+        std::unique_ptr<gui::atlas_page> create_page_() override;
     };
 }
 }

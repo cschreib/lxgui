@@ -1,7 +1,8 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX
@@ -61,8 +62,6 @@ int main(int argc, char* argv[])
             std::move(pRenderer)
         );
 
-        pManager->enable_caching(false);
-
         // Setup the GUI (see examples_common.cpp)
         examples_setup_gui(*pManager);
 
@@ -71,7 +70,16 @@ int main(int argc, char* argv[])
         bool bFocus = true;
         float fDelta = 0.0f;
         timing_clock::time_point mPrevTime = timing_clock::now();
-        input::manager& mInputMgr = pManager->get_input_manager();
+        input::dispatcher& mInputDispatcher = pManager->get_input_dispatcher();
+        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
+
+        // Register a callback on Escape to terminate the program.
+        // Doing it this way, we only react to keyboard input that is not captured by the GUI.
+        mWorldInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+        {
+            if (mKey == input::key::K_ESCAPE)
+                bRunning = false;
+        });
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -87,34 +95,10 @@ int main(int argc, char* argv[])
                     bFocus = false;
                 else if (mEvent.type == sf::Event::GainedFocus)
                     bFocus = true;
-                else if (mEvent.type == sf::Event::KeyReleased)
-                {
-                    // This uses events straight from SFML, but the GUI may want to
-                    // capture some of them (for example: the user is typing in an edit_box).
-                    // Therefore, before we can react to these events, we must check that
-                    // the input isn't being "focussed" into the GUI:
-                    if (!mInputMgr.is_keyboard_focused())
-                    {
-                        switch (mEvent.key.code)
-                        {
-                            case sf::Keyboard::Key::Escape:
-                                // Escape pressed: stop the program
-                                bRunning = false;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
 
-                // Feed events to the GUI
-                static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
-            }
-
-            // Check if WORLD input is allowed
-            if (mInputMgr.can_receive_input("WORLD"))
-            {
-                // Process mouse and click events in the game...
+                // Feed events to the GUI.
+                // NB: Do not use raw keyboard/mouse events from SFML directly. See examples_common.cpp.
+                static_cast<input::sfml::source&>(mInputDispatcher.get_source()).on_sfml_event(mEvent);
             }
 
             // If the window is not focussed, do nothing and wait until focus comes back
@@ -125,7 +109,7 @@ int main(int argc, char* argv[])
             }
 
             // Update the gui
-            pManager->update(fDelta);
+            pManager->update_ui(fDelta);
 
             // Your own rendering would go here!
             // For this example, we just clear the window

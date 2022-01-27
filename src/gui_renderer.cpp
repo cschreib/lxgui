@@ -9,7 +9,7 @@ namespace lxgui {
 namespace gui
 {
 
-void renderer::begin(std::shared_ptr<render_target> pTarget) const
+void renderer::begin(std::shared_ptr<render_target> pTarget)
 {
     uiBatchCount_ = 0;
 
@@ -43,7 +43,7 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
     begin_(std::move(pTarget));
 }
 
-void renderer::end() const
+void renderer::end()
 {
     if (is_quad_batching_enabled())
     {
@@ -54,7 +54,7 @@ void renderer::end() const
     end_();
 }
 
-void renderer::set_view(const matrix4f& mViewMatrix) const
+void renderer::set_view(const matrix4f& mViewMatrix)
 {
     if (is_quad_batching_enabled())
     {
@@ -64,7 +64,7 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
     set_view_(mViewMatrix);
 }
 
-void renderer::render_quad(const quad& mQuad) const
+void renderer::render_quad(const quad& mQuad)
 {
     render_quads(mQuad.mat.get(), {mQuad.v});
 }
@@ -89,7 +89,7 @@ bool renderer::uses_same_texture_(const material* pMat1, const material* pMat2) 
 }
 
 void renderer::render_quads(const material* pMaterial,
-    const std::vector<std::array<vertex,4>>& lQuadList) const
+    const std::vector<std::array<vertex,4>>& lQuadList)
 {
     if (lQuadList.empty())
         return;
@@ -142,7 +142,7 @@ void renderer::render_quads(const material* pMaterial,
     }
 }
 
-void renderer::flush_quad_batch() const
+void renderer::flush_quad_batch()
 {
     auto& mCache = lQuadCache_[uiCurrentQuadCache_];
     if (mCache.lData.empty())
@@ -169,7 +169,7 @@ void renderer::flush_quad_batch() const
 }
 
 void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,
-    const matrix4f& mModelTransform) const
+    const matrix4f& mModelTransform)
 {
     if (is_quad_batching_enabled())
     {
@@ -189,7 +189,8 @@ void renderer::set_quad_batching_enabled(bool bEnabled)
     bQuadBatchingEnabled_ = bEnabled;
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName,
+    material::filter mFilter)
 {
     std::string sBackedName = utils::to_string(static_cast<std::size_t>(mFilter)) + '|' + sFileName;
     auto mIter = lTextureList_.find(sBackedName);
@@ -235,7 +236,7 @@ namespace
 
 std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, std::size_t uiSize,
     std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-    char32_t uiDefaultCodePoint) const
+    char32_t uiDefaultCodePoint)
 {
     const std::string sFontName = hash_font_parameters(
         sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
@@ -248,8 +249,6 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, s
         else
             lFontList_.erase(mIter);
     }
-
-    // TODO: forward lCodePoints to create_font_()
 
     std::shared_ptr<gui::font> pFont = create_font_(
         sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
@@ -310,7 +309,7 @@ void renderer::auto_detect_settings()
     bQuadBatchingEnabled_ = true;
 }
 
-atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const
+atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter mFilter)
 {
     std::shared_ptr<gui::atlas> pAtlas;
 
@@ -331,7 +330,7 @@ atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter 
 }
 
 std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
+    const std::string& sFileName, material::filter mFilter)
 {
     if (!is_texture_atlas_enabled())
         return create_material(sFileName, mFilter);
@@ -355,7 +354,7 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
 
 std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCategory,
     const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
-    const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const
+    const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint)
 {
     if (!is_texture_atlas_enabled())
         return create_font(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
@@ -380,10 +379,10 @@ std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCateg
     return pFont;
 }
 
-std::shared_ptr<material> renderer::create_material(
-    std::shared_ptr<render_target> pRenderTarget) const
+std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> pRenderTarget)
 {
-    return create_material(pRenderTarget, pRenderTarget->get_rect());
+    const auto& mRect = pRenderTarget->get_rect();
+    return create_material(std::move(pRenderTarget), mRect);
 }
 
 void renderer::notify_window_resized(const vector2ui&)

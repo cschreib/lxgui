@@ -2,6 +2,8 @@
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_registry.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -11,7 +13,7 @@ namespace lxgui {
 namespace gui
 {
 
-anchor::anchor(const uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
+anchor::anchor(uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
 {
     if (!mObject.is_virtual())
     {
@@ -22,13 +24,13 @@ anchor::anchor(const uiobject& mObject, const anchor_data& mAnchor) : anchor_dat
     }
 }
 
-void anchor::update_parent_(const uiobject& mObject)
+void anchor::update_parent_(uiobject& mObject)
 {
     pParent_ = nullptr;
 
     if (sParent.empty()) return;
 
-    utils::observer_ptr<const frame> pObjParent = mObject.get_parent();
+    utils::observer_ptr<frame> pObjParent = mObject.get_parent();
 
     std::string sParentFullName = sParent;
     if (pObjParent)
@@ -43,22 +45,14 @@ void anchor::update_parent_(const uiobject& mObject)
         return;
     }
 
-    utils::observer_ptr<const uiobject> pNewParent =
-        mObject.get_manager().get_uiobject_by_name(sParentFullName);
+    utils::observer_ptr<uiobject> pNewParent =
+        mObject.get_registry().get_uiobject_by_name(sParentFullName);
 
     if (!pNewParent)
     {
         gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
             << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
             << sParentFullName << "\" but this widget does not (yet?) exist." << std::endl;
-        return;
-    }
-
-    if (mObject.get_top_level_renderer() != pNewParent->get_top_level_renderer())
-    {
-        gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
-            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
-            << sParentFullName << "\" which is in another renderer." << std::endl;
         return;
     }
 

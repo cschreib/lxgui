@@ -1,20 +1,27 @@
 #include "lxgui/gui_parser_common.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_frame.hpp"
 
 namespace lxgui {
 namespace gui
 {
 
-node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
-    utils::observer_ptr<frame> pParent)
+uiobject_core_attributes parse_core_attributes(
+    registry& mRegistry, virtual_registry& mVirtualRegistry,
+    const layout_node& mNode, utils::observer_ptr<frame> pParent)
 {
-    node_core_attributes mAttr;
+    uiobject_core_attributes mAttr;
     mAttr.sObjectType = mNode.get_name();
     mAttr.sName = mNode.get_attribute_value<std::string>("name");
 
     if (pParent)
     {
-        mAttr.pParent = pParent;
+        mAttr.pParent = std::move(pParent);
 
         if (mNode.has_attribute("virtual"))
         {
@@ -36,16 +43,16 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
         if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
-            auto pParent = mManager.get_uiobject_by_name(sParent);
-            if (!sParent.empty() && !mAttr.pParent)
+            auto pParentObj = mRegistry.get_uiobject_by_name(sParent);
+            if (!sParent.empty() && !pParentObj)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
                     << "Cannot find \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
                     "No parent given to that widget." << std::endl;
             }
 
-            mAttr.pParent = down_cast<frame>(pParent);
-            if (pParent != nullptr && mAttr.pParent == nullptr)
+            mAttr.pParent = down_cast<frame>(pParentObj);
+            if (pParentObj != nullptr && mAttr.pParent == nullptr)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
                     << "Cannot set  \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
@@ -55,7 +62,10 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
     }
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits"))
-        mAttr.lInheritance = mManager.get_virtual_uiobject_list(pAttr->get_value<std::string>());
+    {
+        mAttr.lInheritance = mVirtualRegistry.get_virtual_uiobject_list(
+            pAttr->get_value<std::string>());
+    }
 
     return mAttr;
 }

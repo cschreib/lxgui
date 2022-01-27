@@ -4,7 +4,7 @@
 namespace lxgui {
 namespace gui
 {
-region::region(manager& mManager) : uiobject(mManager)
+region::region(utils::control_block& mBlock, manager& mManager) : uiobject(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

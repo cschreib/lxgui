@@ -5,7 +5,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
 #include "lxgui/input_keys.hpp"
-#include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_bounds2.hpp"
 
@@ -110,18 +110,12 @@ namespace gui
     *   __Events.__ Hard-coded events available to all edit_boxes,
     *   in addition to those from #frame:
     *
-    *   - `OnChar`: Triggered whenever a new character is added to the
-    *   edit box. Will always be preceeded by `OnTextChanged`.
     *   - `OnCursorChanged`: Triggered whenever the position of the edit
     *   cursor is changed (not yet implemented).
-    *   - `OnEditFocusGained`: Triggered when the edit box gains focus,
-    *   see @{FocusFrame:set_focus}.
-    *   - `OnEditFocusLost`: Triggered when the edit box looses focus,
-    *   see @{FocusFrame:set_focus}.
     *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
     *   is pressed while the edit box is focussed. This captures both
     *   the main keyboard key and the smaller one on the numpad.
-    *   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+    *   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
     *   while the edit box is focussed.
     *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
     *   while the edit box is focussed.
@@ -133,16 +127,18 @@ namespace gui
     *   while the edit box is focussed.
     *   - `OnTextChanged`: Triggered whenever the text contained in the
     *   edit box changes (character added or deleted, text set or pasted,
-    *   etc.).
+    *   etc.). Triggered after `OnChar`.
     *   - `OnTextSet`: Triggered by edit_box::set_text. Will always be
     *   followed by `OnTextChanged`.
     */
-    class edit_box : public focus_frame
+    class edit_box : public frame
     {
+        using base = frame;
+
     public :
 
         /// Constructor.
-        explicit edit_box(manager& mManager);
+        explicit edit_box(utils::control_block& mBlock, manager& mManager);
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param mObj The uiobject to copy
@@ -157,14 +153,6 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
-
         /// Calls a script.
         /** \param sScriptName The name of the script
         *   \param mData       Stores scripts arguments
@@ -172,18 +160,13 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+        void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
         bool can_use_script(const std::string& sScriptName) const override;
-
-        /// Sets if this edit_box can receive keyboard input.
-        /** \param bIsKeyboardEnabled 'true' to enable
-        */
-        void enable_keyboard(bool bIsKeyboardEnabled) override;
 
         /// Sets the content of this edit_box.
         /** \param sText The content of this edit_box
@@ -376,9 +359,8 @@ namespace gui
         */
         void set_font(const std::string& sFontName, float fHeight);
 
-        /// Notifies this edit_box it has gained/lost focus.
-        /** \param bFocus 'true' if the edit_box has gained focus
-        *   \note This function is called by manager.
+        /// Notifies this frame that it has received or lost focus.
+        /** \param bFocus 'true' if focus is received, 'false' if lost
         */
         void notify_focus(bool bFocus) override;
 
@@ -416,7 +398,7 @@ namespace gui
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
 
-        void process_key_(input::key uiKey);
+        void process_key_(input::key uiKey, bool bShiftIsPressed, bool bCtrlIsPressed);
 
         utils::ustring           sUnicodeText_;
         utils::ustring           sDisplayedText_;
@@ -436,25 +418,22 @@ namespace gui
         std::string sComboKey_;
 
         utils::observer_ptr<texture> pHighlight_ = nullptr;
-        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
-        std::size_t  uiSelectionStartPos_ = 0u;
-        std::size_t  uiSelectionEndPos_ = 0u;
-        bool  bSelectedText_ = false;
+        color                        mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
+        std::size_t                  uiSelectionStartPos_ = 0u;
+        std::size_t                  uiSelectionEndPos_ = 0u;
+        bool                         bSelectedText_ = false;
 
         utils::observer_ptr<texture> pCarret_ = nullptr;
-        double         dBlinkSpeed_ = 0.5;
-        periodic_timer mCarretTimer_;
+        double                       dBlinkSpeed_ = 0.5;
+        periodic_timer               mCarretTimer_;
 
         std::vector<utils::ustring> lHistoryLineList_;
         std::size_t                 uiMaxHistoryLines_ = std::numeric_limits<std::size_t>::max();
         std::size_t                 uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
 
         utils::observer_ptr<font_string> pFontString_ = nullptr;
-        bounds2f lTextInsets_ = bounds2f::ZERO;
 
-        input::key     mLastKeyPressed_;
-        double         dKeyRepeatSpeed_ = 0.03;
-        periodic_timer mKeyRepeatTimer_;
+        bounds2f lTextInsets_ = bounds2f::ZERO;
     };
 }
 }

@@ -85,7 +85,7 @@ namespace sdl
     private :
 
         std::shared_ptr<sdl::material> pTexture_;
-        mutable matrix4f mViewMatrix_;
+        matrix4f mViewMatrix_;
     };
 }
 }

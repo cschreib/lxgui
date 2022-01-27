@@ -9,7 +9,7 @@ namespace gui {
 namespace sfml
 {
 
-atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
+atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
 {
     const std::size_t uiSize = mRenderer.get_texture_atlas_page_size();
 
@@ -43,9 +43,9 @@ float atlas_page::get_height() const
     return mTexture_.getSize().y;
 }
 
-atlas::atlas(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
+atlas::atlas(renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
-std::unique_ptr<gui::atlas_page> atlas::create_page_() const
+std::unique_ptr<gui::atlas_page> atlas::create_page_()
 {
     return std::make_unique<sfml::atlas_page>(mRenderer_, mFilter_);
 }

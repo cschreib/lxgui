@@ -94,7 +94,7 @@ namespace gui
         using anchor_data::mType;
 
         /// Constructor.
-        anchor(const uiobject& mObject, const anchor_data& mAnchor);
+        anchor(uiobject& mObject, const anchor_data& mAnchor);
 
         /// Non-copiable
         anchor(const anchor&) = delete;
@@ -117,7 +117,12 @@ namespace gui
         /// Returns this anchor's parent widget.
         /** \return This anchor's parent widget
         */
-        const utils::observer_ptr<const uiobject>& get_parent() const { return pParent_; }
+        const utils::observer_ptr<uiobject>& get_parent() { return pParent_; }
+
+        /// Returns this anchor's parent widget.
+        /** \return This anchor's parent widget
+        */
+        utils::observer_ptr<const uiobject> get_parent() const { return pParent_; }
 
         /// Prints all relevant information about this anchor in a string.
         /** \param sTab The offset to give to all lines
@@ -145,9 +150,9 @@ namespace gui
         /// Update the anchor parent object from the parent string.
         /** \param mObject The object owning this anchor
         */
-        void update_parent_(const uiobject& mObject);
+        void update_parent_(uiobject& mObject);
 
-        utils::observer_ptr<const uiobject> pParent_ = nullptr;
+        utils::observer_ptr<uiobject> pParent_ = nullptr;
     };
 }
 }

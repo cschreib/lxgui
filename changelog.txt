@@ -26,7 +26,10 @@ Major changes:
     - the regions are created, in order of declaration in the XML file
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
+ - gui: scripts are now handled with signals and slots in C++, for better control of lifetime
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
+ - gui: focus is now handled as a stack rather than binary
+ - gui: keyboard input is now given to topmost frame registered for the pressed key
  - lua: removed custom lua wrapper, using sol2 instead
  - xml: removed custom xml parser, using pugixml instead
  - yaml: added yaml parser for GUI layout
@@ -47,15 +50,22 @@ Other changes:
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
  - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
+ - utils: string conversion functions are now locale-independent; use localizer class otherwise
+ - utils: added observer/owner smart pointers
+ - utils: added signal
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
  - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
- - input: get_key_name() is now platform-independent, and only returns English
+ - input: renamed input::manager into input::dispatcher
+ - input: get_key_name() is now a free function renamed to get_key_code_name()
+ - input: get_key_code_name() is now platform-independent, and only returns English
  - input: added set_mouse_cursor() and reset_mouse_cursor()
  - input: added get_interface_scaling_factor_hint()
  - input: added set_interface_scaling_factor()
- - gui: added error message when trying to anchor to an object managed by another renderer
+ - input: removed key_is_down_long() and mouse_is_down_long()
+ - input: added world_dispatcher
+ - input: added window
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: added renderer::set_view() to allow arbitrary view transforms
@@ -66,10 +76,19 @@ Other changes:
  - gui: added explicit =delete for copy and move constructors when appropriate
  - gui: added event_data class
  - gui: added frame::get_rough_num_children and get_rough_num_regions
+ - gui: added uiroot to hold root frames
+ - gui: added virtual_uiroot to hold virtual root frames
+ - gui: added factory to manage uiobject creation functions
+ - gui: added registry and virtual_registry to handle uiobject lookup by name
+ - gui: added addon_registry to load and manage addons
+ - gui: added keybinder to manage Lua key bindings
+ - gui: added uiobject::is_loaded() and clarify the semantic
+ - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
+ - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
- - gui: renamed frame::on into frame::on_script
+ - gui: renamed frame::on into frame::fire_script
  - gui: renamed frame::fire_build_layer_list into frame::notify_layers_need_update
  - gui: renamed frame_renderer::fire_redraw into notify_strata_needs_redraw
  - gui: renamed uiobject::fire_udpate_borders to uiobject::notify_borders_need_update
@@ -82,6 +101,14 @@ Other changes:
  - gui: renamed uiobject::set_abs_width/height/dimensions to set_width/height/dimensions
  - gui: renamed uiobject::set_rel_width/height/dimensions to set_relative_width/height/dimensions
  - gui: renamed frame::get/set_min/max_resize to get/set_min/max_dimensions
+ - gui: renamed manager::update to update_ui
+ - gui: renamed manager::read_files to load_ui
+ - gui: renamed manager::create_lua to register_lua_glues
+ - gui: renamed event_manager to event_emitter
+ - gui: renamed input::manager::get_key_name into input::get_key_codename
+ - gui: renamed input::manager::get_mouse_button_string into input::get_mouse_button_codename
+ - gui: renamed input::manager::get_key_name overloads with modifiers
+ - gui: renamed input::manager to input::dispatcher
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
@@ -94,6 +121,14 @@ Other changes:
  - gui: removed anchor::get_abs_x/get_abs_y and added anchor::get_point
  - gui: removed uiobject::get_abs_width/height and added uiobject::get_dimensions()
  - gui: removed uiobject::get_apparent_width/height and added uiobject::get_apparent_dimensions()
+ - gui: removed uiobject::set_newly_created/is_newly_created (no longer necessary)
+ - gui: removed manager::is_loading_ui() (no longer necessary)
+ - gui: removed manager::begin() and end()
+ - gui: removed frame::is_mouse_enabled; use is_mouse_click_enabled and is_mouse_move_enabled
+ - gui: removed frame::is_in_frame; use is_in_region instead
+ - gui: removed frame::register_all_events and unregister_all_events
+ - gui: removed frame::enable_keyboard, use enable_key_capture instead
+ - gui: removed event class; generic events are now only using event_data
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument
@@ -103,7 +138,6 @@ Other changes:
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added frame_renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a frame_renderer
- - gui: manager now inherits from event_manager instead of owning one (fix chicken/egg problem)
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting
@@ -112,6 +146,11 @@ Other changes:
  - gui: relative sizing is now only applicable to XML <Size>
  - gui: split anchor into anchor (logic) + anchor_data (data)
  - gui: uiobject::set_parent() and uiobject::set_name() are no longer public
+ - gui: Lua key binding functions now expect Lua functions as handlers, not strings
+ - gui: renamed OnEditFocusGained to OnFocusGained (now available for FocusFrame too)
+ - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
+ - gui: key and mouse events no longer contain string names of buttons and keys
+ - gui: objects inside a scroll_frame can now correctly anchor to other objects
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
@@ -122,7 +161,10 @@ Other changes:
  - gui: added frame::get_script
  - gui: added slider::set_orientation(const std::string&)
  - gui: added status_bar::set_orientation(const std::string&)
+ - gui: added manager::close_ui_now and made close_ui safer
+ - gui: added frame::enable_mouse_click and frame::enable_mouse_move
  - gui: render targets can now have texture filtering other than nearest
+ - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications
  - gui: improved peformance of generating new object IDs
  - gui: improved peformance of font outline rendering
@@ -145,6 +187,7 @@ Other changes:
  - gui: fixed edit_box getting stuck when pressing Backspace to delete all partially-displayed text
  - gui: fixed edit_box integer_only setting not always checking for validity of the current content
  - gui: fixed edit_box numeric-only mode not accepting input correctly
+ - gui: fixed edit_box key repeat duplicating low-level repetitions from the OS
  - gui: fixed FontString:set_font() outline flags not handled correctly
  - gui: fixed scroll_frame not propagating all size updates to its scroll child
  - gui: fixed is_visible() for layered_regions always returning false
@@ -160,7 +203,6 @@ Other changes:
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
  - gui: fixed missing 'const' for uiobject::render()
- - utils: string conversion functions are now locale-independent; use localizer class otherwise
 
 v1.2.0:
  - added support for MSVC 2010

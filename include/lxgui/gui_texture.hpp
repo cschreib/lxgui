@@ -13,12 +13,16 @@
 namespace lxgui {
 namespace gui
 {
+    class renderer;
+
     /// A layered_region that can draw images and colored rectangles.
     /** This object contains either a texture taken from a file,
     *   or a plain color (possibly with a different color on each corner).
     */
     class texture : public layered_region
     {
+        using base = layered_region;
+
     public :
 
         enum class blend_mode
@@ -31,7 +35,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit texture(manager& mManager);
+        explicit texture(utils::control_block& mBlock, manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -238,7 +242,7 @@ namespace gui
         void parse_gradient_node_(const layout_node& mNode);
 
         void update_dimensions_from_tex_coord_();
-        void update_borders_() const override;
+        void update_borders_() override;
 
         using content = std::variant<color, std::string, gradient>;
         content mContent_ = color::WHITE;
@@ -248,7 +252,8 @@ namespace gui
         bool             bIsDesaturated_ = false;
         bool             bTexCoordModifiesRect_ = false;
 
-        mutable quad mQuad_;
+        renderer& mRenderer_;
+        quad mQuad_;
     };
 }
 }

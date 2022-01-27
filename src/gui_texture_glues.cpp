@@ -237,7 +237,7 @@ void texture::register_on_lua(sol::state& mLua)
         else
         {
             // Normal texture file
-            mSelf.set_texture(mSelf.get_manager().parse_file_name(sTexture));
+            mSelf.set_texture(sTexture);
         }
     },
     [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)

@@ -81,8 +81,11 @@ bounds2f font::get_character_bounds(char32_t uiChar) const
         return bounds2f{};
 
 #if defined(SFML_HAS_OUTLINE_GLYPH_FIX)
-    // Requires https://github.com/SFML/SFML/pull/1827
-    const float fYOffset = uiSize_; // TODO: this should use the font ascender + descender
+    // This code requires https://github.com/SFML/SFML/pull/1827
+
+    // TODO: this should use the font ascender + descender for fYOffset
+    // https://github.com/cschreib/lxgui/issues/97
+    const float fYOffset = uiSize_;
     const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 
     bounds2f mRect;
@@ -91,7 +94,9 @@ bounds2f font::get_character_bounds(char32_t uiChar) const
     mRect.top    = mSFRect.top + fYOffset;
     mRect.bottom = mSFRect.top + fYOffset + mSFRect.height;
 #else
-    const float fYOffset = uiSize_; // TODO: this should use the font ascender + descender
+    // TODO: this should use the font ascender + descender for fYOffset
+    // https://github.com/cschreib/lxgui/issues/97
+    const float fYOffset = uiSize_;
     const float fOffset = static_cast<float>(uiOutline_);
     const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 

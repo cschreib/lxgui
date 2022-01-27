@@ -3,13 +3,15 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_uiobject_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_event.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_view.hpp>
+#include <lxgui/utils_signal.hpp>
 
 #include <sol/protected_function.hpp>
 
@@ -44,15 +46,17 @@ namespace gui
         std::size_t uiLineNbr = 0;
     };
 
-    /// C++ function type for UI script handlers.
-    using script_handler_function = std::function<void(frame&, const event_data&)>;
+    /// Signature of frame scripts.
+    using script_signature = void(frame&, const event_data&);
 
-    /// Disconnectable slot for script handlers (used internally).
-    struct script_handler_slot
-    {
-        script_handler_function mCallback;
-        bool bDisconnected = false;
-    };
+    /// Signal type for scripts (used internally).
+    using script_signal = utils::signal<script_signature>;
+
+    /// C++ function type for UI script handlers.
+    using script_function = script_signal::function_type;
+
+    /// View into all the connected scripts for a given event.
+    using script_list_view = script_signal::slot_list_view;
 
     /// A #uiobject that can contain other objects and react to events.
     /** This class, which is at the core of the UI design, can contain
@@ -104,10 +108,13 @@ namespace gui
     *   However, some hard-coded events require explicit enabling. In particular:
     *
     *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-    *   frame::enable_keyboard.
-    *   - Events related to mouse input (`OnDragStart`, `OnDragStop`, `OnEnter`,
-    *   `OnLeave`, `OnMouseUp`, `OnMouseDown`, `OnMouseWheel`, `OnReceiveDrag`)
-    *   require frame::enable_mouse.
+    *   focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
+    *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
+    *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
+    *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
+    *   require frame::enable_mouse_move.
+    *   - Events related to mouse wheel input (`OnMouseWheel`) require
+    *   frame::enable_mouse_wheel.
     *
     *   To use the second type of events (generic events), you have to register
     *   a callback for `OnEvent` _and_ register the frame for each generic event
@@ -124,10 +131,16 @@ namespace gui
     *
     *   Hard-coded events available to all frames:
     *
+    *   - `OnChar`: Triggered whenever a character is typed into the frame, and
+    *   the frame has focus (see @ref frame::set_focus).
     *   - `OnDragStart`: Triggered when one of the mouse button registered for
     *   dragging (see frame::register_for_drag) has been pressed inside the
     *   area of the screen occupied by the frame, and a mouse movement is first
     *   recorded.
+    *   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
+    *   until `OnDragStop` is triggered.
+    *   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
+    *   released.
     *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
     *   the screen occupied by the frame. Note: this only takes into account the
     *   position and size of the frame and its title region, but not the space
@@ -138,35 +151,56 @@ namespace gui
     *   been fired, the registered callback function is always provided with a
     *   first argument that is set to a string matching the event name. Further
     *   arguments can be passed to the callback and are handled as for other events.
+    *   - `OnFocusGained`: Triggered when the frame gains focus, see
+    *   frame::set_focus.
+    *   - `OnFocusLost`: Triggered when the frame looses focus, see
+    *   frame::set_focus.
     *   - `OnHide`: Triggered when uiobject::hide is called, or when the frame
     *   is hidden indirectly (for example if its parent is itself hidden). This
     *   will only fire if the frame was previously shown.
-    *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will not
-    *   trigger if the frame is hidden. This event provides two arguments to
-    *   the registered callback: a number identifying the key, and the
-    *   human-readable name of the key.
-    *   - `OnKeyUp`: Triggered when any keyboard key is released. Will not
-    *   trigger if the frame is hidden. This event provides two arguments to
-    *   the registered callback: a number identifying the key, and the
-    *   human-readable name of the key.
+    *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+    *   been registered for capture using @ref frame::enable_key_capture. If no
+    *   frame is focussed, only the topmost frame with
+    *   @ref frame::enable_key_capture will receive the event. If no frame has
+    *   captured the key, then the key is tested for existing key bindings (see
+    *   @ref keybinder). This event provides two arguments to the registered
+    *   callback: a number identifying the key, and the human-readable name of the
+    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+    *   the @ref keybinder.
+    *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
+    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+    *   been registered for capture using @ref frame::enable_key_capture. If no
+    *   frame is focussed, only the topmost frame with
+    *   @ref frame::enable_key_capture will receive the event. If no frame has
+    *   captured the key, then the key is tested for existing key bindings (see
+    *   @ref keybinder). This event provides two arguments to the registered
+    *   callback: a number identifying the key, and the human-readable name of the
+    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+    *   the @ref keybinder.
     *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
     *   screen occupied by the frame. Note: this only takes into account the
     *   position and size of the frame and its title region, but not the space
     *   occupied by its children or layered regions. Will not trigger if the
     *   frame is hidden, unless the frame was just hidden with the mouse
-    *   previously inside the frame.
+    *   previously inside the frame. Finally, this _will_ trigger whenever
+    *   the mouse enters another mouse-enabled frame with a higher level/strata,
+    *   even if the mouse is still technically within this frame's region.
     *   - `OnLoad`: Triggered just after the frame is created. This is where
     *   you would normally register for events and specific inputs, set up
     *   initial states for extra logic, or do localization.
-    *   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
+    *   - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
+    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
     *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-    *   - `OnMouseUp`: Triggered when any mouse button is released. Will not
+    *   - `OnMouseUp`: Triggered when any mouse button is released and this frame is
+    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
     *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-    *   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
+    *   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
+    *   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
     *   provides one argument to the registered callback: a number indicating by
     *   how many "notches" the wheel has turned in this event. A positive value
     *   means the wheel has been moved "away" from the user (this would normally
@@ -213,8 +247,10 @@ namespace gui
     *   the inheriting frame will copy all the registered callbacks, all the
     *   child frames, and all the layered regions of the virtual frame.
     */
-    class frame : public event_receiver, public region
+    class frame : public region
     {
+        using base = region;
+
     public :
 
         /// Type of the frame child list (internal).
@@ -249,34 +285,8 @@ namespace gui
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
-        template<typename BaseIterator>
-        struct script_handler_dereferencer
-        {
-            using data_type = const script_handler_function&;
-            static data_type dereference(const BaseIterator& mIter) { return mIter->mCallback; }
-        };
-
-        template<typename BaseIterator>
-        struct non_disconnected_filter
-        {
-            static bool is_included(const BaseIterator& mIter) { return !mIter->bDisconnected; }
-        };
-
-        /// Type of the script handler list (internal).
-        /** \note Constraints on the choice container type:
-        *          - must not invalidate iterators on back insertion
-        *          - must allow forward iteration
-        *          - iterators cannot be invalidated on removal
-        *          - most common use is iteration, not addition or removal
-        *          - ordering of elements is relevant
-        */
-        using script_handler_list = std::list<script_handler_slot>;
-        using script_list_view = utils::view::adaptor<script_handler_list,
-            script_handler_dereferencer,
-            non_disconnected_filter>;
-
         /// Constructor.
-        explicit frame(manager& mManager);
+        explicit frame(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~frame() override;
@@ -304,9 +314,6 @@ namespace gui
         */
         virtual bool can_use_script(const std::string& sScriptName) const;
 
-        /// Checks if this frame's position is valid.
-        void check_position() const;
-
         /// Copies an uiobject's parameters into this frame (inheritance).
         /** \param mObj The uiobject to copy
         */
@@ -327,21 +334,37 @@ namespace gui
         */
         void enable_draw_layer(layer_type mLayerID);
 
-        /// Sets if this frame can receive keyboard input.
-        /** \param bIsKeyboardEnabled 'true' to enable
-        */
-        virtual void enable_keyboard(bool bIsKeyboardEnabled);
-
-        /// Sets if this frame can receive mouse input.
+        /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
-        *   \param bAllowWorldInput 'true' to allow world input
         */
-        virtual void enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput = false);
+        void enable_mouse(bool bIsMouseEnabled);
+
+        /// Sets if this frame can receive mouse click input.
+        /** \param bIsMouseEnabled 'true' to enable
+        */
+        void enable_mouse_click(bool bIsMouseEnabled);
+
+        /// Sets if this frame can receive mouse move input.
+        /** \param bIsMouseEnabled 'true' to enable
+        */
+        void enable_mouse_move(bool bIsMouseEnabled);
 
         /// Sets if this frame can receive mouse wheel input.
         /** \param bIsMouseWheelEnabled 'true' to enable
         */
-        virtual void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+        void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+
+        /// Sets if this frame can receive keyboard input from a specific key.
+        /** \param sKey              The key to capture
+        *   \param bIsCaptureEnabled 'true' to enable
+        *   \note If the frame captures the key, other frames below it will not be able to receive
+        *         the input from this key. The format of the input key name is standard English,
+        *         with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+        *         "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
+        *         simultaneously.
+        *   \see is_key_capture_enabled()
+        */
+        void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
 
         /// Checks if this frame has a script defined.
         /** \param sScriptName The name of the script to check
@@ -373,25 +396,20 @@ namespace gui
             const utils::observer_ptr<layered_region>& pRegion);
 
         /// Creates a new region as child of this frame.
-        /** \param mLayer       The layer on which to create the region
-        *   \param sClassName   The name of the region class ("FontString", ...)
-        *   \param sName        The name of the region
-        *   \param lInheritance The objects to inherit from
+        /** \param mLayer The layer on which to create the region
+        *   \param mAttr  The core attributes of the reguion (pParent will be ignored)
         *   \return The created region.
         *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        utils::observer_ptr<layered_region> create_region(
-            layer_type mLayer, const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {}
-        );
+        utils::observer_ptr<layered_region> create_region(layer_type mLayer,
+            uiobject_core_attributes mAttr);
 
         /// Creates a new region as child of this frame.
-        /** \param mLayer       The layer on which to create the region
-        *   \param sName        The name of the region
-        *   \param lInheritance The objects to inherit from
+        /** \param mLayer The layer on which to create the region
+        *   \param mAttr  The core attributes of the reguion (sObjectType and pParent will be ignored)
         *   \return The created region.
         *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
@@ -400,17 +418,36 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
+        utils::observer_ptr<region_type> create_region(layer_type mLayer,
+            uiobject_core_attributes mAttr)
         {
-            return utils::static_pointer_cast<region_type>(create_region(
-                mLayer, region_type::CLASS_NAME, sName, lInheritance));
+            mAttr.sObjectType = region_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+        }
+
+        /// Creates a new region as child of this frame.
+        /** \param mLayer       The layer on which to create the region
+        *   \param sName        The name of the region
+        *   \return The created region.
+        *   \note You don't have the reponsibility to delete this region.
+        *         It will be done automatically when its parent is deleted.
+        *   \note This function takes care of the basic initializing :
+        *         you can directly use the created region.
+        */
+        template<typename region_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName)
+        {
+            uiobject_core_attributes mAttr;
+            mAttr.sName = sName;
+            mAttr.sObjectType = region_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new frame as child of this frame.
-        /** \param sClassName   The name of the frame class ("Button", ...)
-        *   \param sName        The name of the frame
-        *   \param lInheritance The objects to inherit from
+        /** \param mAttr The core attributes of the frame (pParent will be ignored)
         *   \return The created frame.
         *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
@@ -420,26 +457,48 @@ namespace gui
         *         initialization you require on this frame. If you do not,
         *         the frame's OnLoad callback will not fire.
         */
-        utils::observer_ptr<frame> create_child(
-            const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
+        utils::observer_ptr<frame> create_child(uiobject_core_attributes mAttr);
 
         /// Creates a new frame as child of this frame.
-        /** \param sName        The name of the frame
-        *   \param lInheritance The objects to inherit from
+        /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
         *   \return The created frame.
         *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame.
+        *         you can directly use the created frame. However, you still
+        *         need to call notify_loaded() when you are done with any extra
+        *         initialization you require on this frame. If you do not,
+        *         the frame's OnLoad callback will not fire.
         */
         template<typename frame_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> create_child(const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
+        utils::observer_ptr<frame_type> create_child(uiobject_core_attributes mAttr)
         {
-            return utils::static_pointer_cast<frame_type>(create_child(
-                frame_type::CLASS_NAME, sName, lInheritance));
+            mAttr.sObjectType = frame_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+        }
+
+        /// Creates a new frame as child of this frame.
+        /** \param sName The name of the frame
+        *   \return The created frame.
+        *   \note You don't have the reponsibility to delete this frame.
+        *         It will be done automatically when its parent is deleted.
+        *   \note This function takes care of the basic initializing :
+        *         you can directly use the created frame. However, you still
+        *         need to call notify_loaded() when you are done with any extra
+        *         initialization you require on this frame. If you do not,
+        *         the frame's OnLoad callback will not fire.
+        */
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<frame_type> create_child(const std::string& sName)
+        {
+            uiobject_core_attributes mAttr;
+            mAttr.sName = sName;
+            mAttr.sObjectType = frame_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
         }
 
         /// Adds a frame to this frame's children.
@@ -597,6 +656,20 @@ namespace gui
         */
         frame_strata get_frame_strata() const;
 
+        /// Returns this frame's top-level parent.
+        /** \return This frame's top-level parent
+        */
+        utils::observer_ptr<const frame> get_top_level_parent() const;
+
+        /// Returns this frame's top-level parent.
+        /** \return This frame's top-level parent
+        */
+        utils::observer_ptr<frame> get_top_level_parent()
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame*>(this)->get_top_level_parent());
+        }
+
         /// Returns this frame's backdrop.
         /** \return This frame's backdrop
         */
@@ -685,31 +758,62 @@ namespace gui
         */
         bool is_clamped_to_screen() const;
 
-        /// Checks if the provided coordinates are in the frame.
+        /// Checks if the provided coordinates are inside this frame.
         /** \param mPosition The coordinates to test
-        *   \return 'true' if the provided coordinates are in the frame
+        *   \return 'true' if the provided coordinates are inside this frame or its title region
         */
-        virtual bool is_in_frame(const vector2f& mPosition) const;
+        bool is_in_region(const vector2f& mPosition) const override;
 
-        /// Checks if this frame can receive keyboard input.
-        /** \return 'true' if this frame can receive keyboard input
+        /// Find the topmost frame matching the provided predicate.
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, if any, and nullptr otherwise.
+        *   \note For most frames, this can either return 'this' or 'nullptr'. For
+        *         frames responsible for rendering other frames (such as @ref scroll_frame),
+        *         this can return other frames.
         */
-        bool is_keyboard_enabled() const;
+        virtual utils::observer_ptr<const frame> find_topmost_frame(
+            const std::function<bool(const frame&)>& mPredicate) const;
 
-        /// Checks if this frame can receive mouse input.
-        /** \return 'true' if this frame can receive mouse input
+        /// Find the topmost frame matching the provided predicate.
+        /** \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, if any, and nullptr otherwise.
+        *   \note For most frames, this can either return 'this' or 'nullptr'. For
+        *         frames responsible for rendering other frames (such as @ref scroll_frame),
+        *         this can return other frames.
         */
-        bool is_mouse_enabled() const;
+        utils::observer_ptr<frame> find_topmost_frame(
+            const std::function<bool(const frame&)>& mPredicate)
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame*>(this)->find_topmost_frame(mPredicate));
+        }
 
-        /// Checks if this frame allows world input.
-        /** \return 'true' if this frame allows world input
+        /// Checks if this frame can receive mouse movement input.
+        /** \return 'true' if this frame can receive mouse movement input
         */
-        bool is_world_input_allowed() const;
+        bool is_mouse_move_enabled() const;
+
+        /// Checks if this frame can receive mouse click input.
+        /** \return 'true' if this frame can receive mouse click input
+        */
+        bool is_mouse_click_enabled() const;
 
         /// Checks if this frame can receive mouse wheel input.
         /** \return 'true' if this frame can receive mouse wheel input
         */
         bool is_mouse_wheel_enabled() const;
+
+        /// Checks if this frame is registered for drag events with the provided mouse button.
+        /** \return 'true' if this frame is registered for drag events
+        */
+        bool is_registered_for_drag(const std::string& sButton) const;
+
+        /// Checks if this frame can receive keyboard input from a specific key.
+        /** \param sKey The key to check
+        *   \return 'true' if this frame can receive keyboard input from this key
+        *   \see enable_key_capture()
+        */
+        bool is_key_capture_enabled(const std::string& sKey) const;
 
         /// Checks if this frame can be moved.
         /** \return 'true' if this frame can be moved
@@ -741,88 +845,94 @@ namespace gui
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note The script_info parameter is used only for displaying error messages.
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void add_script(const std::string& sScriptName, std::string sContent,
+        utils::connection add_script(const std::string& sScriptName, std::string sContent,
             script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, sContent, true, mInfo);
+            return define_script_(sScriptName, sContent, true, mInfo);
         }
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a Lua function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a Lua function to be called for the event specified in sScriptName.
         *         This provides more flexibility compared to using C++ function, but also has a
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void add_script(const std::string& sScriptName, sol::protected_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection add_script(const std::string& sScriptName,
+            sol::protected_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), true, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a C++ function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a C++ function to be called for the event specified in sScriptName.
         *         This provides the best performance, but lacks direct access to the Lua
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void add_script(const std::string& sScriptName, script_handler_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection add_script(const std::string& sScriptName,
+            script_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), true, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note The script_info parameter is used only for displaying error messages.
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void set_script(const std::string& sScriptName, std::string sContent,
+        utils::connection set_script(const std::string& sScriptName, std::string sContent,
             script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, sContent, false, mInfo);
+            return define_script_(sScriptName, sContent, false, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a Lua function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a Lua function to be called for the event specified in sScriptName.
         *         This provides more flexibility compared to using C++ function, but also has a
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void set_script(const std::string& sScriptName, sol::protected_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection set_script(const std::string& sScriptName,
+            sol::protected_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), false, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
 
         /// Sets a new handler script for this frame (replacing existing scripts).
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a C++ function
         *   \param mInfo       The location where this script has been defined
+        *   \return A connection object, to disable the script if needed.
         *   \note This defines a C++ function to be called for the event specified in sScriptName.
         *         This provides the best performance, but lacks direct access to the Lua
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void set_script(const std::string& sScriptName, script_handler_function mHandler,
-            script_info mInfo = script_info{})
+        utils::connection set_script(const std::string& sScriptName,
+            script_function mHandler, script_info mInfo = script_info{})
         {
-            define_script_(sScriptName, std::move(mHandler), false, mInfo);
+            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
 
         /// Return a view into this frame's handler scripts, registered for the given event.
@@ -845,23 +955,17 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        virtual void on_script(const std::string& sScriptName, const event_data& mData = event_data{});
-
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
-
-        /// Tells this frame to react to every event in the game.
-        void register_all_events();
+        virtual void fire_script(const std::string& sScriptName, const event_data& mData = event_data{});
 
         /// Tells this frame to react to a certain event.
         /** \param sEventName The name of the event
         */
-        void register_event(const std::string& sEventName) override;
+        void register_event(const std::string& sEventName);
+
+        /// Tells the frame not to react to a certain event.
+        /** \param sEventName The name of the event
+        */
+        void unregister_event(const std::string& sEventName);
 
         /// Tells this frame to react to mouse drag.
         /** \param lButtonList The list of mouse button allowed
@@ -958,6 +1062,10 @@ namespace gui
 
         /// Sets if this frame is at top level.
         /** \param bIsTopLevel 'true' to put the frame at top level
+        *   \note A top-level frame will be raised to the foreground if it or
+        *         any of its children are clicked. This should typically be
+        *         set to 'true' for any "dialog" or "window" frame, which
+        *         can be moved around, and not for "element" frames (buttons, etc.).
         */
         void set_top_level(bool bIsTopLevel);
 
@@ -998,14 +1106,28 @@ namespace gui
         */
         void hide() override;
 
-        /// shows/hides this widget.
-        /** \param bIsShown 'true' if you want to show this widget
-        *   \note See show() and hide() for more infos.
-        *   \note Contrary to show() and hide(), this function doesn't
-        *         trigger any event ("OnShow" or "OnHide"). It should
-        *         only be used to set the initial state of the widget.
+        /// Enables automatic focus when this frame is shown or raised.
+        /** \param bEnable 'true' to enable auto focus
         */
-        void set_shown(bool bIsShown) override;
+        void enable_auto_focus(bool bEnable);
+
+        /// Checks if automatic focus is enabled.
+        /** \return 'true' if automatic focus is enabled
+        */
+        bool is_auto_focus_enabled() const;
+
+        /// Asks for focus for this frame.
+        /** \param bFocus 'true' to ask for focus, 'false' to release it
+        *   \note Focus can be lost if another frame asks for focus later.
+        *         The focus will be restored automaticallly when that other frame
+        *         releases focus, or it can be requested again by calling set_focus(true).
+        */
+        void set_focus(bool bFocus);
+
+        /// Check if this frame currently has focus.
+        /** \return 'true' if the frame has focus, 'false' otherwise
+        */
+        bool has_focus() const;
 
         /// Flags this object as rendered by another object.
         /** \param pRenderer The object that will take care of rendering this widget
@@ -1047,7 +1169,7 @@ namespace gui
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
-        void notify_renderer_need_redraw() const override;
+        void notify_renderer_need_redraw() override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param mDimensions The new dimensions
@@ -1074,16 +1196,19 @@ namespace gui
         virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
 
         /// Notifies this widget that it is now visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_visible(bool bTriggerEvents = true) override;
+        void notify_visible() override;
 
         /// Notifies this widget that it is no longer visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_invisible(bool bTriggerEvents = true) override;
+        void notify_invisible() override;
+
+        /// Notifies this frame that it has received or lost focus.
+        /** \param bFocus 'true' if focus is received, 'false' if lost
+        */
+        virtual void notify_focus(bool bFocus);
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
@@ -1098,26 +1223,6 @@ namespace gui
 
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
-
-        /// Tells the frame not to react to all events.
-        void unregister_all_events();
-
-        /// Tells the frame not to react to a certain event.
-        /** \param sEventName The name of the event
-        */
-        void unregister_event(const std::string& sEventName) override;
-
-        /// Sets the addon this frame belongs to.
-        /** \param pAddOn The addon this frame belongs to
-        */
-        void set_addon(const addon* pAddOn);
-
-        /// Returns this frame's addon.
-        /** \return This frame's addon
-        *   \note Returns "nullptr" if the frame has been created
-        *         by Lua code and wasn't assigned a parent.
-        */
-        const addon* get_addon() const;
 
         /// Creates the associated Lua glue.
         void create_glue() override;
@@ -1152,24 +1257,24 @@ namespace gui
         utils::observer_ptr<frame> parse_child_(const layout_node& mNode,
             const std::string& sType);
 
-        virtual void notify_top_level_parent_(bool bTopLevel,
-            const utils::observer_ptr<frame>& pParent);
+        void check_position_();
 
         void add_level_(int iAmount);
 
         void propagate_renderer_(bool bRendered);
 
-        void update_borders_() const override;
-        void update_mouse_in_frame_();
+        void update_borders_() override;
 
-        void define_script_(const std::string& sScriptName, const std::string& sContent,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            const std::string& sContent, bool bAppend, const script_info& mInfo);
 
-        void define_script_(const std::string& sScriptName, sol::protected_function mHandler,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            sol::protected_function mHandler, bool bAppend, const script_info& mInfo);
 
-        void define_script_(const std::string& sScriptName, script_handler_function mHandler,
-            bool bAppend, const script_info& mInfo);
+        utils::connection define_script_(const std::string& sScriptName,
+            script_function mHandler, bool bAppend, const script_info& mInfo);
+
+        void on_event_(std::string_view sEventName, const event_data& mEvent);
 
         child_list  lChildList_;
         region_list lRegionList_;
@@ -1178,29 +1283,23 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, std::shared_ptr<script_handler_list>> lScriptHandlerList_;
+        std::unordered_map<std::string, script_signal> lSignalList_;
+        event_receiver                                 mEventReceiver_;
 
         std::vector<std::string> lQueuedEventList_;
-        std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
+        std::set<std::string>    lRegKeyList_;
 
-        const addon* pAddOn_ = nullptr;
-
-        int iLevel_ = 0;
-
-        frame_strata               mStrata_ = frame_strata::MEDIUM;
-        bool                       bIsTopLevel_ = false;
-        utils::observer_ptr<frame> pTopLevelParent_ = nullptr;
+        int          iLevel_ = 0;
+        frame_strata mStrata_ = frame_strata::MEDIUM;
+        bool         bIsTopLevel_ = false;
 
         utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 
-        bool bHasAllEventsRegistred_ = false;
-
-        bool bIsKeyboardEnabled_ = false;
-        bool bIsMouseEnabled_ = false;
-        bool bAllowWorldInput_ = false;
+        bool bIsMouseClickEnabled_ = false;
+        bool bIsMouseMoveEnabled_ = false;
         bool bIsMouseWheelEnabled_ = false;
         bool bIsMovable_ = false;
         bool bIsClampedToScreen_ = false;
@@ -1222,12 +1321,13 @@ namespace gui
         float fScale_ = 1.0f;
 
         bool bMouseInFrame_ = false;
-        bool bMouseInTitleRegion_ = false;
-        vector2f mMousePos_;
 
         utils::owner_ptr<region> pTitleRegion_ = nullptr;
 
         bool bMouseDraggedInFrame_ = false;
+
+        bool bFocus_ = false;
+        bool bAutoFocus_ = false;
     };
 }
 }

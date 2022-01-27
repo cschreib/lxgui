@@ -152,10 +152,10 @@ namespace gui
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        void begin(std::shared_ptr<render_target> pTarget = nullptr) const;
+        void begin(std::shared_ptr<render_target> pTarget = nullptr);
 
         /// Ends rendering.
-        void end() const;
+        void end();
 
         /// Flushes any pending quad batch render operation.
         /** \note If is_quad_batching_enabled(), quad rendering is done in batches.
@@ -170,7 +170,7 @@ namespace gui
         *   \note This function is meant to be called between begin() and
         *         end() only.
         */
-        void flush_quad_batch() const;
+        void flush_quad_batch();
 
         /// Sets the view matrix to use when rendering (viewport).
         /** \param mViewMatrix The view matrix
@@ -187,7 +187,7 @@ namespace gui
         *            backends, the view matrix will be simplified to a simpler 2D translate +
         *            rotate + scale transform, or even just translate + scale.
         */
-        void set_view(const matrix4f& mViewMatrix) const;
+        void set_view(const matrix4f& mViewMatrix);
 
         /// Returns the current view matrix to use when rendering (viewport).
         /** \return The current view matrix to use when rendering
@@ -202,7 +202,7 @@ namespace gui
         *   \note This function is meant to be called between begin() and
         *         end() only.
         */
-        void render_quad(const quad& mQuad) const;
+        void render_quad(const quad& mQuad);
 
         /// Renders a set of quads.
         /** \param pMaterial The material to use for rendering, or null if none
@@ -213,7 +213,7 @@ namespace gui
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
         void render_quads(const material* pMaterial,
-            const std::vector<std::array<vertex,4>>& lQuadList) const;
+            const std::vector<std::array<vertex,4>>& lQuadList);
 
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
@@ -232,7 +232,7 @@ namespace gui
         *         and not for just a handful of quads. Benchmark when in doubt.
         */
         void render_cache(const material* pMaterial, const vertex_cache& mCache,
-            const matrix4f& mModelTransform = matrix4f::IDENTITY) const;
+            const matrix4f& mModelTransform = matrix4f::IDENTITY);
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
@@ -242,7 +242,7 @@ namespace gui
         *         The gui library is completely unaware of this.
         */
         std::shared_ptr<material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const;
+            material::filter mFilter = material::filter::NONE);
 
         /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
@@ -266,7 +266,7 @@ namespace gui
         *         material.
         */
         std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
-            const std::string& sFileName, material::filter mFilter = material::filter::NONE) const;
+            const std::string& sFileName, material::filter mFilter = material::filter::NONE);
 
         /// Creates a new material from a portion of a render target.
         /** \param pRenderTarget The render target from which to read the pixels
@@ -274,14 +274,14 @@ namespace gui
         *   \return The new material
         */
         virtual std::shared_ptr<material> create_material(
-            std::shared_ptr<render_target> pRenderTarget, const bounds2f& mLocation) const = 0;
+            std::shared_ptr<render_target> pRenderTarget, const bounds2f& mLocation) = 0;
 
         /// Creates a new material from an entire render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
         std::shared_ptr<material> create_material(
-            std::shared_ptr<render_target> pRenderTarget) const;
+            std::shared_ptr<render_target> pRenderTarget);
 
         /// Creates a new material from arbitrary pixel data.
         /** \param mDimensions The dimensions of the material
@@ -290,7 +290,7 @@ namespace gui
         *   \return The new material
         */
         virtual std::shared_ptr<material> create_material(const vector2ui& mDimensions,
-            const ub32color* pPixelData, material::filter mFilter = material::filter::NONE) const = 0;
+            const ub32color* pPixelData, material::filter mFilter = material::filter::NONE) = 0;
 
         /// Creates a new render target.
         /** \param mDimensions The dimensions of the render target
@@ -298,7 +298,7 @@ namespace gui
         */
         virtual std::shared_ptr<render_target> create_render_target(
             const vector2ui& mDimensions,
-            material::filter mFilter = material::filter::NONE) const = 0;
+            material::filter mFilter = material::filter::NONE) = 0;
 
         /// Creates a new font.
         /** \param sFontFile   The file from which to read the font
@@ -315,7 +315,7 @@ namespace gui
         */
         std::shared_ptr<font> create_font(const std::string& sFontFile, std::size_t uiSize,
             std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-            char32_t uiDefaultCodePoint) const;
+            char32_t uiDefaultCodePoint);
 
         /// Creates a new font.
         /** \param sAtlasCategory The category of atlas in which to create the font texture
@@ -331,14 +331,14 @@ namespace gui
         */
         std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
             const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
-            const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const;
+            const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint);
 
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
         */
         virtual std::shared_ptr<vertex_cache> create_vertex_cache(
-            gui::vertex_cache::type mType) const = 0;
+            gui::vertex_cache::type mType) = 0;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param mDimensions The new window dimensions
@@ -350,10 +350,10 @@ namespace gui
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        virtual void begin_(std::shared_ptr<render_target> pTarget) const = 0;
+        virtual void begin_(std::shared_ptr<render_target> pTarget) = 0;
 
         /// Ends rendering.
-        virtual void end_() const = 0;
+        virtual void end_() = 0;
 
         /// Sets the view matrix to use when rendering (viewport).
         /** \param mViewMatrix The view matrix
@@ -370,7 +370,7 @@ namespace gui
         *            backends, the view matrix will be simplified to a simpler 2D translate +
         *            rotate + scale transform, or even just translate + scale.
         */
-        virtual void set_view_(const matrix4f& mViewMatrix) const = 0;
+        virtual void set_view_(const matrix4f& mViewMatrix) = 0;
 
         /// Renders a set of quads.
         /** \param pMaterial The material to use for rendering, or null if none
@@ -381,7 +381,7 @@ namespace gui
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
         virtual void render_quads_(const material* pMaterial,
-            const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
+            const std::vector<std::array<vertex,4>>& lQuadList) = 0;
 
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
@@ -400,7 +400,7 @@ namespace gui
         *         and not for just a handful of quads. Benchmark when in doubt.
         */
         virtual void render_cache_(const material* pMaterial, const vertex_cache& mCache,
-            const matrix4f& mModelTransform) const = 0;
+            const matrix4f& mModelTransform) = 0;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
@@ -410,13 +410,13 @@ namespace gui
         *         The gui library is completely unaware of this.
         */
         virtual std::shared_ptr<material> create_material_(const std::string& sFileName,
-            material::filter mFilter) const = 0;
+            material::filter mFilter) = 0;
 
         /// Creates a new atlas with a given texture filter mode.
         /** \param mFilter The filtering to apply to the texture
         *   \return The new atlas
         */
-        virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
+        virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) = 0;
 
         /// Creates a new font.
         /** \param sFontFile   The file from which to read the font
@@ -430,21 +430,21 @@ namespace gui
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
             std::size_t uiSize, std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-            char32_t uiDefaultCodePoint) const = 0;
+            char32_t uiDefaultCodePoint) = 0;
 
-        atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
+        atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter);
 
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
-        mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
+        std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
+        std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
     private :
 
         bool uses_same_texture_(const material* pMat1, const material* pMat2) const;
 
-        mutable bool bTextureAtlasEnabled_ = true;
-        mutable bool bVertexCacheEnabled_ = true;
-        mutable bool bQuadBatchingEnabled_ = true;
+        bool bTextureAtlasEnabled_ = true;
+        bool bVertexCacheEnabled_ = true;
+        bool bQuadBatchingEnabled_ = true;
         std::size_t  uiTextureAtlasPageSize_ = 0u;
 
         struct quad_batcher
@@ -454,12 +454,12 @@ namespace gui
         };
 
         static constexpr std::size_t BATCHING_CACHE_CYCLE_SIZE = 16u;
-        mutable std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
+        std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
 
-        mutable const gui::material* pCurrentMaterial_ = nullptr;
-        mutable std::size_t          uiCurrentQuadCache_ = 0u;
-        mutable std::size_t          uiBatchCount_ = 0u;
-        mutable std::size_t          uiLastFrameBatchCount_ = 0u;
+        const gui::material* pCurrentMaterial_ = nullptr;
+        std::size_t          uiCurrentQuadCache_ = 0u;
+        std::size_t          uiBatchCount_ = 0u;
+        std::size_t          uiLastFrameBatchCount_ = 0u;
     };
 }
 }

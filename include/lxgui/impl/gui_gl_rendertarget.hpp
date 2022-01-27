@@ -79,7 +79,7 @@ namespace gl
         std::uint32_t                 uiFBOHandle_ = 0;
         std::shared_ptr<gl::material> pTexture_;
 
-        mutable matrix4f mViewMatrix_;
+        matrix4f mViewMatrix_;
     };
 }
 }

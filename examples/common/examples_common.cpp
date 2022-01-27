@@ -2,6 +2,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/gui_renderer.hpp>
+#include <lxgui/gui_factory.hpp>
 #include <lxgui/gui_texture.hpp>
 #include <lxgui/gui_fontstring.hpp>
 #include <lxgui/gui_button.hpp>
@@ -10,7 +11,10 @@
 #include <lxgui/gui_scrollframe.hpp>
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/gui_uiroot.hpp>
+#include <lxgui/gui_out.hpp>
+#include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/utils_filesystem.hpp>
 
 #include <sol/state.hpp>
@@ -26,6 +30,10 @@ float get_time_delta(const timing_clock::time_point& mT1, const timing_clock::ti
 
 void examples_setup_gui(gui::manager& mManager)
 {
+    // -------------------------------------------------
+    // Initialise the GUI
+    // -------------------------------------------------
+
     // Automatically select best settings
     gui::renderer& mGUIRenderer = mManager.get_renderer();
     mGUIRenderer.auto_detect_settings();
@@ -41,23 +49,23 @@ void examples_setup_gui(gui::manager& mManager)
     std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
     std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
-    // The first thing to do is create the lua::state, and register any glue function
-    // into the Lua state to call into your C++ application.
-    std::cout << " Creating lua..." << std::endl;
-    mManager.create_lua([](gui::manager& mManager)
+    // The first thing to do is register any required C++ classes and functions
+    // onto the Lua state.
+    mManager.register_lua_glues([](gui::manager& mManager)
     {
         // We use a lambda function because this code might be called
         // again later on, for example when one reloads the GUI (the
         // lua state is destroyed and created again).
 
         //  - register the needed widgets
-        mManager.register_region_type<gui::texture>();
-        mManager.register_region_type<gui::font_string>();
-        mManager.register_frame_type<gui::button>();
-        mManager.register_frame_type<gui::slider>();
-        mManager.register_frame_type<gui::edit_box>();
-        mManager.register_frame_type<gui::scroll_frame>();
-        mManager.register_frame_type<gui::status_bar>();
+        gui::factory& mFactory = mManager.get_factory();
+        mFactory.register_uiobject_type<gui::texture>();
+        mFactory.register_uiobject_type<gui::font_string>();
+        mFactory.register_uiobject_type<gui::button>();
+        mFactory.register_uiobject_type<gui::slider>();
+        mFactory.register_uiobject_type<gui::edit_box>();
+        mFactory.register_uiobject_type<gui::scroll_frame>();
+        mFactory.register_uiobject_type<gui::status_bar>();
 
         //  - register additional lua functions (add your own functions here)
         sol::state& mLua = mManager.get_lua();
@@ -71,22 +79,27 @@ void examples_setup_gui(gui::manager& mManager)
         });
     });
 
-    // Now the GUI is ready. We need to create some GUI elements to display.
+    // Now the GUI is initialised and ready, but it is empty.
+    // We need to create some GUI elements to display.
 
     // Load GUI elements from files:
     std::cout << " Reading gui files..." << std::endl;
     //  - set the directory in which the interface is located
     mManager.add_addon_directory("interface");
     //  - and load all files
-    mManager.read_files();
+    mManager.load_ui();
 
-    // Alternatively, you can also create GUI elements directly in C++ code:
+    // Alternatively, you can also create GUI elements directly in C++ code, see below.
+
+    // -------------------------------------------------
+    // Create GUI elements in C++
+    // -------------------------------------------------
 
     // Create a frame
     // A "root" frame has no parent and is directly owned by the gui::manager.
     // A "child" frame is owned by another frame.
     utils::observer_ptr<gui::frame> pFrame;
-    pFrame = mManager.create_root_frame<gui::frame>("FPSCounter");
+    pFrame = mManager.get_root().create_root_frame<gui::frame>("FPSCounter");
     pFrame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
     pFrame->set_point(gui::anchor_data(
         gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT));
@@ -108,7 +121,7 @@ void examples_setup_gui(gui::manager& mManager)
         "self.update_time = 0.5;"
         "self.timer = 1.0;"
         "self.frames = 0;",
-        "main.cpp", 146 // You can provide the location of the Lua source, for error handling
+        "examples_common.cpp", 122 // You can provide the file/line information, for error handling
     );
     pFrame->add_script("OnUpdate",
         "self.timer = self.timer + arg1;"
@@ -121,7 +134,7 @@ void examples_setup_gui(gui::manager& mManager)
         "    self.timer = 0.0;"
         "    self.frames = 0;"
         "end",
-        "main.cpp", 152 // You can provide the location of the Lua source, for error handling
+        "examples_common.cpp", 135 // You can provide the file/line information, for error handling
     );*/
 
     // Or in C++
@@ -148,4 +161,64 @@ void examples_setup_gui(gui::manager& mManager)
 
     // Tell the Frame is has been fully loaded, and call "OnLoad"
     pFrame->notify_loaded();
+
+    // The GUI now has some elements to display.
+    // The next step is setting up callbacks to react to inputs events that are not
+    // captured by the UI.
+
+    // -------------------------------------------------
+    // Reacting to inputs in your game
+    // -------------------------------------------------
+
+    // Lxgui offers multiple layers to react to events:
+    //
+    //  - input::world_dispatcher: processed and filtered events. Use this if you want
+    //    to react to events that the UI allows (e.g., no UI element is blocking the mouse,
+    //    and no UI element is capturing keyboard input for entering text). This is the
+    //    recommended method, and it is illustrated below.
+    //
+    //  - input::dispatcher: processed and higher level events (double click, drag, etc.),
+    //    but with no filtering applied. Use this if you need global events, unfiltered by UI
+    //    elements. Usage: mManager.get_input_dispatcher().
+    //
+    //  - input::source: simple raw events, with no processing or filtering applied.
+    //    Use this if you need the raw inputs. Usage:
+    //    Usage: mManager.get_input_dispatcher().get_source().
+
+    input::world_dispatcher& mWorldInputDispatcher = mManager.get_world_input_dispatcher();
+    mWorldInputDispatcher.on_key_pressed.connect(
+        [&](input::key mKey)
+        {
+            // Process keyboard inputs for the game...
+            switch (mKey)
+            {
+            case input::key::K_P:
+                gui::out << mManager.print_ui() << std::endl;
+                break;
+            case input::key::K_C:
+                mManager.get_root().toggle_caching();
+                break;
+            case input::key::K_R:
+                mManager.reload_ui();
+                break;
+            case input::key::K_B:
+                mManager.get_renderer().set_quad_batching_enabled(
+                    !mManager.get_renderer().is_quad_batching_enabled());
+                break;
+            case input::key::K_A:
+                mManager.get_renderer().set_texture_atlas_enabled(
+                    !mManager.get_renderer().is_texture_atlas_enabled());
+                break;
+            default:
+                break;
+            }
+        }
+    );
+
+    mWorldInputDispatcher.on_mouse_pressed.connect(
+        [&](input::mouse_button mButton, const gui::vector2f& mMousePos)
+        {
+            // Process mouse inputs for the game...
+        }
+    );
 }
