@@ -19,7 +19,7 @@ namespace gui
     class frame;
     class registry;
     class frame_renderer;
-    class manager;
+    class factory;
 
     /// Container of frames.
     /** This class contains and owns "root" frames (frames with no parents)
@@ -46,11 +46,11 @@ namespace gui
             utils::view::non_null_filter>;
 
         /// Constructor.
-        /** \param mManager  The GUI manager
+        /** \param mFactory  The GUI object factory
         *   \param mRegistry The registry in which new frames should be registered
         *   \param pRenderer The frame_renderer that will render these frames (nullptr if none).
         */
-        explicit frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer);
+        explicit frame_container(factory& mFactory, registry& mRegistry, frame_renderer* pRenderer);
 
         virtual ~frame_container() = default;
         frame_container(const frame_container&) = delete;
@@ -143,15 +143,15 @@ namespace gui
         */
         void garbage_collect();
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns the GUI object factory.
+        /** \return The GUI object factory
         */
-        manager& get_manager() { return mManager_; }
+        factory& get_factory() { return mFactory_; }
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns the GUI object factory.
+        /** \return The GUI object factory
         */
-        const manager& get_manager() const { return mManager_; }
+        const factory& get_factory() const { return mFactory_; }
 
         /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
@@ -172,7 +172,7 @@ namespace gui
 
     private :
 
-        manager& mManager_;
+        factory& mFactory_;
         registry& mRegistry_;
         frame_renderer* pRenderer_;
 

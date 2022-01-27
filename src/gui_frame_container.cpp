@@ -11,15 +11,15 @@ namespace lxgui {
 namespace gui
 {
 
-frame_container::frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer) :
-    mManager_(mManager), mRegistry_(mRegistry), pRenderer_(pRenderer)
+frame_container::frame_container(factory& mFactory, registry& mRegistry, frame_renderer* pRenderer) :
+    mFactory_(mFactory), mRegistry_(mRegistry), pRenderer_(pRenderer)
 {
 }
 
 utils::observer_ptr<frame> frame_container::create_root_frame_(
     const uiobject_core_attributes& mAttr)
 {
-    auto pNewFrame = get_manager().get_factory().create_frame(mRegistry_, pRenderer_, mAttr);
+    auto pNewFrame = mFactory_.create_frame(mRegistry_, pRenderer_, mAttr);
     if (!pNewFrame)
         return nullptr;
 

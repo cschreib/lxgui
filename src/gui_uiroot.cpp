@@ -19,7 +19,7 @@ namespace gui
 {
 
 uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
-    frame_container(mManager, mObjectRegistry_, this),
+    frame_container(mManager.get_factory(), mObjectRegistry_, this),
     utils::enable_observer_from_this<uiroot>(mBlock),
     mManager_(mManager), mRenderer_(mManager.get_renderer()),
     mWorldInputDispatcher_(mManager.get_world_input_dispatcher())
