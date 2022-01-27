@@ -7,6 +7,7 @@
 #include <lxgui/utils_observer.hpp>
 
 #include <vector>
+#include <string_view>
 
 namespace lxgui {
 namespace gui
@@ -30,7 +31,7 @@ namespace gui
         *   \return A vector of objects matching the list. Objects not found will be excluded.
         */
         std::vector<utils::observer_ptr<const uiobject>> get_virtual_uiobject_list(
-            const std::string& sNames) const;
+            std::string_view sNames) const;
 
     private :
 

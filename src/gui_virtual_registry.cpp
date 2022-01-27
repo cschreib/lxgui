@@ -14,12 +14,12 @@ virtual_registry::virtual_registry(const registry& mObjectRegistry) :
 }
 
 std::vector<utils::observer_ptr<const uiobject>> virtual_registry::get_virtual_uiobject_list(
-    const std::string& sNames) const
+    std::string_view sNames) const
 {
     std::vector<utils::observer_ptr<const uiobject>> lInheritance;
     for (auto sParent : utils::cut(sNames, ","))
     {
-        utils::trim(sParent, ' ');
+        sParent = utils::trim(sParent, ' ');
 
         utils::observer_ptr<const uiobject> pObj = get_uiobject_by_name(sParent);
 

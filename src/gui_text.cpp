@@ -53,7 +53,7 @@ namespace parser
         float             fWidth = 0.0f;
     };
 
-    std::vector<item> parse_string(renderer& mRenderer, const utils::ustring& sCaption,
+    std::vector<item> parse_string(renderer& mRenderer, const utils::ustring_view& sCaption,
         bool bFormattingEnabled)
     {
         std::vector<item> lContent;
@@ -113,7 +113,7 @@ namespace parser
                         if (!lWords.empty())
                         {
                             texture mTexture;
-                            mTexture.pMaterial = mRenderer.create_material(lWords[0]);
+                            mTexture.pMaterial = mRenderer.create_material(std::string{lWords[0]});
                             mTexture.fWidth = mTexture.fHeight =
                                 std::numeric_limits<float>::quiet_NaN();
 
@@ -706,7 +706,7 @@ void text::update_() const
 
     if (uiMaxLineNbr != 0)
     {
-        std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
+        auto lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
         for (auto iterManual : utils::range::iterator(lManualLineList))
         {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");

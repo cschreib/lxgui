@@ -6,6 +6,7 @@
 #include <lxgui/utils_observer.hpp>
 
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 namespace lxgui {
@@ -29,7 +30,7 @@ namespace gui
         /** \param sName The string to test
         *   \return 'true' if the provided string can be the name of a widget
         */
-        bool check_uiobject_name(const std::string& sName) const;
+        bool check_uiobject_name(std::string_view sName) const;
 
         /// Adds an uiobject to be handled by this registry.
         /** \param pObj The object to add
@@ -46,13 +47,13 @@ namespace gui
         /** \param sName    The name of the widget you're after
         *   \return The uiobject associated with the given name, or nullptr if not found
         */
-        utils::observer_ptr<const uiobject> get_uiobject_by_name(const std::string& sName) const;
+        utils::observer_ptr<const uiobject> get_uiobject_by_name(std::string_view sName) const;
 
         /// Returns the uiobject associated with the given name.
         /** \param sName    The name of the widget you're after
         *   \return The uiobject associated with the given name, or nullptr if not found
         */
-        utils::observer_ptr<uiobject> get_uiobject_by_name(const std::string& sName)
+        utils::observer_ptr<uiobject> get_uiobject_by_name(std::string_view sName)
         {
             return utils::const_pointer_cast<uiobject>(
                 const_cast<const registry*>(this)->get_uiobject_by_name(sName));

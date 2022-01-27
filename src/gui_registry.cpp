@@ -8,7 +8,7 @@ namespace lxgui {
 namespace gui
 {
 
-bool registry::check_uiobject_name(const std::string& sName) const
+bool registry::check_uiobject_name(std::string_view sName) const
 {
     if (utils::has_no_content(sName))
     {
@@ -75,9 +75,9 @@ void registry::remove_uiobject(const uiobject& pObj)
     lNamedObjectList_.erase(pObj.get_name());
 }
 
-utils::observer_ptr<const uiobject> registry::get_uiobject_by_name(const std::string& sName) const
+utils::observer_ptr<const uiobject> registry::get_uiobject_by_name(std::string_view sName) const
 {
-    auto iter = lNamedObjectList_.find(sName);
+    auto iter = lNamedObjectList_.find(std::string{sName});
     if (iter != lNamedObjectList_.end())
         return iter->second;
     else

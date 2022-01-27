@@ -54,17 +54,17 @@ void addon_registry::load_addon_toc_(const std::string& sAddOnName, const std::s
         if (sLine.empty())
             continue;
 
-        if (sLine[0] == '#' && sLine[1] == '#')
+        std::string_view sLineView = sLine;
+
+        if (sLineView.size() >= 2 && sLineView[0] == '#' && sLineView[1] == '#')
         {
-            sLine.erase(0, 2);
-            utils::trim(sLine, ' ');
-            std::pair<std::string, std::string> lArgs = utils::cut_first(sLine, ":");
+            sLineView = sLineView.substr(2);
+            sLineView = utils::trim(sLineView, ' ');
+            auto lArgs = utils::cut_first(sLineView, ":");
             if (!lArgs.first.empty() && !lArgs.second.empty())
             {
-                std::string sKey = lArgs.first;
-                utils::trim(sKey, ' ');
-                std::string sValue = lArgs.second;
-                utils::trim(sValue, ' ');
+                std::string_view sKey = utils::trim(lArgs.first, ' ');
+                std::string_view sValue = utils::trim(lArgs.second, ' ');
 
                 if (sKey == "Interface")
                 {
@@ -91,18 +91,18 @@ void addon_registry::load_addon_toc_(const std::string& sAddOnName, const std::s
                 {
                     for (auto sVar : utils::cut(sValue, ","))
                     {
-                        utils::trim(sVar, ' ');
+                        sVar = utils::trim(sVar, ' ');
                         if (!utils::has_no_content(sVar))
-                            mAddOn.lSavedVariableList.push_back(std::move(sVar));
+                            mAddOn.lSavedVariableList.push_back(std::string{sVar});
                     }
                 }
             }
         }
         else
         {
-            utils::trim(sLine, ' ');
-            if (!utils::has_no_content(sLine))
-                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
+            sLineView = utils::trim(sLineView, ' ');
+            if (!utils::has_no_content(sLineView))
+                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + std::string{sLineView});
         }
     }
 
@@ -175,30 +175,29 @@ void addon_registry::load_addon_directory(const std::string& sDirectory)
     std::ifstream mFile(sDirectory + "/addons.txt");
     if (mFile.is_open())
     {
-        while (!mFile.eof())
+        std::string sLine;
+        while (std::getline(mFile, sLine))
         {
-            std::string sLine;
-            getline(mFile, sLine);
+            utils::replace(sLine, "\r", "");
             if (sLine.empty())
                 continue;
 
-            utils::replace(sLine, "\r", "");
-            if (sLine[0] == '#')
+            std::string_view sLineView = sLine;
+
+            if (sLineView[0] == '#')
             {
-                sLine.erase(0, 1);
-                utils::trim(sLine, ' ');
-                bCore = sLine == "Core";
+                sLineView = sLineView.substr(1);
+                sLineView = utils::trim(sLineView, ' ');
+                bCore = sLineView == "Core";
             }
             else
             {
-                std::pair<std::string,std::string> lArgs = utils::cut_first(sLine, ":");
+                auto lArgs = utils::cut_first(sLineView, ":");
                 if (!lArgs.first.empty() && !lArgs.second.empty())
                 {
-                    std::string sKey = lArgs.first;
-                    utils::trim(sKey, ' ');
-                    std::string sValue = lArgs.second;
-                    utils::trim(sValue, ' ');
-                    auto iter = lAddOns.find(sKey);
+                    std::string_view sKey = utils::trim(lArgs.first, ' ');
+                    std::string_view sValue = utils::trim(lArgs.second, ' ');
+                    auto iter = lAddOns.find(std::string{sKey});
                     if (iter != lAddOns.end())
                     {
                         if (bCore)

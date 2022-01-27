@@ -63,13 +63,13 @@ namespace
         const std::string sLanguageVar = get_environment_variable("LANGUAGE");
         if (!sLanguageVar.empty())
         {
-            std::vector<std::string> lLanguages = utils::cut(sLanguageVar, ":");
             std::vector<std::string> lOutput;
-            for (auto& sLanguage : lLanguages)
+            for (auto sLanguage : utils::cut(sLanguageVar, ":"))
             {
-                utils::replace(sLanguage, "_", "");
-                if (sLanguage.size() == 4)
-                    lOutput.push_back(sLanguage);
+                std::string sLanguageNormalized{sLanguage};
+                utils::replace(sLanguageNormalized, "_", "");
+                if (sLanguageNormalized.size() == 4)
+                    lOutput.push_back(sLanguageNormalized);
             }
 
             if (!lOutput.empty())

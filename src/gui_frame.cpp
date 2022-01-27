@@ -1030,7 +1030,7 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     return sOriginalMessage;
 }
 
-std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
+std::string hijack_sol_error_message(std::string_view sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
 {
     std::string sNewError;
     for (auto sLine : utils::cut(sOriginalMessage, "\n"))
@@ -1038,7 +1038,7 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
         if (!sNewError.empty())
             sNewError += '\n';
 
-        sNewError += hijack_sol_error_line(sLine, sFile, uiLineNbr);
+        sNewError += hijack_sol_error_line(std::string{sLine}, sFile, uiLineNbr);
     }
 
     return sNewError;
@@ -1235,9 +1235,7 @@ void frame::fire_script(const std::string& sScriptName, const event_data& mData)
     catch (const std::exception& mException)
     {
         std::string sError = mException.what();
-
         gui::out << gui::error << sError << std::endl;
-
         mEventEmitter.fire_event("LUA_ERROR", {sError});
     }
 

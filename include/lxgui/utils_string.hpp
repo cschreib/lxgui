@@ -6,6 +6,7 @@
 #include "lxgui/utils_variant.hpp"
 
 #include <string>
+#include <string_view>
 #include <vector>
 #include <array>
 #include <iostream>
@@ -17,83 +18,85 @@ namespace lxgui {
 namespace utils
 {
     using string = std::string;
+    using string_view = std::string_view;
     using ustring = std::u32string;
+    using ustring_view = std::u32string_view;
 
-    void trim(string& s, char cPattern);
-    void trim(string& s, const string& sPatterns);
-    void replace(string& s, const string& sPattern, const string& sReplacement);
+    [[nodiscard]] string_view trim(string_view s, char cPattern);
+    [[nodiscard]] string_view trim(string_view s, string_view sPatterns);
+    void replace(string& s, string_view sPattern, string_view sReplacement);
 
-    std::size_t count_occurrences(const string& s, const string& sPattern);
+    [[nodiscard]] std::size_t count_occurrences(string_view s, string_view sPattern);
 
-    std::vector<string> cut(const string& s, const string& sDelim);
-    std::vector<ustring> cut(const ustring& s, const ustring& sDelim);
+    [[nodiscard]] std::vector<string_view> cut(string_view s, string_view sDelim);
+    [[nodiscard]] std::vector<ustring_view> cut(ustring_view s, ustring_view sDelim);
 
-    std::vector<string> cut_each(const string& s, const string& sDelim);
-    std::vector<ustring> cut_each(const ustring& s, const ustring& sDelim);
+    [[nodiscard]] std::vector<string_view> cut_each(string_view s, string_view sDelim);
+    [[nodiscard]] std::vector<ustring_view> cut_each(ustring_view s, ustring_view sDelim);
 
-    std::pair<string,string> cut_first(const string& s, const string& sDelim);
-    std::pair<ustring,ustring> cut_first(const ustring& s, const ustring& sDelim);
+    [[nodiscard]] std::pair<string_view,string_view> cut_first(string_view s, string_view sDelim);
+    [[nodiscard]] std::pair<ustring_view,ustring_view> cut_first(ustring_view s, ustring_view sDelim);
 
-    bool starts_with(const string& s, const string& sPattern);
-    bool ends_with(const string& s, const string& sPattern);
+    [[nodiscard]] bool starts_with(string_view s, string_view sPattern);
+    [[nodiscard]] bool ends_with(string_view s, string_view sPattern);
 
-    bool has_no_content(const string& s);
+    [[nodiscard]] bool has_no_content(string_view s);
 
-    ustring utf8_to_unicode(const string& s);
-    string  unicode_to_utf8(const ustring& s);
+    [[nodiscard]] ustring utf8_to_unicode(string_view s);
+    [[nodiscard]] string  unicode_to_utf8(ustring_view s);
 
-    std::size_t hex_to_uint(const string& s);
+    [[nodiscard]] std::size_t hex_to_uint(string_view s);
 
-    bool from_string(const string&, int&);
-    bool from_string(const string&, long&);
-    bool from_string(const string&, long long&);
-    bool from_string(const string&, unsigned&);
-    bool from_string(const string&, unsigned long&);
-    bool from_string(const string&, unsigned long long&);
-    bool from_string(const string&, float&);
-    bool from_string(const string&, double&);
-    bool from_string(const string&, bool&);
-    bool from_string(const string&, string&);
+    bool from_string(string_view, int&);
+    bool from_string(string_view, long&);
+    bool from_string(string_view, long long&);
+    bool from_string(string_view, unsigned&);
+    bool from_string(string_view, unsigned long&);
+    bool from_string(string_view, unsigned long long&);
+    bool from_string(string_view, float&);
+    bool from_string(string_view, double&);
+    bool from_string(string_view, bool&);
+    bool from_string(string_view, string&);
 
-    bool from_string(const ustring&, int&);
-    bool from_string(const ustring&, long&);
-    bool from_string(const ustring&, long long&);
-    bool from_string(const ustring&, unsigned&);
-    bool from_string(const ustring&, unsigned long&);
-    bool from_string(const ustring&, unsigned long long&);
-    bool from_string(const ustring&, float&);
-    bool from_string(const ustring&, double&);
-    bool from_string(const ustring&, bool&);
-    bool from_string(const ustring&, ustring&);
+    bool from_string(ustring_view, int&);
+    bool from_string(ustring_view, long&);
+    bool from_string(ustring_view, long long&);
+    bool from_string(ustring_view, unsigned&);
+    bool from_string(ustring_view, unsigned long&);
+    bool from_string(ustring_view, unsigned long long&);
+    bool from_string(ustring_view, float&);
+    bool from_string(ustring_view, double&);
+    bool from_string(ustring_view, bool&);
+    bool from_string(ustring_view, ustring&);
 
-    bool is_number(const string& s);
-    bool is_number(const ustring& s);
-    bool is_number(char s);
-    bool is_number(char32_t s);
-    bool is_integer(const string& s);
-    bool is_integer(const ustring& s);
-    bool is_integer(char s);
-    bool is_integer(char32_t s);
-    bool is_boolean(const string& s);
-    bool is_boolean(const ustring& s);
+    [[nodiscard]] bool is_number(string_view s);
+    [[nodiscard]] bool is_number(ustring_view s);
+    [[nodiscard]] bool is_number(char s);
+    [[nodiscard]] bool is_number(char32_t s);
+    [[nodiscard]] bool is_integer(string_view s);
+    [[nodiscard]] bool is_integer(ustring_view s);
+    [[nodiscard]] bool is_integer(char s);
+    [[nodiscard]] bool is_integer(char32_t s);
+    [[nodiscard]] bool is_boolean(string_view s);
+    [[nodiscard]] bool is_boolean(ustring_view s);
 
-    bool is_whitespace(char c);
-    bool is_whitespace(char32_t c);
+    [[nodiscard]] bool is_whitespace(char c);
+    [[nodiscard]] bool is_whitespace(char32_t c);
 
-    string to_string(int v);
-    string to_string(long v);
-    string to_string(long long v);
-    string to_string(unsigned v);
-    string to_string(unsigned long v);
-    string to_string(unsigned long long v);
-    string to_string(float v);
-    string to_string(double v);
-    string to_string(bool v);
-    string to_string(bool b);
-    string to_string(void* p);
+    [[nodiscard]] string to_string(int v);
+    [[nodiscard]] string to_string(long v);
+    [[nodiscard]] string to_string(long long v);
+    [[nodiscard]] string to_string(unsigned v);
+    [[nodiscard]] string to_string(unsigned long v);
+    [[nodiscard]] string to_string(unsigned long long v);
+    [[nodiscard]] string to_string(float v);
+    [[nodiscard]] string to_string(double v);
+    [[nodiscard]] string to_string(bool v);
+    [[nodiscard]] string to_string(bool b);
+    [[nodiscard]] string to_string(void* p);
 
     template<typename T>
-    string to_string(T* p)
+    [[nodiscard]] string to_string(T* p)
     {
         if (p != nullptr)
             return to_string(static_cast<void*>(p));
@@ -101,10 +104,10 @@ namespace utils
             return "null";
     }
 
-    string to_string(const utils::variant& mValue);
+    [[nodiscard]] string to_string(const utils::variant& mValue);
 
     template<typename ... Args>
-    ustring to_ustring(Args&& ... args)
+    [[nodiscard]] ustring to_ustring(Args&& ... args)
     {
         return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
     }
