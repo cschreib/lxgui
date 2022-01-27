@@ -4,7 +4,7 @@
 
 - [What is lxgui?](#what-is-lxgui)
     - [In a nutshell](#in-a-nutshell)
-    - [Available GUI widgets](#available-gui-widgets)
+    - [Available GUI region types](#available-gui-region-types)
     - [Demonstration](#demonstration)
     - [Gallery](#gallery)
     - [Front-end and back-ends](#front-end-and-back-ends)
@@ -35,17 +35,17 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Platform independent**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **High-DPI aware**. The interface can be scaled by an arbitrary factor when rendered on the screen. This can be used to improve accessibility for visually-impaired users.
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
-* **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
+* **Fully extensible**. Except for the base GUI region types, every region type is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New region types can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of the layout+script files is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
-* **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
+* **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual regions, inheritance, ...).
 
 
-## Available GUI widgets
+## Available GUI region types
 
-* **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
-* **layered_region** (abstract): can be rendered on the screen.
+* **region**: the very base of every GUI element; can be placed on screen, and that's about it.
+* **layered_region**: can be rendered on the screen as part of a draw layer.
 * **frame**: can contain layered_regions (sorted by layer) and other frames, and respond to events.
 * **texture**: can render a texture file, a gradient, or a plain color.
 * **font_string**: can render text.
@@ -56,7 +56,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
-As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
+As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system. You can create a "virtual" frame template, containing any number of children regions and any set of properties, and then instantiate several frames that will "inherit" from this template. This reduces the necessary code, and can help you make consistent GUIs. For example, you can create a "ButtonTemplate", and use it as a base for all the buttons of your GUI. Then if you need to change your buttons to have round instead of square corners, you only need to do the modification to the button template, and it will apply to all buttons.
 
 
 ## Demonstration
@@ -302,15 +302,15 @@ manager->register_lua_glues([](gui::manager& mgr)
 {
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
-    //  - register the needed widgets
+    //  - register the needed region types
     gui::factory& fac = mgr.get_factory();
-    fac.register_uiobject_type<gui::texture>();
-    fac.register_uiobject_type<gui::font_string>();
-    fac.register_uiobject_type<gui::button>();
-    fac.register_uiobject_type<gui::slider>();
-    fac.register_uiobject_type<gui::edit_box>();
-    fac.register_uiobject_type<gui::scroll_frame>();
-    fac.register_uiobject_type<gui::status_bar>();
+    fac.register_region_type<gui::texture>();
+    fac.register_region_type<gui::font_string>();
+    fac.register_region_type<gui::button>();
+    fac.register_region_type<gui::slider>();
+    fac.register_region_type<gui::edit_box>();
+    fac.register_region_type<gui::scroll_frame>();
+    fac.register_region_type<gui::status_bar>();
     //  - register your own additional Lua "glue" functions, if needed.
     // ...
 });
@@ -573,8 +573,8 @@ ui:
 Re-creating the above addon in pure C++ is perfectly possible. This can be done with the following code:
 
 ```c++
-// Root frames (with no parents) are owned by the "uiroot".
-gui::uiroot& root = manager->get_root();
+// Root frames (with no parents) are owned by the UI "root".
+gui::root& root = manager->get_root();
 
 // Create the Frame.
 // NB: observer_ptr is a non-owning smart pointer similar to std::weak_ptr.
@@ -585,7 +585,7 @@ frame->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT));
 
 // Create the FontString as a child region of the frame.
 utils::observer_ptr<gui::font_string> text;
-text = frame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
+text = frame->create_layered_region<gui::font_string>(gui::layer::LAYER_ARTWORK, "$parentText");
 text->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5}));
 text->set_font("interface/fonts/main.ttf", 12);
 text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
