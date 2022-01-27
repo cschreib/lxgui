@@ -167,7 +167,7 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
     if (mYAMLNode.has_key())
         mNode.set_name(normalize_node_name(to_string(mYAMLNode.key()), true));
 
-    for (const auto mElemNode : mYAMLNode.children())
+    for (const auto& mElemNode : mYAMLNode.children())
     {
         switch (mElemNode.type())
         {
