@@ -60,10 +60,10 @@ namespace gui
         /// Binds an action to a key.
         /** \param sName The action to bind
         *   \param sKey  The key to bind it to (e.g., "Shift-T")
-        *   \note The format of the @ref sKey parameter is any key name as returned from @ref
-        *         input::get_key_code_name(), preceded by optional modifiers (any combination of
-        *         "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given to frames
-        *         in the "OnKeyDown" and "OnKeyUp" scripts.
+        *   \note The format of the `sKey` parameter is any key name as returned from @ref
+        *         input::get_key_codename(), preceded by optional modifiers (any
+        *         combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
+        *         to frames in the "OnKeyDown" and "OnKeyUp" scripts.
         */
         void set_key_binding(std::string_view sName, std::string_view sKey);
 
