@@ -163,6 +163,19 @@ std::string_view get_key_codename(key mKey)
     }
 }
 
+key get_key_from_codename(std::string_view sKey)
+{
+    using index_t = std::underlying_type_t<key>;
+
+    for (index_t i = 0; i < static_cast<index_t>(key::K_MAXKEY); ++i)
+    {
+        if (sKey == get_key_codename(static_cast<key>(i)))
+            return static_cast<key>(i);
+    }
+
+    return key::K_UNASSIGNED;
+}
+
 std::string_view get_localizable_key_name(key mKey)
 {
     switch (mKey)

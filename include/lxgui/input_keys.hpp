@@ -201,6 +201,13 @@ namespace input
     */
     std::string_view get_key_codename(key mKey);
 
+    /// Returns the key code from the standard English name of a key.
+    /** \param sKey The name of the key
+    *   \return The key code
+    *   \note The name of the key must be from get_key_codename().
+    */
+    key get_key_from_codename(std::string_view sKey);
+
     /// Returns the localizable name of the provided key.
     /** \param mKey The key
     *   \return The localizable name of the provided key
