@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_UIOBJECT_HPP
-#define LXGUI_GUI_UIOBJECT_HPP
+#ifndef LXGUI_GUI_REGION_HPP
+#define LXGUI_GUI_REGION_HPP
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
@@ -44,19 +44,19 @@ namespace gui
     /** Objects of this class offers core functionalities needed by every element
     *   of the interface. They have a name, and a corresponding variable created
     *   in Lua to access them. They can have a parent #lxgui::gui::frame. They can be
-    *   placed on the screen at an absolute position, or relative to other uiobjects.
+    *   placed on the screen at an absolute position, or relative to other regions.
     *   They can be shown or hidden.
     *
-    *   Apart form this, a uiobject does not contain anything, nor can it display
+    *   Apart form this, a region does not contain anything, nor can it display
     *   anything on the screen. Any functionality beyond the list above is implemented
     *   in specialized subclasses (see the full list below).
     *
-    *   __Interaction between C++, Lua, and layout files.__ When a uiobject is created,
+    *   __Interaction between C++, Lua, and layout files.__ When a region is created,
     *   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
     *   object lives, this name will be used to refer to it. In particular, as soon
     *   as the object is created, regardless of whether this was done in C++, layout
     *   files, or Lua, a new variable will be created in the Lua state with the exact
-    *   same name, `PlayerHealthBar`. This variable is a reference to the uiobject, and
+    *   same name, `PlayerHealthBar`. This variable is a reference to the region, and
     *   can be used to interact with it dynamically. Because of this, each object must
     *   have a unique name, otherwise it could not be accessible from Lua.
     *
@@ -69,17 +69,17 @@ namespace gui
     *   content may change, you can also recycle the object, i.e., keep it alive and
     *   simply change its content when it later reappears.
     *
-    *   Deleting an object from C++ is done using uiobject::destroy.
+    *   Deleting an object from C++ is done using region::destroy.
     *   This will automatically delete all references to this object in Lua as well.
     *
     *   Finally, note that objects do not need to be explicitly destroyed: they will
     *   automatically be destroyed when their parent is itself destroyed (see below).
     *   Only use explicit destruction when absolutely necessary.
     *
-    *   __Parent-child relationship.__ Parents of uiobjects are frames. See
+    *   __Parent-child relationship.__ Parents of regions are frames. See
     *   the #lxgui::gui::frame class documentation for more information. One important
     *   aspect of the parent-child relationship is related to the object name. If a
-    *   uiobject has a parent, it can be given a name starting with `"$parent"`.
+    *   region has a parent, it can be given a name starting with `"$parent"`.
     *   The name of the parent will automatically replace the `"$parent"` string.
     *   For example, if an object is named `"$parentButton"` and its parent is named
     *   `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
@@ -91,7 +91,7 @@ namespace gui
     *   powerful for writing generic code which does not rely on the full names of
     *   objects, only on their child-parent relationship.
     *
-    *   __Positioning.__ uiobjects have a position on the screen, but this is
+    *   __Positioning.__ regions have a position on the screen, but this is
     *   not parametrized as a simple pair of X and Y coordinates. Instead, objects
     *   are positioned based on a list of "anchors". Anchors are links between
     *   objects, which force one edge or one corner of a given object to match with
@@ -110,7 +110,7 @@ namespace gui
     *   An object which has no anchor will be considered "invalid" and will not be
     *   displayed.
     *
-    *   __Sizing.__ There are two ways to specify the size of a uiobject. The
+    *   __Sizing.__ There are two ways to specify the size of a region. The
     *   first and most straightforward approach is to directly set its width and/or
     *   height. This must be specified as an absolute number of pixels. The second
     *   and more versatile method is to use more than one anchor for opposite sides
@@ -151,204 +151,204 @@ namespace gui
     *   constraint on `A`'s midpoint will be ignored: `A` will be enlarged to a height
     *   of 40 pixels, i.e., the distance between `B`'s top and bottom edges.
     */
-    class uiobject : public utils::enable_observer_from_this<uiobject>
+    class region : public utils::enable_observer_from_this<region>
     {
     friend factory;
     friend frame;
     public :
 
         /// Contructor.
-        explicit uiobject(utils::control_block& mBlock, manager& mManager);
+        explicit region(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
-        ~uiobject() override;
+        ~region() override;
 
         /// Non-copiable
-        uiobject(const uiobject&) = delete;
+        region(const region&) = delete;
 
         /// Non-movable
-        uiobject(uiobject&&) = delete;
+        region(region&&) = delete;
 
         /// Non-copiable
-        uiobject& operator=(const uiobject&) = delete;
+        region& operator=(const region&) = delete;
 
         /// Non-movable
-        uiobject& operator=(uiobject&&) = delete;
+        region& operator=(region&&) = delete;
 
-        /// Renders this widget on the current render target.
+        /// Renders this region on the current render target.
         virtual void render() const;
 
-        /// Updates this widget's logic.
+        /// Updates this region's logic.
         /** \param fDelta Time spent since last update
         */
         virtual void update(float fDelta);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         virtual std::string serialize(const std::string& sTab) const;
 
-        /// Copies an uiobject's parameters into this uiobject (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this region (inheritance).
+        /** \param mObj The region to copy
         */
-        virtual void copy_from(const uiobject& mObj);
+        virtual void copy_from(const region& mObj);
 
-        /// Tells this widget that its borders need updating.
+        /// Tells this region that its borders need updating.
         virtual void notify_borders_need_update();
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         virtual void notify_scaling_factor_updated();
 
-        /// Returns this widget's name.
-        /** \return This widget's name
+        /// Returns this region's name.
+        /** \return This region's name
         */
         const std::string& get_name() const;
 
-        /// Returns this widget's Lua name.
-        /** \return This widget's Lua name
+        /// Returns this region's Lua name.
+        /** \return This region's Lua name
         */
         const std::string& get_lua_name() const;
 
-        /// Returns this widget's raw name.
-        /** \return This widget's raw name
-        *   \note This is the name of the widget before "$parent"
+        /// Returns this region's raw name.
+        /** \return This region's raw name
+        *   \note This is the name of the region before "$parent"
         *         has been replaced by its parent's name.
         */
         const std::string& get_raw_name() const;
 
-        /// Returns this widget's parent.
-        /** \return This widget's parent
+        /// Returns this region's parent.
+        /** \return This region's parent
         */
         utils::observer_ptr<const frame> get_parent() const { return pParent_; }
 
-        /// Returns this widget's parent.
-        /** \return This widget's parent
+        /// Returns this region's parent.
+        /** \return This region's parent
         */
         const utils::observer_ptr<frame>& get_parent() { return pParent_; }
 
-        /// Removes this widget from its parent and return an owning pointer.
-        /** \return An owning pointer to this widget
+        /// Removes this region from its parent and return an owning pointer.
+        /** \return An owning pointer to this region
         */
-        virtual utils::owner_ptr<uiobject> release_from_parent();
+        virtual utils::owner_ptr<region> release_from_parent();
 
-        /// Forcefully removes this widget from the GUI.
+        /// Forcefully removes this region from the GUI.
         /** \warning After calling this function, any pointer to the object is invalidated!
         *            Only call this function if you need the object to be destroyed early,
         *            before its parent (if any) would itself be destroyed.
         */
         void destroy();
 
-        /// Changes this widget's alpha (opacity).
+        /// Changes this region's alpha (opacity).
         /** \param fAlpha The new alpha value
         *   \note Default is 1.0f.
         */
         void set_alpha(float fAlpha);
 
-        /// Returns this widget's alpha (opacity).
-        /** \return This widget's alpha (opacity).
+        /// Returns this region's alpha (opacity).
+        /** \return This region's alpha (opacity).
         */
         float get_alpha() const;
 
-        /// Returns this widget's effective alpha (opacity).
-        /** \return This widget's effective alpha (opacity).
-        *   \note This includes the widget's parent alpha.
+        /// Returns this region's effective alpha (opacity).
+        /** \return This region's effective alpha (opacity).
+        *   \note This includes the region's parent alpha.
         */
         float get_effective_alpha() const;
 
-        /// shows this widget.
+        /// shows this region.
         /** \note Its parent must be shown for it to appear on
         *         the screen.
         */
         virtual void show();
 
-        /// hides this widget.
+        /// hides this region.
         /** \note All its children won't be visible on the screen
         *         anymore, even if they are still marked as shown.
         */
         virtual void hide();
 
-        /// shows/hides this widget.
-        /** \param bIsShown 'true' if you want to show this widget
+        /// shows/hides this region.
+        /** \param bIsShown 'true' if you want to show this region
         *   \note See show() and hide() for more infos.
         */
         void set_shown(bool bIsShown);
 
-        /// Checks if this widget is shown.
-        /** \return 'true' if this widget is shown
+        /// Checks if this region is shown.
+        /** \return 'true' if this region is shown
         */
         bool is_shown() const;
 
-        /// Checks if this widget can be seen on the screen.
-        /** \return 'true' if this widget can be seen on the screen
+        /// Checks if this region can be seen on the screen.
+        /** \return 'true' if this region can be seen on the screen
         */
         virtual bool is_visible() const;
 
-        /// Changes this widget's absolute dimensions (in pixels).
+        /// Changes this region's absolute dimensions (in pixels).
         /** \param mDimensions The new dimensions
         */
         virtual void set_dimensions(const vector2f& mDimensions);
 
-        /// Changes this widget's absolute width (in pixels).
+        /// Changes this region's absolute width (in pixels).
         /** \param fAbsWidth The new width
         */
         virtual void set_width(float fAbsWidth);
 
-        /// Changes this widget's absolute height (in pixels).
+        /// Changes this region's absolute height (in pixels).
         /** \param fAbsHeight The new height
         */
         virtual void set_height(float fAbsHeight);
 
-        /// Changes this widget's dimensions (relative to its parent).
+        /// Changes this region's dimensions (relative to its parent).
         /** \param mDimensions The new dimensions (relative)
         */
         void set_relative_dimensions(const vector2f& mDimensions);
 
-        /// Changes this widget's width (relative to its parent).
+        /// Changes this region's width (relative to its parent).
         /** \param fRelWidth The new width
         */
         void set_relative_width(float fRelWidth);
 
-        /// Changes this widget's height (relative to its parent).
+        /// Changes this region's height (relative to its parent).
         /** \param fRelHeight The new height
         */
         void set_relative_height(float fRelHeight);
 
-        /// Returns this widget's explicitly-defined width and height (in pixels).
-        /** \return This widget's explicitly-defined width and height (in pixels)
-        *   \note If you need to get the actual size of a widget on the screen,
-        *         use get_apparent_dimensions(), as some widgets may not have
+        /// Returns this region's explicitly-defined width and height (in pixels).
+        /** \return This region's explicitly-defined width and height (in pixels)
+        *   \note If you need to get the actual size of a region on the screen,
+        *         use get_apparent_dimensions(), as some regions may not have
         *         their dimensions explicitly defined, and instead get their
         *         extents from anchors. If a dimension is not explicitly defined,
         *         it will be returned as zero.
         */
         const vector2f& get_dimensions() const;
 
-        /// Returns this widget's appearent width and height (in pixels).
-        /** \return This widget's appearent width and height (in pixels)
-        *   \note If you need to get the actual size of a widget on the screen,
-        *         use this function instead of get_dimensions(), as some widgets
+        /// Returns this region's appearent width and height (in pixels).
+        /** \return This region's appearent width and height (in pixels)
+        *   \note If you need to get the actual size of a region on the screen,
+        *         use this function instead of get_dimensions(), as some regions
         *         may not have their dimensions explicitly defined, and instead
         *         get their extents from anchors.
         */
         vector2f get_apparent_dimensions() const;
 
-        /// Checks if this widget's apparent width is defined.
+        /// Checks if this region's apparent width is defined.
         /** \return 'true' if defined, 'false' otherwise
-        *   \note The apparent width is defined if either the widget's absolute
+        *   \note The apparent width is defined if either the region's absolute
         *         or relative width is explicitly specified (from set_width(),
         *         set_relative_width(), set_dimensions(), or set_relative_dimensions()),
-        *         or if its left and right borders are anchored. A widget with an undefined
+        *         or if its left and right borders are anchored. A region with an undefined
         *         apparent width will not be rendered on the screen until its width is defined.
         */
         bool is_apparent_width_defined() const;
 
-        /// Checks if this widget's apparent height is defined.
+        /// Checks if this region's apparent height is defined.
         /** \return 'true' if defined, 'false' otherwise
-        *   \note The apparent height is defined if either the widget's absolute
+        *   \note The apparent height is defined if either the region's absolute
         *         or relative height is explicitly specified (from set_height(),
         *         set_relative_height(), set_dimensions(), or set_relative_dimensions()),
-        *         or if its left and right borders are anchored. A widget with an undefined
+        *         or if its left and right borders are anchored. A region with an undefined
         *         apparent height will not be rendered on the screen until its height is defined.
         */
         bool is_apparent_height_defined() const;
@@ -359,19 +359,19 @@ namespace gui
         */
         virtual bool is_in_region(const vector2f& mPosition) const;
 
-        /// Returns the type of this widget.
-        /** \return The type of this widget
+        /// Returns the type of this region.
+        /** \return The type of this region
         */
         const std::string& get_object_type() const;
 
-        /// Checks if this widget is of the provided type.
+        /// Checks if this region is of the provided type.
         /** \param sType The type to test
-        *   \return 'true' if this widget is of the provided type
+        *   \return 'true' if this region is of the provided type
         */
         bool is_object_type(const std::string& sType) const;
 
-        /// Checks if this widget is of the provided type.
-        /** \return 'true' if this widget is of the provided type
+        /// Checks if this region is of the provided type.
+        /** \return 'true' if this region is of the provided type
         */
         template<typename ObjectType>
         bool is_object_type() const
@@ -379,57 +379,57 @@ namespace gui
             return is_object_type(ObjectType::CLASS_NAME);
         }
 
-        /// Returns an array containing all the types of this widget.
-        /** \return An array containing all the types of this widget
+        /// Returns an array containing all the types of this region.
+        /** \return An array containing all the types of this region
         */
         const std::vector<std::string>& get_object_type_list() const;
 
-        /// Returns the vertical position of this widget's bottom border.
-        /** \return The vertical position of this widget's bottom border
+        /// Returns the vertical position of this region's bottom border.
+        /** \return The vertical position of this region's bottom border
         */
         float get_bottom() const;
 
-        /// Returns the position of this widget's center.
-        /** \return The position of this widget's center
+        /// Returns the position of this region's center.
+        /** \return The position of this region's center
         */
         vector2f get_center() const;
 
-        /// Returns the horizontal position of this widget's left border.
-        /** \return The horizontal position of this widget's left border
+        /// Returns the horizontal position of this region's left border.
+        /** \return The horizontal position of this region's left border
         */
         float get_left() const;
 
-        /// Returns the horizontal position of this widget's right border.
-        /** \return The horizontal position of this widget's right border
+        /// Returns the horizontal position of this region's right border.
+        /** \return The horizontal position of this region's right border
         */
         float get_right() const;
 
-        /// Returns the vertical position of this widget's top border.
-        /** \return The vertical position of this widget's top border
+        /// Returns the vertical position of this region's top border.
+        /** \return The vertical position of this region's top border
         */
         float get_top() const;
 
-        /// Returns this widget's borders.
-        /** \return This widget's borders
+        /// Returns this region's borders.
+        /** \return This region's borders
         */
         const bounds2f& get_borders() const;
 
         /// Removes all anchors.
-        /** \note This widget and its children won't be visible until you
+        /** \note This region and its children won't be visible until you
         *         define at least one anchor.
         */
         void clear_all_points();
 
-        /// Adjusts this widgets anchors to fit the provided widget.
+        /// Adjusts this regions anchors to fit the provided region.
         /** \param pObj A pointer to the object you want to wrap
         *   \note Removes all anchors and defines two new ones.
         */
-        void set_all_points(const utils::observer_ptr<uiobject>& pObj);
+        void set_all_points(const utils::observer_ptr<region>& pObj);
 
-        /// Adjusts this widgets anchors to fit the provided widget.
+        /// Adjusts this regions anchors to fit the provided region.
         /** \param sObjName The name of the object to fit to
         *   \note Removes all anchors and defines two new ones.<br>
-        *         This version is to be used by virtual widgets to
+        *         This version is to be used by virtual regions to
         *         preserve the anchor hierarchy.
         */
         void set_all_points(const std::string& sObjName);
@@ -439,31 +439,31 @@ namespace gui
         */
         void set_point(const anchor_data& mAnchor);
 
-        /// Checks if this widget depends on another.
-        /** \param mObj The widget to test
+        /// Checks if this region depends on another.
+        /** \param mObj The region to test
         *   \note Usefull to detect circular refences.
         */
-        bool depends_on(const uiobject& mObj) const;
+        bool depends_on(const region& mObj) const;
 
         /// Returns the number of defined anchors.
         /** \return The number of defined anchors
         */
         std::size_t get_num_point() const;
 
-        /// Returns one of this widget's anchor to modify it.
+        /// Returns one of this region's anchor to modify it.
         /** \param mPoint The anchor point
         *   \return A pointer to the anchor, nullptr if none
         */
         anchor& modify_point(anchor_point mPoint);
 
-        /// Returns one of this widget's anchor.
+        /// Returns one of this region's anchor.
         /** \param mPoint The anchor point
         *   \return A pointer to the anchor, nullptr if none
         */
         const anchor& get_point(anchor_point mPoint) const;
 
-        /// Returns all of this widgets's anchors.
-        /** \return All of this widgets's anchors
+        /// Returns all of this regions's anchors.
+        /** \return All of this regions's anchors
         */
         const std::array<std::optional<anchor>,9>& get_point_list() const;
 
@@ -483,28 +483,28 @@ namespace gui
         vector2f round_to_pixel(const vector2f& mPosition,
             utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
 
-        /// Notifies this widget that another one is anchored to it.
-        /** \param mObj The anchored widget
+        /// Notifies this region that another one is anchored to it.
+        /** \param mObj The anchored region
         *   \note Anchored objects get their borders automatically updated
         *         whenever this objet's borders are updated.
         */
-        void add_anchored_object(uiobject& mObj);
+        void add_anchored_object(region& mObj);
 
-        /// Notifies this widget that another one is no longer anchored to it.
-        /** \param mObj The widget no longer anchored
+        /// Notifies this region that another one is no longer anchored to it.
+        /** \param mObj The region no longer anchored
         *   \see add_anchored_object()
         */
-        void remove_anchored_object(uiobject& mObj);
+        void remove_anchored_object(region& mObj);
 
-        /// Checks if this uiobject is virtual.
-        /** \return 'true' if this uiobject is virtual
-        *   \note A virtual uiobject will not be displayed on the screen, but can serve as a
+        /// Checks if this region is virtual.
+        /** \return 'true' if this region is virtual
+        *   \note A virtual region will not be displayed on the screen, but can serve as a
         *         template to create new GUI elements (it is then "inherited", although note
         *         that this has no connection to C++ inheritance).
         */
         bool is_virtual() const;
 
-        /// Makes this uiobject virtual.
+        /// Makes this region virtual.
         /** \note See is_virtual().
         */
         void set_virtual();
@@ -537,10 +537,10 @@ namespace gui
         utils::observer_ptr<frame_renderer> get_top_level_renderer()
         {
             return utils::const_pointer_cast<frame_renderer>(
-                const_cast<const uiobject*>(this)->get_top_level_renderer());
+                const_cast<const region*>(this)->get_top_level_renderer());
         }
 
-        /// Notifies the renderer of this widget that it needs to be redrawn.
+        /// Notifies the renderer of this region that it needs to be redrawn.
         /** \note Automatically called by any shape-changing function.
         */
         virtual void notify_renderer_need_redraw();
@@ -548,30 +548,30 @@ namespace gui
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one
         */
-        const std::vector<utils::observer_ptr<uiobject>>& get_anchored_objects() const;
+        const std::vector<utils::observer_ptr<region>>& get_anchored_objects() const;
 
-        /// Notifies this widget that it has been fully loaded.
+        /// Notifies this region that it has been fully loaded.
         /** \see is_loaded()
         */
         virtual void notify_loaded();
 
-        /// Checks if this widget has been fully loaded.
-        /** \note A widget that is not fully loaded still has all its core attributes
+        /// Checks if this region has been fully loaded.
+        /** \note A region that is not fully loaded still has all its core attributes
         *         set, hence can be considered as "fully constructed" from a C++ point
         *         of view. However, semantically, the object may need further steps to
         *         be complete, as designed by the UI designer. Therefore, form the UI's
-        *         point of view, a widget is considered "complete" only if is_loaded()
-        *         returns 'true' (see notifu_loaded()). Only then can the widget, e.g.,
+        *         point of view, a region is considered "complete" only if is_loaded()
+        *         returns 'true' (see notifu_loaded()). Only then can the region, e.g.,
         *         react to or generate events.
         */
         bool is_loaded() const;
 
-        /// Notifies this widget that it is now visible on screen.
+        /// Notifies this region that it is now visible on screen.
         /** \note Automatically called by show()/hide().
         */
         virtual void notify_visible();
 
-        /// Notifies this widget that it is no longer visible on screen.
+        /// Notifies this region that it is no longer visible on screen.
         /** \note Automatically called by show()/hide().
         */
         virtual void notify_invisible();
@@ -600,13 +600,13 @@ namespace gui
         */
         std::string parse_file_name(const std::string& sFileName) const;
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns this region's manager.
+        /** \return This region's manager
         */
         manager& get_manager() { return mManager_; }
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns this region's manager.
+        /** \return This region's manager
         */
         const manager& get_manager() const { return mManager_; }
 
@@ -631,16 +631,16 @@ namespace gui
         */
         virtual void parse_layout(const layout_node& mNode);
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         template<typename ObjectType>
-        friend const ObjectType* down_cast(const uiobject* pSelf);
+        friend const ObjectType* down_cast(const region* pSelf);
 
         template<typename ObjectType>
-        friend ObjectType* down_cast(uiobject* pSelf);
+        friend ObjectType* down_cast(region* pSelf);
 
-        static constexpr const char* CLASS_NAME = "UIObject";
+        static constexpr const char* CLASS_NAME = "Region";
 
     protected :
 
@@ -668,21 +668,21 @@ namespace gui
         void set_lua_member_(std::string sKey, sol::stack_object mValue);
         sol::object get_lua_member_(const std::string& sKey) const;
 
-        /// Sets this widget's name.
-        /** \param sName This widget's name
+        /// Sets this region's name.
+        /** \param sName This region's name
         *   \note Can only be called once. If you need to set both the name and the parent
         *         at the same time (typically, at creation), use set_name_and_parent_().
         */
         void set_name_(const std::string& sName);
 
-        /// Changes this widget's parent.
+        /// Changes this region's parent.
         /** \param pParent The new parent
         *   \note Default is nullptr.
         */
         void set_parent_(utils::observer_ptr<frame> pParent);
 
-        /// Sets this widget's name and parent at once.
-        /** \param sName This widget's name
+        /// Sets this region's name and parent at once.
+        /** \param sName This region's name
         *   \param pParent The new parent
         *   \note The name can only be set once. If you need to just change the
         *         parent, call set_parent_().
@@ -709,7 +709,7 @@ namespace gui
         std::vector<std::string> lType_;
 
         std::array<std::optional<anchor>,9> lAnchorList_;
-        std::vector<utils::observer_ptr<uiobject>> lPreviousAnchorParentList_;
+        std::vector<utils::observer_ptr<region>> lPreviousAnchorParentList_;
         bounds2<bool>                       lDefinedBorderList_;
         bounds2f                            lBorderList_;
 
@@ -719,7 +719,7 @@ namespace gui
 
         vector2f mDimensions_;
 
-        std::vector<utils::observer_ptr<uiobject>> lAnchoredObjectList_;
+        std::vector<utils::observer_ptr<region>> lAnchoredObjectList_;
 
         std::unordered_map<std::string, sol::object> lLuaMembers_;
     };
@@ -727,13 +727,13 @@ namespace gui
     /// Obtain a pointer to a derived class.
     /** \param pSelf The pointer to down cast
     *   \return A pointer to a derived class
-    *   \note Like dynamic_cast(), this will return nullptr if this widget
+    *   \note Like dynamic_cast(), this will return nullptr if this region
     *         is not of the requested type. However, it will throw if the cast
     *         failed because the derived class destructor has already been
     *         called. This indicates a programming error.
     */
     template<typename ObjectType>
-    const ObjectType* down_cast(const uiobject* pSelf)
+    const ObjectType* down_cast(const region* pSelf)
     {
         const ObjectType* pObject = dynamic_cast<const ObjectType*>(pSelf);
         if (pSelf && !pObject && pSelf->is_object_type(ObjectType::CLASS_NAME))
@@ -748,25 +748,25 @@ namespace gui
     /// Obtain a pointer to a derived class.
     /** \param pSelf The pointer to down cast
     *   \return A pointer to a derived class
-    *   \note Like dynamic_cast(), this will return nullptr if this widget
+    *   \note Like dynamic_cast(), this will return nullptr if this region
     *         is not of the requested type. However, it will throw if the cast
     *         failed because the derived class destructor has already been
     *         called. This indicates a programming error.
     */
     template<typename ObjectType>
-    ObjectType* down_cast(uiobject* pSelf)
+    ObjectType* down_cast(region* pSelf)
     {
         return const_cast<ObjectType*>(
-            down_cast<ObjectType>(const_cast<const uiobject*>(pSelf)));
+            down_cast<ObjectType>(const_cast<const region*>(pSelf)));
     }
 
     /// Perform a down cast on an owning pointer.
     /** \param pObject The owning pointer to down cast
     *   \return The down casted pointer.
-    *   \note See down_cast(const uiobject*) for more information.
+    *   \note See down_cast(const region*) for more information.
     */
     template<typename ObjectType>
-    utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<uiobject>&& pObject)
+    utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& pObject)
     {
         return utils::owner_ptr<ObjectType>(std::move(pObject),
             down_cast<ObjectType>(pObject.get()));
@@ -775,10 +775,10 @@ namespace gui
     /// Perform a down cast on an observer pointer.
     /** \param pObject The observer pointer to down cast
     *   \return The down casted pointer.
-    *   \note See down_cast(const uiobject*) for more information.
+    *   \note See down_cast(const region*) for more information.
     */
     template<typename ObjectType>
-    utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<uiobject>& pObject)
+    utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& pObject)
     {
         return utils::observer_ptr<ObjectType>(pObject, down_cast<ObjectType>(pObject.get()));
     }
@@ -786,10 +786,10 @@ namespace gui
     /// Perform a down cast on an observer pointer.
     /** \param pObject The observer pointer to down cast
     *   \return The down casted pointer.
-    *   \note See down_cast(const uiobject*) for more information.
+    *   \note See down_cast(const region*) for more information.
     */
     template<typename ObjectType>
-    utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<uiobject>&& pObject)
+    utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& pObject)
     {
         return utils::observer_ptr<ObjectType>(std::move(pObject),
             down_cast<ObjectType>(pObject.get()));
@@ -806,7 +806,7 @@ namespace gui
     utils::observer_ptr<ObjectType> observer_from(ObjectType* pSelf)
     {
         if (pSelf)
-            return utils::static_pointer_cast<ObjectType>(pSelf->uiobject::observer_from_this());
+            return utils::static_pointer_cast<ObjectType>(pSelf->region::observer_from_this());
         else
             return nullptr;
     }

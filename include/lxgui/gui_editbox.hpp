@@ -140,12 +140,12 @@ namespace gui
         /// Constructor.
         explicit edit_box(utils::control_block& mBlock, manager& mManager);
 
-        /// Copies an uiobject's parameters into this edit_box (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this edit_box (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
-        /// Updates this widget's logic.
+        /// Updates this region's logic.
         /** \param fDelta Time spent since last update
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
@@ -364,13 +364,13 @@ namespace gui
         */
         void notify_focus(bool bFocus) override;
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
-        /// Returns this widget's Lua glue.
+        /// Returns this region's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "EditBox";

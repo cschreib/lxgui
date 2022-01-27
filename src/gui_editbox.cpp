@@ -6,7 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/input_window.hpp>
 #include <lxgui/utils_range.hpp>
@@ -48,7 +48,7 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void edit_box::copy_from(const uiobject& mObj)
+void edit_box::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -68,7 +68,7 @@ void edit_box::copy_from(const uiobject& mObj)
 
     if (const font_string* pFS = pEditBox->get_font_string().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pFS->get_name();
         mAttr.lInheritance = {pEditBox->get_font_string()};
 

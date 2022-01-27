@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 
 namespace lxgui {
 namespace gui
@@ -26,7 +26,7 @@ namespace gui
     */
     layer_type parse_layer_type(const std::string& sLayer);
 
-    /// A #uiobject that can be rendered in a layer.
+    /// A #region that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
     *   texts, 3D models, ...) and must be contained inside a layer,
     *   within a #lxgui::gui::frame object. The frame will then render all
@@ -35,43 +35,43 @@ namespace gui
     *   Layered regions cannot themselves react to events; this
     *   must be taken care of by the parent frame.
     */
-    class layered_region : public uiobject
+    class layered_region : public region
     {
-        using base = uiobject;
+        using base = region;
 
     public :
 
         /// Constructor.
         explicit layered_region(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Removes this widget from its parent and return an owning pointer.
-        /** \return An owning pointer to this widget
+        /// Removes this region from its parent and return an owning pointer.
+        /** \return An owning pointer to this region
         */
-        utils::owner_ptr<uiobject> release_from_parent() override;
+        utils::owner_ptr<region> release_from_parent() override;
 
-        /// shows this widget.
+        /// shows this region.
         /** \note Its parent must be shown for it to appear on
         *         the screen.
         */
         void show() override;
 
-        /// hides this widget.
+        /// hides this region.
         /** \note All its children won't be visible on the screen
         *   anymore, even if they are still marked as shown.
         */
         void hide() override;
 
-        /// Checks if this widget can be seen on the screen.
-        /** \return 'true' if this widget can be seen on the screen
+        /// Checks if this region can be seen on the screen.
+        /** \return 'true' if this region can be seen on the screen
         */
         bool is_visible() const override;
 
@@ -90,7 +90,7 @@ namespace gui
         */
         virtual void set_draw_layer(const std::string& sLayer);
 
-        /// Notifies the renderer of this widget that it needs to be redrawn.
+        /// Notifies the renderer of this region that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
         void notify_renderer_need_redraw() override;
@@ -100,7 +100,7 @@ namespace gui
         */
         void parse_layout(const layout_node& mNode) override;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "LayeredRegion";

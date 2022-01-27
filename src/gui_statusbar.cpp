@@ -4,7 +4,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sstream>
 
@@ -51,7 +51,7 @@ bool status_bar::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void status_bar::copy_from(const uiobject& mObj)
+void status_bar::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -68,7 +68,7 @@ void status_bar::copy_from(const uiobject& mObj)
 
     if (const texture* pBar = pStatusBar->get_bar_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pBar->get_name();
         mAttr.lInheritance = {pStatusBar->get_bar_texture()};
 

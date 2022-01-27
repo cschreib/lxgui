@@ -44,7 +44,7 @@ namespace gui
         /// Destructor.
         ~scroll_frame() override;
 
-        /// Updates this widget's logic.
+        /// Updates this region's logic.
         /** \param fDelta Time spent since last update
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
@@ -52,10 +52,10 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Copies an uiobject's parameters into this scroll_frame (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this scroll_frame (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Returns 'true' if this scroll_frame can use a script.
         /** \param sScriptName The name of the script
@@ -130,7 +130,7 @@ namespace gui
         utils::observer_ptr<const frame> find_topmost_frame(
             const std::function<bool(const frame&)>& mPredicate) const override;
 
-        /// Tells this renderer that one of its widget requires redraw.
+        /// Tells this renderer that one of its region requires redraw.
         void notify_strata_needs_redraw(frame_strata mStrata) override;
 
         /// Tells this renderer that it should (or not) render another frame.
@@ -144,13 +144,13 @@ namespace gui
         */
         vector2f get_target_dimensions() const override;
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
-        /// Returns this widget's Lua glue.
+        /// Returns this region's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "ScrollFrame";

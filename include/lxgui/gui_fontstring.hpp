@@ -19,8 +19,8 @@ namespace gui
     *   __Sizing.__ The #font_string class has a special property when it
     *   comes to determining the size of its region on the screen, hence
     *   how other object anchor to it, and how it anchors to other objects.
-    *   See the documentation for #uiobject for more information on anchors.
-    *   While other uiobjects must either have a fixed size or more than two
+    *   See the documentation for #region for more information on anchors.
+    *   While other regions must either have a fixed size or more than two
     *   anchors constraining their size, the #font_string does not. If only
     *   one anchor is specified, the width and height of the #font_string will
     *   be determined by the area occupied by the displayed text, however long and
@@ -40,19 +40,19 @@ namespace gui
         /// Constructor.
         explicit font_string(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
-        /// Renders this widget on the current render target.
+        /// Renders this region on the current render target.
         void render() const override;
 
-        /// Copies an uiobject's parameters into this font_string (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this font_string (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Returns the name of the font file.
         /** \return The name of the font file
@@ -244,7 +244,7 @@ namespace gui
         */
         void set_text(const utils::ustring& sText);
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
         /// Creates the associated Lua glue.
@@ -265,7 +265,7 @@ namespace gui
         */
         const text* get_text_object() const;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "FontString";

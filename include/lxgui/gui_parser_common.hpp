@@ -2,7 +2,7 @@
 #define LXGUI_GUI_PARSER_COMMON_HPP
 
 #include "lxgui/lxgui.hpp"
-#include "lxgui/gui_uiobject_attributes.hpp"
+#include "lxgui/gui_region_attributes.hpp"
 
 #include <lxgui/utils_observer.hpp>
 
@@ -21,7 +21,7 @@ namespace gui
     *   \param pParent          The current layout parent frame of this node (nullptr if none)
     *   \return Filled-in core attributes structure.
     */
-    uiobject_core_attributes parse_core_attributes(
+    region_core_attributes parse_core_attributes(
         registry& mRegistry, virtual_registry& mVirtualRegistry,
         const layout_node& mNode, utils::observer_ptr<frame> pParent);
 

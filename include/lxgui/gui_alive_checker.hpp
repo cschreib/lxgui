@@ -9,9 +9,9 @@ namespace lxgui
 {
 namespace gui
 {
-    class uiobject;
+    class region;
 
-    /// Utility class for safe checking of widget validity
+    /// Utility class for safe checking of region validity
     /** To use this class, construct an instance of alive_checker
     *   with any object you wish to monitor. Then use the object.
     *   Then use alive_checker::is_alive() to check if the object
@@ -25,7 +25,7 @@ namespace gui
     public :
 
         /// Contructor.
-        explicit alive_checker(uiobject& mObject) : pObject_(mObject.observer_from_this()) {}
+        explicit alive_checker(region& mObject) : pObject_(mObject.observer_from_this()) {}
 
         // Non-copiable, non-movable
         alive_checker(const alive_checker&) = delete;
@@ -33,14 +33,14 @@ namespace gui
         alive_checker& operator=(const alive_checker&) = delete;
         alive_checker& operator=(alive_checker&&) = delete;
 
-        /// Check if the wrapper widget is still alive
-        /** \return 'true' if the widget is alive, 'false' otherwise
+        /// Check if the wrapped region is still alive
+        /** \return 'true' if the region is alive, 'false' otherwise
         */
         bool is_alive() const { return !pObject_.expired(); }
 
     private :
 
-        utils::observer_ptr<uiobject> pObject_;
+        utils::observer_ptr<region> pObject_;
     };
 }
 }

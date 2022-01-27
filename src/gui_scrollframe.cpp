@@ -6,7 +6,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 namespace lxgui {
 namespace gui
@@ -54,7 +54,7 @@ void scroll_frame::fire_script(const std::string& sScriptName, const event_data&
         bRebuildScrollRenderTarget_ = true;
 }
 
-void scroll_frame::copy_from(const uiobject& mObj)
+void scroll_frame::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -67,7 +67,7 @@ void scroll_frame::copy_from(const uiobject& mObj)
 
     if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pOtherChild->get_object_type();
         mAttr.sName = pOtherChild->get_raw_name();
         mAttr.lInheritance = {pScrollFrame->get_scroll_child()};

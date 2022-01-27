@@ -1,7 +1,7 @@
 #include "lxgui/gui_manager.hpp"
 
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_event.hpp"
@@ -222,7 +222,7 @@ void manager::update_ui(float fDelta)
 {
     bUpdating_ = true;
 
-    DEBUG_LOG(" Update widgets...");
+    DEBUG_LOG(" Update regions...");
     pRoot_->update(fDelta);
 
     if (bFirstIteration_)
@@ -246,13 +246,13 @@ std::string manager::print_ui() const
 {
     std::stringstream s;
 
-    s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
+    s << "\n\n######################## Regions ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())
     {
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 
-    s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
+    s << "\n\n#################### Virtual Regions ####################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pVirtualRoot_->get_root_frames())
     {
         s << mFrame.serialize("") << "\n########################\n" << std::endl;

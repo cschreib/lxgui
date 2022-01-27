@@ -1,4 +1,4 @@
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_color.hpp"
@@ -11,7 +11,7 @@ namespace lxgui {
 namespace gui
 {
 
-color uiobject::parse_color_node_(const layout_node& mNode)
+color region::parse_color_node_(const layout_node& mNode)
 {
     if (const layout_attribute* pAttr = mNode.try_get_attribute("c"))
     {
@@ -28,7 +28,7 @@ color uiobject::parse_color_node_(const layout_node& mNode)
     );
 }
 
-std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_(
+std::pair<anchor_type, vector2<std::optional<float>>> region::parse_dimension_(
     const layout_node& mNode)
 {
     const layout_node* pAbsDimNode = mNode.try_get_child("AbsDimension");
@@ -75,7 +75,7 @@ std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_
     return std::make_pair(mType, mVec);
 }
 
-void uiobject::parse_size_node_(const layout_node& mNode)
+void region::parse_size_node_(const layout_node& mNode)
 {
     if (const layout_node* pSizeBlock = mNode.try_get_child("Size"))
     {
@@ -111,7 +111,7 @@ void uiobject::parse_size_node_(const layout_node& mNode)
     }
 }
 
-void uiobject::parse_anchor_node_(const layout_node& mNode)
+void region::parse_anchor_node_(const layout_node& mNode)
 {
     if (const layout_node* pAnchorsNode = mNode.try_get_child("Anchors"))
     {
@@ -161,14 +161,14 @@ void uiobject::parse_anchor_node_(const layout_node& mNode)
     }
 }
 
-void uiobject::parse_layout(const layout_node& mNode)
+void region::parse_layout(const layout_node& mNode)
 {
     parse_attributes_(mNode);
     parse_size_node_(mNode);
     parse_anchor_node_(mNode);
 }
 
-void uiobject::parse_attributes_(const layout_node& mNode)
+void region::parse_attributes_(const layout_node& mNode)
 {
     if (mNode.get_attribute_value_or<bool>("setAllPoints", false))
         set_all_points("$parent");

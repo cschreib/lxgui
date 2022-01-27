@@ -1,6 +1,6 @@
 #include "lxgui/gui_statusbar.hpp"
 
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 
@@ -23,7 +23,7 @@
 *   This can also be triggered by @{StatusBar:set_min_max_values} if
 *   the previous value would not satisfy the new constraints.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}.
+*   Inherits all methods from: @{Region}, @{Frame}.
 *
 *   Child classes: none.
 *   @classmod StatusBar
@@ -36,7 +36,7 @@ namespace gui
 void status_bar::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<status_bar>("StatusBar",
-        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::base_classes, sol::bases<region, frame>(),
         sol::meta_function::index,
         member_function<&status_bar::get_lua_member_>(),
         sol::meta_function::new_index,

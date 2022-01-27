@@ -14,8 +14,7 @@ namespace lxgui {
 
 namespace gui
 {
-    class uiobject;
-    class frame;
+    class registry;
     class manager;
     class renderer;
 

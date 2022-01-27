@@ -5,7 +5,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sstream>
 #include <algorithm>
@@ -114,7 +114,7 @@ void slider::fire_script(const std::string& sScriptName, const event_data& mData
     }
 }
 
-void slider::copy_from(const uiobject& mObj)
+void slider::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -132,7 +132,7 @@ void slider::copy_from(const uiobject& mObj)
 
     if (const texture* pThumb = pSlider->get_thumb_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pThumb->get_name();
         mAttr.lInheritance = {pSlider->get_thumb_texture()};
 

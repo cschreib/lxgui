@@ -677,6 +677,42 @@
 					"shell_cmd": "make -j12 src/gui_parser_common.s",
 				},
 				{
+					"name": "src/gui_region.o",
+					"shell_cmd": "make -j12 src/gui_region.o",
+				},
+				{
+					"name": "src/gui_region.i",
+					"shell_cmd": "make -j12 src/gui_region.i",
+				},
+				{
+					"name": "src/gui_region.s",
+					"shell_cmd": "make -j12 src/gui_region.s",
+				},
+				{
+					"name": "src/gui_region_glues.o",
+					"shell_cmd": "make -j12 src/gui_region_glues.o",
+				},
+				{
+					"name": "src/gui_region_glues.i",
+					"shell_cmd": "make -j12 src/gui_region_glues.i",
+				},
+				{
+					"name": "src/gui_region_glues.s",
+					"shell_cmd": "make -j12 src/gui_region_glues.s",
+				},
+				{
+					"name": "src/gui_region_parser.o",
+					"shell_cmd": "make -j12 src/gui_region_parser.o",
+				},
+				{
+					"name": "src/gui_region_parser.i",
+					"shell_cmd": "make -j12 src/gui_region_parser.i",
+				},
+				{
+					"name": "src/gui_region_parser.s",
+					"shell_cmd": "make -j12 src/gui_region_parser.s",
+				},
+				{
 					"name": "src/gui_registry.o",
 					"shell_cmd": "make -j12 src/gui_registry.o",
 				},
@@ -855,42 +891,6 @@
 				{
 					"name": "src/gui_texture_parser.s",
 					"shell_cmd": "make -j12 src/gui_texture_parser.s",
-				},
-				{
-					"name": "src/gui_uiobject.o",
-					"shell_cmd": "make -j12 src/gui_uiobject.o",
-				},
-				{
-					"name": "src/gui_uiobject.i",
-					"shell_cmd": "make -j12 src/gui_uiobject.i",
-				},
-				{
-					"name": "src/gui_uiobject.s",
-					"shell_cmd": "make -j12 src/gui_uiobject.s",
-				},
-				{
-					"name": "src/gui_uiobject_glues.o",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.o",
-				},
-				{
-					"name": "src/gui_uiobject_glues.i",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.i",
-				},
-				{
-					"name": "src/gui_uiobject_glues.s",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.s",
-				},
-				{
-					"name": "src/gui_uiobject_parser.o",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.o",
-				},
-				{
-					"name": "src/gui_uiobject_parser.i",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.i",
-				},
-				{
-					"name": "src/gui_uiobject_parser.s",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.s",
 				},
 				{
 					"name": "src/gui_uiroot.o",

@@ -3,7 +3,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 namespace lxgui {
 namespace gui
@@ -18,7 +18,7 @@ std::string check_button::serialize(const std::string& sTab) const
     return base::serialize(sTab);
 }
 
-void check_button::copy_from(const uiobject& mObj)
+void check_button::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -28,7 +28,7 @@ void check_button::copy_from(const uiobject& mObj)
 
     if (const texture* pCheckedTexture = pButton->get_checked_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pCheckedTexture->get_name();
         mAttr.lInheritance = {pButton->get_checked_texture()};
 
@@ -45,7 +45,7 @@ void check_button::copy_from(const uiobject& mObj)
 
     if (const texture* pDisabledTexture = pButton->get_disabled_checked_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pDisabledTexture->get_name();
         mAttr.lInheritance = {pButton->get_disabled_checked_texture()};
 

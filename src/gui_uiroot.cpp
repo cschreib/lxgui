@@ -299,7 +299,7 @@ void uiroot::notify_hovered_frame_dirty()
     update_hovered_frame_();
 }
 
-void uiroot::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
+void uiroot::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
     constraint mConstraint, std::function<void()> mApplyConstraintFunc)
 {
     pSizedObject_ = nullptr;
@@ -335,12 +335,12 @@ void uiroot::stop_moving()
     pMovedAnchor_ = nullptr;
 }
 
-bool uiroot::is_moving(const uiobject& mObj) const
+bool uiroot::is_moving(const region& mObj) const
 {
     return pMovedObject_.get() == &mObj;
 }
 
-void uiroot::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint)
+void uiroot::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
 {
     pMovedObject_   = nullptr;
     pSizedObject_   = std::move(pObj);
@@ -419,7 +419,7 @@ void uiroot::stop_sizing()
     pSizedObject_ = nullptr;
 }
 
-bool uiroot::is_sizing(const uiobject& mObj) const
+bool uiroot::is_sizing(const region& mObj) const
 {
     return pSizedObject_.get() == &mObj;
 }

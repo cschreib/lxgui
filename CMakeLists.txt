@@ -282,6 +282,9 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_matrix4.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_out.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_parser_common.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp
@@ -297,9 +300,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_texture.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_uiroot.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp

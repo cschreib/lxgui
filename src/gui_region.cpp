@@ -1,4 +1,4 @@
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_frame.hpp"
@@ -9,7 +9,7 @@
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
@@ -21,17 +21,17 @@
 namespace lxgui {
 namespace gui
 {
-uiobject::uiobject(utils::control_block& mBlock, manager& mManager) :
-    utils::enable_observer_from_this<uiobject>(mBlock), mManager_(mManager)
+region::region(utils::control_block& mBlock, manager& mManager) :
+    utils::enable_observer_from_this<region>(mBlock), mManager_(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
 
-uiobject::~uiobject()
+region::~region()
 {
     if (!bVirtual_)
     {
-        // Tell this widget's anchor parents that it is no longer anchored to them
+        // Tell this region's anchor parents that it is no longer anchored to them
         for (auto& mAnchor : lAnchorList_)
         {
             if (mAnchor)
@@ -43,10 +43,10 @@ uiobject::~uiobject()
             mAnchor.reset();
         }
 
-        // Replace anchors pointing to this widget by absolute anchors
+        // Replace anchors pointing to this region by absolute anchors
         // (need to copy the anchored object list, because the objects will attempt to
         // modify it when un-anchored, which would invalidate our iteration)
-        std::vector<utils::observer_ptr<uiobject>> lTempAnchoredObjectList =
+        std::vector<utils::observer_ptr<region>> lTempAnchoredObjectList =
             std::move(lAnchoredObjectList_);
         for (const auto& pObj : lTempAnchoredObjectList)
         {
@@ -90,10 +90,10 @@ uiobject::~uiobject()
 
     // Unregister this object from the GUI manager
     if (!is_virtual() || pParent_ == nullptr)
-        get_registry().remove_uiobject(*this);
+        get_registry().remove_region(*this);
 }
 
-std::string uiobject::serialize(const std::string& sTab) const
+std::string region::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
@@ -133,7 +133,7 @@ std::string uiobject::serialize(const std::string& sTab) const
     return sStr.str();
 }
 
-void uiobject::copy_from(const uiobject& mObj)
+void region::copy_from(const region& mObj)
 {
     bInherits_ = true;
 
@@ -151,42 +151,42 @@ void uiobject::copy_from(const uiobject& mObj)
     }
 }
 
-const std::string& uiobject::get_name() const
+const std::string& region::get_name() const
 {
     return sName_;
 }
 
-const std::string& uiobject::get_lua_name() const
+const std::string& region::get_lua_name() const
 {
     return sLuaName_;
 }
 
-const std::string& uiobject::get_raw_name() const
+const std::string& region::get_raw_name() const
 {
     return sRawName_;
 }
 
-const std::string& uiobject::get_object_type() const
+const std::string& region::get_object_type() const
 {
     return lType_.back();
 }
 
-const std::vector<std::string>& uiobject::get_object_type_list() const
+const std::vector<std::string>& region::get_object_type_list() const
 {
     return lType_;
 }
 
-bool uiobject::is_object_type(const std::string& sType) const
+bool region::is_object_type(const std::string& sType) const
 {
     return utils::find(lType_, sType) != lType_.end();
 }
 
-float uiobject::get_alpha() const
+float region::get_alpha() const
 {
     return fAlpha_;
 }
 
-float uiobject::get_effective_alpha() const
+float region::get_effective_alpha() const
 {
     if (pParent_)
     {
@@ -198,7 +198,7 @@ float uiobject::get_effective_alpha() const
     }
 }
 
-void uiobject::set_alpha(float fAlpha)
+void region::set_alpha(float fAlpha)
 {
     if (fAlpha_ != fAlpha)
     {
@@ -207,7 +207,7 @@ void uiobject::set_alpha(float fAlpha)
     }
 }
 
-void uiobject::show()
+void region::show()
 {
     if (bIsShown_)
         return;
@@ -218,7 +218,7 @@ void uiobject::show()
         notify_visible();
 }
 
-void uiobject::hide()
+void region::hide()
 {
     if (!bIsShown_)
         return;
@@ -229,7 +229,7 @@ void uiobject::hide()
         notify_invisible();
 }
 
-void uiobject::set_shown(bool bIsShown)
+void region::set_shown(bool bIsShown)
 {
     if (bIsShown)
         show();
@@ -237,17 +237,17 @@ void uiobject::set_shown(bool bIsShown)
         hide();
 }
 
-bool uiobject::is_shown() const
+bool region::is_shown() const
 {
     return bIsShown_;
 }
 
-bool uiobject::is_visible() const
+bool region::is_visible() const
 {
     return bIsVisible_;
 }
 
-void uiobject::set_dimensions(const vector2f& mDimensions)
+void region::set_dimensions(const vector2f& mDimensions)
 {
     if (mDimensions_ == mDimensions)
         return;
@@ -261,7 +261,7 @@ void uiobject::set_dimensions(const vector2f& mDimensions)
     }
 }
 
-void uiobject::set_width(float fAbsWidth)
+void region::set_width(float fAbsWidth)
 {
     if (mDimensions_.x == fAbsWidth)
         return;
@@ -275,7 +275,7 @@ void uiobject::set_width(float fAbsWidth)
     }
 }
 
-void uiobject::set_height(float fAbsHeight)
+void region::set_height(float fAbsHeight)
 {
     if (mDimensions_.y == fAbsHeight)
         return;
@@ -289,7 +289,7 @@ void uiobject::set_height(float fAbsHeight)
     }
 }
 
-void uiobject::set_relative_dimensions(const vector2f& mDimensions)
+void region::set_relative_dimensions(const vector2f& mDimensions)
 {
     if (pParent_)
         set_dimensions(mDimensions*pParent_->get_apparent_dimensions());
@@ -297,7 +297,7 @@ void uiobject::set_relative_dimensions(const vector2f& mDimensions)
         set_dimensions(mDimensions*get_top_level_renderer()->get_target_dimensions());
 }
 
-void uiobject::set_relative_width(float fRelWidth)
+void region::set_relative_width(float fRelWidth)
 {
     if (pParent_)
         set_width(fRelWidth*pParent_->get_apparent_dimensions().x);
@@ -305,7 +305,7 @@ void uiobject::set_relative_width(float fRelWidth)
         set_width(fRelWidth*get_top_level_renderer()->get_target_dimensions().x);
 }
 
-void uiobject::set_relative_height(float fRelHeight)
+void region::set_relative_height(float fRelHeight)
 {
     if (pParent_)
         set_height(fRelHeight*pParent_->get_apparent_dimensions().y);
@@ -313,33 +313,33 @@ void uiobject::set_relative_height(float fRelHeight)
         set_height(fRelHeight*get_top_level_renderer()->get_target_dimensions().y);
 }
 
-const vector2f& uiobject::get_dimensions() const
+const vector2f& region::get_dimensions() const
 {
     return mDimensions_;
 }
 
-vector2f uiobject::get_apparent_dimensions() const
+vector2f region::get_apparent_dimensions() const
 {
     return vector2f(lBorderList_.width(), lBorderList_.height());
 }
 
-bool uiobject::is_apparent_width_defined() const
+bool region::is_apparent_width_defined() const
 {
     return mDimensions_.x > 0.0f || (lDefinedBorderList_.left && lDefinedBorderList_.right);
 }
 
-bool uiobject::is_apparent_height_defined() const
+bool region::is_apparent_height_defined() const
 {
     return mDimensions_.y > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
 }
 
-bool uiobject::is_in_region(const vector2f& mPosition) const
+bool region::is_in_region(const vector2f& mPosition) const
 {
     return ((lBorderList_.left <= mPosition.x && mPosition.x <= lBorderList_.right  - 1) &&
             (lBorderList_.top  <= mPosition.y && mPosition.y <= lBorderList_.bottom - 1));
 }
 
-void uiobject::set_name_(const std::string& sName)
+void region::set_name_(const std::string& sName)
 {
     if (sName_.empty())
     {
@@ -365,7 +365,7 @@ void uiobject::set_name_(const std::string& sName)
     }
 }
 
-void uiobject::set_parent_(utils::observer_ptr<frame> pParent)
+void region::set_parent_(utils::observer_ptr<frame> pParent)
 {
     if (pParent == observer_from_this())
     {
@@ -382,7 +382,7 @@ void uiobject::set_parent_(utils::observer_ptr<frame> pParent)
     }
 }
 
-void uiobject::set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent)
+void region::set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent)
 {
     if (pParent == observer_from_this())
     {
@@ -400,12 +400,12 @@ void uiobject::set_name_and_parent_(const std::string& sName, utils::observer_pt
         notify_borders_need_update();
 }
 
-utils::owner_ptr<uiobject> uiobject::release_from_parent()
+utils::owner_ptr<region> region::release_from_parent()
 {
     return nullptr;
 }
 
-void uiobject::destroy()
+void region::destroy()
 {
     // Gracefully disappear (triggers events, etc).
     hide();
@@ -414,37 +414,37 @@ void uiobject::destroy()
     release_from_parent();
 }
 
-vector2f uiobject::get_center() const
+vector2f region::get_center() const
 {
     return lBorderList_.center();
 }
 
-float uiobject::get_left() const
+float region::get_left() const
 {
     return lBorderList_.left;
 }
 
-float uiobject::get_right() const
+float region::get_right() const
 {
     return lBorderList_.right;
 }
 
-float uiobject::get_top() const
+float region::get_top() const
 {
     return lBorderList_.top;
 }
 
-float uiobject::get_bottom() const
+float region::get_bottom() const
 {
     return lBorderList_.bottom;
 }
 
-const bounds2f& uiobject::get_borders() const
+const bounds2f& region::get_borders() const
 {
     return lBorderList_;
 }
 
-void uiobject::clear_all_points()
+void region::clear_all_points()
 {
     bool bHadAnchors = false;
     for (auto& mAnchor : lAnchorList_)
@@ -469,7 +469,7 @@ void uiobject::clear_all_points()
     }
 }
 
-void uiobject::set_all_points(const std::string& sObjName)
+void region::set_all_points(const std::string& sObjName)
 {
     if (sObjName == sName_)
     {
@@ -496,7 +496,7 @@ void uiobject::set_all_points(const std::string& sObjName)
     }
 }
 
-void uiobject::set_all_points(const utils::observer_ptr<uiobject>& pObj)
+void region::set_all_points(const utils::observer_ptr<region>& pObj)
 {
     if (pObj == observer_from_this())
     {
@@ -508,7 +508,7 @@ void uiobject::set_all_points(const utils::observer_ptr<uiobject>& pObj)
     set_all_points(pObj ? pObj->get_name() : "");
 }
 
-void uiobject::set_point(const anchor_data& mAnchor)
+void region::set_point(const anchor_data& mAnchor)
 {
     lAnchorList_[static_cast<int>(mAnchor.mPoint)].emplace(*this, mAnchor);
 
@@ -553,14 +553,14 @@ void uiobject::set_point(const anchor_data& mAnchor)
     }
 }
 
-bool uiobject::depends_on(const uiobject& mObj) const
+bool region::depends_on(const region& mObj) const
 {
     for (const auto& mAnchor : lAnchorList_)
     {
         if (!mAnchor)
             continue;
 
-        const uiobject* pParent = mAnchor->get_parent().get();
+        const region* pParent = mAnchor->get_parent().get();
         if (pParent == &mObj)
             return true;
 
@@ -571,7 +571,7 @@ bool uiobject::depends_on(const uiobject& mObj) const
     return false;
 }
 
-std::size_t uiobject::get_num_point() const
+std::size_t region::get_num_point() const
 {
     std::size_t uiNumAnchors = 0u;
     for (const auto& mAnchor : lAnchorList_)
@@ -583,51 +583,51 @@ std::size_t uiobject::get_num_point() const
     return uiNumAnchors;
 }
 
-anchor& uiobject::modify_point(anchor_point mPoint)
+anchor& region::modify_point(anchor_point mPoint)
 {
     auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
     if (!mAnchor)
     {
-        throw gui::exception("uiobject",
+        throw gui::exception("region",
             "Cannot modify a point that does not exist. Use set_point() first.");
     }
 
     return *mAnchor;
 }
 
-const anchor& uiobject::get_point(anchor_point mPoint) const
+const anchor& region::get_point(anchor_point mPoint) const
 {
     const auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
     if (!mAnchor)
     {
-        throw gui::exception("uiobject",
+        throw gui::exception("region",
             "Cannot get a point that does not exist. Use set_point() first.");
     }
 
     return *mAnchor;
 }
 
-const std::array<std::optional<anchor>,9>& uiobject::get_point_list() const
+const std::array<std::optional<anchor>,9>& region::get_point_list() const
 {
     return lAnchorList_;
 }
 
-bool uiobject::is_virtual() const
+bool region::is_virtual() const
 {
     return bVirtual_;
 }
 
-void uiobject::set_virtual()
+void region::set_virtual()
 {
     bVirtual_ = true;
 }
 
-void uiobject::add_anchored_object(uiobject& mObj)
+void region::add_anchored_object(region& mObj)
 {
     lAnchoredObjectList_.push_back(observer_from(&mObj));
 }
 
-void uiobject::remove_anchored_object(uiobject& mObj)
+void region::remove_anchored_object(region& mObj)
 {
     auto mIter = utils::find_if(lAnchoredObjectList_,
         [&](const auto& pPtr) { return pPtr.get() == &mObj; });
@@ -636,20 +636,20 @@ void uiobject::remove_anchored_object(uiobject& mObj)
         lAnchoredObjectList_.erase(mIter);
 }
 
-float uiobject::round_to_pixel(float fValue, utils::rounding_method mMethod) const
+float region::round_to_pixel(float fValue, utils::rounding_method mMethod) const
 {
     float fScalingFactor = get_manager().get_interface_scaling_factor();
     return utils::round(fValue, 1.0f/fScalingFactor, mMethod);
 }
 
-vector2f uiobject::round_to_pixel(const vector2f& mPosition, utils::rounding_method mMethod) const
+vector2f region::round_to_pixel(const vector2f& mPosition, utils::rounding_method mMethod) const
 {
     float fScalingFactor = get_manager().get_interface_scaling_factor();
     return vector2f(utils::round(mPosition.x, 1.0f/fScalingFactor, mMethod),
                     utils::round(mPosition.y, 1.0f/fScalingFactor, mMethod));
 }
 
-bool uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
+bool region::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
 {
     if (std::isinf(fMin) && std::isinf(fMax))
     {
@@ -683,7 +683,7 @@ bool uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSiz
     return true;
 }
 
-void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
+void region::read_anchors_(float& fLeft, float& fRight, float& fTop,
     float& fBottom, float& fXCenter, float& fYCenter) const
 {
     fLeft   = +std::numeric_limits<float>::infinity();
@@ -741,7 +741,7 @@ void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
     }
 }
 
-void uiobject::update_borders_()
+void region::update_borders_()
 {
     // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
@@ -815,15 +815,15 @@ void uiobject::update_borders_()
     #undef DEBUG_LOG
 }
 
-void uiobject::update_anchors_()
+void region::update_anchors_()
 {
-    std::vector<utils::observer_ptr<uiobject>> lAnchorParentList;
+    std::vector<utils::observer_ptr<region>> lAnchorParentList;
     for (auto& mAnchor : lAnchorList_)
     {
         if (!mAnchor)
             continue;
 
-        utils::observer_ptr<uiobject> pObj = mAnchor->get_parent();
+        utils::observer_ptr<region> pObj = mAnchor->get_parent();
         if (pObj)
         {
             if (pObj->depends_on(*this))
@@ -857,7 +857,7 @@ void uiobject::update_anchors_()
     lPreviousAnchorParentList_ = std::move(lAnchorParentList);
 }
 
-void uiobject::notify_borders_need_update()
+void region::notify_borders_need_update()
 {
     if (is_virtual())
         return;
@@ -868,80 +868,80 @@ void uiobject::notify_borders_need_update()
         pObject->notify_borders_need_update();
 }
 
-void uiobject::notify_scaling_factor_updated()
+void region::notify_scaling_factor_updated()
 {
     notify_borders_need_update();
 }
 
-void uiobject::update(float)
+void region::update(float)
 {
 }
 
-void uiobject::render() const
+void region::render() const
 {
 }
 
-sol::state& uiobject::get_lua_()
+sol::state& region::get_lua_()
 {
     return get_manager().get_lua();
 }
 
-void uiobject::create_glue()
+void region::create_glue()
 {
-    create_glue_(static_cast<uiobject*>(this));
+    create_glue_(static_cast<region*>(this));
 }
 
-void uiobject::remove_glue()
+void region::remove_glue()
 {
     get_lua_().globals()[sLuaName_] = sol::lua_nil;
 }
 
-void uiobject::set_special()
+void region::set_special()
 {
     bSpecial_ = true;
 }
 
-bool uiobject::is_special() const
+bool region::is_special() const
 {
     return bSpecial_;
 }
 
-void uiobject::notify_renderer_need_redraw()
+void region::notify_renderer_need_redraw()
 {
 }
 
-const std::vector<utils::observer_ptr<uiobject>>& uiobject::get_anchored_objects() const
+const std::vector<utils::observer_ptr<region>>& region::get_anchored_objects() const
 {
     return lAnchoredObjectList_;
 }
 
-void uiobject::notify_loaded()
+void region::notify_loaded()
 {
     bLoaded_ = true;
 }
 
-bool uiobject::is_loaded() const
+bool region::is_loaded() const
 {
     return bLoaded_;
 }
 
-utils::observer_ptr<const frame_renderer> uiobject::get_top_level_renderer() const
+utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const
 {
     if (!pParent_) return get_manager().get_root().observer_from_this();
     return pParent_->get_top_level_renderer();
 }
 
-void uiobject::notify_visible()
+void region::notify_visible()
 {
     bIsVisible_ = true;
 }
 
-void uiobject::notify_invisible()
+void region::notify_invisible()
 {
     bIsVisible_ = false;
 }
 
-std::string uiobject::parse_file_name(const std::string& sFileName) const
+std::string region::parse_file_name(const std::string& sFileName) const
 {
     if (sFileName.empty())
         return sFileName;
@@ -958,7 +958,7 @@ std::string uiobject::parse_file_name(const std::string& sFileName) const
     return sNewFile;
 }
 
-void uiobject::set_addon(const addon* pAddOn)
+void region::set_addon(const addon* pAddOn)
 {
     if (pAddOn_)
     {
@@ -970,7 +970,7 @@ void uiobject::set_addon(const addon* pAddOn)
     pAddOn_ = pAddOn;
 }
 
-const addon* uiobject::get_addon() const
+const addon* region::get_addon() const
 {
     if (!pAddOn_ && pParent_)
         return pParent_->get_addon();
@@ -978,14 +978,14 @@ const addon* uiobject::get_addon() const
         return pAddOn_;
 }
 
-registry& uiobject::get_registry()
+registry& region::get_registry()
 {
     return is_virtual() ?
         get_manager().get_virtual_root().get_registry() :
         get_manager().get_root().get_registry();
 }
 
-const registry& uiobject::get_registry() const
+const registry& region::get_registry() const
 {
     return is_virtual() ?
         get_manager().get_virtual_root().get_registry() :

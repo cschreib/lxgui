@@ -58,9 +58,9 @@ namespace gui
 
         /// Sets the current addon.
         /** \param pAddOn The current addon
-        *   \note The current addon is used to set the addon of each new uiobject.
+        *   \note The current addon is used to set the addon of each new region.
         *         This is normally set by the parser, while loading each addon.
-        *         For uiobjects created manually, after the loading stage, this is
+        *         For regions created manually, after the loading stage, this is
         *         also set by @ref frame, before each call to a handler function.
         */
         void set_current_addon(const addon* pAddOn);

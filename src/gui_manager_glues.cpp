@@ -1,6 +1,6 @@
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
@@ -55,12 +55,12 @@ void manager::create_lua_()
     mLua.set_function("create_frame", [&](const std::string& sType, const std::string& sName,
         sol::optional<frame&> pParent, sol::optional<std::string> sInheritance) -> sol::object
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = sName;
         mAttr.sObjectType = sType;
         if (sInheritance.has_value())
         {
-            mAttr.lInheritance = get_virtual_root().get_registry().get_virtual_uiobject_list(
+            mAttr.lInheritance = get_virtual_root().get_registry().get_virtual_region_list(
                 sInheritance.value());
         }
 
@@ -136,12 +136,9 @@ void manager::create_lua_()
     pLocalizer_->register_on_lua(mLua);
 
     // Base types
-    pFactory_->register_uiobject_type<uiobject>();
-    pFactory_->register_uiobject_type<frame>();
-    pFactory_->register_uiobject_type<layered_region>();
-
-    // Abstract types
-    uiobject::register_on_lua(mLua);
+    pFactory_->register_region_type<region>();
+    pFactory_->register_region_type<frame>();
+    pFactory_->register_region_type<layered_region>();
 
     if (pLuaRegs_)
         pLuaRegs_(*this);

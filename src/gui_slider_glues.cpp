@@ -1,6 +1,6 @@
 #include "lxgui/gui_slider.hpp"
 
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
 #include <sol/state.hpp>
@@ -21,7 +21,7 @@
 *   @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
 *   previous value would not satisfy the new constraints.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}.
+*   Inherits all methods from: @{Region}, @{Frame}.
 *
 *   Child classes: none.
 *   @classmod Slider
@@ -34,7 +34,7 @@ namespace gui
 void slider::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<slider>("Slider",
-        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::base_classes, sol::bases<region, frame>(),
         sol::meta_function::index,
         member_function<&slider::get_lua_member_>(),
         sol::meta_function::new_index,

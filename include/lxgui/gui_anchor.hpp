@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-    class uiobject;
+    class region;
 
     enum class anchor_type
     {
@@ -39,7 +39,7 @@ namespace gui
         Y
     };
 
-    /// Stores a position for a UI widget
+    /// Stores a position for a UI region
     struct anchor_data
     {
         anchor_data(anchor_point mInputPoint) :
@@ -84,7 +84,7 @@ namespace gui
         anchor_type  mType = anchor_type::ABS;
     };
 
-    /// Stores a position for a UI widget
+    /// Stores a position for a UI region
     class anchor : private anchor_data
     {
     public :
@@ -94,7 +94,7 @@ namespace gui
         using anchor_data::mType;
 
         /// Constructor.
-        anchor(uiobject& mObject, const anchor_data& mAnchor);
+        anchor(region& mObject, const anchor_data& mAnchor);
 
         /// Non-copiable
         anchor(const anchor&) = delete;
@@ -112,17 +112,17 @@ namespace gui
         /** \param mObject The object owning this anchor
         *   \return The absolute coordinates of this anchor.
         */
-        vector2f get_point(const uiobject& mObject) const;
+        vector2f get_point(const region& mObject) const;
 
-        /// Returns this anchor's parent widget.
-        /** \return This anchor's parent widget
+        /// Returns this anchor's parent region.
+        /** \return This anchor's parent region
         */
-        const utils::observer_ptr<uiobject>& get_parent() { return pParent_; }
+        const utils::observer_ptr<region>& get_parent() { return pParent_; }
 
-        /// Returns this anchor's parent widget.
-        /** \return This anchor's parent widget
+        /// Returns this anchor's parent region.
+        /** \return This anchor's parent region
         */
-        utils::observer_ptr<const uiobject> get_parent() const { return pParent_; }
+        utils::observer_ptr<const region> get_parent() const { return pParent_; }
 
         /// Prints all relevant information about this anchor in a string.
         /** \param sTab The offset to give to all lines
@@ -150,9 +150,9 @@ namespace gui
         /// Update the anchor parent object from the parent string.
         /** \param mObject The object owning this anchor
         */
-        void update_parent_(uiobject& mObject);
+        void update_parent_(region& mObject);
 
-        utils::observer_ptr<uiobject> pParent_ = nullptr;
+        utils::observer_ptr<region> pParent_ = nullptr;
     };
 }
 }

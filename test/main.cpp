@@ -436,15 +436,15 @@ int main(int argc, char* argv[])
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
-            //  - register the needed widgets
+            //  - register the needed region types
             gui::factory& mFactory = mManager.get_factory();
-            mFactory.register_uiobject_type<gui::texture>();
-            mFactory.register_uiobject_type<gui::font_string>();
-            mFactory.register_uiobject_type<gui::button>();
-            mFactory.register_uiobject_type<gui::slider>();
-            mFactory.register_uiobject_type<gui::edit_box>();
-            mFactory.register_uiobject_type<gui::scroll_frame>();
-            mFactory.register_uiobject_type<gui::status_bar>();
+            mFactory.register_region_type<gui::texture>();
+            mFactory.register_region_type<gui::font_string>();
+            mFactory.register_region_type<gui::button>();
+            mFactory.register_region_type<gui::slider>();
+            mFactory.register_region_type<gui::edit_box>();
+            mFactory.register_region_type<gui::scroll_frame>();
+            mFactory.register_region_type<gui::status_bar>();
             //  - register additional lua functions
             sol::state& mLua = mManager.get_lua();
             mLua.set_function("get_folder_list", [](const std::string& sDir)

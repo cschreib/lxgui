@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_UIOBJECT_ATTRIBUTES_HPP
-#define LXGUI_GUI_UIOBJECT_ATTRIBUTES_HPP
+#ifndef LXGUI_GUI_REGION_ATTRIBUTES_HPP
+#define LXGUI_GUI_REGION_ATTRIBUTES_HPP
 
 #include <lxgui/lxgui.hpp>
 
@@ -11,10 +11,10 @@ namespace lxgui {
 namespace gui
 {
     class frame;
-    class uiobject;
+    class region;
 
-    /// Struct holding all the core information about a uiobject necessary for its creation.
-    struct uiobject_core_attributes
+    /// Struct holding all the core information about a region necessary for its creation.
+    struct region_core_attributes
     {
         std::string sObjectType;
         std::string sName;
@@ -22,7 +22,7 @@ namespace gui
 
         utils::observer_ptr<frame> pParent = nullptr;
 
-        std::vector<utils::observer_ptr<const uiobject>> lInheritance;
+        std::vector<utils::observer_ptr<const region>> lInheritance;
     };
 }
 }

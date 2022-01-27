@@ -1,5 +1,5 @@
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_registry.hpp"
@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui
 {
 
-anchor::anchor(uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
+anchor::anchor(region& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
 {
     if (!mObject.is_virtual())
     {
@@ -24,7 +24,7 @@ anchor::anchor(uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnc
     }
 }
 
-void anchor::update_parent_(uiobject& mObject)
+void anchor::update_parent_(region& mObject)
 {
     pParent_ = nullptr;
 
@@ -40,30 +40,30 @@ void anchor::update_parent_(uiobject& mObject)
     else if (sParentFullName.find("$parent") != sParentFullName.npos)
     {
         gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
-            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
+            << "region \"" << mObject.get_name() << "\" tries to anchor to \""
             << sParentFullName << "\", but '$parent' does not exist." << std::endl;
         return;
     }
 
-    utils::observer_ptr<uiobject> pNewParent =
-        mObject.get_registry().get_uiobject_by_name(sParentFullName);
+    utils::observer_ptr<region> pNewParent =
+        mObject.get_registry().get_region_by_name(sParentFullName);
 
     if (!pNewParent)
     {
         gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
-            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
-            << sParentFullName << "\" but this widget does not (yet?) exist." << std::endl;
+            << "region \"" << mObject.get_name() << "\" tries to anchor to \""
+            << sParentFullName << "\" but this region does not (yet?) exist." << std::endl;
         return;
     }
 
     pParent_ = pNewParent;
 }
 
-vector2f anchor::get_point(const uiobject& mObject) const
+vector2f anchor::get_point(const region& mObject) const
 {
     vector2f mParentPos;
     vector2f mParentSize;
-    if (const uiobject* pRawParent = pParent_.get())
+    if (const region* pRawParent = pParent_.get())
     {
         mParentPos = pRawParent->get_borders().top_left();
         mParentSize = pRawParent->get_apparent_dimensions();

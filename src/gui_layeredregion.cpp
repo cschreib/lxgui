@@ -1,10 +1,10 @@
 #include "lxgui/gui_layeredregion.hpp"
 
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sstream>
 
@@ -43,7 +43,7 @@ void layered_region::create_glue()
     create_glue_(this);
 }
 
-utils::owner_ptr<uiobject> layered_region::release_from_parent()
+utils::owner_ptr<region> layered_region::release_from_parent()
 {
     if (!pParent_)
         return nullptr;

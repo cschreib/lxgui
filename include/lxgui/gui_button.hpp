@@ -21,7 +21,7 @@ namespace gui
     *   "disabled".
     *
     *   In addition, you can provide another texture/fontstring for the
-    *   "highlight" state (when the mouse is over the button widget).
+    *   "highlight" state (when the mouse is over the button region).
     *
     *   Note that there is no fontstring for the "pushed" state: in this
     *   case, the "normal" font is rendered with a slight offset that you
@@ -56,16 +56,16 @@ namespace gui
         /// Constructor.
         explicit button(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Returns 'true' if this Button can use a script.
+        /// Returns 'true' if this button can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
@@ -80,10 +80,10 @@ namespace gui
         */
         void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
-        /// Copies an uiobject's parameters into this Button (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this button (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Sets this button's text.
         /** \param sText The new text
@@ -210,40 +210,40 @@ namespace gui
         */
         void set_disabled_text(utils::observer_ptr<font_string> pFont);
 
-        /// Disables this Button.
+        /// Disables this button.
         /** \note A disabled button doesn't receive any input.
         */
         virtual void disable();
 
-        /// Enables this Button.
+        /// Enables this button.
         virtual void enable();
 
-        /// Checks if this Button is enabled.
-        /** \return 'true' if this Button is enabled
+        /// Checks if this button is enabled.
+        /** \return 'true' if this button is enabled
         */
         bool is_enabled() const;
 
-        /// Pushed this Button.
+        /// Pushed this button.
         /** \note This function only has a visual impact :
         *         the OnClick() handler is not called.
         */
         virtual void push();
 
-        /// Releases this Button.
+        /// Releases this button.
         /** \note This function only has a visual impact :
         *         the OnClick() handler is not called.
         */
         virtual void release();
 
-        /// Highlights this Button.
-        /** \note The Button will be highlighted even if the
+        /// Highlights this button.
+        /** \note The button will be highlighted even if the
         *         mouse is not over it. It will stop when the
         *         mouse leaves it.
         */
         virtual void highlight();
 
-        /// Unlights this Button.
-        /** \note The Button will be unlighted even if the
+        /// Unlights this button.
+        /** \note The button will be unlighted even if the
         *         mouse is over it. It will highlight again
         *         when the mouse leaves then enters its region.
         */
@@ -273,7 +273,7 @@ namespace gui
         */
         const vector2f& get_pushed_text_offset() const;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Button";

@@ -63,7 +63,7 @@ void frame::parse_attributes_(const layout_node& mNode)
         else
         {
             gui::out << gui::warning << mNode.get_location() << " : "
-                << "\"frameLevel\" is not allowed for virtual widgets. Ignored." << std::endl;
+                << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
     if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouse"))

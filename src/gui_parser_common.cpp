@@ -11,11 +11,11 @@ namespace lxgui {
 namespace gui
 {
 
-uiobject_core_attributes parse_core_attributes(
+region_core_attributes parse_core_attributes(
     registry& mRegistry, virtual_registry& mVirtualRegistry,
     const layout_node& mNode, utils::observer_ptr<frame> pParent)
 {
-    uiobject_core_attributes mAttr;
+    region_core_attributes mAttr;
     mAttr.sObjectType = mNode.get_name();
     mAttr.sName = mNode.get_attribute_value<std::string>("name");
 
@@ -27,13 +27,13 @@ uiobject_core_attributes parse_core_attributes(
         {
             gui::out << gui::warning << mNode.get_location() << " : "
                 << "Cannot use the \"virtual\" attribute on \"" << mAttr.sName << "\", "
-                "because it is a nested uiobject. Attribute ignored." << std::endl;
+                "because it is a nested region. Attribute ignored." << std::endl;
         }
         if (mNode.has_attribute("parent"))
         {
             gui::out << gui::warning << mNode.get_location() << " : "
                 << "Cannot use the \"parent\" attribute on \"" << mAttr.sName << "\", "
-                "because it is a nested uiobject. Attribute ignored." << std::endl;
+                "because it is a nested region. Attribute ignored." << std::endl;
         }
     }
     else
@@ -43,12 +43,12 @@ uiobject_core_attributes parse_core_attributes(
         if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
-            auto pParentObj = mRegistry.get_uiobject_by_name(sParent);
+            auto pParentObj = mRegistry.get_region_by_name(sParent);
             if (!sParent.empty() && !pParentObj)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
                     << "Cannot find \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
-                    "No parent given to that widget." << std::endl;
+                    "No parent given to this region." << std::endl;
             }
 
             mAttr.pParent = down_cast<frame>(pParentObj);
@@ -63,7 +63,7 @@ uiobject_core_attributes parse_core_attributes(
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits"))
     {
-        mAttr.lInheritance = mVirtualRegistry.get_virtual_uiobject_list(
+        mAttr.lInheritance = mVirtualRegistry.get_virtual_region_list(
             pAttr->get_value<std::string>());
     }
 

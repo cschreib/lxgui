@@ -2,15 +2,15 @@
 
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_texture.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sol/state.hpp>
 
 /** A @{Button} with two additional states: checked and unchecked.
-*   This widget works exactly like a classic @{Button}, but is has two
+*   This region works exactly like a classic @{Button}, but is has two
 *   additional special textures for the check sign.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}, @{Button}.
+*   Inherits all methods from: @{Region}, @{Frame}, @{Button}.
 *
 *   Child classes: none.
 *   @classmod CheckButton
@@ -23,7 +23,7 @@ namespace gui
 void check_button::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<check_button>("CheckButton",
-        sol::base_classes, sol::bases<uiobject, frame, button>(),
+        sol::base_classes, sol::bases<region, frame, button>(),
         sol::meta_function::index,
         member_function<&check_button::get_lua_member_>(),
         sol::meta_function::new_index,

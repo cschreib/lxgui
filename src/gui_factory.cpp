@@ -15,10 +15,10 @@ factory::factory(manager& mManager) : mManager_(mManager)
 {
 }
 
-utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
-    const uiobject_core_attributes& mAttr)
+utils::owner_ptr<region> factory::create_region(registry& mRegistry,
+    const region_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(mAttr.sName))
+    if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomObjectList_.find(mAttr.sObjectType);
@@ -29,7 +29,7 @@ utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
         return nullptr;
     }
 
-    utils::owner_ptr<uiobject> pNewObject = mIter->second(mManager_);
+    utils::owner_ptr<region> pNewObject = mIter->second(mManager_);
     if (!pNewObject)
         return nullptr;
 
@@ -42,9 +42,9 @@ utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
 }
 
 utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_renderer* pRenderer,
-    const uiobject_core_attributes& mAttr)
+    const region_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(mAttr.sName))
+    if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomFrameList_.find(mAttr.sObjectType);
@@ -71,9 +71,9 @@ utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_rendere
 }
 
 utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegistry,
-    const uiobject_core_attributes& mAttr)
+    const region_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(mAttr.sName))
+    if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomRegionList_.find(mAttr.sObjectType);
@@ -106,8 +106,8 @@ const sol::state& factory::get_lua() const
     return mManager_.get_lua();
 }
 
-bool factory::finalize_object_(registry& mRegistry, uiobject& mObject,
-    const uiobject_core_attributes& mAttr)
+bool factory::finalize_object_(registry& mRegistry, region& mObject,
+    const region_core_attributes& mAttr)
 {
     if (mAttr.bVirtual)
         mObject.set_virtual();
@@ -119,7 +119,7 @@ bool factory::finalize_object_(registry& mRegistry, uiobject& mObject,
 
     if (!mObject.is_virtual() || mAttr.pParent == nullptr)
     {
-        if (!mRegistry.add_uiobject(observer_from(&mObject)))
+        if (!mRegistry.add_region(observer_from(&mObject)))
             return false;
     }
 
@@ -129,7 +129,7 @@ bool factory::finalize_object_(registry& mRegistry, uiobject& mObject,
     return true;
 }
 
-void factory::apply_inheritance_(uiobject& mObject, const uiobject_core_attributes& mAttr)
+void factory::apply_inheritance_(region& mObject, const region_core_attributes& mAttr)
 {
     for (const auto& pBase : mAttr.lInheritance)
     {

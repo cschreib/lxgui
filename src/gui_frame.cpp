@@ -10,7 +10,7 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_addon_registry.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
@@ -48,7 +48,7 @@ frame::~frame()
 
     if (!bVirtual_)
     {
-        // Tell the renderer to no longer render this widget
+        // Tell the renderer to no longer render this region
         get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
         pRenderer_ = nullptr;
     }
@@ -226,7 +226,7 @@ bool frame::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnUpdate");
 }
 
-void frame::copy_from(const uiobject& mObj)
+void frame::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -278,7 +278,7 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pArt || pArt->is_special()) continue;
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pArt->get_object_type();
         mAttr.sName = pArt->get_raw_name();
         mAttr.lInheritance = {pArt};
@@ -308,7 +308,7 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pChild || pChild->is_special()) continue;
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pChild->get_object_type();
         mAttr.sName = pChild->get_raw_name();
         mAttr.lInheritance = {pChild};
@@ -329,13 +329,13 @@ void frame::create_title_region()
         return;
     }
 
-    uiobject_core_attributes mAttr;
-    mAttr.sObjectType = "UIObject";
+    region_core_attributes mAttr;
+    mAttr.sObjectType = "Region";
     mAttr.bVirtual = is_virtual();
     mAttr.sName = "$parentTitleRegion";
     mAttr.pParent = observer_from(this);
 
-    auto pTitleRegion = get_manager().get_factory().create_uiobject(get_registry(), mAttr);
+    auto pTitleRegion = get_manager().get_factory().create_region(get_registry(), mAttr);
 
     if (!pTitleRegion)
         return;
@@ -651,7 +651,7 @@ utils::owner_ptr<layered_region> frame::remove_region(
 }
 
 utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
-    uiobject_core_attributes mAttr)
+    region_core_attributes mAttr)
 {
     mAttr.bVirtual = is_virtual();
     mAttr.pParent = observer_from(this);
@@ -666,7 +666,7 @@ utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
     return add_region(std::move(pRegion));
 }
 
-utils::observer_ptr<frame> frame::create_child(uiobject_core_attributes mAttr)
+utils::observer_ptr<frame> frame::create_child(region_core_attributes mAttr)
 {
     mAttr.bVirtual = is_virtual();
     mAttr.pParent = observer_from(this);
@@ -1421,7 +1421,7 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-utils::owner_ptr<uiobject> frame::release_from_parent()
+utils::owner_ptr<region> frame::release_from_parent()
 {
     utils::observer_ptr<frame> pSelf = observer_from(this);
     if (pParent_)

@@ -6,7 +6,7 @@
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/utils_filesystem.hpp>
 #include <sstream>
@@ -113,7 +113,7 @@ void texture::create_glue()
     create_glue_(this);
 }
 
-void texture::copy_from(const uiobject& mObj)
+void texture::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 

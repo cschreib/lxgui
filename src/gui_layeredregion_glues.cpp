@@ -1,11 +1,11 @@
 #include "lxgui/gui_layeredregion.hpp"
 
-#include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sol/state.hpp>
 
-/** A @{UIObject} that can be rendered in a layer.
+/** A @{Region} that can be rendered in a layer.
 *   LayeredRegions can display content on the screen (texture,
 *   texts, 3D models, ...) and must be contained inside a layer,
 *   within a @{Frame} object. The frame will then render all
@@ -14,7 +14,7 @@
 *   Layered regions cannot themselves react to events; this
 *   must be taken care of by the parent @{Frame}.
 *
-*   Inherits all methods from: @{UIObject}.
+*   Inherits all methods from: @{Region}.
 *
 *   Child classes: @{FontString}, @{Texture}.
 *   @classmod LayeredRegion
@@ -27,7 +27,7 @@ namespace gui
 void layered_region::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<layered_region>("LayeredRegion",
-        sol::base_classes, sol::bases<uiobject>(),
+        sol::base_classes, sol::bases<region>(),
         sol::meta_function::index,
         member_function<&layered_region::get_lua_member_>(),
         sol::meta_function::new_index,

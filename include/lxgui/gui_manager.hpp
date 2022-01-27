@@ -131,7 +131,7 @@ namespace gui
         void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
 
         /// Prints debug informations in the log file.
-        /** \note Calls uiobject::serialize().
+        /** \note Calls region::serialize().
         */
         std::string print_ui() const;
 
@@ -150,7 +150,7 @@ namespace gui
         void close_ui();
 
         /// Closes the UI (immediately).
-        /** \note All widgets will be deleted, and the Lua state will be closed.
+        /** \note All regions will be deleted, and the Lua state will be closed.
         *   \warning Do not call this function while the manager is running update_ui()
         *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
@@ -178,7 +178,7 @@ namespace gui
         /// Renders the UI into the current render target.
         void render_ui() const;
 
-        /// Updates this manager and its widgets.
+        /// Updates this manager and its regions.
         /** \param fDelta The time elapsed since the last call
         */
         void update_ui(float fDelta);

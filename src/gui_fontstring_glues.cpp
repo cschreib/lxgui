@@ -1,6 +1,6 @@
 #include "lxgui/gui_fontstring.hpp"
 
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
@@ -19,8 +19,8 @@
 *   __Sizing.__ The @{FontString} class has a special property when it
 *   comes to determining the size of its region on the screen, hence
 *   how other object anchor to it, and how it anchors to other objects.
-*   See the documentation for @{UIObject} for more information on anchors.
-*   While other @{UIObject}s must either have a fixed size or more than two
+*   See the documentation for @{Region} for more information on anchors.
+*   While other @{Region}s must either have a fixed size or more than two
 *   anchors constraining their size, the @{FontString} does not. If only
 *   one anchor is specified, the width and height of the @{FontString} will
 *   be determined by the area occupied by the displayed text, however long and
@@ -63,7 +63,7 @@
 *
 *   - `||` displays a single `|` character.
 *
-*   Inherits all methods from: @{UIObject}, @{LayeredRegion}.
+*   Inherits all methods from: @{Region}, @{LayeredRegion}.
 *
 *   Child classes: none.
 *   @classmod FontString
@@ -75,7 +75,7 @@ namespace gui
 void font_string::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<font_string>("FontString",
-        sol::base_classes, sol::bases<uiobject, layered_region>(),
+        sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index,
         member_function<&font_string::get_lua_member_>(),
         sol::meta_function::new_index,

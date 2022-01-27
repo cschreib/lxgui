@@ -5,7 +5,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 
 namespace lxgui {
@@ -72,7 +72,7 @@ void button::fire_script(const std::string& sScriptName, const event_data& mData
     }
 }
 
-void button::copy_from(const uiobject& mObj)
+void button::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -84,7 +84,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_normal_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_normal_texture()};
 
@@ -101,7 +101,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_pushed_texture()};
 
@@ -118,7 +118,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_highlight_texture()};
 
@@ -135,7 +135,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_disabled_texture()};
 
@@ -152,7 +152,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_normal_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_normal_text()};
 
@@ -169,7 +169,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_highlight_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_highlight_text()};
 
@@ -186,7 +186,7 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_disabled_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_disabled_text()};
 

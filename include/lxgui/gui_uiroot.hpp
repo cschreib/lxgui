@@ -24,7 +24,7 @@ namespace input
 
 namespace gui
 {
-    class uiobject;
+    class region;
     class frame;
     class manager;
     class renderer;
@@ -80,7 +80,7 @@ namespace gui
         */
         bool is_caching_enabled() const;
 
-        /// updates this uiroot and its widgets.
+        /// updates this uiroot and its regions.
         /** \param fDelta The time elapsed since the last call
         */
         void update(float fDelta);
@@ -121,7 +121,7 @@ namespace gui
         */
         bool is_dragged(const frame& mFrame) const { return pDraggedFrame_.get() == &mFrame; }
 
-        /// Start manually moving a uiobject with the mouse.
+        /// Start manually moving a region with the mouse.
         /** \param pObj        The object to move
         *   \param pAnchor     The reference anchor
         *   \param mConstraint The constraint axis if any
@@ -130,7 +130,7 @@ namespace gui
         *         calling stop_moving() when you are done.
         */
         void start_moving(
-            utils::observer_ptr<uiobject> pObj, anchor* pAnchor = nullptr,
+            utils::observer_ptr<region> pObj, anchor* pAnchor = nullptr,
             constraint mConstraint = constraint::NONE,
             std::function<void()> mApplyConstraintFunc = nullptr
         );
@@ -144,15 +144,15 @@ namespace gui
         /** \param mObj The object to check
         *   \return 'true' if the given object is allowed to move
         */
-        bool is_moving(const uiobject& mObj) const;
+        bool is_moving(const region& mObj) const;
 
-        /// Starts manually resizing a uiobject with the mouse.
+        /// Starts manually resizing a region with the mouse.
         /** \param pObj   The object to resize
         *   \param mPoint The sizing point
         *   \note Resizing is handled by the uiroot, you don't need to do anything except
         *         calling stop_sizing() when you are done.
         */
-        void start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint);
+        void start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint);
 
         /// Stops sizing for the current object.
         /** \note Does nothing if no object is being resized
@@ -163,7 +163,7 @@ namespace gui
         /** \param mObj The object to check
         *   \return 'true' if the given object is allowed to be resized
         */
-        bool is_sizing(const uiobject& mObj) const;
+        bool is_sizing(const region& mObj) const;
 
         /// Sets whether keyboard input should be focussed.
         /** \param pReceiver The frame that requires focus
@@ -275,9 +275,9 @@ namespace gui
         utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
         utils::observer_ptr<frame> pDraggedFrame_ = nullptr;
 
-        utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
-        utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
-        vector2f                      mMouseMovement_;
+        utils::observer_ptr<region> pMovedObject_ = nullptr;
+        utils::observer_ptr<region> pSizedObject_ = nullptr;
+        vector2f                    mMouseMovement_;
 
         anchor*               pMovedAnchor_ = nullptr;
         vector2f              mMovementStartPosition_;

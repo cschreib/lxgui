@@ -1,6 +1,6 @@
 #include "lxgui/gui_texture.hpp"
 
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -11,7 +11,7 @@
 *   This object contains either a texture taken from a file,
 *   or a plain color (possibly with a different color on each corner).
 *
-*   Inherits all methods from: @{UIObject}, @{LayeredRegion}.
+*   Inherits all methods from: @{Region}, @{LayeredRegion}.
 *
 *   Child classes: none.
 *   @classmod Texture
@@ -40,7 +40,7 @@ sol::optional<gradient::orientation> get_gradient_orientation(const std::string&
 void texture::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<texture>("Texture",
-        sol::base_classes, sol::bases<uiobject, layered_region>(),
+        sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index,
         member_function<&texture::get_lua_member_>(),
         sol::meta_function::new_index,
