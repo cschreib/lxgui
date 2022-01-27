@@ -3,25 +3,27 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/input_keys.hpp"
+#include "lxgui/utils_signal.hpp"
 
 #include <sol/protected_function.hpp>
 
 #include <string>
 #include <vector>
-#include <functional>
 
 namespace lxgui {
 namespace gui
 {
     class event_emitter;
 
-    /// Manages the user interface
+    /// Binds global actions to key presses
     class keybinder
     {
+        using signal_type = utils::signal<void()>;
+
     public :
 
         /// Type of a keybinding callback.
-        using function_type = std::function<void()>;
+        using function_type = signal_type::function_type;
 
         /// Constructor.
         keybinder() = default;
@@ -32,38 +34,51 @@ namespace gui
         keybinder& operator= (const keybinder&) = delete;
         keybinder& operator= (keybinder&&) = delete;
 
-        /// Binds some Lua code to a key.
-        /** \param sName       The key to bind
-        *   \param uiModifier The modifier key (shift, ctrl, ...)
-        *   \param mHandler   The Lua function that will be executed
+        /// Registers an action as a possible key binding.
+        /** \param sName        The name of the key binding (e.g., "JUMP")
+        *   \param mLuaFunction The Lua function that will be executed
+        *   \note The name of the key binding can be anything, but it must be unique.
+        *         This only registers the action as "available" for a key binding.
+        *         You must then call @ref set_key_binding() to actually bind it to a key.
+        *   \return A connection object representing the registered callback function, can be used
+        *           to gracefully disconnect the callback.
         */
-        void register_key_binding(std::string_view sName, sol::protected_function mHandler);
+        utils::connection register_key_binding(std::string_view sName,
+            sol::protected_function mLuaFunction);
 
-        /// Binds some Lua code to a key.
-        /** \param sName        The key to bind
-        *   \param uiModifier1 The first modifier key (shift, ctrl, ...)
-        *   \param uiModifier2 The second modifier key (shift, ctrl, ...)
-        *   \param mHandler    The Lua function that will be executed
+        /// Registers an action as a possible key binding.
+        /** \param sName     The name of the key binding (e.g., "JUMP")
+        *   \param mFunction The C++ function that will be executed
+        *   \note The name of the key binding can be anything, but it must be unique.
+        *         This only registers the action as "available" for a key binding.
+        *         You must then call @ref set_key_binding() to actually bind it to a key.
+        *   \return A connection object representing the registered callback function, can be used
+        *           to gracefully disconnect the callback.
         */
-        void register_key_binding(std::string_view sName, function_type mFunction);
+        utils::connection register_key_binding(std::string_view sName, function_type mFunction);
 
-        /// Binds some Lua code to a key.
-        /** \param sName       The key to bind
-        *   \param sKey   The Lua function that will be executed
+        /// Binds an action to a key.
+        /** \param sName The action to bind
+        *   \param sKey  The key to bind it to (e.g., "Shift-T")
+        *   \note The format of the @ref sKey parameter is any key name as returned from @ref
+        *         input::get_key_code_name(), preceded by optional modifiers (any combination of
+        *         "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given to frames
+        *         in the "OnKeyDown" and "OnKeyUp" scripts.
         */
         void set_key_binding(std::string_view sName, std::string_view sKey);
 
-        /// Binds some Lua code to a key.
-        /** \param mKey       The key to bind
-        *   \param mHandler   The Lua function that will be executed
+        /// Binds an action to a key.
+        /** \param sName           The action to bind
+        *   \param mKey            The key to bind
+        *   \param bShiftIsPressed 'true' if the Shift key must be pressed
+        *   \param bCtrlIsPressed  'true' if the Ctrl key must be pressed
+        *   \param bAltIsPressed   'true' if the Alt key must be pressed
         */
         void set_key_binding(std::string_view sName, input::key mKey,
             bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed);
 
-        /// Unbinds a key.
-        /** \param mKey        The key to unbind
-        *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
-        *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
+        /// Unbinds an action.
+        /** \param sName The action to unbind
         */
         void remove_key_binding(std::string_view sName);
 
@@ -72,12 +87,11 @@ namespace gui
         *   \param bShiftIsPressed Is the Shift key pressed
         *   \param bCtrlIsPressed  Is the Ctrl key pressed
         *   \param bAltIsPressed   Is the Alt key pressed
+        *   \return 'true' if a key binding was found matching this key combination,
+        *           'false' otherwise.
         */
         bool on_key_down(input::key mKey,
-            bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const;
-
-        /// Registers this class to the provided Lua state
-        void register_on_lua(sol::state& mLua);
+            bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed);
 
     private :
 
@@ -90,11 +104,11 @@ namespace gui
             bool       bCtrlIsPressed = false;
             bool       bAltIsPressed = false;
 
-            function_type mCallback;
+            signal_type mSignal;
         };
 
-        const key_binding* find_binding_(input::key mKey,
-            bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const;
+        key_binding* find_binding_(input::key mKey,
+            bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed);
 
         std::vector<key_binding> lKeyBindings_;
     };

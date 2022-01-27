@@ -12,12 +12,13 @@ namespace lxgui {
 namespace gui
 {
 
-void keybinder::register_key_binding(std::string_view sName, sol::protected_function mHandler)
+utils::connection keybinder::register_key_binding(std::string_view sName,
+    sol::protected_function mLuaFunction)
 {
-    auto mFunction = [mHandler = std::move(mHandler)]()
+    auto mFunction = [mLuaFunction = std::move(mLuaFunction)]()
     {
         // Call function
-        auto mResult = mHandler();
+        auto mResult = mLuaFunction();
 
         // Handle errors
         if (!mResult.valid())
@@ -27,10 +28,10 @@ void keybinder::register_key_binding(std::string_view sName, sol::protected_func
         }
     };
 
-    register_key_binding(sName, std::move(mFunction));
+    return register_key_binding(sName, std::move(mFunction));
 }
 
-void keybinder::register_key_binding(std::string_view sName, function_type mFunction)
+utils::connection keybinder::register_key_binding(std::string_view sName, function_type mFunction)
 {
     auto mIter = utils::find_if(lKeyBindings_,
         [&](const auto& mBinding)
@@ -43,13 +44,15 @@ void keybinder::register_key_binding(std::string_view sName, function_type mFunc
     {
         gui::out << gui::error << "keybinder: a binding already exists with name '" <<
             sName << "'." << std::endl;
-        return;
+        return {};
     }
 
     key_binding mBinding;
     mBinding.sName = std::string(sName);
-    mBinding.mCallback = std::move(mFunction);
+    auto mConnection = mBinding.mSignal.connect(std::move(mFunction));
     lKeyBindings_.push_back(std::move(mBinding));
+
+    return mConnection;
 }
 
 void keybinder::set_key_binding(std::string_view sName, input::key mKey,
@@ -113,8 +116,8 @@ void keybinder::remove_key_binding(std::string_view sName)
     lKeyBindings_.erase(mIter);
 }
 
-const keybinder::key_binding* keybinder::find_binding_(input::key mKey,
-    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const
+keybinder::key_binding* keybinder::find_binding_(input::key mKey,
+    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed)
 {
     auto mIter = utils::find_if(lKeyBindings_,
         [&](const auto& mBinding)
@@ -133,15 +136,15 @@ const keybinder::key_binding* keybinder::find_binding_(input::key mKey,
 }
 
 bool keybinder::on_key_down(input::key mKey,
-    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const
+    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed)
 {
-    const auto* pKeyBinding = find_binding_(mKey, bShiftIsPressed, bCtrlIsPressed, bAltIsPressed);
+    auto* pKeyBinding = find_binding_(mKey, bShiftIsPressed, bCtrlIsPressed, bAltIsPressed);
     if (!pKeyBinding)
         return false;
 
     try
     {
-        pKeyBinding->mCallback();
+        pKeyBinding->mSignal();
     }
     catch (const std::exception& e)
     {
