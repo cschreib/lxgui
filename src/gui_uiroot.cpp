@@ -26,42 +26,54 @@ uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
 {
     auto& mWindow = get_manager().get_window();
     mScreenDimensions_ = mWindow.get_dimensions();
-    mWindow.on_window_resized.connect([&](auto... mArgs) { on_window_resized_(mArgs...); });
+
+    lConnections_.push_back(mWindow.on_window_resized.connect(
+        [&](auto... mArgs) { on_window_resized_(mArgs...); }));
 
     auto& mInputDispatcher = get_manager().get_input_dispatcher();
-    mInputDispatcher.on_mouse_moved.connect([&](auto... mArgs) { on_mouse_moved_(mArgs...); });
-    mInputDispatcher.on_mouse_wheel.connect([&](auto... mArgs) { on_mouse_wheel_(mArgs...); });
-    mInputDispatcher.on_mouse_drag_start.connect([&](auto... mArgs) { on_drag_start_(mArgs...); });
-    mInputDispatcher.on_mouse_drag_stop.connect([&](auto... mArgs) { on_drag_stop_(mArgs...); });
-    mInputDispatcher.on_text_entered.connect([&](auto... mArgs) { on_text_entered_(mArgs...); });
 
-    mInputDispatcher.on_mouse_pressed.connect(
+    lConnections_.push_back(mInputDispatcher.on_mouse_moved.connect(
+        [&](auto... mArgs) { on_mouse_moved_(mArgs...); }));
+
+    lConnections_.push_back(mInputDispatcher.on_mouse_wheel.connect(
+        [&](auto... mArgs) { on_mouse_wheel_(mArgs...); }));
+
+    lConnections_.push_back(mInputDispatcher.on_mouse_drag_start.connect(
+        [&](auto... mArgs) { on_drag_start_(mArgs...); }));
+
+    lConnections_.push_back(mInputDispatcher.on_mouse_drag_stop.connect(
+        [&](auto... mArgs) { on_drag_stop_(mArgs...); }));
+
+    lConnections_.push_back(mInputDispatcher.on_text_entered.connect(
+        [&](auto... mArgs) { on_text_entered_(mArgs...); }));
+
+    lConnections_.push_back(mInputDispatcher.on_mouse_pressed.connect(
         [&](input::mouse_button mButton, const vector2f& mMousePos)
     {
         on_mouse_button_state_changed_(mButton, true, false, mMousePos);
-    });
+    }));
 
-    mInputDispatcher.on_mouse_released.connect(
+    lConnections_.push_back(mInputDispatcher.on_mouse_released.connect(
         [&](input::mouse_button mButton, const vector2f& mMousePos)
     {
         on_mouse_button_state_changed_(mButton, false, false, mMousePos);
-    });
+    }));
 
-    mInputDispatcher.on_mouse_double_clicked.connect(
+    lConnections_.push_back(mInputDispatcher.on_mouse_double_clicked.connect(
         [&](input::mouse_button mButton, const vector2f& mMousePos)
     {
         on_mouse_button_state_changed_(mButton, true, true, mMousePos);
-    });
+    }));
 
-    mInputDispatcher.on_key_pressed.connect([&](input::key mKey)
+    lConnections_.push_back(mInputDispatcher.on_key_pressed.connect([&](input::key mKey)
     {
         on_key_state_changed_(mKey, true);
-    });
+    }));
 
-    mInputDispatcher.on_key_released.connect([&](input::key mKey)
+    lConnections_.push_back(mInputDispatcher.on_key_released.connect([&](input::key mKey)
     {
         on_key_state_changed_(mKey, false);
-    });
+    }));
 }
 
 uiroot::~uiroot()

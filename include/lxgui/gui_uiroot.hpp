@@ -10,6 +10,7 @@
 #include "lxgui/gui_anchor.hpp"
 
 #include <lxgui/utils_observer.hpp>
+#include <lxgui/utils_signal.hpp>
 
 #include <list>
 #include <memory>
@@ -266,6 +267,9 @@ namespace gui
 
         std::shared_ptr<render_target> pRenderTarget_;
         quad                           mScreenQuad_;
+
+        // IO
+        std::vector<utils::scoped_connection> lConnections_;
 
         // Mouse IO
         utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
