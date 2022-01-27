@@ -357,8 +357,12 @@ namespace gui
         /// Sets if this frame can receive keyboard input from a specific key.
         /** \param sKey              The key to capture
         *   \param bIsCaptureEnabled 'true' to enable
-        *   \note If the frame captures the key, other frames below it will
-        *         not be able to receive the input from this key.
+        *   \note If the frame captures the key, other frames below it will not be able to receive
+        *         the input from this key. The format of the input key name is standard English,
+        *         with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+        *         "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
+        *         simultaneously.
+        *   \see is_key_capture_enabled()
         */
         void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
 
@@ -807,6 +811,7 @@ namespace gui
         /// Checks if this frame can receive keyboard input from a specific key.
         /** \param sKey The key to check
         *   \return 'true' if this frame can receive keyboard input from this key
+        *   \see enable_key_capture()
         */
         bool is_key_capture_enabled(const std::string& sKey) const;
 

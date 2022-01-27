@@ -742,9 +742,36 @@ void uiroot::on_text_entered_(std::uint32_t uiChar)
     }
 }
 
+std::string get_key_name(input::key mKey, bool bIsShiftPressed, bool bIsCtrlPressed,
+    bool bIsAltPressed)
+{
+    std::string sName;
+
+    if (mKey != input::key::K_LCONTROL && mKey != input::key::K_RCONTROL &&
+        mKey != input::key::K_LSHIFT && mKey != input::key::K_RSHIFT &&
+        mKey != input::key::K_LMENU && mKey != input::key::K_RMENU)
+    {
+        if (bIsCtrlPressed)
+            sName = "Ctrl-";
+        if (bIsAltPressed)
+            sName.append("Alt-");
+        if (bIsShiftPressed)
+            sName.append("Shift-");
+    }
+
+    sName.append(input::get_key_codename(mKey));
+
+    return sName;
+}
+
 void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
 {
-    std::string sKeyName = std::string(input::get_key_codename(mKey));
+    const auto& mInputDispatcher = get_manager().get_input_dispatcher();
+    bool bIsShiftPressed = mInputDispatcher.shift_is_pressed();
+    bool bIsCtrlPressed = mInputDispatcher.ctrl_is_pressed();
+    bool bIsAltPressed = mInputDispatcher.alt_is_pressed();
+
+    std::string sKeyName = get_key_name(mKey, bIsShiftPressed, bIsCtrlPressed, bIsAltPressed);
 
     // First, give priority to the focussed frame
     utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
@@ -766,9 +793,9 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
         event_data mData;
         mData.add(static_cast<std::underlying_type_t<input::key>>(mKey));
         mData.add(sKeyName);
-        mData.add(get_manager().get_input_dispatcher().shift_is_pressed());
-        mData.add(get_manager().get_input_dispatcher().ctrl_is_pressed());
-        mData.add(get_manager().get_input_dispatcher().alt_is_pressed());
+        mData.add(bIsShiftPressed);
+        mData.add(bIsCtrlPressed);
+        mData.add(bIsAltPressed);
 
         if (bIsDown)
             pTopmostFrame->fire_script("OnKeyDown", mData);
