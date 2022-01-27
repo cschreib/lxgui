@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['item_201',['item',['../namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4',1,'lxgui::gui::parser']]]
+  ['attribute_5flist_2521',['attribute_list',['../classlxgui_1_1gui_1_1layout__node.html#a245657c6ad88e28e0ed1890b31a001a1',1,'lxgui::gui::layout_node']]],
+  ['attribute_5fview_2522',['attribute_view',['../classlxgui_1_1gui_1_1layout__node.html#a66e651e73b7aadbf1def5540fd04495c',1,'lxgui::gui::layout_node']]]
 ];

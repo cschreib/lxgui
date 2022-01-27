@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_region.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_region.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,39 +69,56 @@ $(function() {
 <div class="title">gui_region.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__region_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_region.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_region.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_uiobject_tpl.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;region::region(manager&amp; mManager) : uiobject(mManager)</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#a4d1ab3adf82e970e5cf3e34cf48d697f">    7</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1region.html#a4d1ab3adf82e970e5cf3e34cf48d697f">region::region</a>(utils::control_block&amp; mBlock, <a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mManager) : <a class="code" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a>(mBlock, mManager)</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    lType_.push_back(CLASS_NAME);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.push_back(<a class="code" href="classlxgui_1_1gui_1_1region.html#a2010042f69d2a4bd981f3d1f2c14ca1b">CLASS_NAME</a>);</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">void</span> region::render()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">   12</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">region::render</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> region::create_glue()</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#a591a0074efc3de7c27e8365bd1077cd9">   16</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1region.html#a591a0074efc3de7c27e8365bd1077cd9">region::create_glue</a>()</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// The &quot;region&quot; type is not exposed to Lua, just use uiobject.</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    create_glue_(<span class="keyword">static_cast&lt;</span>uiobject*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a2362e07324d105010938dba60feed937">create_glue_</a>(<span class="keyword">static_cast&lt;</span><a class="code" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>));</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">bool</span> region::is_in_region(<span class="keyword">const</span> vector2f&amp; mPosition)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#a156b618c9dde973292c91ec95dd0d775">   22</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1region.html#a156b618c9dde973292c91ec95dd0d775">region::is_in_region</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>&amp; mPosition)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> ((lBorderList_.left &lt;= mPosition.x &amp;&amp; mPosition.x &lt;= lBorderList_.right  - 1) &amp;&amp;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            (lBorderList_.top  &lt;= mPosition.y &amp;&amp; mPosition.y &lt;= lBorderList_.bottom - 1));</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> ((<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#af10394c743d6880b6808ffa3afdbdea7">lBorderList_</a>.<a class="code" href="structlxgui_1_1gui_1_1bounds2.html#a96209addd30700c9ff7ed49fae8e5658">left</a> &lt;= mPosition.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> &amp;&amp; mPosition.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> &lt;= <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#af10394c743d6880b6808ffa3afdbdea7">lBorderList_</a>.<a class="code" href="structlxgui_1_1gui_1_1bounds2.html#a024d0946da756ab07c0a793493b92dbd">right</a>  - 1) &amp;&amp;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            (<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#af10394c743d6880b6808ffa3afdbdea7">lBorderList_</a>.<a class="code" href="structlxgui_1_1gui_1_1bounds2.html#a8840eca7c5fce9973a04e20d01564fe6">top</a>  &lt;= mPosition.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> &amp;&amp; mPosition.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> &lt;= <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#af10394c743d6880b6808ffa3afdbdea7">lBorderList_</a>.<a class="code" href="structlxgui_1_1gui_1_1bounds2.html#ada1898362c07b241227b5c1958d631e3">bottom</a> - 1));</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a591a0074efc3de7c27e8365bd1077cd9"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a591a0074efc3de7c27e8365bd1077cd9">lxgui::gui::region::create_glue</a></div><div class="ttdeci">void create_glue() override</div><div class="ttdoc">Creates the associated Lua glue.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8cpp_source.html#l00016">gui_region.cpp:16</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_a024d0946da756ab07c0a793493b92dbd"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#a024d0946da756ab07c0a793493b92dbd">lxgui::gui::bounds2::right</a></div><div class="ttdeci">T right</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00097">gui_bounds2.hpp:97</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_ada1898362c07b241227b5c1958d631e3"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#ada1898362c07b241227b5c1958d631e3">lxgui::gui::bounds2::bottom</a></div><div class="ttdeci">T bottom</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00097">gui_bounds2.hpp:97</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a2010042f69d2a4bd981f3d1f2c14ca1b"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a2010042f69d2a4bd981f3d1f2c14ca1b">lxgui::gui::region::CLASS_NAME</a></div><div class="ttdeci">static constexpr const char * CLASS_NAME</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8hpp_source.html#l00045">gui_region.hpp:45</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a5c11de52e116dee9dc1e51f2a8fa1587"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lxgui::gui::uiobject::lType_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; lType_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00704">gui_uiobject.hpp:704</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a2362e07324d105010938dba60feed937"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a2362e07324d105010938dba60feed937">lxgui::gui::uiobject::create_glue_</a></div><div class="ttdeci">void create_glue_(T *pSelf)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__tpl_8hpp_source.html#l00155">gui_uiobject_tpl.hpp:155</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a4d1ab3adf82e970e5cf3e34cf48d697f"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a4d1ab3adf82e970e5cf3e34cf48d697f">lxgui::gui::region::region</a></div><div class="ttdeci">region(utils::control_block &amp;mBlock, manager &amp;mManager)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8cpp_source.html#l00007">gui_region.cpp:7</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_a96209addd30700c9ff7ed49fae8e5658"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#a96209addd30700c9ff7ed49fae8e5658">lxgui::gui::bounds2::left</a></div><div class="ttdeci">T left</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00097">gui_bounds2.hpp:97</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a156b618c9dde973292c91ec95dd0d775"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a156b618c9dde973292c91ec95dd0d775">lxgui::gui::region::is_in_region</a></div><div class="ttdeci">virtual bool is_in_region(const vector2f &amp;mPosition) const</div><div class="ttdoc">Checks if the provided coordinates are inside this region.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8cpp_source.html#l00022">gui_region.cpp:22</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_af10394c743d6880b6808ffa3afdbdea7"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#af10394c743d6880b6808ffa3afdbdea7">lxgui::gui::uiobject::lBorderList_</a></div><div class="ttdeci">bounds2f lBorderList_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00709">gui_uiobject.hpp:709</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_ac037bb55646661432417761d9f096bcf"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">lxgui::gui::vector2::x</a></div><div class="ttdeci">T x</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00171">gui_vector2.hpp:171</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00042">gui_manager.hpp:42</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a8d9cbb92dbdde217bbe02d5df857e8f1"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">lxgui::gui::region::render</a></div><div class="ttdeci">void render() const override</div><div class="ttdoc">Renders this widget on the current render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8cpp_source.html#l00012">gui_region.cpp:12</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></div><div class="ttdoc">The base class of all elements in the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00154">gui_uiobject.hpp:154</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_a31cd409ce15d4167a2c252860498eeb2"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">lxgui::gui::vector2::y</a></div><div class="ttdeci">T y</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00171">gui_vector2.hpp:171</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_a8840eca7c5fce9973a04e20d01564fe6"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#a8840eca7c5fce9973a04e20d01564fe6">lxgui::gui::bounds2::top</a></div><div class="ttdeci">T top</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00097">gui_bounds2.hpp:97</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

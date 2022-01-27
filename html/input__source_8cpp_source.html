@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/input_source.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/input_source.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,96 +69,49 @@ $(function() {
 <div class="title">input_source.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="input__source_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/input_source.hpp&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_event.hpp&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;lxgui/utils_exception.hpp&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;lxgui/utils_string.hpp&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;lxgui/utils_std.hpp&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>input</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> source::update()</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    update_();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    lChars_.clear();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::swap(lChars_, lCharsCache_);</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/input_source.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span>input</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classlxgui_1_1input_1_1source.html#ab894d55f716fbedaeebbe6bb469ff90f">    7</a></span>&#160;<span class="keyword">const</span> <a class="code" href="structlxgui_1_1input_1_1source_1_1key__state.html">source::key_state</a>&amp; <a class="code" href="classlxgui_1_1input_1_1source.html#ab894d55f716fbedaeebbe6bb469ff90f">source::get_key_state</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1input_1_1source.html#a728594e6b369b16d95ef8aef08718529">mKeyboard_</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classlxgui_1_1input_1_1source.html#a736a62adaaf7961445b8b644b7086905">   12</a></span>&#160;<span class="keyword">const</span> <a class="code" href="structlxgui_1_1input_1_1source_1_1mouse__state.html">source::mouse_state</a>&amp; <a class="code" href="classlxgui_1_1input_1_1source.html#a736a62adaaf7961445b8b644b7086905">source::get_mouse_state</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1input_1_1source.html#ac04105f449f8838fcd9c3c6dacfd8abf">mMouse_</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classlxgui_1_1input_1_1source.html#a59717bc9049fd5afb702558760850457">   17</a></span>&#160;<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2ui</a>&amp; <a class="code" href="classlxgui_1_1input_1_1source.html#a59717bc9049fd5afb702558760850457">source::get_window_dimensions</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1input_1_1source.html#a84f0b9a7e737153edef95e98e0e3415a">mWindowDimensions_</a>;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">bool</span> source::is_manually_updated()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classlxgui_1_1input_1_1source.html#a8b329b1056c03a0c8f11ff02a49f795d">   22</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1input_1_1source.html#a8b329b1056c03a0c8f11ff02a49f795d">source::get_interface_scaling_factor_hint</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> bManuallyUpdated_;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> 1.0f;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> source::set_manually_updated(<span class="keywordtype">bool</span> bManuallyUpdated)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    bManuallyUpdated_ = bManuallyUpdated;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">const</span> source::key_state&amp; source::get_key_state()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">return</span> mKeyboard_;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">const</span> std::vector&lt;char32_t&gt;&amp; source::get_chars()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">return</span> lChars_;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;std::vector&lt;gui::event&gt; source::poll_events()</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::vector&lt;gui::event&gt; lTemp;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::swap(lTemp, lEvents_);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> lTemp;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">const</span> source::mouse_state&amp; source::get_mouse_state()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> mMouse_;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keywordtype">bool</span> source::has_window_resized()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> bWindowResized_;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span> source::reset_window_resized()</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    bWindowResized_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">const</span> gui::vector2ui&amp; source::get_window_dimensions()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> mWindowDimensions_;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">void</span> source::set_doubleclick_time(<span class="keywordtype">double</span> dDoubleClickTime)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    dDoubleClickTime_ = dDoubleClickTime;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">double</span> source::get_doubleclick_time()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> dDoubleClickTime_;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">float</span> source::get_interface_scaling_factor_hint()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> 1.0f;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a59717bc9049fd5afb702558760850457"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a59717bc9049fd5afb702558760850457">lxgui::input::source::get_window_dimensions</a></div><div class="ttdeci">const gui::vector2ui &amp; get_window_dimensions() const</div><div class="ttdoc">Get the window size (in pixels)</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8cpp_source.html#l00017">input_source.cpp:17</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_ab894d55f716fbedaeebbe6bb469ff90f"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#ab894d55f716fbedaeebbe6bb469ff90f">lxgui::input::source::get_key_state</a></div><div class="ttdeci">const key_state &amp; get_key_state() const</div><div class="ttdoc">Returns the keyboard state of this input source.</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8cpp_source.html#l00007">input_source.cpp:7</a></div></div>
+<div class="ttc" id="astructlxgui_1_1input_1_1source_1_1mouse__state_html"><div class="ttname"><a href="structlxgui_1_1input_1_1source_1_1mouse__state.html">lxgui::input::source::mouse_state</a></div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00048">input_source.hpp:48</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00014">gui_vector2.hpp:14</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_ac04105f449f8838fcd9c3c6dacfd8abf"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#ac04105f449f8838fcd9c3c6dacfd8abf">lxgui::input::source::mMouse_</a></div><div class="ttdeci">mouse_state mMouse_</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00120">input_source.hpp:120</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a736a62adaaf7961445b8b644b7086905"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a736a62adaaf7961445b8b644b7086905">lxgui::input::source::get_mouse_state</a></div><div class="ttdeci">const mouse_state &amp; get_mouse_state() const</div><div class="ttdoc">Returns the mouse state of this input source.</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8cpp_source.html#l00012">input_source.cpp:12</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="astructlxgui_1_1input_1_1source_1_1key__state_html"><div class="ttname"><a href="structlxgui_1_1input_1_1source_1_1key__state.html">lxgui::input::source::key_state</a></div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00043">input_source.hpp:43</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a8b329b1056c03a0c8f11ff02a49f795d"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a8b329b1056c03a0c8f11ff02a49f795d">lxgui::input::source::get_interface_scaling_factor_hint</a></div><div class="ttdeci">virtual float get_interface_scaling_factor_hint() const</div><div class="ttdoc">Return the interface scaling factor suggested by the operating system.</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8cpp_source.html#l00022">input_source.cpp:22</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a84f0b9a7e737153edef95e98e0e3415a"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a84f0b9a7e737153edef95e98e0e3415a">lxgui::input::source::mWindowDimensions_</a></div><div class="ttdeci">gui::vector2ui mWindowDimensions_</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00122">input_source.hpp:122</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a728594e6b369b16d95ef8aef08718529"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a728594e6b369b16d95ef8aef08718529">lxgui::input::source::mKeyboard_</a></div><div class="ttdeci">key_state mKeyboard_</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00119">input_source.hpp:119</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

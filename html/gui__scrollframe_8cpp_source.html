@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_scrollframe.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_scrollframe.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <div class="title">gui_scrollframe.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__scrollframe_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_scrollframe.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_scrollframe.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_frame.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_texture.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
@@ -82,373 +82,424 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;scroll_frame::scroll_frame(manager&amp; mManager) : frame(mManager)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    lType_.push_back(CLASS_NAME);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;scroll_frame::~scroll_frame()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// Make sure the scroll child is destroyed now.</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// It relies on this scroll_frame still being alive</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// when being destroyed, but the scroll_frame destructor</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// would be called before its inherited frame destructor</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// (which would otherwise take care of destroying the scroll child).</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">if</span> (pScrollChild_)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        remove_child(pScrollChild_);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">bool</span> scroll_frame::can_use_script(<span class="keyword">const</span> std::string&amp; sScriptName)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">if</span> (frame::can_use_script(sScriptName))</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((sScriptName == <span class="stringliteral">&quot;OnHorizontalScroll&quot;</span>) ||</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        (sScriptName == <span class="stringliteral">&quot;OnScrollRangeChanged&quot;</span>) ||</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        (sScriptName == <span class="stringliteral">&quot;OnVerticalScroll&quot;</span>))</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> scroll_frame::on_script(<span class="keyword">const</span> std::string&amp; sScriptName, <span class="keyword">const</span> event_data&amp; mData)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    alive_checker mChecker(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    frame::on_script(sScriptName, mData);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span> (!mChecker.is_alive())</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">if</span> (sScriptName == <span class="stringliteral">&quot;OnSizeChanged&quot;</span>)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        bRebuildScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a8c6c6fe8cffa868c3594bc3dcbe5918e">   14</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a8c6c6fe8cffa868c3594bc3dcbe5918e">scroll_frame::scroll_frame</a>(utils::control_block&amp; mBlock, <a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mManager) :</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>(mBlock, mManager)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.push_back(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a24d0b9992ff8a8807d93954da762040e">CLASS_NAME</a>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a416bf4823061e4868dca55c7a47aa0ad">   20</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a416bf4823061e4868dca55c7a47aa0ad">scroll_frame::~scroll_frame</a>()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Make sure the scroll child is destroyed now.</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// It relies on this scroll_frame still being alive</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// when being destroyed, but the scroll_frame destructor</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// would be called before its inherited frame destructor</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// (which would otherwise take care of destroying the scroll child).</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame.html#ac54738ae289e05bc49518e74fc718bda">remove_child</a>(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#acc32f5ba19e24106ef151f25c6cc3fb5">   31</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#acc32f5ba19e24106ef151f25c6cc3fb5">scroll_frame::can_use_script</a>(<span class="keyword">const</span> std::string&amp; sScriptName)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1frame.html#a997f972fde210c1c8c8a28a998047d80">frame::can_use_script</a>(sScriptName))</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((sScriptName == <span class="stringliteral">&quot;OnHorizontalScroll&quot;</span>) ||</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        (sScriptName == <span class="stringliteral">&quot;OnScrollRangeChanged&quot;</span>) ||</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        (sScriptName == <span class="stringliteral">&quot;OnVerticalScroll&quot;</span>))</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a2f6032d8501c87ca7c4815c8edaec177">   43</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a2f6032d8501c87ca7c4815c8edaec177">scroll_frame::fire_script</a>(<span class="keyword">const</span> std::string&amp; sScriptName, <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1event__data.html">event_data</a>&amp; mData)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a7a1637f091f51905bfd0a5be05c47ff3">is_loaded</a>())</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a> mChecker(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#a9c26d2b13ed963fe72821a427419d108">base::fire_script</a>(sScriptName, mData);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (!mChecker.<a class="code" href="classlxgui_1_1gui_1_1alive__checker.html#a041f72f8be0f1a2dac4cfa43df906ded">is_alive</a>())</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> scroll_frame::copy_from(<span class="keyword">const</span> uiobject&amp; mObj)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    frame::copy_from(mObj);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (sScriptName == <span class="stringliteral">&quot;OnSizeChanged&quot;</span>)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">bRebuildScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">const</span> scroll_frame* pScrollFrame = down_cast&lt;scroll_frame&gt;(&amp;mObj);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> (!pScrollFrame)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#abf547230ed547173cbc8113259423839">   57</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#abf547230ed547173cbc8113259423839">scroll_frame::copy_from</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a>&amp; mObj)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#a49679249262388daecd33304f8a8bf26">base::copy_from</a>(mObj);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    this-&gt;set_horizontal_scroll(pScrollFrame-&gt;get_horizontal_scroll());</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    this-&gt;set_vertical_scroll(pScrollFrame-&gt;get_vertical_scroll());</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> frame* pOtherChild = pScrollFrame-&gt;get_scroll_child().get())</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        utils::observer_ptr&lt;frame&gt; pScrollChild = create_child(pOtherChild-&gt;get_object_type(),</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                pOtherChild-&gt;get_raw_name(), {pScrollFrame-&gt;get_scroll_child()});</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> (pScrollChild)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            pScrollChild-&gt;set_special();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            pScrollChild-&gt;notify_loaded();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            this-&gt;set_scroll_child(remove_child(pScrollChild));</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> scroll_frame::set_scroll_child(utils::owner_ptr&lt;frame&gt; pFrame)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (pScrollChild_)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        pScrollChild_-&gt;set_renderer(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        pScrollChild_-&gt;modify_point(anchor_point::TOPLEFT).mOffset = vector2f(</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            lBorderList_.top_left() - vector2f(fHorizontalScroll_, fVerticalScroll_)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        );</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        clear_strata_list_();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!is_virtual() &amp;&amp; !pScrollTexture_)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">// Create the scroll texture</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">auto</span> pScrollTexture = create_region&lt;texture&gt;(layer_type::ARTWORK, <span class="stringliteral">&quot;$parentScrollTexture&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">if</span> (!pScrollTexture)</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        pScrollTexture-&gt;set_special();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        pScrollTexture-&gt;set_all_points(observer_from(<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">if</span> (pScrollRenderTarget_)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            pScrollTexture-&gt;set_texture(pScrollRenderTarget_);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        pScrollTexture-&gt;notify_loaded();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        pScrollTexture_ = pScrollTexture;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        bRebuildScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    pScrollChild_ = pFrame;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">if</span> (pScrollChild_)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        add_child(std::move(pFrame));</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a>* pScrollFrame = down_cast&lt;scroll_frame&gt;(&amp;mObj);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span> (!pScrollFrame)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    this-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#abd742cf390a78ea4376af9c372b116c1">set_horizontal_scroll</a>(pScrollFrame-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#acdd89487b9008392f9c7c8581afc7eaa">get_horizontal_scroll</a>());</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    this-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6bdb337dfca38d6ec0d311c2c98dea98">set_vertical_scroll</a>(pScrollFrame-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aed893c64ee1933f9a42bddc7e42a5601">get_vertical_scroll</a>());</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>* pOtherChild = pScrollFrame-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a1cba7002380021fe1b92a7a24c9a2312">get_scroll_child</a>().get())</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1uiobject__core__attributes.html">uiobject_core_attributes</a> mAttr;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        mAttr.<a class="code" href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#ad0f62c781b348989508b528c963407c5">sObjectType</a> = pOtherChild-&gt;get_object_type();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        mAttr.<a class="code" href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#a01751a9c84083d64bbfb8718988156c7">sName</a> = pOtherChild-&gt;get_raw_name();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        mAttr.<a class="code" href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#a83c6d88fd6285f36b6ee6997efec9e38">lInheritance</a> = {pScrollFrame-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a1cba7002380021fe1b92a7a24c9a2312">get_scroll_child</a>()};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        utils::observer_ptr&lt;frame&gt; pScrollChild = <a class="code" href="classlxgui_1_1gui_1_1frame.html#aaa6fd7c729b77750632ef272f53e9140">create_child</a>(std::move(mAttr));</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> (pScrollChild)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            pScrollChild-&gt;set_special();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            pScrollChild-&gt;notify_loaded();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            this-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">set_scroll_child</a>(<a class="code" href="classlxgui_1_1gui_1_1frame.html#ac54738ae289e05bc49518e74fc718bda">remove_child</a>(pScrollChild));</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">   86</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">scroll_frame::set_scroll_child</a>(<a class="code" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">utils::owner_ptr&lt;frame&gt;</a> pFrame)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;set_renderer(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#ac71ba9991745f6d4112f64c353829bfa">clear_strata_list_</a>();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">is_virtual</a>() &amp;&amp; !<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">pScrollTexture_</a>)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">// Create the scroll texture</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keyword">auto</span> pScrollTexture = create_region&lt;texture&gt;(<a class="code" href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a9b2e9d96ab6088c37a04a8f5a9a0ea80">layer_type::ARTWORK</a>, <span class="stringliteral">&quot;$parentScrollTexture&quot;</span>);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">if</span> (!pScrollTexture)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        pScrollTexture-&gt;set_special();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        pScrollTexture-&gt;set_all_points(<a class="code" href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">observer_from</a>(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            pScrollTexture-&gt;set_texture(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        pScrollTexture-&gt;notify_loaded();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">pScrollTexture_</a> = pScrollTexture;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">bRebuildScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a> = pFrame;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        pScrollChild_-&gt;set_special();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">if</span> (!is_virtual())</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            pScrollChild_-&gt;set_renderer(observer_from(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    {</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame.html#aa64da15011e34d6ed20ab7515efa1820">add_child</a>(std::move(pFrame));</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        pScrollChild_-&gt;clear_all_points();</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        pScrollChild_-&gt;set_point(anchor_data(</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            anchor_point::TOPLEFT, <span class="stringliteral">&quot;&quot;</span>, vector2f(-fHorizontalScroll_, -fVerticalScroll_)));</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        update_scroll_range_();</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        bUpdateScrollRange_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keywordtype">void</span> scroll_frame::set_horizontal_scroll(<span class="keywordtype">float</span> fHorizontalScroll)</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;{</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">if</span> (fHorizontalScroll_ != fHorizontalScroll)</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        fHorizontalScroll_ = fHorizontalScroll;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        lQueuedEventList_.push_back(<span class="stringliteral">&quot;OnHorizontalScroll&quot;</span>);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        pScrollChild_-&gt;modify_point(anchor_point::TOPLEFT).mOffset =</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            vector2f(-fHorizontalScroll_, -fVerticalScroll_);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keywordtype">float</span> scroll_frame::get_horizontal_scroll()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">return</span> fHorizontalScroll_;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keywordtype">float</span> scroll_frame::get_horizontal_scroll_range()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordflow">return</span> fHorizontalScrollRange_;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keywordtype">void</span> scroll_frame::set_vertical_scroll(<span class="keywordtype">float</span> fVerticalScroll)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;{</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span> (fVerticalScroll_ != fVerticalScroll)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        fVerticalScroll_ = fVerticalScroll;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        lQueuedEventList_.push_back(<span class="stringliteral">&quot;OnVerticalScroll&quot;</span>);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        pScrollChild_-&gt;modify_point(anchor_point::TOPLEFT).mOffset =</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            vector2f(-fHorizontalScroll_, -fVerticalScroll_);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;set_special();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">is_virtual</a>())</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;set_renderer(<a class="code" href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">observer_from</a>(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;clear_all_points();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;set_point(<a class="code" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a>(<a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc">anchor_point::TOPLEFT</a>, <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a9495ea62744d78b7f5d8a522c32eef97">get_name</a>(), -<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>));</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af8b723b37d8517b61026e8a5b9a3b979">update_scroll_range_</a>();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">bUpdateScrollRange_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#abd742cf390a78ea4376af9c372b116c1">  132</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#abd742cf390a78ea4376af9c372b116c1">scroll_frame::set_horizontal_scroll</a>(<span class="keywordtype">float</span> fHorizontalScroll)</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;{</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> != fHorizontalScroll)</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> = fHorizontalScroll;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame.html#a59f35c565e0f28f4fa5a2849bd1186e1">lQueuedEventList_</a>.push_back(<span class="stringliteral">&quot;OnHorizontalScroll&quot;</span>);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;modify_point(<a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc">anchor_point::TOPLEFT</a>).mOffset = -<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;notify_borders_need_update();</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#acdd89487b9008392f9c7c8581afc7eaa">  146</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#acdd89487b9008392f9c7c8581afc7eaa">scroll_frame::get_horizontal_scroll</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a398a283fff0489eed8930ec0c14c68c6">  151</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a398a283fff0489eed8930ec0c14c68c6">scroll_frame::get_horizontal_scroll_range</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a6bdb337dfca38d6ec0d311c2c98dea98">  156</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6bdb337dfca38d6ec0d311c2c98dea98">scroll_frame::set_vertical_scroll</a>(<span class="keywordtype">float</span> fVerticalScroll)</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;{</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> != fVerticalScroll)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> = fVerticalScroll;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame.html#a59f35c565e0f28f4fa5a2849bd1186e1">lQueuedEventList_</a>.push_back(<span class="stringliteral">&quot;OnVerticalScroll&quot;</span>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;modify_point(<a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc">anchor_point::TOPLEFT</a>).mOffset = -<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;notify_borders_need_update();</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keywordtype">float</span> scroll_frame::get_vertical_scroll()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">return</span> fVerticalScroll_;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keywordtype">float</span> scroll_frame::get_vertical_scroll_range()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordflow">return</span> fVerticalScrollRange_;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keywordtype">void</span> scroll_frame::update(<span class="keywordtype">float</span> fDelta)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;{</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    vector2f mOldChildSize;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">if</span> (pScrollChild_)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        mOldChildSize = pScrollChild_-&gt;get_apparent_dimensions();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    alive_checker mChecker(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    frame::update(fDelta);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">if</span> (!mChecker.is_alive())</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> (pScrollChild_ &amp;&amp; mOldChildSize != pScrollChild_-&gt;get_apparent_dimensions())</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        bUpdateScrollRange_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">if</span> (is_visible())</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">if</span> (bRebuildScrollRenderTarget_ &amp;&amp; pScrollTexture_)</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        {</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            rebuild_scroll_render_target_();</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            bRebuildScrollRenderTarget_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keywordflow">if</span> (bUpdateScrollRange_)</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            update_scroll_range_();</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            bUpdateScrollRange_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">if</span> (pScrollChild_)</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            update_scroll_child_input_();</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">if</span> (pScrollChild_ &amp;&amp; pScrollRenderTarget_ &amp;&amp; bRedrawScrollRenderTarget_)</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            render_scroll_strata_list_();</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            bRedrawScrollRenderTarget_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;}</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keywordtype">void</span> scroll_frame::update_scroll_range_()</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;{</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keyword">const</span> vector2f mApparentSize = get_apparent_dimensions();</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">const</span> vector2f mChildApparentSize = pScrollChild_-&gt;get_apparent_dimensions();</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    fHorizontalScrollRange_ = mChildApparentSize.x - mApparentSize.x;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    fVerticalScrollRange_ = mChildApparentSize.y - mApparentSize.y;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aed893c64ee1933f9a42bddc7e42a5601">  170</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aed893c64ee1933f9a42bddc7e42a5601">scroll_frame::get_vertical_scroll</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">mScroll_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;}</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a2e277e291e0939a2101db8eca97a7056">  175</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a2e277e291e0939a2101db8eca97a7056">scroll_frame::get_vertical_scroll_range</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">  180</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">scroll_frame::update</a>(<span class="keywordtype">float</span> fDelta)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;{</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mOldChildSize;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        mOldChildSize = <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;get_apparent_dimensions();</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a> mChecker(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8b2266d230a6e194a57f87169eee5e2e">base::update</a>(fDelta);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">if</span> (!mChecker.<a class="code" href="classlxgui_1_1gui_1_1alive__checker.html#a041f72f8be0f1a2dac4cfa43df906ded">is_alive</a>())</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a> &amp;&amp; mOldChildSize != <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;get_apparent_dimensions())</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">bUpdateScrollRange_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#acf781503737274463891a202b5eda7b0">is_visible</a>())</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">bRebuildScrollRenderTarget_</a> &amp;&amp; <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">pScrollTexture_</a>)</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        {</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a72732260b45da9c02af76ca25302b7eb">rebuild_scroll_render_target_</a>();</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">bRebuildScrollRenderTarget_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">bUpdateScrollRange_</a>)</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af8b723b37d8517b61026e8a5b9a3b979">update_scroll_range_</a>();</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">bUpdateScrollRange_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a> &amp;&amp; <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a> &amp;&amp; <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a>)</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ab51d4b9a8d8ad883c36a66f5e88f02b1">render_scroll_strata_list_</a>();</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;}</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#af8b723b37d8517b61026e8a5b9a3b979">  220</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af8b723b37d8517b61026e8a5b9a3b979">scroll_frame::update_scroll_range_</a>()</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;{</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mApparentSize = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a60f63805eb0c013e98b5a91241862893">get_apparent_dimensions</a>();</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mChildApparentSize = <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">pScrollChild_</a>-&gt;get_apparent_dimensions();</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a> = mChildApparentSize - mApparentSize;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">if</span> (fHorizontalScrollRange_ &lt; 0) fHorizontalScrollRange_ = 0;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (fVerticalScrollRange_ &lt; 0) fVerticalScrollRange_ = 0;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> &lt; 0) <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> = 0;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> &lt; 0) <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">mScrollRange_</a>.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> = 0;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">if</span> (!is_virtual())</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">is_virtual</a>())</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        alive_checker mChecker(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        on_script(<span class="stringliteral">&quot;OnScrollRangeChanged&quot;</span>);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">if</span> (!mChecker.is_alive())</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a> mChecker(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a2f6032d8501c87ca7c4815c8edaec177">fire_script</a>(<span class="stringliteral">&quot;OnScrollRangeChanged&quot;</span>);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">if</span> (!mChecker.<a class="code" href="classlxgui_1_1gui_1_1alive__checker.html#a041f72f8be0f1a2dac4cfa43df906ded">is_alive</a>())</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;}</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keywordtype">void</span> scroll_frame::update_scroll_child_input_()</div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">  239</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">scroll_frame::notify_scaling_factor_updated</a>()</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;{</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keyword">const</span> vector2f mOffset = mMousePos_ - lBorderList_.top_left();</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#afa3e9e8b46f22972d2cd7e576e39fbbc">base::notify_scaling_factor_updated</a>();</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    update_mouse_in_frame_();</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">if</span> (bMouseInScrollTexture_)</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    {</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        utils::observer_ptr&lt;frame&gt; pHoveredFrame = find_hovered_frame_(mOffset);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordflow">if</span> (pHoveredFrame != pHoveredScrollChild_)</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordflow">if</span> (pHoveredScrollChild_)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                pHoveredScrollChild_-&gt;notify_mouse_in_frame(<span class="keyword">false</span>, mOffset);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">bRebuildScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;}</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a72732260b45da9c02af76ca25302b7eb">  246</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a72732260b45da9c02af76ca25302b7eb">scroll_frame::rebuild_scroll_render_target_</a>()</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;{</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mApparentSize = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a60f63805eb0c013e98b5a91241862893">get_apparent_dimensions</a>();</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keywordflow">if</span> (mApparentSize.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a> &lt;= 0 || mApparentSize.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a> &lt;= 0)</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            pHoveredScrollChild_ = pHoveredFrame;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="keywordflow">if</span> (pHoveredScrollChild_)</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            pHoveredScrollChild_-&gt;notify_mouse_in_frame(<span class="keyword">true</span>, mOffset);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pHoveredScrollChild_)</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        pHoveredScrollChild_-&gt;notify_mouse_in_frame(<span class="keyword">false</span>, mOffset);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        pHoveredScrollChild_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    }</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;}</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="keywordtype">void</span> scroll_frame::notify_scaling_factor_updated()</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;{</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    frame::notify_scaling_factor_updated();</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    bRebuildScrollRenderTarget_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordtype">float</span> fFactor = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">get_interface_scaling_factor</a>();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> mScaledSize = <a class="code" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a>(</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        std::round(mApparentSize.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">x</a>*fFactor), std::round(mApparentSize.<a class="code" href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">y</a>*fFactor));</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>)</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>-&gt;set_dimensions(mScaledSize);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">pScrollTexture_</a>-&gt;set_tex_rect(std::array&lt;float,4&gt;{0.0f, 0.0f, 1.0f, 1.0f});</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">bUpdateScrollRange_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    {</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keyword">auto</span>&amp; mRenderer = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a9b5e0c0d922e137ab398edc8c661be33">get_renderer</a>();</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a> = mRenderer.create_render_target(mScaledSize);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>)</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">pScrollTexture_</a>-&gt;set_texture(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keywordtype">void</span> scroll_frame::rebuild_scroll_render_target_()</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#ab51d4b9a8d8ad883c36a66f5e88f02b1">  273</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ab51d4b9a8d8ad883c36a66f5e88f02b1">scroll_frame::render_scroll_strata_list_</a>()</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;{</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">const</span> vector2f mApparentSize = get_apparent_dimensions();</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; mRenderer = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a9b5e0c0d922e137ab398edc8c661be33">get_renderer</a>();</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">if</span> (mApparentSize.x &lt;= 0 || mApparentSize.y &lt;= 0)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordtype">float</span> fFactor = get_manager().get_interface_scaling_factor();</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    vector2ui mScaledSize = vector2ui(</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <a class="code" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">std::round</a>(mApparentSize.x*fFactor), <a class="code" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">std::round</a>(mApparentSize.y*fFactor));</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    mRenderer.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a725ee8e11bcbf4920b68fd4725fc58b2">begin</a>(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mView = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>-&gt;get_canvas_dimensions())/</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">get_interface_scaling_factor</a>();</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    mRenderer.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#ad7cc0b56cf659e7927a3a44eba48515c">set_view</a>(<a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#ad02c391364323f2612cd692fdacadcf7">matrix4f::translation</a>(-<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a70a9a9e3dbc202e5c4bfc5d5207aaf94">get_borders</a>().top_left()) * <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#af1aa37b85b0d528eabc4b1877a37f0dd">matrix4f::view</a>(mView));</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordflow">if</span> (pScrollRenderTarget_)</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    {</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        pScrollRenderTarget_-&gt;set_dimensions(mScaledSize);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        pScrollTexture_-&gt;set_tex_rect(std::array&lt;float,4&gt;{0.0f, 0.0f, 1.0f, 1.0f});</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        bUpdateScrollRange_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">pScrollRenderTarget_</a>-&gt;clear(<a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mStrata : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a8bc2ee39137e0f09091dc01b4443eb94">lStrataList_</a>)</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    {</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a88b958d9551170672a28ea6fab080cfc">render_strata_</a>(mStrata);</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    }</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keyword">auto</span>&amp; mRenderer = get_manager().get_renderer();</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        pScrollRenderTarget_ = mRenderer.create_render_target(mScaledSize);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">if</span> (pScrollRenderTarget_)</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            pScrollTexture_-&gt;set_texture(pScrollRenderTarget_);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;}</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keywordtype">void</span> scroll_frame::render_scroll_strata_list_()</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;{</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    get_manager().begin(pScrollRenderTarget_);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    pScrollRenderTarget_-&gt;clear(color::EMPTY);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    mRenderer.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e">end</a>();</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;}</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00294"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aceea768447fe3b192e8388cb6edb7f3c">  294</a></span>&#160;utils::observer_ptr&lt;const frame&gt; <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aceea768447fe3b192e8388cb6edb7f3c">scroll_frame::find_topmost_frame</a>(</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keyword">const</span> std::function&lt;<span class="keywordtype">bool</span>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>&amp;)&gt;&amp; mPredicate)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1frame.html#a4226c9bd2cb4337d48862e145cd7eab5">base::find_topmost_frame</a>(mPredicate))</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    {</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">auto</span> pHoveredFrame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6be1da013f102ae7034fdd96c44bbf41">frame_renderer::find_topmost_frame</a>(mPredicate))</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <span class="keywordflow">return</span> pHoveredFrame;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">observer_from</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mStrata : lStrataList_)</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    {</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        render_strata_(mStrata);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    get_manager().end();</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;}</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keywordtype">bool</span> scroll_frame::is_in_frame(<span class="keyword">const</span> vector2f&amp; mPosition)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">if</span> (pScrollTexture_)</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keywordflow">return</span> frame::is_in_frame(mPosition) || pScrollTexture_-&gt;is_in_region(mPosition);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="keywordflow">return</span> frame::is_in_frame(mPosition);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;}</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a5a10cd6fd753be2cfb349c8dd322e321">  308</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a5a10cd6fd753be2cfb349c8dd322e321">scroll_frame::notify_strata_needs_redraw</a>(<a class="code" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mStrata)</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;{</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#af4dc6cc0e4c8d7f32bede59da7861db3">frame_renderer::notify_strata_needs_redraw</a>(mStrata);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#aa56c14fb3a6449395cee79832132cef0">notify_renderer_need_redraw</a>();</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aef8739f54922b0cdbf6b4d460bd34a9f">  316</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aef8739f54922b0cdbf6b4d460bd34a9f">scroll_frame::create_glue</a>()</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;{</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a2362e07324d105010938dba60feed937">create_glue_</a>(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;}</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="keywordtype">void</span> scroll_frame::notify_mouse_in_frame(<span class="keywordtype">bool</span> bMouseInFrame, <span class="keyword">const</span> vector2f&amp; mMousePos)</div>
+<div class="line"><a name="l00321"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aaee794c78eeac36059e70b4500d03ea2">  321</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aaee794c78eeac36059e70b4500d03ea2">scroll_frame::notify_rendered_frame</a>(<span class="keyword">const</span> utils::observer_ptr&lt;frame&gt;&amp; pFrame, <span class="keywordtype">bool</span> bRendered)</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    bMouseInScrollTexture_ = (bMouseInFrame &amp;&amp; pScrollTexture_ &amp;&amp; pScrollTexture_-&gt;is_in_region(mMousePos));</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;}</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="keywordtype">void</span> scroll_frame::notify_strata_needs_redraw(frame_strata mStrata)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    frame_renderer::notify_strata_needs_redraw(mStrata);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordflow">if</span> (!pFrame)</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#ab0dee40803be4da57023f408aa5206d4">frame_renderer::notify_rendered_frame</a>(pFrame, bRendered);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">bRedrawScrollRenderTarget_</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    notify_renderer_need_redraw();</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;}</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keywordtype">void</span> scroll_frame::create_glue()</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;{</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    create_glue_(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="keywordtype">void</span> scroll_frame::notify_rendered_frame(<span class="keyword">const</span> utils::observer_ptr&lt;frame&gt;&amp; pFrame, <span class="keywordtype">bool</span> bRendered)</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;{</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordflow">if</span> (!pFrame)</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    frame_renderer::notify_rendered_frame(pFrame, bRendered);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordflow">if</span> (!bRendered)</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    {</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <span class="keywordflow">if</span> (pFrame == pHoveredScrollChild_)</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        {</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            pHoveredScrollChild_-&gt;notify_mouse_in_frame(<span class="keyword">false</span>, vector2f::ZERO);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            pHoveredScrollChild_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    }</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    bRedrawScrollRenderTarget_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;}</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;vector2f scroll_frame::get_target_dimensions()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordflow">return</span> get_apparent_dimensions();</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;}</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="keywordtype">void</span> scroll_frame::update_borders_()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordtype">bool</span> bPositionUpdated = bUpdateBorders_;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    frame::update_borders_();</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordflow">if</span> (bPositionUpdated &amp;&amp; pScrollChild_)</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        pScrollChild_-&gt;notify_borders_need_update();</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;}</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;}</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;}</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#adcc50f9c7ce81ce78d20d14d31191636">  331</a></span>&#160;<a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#adcc50f9c7ce81ce78d20d14d31191636">scroll_frame::get_target_dimensions</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a60f63805eb0c013e98b5a91241862893">get_apparent_dimensions</a>();</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;}</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;}</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1utils_html_aa4c505cea5306e6723e05a645da29e53"><div class="ttname"><a href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">lxgui::utils::round</a></div><div class="ttdeci">float round(float fValue, float fUnit, rounding_method mMethod)</div><div class="ttdef"><b>Definition:</b> <a href="utils__maths_8cpp_source.html#l00010">utils_maths.cpp:10</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_acf781503737274463891a202b5eda7b0"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#acf781503737274463891a202b5eda7b0">lxgui::gui::uiobject::is_visible</a></div><div class="ttdeci">virtual bool is_visible() const</div><div class="ttdoc">Checks if this widget can be seen on the screen.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00244">gui_uiobject.cpp:244</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_af8b723b37d8517b61026e8a5b9a3b979"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#af8b723b37d8517b61026e8a5b9a3b979">lxgui::gui::scroll_frame::update_scroll_range_</a></div><div class="ttdeci">void update_scroll_range_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00220">gui_scrollframe.cpp:220</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a6b5fbd1eb261daddac75e7015cc30a9b"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a6b5fbd1eb261daddac75e7015cc30a9b">lxgui::gui::scroll_frame::mScroll_</a></div><div class="ttdeci">vector2f mScroll_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00167">gui_scrollframe.hpp:167</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a8887a7182a01f80948935c233019c319"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">lxgui::gui::scroll_frame::set_scroll_child</a></div><div class="ttdeci">void set_scroll_child(utils::owner_ptr&lt; frame &gt; pFrame)</div><div class="ttdoc">Sets this scroll_frame's scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00086">gui_scrollframe.cpp:86</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html">lxgui::gui::frame</a></div><div class="ttdoc">A uiobject that can contain other objects and react to events.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l00250">gui_frame.hpp:250</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a8c6c6fe8cffa868c3594bc3dcbe5918e"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a8c6c6fe8cffa868c3594bc3dcbe5918e">lxgui::gui::scroll_frame::scroll_frame</a></div><div class="ttdeci">scroll_frame(utils::control_block &amp;mBlock, manager &amp;mManager)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00014">gui_scrollframe.cpp:14</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html">lxgui::gui::scroll_frame</a></div><div class="ttdoc">A frame with scrollable content.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00035">gui_scrollframe.hpp:35</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_ad7dac601517f50fac6d7303e390ec88d"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#ad7dac601517f50fac6d7303e390ec88d">lxgui::gui::scroll_frame::pScrollTexture_</a></div><div class="ttdeci">utils::observer_ptr&lt; texture &gt; pScrollTexture_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00177">gui_scrollframe.hpp:177</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1uiobject__core__attributes_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1uiobject__core__attributes.html">lxgui::gui::uiobject_core_attributes</a></div><div class="ttdoc">Struct holding all the core information about a uiobject necessary for its creation.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__attributes_8hpp_source.html#l00017">gui_uiobject_attributes.hpp:17</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a725ee8e11bcbf4920b68fd4725fc58b2"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a725ee8e11bcbf4920b68fd4725fc58b2">lxgui::gui::renderer::begin</a></div><div class="ttdeci">void begin(std::shared_ptr&lt; render_target &gt; pTarget=nullptr)</div><div class="ttdoc">Begins rendering on a particular render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00012">gui_renderer.cpp:12</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a2e277e291e0939a2101db8eca97a7056"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a2e277e291e0939a2101db8eca97a7056">lxgui::gui::scroll_frame::get_vertical_scroll_range</a></div><div class="ttdeci">float get_vertical_scroll_range() const</div><div class="ttdoc">Returns the maximum vertical offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00175">gui_scrollframe.cpp:175</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_acdd89487b9008392f9c7c8581afc7eaa"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#acdd89487b9008392f9c7c8581afc7eaa">lxgui::gui::scroll_frame::get_horizontal_scroll</a></div><div class="ttdeci">float get_horizontal_scroll() const</div><div class="ttdoc">Returns the horizontal offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00146">gui_scrollframe.cpp:146</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a416bf4823061e4868dca55c7a47aa0ad"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a416bf4823061e4868dca55c7a47aa0ad">lxgui::gui::scroll_frame::~scroll_frame</a></div><div class="ttdeci">~scroll_frame() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00020">gui_scrollframe.cpp:20</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a2f6032d8501c87ca7c4815c8edaec177"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a2f6032d8501c87ca7c4815c8edaec177">lxgui::gui::scroll_frame::fire_script</a></div><div class="ttdeci">void fire_script(const std::string &amp;sScriptName, const event_data &amp;mData=event_data{}) override</div><div class="ttdoc">Calls a script.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00043">gui_scrollframe.cpp:43</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_af4dc6cc0e4c8d7f32bede59da7861db3"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#af4dc6cc0e4c8d7f32bede59da7861db3">lxgui::gui::frame_renderer::notify_strata_needs_redraw</a></div><div class="ttdeci">virtual void notify_strata_needs_redraw(frame_strata mStrata)</div><div class="ttdoc">Tells this renderer that one of its widget requires redraw.</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00048">gui_framerenderer.cpp:48</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc">lxgui::gui::anchor_point::TOPLEFT</a></div><div class="ttdeci">@ TOPLEFT</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a8b2266d230a6e194a57f87169eee5e2e"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a8b2266d230a6e194a57f87169eee5e2e">lxgui::gui::frame::update</a></div><div class="ttdeci">void update(float fDelta) override</div><div class="ttdoc">Updates this widget's logic.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01757">gui_frame.cpp:1757</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a5facc4ce82f488ad44bd85afce86c3f1"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a5facc4ce82f488ad44bd85afce86c3f1">lxgui::gui::scroll_frame::pScrollChild_</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; pScrollChild_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00170">gui_scrollframe.hpp:170</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_afa3e9e8b46f22972d2cd7e576e39fbbc"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#afa3e9e8b46f22972d2cd7e576e39fbbc">lxgui::gui::frame::notify_scaling_factor_updated</a></div><div class="ttdeci">void notify_scaling_factor_updated() override</div><div class="ttdoc">Tells this widget that the global interface scaling factor has changed.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01674">gui_frame.cpp:1674</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a450a2337b596d16287ce9f67c8462f61"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a450a2337b596d16287ce9f67c8462f61">lxgui::gui::scroll_frame::mScrollRange_</a></div><div class="ttdeci">vector2f mScrollRange_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00168">gui_scrollframe.hpp:168</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_ab51d4b9a8d8ad883c36a66f5e88f02b1"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#ab51d4b9a8d8ad883c36a66f5e88f02b1">lxgui::gui::scroll_frame::render_scroll_strata_list_</a></div><div class="ttdeci">void render_scroll_strata_list_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00273">gui_scrollframe.cpp:273</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1anchor__data_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1anchor__data.html">lxgui::gui::anchor_data</a></div><div class="ttdoc">Stores a position for a UI widget.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00043">gui_anchor.hpp:43</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_ac54738ae289e05bc49518e74fc718bda"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#ac54738ae289e05bc49518e74fc718bda">lxgui::gui::frame::remove_child</a></div><div class="ttdeci">utils::owner_ptr&lt; frame &gt; remove_child(const utils::observer_ptr&lt; frame &gt; &amp;pChild)</div><div class="ttdoc">Removes a frame from this frame's children.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00724">gui_frame.cpp:724</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_ad9100f8569261b45652550a61d601fa4"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#ad9100f8569261b45652550a61d601fa4">lxgui::gui::scroll_frame::bRedrawScrollRenderTarget_</a></div><div class="ttdeci">bool bRedrawScrollRenderTarget_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00173">gui_scrollframe.hpp:173</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_ad7cc0b56cf659e7927a3a44eba48515c"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#ad7cc0b56cf659e7927a3a44eba48515c">lxgui::gui::renderer::set_view</a></div><div class="ttdeci">void set_view(const matrix4f &amp;mViewMatrix)</div><div class="ttdoc">Sets the view matrix to use when rendering (viewport).</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00057">gui_renderer.cpp:57</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a5cf2b514a4541f2764c08f8dbdcfe86e"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame::notify_scaling_factor_updated</a></div><div class="ttdeci">void notify_scaling_factor_updated() override</div><div class="ttdoc">Tells this widget that the global interface scaling factor has changed.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00239">gui_scrollframe.cpp:239</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae5880ee33c39fd4d2e6c5cdd5576854c"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">lxgui::gui::uiobject::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns this widget's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00600">gui_uiobject.hpp:600</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_adcc50f9c7ce81ce78d20d14d31191636"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#adcc50f9c7ce81ce78d20d14d31191636">lxgui::gui::scroll_frame::get_target_dimensions</a></div><div class="ttdeci">vector2f get_target_dimensions() const override</div><div class="ttdoc">Returns the width and height of of this renderer's main render target (e.g., screen).</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00331">gui_scrollframe.cpp:331</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a4226c9bd2cb4337d48862e145cd7eab5"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a4226c9bd2cb4337d48862e145cd7eab5">lxgui::gui::frame::find_topmost_frame</a></div><div class="ttdeci">virtual utils::observer_ptr&lt; const frame &gt; find_topmost_frame(const std::function&lt; bool(const frame &amp;)&gt; &amp;mPredicate) const</div><div class="ttdoc">Find the topmost frame matching the provided predicate.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00920">gui_frame.cpp:920</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_af7c730d3c0cb2479a5acd160af617a60"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60">lxgui::gui::scroll_frame::bUpdateScrollRange_</a></div><div class="ttdeci">bool bUpdateScrollRange_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00174">gui_scrollframe.hpp:174</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_aa64da15011e34d6ed20ab7515efa1820"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#aa64da15011e34d6ed20ab7515efa1820">lxgui::gui::frame::add_child</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; add_child(utils::owner_ptr&lt; frame &gt; pChild)</div><div class="ttdoc">Adds a frame to this frame's children.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00686">gui_frame.cpp:686</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_ab0dee40803be4da57023f408aa5206d4"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#ab0dee40803be4da57023f408aa5206d4">lxgui::gui::frame_renderer::notify_rendered_frame</a></div><div class="ttdeci">virtual void notify_rendered_frame(const utils::observer_ptr&lt; frame &gt; &amp;pFrame, bool bRendered)</div><div class="ttdoc">Tells this renderer that it should (or not) render another frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00053">gui_framerenderer.cpp:53</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a5c11de52e116dee9dc1e51f2a8fa1587"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lxgui::gui::uiobject::lType_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; lType_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00704">gui_uiobject.hpp:704</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1uiobject__core__attributes_html_ad0f62c781b348989508b528c963407c5"><div class="ttname"><a href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#ad0f62c781b348989508b528c963407c5">lxgui::gui::uiobject_core_attributes::sObjectType</a></div><div class="ttdeci">std::string sObjectType</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__attributes_8hpp_source.html#l00019">gui_uiobject_attributes.hpp:19</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a6be1da013f102ae7034fdd96c44bbf41"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a6be1da013f102ae7034fdd96c44bbf41">lxgui::gui::frame_renderer::find_topmost_frame</a></div><div class="ttdeci">utils::observer_ptr&lt; const frame &gt; find_topmost_frame(const std::function&lt; bool(const frame &amp;)&gt; &amp;mPredicate) const</div><div class="ttdoc">Find the top-most frame matching the provided predicate.</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00123">gui_framerenderer.cpp:123</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a2362e07324d105010938dba60feed937"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a2362e07324d105010938dba60feed937">lxgui::gui::uiobject::create_glue_</a></div><div class="ttdeci">void create_glue_(T *pSelf)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__tpl_8hpp_source.html#l00155">gui_uiobject_tpl.hpp:155</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1utils_html_a9b701a0588e6924943ea55e0620732b8"><div class="ttname"><a href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">lxgui::utils::owner_ptr</a></div><div class="ttdeci">oup::observable_sealed_ptr&lt; T &gt; owner_ptr</div><div class="ttdef"><b>Definition:</b> <a href="utils__observer_8hpp_source.html#l00011">utils_observer.hpp:11</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1uiobject__core__attributes_html_a01751a9c84083d64bbfb8718988156c7"><div class="ttname"><a href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#a01751a9c84083d64bbfb8718988156c7">lxgui::gui::uiobject_core_attributes::sName</a></div><div class="ttdeci">std::string sName</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__attributes_8hpp_source.html#l00020">gui_uiobject_attributes.hpp:20</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a24d0b9992ff8a8807d93954da762040e"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a24d0b9992ff8a8807d93954da762040e">lxgui::gui::scroll_frame::CLASS_NAME</a></div><div class="ttdeci">static constexpr const char * CLASS_NAME</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00156">gui_scrollframe.hpp:156</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a49679249262388daecd33304f8a8bf26"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a49679249262388daecd33304f8a8bf26">lxgui::gui::frame::copy_from</a></div><div class="ttdeci">void copy_from(const uiobject &amp;mObj) override</div><div class="ttdoc">Copies an uiobject's parameters into this frame (inheritance).</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00229">gui_frame.cpp:229</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00186">gui_vector2.hpp:186</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a72732260b45da9c02af76ca25302b7eb"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a72732260b45da9c02af76ca25302b7eb">lxgui::gui::scroll_frame::rebuild_scroll_render_target_</a></div><div class="ttdeci">void rebuild_scroll_render_target_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00246">gui_scrollframe.cpp:246</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_abf547230ed547173cbc8113259423839"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#abf547230ed547173cbc8113259423839">lxgui::gui::scroll_frame::copy_from</a></div><div class="ttdeci">void copy_from(const uiobject &amp;mObj) override</div><div class="ttdoc">Copies an uiobject's parameters into this scroll_frame (inheritance).</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00057">gui_scrollframe.cpp:57</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_aaa6fd7c729b77750632ef272f53e9140"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#aaa6fd7c729b77750632ef272f53e9140">lxgui::gui::frame::create_child</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; create_child(uiobject_core_attributes mAttr)</div><div class="ttdoc">Creates a new frame as child of this frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00670">gui_frame.cpp:670</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a1cba7002380021fe1b92a7a24c9a2312"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a1cba7002380021fe1b92a7a24c9a2312">lxgui::gui::scroll_frame::get_scroll_child</a></div><div class="ttdeci">const utils::observer_ptr&lt; frame &gt; &amp; get_scroll_child()</div><div class="ttdoc">Returns this scroll_frame's scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00084">gui_scrollframe.hpp:84</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_acc32f5ba19e24106ef151f25c6cc3fb5"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#acc32f5ba19e24106ef151f25c6cc3fb5">lxgui::gui::scroll_frame::can_use_script</a></div><div class="ttdeci">bool can_use_script(const std::string &amp;sScriptName) const override</div><div class="ttdoc">Returns 'true' if this scroll_frame can use a script.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00031">gui_scrollframe.cpp:31</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a8bc2ee39137e0f09091dc01b4443eb94"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a8bc2ee39137e0f09091dc01b4443eb94">lxgui::gui::frame_renderer::lStrataList_</a></div><div class="ttdeci">std::array&lt; strata, 8 &gt; lStrataList_</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8hpp_source.html#l00108">gui_framerenderer.hpp:108</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a7a1637f091f51905bfd0a5be05c47ff3"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a7a1637f091f51905bfd0a5be05c47ff3">lxgui::gui::uiobject::is_loaded</a></div><div class="ttdeci">bool is_loaded() const</div><div class="ttdoc">Checks if this widget has been fully loaded.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00907">gui_uiobject.cpp:907</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_ae21912729f67bdc72c7e8c8c67189212"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#ae21912729f67bdc72c7e8c8c67189212">lxgui::gui::scroll_frame::bRebuildScrollRenderTarget_</a></div><div class="ttdeci">bool bRebuildScrollRenderTarget_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00172">gui_scrollframe.hpp:172</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a4c6a0991a2cc47da4c8a4eea813a231e"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e">lxgui::gui::renderer::end</a></div><div class="ttdeci">void end()</div><div class="ttdoc">Ends rendering.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00046">gui_renderer.cpp:46</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1matrix4f_html_af1aa37b85b0d528eabc4b1877a37f0dd"><div class="ttname"><a href="structlxgui_1_1gui_1_1matrix4f.html#af1aa37b85b0d528eabc4b1877a37f0dd">lxgui::gui::matrix4f::view</a></div><div class="ttdeci">static matrix4f view(const vector2f &amp;window) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="gui__matrix4_8cpp_source.html#l00078">gui_matrix4.cpp:78</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a60f63805eb0c013e98b5a91241862893"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a60f63805eb0c013e98b5a91241862893">lxgui::gui::uiobject::get_apparent_dimensions</a></div><div class="ttdeci">vector2f get_apparent_dimensions() const</div><div class="ttdoc">Returns this widget's appearent width and height (in pixels).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00320">gui_uiobject.cpp:320</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_ac19f5eabb4adfd17e727e47f4e0761bf"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">lxgui::gui::scroll_frame::update</a></div><div class="ttdeci">void update(float fDelta) override</div><div class="ttdoc">Updates this widget's logic.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00180">gui_scrollframe.cpp:180</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1matrix4f_html_ad02c391364323f2612cd692fdacadcf7"><div class="ttname"><a href="structlxgui_1_1gui_1_1matrix4f.html#ad02c391364323f2612cd692fdacadcf7">lxgui::gui::matrix4f::translation</a></div><div class="ttdeci">static matrix4f translation(const vector2f &amp;dx) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="gui__matrix4_8cpp_source.html#l00034">gui_matrix4.cpp:34</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a6bdb337dfca38d6ec0d311c2c98dea98"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a6bdb337dfca38d6ec0d311c2c98dea98">lxgui::gui::scroll_frame::set_vertical_scroll</a></div><div class="ttdeci">void set_vertical_scroll(float fVerticalScroll)</div><div class="ttdoc">Sets the vertical offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00156">gui_scrollframe.cpp:156</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a3d8ee187ee3c4de4d43208ecd3d6fe75"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">lxgui::gui::color::EMPTY</a></div><div class="ttdeci">static const color EMPTY</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00047">gui_color.hpp:47</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_aa56c14fb3a6449395cee79832132cef0"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#aa56c14fb3a6449395cee79832132cef0">lxgui::gui::frame::notify_renderer_need_redraw</a></div><div class="ttdeci">void notify_renderer_need_redraw() override</div><div class="ttdoc">Notifies the renderer of this widget that it needs to be redrawn.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01666">gui_frame.cpp:1666</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_ac037bb55646661432417761d9f096bcf"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf">lxgui::gui::vector2::x</a></div><div class="ttdeci">T x</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00171">gui_vector2.hpp:171</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a59f35c565e0f28f4fa5a2849bd1186e1"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a59f35c565e0f28f4fa5a2849bd1186e1">lxgui::gui::frame::lQueuedEventList_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; lQueuedEventList_</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l01289">gui_frame.hpp:1289</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a997f972fde210c1c8c8a28a998047d80"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a997f972fde210c1c8c8a28a998047d80">lxgui::gui::frame::can_use_script</a></div><div class="ttdeci">virtual bool can_use_script(const std::string &amp;sScriptName) const</div><div class="ttdoc">Returns 'true' if this frame can use a script.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00204">gui_frame.cpp:204</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a5f3f2246208ef88a618ced2b3a34f41f"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">lxgui::gui::observer_from</a></div><div class="ttdeci">utils::observer_ptr&lt; ObjectType &gt; observer_from(ObjectType *pSelf)</div><div class="ttdoc">Obtain an observer pointer from a raw pointer (typically 'this')</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00801">gui_uiobject.hpp:801</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a3c85265c0b14c9bfecbcdcc28730ff82"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">lxgui::gui::manager::get_interface_scaling_factor</a></div><div class="ttdeci">float get_interface_scaling_factor() const</div><div class="ttdoc">Returns the current UI scaling factor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l00084">gui_manager.cpp:84</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a5a10cd6fd753be2cfb349c8dd322e321"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a5a10cd6fd753be2cfb349c8dd322e321">lxgui::gui::scroll_frame::notify_strata_needs_redraw</a></div><div class="ttdeci">void notify_strata_needs_redraw(frame_strata mStrata) override</div><div class="ttdoc">Tells this renderer that one of its widget requires redraw.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00308">gui_scrollframe.cpp:308</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1alive__checker_html_a041f72f8be0f1a2dac4cfa43df906ded"><div class="ttname"><a href="classlxgui_1_1gui_1_1alive__checker.html#a041f72f8be0f1a2dac4cfa43df906ded">lxgui::gui::alive_checker::is_alive</a></div><div class="ttdeci">bool is_alive() const</div><div class="ttdoc">Check if the wrapper widget is still alive.</div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8hpp_source.html#l00039">gui_alive_checker.hpp:39</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_ac71ba9991745f6d4112f64c353829bfa"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#ac71ba9991745f6d4112f64c353829bfa">lxgui::gui::frame_renderer::clear_strata_list_</a></div><div class="ttdeci">void clear_strata_list_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00215">gui_framerenderer.cpp:215</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html">lxgui::gui::renderer</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8hpp_source.html#l00027">gui_renderer.hpp:27</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_abd742cf390a78ea4376af9c372b116c1"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#abd742cf390a78ea4376af9c372b116c1">lxgui::gui::scroll_frame::set_horizontal_scroll</a></div><div class="ttdeci">void set_horizontal_scroll(float fHorizontalScroll)</div><div class="ttdoc">Sets the horizontal offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00132">gui_scrollframe.cpp:132</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00042">gui_manager.hpp:42</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1uiobject__core__attributes_html_a83c6d88fd6285f36b6ee6997efec9e38"><div class="ttname"><a href="structlxgui_1_1gui_1_1uiobject__core__attributes.html#a83c6d88fd6285f36b6ee6997efec9e38">lxgui::gui::uiobject_core_attributes::lInheritance</a></div><div class="ttdeci">std::vector&lt; utils::observer_ptr&lt; const uiobject &gt; &gt; lInheritance</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__attributes_8hpp_source.html#l00025">gui_uiobject_attributes.hpp:25</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a37fe638e0ce4bbbeb6445a9a47edeca9"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a37fe638e0ce4bbbeb6445a9a47edeca9">lxgui::gui::scroll_frame::pScrollRenderTarget_</a></div><div class="ttdeci">std::shared_ptr&lt; render_target &gt; pScrollRenderTarget_</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00175">gui_scrollframe.hpp:175</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a70a9a9e3dbc202e5c4bfc5d5207aaf94"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a70a9a9e3dbc202e5c4bfc5d5207aaf94">lxgui::gui::uiobject::get_borders</a></div><div class="ttdeci">const bounds2f &amp; get_borders() const</div><div class="ttdoc">Returns this widget's borders.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00435">gui_uiobject.cpp:435</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a6f62faad68736da3e6df7e8d92c293a6"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">lxgui::gui::frame_strata</a></div><div class="ttdeci">frame_strata</div><div class="ttdef"><b>Definition:</b> <a href="gui__strata_8hpp_source.html#l00019">gui_strata.hpp:19</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1alive__checker_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1alive__checker.html">lxgui::gui::alive_checker</a></div><div class="ttdoc">Utility class for safe checking of widget validity.</div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8hpp_source.html#l00023">gui_alive_checker.hpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a9c26d2b13ed963fe72821a427419d108"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a9c26d2b13ed963fe72821a427419d108">lxgui::gui::frame::fire_script</a></div><div class="ttdeci">virtual void fire_script(const std::string &amp;sScriptName, const event_data &amp;mData=event_data{})</div><div class="ttdoc">Calls a script.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01212">gui_frame.cpp:1212</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aed893c64ee1933f9a42bddc7e42a5601"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aed893c64ee1933f9a42bddc7e42a5601">lxgui::gui::scroll_frame::get_vertical_scroll</a></div><div class="ttdeci">float get_vertical_scroll() const</div><div class="ttdoc">Returns the vertical offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00170">gui_scrollframe.cpp:170</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aceea768447fe3b192e8388cb6edb7f3c"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aceea768447fe3b192e8388cb6edb7f3c">lxgui::gui::scroll_frame::find_topmost_frame</a></div><div class="ttdeci">utils::observer_ptr&lt; const frame &gt; find_topmost_frame(const std::function&lt; bool(const frame &amp;)&gt; &amp;mPredicate) const override</div><div class="ttdoc">Find the topmost frame matching the provided predicate.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00294">gui_scrollframe.cpp:294</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a9b5e0c0d922e137ab398edc8c661be33"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a9b5e0c0d922e137ab398edc8c661be33">lxgui::gui::manager::get_renderer</a></div><div class="ttdeci">const renderer &amp; get_renderer() const</div><div class="ttdoc">Returns the renderer implementation.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00199">gui_manager.hpp:199</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a88b958d9551170672a28ea6fab080cfc"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a88b958d9551170672a28ea6fab080cfc">lxgui::gui::frame_renderer::render_strata_</a></div><div class="ttdeci">void render_strata_(const strata &amp;mStrata) const</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00204">gui_framerenderer.cpp:204</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aef8739f54922b0cdbf6b4d460bd34a9f"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aef8739f54922b0cdbf6b4d460bd34a9f">lxgui::gui::scroll_frame::create_glue</a></div><div class="ttdeci">void create_glue() override</div><div class="ttdoc">Returns this widget's Lua glue.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00316">gui_scrollframe.cpp:316</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a0c2cba6197570349be19187871420c85a9b2e9d96ab6088c37a04a8f5a9a0ea80"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a9b2e9d96ab6088c37a04a8f5a9a0ea80">lxgui::gui::layer_type::ARTWORK</a></div><div class="ttdeci">@ ARTWORK</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></div><div class="ttdoc">The base class of all elements in the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00154">gui_uiobject.hpp:154</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a398a283fff0489eed8930ec0c14c68c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a398a283fff0489eed8930ec0c14c68c6">lxgui::gui::scroll_frame::get_horizontal_scroll_range</a></div><div class="ttdeci">float get_horizontal_scroll_range() const</div><div class="ttdoc">Returns the maximum horizontal offset of the scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00151">gui_scrollframe.cpp:151</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_a31cd409ce15d4167a2c252860498eeb2"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">lxgui::gui::vector2::y</a></div><div class="ttdeci">T y</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00171">gui_vector2.hpp:171</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a4029a09f3c3b57c27d605eae4057c5b1"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">lxgui::gui::vector2ui</a></div><div class="ttdeci">vector2&lt; std::size_t &gt; vector2ui</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00189">gui_vector2.hpp:189</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aaee794c78eeac36059e70b4500d03ea2"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aaee794c78eeac36059e70b4500d03ea2">lxgui::gui::scroll_frame::notify_rendered_frame</a></div><div class="ttdeci">void notify_rendered_frame(const utils::observer_ptr&lt; frame &gt; &amp;pFrame, bool bRendered) override</div><div class="ttdoc">Tells this renderer that it should (or not) render another frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00321">gui_scrollframe.cpp:321</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a9495ea62744d78b7f5d8a522c32eef97"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a9495ea62744d78b7f5d8a522c32eef97">lxgui::gui::uiobject::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns this widget's name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00153">gui_uiobject.cpp:153</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a85b34049a4de7ccb6fba32efef7a6b1e"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">lxgui::gui::uiobject::is_virtual</a></div><div class="ttdeci">bool is_virtual() const</div><div class="ttdoc">Checks if this uiobject is virtual.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00608">gui_uiobject.cpp:608</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__data_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__data.html">lxgui::gui::event_data</a></div><div class="ttdoc">Stores a variable number of arguments for an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8hpp_source.html#l00015">gui_event.hpp:15</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

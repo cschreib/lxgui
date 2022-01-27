@@ -1,10 +1,24 @@
 var searchData=
 [
-  ['input_2ecpp_65',['input.cpp',['../input_8cpp.html',1,'']]],
-  ['input_5fsource_2ecpp_66',['input_source.cpp',['../input__source_8cpp.html',1,'']]],
-  ['is_5fcharacter_67',['is_character',['../namespacelxgui_1_1gui_1_1parser.html#a45c071397ab2a1664619cf83ba3493a5',1,'lxgui::gui::parser::is_character(const item &amp;mItem)'],['../namespacelxgui_1_1gui_1_1parser.html#a82f7c444fb1f8f56355b38ce5c3adf3f',1,'lxgui::gui::parser::is_character(const item &amp;mItem, char32_t uiChar)']]],
-  ['is_5fformat_68',['is_format',['../namespacelxgui_1_1gui_1_1parser.html#a8104066e9a1331f8b04ed5d18ac6fea4',1,'lxgui::gui::parser']]],
-  ['is_5fwhitespace_69',['is_whitespace',['../namespacelxgui_1_1gui_1_1parser.html#a4abc075fa4de30106ba318826f6cbb1a',1,'lxgui::gui::parser']]],
-  ['is_5fword_70',['is_word',['../namespacelxgui_1_1gui_1_1parser.html#ab17b4653cc8633e73ca7323d2df96aff',1,'lxgui::gui::parser']]],
-  ['item_71',['item',['../namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4',1,'lxgui::gui::parser']]]
+  ['h_512',['h',['../structlxgui_1_1gui_1_1color_1_1hls.html#aef540a2343cc0e53b4ef325263f1dae0',1,'lxgui::gui::color::hls::h()'],['../structlxgui_1_1gui_1_1color_1_1hsv.html#a374912b6c0ed3c5df175d32cce4009de',1,'lxgui::gui::color::hsv::h()']]],
+  ['h2_5fto_5frgb_513',['h2_to_rgb',['../namespacelxgui_1_1gui.html#a673f98202e87b953f2941b7f2af532d7',1,'lxgui::gui']]],
+  ['has_5fattribute_514',['has_attribute',['../classlxgui_1_1gui_1_1layout__node.html#a929ebb6668f9163a2562626f8e0cc30e',1,'lxgui::gui::layout_node']]],
+  ['has_5fchild_515',['has_child',['../classlxgui_1_1gui_1_1layout__node.html#a0a65665de0139fafd5e508340648a82c',1,'lxgui::gui::layout_node']]],
+  ['has_5ffocus_516',['has_focus',['../classlxgui_1_1gui_1_1frame.html#abf70f639902531851b778eb554b9dce4',1,'lxgui::gui::frame']]],
+  ['has_5fgradient_517',['has_gradient',['../classlxgui_1_1gui_1_1texture.html#af7de5da833df171651c1ef6a0d3d8cef',1,'lxgui::gui::texture']]],
+  ['has_5fscript_518',['has_script',['../classlxgui_1_1gui_1_1frame.html#a4c79e45d962ca5463d6883ac8174bd2f',1,'lxgui::gui::frame']]],
+  ['has_5fshadow_519',['has_shadow',['../classlxgui_1_1gui_1_1font__string.html#a50a302c14480be0ed0856f6258514c1e',1,'lxgui::gui::font_string']]],
+  ['has_5fsolid_5fcolor_520',['has_solid_color',['../classlxgui_1_1gui_1_1texture.html#a6ad51306b18d0b971c58dde2fbcdb0d8',1,'lxgui::gui::texture']]],
+  ['has_5fstrata_5flist_5fchanged_5f_521',['has_strata_list_changed_',['../classlxgui_1_1gui_1_1frame__renderer.html#a7a071267901b73cb56ccad565aaf5b51',1,'lxgui::gui::frame_renderer']]],
+  ['has_5ftexture_5ffile_522',['has_texture_file',['../classlxgui_1_1gui_1_1texture.html#ae1728654b4b4d08697dfe44d68e961d7',1,'lxgui::gui::texture']]],
+  ['height_523',['height',['../structlxgui_1_1gui_1_1bounds2.html#a8de5599ca8d98b3e84f25ea044341b23',1,'lxgui::gui::bounds2']]],
+  ['hide_524',['hide',['../classlxgui_1_1gui_1_1frame.html#ab1c83c9960671fec365a2ab31659947b',1,'lxgui::gui::frame::hide()'],['../classlxgui_1_1gui_1_1layered__region.html#ae239f110c864bab9470644d9670c4224',1,'lxgui::gui::layered_region::hide()'],['../classlxgui_1_1gui_1_1uiobject.html#a98e6af6fd9584177f5bdf8823a1432d9',1,'lxgui::gui::uiobject::hide()']]],
+  ['high_525',['HIGH',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ab89de3b4b81c4facfac906edf29aec8c',1,'lxgui::gui']]],
+  ['highlight_526',['highlight',['../classlxgui_1_1gui_1_1button.html#a8d16306d9176c5c7c7838f1390004ca1',1,'lxgui::gui::button::highlight()'],['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a57830ad692fb15d7a396d61f7bd9ccc7',1,'lxgui::gui::HIGHLIGHT()']]],
+  ['highlight_5ftext_527',['highlight_text',['../classlxgui_1_1gui_1_1edit__box.html#a56c7f9c4b6f60ef4a5860fbc183014eb',1,'lxgui::gui::edit_box']]],
+  ['hijack_5fsol_5ferror_5fline_528',['hijack_sol_error_line',['../namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7',1,'lxgui::gui']]],
+  ['hijack_5fsol_5ferror_5fmessage_529',['hijack_sol_error_message',['../namespacelxgui_1_1gui.html#a4d73d205bde24ec9ed3b292dbec60696',1,'lxgui::gui']]],
+  ['hls_530',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]],
+  ['horizontal_531',['HORIZONTAL',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::gradient::HORIZONTAL()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::slider::HORIZONTAL()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::status_bar::HORIZONTAL()']]],
+  ['hsv_532',['hsv',['../structlxgui_1_1gui_1_1color_1_1hsv.html',1,'lxgui::gui::color']]]
 ];

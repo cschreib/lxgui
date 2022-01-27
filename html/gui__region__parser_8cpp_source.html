@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_region_parser.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_region_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,31 +69,38 @@ $(function() {
 <div class="title">gui_region_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__region__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_region.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_region.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordtype">void</span> region::parse_layout(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#abc94233450883018d0c6a25acb188ed9">    7</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1region.html#abc94233450883018d0c6a25acb188ed9">region::parse_layout</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    parse_attributes_(mNode);</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    parse_size_node_(mNode);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    parse_anchor_node_(mNode);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1region.html#a73eca6bbcb0c562c82305cd7026cb7f2">parse_attributes_</a>(mNode);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a6b07893fddfcea26bc1b4d7ba791c58c">parse_size_node_</a>(mNode);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a89e4d4d1c1b0e23dae1ccc9312648b5f">parse_anchor_node_</a>(mNode);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;}</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> region::parse_attributes_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1region.html#a73eca6bbcb0c562c82305cd7026cb7f2">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1region.html#a73eca6bbcb0c562c82305cd7026cb7f2">region::parse_attributes_</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">if</span> (mNode.get_attribute_value_or&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="keyword">false</span>))</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        set_all_points(<span class="stringliteral">&quot;$parent&quot;</span>);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">if</span> (mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a0ae4ef1ca9f5856c01fbdd1d79d514a2">get_attribute_value_or</a>&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="keyword">false</span>))</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a124ec43394053c3c32b633dd70c9458e">set_all_points</a>(<span class="stringliteral">&quot;$parent&quot;</span>);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a0ae4ef1ca9f5856c01fbdd1d79d514a2"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a0ae4ef1ca9f5856c01fbdd1d79d514a2">lxgui::gui::layout_node::get_attribute_value_or</a></div><div class="ttdeci">std::string_view get_attribute_value_or(std::string_view sName, std::string_view sFallback) const noexcept</div><div class="ttdoc">Returns the value of the attribute with the provided name, or a default value if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00371">gui_layoutnode.hpp:371</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a124ec43394053c3c32b633dd70c9458e"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a124ec43394053c3c32b633dd70c9458e">lxgui::gui::uiobject::set_all_points</a></div><div class="ttdeci">void set_all_points(const utils::observer_ptr&lt; uiobject &gt; &amp;pObj)</div><div class="ttdoc">Adjusts this widgets anchors to fit the provided widget.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00492">gui_uiobject.cpp:492</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_abc94233450883018d0c6a25acb188ed9"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#abc94233450883018d0c6a25acb188ed9">lxgui::gui::region::parse_layout</a></div><div class="ttdeci">void parse_layout(const layout_node &amp;mNode) override</div><div class="ttdoc">Parses data from a layout_node.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region__parser_8cpp_source.html#l00007">gui_region_parser.cpp:7</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a6b07893fddfcea26bc1b4d7ba791c58c"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a6b07893fddfcea26bc1b4d7ba791c58c">lxgui::gui::uiobject::parse_size_node_</a></div><div class="ttdeci">virtual void parse_size_node_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00077">gui_uiobject_parser.cpp:77</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a73eca6bbcb0c562c82305cd7026cb7f2"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a73eca6bbcb0c562c82305cd7026cb7f2">lxgui::gui::region::parse_attributes_</a></div><div class="ttdeci">virtual void parse_attributes_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__region__parser_8cpp_source.html#l00014">gui_region_parser.cpp:14</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html">lxgui::gui::layout_node</a></div><div class="ttdoc">An node in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00188">gui_layoutnode.hpp:188</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a89e4d4d1c1b0e23dae1ccc9312648b5f"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a89e4d4d1c1b0e23dae1ccc9312648b5f">lxgui::gui::uiobject::parse_anchor_node_</a></div><div class="ttdeci">virtual void parse_anchor_node_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00113">gui_uiobject_parser.cpp:113</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

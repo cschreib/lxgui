@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_texture_parser.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_texture_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <div class="title">gui_texture_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__texture__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_texture.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_texture.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
@@ -77,34 +77,34 @@ $(function() {
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> texture::parse_layout(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#ae5b4f9d9206dcb6b461f0285ce4ca45c">    9</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#ae5b4f9d9206dcb6b461f0285ce4ca45c">texture::parse_layout</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    layered_region::parse_layout(mNode);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a26cf1078fa68bd8f56a458e37f3f5871">layered_region::parse_layout</a>(mNode);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    parse_tex_coords_node_(mNode);</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pColorNode = mNode.try_get_child(<span class="stringliteral">&quot;Color&quot;</span>))</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        set_solid_color(parse_color_node_(*pColorNode));</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>* pColorNode = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">try_get_child</a>(<span class="stringliteral">&quot;Color&quot;</span>))</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1texture.html#a7e5f513c783b6c042466b674e82ab9ac">set_solid_color</a>(<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae254e1937c713eaeb34710800f8b7d20">parse_color_node_</a>(*pColorNode));</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    parse_gradient_node_(mNode);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> texture::parse_attributes_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> texture::parse_attributes_(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    layered_region::parse_attributes_(mNode);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a7f6af5e4dff47cdec24c5d1deccbea93">layered_region::parse_attributes_</a>(mNode);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;filter&quot;</span>))</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        set_filter_mode(pAttr-&gt;get_value&lt;std::string&gt;());</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__attribute.html">layout_attribute</a>* pAttr = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#af6a2eeabbaab1750e0b89a70daacfaab">try_get_attribute</a>(<span class="stringliteral">&quot;filter&quot;</span>))</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1texture.html#ad3d2441869b58b352e3a93a878fa97dc">set_filter_mode</a>(pAttr-&gt;get_value&lt;std::string&gt;());</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;file&quot;</span>))</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        set_texture(get_manager().parse_file_name(pAttr-&gt;get_value&lt;std::string&gt;()));</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__attribute.html">layout_attribute</a>* pAttr = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#af6a2eeabbaab1750e0b89a70daacfaab">try_get_attribute</a>(<span class="stringliteral">&quot;file&quot;</span>))</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">set_texture</a>(pAttr-&gt;get_value&lt;std::string&gt;());</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> texture::parse_tex_coords_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pTexCoordsNode = mNode.try_get_child(<span class="stringliteral">&quot;TexCoords&quot;</span>))</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        set_tex_rect({</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1texture.html#a3834a010db41f0c47f104469cc05e78a">set_tex_rect</a>({</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;left&quot;</span>, 0.0f),</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;top&quot;</span>, 0.0f),</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;right&quot;</span>, 1.0f),</div>
@@ -119,15 +119,15 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        std::string sOrientation = pGradientNode-&gt;get_attribute_value_or&lt;std::string&gt;(</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="stringliteral">&quot;orientation&quot;</span>, <span class="stringliteral">&quot;HORIZONTAL&quot;</span>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        gradient::orientation mOrient;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0">gradient::orientation</a> mOrient;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;HORIZONTAL&quot;</span>)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            mOrient = gradient::orientation::HORIZONTAL;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            mOrient = <a class="code" href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e">gradient::orientation::HORIZONTAL</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;VERTICAL&quot;</span>)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            mOrient = gradient::orientation::VERTICAL;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            mOrient = <a class="code" href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a3e1b74251c07310c5f1b968145bf00dc">gradient::orientation::VERTICAL</a>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pGradientNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="stringliteral">&quot;Unknown gradient orientation for &quot;</span>+sName_+<span class="stringliteral">&quot; : \&quot;&quot;</span>+sOrientation+<span class="stringliteral">&quot;\&quot;. &quot;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pGradientNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="stringliteral">&quot;Unknown gradient orientation for &quot;</span>+<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a>+<span class="stringliteral">&quot; : \&quot;&quot;</span>+sOrientation+<span class="stringliteral">&quot;\&quot;. &quot;</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="stringliteral">&quot;No gradient will be shown for this texture.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
@@ -135,7 +135,7 @@ $(function() {
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">const</span> layout_node* pMinColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MinColor&quot;</span>);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span> (!pMinColorNode)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="stringliteral">&quot;Gradient requires MinColor child node.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
@@ -143,26 +143,43 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> layout_node* pMaxColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MaxColor&quot;</span>);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> (!pMaxColorNode)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="stringliteral">&quot;Gradient requires MaxColor child node.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        set_gradient(gradient(mOrient,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            parse_color_node_(*pMinColorNode),</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            parse_color_node_(*pMaxColorNode)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1texture.html#a18816eac0bb31a9633eb0a79b9d10d88">set_gradient</a>(gradient(mOrient,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae254e1937c713eaeb34710800f8b7d20">parse_color_node_</a>(*pMinColorNode),</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae254e1937c713eaeb34710800f8b7d20">parse_color_node_</a>(*pMaxColorNode)</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        ));</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a3834a010db41f0c47f104469cc05e78a"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a3834a010db41f0c47f104469cc05e78a">lxgui::gui::texture::set_tex_rect</a></div><div class="ttdeci">void set_tex_rect(const std::array&lt; float, 4 &gt; &amp;lTextureRect)</div><div class="ttdoc">Sets this texture's texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00336">gui_texture.cpp:336</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layered__region_html_a7f6af5e4dff47cdec24c5d1deccbea93"><div class="ttname"><a href="classlxgui_1_1gui_1_1layered__region.html#a7f6af5e4dff47cdec24c5d1deccbea93">lxgui::gui::layered_region::parse_attributes_</a></div><div class="ttdeci">void parse_attributes_(const layout_node &amp;mNode) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__layeredregion__parser_8cpp_source.html#l00019">gui_layeredregion_parser.cpp:19</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ad3d2441869b58b352e3a93a878fa97dc"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ad3d2441869b58b352e3a93a878fa97dc">lxgui::gui::texture::set_filter_mode</a></div><div class="ttdeci">void set_filter_mode(material::filter mFilter)</div><div class="ttdoc">Sets this texture's filtering mode.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00264">gui_texture.cpp:264</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aa46025a9b9a69379c85c6420ffb703b0a3e1b74251c07310c5f1b968145bf00dc"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a3e1b74251c07310c5f1b968145bf00dc">lxgui::gui::gradient::orientation::VERTICAL</a></div><div class="ttdeci">@ VERTICAL</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aa46025a9b9a69379c85c6420ffb703b0"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0">lxgui::gui::gradient::orientation</a></div><div class="ttdeci">orientation</div><div class="ttdef"><b>Definition:</b> <a href="gui__gradient_8hpp_source.html#l00016">gui_gradient.hpp:16</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_af6a2eeabbaab1750e0b89a70daacfaab"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#af6a2eeabbaab1750e0b89a70daacfaab">lxgui::gui::layout_node::try_get_attribute</a></div><div class="ttdeci">const layout_attribute * try_get_attribute(std::string_view sName) const noexcept</div><div class="ttdoc">Returns the attribute with the provided name, or null if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00302">gui_layoutnode.hpp:302</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ae5b4f9d9206dcb6b461f0285ce4ca45c"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ae5b4f9d9206dcb6b461f0285ce4ca45c">lxgui::gui::texture::parse_layout</a></div><div class="ttdeci">void parse_layout(const layout_node &amp;mNode) override</div><div class="ttdoc">Parses data from a layout_node.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture__parser_8cpp_source.html#l00009">gui_texture_parser.cpp:9</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a7e5f513c783b6c042466b674e82ab9ac"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a7e5f513c783b6c042466b674e82ab9ac">lxgui::gui::texture::set_solid_color</a></div><div class="ttdeci">void set_solid_color(const color &amp;mColor)</div><div class="ttdoc">Sets this texture's color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00473">gui_texture.cpp:473</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae254e1937c713eaeb34710800f8b7d20"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae254e1937c713eaeb34710800f8b7d20">lxgui::gui::uiobject::parse_color_node_</a></div><div class="ttdeci">color parse_color_node_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00013">gui_uiobject_parser.cpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layered__region_html_a26cf1078fa68bd8f56a458e37f3f5871"><div class="ttname"><a href="classlxgui_1_1gui_1_1layered__region.html#a26cf1078fa68bd8f56a458e37f3f5871">lxgui::gui::layered_region::parse_layout</a></div><div class="ttdeci">void parse_layout(const layout_node &amp;mNode) override</div><div class="ttdoc">Parses data from a layout_node.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layeredregion__parser_8cpp_source.html#l00011">gui_layeredregion_parser.cpp:11</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_adc4e43169d721038cf8f257515721593"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">lxgui::gui::uiobject::sName_</a></div><div class="ttdeci">std::string sName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00691">gui_uiobject.hpp:691</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a18816eac0bb31a9633eb0a79b9d10d88"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a18816eac0bb31a9633eb0a79b9d10d88">lxgui::gui::texture::set_gradient</a></div><div class="ttdeci">void set_gradient(const gradient &amp;mGradient)</div><div class="ttdoc">Adds a gradient effect to this texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00312">gui_texture.cpp:312</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ae35d367ac41dde4a7561a3218b9169fc"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">lxgui::gui::texture::set_texture</a></div><div class="ttdeci">void set_texture(const std::string &amp;sFile)</div><div class="ttdoc">Sets this texture's texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00399">gui_texture.cpp:399</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e">lxgui::gui::gradient::orientation::HORIZONTAL</a></div><div class="ttdeci">@ HORIZONTAL</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a45770e7d6aa845c750c96d07b545e268"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">lxgui::gui::layout_node::try_get_child</a></div><div class="ttdeci">const layout_node * try_get_child(std::string_view sName) const noexcept</div><div class="ttdoc">Returns the first child with a given name, or null if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00258">gui_layoutnode.hpp:258</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html">lxgui::gui::layout_node</a></div><div class="ttdoc">An node in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00188">gui_layoutnode.hpp:188</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__attribute_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__attribute.html">lxgui::gui::layout_attribute</a></div><div class="ttdoc">An attribute in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00022">gui_layoutnode.hpp:22</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

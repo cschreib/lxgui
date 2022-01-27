@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_checkbutton_parser.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_checkbutton_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <div class="title">gui_checkbutton_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__checkbutton__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_checkbutton.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_checkbutton.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_texture.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_parser_common.hpp&quot;</span></div>
@@ -77,42 +77,42 @@ $(function() {
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> check_button::parse_all_nodes_before_children_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1check__button.html#ae7ecbfbe9ac0fd58d1033c76f8b4d753">    9</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1check__button.html#ae7ecbfbe9ac0fd58d1033c76f8b4d753">check_button::parse_all_nodes_before_children_</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    button::parse_all_nodes_before_children_(mNode);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1button.html#a8f9d3178834647082df297a4946a3049">button::parse_all_nodes_before_children_</a>(mNode);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;CheckedTexture&quot;</span>))</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>* pSpecialNode = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">try_get_child</a>(<span class="stringliteral">&quot;CheckedTexture&quot;</span>))</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        std::string sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;ARTWORK&quot;</span>);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentCheckedTexture&quot;</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        mDefaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#ab16f162e292a047d3b8584d7f1e314e7">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentCheckedTexture&quot;</span>);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#aa0f7b804a19c429eb2fd7a72202f7420">parse_region_</a>(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            set_checked_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1check__button.html#ace00e36d49d0c7e0c05ca084096f2c1e">set_checked_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;DisabledCheckedTexture&quot;</span>))</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>* pSpecialNode = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">try_get_child</a>(<span class="stringliteral">&quot;DisabledCheckedTexture&quot;</span>))</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        std::string sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;ARTWORK&quot;</span>);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledCheckedTexture&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        mDefaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#ab16f162e292a047d3b8584d7f1e314e7">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledCheckedTexture&quot;</span>);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#aa0f7b804a19c429eb2fd7a72202f7420">parse_region_</a>(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            set_disabled_checked_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1check__button.html#ae1c3b027e23128b5e41e96d7f110cde1">set_disabled_checked_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
@@ -122,11 +122,19 @@ $(function() {
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a3b5e64716a88095f97dbe8b7d9fb72e6"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">lxgui::gui::warn_for_not_accessed_node</a></div><div class="ttdeci">void warn_for_not_accessed_node(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__parser__common_8cpp_source.html#l00063">gui_parser_common.cpp:63</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_ace00e36d49d0c7e0c05ca084096f2c1e"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#ace00e36d49d0c7e0c05ca084096f2c1e">lxgui::gui::check_button::set_checked_texture</a></div><div class="ttdeci">void set_checked_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's checked texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8cpp_source.html#l00140">gui_checkbutton.cpp:140</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a3b5e64716a88095f97dbe8b7d9fb72e6"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">lxgui::gui::warn_for_not_accessed_node</a></div><div class="ttdeci">void warn_for_not_accessed_node(const layout_node &amp;mNode)</div><div class="ttdoc">Emit a warning if this node (or any of its attributes/children) was not read.</div><div class="ttdef"><b>Definition:</b> <a href="gui__parser__common_8cpp_source.html#l00073">gui_parser_common.cpp:73</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a8f9d3178834647082df297a4946a3049"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a8f9d3178834647082df297a4946a3049">lxgui::gui::button::parse_all_nodes_before_children_</a></div><div class="ttdeci">void parse_all_nodes_before_children_(const layout_node &amp;mNode) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__button__parser_8cpp_source.html#l00024">gui_button_parser.cpp:24</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_ae1c3b027e23128b5e41e96d7f110cde1"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#ae1c3b027e23128b5e41e96d7f110cde1">lxgui::gui::check_button::set_disabled_checked_texture</a></div><div class="ttdeci">void set_disabled_checked_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's disabled checked texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8cpp_source.html#l00150">gui_checkbutton.cpp:150</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_ae7ecbfbe9ac0fd58d1033c76f8b4d753"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#ae7ecbfbe9ac0fd58d1033c76f8b4d753">lxgui::gui::check_button::parse_all_nodes_before_children_</a></div><div class="ttdeci">void parse_all_nodes_before_children_(const layout_node &amp;mNode) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton__parser_8cpp_source.html#l00009">gui_checkbutton_parser.cpp:9</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a45770e7d6aa845c750c96d07b545e268"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">lxgui::gui::layout_node::try_get_child</a></div><div class="ttdeci">const layout_node * try_get_child(std::string_view sName) const noexcept</div><div class="ttdoc">Returns the first child with a given name, or null if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00258">gui_layoutnode.hpp:258</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_ab16f162e292a047d3b8584d7f1e314e7"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#ab16f162e292a047d3b8584d7f1e314e7">lxgui::gui::layout_node::get_or_set_attribute_value</a></div><div class="ttdeci">std::string_view get_or_set_attribute_value(std::string_view sName, std::string_view sValue)</div><div class="ttdoc">Returns the value of the attribute with the provided name, or set it if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00427">gui_layoutnode.hpp:427</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_aa0f7b804a19c429eb2fd7a72202f7420"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#aa0f7b804a19c429eb2fd7a72202f7420">lxgui::gui::frame::parse_region_</a></div><div class="ttdeci">utils::observer_ptr&lt; layered_region &gt; parse_region_(const layout_node &amp;mNode, const std::string &amp;sLayer, const std::string &amp;sType)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00342">gui_frame_parser.cpp:342</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html">lxgui::gui::layout_node</a></div><div class="ttdoc">An node in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00188">gui_layoutnode.hpp:188</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

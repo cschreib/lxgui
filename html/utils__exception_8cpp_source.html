@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/utils_exception.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/utils_exception.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,36 +69,40 @@ $(function() {
 <div class="title">utils_exception.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="utils__exception_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/utils_exception.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/utils_exception.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1utils.html">    4</a></span>&#160;<span class="keyword">namespace </span>utils</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;exception::exception(<span class="keyword">const</span> std::string&amp; sMessage) : sMessage_(sMessage)</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#a07e5b1d1af7c5502d98e9ff99cc01130">    6</a></span>&#160;<a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception::exception</a>(<span class="keyword">const</span> std::string&amp; sMessage) : sMessage_(sMessage)</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;}</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;exception::exception(<span class="keyword">const</span> std::string&amp; sClassName, <span class="keyword">const</span> std::string&amp; sMessage) :</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#a306bc24e23f96f8f2ea97bb6b805f784">   10</a></span>&#160;<a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception::exception</a>(<span class="keyword">const</span> std::string&amp; sClassName, <span class="keyword">const</span> std::string&amp; sMessage) :</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    sMessage_(sClassName+<span class="stringliteral">&quot; : &quot;</span>+sMessage)</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">const</span> std::string&amp; exception::get_description()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#af84420510968f88b5dbafd23ccfeb205">   15</a></span>&#160;<span class="keyword">const</span> std::string&amp; <a class="code" href="classlxgui_1_1utils_1_1exception.html#af84420510968f88b5dbafd23ccfeb205">exception::get_description</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> sMessage_;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">sMessage_</a>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>* exception::what() <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#a87eb8a726f98d4e71aafb1154161d3e5">   20</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classlxgui_1_1utils_1_1exception.html#a87eb8a726f98d4e71aafb1154161d3e5">exception::what</a>() const noexcept</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> sMessage_.c_str();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">sMessage_</a>.c_str();</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a81da9cf74e44e0ca656eec3ba46a72b7"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">lxgui::utils::exception::sMessage_</a></div><div class="ttdeci">std::string sMessage_</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8hpp_source.html#l00050">utils_exception.hpp:50</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a87eb8a726f98d4e71aafb1154161d3e5"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a87eb8a726f98d4e71aafb1154161d3e5">lxgui::utils::exception::what</a></div><div class="ttdeci">const char * what() const noexcept override</div><div class="ttdoc">Override std::exception::what()</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8cpp_source.html#l00020">utils_exception.cpp:20</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a7f943854fa5d934d0308744a0ab9f69a"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">lxgui::utils::exception::exception</a></div><div class="ttdeci">exception()=default</div><div class="ttdoc">Default exception.</div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_af84420510968f88b5dbafd23ccfeb205"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#af84420510968f88b5dbafd23ccfeb205">lxgui::utils::exception::get_description</a></div><div class="ttdeci">const std::string &amp; get_description() const</div><div class="ttdoc">Returns the message of the exception.</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8cpp_source.html#l00015">utils_exception.cpp:15</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

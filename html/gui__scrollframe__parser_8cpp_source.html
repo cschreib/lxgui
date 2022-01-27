@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/src/gui_scrollframe_parser.cpp Source File</title>
+<title>lxgui: /home/runner/work/lxgui/lxgui/src/gui_scrollframe_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">gui
+   <div id="projectname">lxgui
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 <div class="title">gui_scrollframe_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__scrollframe__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_scrollframe.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_scrollframe.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
@@ -77,60 +77,71 @@ $(function() {
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> scroll_frame::parse_all_nodes_before_children_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aebbbbb8a2282589b6ce003e271af1214">    9</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aebbbbb8a2282589b6ce003e271af1214">scroll_frame::parse_all_nodes_before_children_</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    frame::parse_all_nodes_before_children_(mNode);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    parse_scroll_child_node_(mNode);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8fcdd780e5770ca837b7ae14710e07ea">frame::parse_all_nodes_before_children_</a>(mNode);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a575cf67213e8484970817af09344868a">parse_scroll_child_node_</a>(mNode);</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> scroll_frame::parse_scroll_child_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a575cf67213e8484970817af09344868a">   15</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a575cf67213e8484970817af09344868a">scroll_frame::parse_scroll_child_node_</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mNode)</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pScrollChildNode = mNode.try_get_child(<span class="stringliteral">&quot;ScrollChild&quot;</span>))</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>* pScrollChildNode = mNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">try_get_child</a>(<span class="stringliteral">&quot;ScrollChild&quot;</span>))</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">if</span> (pScrollChildNode-&gt;get_children_count() == 0)</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pScrollChildNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pScrollChildNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                <span class="stringliteral">&quot;ScrollChild node needs a child node.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">if</span> (pScrollChildNode-&gt;get_children_count() &gt; 1)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pScrollChildNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pScrollChildNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                <span class="stringliteral">&quot;ScrollChild node needs only one child node; other nodes will be ignored.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        }</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">const</span> layout_node&amp; mChildNode = pScrollChildNode-&gt;get_child(0);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">auto</span> pScrollChild = parse_child_(mChildNode, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; mChildNode = pScrollChildNode-&gt;<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#ae9e47f5d31c60ac0e66357a22ff777c7">get_child</a>(0);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">auto</span> pScrollChild = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a0a752dcb397e9b35db5eaa2750514adc">parse_child_</a>(mChildNode, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">if</span> (!pScrollChild)</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">const</span> layout_node* pAnchors = mChildNode.try_get_child(<span class="stringliteral">&quot;Anchors&quot;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>* pAnchors = mChildNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">try_get_child</a>(<span class="stringliteral">&quot;Anchors&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">if</span> (pAnchors)</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pAnchors-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pAnchors-&gt;<a class="code" href="classlxgui_1_1gui_1_1layout__attribute.html#a8d69495964e386fb8899f53d05b089c6">get_location</a>() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;Scroll child&#39;s anchors are ignored.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">if</span> (!mChildNode.has_child(<span class="stringliteral">&quot;Size&quot;</span>))</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">if</span> (!mChildNode.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a0a65665de0139fafd5e508340648a82c">has_child</a>(<span class="stringliteral">&quot;Size&quot;</span>))</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mChildNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mChildNode.<a class="code" href="classlxgui_1_1gui_1_1layout__attribute.html#a8d69495964e386fb8899f53d05b089c6">get_location</a>() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="stringliteral">&quot;Scroll child needs its size to be defined in a Size block.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        this-&gt;set_scroll_child(remove_child(pScrollChild));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        this-&gt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">set_scroll_child</a>(<a class="code" href="classlxgui_1_1gui_1_1frame.html#ac54738ae289e05bc49518e74fc718bda">remove_child</a>(pScrollChild));</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a8887a7182a01f80948935c233019c319"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">lxgui::gui::scroll_frame::set_scroll_child</a></div><div class="ttdeci">void set_scroll_child(utils::owner_ptr&lt; frame &gt; pFrame)</div><div class="ttdoc">Sets this scroll_frame's scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00086">gui_scrollframe.cpp:86</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a575cf67213e8484970817af09344868a"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a575cf67213e8484970817af09344868a">lxgui::gui::scroll_frame::parse_scroll_child_node_</a></div><div class="ttdeci">virtual void parse_scroll_child_node_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe__parser_8cpp_source.html#l00015">gui_scrollframe_parser.cpp:15</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_ac54738ae289e05bc49518e74fc718bda"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#ac54738ae289e05bc49518e74fc718bda">lxgui::gui::frame::remove_child</a></div><div class="ttdeci">utils::owner_ptr&lt; frame &gt; remove_child(const utils::observer_ptr&lt; frame &gt; &amp;pChild)</div><div class="ttdoc">Removes a frame from this frame's children.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00724">gui_frame.cpp:724</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a0a65665de0139fafd5e508340648a82c"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a0a65665de0139fafd5e508340648a82c">lxgui::gui::layout_node::has_child</a></div><div class="ttdeci">bool has_child(std::string_view sName) const noexcept</div><div class="ttdoc">Checks if at least one child exists with the given name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00290">gui_layoutnode.hpp:290</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a8fcdd780e5770ca837b7ae14710e07ea"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a8fcdd780e5770ca837b7ae14710e07ea">lxgui::gui::frame::parse_all_nodes_before_children_</a></div><div class="ttdeci">virtual void parse_all_nodes_before_children_(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00014">gui_frame_parser.cpp:14</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__attribute_html_a8d69495964e386fb8899f53d05b089c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__attribute.html#a8d69495964e386fb8899f53d05b089c6">lxgui::gui::layout_attribute::get_location</a></div><div class="ttdeci">std::string_view get_location() const noexcept</div><div class="ttdoc">Returns this node's location in the file as {file}:{line}.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00034">gui_layoutnode.hpp:34</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aebbbbb8a2282589b6ce003e271af1214"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aebbbbb8a2282589b6ce003e271af1214">lxgui::gui::scroll_frame::parse_all_nodes_before_children_</a></div><div class="ttdeci">void parse_all_nodes_before_children_(const layout_node &amp;mNode) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe__parser_8cpp_source.html#l00009">gui_scrollframe_parser.cpp:9</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_ae9e47f5d31c60ac0e66357a22ff777c7"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#ae9e47f5d31c60ac0e66357a22ff777c7">lxgui::gui::layout_node::get_child</a></div><div class="ttdeci">const layout_node &amp; get_child(std::size_t uiIndex) const noexcept</div><div class="ttdoc">Returns a specific child of this node, by index.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00214">gui_layoutnode.hpp:214</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a45770e7d6aa845c750c96d07b545e268"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a45770e7d6aa845c750c96d07b545e268">lxgui::gui::layout_node::try_get_child</a></div><div class="ttdeci">const layout_node * try_get_child(std::string_view sName) const noexcept</div><div class="ttdoc">Returns the first child with a given name, or null if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00258">gui_layoutnode.hpp:258</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html">lxgui::gui::layout_node</a></div><div class="ttdoc">An node in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layoutnode_8hpp_source.html#l00188">gui_layoutnode.hpp:188</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a0a752dcb397e9b35db5eaa2750514adc"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a0a752dcb397e9b35db5eaa2750514adc">lxgui::gui::frame::parse_child_</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; parse_child_(const layout_node &amp;mNode, const std::string &amp;sType)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00401">gui_frame_parser.cpp:401</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 27 2021 11:11:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
