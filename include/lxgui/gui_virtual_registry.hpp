@@ -14,7 +14,7 @@ namespace gui
 {
     class uiobject;
 
-    /// Manages the user interface
+    /// Keeps track of virtual UI objects and records their names for lookup.
     class virtual_registry : public registry
     {
     public :

@@ -204,13 +204,13 @@ namespace gui
                 const_cast<const uiroot*>(this)->get_focussed_frame());
         }
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns the manager instance associated with this uiroot.
+        /** \return The manager instance associated with this uiroot
         */
         manager& get_manager() { return mManager_; }
 
-        /// Returns this widget's manager.
-        /** \return This widget's manager
+        /// Returns the manager instance associated with this uiroot.
+        /** \return The manager instance associated with this uiroot
         */
         const manager& get_manager() const { return mManager_; }
 

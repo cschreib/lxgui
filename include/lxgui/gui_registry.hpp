@@ -14,7 +14,7 @@ namespace gui
 {
     class uiobject;
 
-    /// Manages the user interface
+    /// Keeps track of created UI objects and records their names for lookup.
     class registry
     {
     public :
