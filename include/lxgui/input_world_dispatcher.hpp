@@ -26,7 +26,7 @@ namespace input
     *
     *   These events will only trigger if not captured by any UI element,
     *   and are therefore suitable for "world" input (i.e., input for the game
-    *   elements rendered below the UI). These events are triggered by @ref gui::uiroot,
+    *   elements rendered below the UI). These events are triggered by @ref gui::root,
     *   which takes care of filtering global inputs from the @ref input::dispatcher.
     */
     class world_dispatcher : public signals

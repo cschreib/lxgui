@@ -8,8 +8,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_keybinder.hpp"
@@ -147,8 +147,8 @@ void manager::load_ui()
         return;
 
     pFactory_ = std::make_unique<factory>(*this);
-    pRoot_ = utils::make_owned<uiroot>(*this);
-    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
+    pRoot_ = utils::make_owned<root>(*this);
+    pVirtualRoot_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
 
     create_lua_();
     read_files_();

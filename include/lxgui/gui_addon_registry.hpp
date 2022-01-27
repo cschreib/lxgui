@@ -21,8 +21,8 @@ namespace gui
 {
     class localizer;
     class event_emitter;
-    class uiroot;
-    class virtual_uiroot;
+    class root;
+    class virtual_root;
 
     /// Loads and owns addons
     class addon_registry
@@ -37,7 +37,7 @@ namespace gui
         *   \param mVirtualRoot  The virtual root, to create new virtual frames into
         */
         addon_registry(sol::state& mLua, localizer& mLocalizer, event_emitter& mEventEmitter,
-            uiroot& mRoot, virtual_uiroot& mVirtualRoot);
+            root& mRoot, virtual_root& mVirtualRoot);
 
         addon_registry(const addon_registry&) = delete;
         addon_registry(addon_registry&&) = delete;
@@ -80,11 +80,11 @@ namespace gui
         template<typename T>
         using string_map = std::unordered_map<std::string,T>;
 
-        sol::state&     mLua_;
-        localizer&      mLocalizer_;
-        event_emitter&  mEventEmitter_;
-        uiroot&         mRoot_;
-        virtual_uiroot& mVirtualRoot_;
+        sol::state&    mLua_;
+        localizer&     mLocalizer_;
+        event_emitter& mEventEmitter_;
+        root&          mRoot_;
+        virtual_root&  mVirtualRoot_;
 
         const addon*                  pCurrentAddOn_ = nullptr;
         string_map<string_map<addon>> lAddOnList_;

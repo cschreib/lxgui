@@ -6,7 +6,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_factory.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_keybinder.hpp"

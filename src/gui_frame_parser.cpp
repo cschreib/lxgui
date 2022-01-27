@@ -5,8 +5,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_layoutnode.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 
 namespace lxgui {
 namespace gui

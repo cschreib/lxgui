@@ -4,8 +4,8 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_parser_common.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_layoutnode.hpp"
 
 #include <lxgui/utils_string.hpp>

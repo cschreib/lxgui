@@ -5,7 +5,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>

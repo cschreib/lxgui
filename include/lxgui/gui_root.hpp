@@ -33,8 +33,8 @@ namespace gui
     /** This class contains and owns all "root" frames (frames with no parents)
     *   and is responsible for their lifetime, update, and rendering.
     */
-    class uiroot: public frame_renderer, public frame_container,
-                  public utils::enable_observer_from_this<uiroot>
+    class root: public frame_renderer, public frame_container,
+                  public utils::enable_observer_from_this<root>
     {
     public :
 
@@ -42,15 +42,15 @@ namespace gui
         /** \param mBlock   The owner pointer control block
         *   \param mManager The GUI manager
         */
-        explicit uiroot(utils::control_block& mBlock, manager& mManager);
+        explicit root(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
-        ~uiroot() override;
+        ~root() override;
 
-        uiroot(const uiroot&) = delete;
-        uiroot(uiroot&&) = delete;
-        uiroot& operator = (const uiroot&) = delete;
-        uiroot& operator = (uiroot&&) = delete;
+        root(const root&) = delete;
+        root(root&&) = delete;
+        root& operator = (const root&) = delete;
+        root& operator = (root&&) = delete;
 
         /// Returns the width and height of this renderer's main render target (e.g., screen).
         /** \return The render target dimensions
@@ -80,7 +80,7 @@ namespace gui
         */
         bool is_caching_enabled() const;
 
-        /// updates this uiroot and its regions.
+        /// updates this root and its regions.
         /** \param fDelta The time elapsed since the last call
         */
         void update(float fDelta);
@@ -126,7 +126,7 @@ namespace gui
         *   \param pAnchor     The reference anchor
         *   \param mConstraint The constraint axis if any
         *   \param mApplyConstraintFunc Optional function to implement further constraints
-        *   \note Movement is handled by the uiroot, you don't need to do anything except
+        *   \note Movement is handled by the root, you don't need to do anything except
         *         calling stop_moving() when you are done.
         */
         void start_moving(
@@ -149,7 +149,7 @@ namespace gui
         /// Starts manually resizing a region with the mouse.
         /** \param pObj   The object to resize
         *   \param mPoint The sizing point
-        *   \note Resizing is handled by the uiroot, you don't need to do anything except
+        *   \note Resizing is handled by the root, you don't need to do anything except
         *         calling stop_sizing() when you are done.
         */
         void start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint);
@@ -201,16 +201,16 @@ namespace gui
         utils::observer_ptr<frame> get_focussed_frame()
         {
             return utils::const_pointer_cast<frame>(
-                const_cast<const uiroot*>(this)->get_focussed_frame());
+                const_cast<const root*>(this)->get_focussed_frame());
         }
 
-        /// Returns the manager instance associated with this uiroot.
-        /** \return The manager instance associated with this uiroot
+        /// Returns the manager instance associated with this root.
+        /** \return The manager instance associated with this root
         */
         manager& get_manager() { return mManager_; }
 
-        /// Returns the manager instance associated with this uiroot.
-        /** \return The manager instance associated with this uiroot
+        /// Returns the manager instance associated with this root.
+        /** \return The manager instance associated with this root
         */
         const manager& get_manager() const { return mManager_; }
 

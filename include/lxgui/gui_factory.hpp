@@ -32,7 +32,7 @@ namespace gui
     /// Handles the creation of new UI objects.
     /** \note This is a low-level class, which is only meant to be used
     *         internally by the GUI. To create your own UI objects, use
-    *         uiroot::create_root_frame(), frame::create_child(), or
+    *         root::create_root_frame(), frame::create_child(), or
     *         frame::create_region().
     */
     class factory

@@ -6,7 +6,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 

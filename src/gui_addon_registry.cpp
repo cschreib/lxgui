@@ -25,7 +25,7 @@ namespace gui
 {
 
 addon_registry::addon_registry(sol::state& mLua, localizer& mLocalizer,
-    event_emitter& mEventEmitter, uiroot& mRoot, virtual_uiroot& mVirtualRoot) :
+    event_emitter& mEventEmitter, root& mRoot, virtual_root& mVirtualRoot) :
     mLua_(mLua), mLocalizer_(mLocalizer), mEventEmitter_(mEventEmitter),
     mRoot_(mRoot), mVirtualRoot_(mVirtualRoot)
 {

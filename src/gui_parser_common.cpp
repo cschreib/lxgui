@@ -3,8 +3,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_frame.hpp"
 
 namespace lxgui {

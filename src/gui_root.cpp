@@ -1,4 +1,4 @@
-#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
@@ -18,9 +18,9 @@ namespace lxgui {
 namespace gui
 {
 
-uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
+root::root(utils::control_block& mBlock, manager& mManager) :
     frame_container(mManager.get_factory(), mObjectRegistry_, this),
-    utils::enable_observer_from_this<uiroot>(mBlock),
+    utils::enable_observer_from_this<root>(mBlock),
     mManager_(mManager), mRenderer_(mManager.get_renderer()),
     mWorldInputDispatcher_(mManager.get_world_input_dispatcher())
 {
@@ -76,18 +76,18 @@ uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
     }));
 }
 
-uiroot::~uiroot()
+root::~root()
 {
     // Must be done before we destroy the registry
     clear_frames_();
 }
 
-vector2f uiroot::get_target_dimensions() const
+vector2f root::get_target_dimensions() const
 {
     return vector2f(mScreenDimensions_)/get_manager().get_interface_scaling_factor();
 }
 
-void uiroot::render() const
+void root::render() const
 {
     mRenderer_.set_view(matrix4f::view(get_target_dimensions()));
 
@@ -104,7 +104,7 @@ void uiroot::render() const
     }
 }
 
-void uiroot::create_caching_render_target_()
+void root::create_caching_render_target_()
 {
     try
     {
@@ -115,7 +115,7 @@ void uiroot::create_caching_render_target_()
     }
     catch (const utils::exception& e)
     {
-        gui::out << gui::error << "gui::uiroot : "
+        gui::out << gui::error << "gui::root : "
             << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
 
         bEnableCaching_ = false;
@@ -136,7 +136,7 @@ void uiroot::create_caching_render_target_()
     mScreenQuad_.v[3].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void uiroot::create_strata_cache_render_target_(strata& mStrata)
+void root::create_strata_cache_render_target_(strata& mStrata)
 {
     if (mStrata.pRenderTarget)
         mStrata.pRenderTarget->set_dimensions(mScreenDimensions_);
@@ -157,7 +157,7 @@ void uiroot::create_strata_cache_render_target_(strata& mStrata)
     mStrata.mQuad.v[3].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void uiroot::update(float fDelta)
+void root::update(float fDelta)
 {
     // Update logics on root frames from parent to children.
     for (auto& mFrame : get_root_frames())
@@ -232,7 +232,7 @@ void uiroot::update(float fDelta)
         }
         catch (const utils::exception& e)
         {
-            gui::out << gui::error << "gui::uiroot : "
+            gui::out << gui::error << "gui::root : "
                 << "Unable to create render_target for strata :\n"
                 << e.get_description() << std::endl;
 
@@ -241,7 +241,7 @@ void uiroot::update(float fDelta)
     }
 }
 
-void uiroot::toggle_caching()
+void root::toggle_caching()
 {
     bEnableCaching_ = !bEnableCaching_;
 
@@ -252,18 +252,18 @@ void uiroot::toggle_caching()
     }
 }
 
-void uiroot::enable_caching(bool bEnable)
+void root::enable_caching(bool bEnable)
 {
     if (bEnableCaching_ != bEnable)
         toggle_caching();
 }
 
-bool uiroot::is_caching_enabled() const
+bool root::is_caching_enabled() const
 {
     return bEnableCaching_;
 }
 
-void uiroot::notify_scaling_factor_updated()
+void root::notify_scaling_factor_updated()
 {
     for (auto& mFrame : get_root_frames())
     {
@@ -280,7 +280,7 @@ void uiroot::notify_scaling_factor_updated()
     }
 }
 
-void uiroot::update_hovered_frame_()
+void root::update_hovered_frame_()
 {
     const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
@@ -294,12 +294,12 @@ void uiroot::update_hovered_frame_()
     set_hovered_frame_(std::move(pHoveredFrame), mMousePos);
 }
 
-void uiroot::notify_hovered_frame_dirty()
+void root::notify_hovered_frame_dirty()
 {
     update_hovered_frame_();
 }
 
-void uiroot::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
+void root::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
     constraint mConstraint, std::function<void()> mApplyConstraintFunc)
 {
     pSizedObject_ = nullptr;
@@ -329,18 +329,18 @@ void uiroot::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
     }
 }
 
-void uiroot::stop_moving()
+void root::stop_moving()
 {
     pMovedObject_ = nullptr;
     pMovedAnchor_ = nullptr;
 }
 
-bool uiroot::is_moving(const region& mObj) const
+bool root::is_moving(const region& mObj) const
 {
     return pMovedObject_.get() == &mObj;
 }
 
-void uiroot::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
+void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
 {
     pMovedObject_   = nullptr;
     pSizedObject_   = std::move(pObj);
@@ -414,12 +414,12 @@ void uiroot::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
     }
 }
 
-void uiroot::stop_sizing()
+void root::stop_sizing()
 {
     pSizedObject_ = nullptr;
 }
 
-bool uiroot::is_sizing(const region& mObj) const
+bool root::is_sizing(const region& mObj) const
 {
     return pSizedObject_.get() == &mObj;
 }
@@ -467,7 +467,7 @@ void request_focus_to_list(utils::observer_ptr<frame> pReceiver,
     lList.push_back(std::move(pReceiver));
 }
 
-void uiroot::request_focus(utils::observer_ptr<frame> pReceiver)
+void root::request_focus(utils::observer_ptr<frame> pReceiver)
 {
     auto pOldFocus = get_focussed_frame();
     request_focus_to_list(std::move(pReceiver), lFocusStack_);
@@ -483,7 +483,7 @@ void uiroot::request_focus(utils::observer_ptr<frame> pReceiver)
     }
 }
 
-void uiroot::release_focus(const frame& mReceiver)
+void root::release_focus(const frame& mReceiver)
 {
     auto pOldFocus = get_focussed_frame();
     release_focus_to_list(mReceiver, lFocusStack_);
@@ -499,7 +499,7 @@ void uiroot::release_focus(const frame& mReceiver)
     }
 }
 
-void uiroot::clear_focus()
+void root::clear_focus()
 {
     auto pOldFocus = get_focussed_frame();
     lFocusStack_.clear();
@@ -508,12 +508,12 @@ void uiroot::clear_focus()
         pOldFocus->notify_focus(false);
 }
 
-bool uiroot::is_focused() const
+bool root::is_focused() const
 {
     return get_focussed_frame() != nullptr;
 }
 
-utils::observer_ptr<const frame> uiroot::get_focussed_frame() const
+utils::observer_ptr<const frame> root::get_focussed_frame() const
 {
     for (const auto& pPtr : utils::range::reverse(lFocusStack_))
     {
@@ -524,12 +524,12 @@ utils::observer_ptr<const frame> uiroot::get_focussed_frame() const
     return nullptr;
 }
 
-void uiroot::clear_hovered_frame_()
+void root::clear_hovered_frame_()
 {
     pHoveredFrame_ = nullptr;
 }
 
-void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
+void root::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
 {
     if (pHoveredFrame_ && pFrame != pHoveredFrame_)
         pHoveredFrame_->notify_mouse_in_frame(false, mMousePos);
@@ -543,7 +543,7 @@ void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2
         clear_hovered_frame_();
 }
 
-void uiroot::on_window_resized_(const vector2ui& mDimensions)
+void root::on_window_resized_(const vector2ui& mDimensions)
 {
     // Update internal window size
     mScreenDimensions_ = mDimensions;
@@ -568,7 +568,7 @@ void uiroot::on_window_resized_(const vector2ui& mDimensions)
     notify_hovered_frame_dirty();
 }
 
-void uiroot::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
+void root::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
 {
     notify_hovered_frame_dirty();
 
@@ -641,7 +641,7 @@ void uiroot::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePo
     }
 }
 
-void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
+void root::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
 {
     utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
         [&](const frame& mFrame)
@@ -664,7 +664,7 @@ void uiroot::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
     pHoveredFrame->fire_script("OnMouseWheel", mData);
 }
 
-void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos)
+void root::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos)
 {
     utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
         [&](const frame& mFrame)
@@ -700,7 +700,7 @@ void uiroot::on_drag_start_(input::mouse_button mButton, const vector2f& mMouseP
     }
 }
 
-void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
+void root::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
 {
     stop_moving();
     stop_sizing();
@@ -738,7 +738,7 @@ void uiroot::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePo
     }
 }
 
-void uiroot::on_text_entered_(std::uint32_t uiChar)
+void root::on_text_entered_(std::uint32_t uiChar)
 {
     if (auto pFocus = get_focussed_frame())
     {
@@ -777,7 +777,7 @@ std::string get_key_name(input::key mKey, bool bIsShiftPressed, bool bIsCtrlPres
     return sName;
 }
 
-void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
+void root::on_key_state_changed_(input::key mKey, bool bIsDown)
 {
     const auto& mInputDispatcher = get_manager().get_input_dispatcher();
     bool bIsShiftPressed = mInputDispatcher.shift_is_pressed();
@@ -842,7 +842,7 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
         mWorldInputDispatcher_.on_key_released(mKey);
 }
 
-void uiroot::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
+void root::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
     bool bIsDoubleClick, const vector2f& mMousePos)
 {
     utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
