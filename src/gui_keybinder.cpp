@@ -3,6 +3,8 @@
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input_dispatcher.hpp"
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_std.hpp"
 
 #include <sol/state.hpp>
 
@@ -10,186 +12,140 @@ namespace lxgui {
 namespace gui
 {
 
-std::string get_key_debug_name(input::key mKey)
+void keybinder::register_key_binding(std::string_view sName, sol::protected_function mHandler)
 {
-    return std::string(input::get_key_codename(mKey));
-}
-
-std::string get_key_debug_name(input::key mKey, input::key mModifier)
-{
-    std::string sString;
-    switch (mModifier)
+    auto mFunction = [mHandler = std::move(mHandler)]()
     {
-        case (input::key::K_LSHIFT) :
-        case (input::key::K_RSHIFT) :
-            sString = "Shift + ";
-            break;
+        // Call function
+        auto mResult = mHandler();
 
-        case (input::key::K_LCONTROL) :
-        case (input::key::K_RCONTROL) :
-            sString = "Ctrl + ";
-            break;
-
-        case (input::key::K_LMENU) :
-        case (input::key::K_RMENU) :
-            sString = "Alt + ";
-            break;
-
-        default :
-            sString = get_key_debug_name(mModifier) + " + ";
-            break;
-    }
-
-    return sString + get_key_debug_name(mKey);
-}
-
-std::string get_key_debug_name(input::key mKey, input::key mModifier1, input::key mModifier2)
-{
-    std::string sString;
-    switch (mModifier1)
-    {
-        case (input::key::K_LSHIFT) :
-        case (input::key::K_RSHIFT) :
-            sString = "Shift + ";
-            break;
-
-        case (input::key::K_LCONTROL) :
-        case (input::key::K_RCONTROL) :
-            sString = "Ctrl + ";
-            break;
-
-        case (input::key::K_LMENU) :
-        case (input::key::K_RMENU) :
-            sString = "Alt + ";
-            break;
-
-        default :
-            sString = get_key_debug_name(mModifier1) + " + ";
-            break;
-    }
-
-    switch (mModifier2)
-    {
-        case (input::key::K_LSHIFT) :
-        case (input::key::K_RSHIFT) :
-            sString += "Shift + ";
-            break;
-
-        case (input::key::K_LCONTROL) :
-        case (input::key::K_RCONTROL) :
-            sString += "Ctrl + ";
-            break;
-
-        case (input::key::K_LMENU) :
-        case (input::key::K_RMENU) :
-            sString += "Alt + ";
-            break;
-
-        default :
-            sString += get_key_debug_name(mModifier2) + " + ";
-            break;
-    }
-
-    return sString + get_key_debug_name(mKey);
-}
-
-void keybinder::set_key_binding(input::key mKey, sol::protected_function mHandler)
-{
-    lKeyBindingList_[mKey][input::key::K_UNASSIGNED][input::key::K_UNASSIGNED] = std::move(mHandler);
-}
-
-void keybinder::set_key_binding(input::key mKey, input::key mModifier,
-    sol::protected_function mHandler)
-{
-    lKeyBindingList_[mKey][mModifier][input::key::K_UNASSIGNED] = std::move(mHandler);
-}
-
-void keybinder::set_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2,
-    sol::protected_function mHandler)
-{
-    lKeyBindingList_[mKey][mModifier1][mModifier2] = std::move(mHandler);
-}
-
-void keybinder::remove_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2)
-{
-    auto iter1 = lKeyBindingList_.find(mKey);
-    if (iter1 != lKeyBindingList_.end())
-    {
-        auto iter2 = iter1->second.find(mModifier1);
-        if (iter2 != iter1->second.end())
+        // Handle errors
+        if (!mResult.valid())
         {
-            auto iter3 = iter2->second.find(mModifier2);
-            if (iter3 != iter2->second.end())
-            {
-                iter2->second.erase(iter3);
-
-                if (iter2->second.empty())
-                    iter1->second.erase(iter2);
-
-                if (iter1->second.empty())
-                    lKeyBindingList_.erase(iter1);
-            }
+            sol::error mError = mResult;
+            throw gui::exception(mError.what());
         }
-    }
+    };
+
+    register_key_binding(sName, std::move(mFunction));
 }
 
-std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
-    input::key mKey, const input::dispatcher& mDispatcher) const
+void keybinder::register_key_binding(std::string_view sName, function_type mFunction)
 {
-    auto iter1 = lKeyBindingList_.find(mKey);
-    if (iter1 == lKeyBindingList_.end())
-        return {nullptr, ""};
+    auto mIter = utils::find_if(lKeyBindings_,
+        [&](const auto& mBinding)
+        {
+            return mBinding.sName == sName;
+        }
+    );
 
-    for (const auto& iter2 : iter1->second)
+    if (mIter == lKeyBindings_.end())
     {
-        if (iter2.first == input::key::K_UNASSIGNED || !mDispatcher.key_is_down(iter2.first))
-            continue;
-
-        // First try to get a match with the most complicated binding with two modifiers
-        for (const auto& iter3 : iter2.second)
-        {
-            if (iter3.first == input::key::K_UNASSIGNED || !mDispatcher.key_is_down(iter3.first))
-                continue;
-
-            return {&iter3.second, get_key_debug_name(mKey, iter2.first, iter3.first)};
-        }
-
-        // If none was found, try with only one modifier
-        auto iter3 = iter2.second.find(input::key::K_UNASSIGNED);
-        if (iter3 != iter2.second.end())
-        {
-            return {&iter3->second, get_key_debug_name(mKey, iter2.first)};
-        }
+        gui::out << gui::error << "keybinder: a binding already exists with name '" <<
+            sName << "'." << std::endl;
+        return;
     }
 
-    // If no modifier was matching, try with no modifier
-    auto iter2 = iter1->second.find(input::key::K_UNASSIGNED);
-    if (iter2 != iter1->second.end())
-    {
-        auto iter3 = iter2->second.find(input::key::K_UNASSIGNED);
-        if (iter3 != iter2->second.end())
-        {
-            return {&iter3->second, get_key_debug_name(mKey)};
-        }
-    }
-
-    // No match at all
-    return {nullptr, ""};
+    key_binding mBinding;
+    mBinding.sName = std::string(sName);
+    mBinding.mCallback = std::move(mFunction);
+    lKeyBindings_.push_back(std::move(mBinding));
 }
 
-bool keybinder::on_key_down(input::key mKey, const input::dispatcher& mDispatcher)
+void keybinder::set_key_binding(std::string_view sName, input::key mKey,
+    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed)
 {
-    const auto mHandler = find_handler_(mKey, mDispatcher);
-    if (!mHandler.first)
+    auto mIter = utils::find_if(lKeyBindings_,
+        [&](const auto& mBinding)
+        {
+            return mBinding.sName == sName;
+        }
+    );
+
+    if (mIter == lKeyBindings_.end())
+    {
+        gui::out << gui::error << "keybinder: no binding with name '" << sName << "'." << std::endl;
+        return;
+    }
+
+    mIter->mKey = mKey;
+    mIter->bShiftIsPressed = bShiftIsPressed || mKey == input::key::K_LSHIFT || mKey == input::key::K_RSHIFT;
+    mIter->bCtrlIsPressed = bCtrlIsPressed || mKey == input::key::K_LCONTROL || mKey == input::key::K_RCONTROL;
+    mIter->bAltIsPressed = bAltIsPressed || mKey == input::key::K_LMENU || mKey == input::key::K_RMENU;
+}
+
+void keybinder::set_key_binding(std::string_view sName, std::string_view sKey)
+{
+    bool bShiftIsPressed = false;
+    bool bCtrlIsPressed = false;
+    bool bAltIsPressed = false;
+
+    const auto lTokens = utils::cut(sKey, "-");
+    for (auto sToken : lTokens)
+    {
+        if (sToken == "Shift")
+            bShiftIsPressed = true;
+        else if (sToken == "Ctrl")
+            bCtrlIsPressed = true;
+        else if (sToken == "Alt")
+            bAltIsPressed = true;
+    }
+
+    set_key_binding(sName, input::get_key_from_codename(lTokens.back()),
+        bShiftIsPressed, bCtrlIsPressed, bAltIsPressed);
+}
+
+void keybinder::remove_key_binding(std::string_view sName)
+{
+    auto mIter = utils::find_if(lKeyBindings_,
+        [&](const auto& mBinding)
+        {
+            return mBinding.sName == sName;
+        }
+    );
+
+    if (mIter == lKeyBindings_.end())
+    {
+        gui::out << gui::error << "keybinder: no binding with name '" << sName << "'." << std::endl;
+        return;
+    }
+
+    lKeyBindings_.erase(mIter);
+}
+
+const keybinder::key_binding* keybinder::find_binding_(input::key mKey,
+    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const
+{
+    auto mIter = utils::find_if(lKeyBindings_,
+        [&](const auto& mBinding)
+        {
+            return mBinding.mKey == mKey &&
+                mBinding.bShiftIsPressed == bShiftIsPressed &&
+                mBinding.bCtrlIsPressed == bCtrlIsPressed &&
+                mBinding.bAltIsPressed == bAltIsPressed;
+        }
+    );
+
+    if (mIter == lKeyBindings_.end())
+        return nullptr;
+
+    return &*mIter;
+}
+
+bool keybinder::on_key_down(input::key mKey,
+    bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed) const
+{
+    const auto* pKeyBinding = find_binding_(mKey, bShiftIsPressed, bCtrlIsPressed, bAltIsPressed);
+    if (!pKeyBinding)
         return false;
 
     try
     {
-        (*mHandler.first)();
+        pKeyBinding->mCallback();
     }
     catch (const std::exception& e)
     {
-        std::string sError = "Bound action: " + mHandler.second + ": " + std::string(e.what());
+        std::string sError = "Bound action: " + pKeyBinding->sName + ": " + std::string(e.what());
         throw std::runtime_error(std::move(sError));
     }
 

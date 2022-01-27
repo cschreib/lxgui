@@ -820,15 +820,16 @@ void uiroot::on_key_state_changed_(input::key mKey, bool bIsDown)
     if (bIsDown)
     {
         // If no frame is found, try the keybinder
-        // TODO: I don't like this design, too tightly coupled
         try
         {
-            if (get_keybinder().on_key_down(mKey, get_manager().get_input_dispatcher()))
+            if (get_keybinder().on_key_down(mKey, bIsShiftPressed, bIsCtrlPressed, bIsAltPressed))
                 return;
         }
-        catch (const std::exception& e)
+        catch (const std::exception& mException)
         {
-            get_manager().get_event_emitter().fire_event("LUA_ERROR", {std::string(e.what())});
+            std::string sError = mException.what();
+            gui::out << gui::error << sError << std::endl;
+            get_manager().get_event_emitter().fire_event("LUA_ERROR", {sError});
             return;
         }
     }

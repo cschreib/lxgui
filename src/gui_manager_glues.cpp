@@ -87,37 +87,23 @@ void manager::create_lua_()
         mFrame.destroy();
     });
 
+    /** @function register_key_binding
+    */
+    mLua.set_function("register_key_binding",
+    [&](std::string sID, sol::protected_function mFunction)
+    {
+        get_root().get_keybinder().register_key_binding(sID, mFunction);
+    });
+
     /** @function set_key_binding
     */
-    mLua.set_function("set_key_binding", sol::overload(
-    [&](std::size_t uiKey, sol::optional<sol::protected_function> mFunction)
+    mLua.set_function("set_key_binding", [&](std::string sID, sol::optional<std::string> sKey)
     {
-        auto mKey = static_cast<input::key>(uiKey);
-        if (mFunction.has_value())
-            get_root().get_keybinder().set_key_binding(mKey, mFunction.value());
+        if (sKey.has_value())
+            get_root().get_keybinder().set_key_binding(sID, sKey.value());
         else
-            get_root().get_keybinder().remove_key_binding(mKey);
-    },
-    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<sol::protected_function> mFunction)
-    {
-        auto mKey = static_cast<input::key>(uiKey);
-        auto mModifier = static_cast<input::key>(uiModifier);
-        if (mFunction.has_value())
-            get_root().get_keybinder().set_key_binding(mKey, mModifier, mFunction.value());
-        else
-            get_root().get_keybinder().remove_key_binding(mKey, mModifier);
-    },
-    [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
-        sol::optional<sol::protected_function> mFunction)
-    {
-        auto mKey = static_cast<input::key>(uiKey);
-        auto mModifier1 = static_cast<input::key>(uiModifier1);
-        auto mModifier2 = static_cast<input::key>(uiModifier2);
-        if (mFunction.has_value())
-            get_root().get_keybinder().set_key_binding(mKey, mModifier1, mModifier2, mFunction.value());
-        else
-            get_root().get_keybinder().remove_key_binding(mKey, mModifier1, mModifier2);
-    }));
+            get_root().get_keybinder().remove_key_binding(sID);
+    });
 
     /** Closes the whole GUI and re-loads addons from files.
     * For safety reasons, the re-loading operation will not be triggered instantaneously.
