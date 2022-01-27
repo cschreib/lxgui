@@ -163,7 +163,7 @@ void addon_registry::load_addon_files_(const addon& mAddOn)
 
 void addon_registry::load_addon_directory(const std::string& sDirectory)
 {
-    for (auto sSubDir : utils::get_directory_list(sDirectory))
+    for (const auto& sSubDir : utils::get_directory_list(sDirectory))
         this->load_addon_toc_(sSubDir, sDirectory);
 
     std::vector<addon*> lCoreAddOnStack;

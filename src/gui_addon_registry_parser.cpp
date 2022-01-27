@@ -297,9 +297,10 @@ void addon_registry::parse_layout_file_(const std::string& sFile, const addon& m
                     mRoot_.get_registry(), mVirtualRoot_.get_registry(), mNode, nullptr);
 
                 utils::observer_ptr<frame> pFrame;
-                if (mAttr.pParent)
+                auto pParent = mAttr.pParent; // copy here to prevent use-after-move
+                if (pParent)
                 {
-                    pFrame = mAttr.pParent->create_child(std::move(mAttr));
+                    pFrame = pParent->create_child(std::move(mAttr));
                 }
                 else
                 {

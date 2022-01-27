@@ -66,7 +66,7 @@ void frame::render() const
             pBackdrop_->render();
 
         // Render child regions
-        for (auto& mLayer : lLayerList_)
+        for (const auto& mLayer : lLayerList_)
         {
             if (mLayer.bDisabled) continue;
 
@@ -203,7 +203,7 @@ std::string frame::serialize(const std::string& sTab) const
 
 bool frame::can_use_script(const std::string& sScriptName) const
 {
-    if ((sScriptName == "OnChar") ||
+    return (sScriptName == "OnChar") ||
         (sScriptName == "OnDragStart") ||
         (sScriptName == "OnDragStop") ||
         (sScriptName == "OnDragMove") ||
@@ -223,10 +223,7 @@ bool frame::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnReceiveDrag") ||
         (sScriptName == "OnShow") ||
         (sScriptName == "OnSizeChanged") ||
-        (sScriptName == "OnUpdate"))
-        return true;
-    else
-        return false;
+        (sScriptName == "OnUpdate");
 }
 
 void frame::copy_from(const uiobject& mObj)
@@ -339,7 +336,7 @@ void frame::create_title_region()
     mAttr.pParent = observer_from(this);
 
     auto pTitleRegion = utils::static_pointer_cast<region>(
-        get_manager().get_factory().create_uiobject(get_registry(), std::move(mAttr)));
+        get_manager().get_factory().create_uiobject(get_registry(), mAttr));
 
     if (!pTitleRegion)
         return;
@@ -1123,7 +1120,7 @@ utils::connection frame::define_script_(const std::string& sScriptName,
 }
 
 utils::connection frame::define_script_(const std::string& sScriptName,
-    script_function mHandler, bool bAppend, const script_info& mInfo)
+    script_function mHandler, bool bAppend, const script_info& /*mInfo*/)
 {
     if (!is_virtual())
     {
@@ -1224,7 +1221,7 @@ void frame::fire_script(const std::string& sScriptName, const event_data& mData)
     // Make a copy of useful pointers: in case the frame is deleted, we will need this
     auto& mEventEmitter = get_manager().get_event_emitter();
     auto& mAddonRegistry = *get_manager().get_addon_registry();
-    auto* pOldAddOn = mAddonRegistry.get_current_addon();
+    const auto* pOldAddOn = mAddonRegistry.get_current_addon();
     mAddonRegistry.set_current_addon(get_addon());
 
     try
@@ -1712,7 +1709,7 @@ void frame::hide()
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
+void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& /*mPosition*/)
 {
     alive_checker mChecker(*this);
 

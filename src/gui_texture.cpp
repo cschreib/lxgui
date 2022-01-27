@@ -443,7 +443,7 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
 
     std::shared_ptr<gui::material> pMat;
     if (pRenderTarget)
-        pMat = mRenderer.create_material(pRenderTarget);
+        pMat = mRenderer.create_material(std::move(pRenderTarget));
 
     mQuad_.mat = pMat;
 

@@ -31,7 +31,8 @@ namespace gui
         /// Adds a parameter to this event.
         /** \param mValue The value
         */
-        void add(const utils::variant& mValue) { lArgList_.push_back(mValue); }
+        template<typename T>
+        void add(T&& mValue) { lArgList_.push_back(std::forward<T>(mValue)); }
 
         /// Returns a parameter of this event.
         /** \param uiIndex The index of the parameter (see get_num_param())

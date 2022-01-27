@@ -21,7 +21,7 @@ uiobject_core_attributes parse_core_attributes(
 
     if (pParent)
     {
-        mAttr.pParent = pParent;
+        mAttr.pParent = std::move(pParent);
 
         if (mNode.has_attribute("virtual"))
         {

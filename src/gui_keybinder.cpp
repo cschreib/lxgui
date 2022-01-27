@@ -148,8 +148,8 @@ bool keybinder::on_key_down(input::key mKey,
     }
     catch (const std::exception& e)
     {
-        std::string sError = "Bound action: " + pKeyBinding->sName + ": " + std::string(e.what());
-        throw std::runtime_error(std::move(sError));
+        throw std::runtime_error(
+            "Bound action: " + pKeyBinding->sName + ": " + std::string(e.what()));
     }
 
     return true;

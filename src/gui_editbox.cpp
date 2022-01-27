@@ -924,8 +924,8 @@ void edit_box::update_carret_position_()
                 (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
         }
 
-        float fYOffset = static_cast<float>(
-            (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing()));
+        float fYOffset = static_cast<float>((pText->get_num_lines() - 1)) *
+            (pText->get_line_height() * pText->get_line_spacing());
 
         std::size_t uiIndex = iterDisplayCarret - sDisplayedText_.begin();
 

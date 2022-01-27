@@ -140,7 +140,7 @@ void main_loop(void* pTypeErasedData)
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     // Get events from SFML
-    sf::Event mEvent;
+    sf::Event mEvent{};
     while (mContext.pWindow->pollEvent(mEvent))
     {
         if (mEvent.type == sf::Event::Closed)

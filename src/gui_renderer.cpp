@@ -379,10 +379,10 @@ std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCateg
     return pFont;
 }
 
-std::shared_ptr<material> renderer::create_material(
-    std::shared_ptr<render_target> pRenderTarget)
+std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> pRenderTarget)
 {
-    return create_material(pRenderTarget, pRenderTarget->get_rect());
+    const auto& mRect = pRenderTarget->get_rect();
+    return create_material(std::move(pRenderTarget), mRect);
 }
 
 void renderer::notify_window_resized(const vector2ui&)

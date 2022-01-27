@@ -43,9 +43,10 @@ uiobject::~uiobject()
         }
 
         // Replace anchors pointing to this widget by absolute anchors
-        // (need to copy the anchored object list, because the objects will attempt to modify it when
-        // un-anchored, which would invalidate our iteration)
-        std::vector<utils::observer_ptr<uiobject>> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
+        // (need to copy the anchored object list, because the objects will attempt to
+        // modify it when un-anchored, which would invalidate our iteration)
+        std::vector<utils::observer_ptr<uiobject>> lTempAnchoredObjectList =
+            std::move(lAnchoredObjectList_);
         for (const auto& pObj : lTempAnchoredObjectList)
         {
             if (!pObj)
@@ -66,15 +67,15 @@ uiobject::~uiobject()
 
                 switch (mAnchor.mParentPoint)
                 {
-                    case anchor_point::TOPLEFT :     mNewAnchor.mOffset   += lBorderList_.top_left();     break;
-                    case anchor_point::TOP :         mNewAnchor.mOffset.y += lBorderList_.top;            break;
-                    case anchor_point::TOPRIGHT :    mNewAnchor.mOffset   += lBorderList_.top_right();    break;
-                    case anchor_point::RIGHT :       mNewAnchor.mOffset.x += lBorderList_.right;          break;
-                    case anchor_point::BOTTOMRIGHT : mNewAnchor.mOffset   += lBorderList_.bottom_right(); break;
-                    case anchor_point::BOTTOM :      mNewAnchor.mOffset.y += lBorderList_.bottom;         break;
-                    case anchor_point::BOTTOMLEFT :  mNewAnchor.mOffset   += lBorderList_.bottom_left();  break;
-                    case anchor_point::LEFT :        mNewAnchor.mOffset.x += lBorderList_.left;           break;
-                    case anchor_point::CENTER :      mNewAnchor.mOffset   += lBorderList_.center();       break;
+                case anchor_point::TOPLEFT :     mNewAnchor.mOffset   += lBorderList_.top_left();     break;
+                case anchor_point::TOP :         mNewAnchor.mOffset.y += lBorderList_.top;            break;
+                case anchor_point::TOPRIGHT :    mNewAnchor.mOffset   += lBorderList_.top_right();    break;
+                case anchor_point::RIGHT :       mNewAnchor.mOffset.x += lBorderList_.right;          break;
+                case anchor_point::BOTTOMRIGHT : mNewAnchor.mOffset   += lBorderList_.bottom_right(); break;
+                case anchor_point::BOTTOM :      mNewAnchor.mOffset.y += lBorderList_.bottom;         break;
+                case anchor_point::BOTTOMLEFT :  mNewAnchor.mOffset   += lBorderList_.bottom_left();  break;
+                case anchor_point::LEFT :        mNewAnchor.mOffset.x += lBorderList_.left;           break;
+                case anchor_point::CENTER :      mNewAnchor.mOffset   += lBorderList_.center();       break;
                 }
 
                 pObj->set_point(mNewAnchor);

@@ -303,13 +303,13 @@ void uiroot::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
     constraint mConstraint, std::function<void()> mApplyConstraintFunc)
 {
     pSizedObject_ = nullptr;
-    pMovedObject_ = pObj;
+    pMovedObject_ = std::move(pObj);
     mMouseMovement_ = vector2f::ZERO;
 
     if (pMovedObject_)
     {
         mConstraint_ = mConstraint;
-        mApplyConstraintFunc_ = mApplyConstraintFunc;
+        mApplyConstraintFunc_ = std::move(mApplyConstraintFunc);
         if (pAnchor)
         {
             pMovedAnchor_ = pAnchor;
@@ -343,7 +343,7 @@ bool uiroot::is_moving(const uiobject& mObj) const
 void uiroot::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint)
 {
     pMovedObject_   = nullptr;
-    pSizedObject_   = pObj;
+    pSizedObject_   = std::move(pObj);
     mMouseMovement_ = vector2f::ZERO;
 
     if (pSizedObject_)
@@ -385,7 +385,8 @@ void uiroot::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoin
                 break;
             case anchor_point::CENTER :
                 gui::out << gui::error << "gui::manager : "
-                    << "Cannot resize \"" <<  pObj->get_name() << "\" from its center." << std::endl;
+                    << "Cannot resize \"" <<  pSizedObject_->get_name() <<
+                    "\" from its center." << std::endl;
                 pSizedObject_ = nullptr;
                 return;
         }
@@ -535,7 +536,7 @@ void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2
 
     if (pFrame)
     {
-        pHoveredFrame_ = pFrame;
+        pHoveredFrame_ = std::move(pFrame);
         pHoveredFrame_->notify_mouse_in_frame(true, mMousePos);
     }
     else

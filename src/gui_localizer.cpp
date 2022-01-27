@@ -18,14 +18,6 @@ namespace gui
 
 namespace
 {
-    std::string to_upper(std::string sStr)
-    {
-        for (char& cChar : sStr)
-            cChar = static_cast<char>(std::toupper(cChar));
-
-        return sStr;
-    }
-
     std::string to_lower(std::string sStr)
     {
         for (char& cChar : sStr)

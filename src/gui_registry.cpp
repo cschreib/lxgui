@@ -36,7 +36,7 @@ bool registry::check_uiobject_name(std::string_view sName) const
 
     for (auto c : sName)
     {
-        if (!std::isalnum(c) && c != '_' && c != '$')
+        if ((std::isalnum(c) == 0) && c != '_' && c != '$')
         {
             gui::out << gui::error << "gui::registry : "
                 << "A widget's name can only contain alphanumeric symbols, or underscores : \""

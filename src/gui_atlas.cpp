@@ -57,8 +57,7 @@ std::shared_ptr<font> atlas_page::fetch_font(const std::string& sFontName) const
     return nullptr;
 }
 
-bool atlas_page::add_font(const std::string& sFontName,
-    std::shared_ptr<gui::font> pFont)
+bool atlas_page::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont)
 {
     try
     {
@@ -72,7 +71,7 @@ bool atlas_page::add_font(const std::string& sFontName,
             std::shared_ptr<gui::material> pTex = add_material_(*pMat, mLocation.value());
             pFont->update_texture(pTex);
 
-            lFontList_[sFontName] = pFont;
+            lFontList_[sFontName] = std::move(pFont);
             return true;
         }
         else
@@ -262,10 +261,8 @@ bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pF
         }
 
         add_page_();
-        if (lPageList_.back().pPage->add_font(sFontName, pFont))
-            return true;
 
-        return false;
+        return lPageList_.back().pPage->add_font(sFontName, std::move(pFont));
     }
     catch (const std::exception& e)
     {

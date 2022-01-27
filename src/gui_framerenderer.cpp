@@ -147,7 +147,7 @@ utils::observer_ptr<const frame> frame_renderer::find_topmost_frame(
 
 int frame_renderer::get_highest_level(frame_strata mFrameStrata) const
 {
-    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
+    const auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
     if (!mStrata.lLevelList.empty())
         return mStrata.lLevelList.rbegin()->first;
 
