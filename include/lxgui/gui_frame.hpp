@@ -2,7 +2,7 @@
 #define LXGUI_GUI_FRAME_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_region.hpp"
+#include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_uiobject_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
@@ -247,9 +247,9 @@ namespace gui
     *   the inheriting frame will copy all the registered callbacks, all the
     *   child frames, and all the layered regions of the virtual frame.
     */
-    class frame : public region
+    class frame : public uiobject
     {
-        using base = region;
+        using base = uiobject;
 
     public :
 
@@ -748,10 +748,10 @@ namespace gui
         float get_scale() const;
 
         /// Returns this frame's title region.
-        utils::observer_ptr<const region> get_title_region() const { return pTitleRegion_; }
+        utils::observer_ptr<const uiobject> get_title_region() const { return pTitleRegion_; }
 
         /// Returns this frame's title region.
-        utils::observer_ptr<region> get_title_region() { return pTitleRegion_; }
+        utils::observer_ptr<uiobject> get_title_region() { return pTitleRegion_; }
 
         /// Checks if this frame is clamped to screen.
         /** \return 'true' if this frame is clamed to screen
@@ -1322,7 +1322,7 @@ namespace gui
 
         bool bMouseInFrame_ = false;
 
-        utils::owner_ptr<region> pTitleRegion_ = nullptr;
+        utils::owner_ptr<uiobject> pTitleRegion_ = nullptr;
 
         bool bMouseDraggedInFrame_ = false;
 

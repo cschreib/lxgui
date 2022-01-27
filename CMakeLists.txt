@@ -282,8 +282,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_matrix4.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_out.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_parser_common.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_region.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_region_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp

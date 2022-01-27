@@ -176,7 +176,7 @@ namespace gui
         uiobject& operator=(uiobject&&) = delete;
 
         /// Renders this widget on the current render target.
-        virtual void render() const = 0;
+        virtual void render() const;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
@@ -352,6 +352,12 @@ namespace gui
         *         apparent height will not be rendered on the screen until its height is defined.
         */
         bool is_apparent_height_defined() const;
+
+        /// Checks if the provided coordinates are inside this region.
+        /** \param mPosition The coordinates to test
+        *   \return 'true' if the provided coordinates are inside this region
+        */
+        virtual bool is_in_region(const vector2f& mPosition) const;
 
         /// Returns the type of this widget.
         /** \return The type of this widget
@@ -615,9 +621,7 @@ namespace gui
         const registry& get_registry() const;
 
         /// Creates the associated Lua glue.
-        /** \note This method is pure virtual : it must be overriden.
-        */
-        virtual void create_glue() = 0;
+        virtual void create_glue();
 
         /// Removes the Lua glue.
         void remove_glue();
@@ -625,7 +629,7 @@ namespace gui
         /// Parses data from a layout_node.
         /** \param mNode The layout node
         */
-        virtual void parse_layout(const layout_node& mNode) = 0;
+        virtual void parse_layout(const layout_node& mNode);
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -641,6 +645,7 @@ namespace gui
     protected :
 
         // Layout parsing
+        virtual void parse_attributes_(const layout_node& mNode);
         virtual void parse_size_node_(const layout_node& mNode);
         virtual void parse_anchor_node_(const layout_node& mNode);
         color        parse_color_node_(const layout_node& mNode);

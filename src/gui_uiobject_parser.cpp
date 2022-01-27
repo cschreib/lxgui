@@ -10,6 +10,7 @@
 namespace lxgui {
 namespace gui
 {
+
 color uiobject::parse_color_node_(const layout_node& mNode)
 {
     if (const layout_attribute* pAttr = mNode.try_get_attribute("c"))
@@ -159,5 +160,19 @@ void uiobject::parse_anchor_node_(const layout_node& mNode)
         }
     }
 }
+
+void uiobject::parse_layout(const layout_node& mNode)
+{
+    parse_attributes_(mNode);
+    parse_size_node_(mNode);
+    parse_anchor_node_(mNode);
+}
+
+void uiobject::parse_attributes_(const layout_node& mNode)
+{
+    if (mNode.get_attribute_value_or<bool>("setAllPoints", false))
+        set_all_points("$parent");
+}
+
 }
 }

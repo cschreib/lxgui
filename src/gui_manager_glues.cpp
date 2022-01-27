@@ -136,8 +136,8 @@ void manager::create_lua_()
     pLocalizer_->register_on_lua(mLua);
 
     // Base types
+    pFactory_->register_uiobject_type<uiobject>();
     pFactory_->register_uiobject_type<frame>();
-    pFactory_->register_uiobject_type<region>();
     pFactory_->register_uiobject_type<layered_region>();
 
     // Abstract types

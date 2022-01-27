@@ -9,6 +9,7 @@
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
@@ -330,6 +331,12 @@ bool uiobject::is_apparent_width_defined() const
 bool uiobject::is_apparent_height_defined() const
 {
     return mDimensions_.y > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
+}
+
+bool uiobject::is_in_region(const vector2f& mPosition) const
+{
+    return ((lBorderList_.left <= mPosition.x && mPosition.x <= lBorderList_.right  - 1) &&
+            (lBorderList_.top  <= mPosition.y && mPosition.y <= lBorderList_.bottom - 1));
 }
 
 void uiobject::set_name_(const std::string& sName)
@@ -870,9 +877,18 @@ void uiobject::update(float)
 {
 }
 
+void uiobject::render() const
+{
+}
+
 sol::state& uiobject::get_lua_()
 {
     return get_manager().get_lua();
+}
+
+void uiobject::create_glue()
+{
+    create_glue_(static_cast<uiobject*>(this));
 }
 
 void uiobject::remove_glue()

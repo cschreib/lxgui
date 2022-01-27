@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
-#include "lxgui/gui_region.hpp"
+#include "lxgui/gui_uiobject.hpp"
 
 namespace lxgui {
 namespace gui
@@ -35,9 +35,9 @@ namespace gui
     *   Layered regions cannot themselves react to events; this
     *   must be taken care of by the parent frame.
     */
-    class layered_region : public region
+    class layered_region : public uiobject
     {
-        using base = region;
+        using base = uiobject;
 
     public :
 

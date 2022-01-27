@@ -677,30 +677,6 @@
 					"shell_cmd": "make -j12 src/gui_parser_common.s",
 				},
 				{
-					"name": "src/gui_region.o",
-					"shell_cmd": "make -j12 src/gui_region.o",
-				},
-				{
-					"name": "src/gui_region.i",
-					"shell_cmd": "make -j12 src/gui_region.i",
-				},
-				{
-					"name": "src/gui_region.s",
-					"shell_cmd": "make -j12 src/gui_region.s",
-				},
-				{
-					"name": "src/gui_region_parser.o",
-					"shell_cmd": "make -j12 src/gui_region_parser.o",
-				},
-				{
-					"name": "src/gui_region_parser.i",
-					"shell_cmd": "make -j12 src/gui_region_parser.i",
-				},
-				{
-					"name": "src/gui_region_parser.s",
-					"shell_cmd": "make -j12 src/gui_region_parser.s",
-				},
-				{
 					"name": "src/gui_registry.o",
 					"shell_cmd": "make -j12 src/gui_registry.o",
 				},

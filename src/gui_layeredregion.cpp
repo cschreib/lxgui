@@ -13,7 +13,7 @@ namespace gui
 {
 
 layered_region::layered_region(utils::control_block& mBlock, manager& mManager) :
-    region(mBlock, mManager)
+    base(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -21,7 +21,7 @@ layered_region::layered_region(utils::control_block& mBlock, manager& mManager) 
 std::string layered_region::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
-    sStr << region::serialize(sTab);
+    sStr << base::serialize(sTab);
 
     sStr << sTab << "  # Layer       : ";
     switch (mLayer_)

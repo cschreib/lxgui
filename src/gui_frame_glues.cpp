@@ -1,7 +1,6 @@
 #include "lxgui/gui_frame.hpp"
 
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -482,7 +481,7 @@ void frame::register_on_lua(sol::state& mLua)
     /** @function get_title_region
     */
     mClass.set_function("get_title_region", member_function< // select the right overload for Lua
-        static_cast<utils::observer_ptr<region> (frame::*)()>(&frame::get_title_region)>());
+        static_cast<utils::observer_ptr<uiobject> (frame::*)()>(&frame::get_title_region)>());
 
     /** @function has_script
     */

@@ -32,7 +32,7 @@ layer::layer() : bDisabled(false)
 }
 
 frame::frame(utils::control_block& mBlock, manager& mManager) :
-    region(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
+    base(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -88,7 +88,7 @@ std::string frame::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << region::serialize(sTab);
+    sStr << base::serialize(sTab);
     if (auto pFrameRenderer = utils::dynamic_pointer_cast<frame>(pRenderer_))
     sStr << sTab << "  # Man. render : " << pFrameRenderer->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
@@ -330,13 +330,12 @@ void frame::create_title_region()
     }
 
     uiobject_core_attributes mAttr;
-    mAttr.sObjectType = "Region";
+    mAttr.sObjectType = "UIObject";
     mAttr.bVirtual = is_virtual();
     mAttr.sName = "$parentTitleRegion";
     mAttr.pParent = observer_from(this);
 
-    auto pTitleRegion = utils::static_pointer_cast<region>(
-        get_manager().get_factory().create_uiobject(get_registry(), mAttr));
+    auto pTitleRegion = get_manager().get_factory().create_uiobject(get_registry(), mAttr);
 
     if (!pTitleRegion)
         return;
