@@ -56,37 +56,37 @@ void font_string::parse_attributes_(const layout_node& mNode)
         }
     }
 
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("justifyH"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("alignX"))
     {
-        const std::string& sJustifyH = pAttr->get_value<std::string>();
-        if (sJustifyH == "LEFT")
-            set_justify_h(text::alignment::LEFT);
-        else if (sJustifyH == "CENTER")
-            set_justify_h(text::alignment::CENTER);
-        else if (sJustifyH == "RIGHT")
-            set_justify_h(text::alignment::RIGHT);
+        const std::string& sAlignX = pAttr->get_value<std::string>();
+        if (sAlignX == "LEFT")
+            set_alignment_x(alignment_x::LEFT);
+        else if (sAlignX == "CENTER")
+            set_alignment_x(alignment_x::CENTER);
+        else if (sAlignX == "RIGHT")
+            set_alignment_x(alignment_x::RIGHT);
         else
         {
             gui::out << gui::warning << mNode.get_location() <<  " : "
-                << "Unknown horizontal justify behavior for " << sName_
-                << " : \"" << sJustifyH << "\"." << std::endl;
+                << "Unknown horizontal alignment behavior for " << sName_
+                << " : \"" << sAlignX << "\"." << std::endl;
         }
     }
 
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("justifyV"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("alignY"))
     {
-        const std::string& sJustifyV = pAttr->get_value<std::string>();
-        if (sJustifyV == "TOP")
-            set_justify_v(text::vertical_alignment::TOP);
-        else if (sJustifyV == "MIDDLE")
-            set_justify_v(text::vertical_alignment::MIDDLE);
-        else if (sJustifyV == "BOTTOM")
-            set_justify_v(text::vertical_alignment::BOTTOM);
+        const std::string& sAlignY = pAttr->get_value<std::string>();
+        if (sAlignY == "TOP")
+            set_alignment_y(alignment_y::TOP);
+        else if (sAlignY == "MIDDLE")
+            set_alignment_y(alignment_y::MIDDLE);
+        else if (sAlignY == "BOTTOM")
+            set_alignment_y(alignment_y::BOTTOM);
         else
         {
             gui::out << gui::warning << mNode.get_location() <<  " : "
-                << "Unknown vertical justify behavior for " << sName_
-                << " : \"" << sJustifyV << "\"." << std::endl;
+                << "Unknown vertical alignment behavior for " << sName_
+                << " : \"" << sAlignY << "\"." << std::endl;
         }
     }
 }

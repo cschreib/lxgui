@@ -85,30 +85,30 @@ void font_string::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("get_font", member_function<&font_string::get_font_name>());
 
-    /** @function get_justify_h
+    /** @function get_alignment_x
     */
-    mClass.set_function("get_justify_h", [](const font_string& mSelf)
+    mClass.set_function("get_alignment_x", [](const font_string& mSelf)
     {
-        text::alignment mAlignment = mSelf.get_justify_h();
+        alignment_x mAlignment = mSelf.get_alignment_x();
         switch (mAlignment)
         {
-            case text::alignment::LEFT :   return "LEFT";
-            case text::alignment::CENTER : return "CENTER";
-            case text::alignment::RIGHT :  return "RIGHT";
+            case alignment_x::LEFT :   return "LEFT";
+            case alignment_x::CENTER : return "CENTER";
+            case alignment_x::RIGHT :  return "RIGHT";
             default:                       return "UNKNOWN";
         }
     });
 
-    /** @function get_justify_v
+    /** @function get_alignment_y
     */
-    mClass.set_function("get_justify_v", [](const font_string& mSelf)
+    mClass.set_function("get_alignment_y", [](const font_string& mSelf)
     {
-        text::vertical_alignment mAlignment = mSelf.get_justify_v();
+        alignment_y mAlignment = mSelf.get_alignment_y();
         switch (mAlignment)
         {
-            case text::vertical_alignment::TOP :    return "TOP";
-            case text::vertical_alignment::MIDDLE : return "MIDDLE";
-            case text::vertical_alignment::BOTTOM : return "BOTTOM";
+            case alignment_y::TOP :    return "TOP";
+            case alignment_y::MIDDLE : return "MIDDLE";
+            case alignment_y::BOTTOM : return "BOTTOM";
             default:                                return "UNKNOWN";
         }
     });
@@ -169,36 +169,36 @@ void font_string::register_on_lua(sol::state& mLua)
             mSelf.set_outlined(false);
     });
 
-    /** @function set_justify_h
+    /** @function set_alignment_x
     */
-    mClass.set_function("set_justify_h", [](font_string& mSelf, const std::string& sJustifyH)
+    mClass.set_function("set_alignment_x", [](font_string& mSelf, const std::string& sJustifyH)
     {
         if (sJustifyH == "LEFT")
-            mSelf.set_justify_h(text::alignment::LEFT);
+            mSelf.set_alignment_x(alignment_x::LEFT);
         else if (sJustifyH == "CENTER")
-            mSelf.set_justify_h(text::alignment::CENTER);
+            mSelf.set_alignment_x(alignment_x::CENTER);
         else if (sJustifyH == "RIGHT")
-            mSelf.set_justify_h(text::alignment::RIGHT);
+            mSelf.set_alignment_x(alignment_x::RIGHT);
         else
         {
-            gui::out << gui::warning << "font_string:set_justify_h : "
+            gui::out << gui::warning << "font_string:set_alignment_x : "
                 << "Unknown justify behavior : \"" << sJustifyH << "\"." << std::endl;
         }
     });
 
-    /** @function set_justify_v
+    /** @function set_alignment_y
     */
-    mClass.set_function("set_justify_v", [](font_string& mSelf, const std::string& sJustifyV)
+    mClass.set_function("set_alignment_y", [](font_string& mSelf, const std::string& sJustifyV)
     {
         if (sJustifyV == "TOP")
-            mSelf.set_justify_v(text::vertical_alignment::TOP);
+            mSelf.set_alignment_y(alignment_y::TOP);
         else if (sJustifyV == "MIDDLE")
-            mSelf.set_justify_v(text::vertical_alignment::MIDDLE);
+            mSelf.set_alignment_y(alignment_y::MIDDLE);
         else if (sJustifyV == "BOTTOM")
-            mSelf.set_justify_v(text::vertical_alignment::BOTTOM);
+            mSelf.set_alignment_y(alignment_y::BOTTOM);
         else
         {
-            gui::out << gui::warning << "font_string:set_justify_v : "
+            gui::out << gui::warning << "font_string:set_alignment_y : "
                 << "Unknown justify behavior : \"" << sJustifyV << "\"." << std::endl;
         }
     });

@@ -23,27 +23,26 @@ namespace gui
     class  vertex_cache;
     struct vertex;
 
+    enum class alignment_x
+    {
+        LEFT,
+        CENTER,
+        RIGHT
+    };
+
+    enum class alignment_y
+    {
+        TOP,
+        MIDDLE,
+        BOTTOM
+    };
+
     /// Used to draw some text on the screen
     /**
     */
     class text
     {
     public :
-
-        enum class alignment
-        {
-            LEFT,
-            CENTER,
-            RIGHT
-        };
-
-        enum class vertical_alignment
-        {
-            TOP,
-            MIDDLE,
-            BOTTOM
-        };
-
         /// Constructor.
         /** \param mRenderer    The renderer instance to use
         *   \param pFont        The font to use for rendering
@@ -205,25 +204,25 @@ namespace gui
         */
         float get_text_height() const;
 
-        /// Sets text alignment.
-        /** \param mAlign The new alignment
+        /// Sets text horizontal alignment.
+        /** \param mAlign The new horizontal alignment
         */
-        void set_alignment(const alignment& mAlign);
+        void set_alignment_x(const alignment_x& mAlignX);
 
         /// Sets text vertical alignment.
-        /** \param mVertAlign The new vertical alignment
+        /** \param mAlignY The new vertical alignment
         */
-        void set_vertical_alignment(const vertical_alignment& mVertAlign);
+        void set_alignment_y(const alignment_y& mAlignY);
 
-        /// Returns the text aligment.
-        /** \return The text alignment
+        /// Returns the text horizontal alignment.
+        /** \return The text horizontal alignment
         */
-        const alignment& get_alignment() const;
+        const alignment_x& get_alignment_x() const;
 
-        /// Returns the text aligment.
-        /** \return The text alignment
+        /// Returns the text vertical alignment.
+        /** \return The text vertical alignment
         */
-        const vertical_alignment& get_vertical_alignment() const;
+        const alignment_y& get_alignment_y() const;
 
         /// Sets this text's tracking.
         /** \param fTracking The new tracking
@@ -356,8 +355,8 @@ namespace gui
         bool  bFormattingEnabled_ = false;
         float fBoxW_ = std::numeric_limits<float>::infinity();
         float fBoxH_ = std::numeric_limits<float>::infinity();
-        alignment          mAlign_ = alignment::LEFT;
-        vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
+        alignment_x mAlignX_ = alignment_x::LEFT;
+        alignment_y mAlignY_ = alignment_y::MIDDLE;
 
         std::shared_ptr<font> pFont_;
         std::shared_ptr<font> pOutlineFont_;

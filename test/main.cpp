@@ -492,8 +492,8 @@ int main(int argc, char* argv[])
         pFont = pFrame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
         pFont->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f(0, -5));
         pFont->set_font("interface/fonts/main.ttf", 15);
-        pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
-        pFont->set_justify_h(gui::text::alignment::RIGHT);
+        pFont->set_alignment_y(gui::alignment_y::BOTTOM);
+        pFont->set_alignment_x(gui::alignment_x::RIGHT);
         pFont->set_outlined(true);
         pFont->set_text_color(gui::color::RED);
         pFont->notify_loaded();

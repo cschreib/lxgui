@@ -66,7 +66,7 @@
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="CENTER" text="">
+                        <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" alignX="CENTER" text="">
                             <Size>
                                 <AbsDimension x="140" y="32"/>
                             </Size>
@@ -282,7 +282,7 @@
         </Anchors>
         <Layers>
             <Layer>
-                <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="LEFT">
+                <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" alignX="LEFT">
                     <Size>
                         <AbsDimension x="40"/>
                     </Size>
@@ -294,7 +294,7 @@
                         </Anchor>
                     </Anchors>
                 </FontString>
-                <FontString name="$parentValueString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="RIGHT" text="0">
+                <FontString name="$parentValueString" font="interface/fonts/main.ttf" fontHeight="11" alignX="RIGHT" text="0">
                     <Size>
                         <AbsDimension x="24"/>
                     </Size>

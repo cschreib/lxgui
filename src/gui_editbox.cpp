@@ -844,16 +844,16 @@ void edit_box::update_carret_position_()
     {
         anchor_point mPoint;
         float fOffset = 0.0f;
-        switch (pFontString_->get_justify_h())
+        switch (pFontString_->get_alignment_x())
         {
-            case text::alignment::LEFT :
+            case alignment_x::LEFT :
                 mPoint = anchor_point::LEFT;
                 fOffset = lTextInsets_.left - 1;
                 break;
-            case text::alignment::CENTER :
+            case alignment_x::CENTER :
                 mPoint = anchor_point::CENTER;
                 break;
-            case text::alignment::RIGHT :
+            case alignment_x::RIGHT :
                 mPoint = anchor_point::RIGHT;
                 fOffset = -lTextInsets_.right - 1;
                 break;

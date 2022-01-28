@@ -412,7 +412,7 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
             <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
-            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
+            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" alignX="RIGHT" alignY="BOTTOM" outline="NORMAL">
                 <Anchors>
                     <Anchor point="BOTTOM_RIGHT">
                         <Offset>
@@ -428,7 +428,7 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
 
 We named our FontString `$parentText`. In names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
 
-Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `justifyH` and `justifyV` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
+Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `alignX` and `alignY` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
 
 NB: the GUI positioning is done in "points". By default, on traditional displays a point is equivalent to a pixel, but it can be equivalent to two or more pixels on modern hi-DPI displays. In addition, the GUI can always be rescaled by an arbitrary scaling factor (in the same way that you can zoom on a web page in your browser). This rescaling factor is set to `1.0` by default, but changing its value also changes the number of pixels per points.
 
@@ -472,7 +472,7 @@ Once this is done, we have the full XML file:
             <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
-            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
+            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" alignX="RIGHT" alignY="BOTTOM" outline="NORMAL">
                 <Anchors>
                     <Anchor point="BOTTOM_RIGHT">
                         <Offset>
@@ -538,8 +538,8 @@ ui:
           font: interface/fonts/main.ttf
           text: ""
           font_height: 12
-          justify_h: RIGHT
-          justify_v: BOTTOM
+          align_x: RIGHT
+          align_y: BOTTOM
           outline: NORMAL
           color: {r: 0, g: 1, b: 0}
           anchors:
@@ -588,8 +588,8 @@ utils::observer_ptr<gui::font_string> text =
     frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
 text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
-text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
-text->set_justify_h(gui::text::alignment::RIGHT);
+text->set_alignment_y(gui::alignment_y::BOTTOM);
+text->set_alignment_x(gui::alignment_x::RIGHT);
 text->set_outlined(true);
 text->set_text_color(gui::color::GREEN);
 text->notify_loaded(); // must be called on all objects when they are fully set up
