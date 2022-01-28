@@ -443,7 +443,12 @@ namespace gui
         /** \param mArgs Argument to construct a new anchor_data
         */
         template<typename ... Args>
-        void set_point(Args&& ... mArgs) { set_point(std::forward<Args>(mArgs)...); }
+        void set_point(Args&& ... mArgs)
+        {
+            constexpr auto set_point_overload =
+                static_cast<void(region::*)(const anchor_data&)>(&region::set_point);
+            (this->*set_point_overload)(anchor_data{std::forward<Args>(mArgs)...});
+        }
 
         /// Checks if this region depends on another.
         /** \param mObj The region to test
