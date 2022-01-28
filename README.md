@@ -532,7 +532,6 @@ ui:
 
     layers:
       layer:
-
         font_string:
           name: $parentText
           font: interface/fonts/main.ttf
@@ -588,8 +587,8 @@ utils::observer_ptr<gui::font_string> text =
     frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
 text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
-text->set_alignment_y(gui::alignment_y::BOTTOM);
 text->set_alignment_x(gui::alignment_x::RIGHT);
+text->set_alignment_y(gui::alignment_y::BOTTOM);
 text->set_outlined(true);
 text->set_text_color(gui::color::GREEN);
 text->notify_loaded(); // must be called on all objects when they are fully set up
@@ -605,8 +604,7 @@ frame->add_script("OnUpdate", [=](gui::frame& self, const event_data& args) muta
 
     if (timer > update_time)
     {
-        utils::observer_ptr<gui::font_string> text;
-        text = self.get_region<gui::font_string>("Text");
+        utils::observer_ptr<gui::font_string> text = self.get_region<gui::font_string>("Text");
         text->set_text("FPS : "+utils::to_string(std::floor(frames/timer)));
 
         timer = 0.0f;
