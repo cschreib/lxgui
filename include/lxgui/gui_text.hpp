@@ -205,7 +205,7 @@ namespace gui
         float get_text_height() const;
 
         /// Sets text horizontal alignment.
-        /** \param mAlign The new horizontal alignment
+        /** \param mAlignX The new horizontal alignment
         */
         void set_alignment_x(const alignment_x& mAlignX);
 
