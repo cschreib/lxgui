@@ -12,7 +12,7 @@
             </Max>
         </ResizeBounds>
         <Anchors>
-            <Anchor point="TOPLEFT"/>
+            <Anchor point="TOP_LEFT"/>
         </Anchors>
         <Scripts>
             <OnLoad>
@@ -31,7 +31,7 @@
                     <AbsDimension x="60" y="40"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT">
+                    <Anchor point="TOP_RIGHT">
                         <Offset>
                             <AbsDimension x="-16" y="32"/>
                         </Offset>
@@ -55,12 +55,12 @@
             </Frame>
             <Button name="$parentCopy" inherits="ButtonTemplate_Button">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentSwatch" relativePoint="BOTTOMRIGHT">
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentSwatch" relativePoint="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension y="5"/>
                         </Offset>
                     </Anchor>
-                    <Anchor point="TOPLEFT" relativeTo="$parentSwatch" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOP_LEFT" relativeTo="$parentSwatch" relativePoint="BOTTOM_LEFT">
                         <Offset>
                             <AbsDimension y="5"/>
                         </Offset>
@@ -78,12 +78,12 @@
             </Button>
             <Button name="$parentPaste" inherits="ButtonTemplate_Button">
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentCopy" relativePoint="BOTTOMRIGHT">
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentCopy" relativePoint="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension y="3"/>
                         </Offset>
                     </Anchor>
-                    <Anchor point="TOPLEFT" relativeTo="$parentCopy" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOP_LEFT" relativeTo="$parentCopy" relativePoint="BOTTOM_LEFT">
                         <Offset>
                             <AbsDimension y="3"/>
                         </Offset>

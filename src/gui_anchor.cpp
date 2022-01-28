@@ -84,7 +84,7 @@ vector2f anchor::get_point(const region& mObject) const
     vector2f mParentOffset;
     switch (mParentPoint)
     {
-        case anchor_point::TOPLEFT:
+        case anchor_point::TOP_LEFT:
             mParentOffset.x = 0.0f;
             mParentOffset.y = 0.0f;
             break;
@@ -92,7 +92,7 @@ vector2f anchor::get_point(const region& mObject) const
             mParentOffset.x = 0.0f;
             mParentOffset.y = mParentSize.y/2.0f;
             break;
-        case anchor_point::BOTTOMLEFT:
+        case anchor_point::BOTTOM_LEFT:
             mParentOffset.x = 0.0f;
             mParentOffset.y = mParentSize.y;
             break;
@@ -107,7 +107,7 @@ vector2f anchor::get_point(const region& mObject) const
             mParentOffset.x = mParentSize.x/2.0f;
             mParentOffset.y = mParentSize.y;
             break;
-        case anchor_point::TOPRIGHT:
+        case anchor_point::TOP_RIGHT:
             mParentOffset.x = mParentSize.x;
             mParentOffset.y = 0.0f;
             break;
@@ -115,7 +115,7 @@ vector2f anchor::get_point(const region& mObject) const
             mParentOffset.x = mParentSize.x;
             mParentOffset.y = mParentSize.y/2.0f;
             break;
-        case anchor_point::BOTTOMRIGHT:
+        case anchor_point::BOTTOM_RIGHT:
             mParentOffset.x = mParentSize.x;
             mParentOffset.y = mParentSize.y;
             break;
@@ -156,13 +156,13 @@ std::string anchor::get_string_point(anchor_point mP)
 {
     switch (mP)
     {
-        case anchor_point::TOPLEFT :     return "TOPLEFT";
+        case anchor_point::TOP_LEFT :     return "TOP_LEFT";
         case anchor_point::TOP :         return "TOP";
-        case anchor_point::TOPRIGHT :    return "TOPRIGHT";
+        case anchor_point::TOP_RIGHT :    return "TOP_RIGHT";
         case anchor_point::RIGHT :       return "RIGHT";
-        case anchor_point::BOTTOMRIGHT : return "BOTTOMRIGHT";
+        case anchor_point::BOTTOM_RIGHT : return "BOTTOM_RIGHT";
         case anchor_point::BOTTOM :      return "BOTTOM";
-        case anchor_point::BOTTOMLEFT :  return "BOTTOMLEFT";
+        case anchor_point::BOTTOM_LEFT :  return "BOTTOM_LEFT";
         case anchor_point::LEFT :        return "LEFT";
         case anchor_point::CENTER :      return "CENTER";
     }
@@ -171,16 +171,16 @@ std::string anchor::get_string_point(anchor_point mP)
 
 anchor_point anchor::get_anchor_point(const std::string& sPoint)
 {
-    if (sPoint == "TOPLEFT")          return anchor_point::TOPLEFT;
+    if (sPoint == "TOP_LEFT")          return anchor_point::TOP_LEFT;
     else if (sPoint == "TOP")         return anchor_point::TOP;
-    else if (sPoint == "TOPRIGHT")    return anchor_point::TOPRIGHT;
+    else if (sPoint == "TOP_RIGHT")    return anchor_point::TOP_RIGHT;
     else if (sPoint == "RIGHT")       return anchor_point::RIGHT;
-    else if (sPoint == "BOTTOMRIGHT") return anchor_point::BOTTOMRIGHT;
+    else if (sPoint == "BOTTOM_RIGHT") return anchor_point::BOTTOM_RIGHT;
     else if (sPoint == "BOTTOM")      return anchor_point::BOTTOM;
-    else if (sPoint == "BOTTOMLEFT")  return anchor_point::BOTTOMLEFT;
+    else if (sPoint == "BOTTOM_LEFT")  return anchor_point::BOTTOM_LEFT;
     else if (sPoint == "LEFT")        return anchor_point::LEFT;
     else if (sPoint == "CENTER")      return anchor_point::CENTER;
-    return anchor_point::TOPLEFT;
+    return anchor_point::TOP_LEFT;
 }
 
 }

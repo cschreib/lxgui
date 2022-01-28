@@ -47,7 +47,7 @@
             <AbsDimension x="100" y="16"/>
         </Size>
         <Anchors>
-            <Anchor point="BOTTOMRIGHT">
+            <Anchor point="BOTTOM_RIGHT">
                 <Offset><AbsDimension y="-5"/></Offset>
             </Anchor>
         </Anchors>
@@ -59,7 +59,7 @@
                 self.timer = self.update_time;
                 self.total_fps = 0;
                 self.frames = 0;
-                FontstringTestFrameText:set_point("BOTTOMRIGHT", self, "TOPRIGHT", -2, -5);
+                FontstringTestFrameText:set_point("BOTTOM_RIGHT", self, "TOP_RIGHT", -2, -5);
             </OnLoad>
             <OnUpdate>
                 if (arg1 == 0) then arg1 = 0.1; end

@@ -126,7 +126,7 @@ void region::parse_anchor_node_(const layout_node& mNode)
             }
 
             std::string sPoint = mAnchorNode.get_attribute_value_or<std::string>(
-                "point", "TOPLEFT");
+                "point", "TOP_LEFT");
             std::string sParent = mAnchorNode.get_attribute_value_or<std::string>(
                 "relativeTo", pParent_ || is_virtual() ? "$parent" : "");
             std::string sRelativePoint = mAnchorNode.get_attribute_value_or<std::string>(

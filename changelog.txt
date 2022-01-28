@@ -132,6 +132,7 @@ Other changes:
  - gui: removed frame::register_all_events and unregister_all_events
  - gui: removed frame::enable_keyboard, use enable_key_capture instead
  - gui: removed event class; generic events are now only using event_data
+ - gui: removed TOPLEFT to TOP_LEFT, BOTTOMRIGHT to BOTTOM_RIGHT, etc.
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument

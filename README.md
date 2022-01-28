@@ -397,8 +397,8 @@ Then, within this tag, we need to create a frame (which is more or less a GUI co
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
     </Frame>
 ```
@@ -408,13 +408,13 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-5" y="-5"/>
                         </Offset>
@@ -468,13 +468,13 @@ Once this is done, we have the full XML file:
 <Ui>
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-5" y="-5"/>
                         </Offset>
@@ -527,8 +527,8 @@ ui:
   frame:
     name: FPSCounter
     anchors:
-      - point: TOPLEFT
-      - point: BOTTOMRIGHT
+      - point: TOP_LEFT
+      - point: BOTTOM_RIGHT
 
     layers:
       layer:
@@ -543,7 +543,7 @@ ui:
           outline: NORMAL
           color: {r: 0, g: 1, b: 0}
           anchors:
-            - point: BOTTOMRIGHT
+            - point: BOTTOM_RIGHT
               offset: {abs_dimension: {x: -5, y: -5}}
 
     scripts:
@@ -577,16 +577,16 @@ Re-creating the above addon in pure C++ is perfectly possible. This can be done 
 gui::root& root = manager->get_root();
 
 // Create the Frame.
-// NB: observer_ptr is a non-owning smart pointer similar to std::weak_ptr.
-utils::observer_ptr<gui::frame> frame;
-frame = root.create_root_frame<gui::frame>("FPSCounter");
-frame->set_point(gui::anchor_point::TOPLEFT);
-frame->set_point(gui::anchor_point::BOTTOMRIGHT);
+// NB: observer_ptr is a lightweight, non-owning smart pointer.
+utils::observer_ptr<gui::frame> frame =
+    root.create_root_frame<gui::frame>("FPSCounter");
+frame->set_point(gui::anchor_point::TOP_LEFT);
+frame->set_point(gui::anchor_point::BOTTOM_RIGHT);
 
 // Create the FontString as a child region of the frame.
-utils::observer_ptr<gui::font_string> text;
-text = frame->create_layered_region<gui::font_string>(gui::layer::LAYER_ARTWORK, "$parentText");
-text->set_point(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5});
+utils::observer_ptr<gui::font_string> text =
+    frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
+text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
 text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
 text->set_justify_h(gui::text::alignment::RIGHT);

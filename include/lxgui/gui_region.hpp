@@ -125,9 +125,9 @@ namespace gui
     *
     *   __Anchors.__ There are nine available anchor points:
     *
-    *   - `TOPLEFT`: constrains the max Y and min X.
-    *   - `TOPRIGHT`: constrains the max Y and max X.
-    *   - `BOTTOMLEFT`: constrains the min Y and min X.
+    *   - `TOP_LEFT`: constrains the max Y and min X.
+    *   - `TOP_RIGHT`: constrains the max Y and max X.
+    *   - `BOTTOM_LEFT`: constrains the min Y and min X.
     *   - `BOTTOMRIGH`: constrains the min Y and max X.
     *   - `LEFT`: constrains the min X and the midpoint in Y.
     *   - `RIGHT`: constrains the max X and the midpoint in Y.
@@ -135,8 +135,8 @@ namespace gui
     *   - `BOTTOM`: constrains the min Y and the midpoint in X.
     *   - `CENTER`: constrains the midpoint in X and Y.
     *
-    *   If you specify two constraints on the same point (for example: `TOPLEFT`
-    *   and `BOTTOMLEFT` both constrain the min X coordinate), the most stringent
+    *   If you specify two constraints on the same point (for example: `TOP_LEFT`
+    *   and `BOTTOM_LEFT` both constrain the min X coordinate), the most stringent
     *   constraint always wins. Constraints on the midpoints are more subtle however,
     *   as they will always be discarded when both the min and max are constrained.
     *   For example, consider an object `A` of fixed size 30x30 and some other object

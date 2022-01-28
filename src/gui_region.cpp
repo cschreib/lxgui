@@ -63,18 +63,18 @@ region::~region()
             for (const auto& mPoint : lAnchoredPointList)
             {
                 const anchor& mAnchor = pObj->get_point(mPoint);
-                anchor_data mNewAnchor = anchor_data(mPoint, "", anchor_point::TOPLEFT);
+                anchor_data mNewAnchor = anchor_data(mPoint, "", anchor_point::TOP_LEFT);
                 mNewAnchor.mOffset = mAnchor.mOffset;
 
                 switch (mAnchor.mParentPoint)
                 {
-                case anchor_point::TOPLEFT :     mNewAnchor.mOffset   += lBorderList_.top_left();     break;
+                case anchor_point::TOP_LEFT :     mNewAnchor.mOffset   += lBorderList_.top_left();     break;
                 case anchor_point::TOP :         mNewAnchor.mOffset.y += lBorderList_.top;            break;
-                case anchor_point::TOPRIGHT :    mNewAnchor.mOffset   += lBorderList_.top_right();    break;
+                case anchor_point::TOP_RIGHT :    mNewAnchor.mOffset   += lBorderList_.top_right();    break;
                 case anchor_point::RIGHT :       mNewAnchor.mOffset.x += lBorderList_.right;          break;
-                case anchor_point::BOTTOMRIGHT : mNewAnchor.mOffset   += lBorderList_.bottom_right(); break;
+                case anchor_point::BOTTOM_RIGHT : mNewAnchor.mOffset   += lBorderList_.bottom_right(); break;
                 case anchor_point::BOTTOM :      mNewAnchor.mOffset.y += lBorderList_.bottom;         break;
-                case anchor_point::BOTTOMLEFT :  mNewAnchor.mOffset   += lBorderList_.bottom_left();  break;
+                case anchor_point::BOTTOM_LEFT :  mNewAnchor.mOffset   += lBorderList_.bottom_left();  break;
                 case anchor_point::LEFT :        mNewAnchor.mOffset.x += lBorderList_.left;           break;
                 case anchor_point::CENTER :      mNewAnchor.mOffset   += lBorderList_.center();       break;
                 }
@@ -480,11 +480,11 @@ void region::set_all_points(const std::string& sObjName)
 
     clear_all_points();
 
-    lAnchorList_[static_cast<int>(anchor_point::TOPLEFT)].emplace(
-        *this, anchor_data(anchor_point::TOPLEFT, sObjName));
+    lAnchorList_[static_cast<int>(anchor_point::TOP_LEFT)].emplace(
+        *this, anchor_data(anchor_point::TOP_LEFT, sObjName));
 
-    lAnchorList_[static_cast<int>(anchor_point::BOTTOMRIGHT)].emplace(
-        *this, anchor_data(anchor_point::BOTTOMRIGHT, sObjName));
+    lAnchorList_[static_cast<int>(anchor_point::BOTTOM_RIGHT)].emplace(
+        *this, anchor_data(anchor_point::BOTTOM_RIGHT, sObjName));
 
     lDefinedBorderList_ = bounds2<bool>(true, true, true, true);
 
@@ -514,28 +514,28 @@ void region::set_point(const anchor_data& mAnchor)
 
     switch (mAnchor.mPoint)
     {
-        case anchor_point::TOPLEFT :
+        case anchor_point::TOP_LEFT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.left   = true;
             break;
         case anchor_point::TOP :
             lDefinedBorderList_.top    = true;
             break;
-        case anchor_point::TOPRIGHT :
+        case anchor_point::TOP_RIGHT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.right  = true;
             break;
         case anchor_point::RIGHT :
             lDefinedBorderList_.right  = true;
             break;
-        case anchor_point::BOTTOMRIGHT :
+        case anchor_point::BOTTOM_RIGHT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.right  = true;
             break;
         case anchor_point::BOTTOM :
             lDefinedBorderList_.bottom = true;
             break;
-        case anchor_point::BOTTOMLEFT :
+        case anchor_point::BOTTOM_LEFT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.left   = true;
             break;
@@ -701,7 +701,7 @@ void region::read_anchors_(float& fLeft, float& fRight, float& fTop,
 
         switch (mAnchor.mPoint)
         {
-            case anchor_point::TOPLEFT :
+            case anchor_point::TOP_LEFT :
                 fTop = std::min<float>(fTop, mAnchorPoint.y);
                 fLeft = std::min<float>(fLeft, mAnchorPoint.x);
                 break;
@@ -709,7 +709,7 @@ void region::read_anchors_(float& fLeft, float& fRight, float& fTop,
                 fTop = std::min<float>(fTop, mAnchorPoint.y);
                 fXCenter = mAnchorPoint.x;
                 break;
-            case anchor_point::TOPRIGHT :
+            case anchor_point::TOP_RIGHT :
                 fTop = std::min<float>(fTop, mAnchorPoint.y);
                 fRight = std::max<float>(fRight, mAnchorPoint.x);
                 break;
@@ -717,7 +717,7 @@ void region::read_anchors_(float& fLeft, float& fRight, float& fTop,
                 fRight = std::max<float>(fRight, mAnchorPoint.x);
                 fYCenter = mAnchorPoint.y;
                 break;
-            case anchor_point::BOTTOMRIGHT :
+            case anchor_point::BOTTOM_RIGHT :
                 fBottom = std::max<float>(fBottom, mAnchorPoint.y);
                 fRight = std::max<float>(fRight, mAnchorPoint.x);
                 break;
@@ -725,7 +725,7 @@ void region::read_anchors_(float& fLeft, float& fRight, float& fTop,
                 fBottom = std::max<float>(fBottom, mAnchorPoint.y);
                 fXCenter = mAnchorPoint.x;
                 break;
-            case anchor_point::BOTTOMLEFT :
+            case anchor_point::BOTTOM_LEFT :
                 fBottom = std::max<float>(fBottom, mAnchorPoint.y);
                 fLeft = std::min<float>(fLeft, mAnchorPoint.x);
                 break;

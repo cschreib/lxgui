@@ -320,9 +320,9 @@ void root::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
             const bounds2f lBorders = pMovedObject_->get_borders();
 
             pMovedObject_->clear_all_points();
-            pMovedObject_->set_point(anchor_point::TOPLEFT, "", lBorders.top_left());
+            pMovedObject_->set_point(anchor_point::TOP_LEFT, "", lBorders.top_left());
 
-            pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOPLEFT);
+            pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOP_LEFT);
 
             mMovementStartPosition_ = lBorders.top_left();
         }
@@ -355,30 +355,30 @@ void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
 
         switch (mPoint)
         {
-            case anchor_point::TOPLEFT :
+            case anchor_point::TOP_LEFT :
             case anchor_point::TOP :
-                mOppositePoint = anchor_point::BOTTOMRIGHT;
+                mOppositePoint = anchor_point::BOTTOM_RIGHT;
                 mOffset = lBorders.bottom_right();
                 bResizeFromRight_  = false;
                 bResizeFromBottom_ = false;
                 break;
-            case anchor_point::TOPRIGHT :
+            case anchor_point::TOP_RIGHT :
             case anchor_point::RIGHT :
-                mOppositePoint = anchor_point::BOTTOMLEFT;
+                mOppositePoint = anchor_point::BOTTOM_LEFT;
                 mOffset = lBorders.bottom_left();
                 bResizeFromRight_  = true;
                 bResizeFromBottom_ = false;
                 break;
-            case anchor_point::BOTTOMRIGHT :
+            case anchor_point::BOTTOM_RIGHT :
             case anchor_point::BOTTOM :
-                mOppositePoint = anchor_point::TOPLEFT;
+                mOppositePoint = anchor_point::TOP_LEFT;
                 mOffset = lBorders.top_left();
                 bResizeFromRight_  = true;
                 bResizeFromBottom_ = true;
                 break;
-            case anchor_point::BOTTOMLEFT :
+            case anchor_point::BOTTOM_LEFT :
             case anchor_point::LEFT :
-                mOppositePoint = anchor_point::TOPRIGHT;
+                mOppositePoint = anchor_point::TOP_RIGHT;
                 mOffset = lBorders.top_right();
                 bResizeFromRight_  = false;
                 bResizeFromBottom_ = true;
@@ -392,7 +392,7 @@ void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
         }
 
         pSizedObject_->clear_all_points();
-        pSizedObject_->set_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
+        pSizedObject_->set_point(mOppositePoint, "", anchor_point::TOP_LEFT, mOffset);
 
         mResizeStart_ = pSizedObject_->get_apparent_dimensions();
 

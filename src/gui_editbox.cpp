@@ -620,8 +620,8 @@ void edit_box::set_text_insets(const bounds2f& lInsets)
     if (pFontString_)
     {
         pFontString_->clear_all_points();
-        pFontString_->set_point(anchor_point::TOPLEFT, lTextInsets_.top_left());
-        pFontString_->set_point(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right());
+        pFontString_->set_point(anchor_point::TOP_LEFT, lTextInsets_.top_left());
+        pFontString_->set_point(anchor_point::BOTTOM_RIGHT, -lTextInsets_.bottom_right());
 
         update_displayed_text_();
         update_font_string_();
@@ -682,8 +682,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
     pFontString_->set_dimensions(vector2f(0, 0));
     pFontString_->clear_all_points();
 
-    pFontString_->set_point(anchor_point::TOPLEFT, lTextInsets_.top_left());
-    pFontString_->set_point(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right());
+    pFontString_->set_point(anchor_point::TOP_LEFT, lTextInsets_.top_left());
+    pFontString_->set_point(anchor_point::BOTTOM_RIGHT, -lTextInsets_.bottom_right());
 
     pFontString_->enable_formatting(false);
 

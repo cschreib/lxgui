@@ -3,8 +3,8 @@
 
     <Frame name="FontstringTestFrame">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers>
             <Layer>
@@ -30,7 +30,7 @@
                 </FontString>
                 <FontString name="$parentText2" font="interface/fonts/main.ttf" text="Shadow" fontHeight="38" justifyH="RIGHT" justifyV="BOTTOM">
                     <Anchors>
-                        <Anchor point="TOPRIGHT">
+                        <Anchor point="TOP_RIGHT">
                             <Offset>
                                 <AbsDimension x="0" y="0"/>
                             </Offset>
@@ -44,7 +44,7 @@
                 </FontString>
                 <FontString name="$parentText" font="interface/fonts/main.ttf" text="FPS : ---\n(created by XML)" fontHeight="15" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
                     <Anchors>
-                        <Anchor point="BOTTOMRIGHT">
+                        <Anchor point="BOTTOM_RIGHT">
                             <Offset>
                                 <AbsDimension x="-5" y="-5"/>
                             </Offset>

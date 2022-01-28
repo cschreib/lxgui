@@ -21,13 +21,13 @@ namespace gui
 
     enum class anchor_point
     {
-        TOPLEFT = 0,
+        TOP_LEFT = 0,
         TOP,
-        TOPRIGHT,
+        TOP_RIGHT,
         RIGHT,
-        BOTTOMRIGHT,
+        BOTTOM_RIGHT,
         BOTTOM,
-        BOTTOMLEFT,
+        BOTTOM_LEFT,
         LEFT,
         CENTER
     };
@@ -77,9 +77,9 @@ namespace gui
         anchor_data(anchor_point mInputPoint, anchor_point mInputParentPoint) :
             mPoint(mInputPoint), sParent("$default"), mParentPoint(mInputParentPoint) {}
 
-        anchor_point mPoint = anchor_point::TOPLEFT;
+        anchor_point mPoint = anchor_point::TOP_LEFT;
         std::string  sParent;
-        anchor_point mParentPoint = anchor_point::TOPLEFT;
+        anchor_point mParentPoint = anchor_point::TOP_LEFT;
         vector2f     mOffset;
         anchor_type  mType = anchor_type::ABS;
     };

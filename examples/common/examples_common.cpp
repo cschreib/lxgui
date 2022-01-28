@@ -100,14 +100,14 @@ void examples_setup_gui(gui::manager& mManager)
     // A "child" frame is owned by another frame.
     utils::observer_ptr<gui::frame> pFrame;
     pFrame = mManager.get_root().create_root_frame<gui::frame>("FPSCounter");
-    pFrame->set_point(gui::anchor_point::TOPLEFT);
-    pFrame->set_point(gui::anchor_point::BOTTOMRIGHT,
-        "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
+    pFrame->set_point(gui::anchor_point::TOP_LEFT);
+    pFrame->set_point(gui::anchor_point::BOTTOM_RIGHT,
+        "FontstringTestFrameText", gui::anchor_point::TOP_RIGHT);
 
     // Create a font_string in the frame
     utils::observer_ptr<gui::font_string> pFont;
     pFont = pFrame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
-    pFont->set_point(gui::anchor_point::BOTTOMRIGHT, gui::vector2f(0, -5));
+    pFont->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f(0, -5));
     pFont->set_font("interface/fonts/main.ttf", 15);
     pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
     pFont->set_justify_h(gui::text::alignment::RIGHT);

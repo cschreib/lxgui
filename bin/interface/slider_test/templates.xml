@@ -117,7 +117,7 @@
                     <AbsDimension x="10" y="10"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT">
+                    <Anchor point="TOP_LEFT">
                         <Offset>
                             <AbsDimension x="5" y="5"/>
                         </Offset>
@@ -129,7 +129,7 @@
                     <AbsDimension x="10" y="10"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT">
+                    <Anchor point="TOP_LEFT">
                         <Offset>
                             <AbsDimension x="5" y="5"/>
                         </Offset>
@@ -141,7 +141,7 @@
                     <AbsDimension x="10" y="10"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-5" y="-5"/>
                         </Offset>
@@ -152,7 +152,7 @@
                         self:register_for_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
-                        self:get_parent():start_sizing("BOTTOMRIGHT");
+                        self:get_parent():start_sizing("BOTTOM_RIGHT");
                     </OnDragStart>
                     <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
@@ -164,7 +164,7 @@
                     <AbsDimension x="10" y="10"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT">
+                    <Anchor point="BOTTOM_LEFT">
                         <Offset>
                             <AbsDimension x="5" y="-5"/>
                         </Offset>
@@ -175,7 +175,7 @@
                         self:register_for_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
-                        self:get_parent():start_sizing("BOTTOMLEFT");
+                        self:get_parent():start_sizing("BOTTOM_LEFT");
                     </OnDragStart>
                     <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
@@ -187,8 +187,8 @@
                     <AbsDimension x="3"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentResizeZoneTL" relativePoint="BOTTOMLEFT"/>
-                    <Anchor point="BOTTOMLEFT" relativeTo="$parentResizeZoneBL" relativePoint="TOPLEFT"/>
+                    <Anchor point="TOP_LEFT" relativeTo="$parentResizeZoneTL" relativePoint="BOTTOM_LEFT"/>
+                    <Anchor point="BOTTOM_LEFT" relativeTo="$parentResizeZoneBL" relativePoint="TOP_LEFT"/>
                 </Anchors>
                 <Scripts>
                     <OnLoad>
@@ -207,8 +207,8 @@
                     <AbsDimension x="3"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentResizeZoneTR" relativePoint="BOTTOMRIGHT"/>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentResizeZoneBR" relativePoint="TOPRIGHT"/>
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentResizeZoneTR" relativePoint="BOTTOM_RIGHT"/>
+                    <Anchor point="BOTTOM_RIGHT" relativeTo="$parentResizeZoneBR" relativePoint="TOP_RIGHT"/>
                 </Anchors>
                 <Scripts>
                     <OnLoad>
@@ -227,8 +227,8 @@
                     <AbsDimension y="3"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativeTo="$parentResizeZoneBL" relativePoint="BOTTOMRIGHT"/>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentResizeZoneBR" relativePoint="BOTTOMLEFT"/>
+                    <Anchor point="BOTTOM_LEFT" relativeTo="$parentResizeZoneBL" relativePoint="BOTTOM_RIGHT"/>
+                    <Anchor point="BOTTOM_RIGHT" relativeTo="$parentResizeZoneBR" relativePoint="BOTTOM_LEFT"/>
                 </Anchors>
                 <Scripts>
                     <OnLoad>
