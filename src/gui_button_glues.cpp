@@ -28,8 +28,8 @@
 *   addition to those from @{Frame}:
 *
 *   - `OnClick`: Triggered when the button is clicked, either when
-*   @{Button:click} is called, or after the mouse is released after a
-*   click over the button.
+*   @{Button:click} is called, or just when a mouse button is pressed
+*   when the cursor is over the button.
 *   - `OnDoubleClick`: Triggered when the button is double-clicked.
 *   - `OnEnable`: Triggered by @{Button:enable}.
 *   - `OnDisable`: Triggered by @{Button:disable}.
