@@ -85,8 +85,8 @@ Inheritance diagram for lxgui::gui::frame_renderer:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1frame__renderer.png" usemap="#lxgui::gui::frame_5Frenderer_map" alt=""/>
   <map id="lxgui::gui::frame_5Frenderer_map" name="lxgui::gui::frame_5Frenderer_map">
-<area href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content." alt="lxgui::gui::scroll_frame" shape="rect" coords="0,56,156,80"/>
-<area href="classlxgui_1_1gui_1_1uiroot.html" title="Root of the UI object hierarchy." alt="lxgui::gui::uiroot" shape="rect" coords="166,56,322,80"/>
+<area href="classlxgui_1_1gui_1_1root.html" title="Root of the UI object hierarchy." alt="lxgui::gui::root" shape="rect" coords="0,56,156,80"/>
+<area href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content." alt="lxgui::gui::scroll_frame" shape="rect" coords="166,56,322,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af1d2781ab6ac12c076cf06f09ada1f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-movable.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#af1d2781ab6ac12c076cf06f09ada1f43">More...</a><br /></td></tr>
 <tr class="separator:af1d2781ab6ac12c076cf06f09ada1f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4dc6cc0e4c8d7f32bede59da7861db3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#af4dc6cc0e4c8d7f32bede59da7861db3">notify_strata_needs_redraw</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mStrata)</td></tr>
-<tr class="memdesc:af4dc6cc0e4c8d7f32bede59da7861db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that one of its widget requires redraw.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#af4dc6cc0e4c8d7f32bede59da7861db3">More...</a><br /></td></tr>
+<tr class="memdesc:af4dc6cc0e4c8d7f32bede59da7861db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that one of its region requires redraw.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#af4dc6cc0e4c8d7f32bede59da7861db3">More...</a><br /></td></tr>
 <tr class="separator:af4dc6cc0e4c8d7f32bede59da7861db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0dee40803be4da57023f408aa5206d4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ab0dee40803be4da57023f408aa5206d4">notify_rendered_frame</a> (const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;pFrame, bool bRendered)</td></tr>
 <tr class="memdesc:ab0dee40803be4da57023f408aa5206d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#ab0dee40803be4da57023f408aa5206d4">More...</a><br /></td></tr>
@@ -503,7 +503,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns the width and height of of this renderer's main render target (e.g., screen). </p>
 <dl class="section return"><dt>Returns</dt><dd>The render target dimensions </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#adcc50f9c7ce81ce78d20d14d31191636">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1uiroot.html#a4cac99d685660303bf23a7522b182d97">lxgui::gui::uiroot</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#adcc50f9c7ce81ce78d20d14d31191636">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1root.html#a765b97a49b066b6f9ad97c731a4baec4">lxgui::gui::root</a>.</p>
 
 </div>
 </div>
@@ -715,7 +715,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Tells this renderer that one of its widget requires redraw. </p>
+<p>Tells this renderer that one of its region requires redraw. </p>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5a10cd6fd753be2cfb349c8dd322e321">lxgui::gui::scroll_frame</a>.</p>
 
@@ -994,7 +994,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 1 2022 08:39:36 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -197,7 +197,7 @@ Public Attributes</h2></td></tr>
 <li><a class="el" href="classlxgui_1_1input_1_1signals.html#a6f19eb989a64c790376d2431ac2fa091">on_key_released</a></li>
 <li><a class="el" href="classlxgui_1_1input_1_1signals.html#afc2e576ac27a794c89f16c53946e3f8a">on_text_entered</a></li>
 </ul>
-<p>These events are "global" and are not restricted by the UI. For example, <a class="el" href="classlxgui_1_1input_1_1signals.html#aed84c4d247d35d3c79cd67bd8d239845">on_mouse_pressed</a> will trigger whenever a mouse button is pressed, even if the mouse pointer is currently over a UI element that should capture mouse input. Likewise, <a class="el" href="classlxgui_1_1input_1_1signals.html#add0f56f4999aa9ab2cdd9826bc6002a1">on_key_pressed</a> will trigger even if a UI element has focus. These global events are meant to be consumed by the <a class="el" href="classlxgui_1_1gui_1_1uiroot.html">gui::uiroot</a>, which takes care of forwarding them to UI elements, and determining if a particular event is allowed to propagate to the elements below the UI. If you need to react only to events that are not captured by the UI, use events from <a class="el" href="classlxgui_1_1input_1_1world__dispatcher.html">input::world_dispatcher</a> instead. </p>
+<p>These events are "global" and are not restricted by the UI. For example, <a class="el" href="classlxgui_1_1input_1_1signals.html#aed84c4d247d35d3c79cd67bd8d239845">on_mouse_pressed</a> will trigger whenever a mouse button is pressed, even if the mouse pointer is currently over a UI element that should capture mouse input. Likewise, <a class="el" href="classlxgui_1_1input_1_1signals.html#add0f56f4999aa9ab2cdd9826bc6002a1">on_key_pressed</a> will trigger even if a UI element has focus. These global events are meant to be consumed by the <a class="el" href="classlxgui_1_1gui_1_1root.html">gui::root</a>, which takes care of forwarding them to UI elements, and determining if a particular event is allowed to propagate to the elements below the UI. If you need to react only to events that are not captured by the UI, use events from <a class="el" href="classlxgui_1_1input_1_1world__dispatcher.html">input::world_dispatcher</a> instead. </p>
 
 <p class="definition">Definition at line <a class="el" href="input__dispatcher_8hpp_source.html#l00052">52</a> of file <a class="el" href="input__dispatcher_8hpp_source.html">input_dispatcher.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -1001,7 +1001,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 27 2022 19:38:05 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 1 2022 08:39:36 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

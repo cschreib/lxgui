@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">class </span>uiobject;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">class </span>region;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1virtual__registry.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html">virtual_registry</a> : <span class="keyword">public</span> <a class="code" href="classlxgui_1_1gui_1_1registry.html">registry</a></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
@@ -97,7 +97,7 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html">virtual_registry</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html#ad6d9124fdad0f18e35bf07a7a0613df0">operator = </a>(<a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html">virtual_registry</a>&amp;&amp; mMgr) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        std::vector&lt;utils::observer_ptr&lt;const uiobject&gt;&gt; <a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html#ae6dcfea373c710f1d6e852d10ac6dc35">get_virtual_uiobject_list</a>(</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        std::vector&lt;utils::observer_ptr&lt;const region&gt;&gt; <a class="code" href="classlxgui_1_1gui_1_1virtual__registry.html#a5adda8a6340d06d44a662168cd89d35d">get_virtual_region_list</a>(</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            std::string_view sNames) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    private :</div>
@@ -114,11 +114,11 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__registry_html_a89803557dd1e8217611b37e59df32c08"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__registry.html#a89803557dd1e8217611b37e59df32c08">lxgui::gui::virtual_registry::virtual_registry</a></div><div class="ttdeci">virtual_registry(const registry &amp;mObjectRegistry)</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__registry_8cpp_source.html#l00011">gui_virtual_registry.cpp:11</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__registry_html_ad6d9124fdad0f18e35bf07a7a0613df0"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__registry.html#ad6d9124fdad0f18e35bf07a7a0613df0">lxgui::gui::virtual_registry::operator=</a></div><div class="ttdeci">virtual_registry &amp; operator=(const virtual_registry &amp;mMgr)=default</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__registry_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__registry.html">lxgui::gui::virtual_registry</a></div><div class="ttdoc">Keeps track of virtual UI objects and records their names for lookup.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__registry_8hpp_source.html#l00018">gui_virtual_registry.hpp:18</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__registry_html_a5adda8a6340d06d44a662168cd89d35d"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__registry.html#a5adda8a6340d06d44a662168cd89d35d">lxgui::gui::virtual_registry::get_virtual_region_list</a></div><div class="ttdeci">std::vector&lt; utils::observer_ptr&lt; const region &gt; &gt; get_virtual_region_list(std::string_view sNames) const</div><div class="ttdoc">Return a list of virtual regions matching the provided comma-separated list.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__registry_8cpp_source.html#l00016">gui_virtual_registry.cpp:16</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__registry_html_ae6dcfea373c710f1d6e852d10ac6dc35"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__registry.html#ae6dcfea373c710f1d6e852d10ac6dc35">lxgui::gui::virtual_registry::get_virtual_uiobject_list</a></div><div class="ttdeci">std::vector&lt; utils::observer_ptr&lt; const uiobject &gt; &gt; get_virtual_uiobject_list(std::string_view sNames) const</div><div class="ttdoc">Return a list of virtual uiobjects matching the provided comma-separated list.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__registry_8cpp_source.html#l00016">gui_virtual_registry.cpp:16</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 27 2022 19:38:04 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 1 2022 08:39:35 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
