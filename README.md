@@ -37,7 +37,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
 * **Fully extensible**. Except for the base GUI region types, every region type is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New region types can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
-* **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of the layout+script files is not required.
+* **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly in C++ if the flexibility of the layout+script files is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
 * **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual regions, inheritance, ...).
 
@@ -79,13 +79,13 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
 
-To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support XML and YAML layout files, or just one if you need only XML or YAML.
+To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
 
 Available rendering back-ends:
 
- - OpenGL. This back-end depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance. This back-end generally offers the best possible performance, but it also has the largest number of third-party dependencies, hence it can be harder to set up.
+ - OpenGL. This back-end depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance. This back-end generally offers the best possible performance, but it also has the largest number of third-party dependencies, hence it can be harder to set up.
 
  - SFML2. This back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML. It runs a little bit slower than the OpenGL back-end, as the extra layer from SFML adds a bit of overhead. At present, some limitations in the SFML API also prevents using VBOs.
 
@@ -282,6 +282,7 @@ Setting up the GUI in C++ is rather straightforward. The example code below is b
 sf::RenderWindow window;
 
 // Initialize the GUI using the SFML back-end
+// NB: owner_ptr is a lightweight, unique-ownership smart pointer (similar to std::unique_ptr).
 utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
 // Grab a pointer to the SFML input source so we can feed events to it later
@@ -426,7 +427,7 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
     </Frame>
 ```
 
-We named our FontString `$parentText`. In names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
+We named our FontString `$parentText`. In UI element names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
 
 Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `alignX` and `alignY` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
 
@@ -576,7 +577,7 @@ Re-creating the above addon in pure C++ is perfectly possible. This can be done 
 gui::root& root = manager->get_root();
 
 // Create the Frame.
-// NB: observer_ptr is a lightweight, non-owning smart pointer.
+// NB: observer_ptr is a lightweight, non-owning smart pointer (vaguely similar to std::weak_ptr).
 utils::observer_ptr<gui::frame> frame =
     root.create_root_frame<gui::frame>("FPSCounter");
 frame->set_point(gui::anchor_point::TOP_LEFT);
