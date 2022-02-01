@@ -1182,26 +1182,12 @@ void frame::remove_script(const std::string& sScriptName)
 
 void frame::on_event_(std::string_view sEventName, const event_data& mEvent)
 {
-    alive_checker mChecker(*this);
+    event_data mData;
+    mData.add(std::string(sEventName));
+    for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
+        mData.add(mEvent.get(i));
 
-    if (has_script("OnEvent"))
-    {
-        // ADDON_LOADED should only be fired if it's this frame's addon
-        if (sEventName == "ADDON_LOADED")
-        {
-            if (!pAddOn_ || pAddOn_->sName != mEvent.get<std::string>(0))
-                return;
-        }
-
-        event_data mData;
-        mData.add(std::string(sEventName));
-        for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
-            mData.add(mEvent.get(i));
-
-        fire_script("OnEvent", mData);
-        if (!mChecker.is_alive())
-            return;
-    }
+    fire_script("OnEvent", mData);
 }
 
 void frame::fire_script(const std::string& sScriptName, const event_data& mData)
