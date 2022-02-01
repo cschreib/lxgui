@@ -1616,7 +1616,10 @@ void frame::notify_visible()
         }
     }
 
-    lQueuedEventList_.push_back("OnShow");
+    fire_script("OnShow");
+    if (!mChecker.is_alive())
+        return;
+
     notify_renderer_need_redraw();
 }
 
@@ -1640,7 +1643,10 @@ void frame::notify_invisible()
         }
     }
 
-    lQueuedEventList_.push_back("OnHide");
+    fire_script("OnHide");
+    if (!mChecker.is_alive())
+        return;
+
     notify_renderer_need_redraw();
 }
 
@@ -1745,16 +1751,6 @@ void frame::update(float fDelta)
     DEBUG_LOG("  ~");
     base::update(fDelta);
     DEBUG_LOG("   #");
-
-    for (const auto& sEvent : lQueuedEventList_)
-    {
-        DEBUG_LOG("   Event " + *iterEvent);
-        fire_script(sEvent);
-        if (!mChecker.is_alive())
-            return;
-    }
-
-    lQueuedEventList_.clear();
 
     if (bBuildLayerList_)
     {

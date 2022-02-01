@@ -136,7 +136,11 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
     if (mScroll_.x != fHorizontalScroll)
     {
         mScroll_.x = fHorizontalScroll;
-        lQueuedEventList_.push_back("OnHorizontalScroll");
+
+        alive_checker mChecker(*this);
+        fire_script("OnHorizontalScroll");
+        if (!mChecker.is_alive())
+            return;
 
         pScrollChild_->modify_point(anchor_point::TOP_LEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
@@ -160,7 +164,11 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
     if (mScroll_.y != fVerticalScroll)
     {
         mScroll_.y = fVerticalScroll;
-        lQueuedEventList_.push_back("OnVerticalScroll");
+
+        alive_checker mChecker(*this);
+        fire_script("OnVerticalScroll");
+        if (!mChecker.is_alive())
+            return;
 
         pScrollChild_->modify_point(anchor_point::TOP_LEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
