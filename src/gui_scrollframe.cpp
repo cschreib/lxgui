@@ -6,7 +6,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 namespace lxgui {
 namespace gui
@@ -54,7 +54,7 @@ void scroll_frame::fire_script(const std::string& sScriptName, const event_data&
         bRebuildScrollRenderTarget_ = true;
 }
 
-void scroll_frame::copy_from(const uiobject& mObj)
+void scroll_frame::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -67,7 +67,7 @@ void scroll_frame::copy_from(const uiobject& mObj)
 
     if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pOtherChild->get_object_type();
         mAttr.sName = pOtherChild->get_raw_name();
         mAttr.lInheritance = {pScrollFrame->get_scroll_child()};
@@ -93,7 +93,9 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // Create the scroll texture
-        auto pScrollTexture = create_region<texture>(layer_type::ARTWORK, "$parentScrollTexture");
+        auto pScrollTexture = create_layered_region<texture>(
+            layer::ARTWORK, "$parentScrollTexture");
+
         if (!pScrollTexture)
             return;
 
@@ -120,7 +122,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
             pScrollChild_->set_renderer(observer_from(this));
 
         pScrollChild_->clear_all_points();
-        pScrollChild_->set_point(anchor_data(anchor_point::TOPLEFT, get_name(), -mScroll_));
+        pScrollChild_->set_point(anchor_point::TOP_LEFT, get_name(), -mScroll_);
 
         update_scroll_range_();
         bUpdateScrollRange_ = false;
@@ -136,7 +138,7 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
         mScroll_.x = fHorizontalScroll;
         lQueuedEventList_.push_back("OnHorizontalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
+        pScrollChild_->modify_point(anchor_point::TOP_LEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
 
         bRedrawScrollRenderTarget_ = true;
@@ -160,7 +162,7 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
         mScroll_.y = fVerticalScroll;
         lQueuedEventList_.push_back("OnVerticalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
+        pScrollChild_->modify_point(anchor_point::TOP_LEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
 
         bRedrawScrollRenderTarget_ = true;

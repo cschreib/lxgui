@@ -33,8 +33,8 @@ namespace gui
     class renderer;
     class localizer;
     class factory;
-    class uiroot;
-    class virtual_uiroot;
+    class root;
+    class virtual_root;
     class addon_registry;
     class event_emitter;
 
@@ -131,7 +131,7 @@ namespace gui
         void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
 
         /// Prints debug informations in the log file.
-        /** \note Calls uiobject::serialize().
+        /** \note Calls region::serialize().
         */
         std::string print_ui() const;
 
@@ -150,7 +150,7 @@ namespace gui
         void close_ui();
 
         /// Closes the UI (immediately).
-        /** \note All widgets will be deleted, and the Lua state will be closed.
+        /** \note All regions will be deleted, and the Lua state will be closed.
         *   \warning Do not call this function while the manager is running update_ui()
         *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
@@ -178,7 +178,7 @@ namespace gui
         /// Renders the UI into the current render target.
         void render_ui() const;
 
-        /// Updates this manager and its widgets.
+        /// Updates this manager and its regions.
         /** \param fDelta The time elapsed since the last call
         */
         void update_ui(float fDelta);
@@ -256,22 +256,22 @@ namespace gui
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        uiroot& get_root() { return *pRoot_; }
+        root& get_root() { return *pRoot_; }
 
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        const uiroot& get_root() const { return *pRoot_; }
+        const root& get_root() const { return *pRoot_; }
 
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        virtual_uiroot& get_virtual_root() { return *pVirtualRoot_; }
+        virtual_root& get_virtual_root() { return *pVirtualRoot_; }
 
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        const virtual_uiroot& get_virtual_root() const { return *pVirtualRoot_; }
+        const virtual_root& get_virtual_root() const { return *pVirtualRoot_; }
 
         /// Returns the UI object factory, which is used to create new objects.
         /** \return The factory object
@@ -332,8 +332,8 @@ namespace gui
         std::unique_ptr<factory>         pFactory_;
         std::unique_ptr<localizer>       pLocalizer_;
         std::unique_ptr<sol::state>      pLua_;
-        utils::owner_ptr<uiroot>         pRoot_;
-        utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
+        utils::owner_ptr<root>         pRoot_;
+        utils::owner_ptr<virtual_root> pVirtualRoot_;
         std::unique_ptr<addon_registry>  pAddOnRegistry_;
 
         bool bLoaded_ = false;

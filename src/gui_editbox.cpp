@@ -6,7 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/input_window.hpp>
 #include <lxgui/utils_range.hpp>
@@ -48,7 +48,7 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void edit_box::copy_from(const uiobject& mObj)
+void edit_box::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -68,11 +68,12 @@ void edit_box::copy_from(const uiobject& mObj)
 
     if (const font_string* pFS = pEditBox->get_font_string().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pFS->get_name();
         mAttr.lInheritance = {pEditBox->get_font_string()};
 
-        auto pFont = this->create_region<font_string>(pFS->get_draw_layer(), std::move(mAttr));
+        auto pFont = this->create_layered_region<font_string>(
+            pFS->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -327,10 +328,9 @@ void edit_box::highlight_text(std::size_t uiStart, std::size_t uiEnd, bool bForc
                         fRightPos += pText->get_letter_quad(uiRight)[2].pos.x;
                 }
 
-                pHighlight_->set_point(anchor_data(
-                    anchor_point::LEFT,  sName_, vector2f(fLeftPos,  0)));
-                pHighlight_->set_point(anchor_data(
-                    anchor_point::RIGHT, sName_, anchor_point::LEFT, vector2f(fRightPos, 0)));
+                pHighlight_->set_point(anchor_point::LEFT,  sName_, vector2f(fLeftPos,  0));
+                pHighlight_->set_point(anchor_point::RIGHT, sName_,
+                    anchor_point::LEFT, vector2f(fRightPos, 0));
 
                 pHighlight_->show();
             }
@@ -620,8 +620,8 @@ void edit_box::set_text_insets(const bounds2f& lInsets)
     if (pFontString_)
     {
         pFontString_->clear_all_points();
-        pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
-        pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
+        pFontString_->set_point(anchor_point::TOP_LEFT, lTextInsets_.top_left());
+        pFontString_->set_point(anchor_point::BOTTOM_RIGHT, -lTextInsets_.bottom_right());
 
         update_displayed_text_();
         update_font_string_();
@@ -682,8 +682,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
     pFontString_->set_dimensions(vector2f(0, 0));
     pFontString_->clear_all_points();
 
-    pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
-    pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
+    pFontString_->set_point(anchor_point::TOP_LEFT, lTextInsets_.top_left());
+    pFontString_->set_point(anchor_point::BOTTOM_RIGHT, -lTextInsets_.bottom_right());
 
     pFontString_->enable_formatting(false);
 
@@ -704,7 +704,7 @@ void edit_box::create_font_string_()
     if (pFontString_)
         return;
 
-    auto pFont = create_region<font_string>(layer_type::ARTWORK, "$parentFontString");
+    auto pFont = create_layered_region<font_string>(layer::ARTWORK, "$parentFontString");
     if (!pFont)
         return;
 
@@ -718,14 +718,14 @@ void edit_box::create_highlight_()
     if (pHighlight_ || is_virtual())
         return;
 
-    auto pHighlight = create_region<texture>(layer_type::HIGHLIGHT, "$parentHighlight");
+    auto pHighlight = create_layered_region<texture>(layer::HIGHLIGHT, "$parentHighlight");
     if (!pHighlight)
         return;
 
     pHighlight->set_special();
 
-    pHighlight->set_point(anchor_data(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top)));
-    pHighlight->set_point(anchor_data(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom)));
+    pHighlight->set_point(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top));
+    pHighlight->set_point(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom));
 
     pHighlight->set_solid_color(mHighlightColor_);
 
@@ -740,14 +740,14 @@ void edit_box::create_carret_()
 
     if (!pCarret_)
     {
-        auto pCarret = create_region<texture>(layer_type::HIGHLIGHT, "$parentCarret");
+        auto pCarret = create_layered_region<texture>(layer::HIGHLIGHT, "$parentCarret");
         if (!pCarret)
             return;
 
         pCarret->set_special();
 
-        pCarret->set_point(anchor_data(
-            anchor_point::CENTER, anchor_point::LEFT, vector2f(lTextInsets_.left - 1, 0)));
+        pCarret->set_point(anchor_point::CENTER, anchor_point::LEFT,
+            vector2f(lTextInsets_.left - 1.0f, 0.0f));
 
         pCarret->notify_loaded();
         pCarret_ = pCarret;
@@ -844,23 +844,23 @@ void edit_box::update_carret_position_()
     {
         anchor_point mPoint;
         float fOffset = 0.0f;
-        switch (pFontString_->get_justify_h())
+        switch (pFontString_->get_alignment_x())
         {
-            case text::alignment::LEFT :
+            case alignment_x::LEFT :
                 mPoint = anchor_point::LEFT;
                 fOffset = lTextInsets_.left - 1;
                 break;
-            case text::alignment::CENTER :
+            case alignment_x::CENTER :
                 mPoint = anchor_point::CENTER;
                 break;
-            case text::alignment::RIGHT :
+            case alignment_x::RIGHT :
                 mPoint = anchor_point::RIGHT;
                 fOffset = -lTextInsets_.right - 1;
                 break;
             default : mPoint = anchor_point::LEFT; break;
         }
 
-        pCarret_->set_point(anchor_data(anchor_point::CENTER, mPoint, vector2f(fOffset, 0)));
+        pCarret_->set_point(anchor_point::CENTER, mPoint, vector2f(fOffset, 0.0f));
     }
     else
     {
@@ -942,8 +942,7 @@ void edit_box::update_carret_position_()
                 fXOffset += pText->get_letter_quad(uiIndex)[2].pos.x;
         }
 
-        pCarret_->set_point(anchor_data(
-            anchor_point::CENTER, anchor_point::LEFT, vector2f(fXOffset, fYOffset)));
+        pCarret_->set_point(anchor_point::CENTER, anchor_point::LEFT, vector2f(fXOffset, fYOffset));
     }
 
     mCarretTimer_.zero();

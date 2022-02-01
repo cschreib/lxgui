@@ -689,6 +689,18 @@
 					"shell_cmd": "make -j12 src/gui_region.s",
 				},
 				{
+					"name": "src/gui_region_glues.o",
+					"shell_cmd": "make -j12 src/gui_region_glues.o",
+				},
+				{
+					"name": "src/gui_region_glues.i",
+					"shell_cmd": "make -j12 src/gui_region_glues.i",
+				},
+				{
+					"name": "src/gui_region_glues.s",
+					"shell_cmd": "make -j12 src/gui_region_glues.s",
+				},
+				{
 					"name": "src/gui_region_parser.o",
 					"shell_cmd": "make -j12 src/gui_region_parser.o",
 				},
@@ -723,6 +735,18 @@
 				{
 					"name": "src/gui_renderer.s",
 					"shell_cmd": "make -j12 src/gui_renderer.s",
+				},
+				{
+					"name": "src/gui_root.o",
+					"shell_cmd": "make -j12 src/gui_root.o",
+				},
+				{
+					"name": "src/gui_root.i",
+					"shell_cmd": "make -j12 src/gui_root.i",
+				},
+				{
+					"name": "src/gui_root.s",
+					"shell_cmd": "make -j12 src/gui_root.s",
 				},
 				{
 					"name": "src/gui_scrollframe.o",
@@ -881,54 +905,6 @@
 					"shell_cmd": "make -j12 src/gui_texture_parser.s",
 				},
 				{
-					"name": "src/gui_uiobject.o",
-					"shell_cmd": "make -j12 src/gui_uiobject.o",
-				},
-				{
-					"name": "src/gui_uiobject.i",
-					"shell_cmd": "make -j12 src/gui_uiobject.i",
-				},
-				{
-					"name": "src/gui_uiobject.s",
-					"shell_cmd": "make -j12 src/gui_uiobject.s",
-				},
-				{
-					"name": "src/gui_uiobject_glues.o",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.o",
-				},
-				{
-					"name": "src/gui_uiobject_glues.i",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.i",
-				},
-				{
-					"name": "src/gui_uiobject_glues.s",
-					"shell_cmd": "make -j12 src/gui_uiobject_glues.s",
-				},
-				{
-					"name": "src/gui_uiobject_parser.o",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.o",
-				},
-				{
-					"name": "src/gui_uiobject_parser.i",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.i",
-				},
-				{
-					"name": "src/gui_uiobject_parser.s",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.s",
-				},
-				{
-					"name": "src/gui_uiroot.o",
-					"shell_cmd": "make -j12 src/gui_uiroot.o",
-				},
-				{
-					"name": "src/gui_uiroot.i",
-					"shell_cmd": "make -j12 src/gui_uiroot.i",
-				},
-				{
-					"name": "src/gui_uiroot.s",
-					"shell_cmd": "make -j12 src/gui_uiroot.s",
-				},
-				{
 					"name": "src/gui_vertexcache.o",
 					"shell_cmd": "make -j12 src/gui_vertexcache.o",
 				},
@@ -953,16 +929,16 @@
 					"shell_cmd": "make -j12 src/gui_virtual_registry.s",
 				},
 				{
-					"name": "src/gui_virtual_uiroot.o",
-					"shell_cmd": "make -j12 src/gui_virtual_uiroot.o",
+					"name": "src/gui_virtual_root.o",
+					"shell_cmd": "make -j12 src/gui_virtual_root.o",
 				},
 				{
-					"name": "src/gui_virtual_uiroot.i",
-					"shell_cmd": "make -j12 src/gui_virtual_uiroot.i",
+					"name": "src/gui_virtual_root.i",
+					"shell_cmd": "make -j12 src/gui_virtual_root.i",
 				},
 				{
-					"name": "src/gui_virtual_uiroot.s",
-					"shell_cmd": "make -j12 src/gui_virtual_uiroot.s",
+					"name": "src/gui_virtual_root.s",
+					"shell_cmd": "make -j12 src/gui_virtual_root.s",
 				},
 				{
 					"name": "src/input_dispatcher.o",

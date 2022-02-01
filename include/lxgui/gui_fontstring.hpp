@@ -19,8 +19,8 @@ namespace gui
     *   __Sizing.__ The #font_string class has a special property when it
     *   comes to determining the size of its region on the screen, hence
     *   how other object anchor to it, and how it anchors to other objects.
-    *   See the documentation for #uiobject for more information on anchors.
-    *   While other uiobjects must either have a fixed size or more than two
+    *   See the documentation for #region for more information on anchors.
+    *   While other regions must either have a fixed size or more than two
     *   anchors constraining their size, the #font_string does not. If only
     *   one anchor is specified, the width and height of the #font_string will
     *   be determined by the area occupied by the displayed text, however long and
@@ -40,19 +40,19 @@ namespace gui
         /// Constructor.
         explicit font_string(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
-        /// Renders this widget on the current render target.
+        /// Renders this region on the current render target.
         void render() const override;
 
-        /// Copies an uiobject's parameters into this font_string (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this font_string (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Returns the name of the font file.
         /** \return The name of the font file
@@ -79,12 +79,12 @@ namespace gui
         /// Returns the horizontal alignment behavior.
         /** \return The horizontal alignment behavior
         */
-        text::alignment get_justify_h() const;
+        alignment_x get_alignment_x() const;
 
         /// Returns the vertical alignment behavior.
         /** \return The vertical alignment behavior
         */
-        text::vertical_alignment get_justify_v() const;
+        alignment_y get_alignment_y() const;
 
         /// Returns this font_string's shadow color.
         /** \return This font_string's shadow color
@@ -125,14 +125,14 @@ namespace gui
         void set_font(const std::string& sFontName, float fHeight);
 
         /// Sets this font_string's horizontal aligment behavior.
-        /** \param mJustifyH The horizontal alignment behavior
+        /** \param mAlignX The horizontal alignment behavior
         */
-        void set_justify_h(text::alignment mJustifyH);
+        void set_alignment_x(alignment_x mAlignX);
 
         /// Sets this font_string's vertical aligment behavior.
-        /** \param mJustifyV The vertical alignment behavior
+        /** \param mAlignY The vertical alignment behavior
         */
-        void set_justify_v(text::vertical_alignment mJustifyV);
+        void set_alignment_y(alignment_y mAlignY);
 
         /// Sets this font_string's shadow color.
         /** \param mShadowColor The shadow color
@@ -244,7 +244,7 @@ namespace gui
         */
         void set_text(const utils::ustring& sText);
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
         /// Creates the associated Lua glue.
@@ -265,7 +265,7 @@ namespace gui
         */
         const text* get_text_object() const;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "FontString";
@@ -285,11 +285,11 @@ namespace gui
         std::string    sFontName_;
         float          fHeight_ = 0.0f;
 
-        float                    fSpacing_ = 0.0f;
-        float                    fLineSpacing_ = 1.0f;
-        text::alignment          mJustifyH_ = text::alignment::CENTER;
-        text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
-        vector2f                 mOffset_ = vector2f::ZERO;
+        float       fSpacing_ = 0.0f;
+        float       fLineSpacing_ = 1.0f;
+        alignment_x mAlignX_ = alignment_x::CENTER;
+        alignment_y mAlignY_ = alignment_y::MIDDLE;
+        vector2f    mOffset_ = vector2f::ZERO;
 
         bool  bIsOutlined_ = false;
         bool  bCanNonSpaceWrap_ = false;

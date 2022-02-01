@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_region.hpp"
-#include "lxgui/gui_uiobject_attributes.hpp"
+#include "lxgui/gui_region_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
@@ -29,14 +29,10 @@ namespace gui
     class frame;
 
     /// Contains gui::layered_region
-    struct layer
+    struct layer_container
     {
-        layer();
-
-        bool bDisabled;
+        bool bDisabled = false;
         std::vector<utils::observer_ptr<layered_region>> lRegionList;
-
-        static layer_type get_layer_type(const std::string& sLayer);
     };
 
     /// Holds file/line information for a script.
@@ -58,7 +54,7 @@ namespace gui
     /// View into all the connected scripts for a given event.
     using script_list_view = script_signal::slot_list_view;
 
-    /// A #uiobject that can contain other objects and react to events.
+    /// A #region that can contain other regions and react to events.
     /** This class, which is at the core of the UI design, can contain
     *   other frames as "children", and layered regions sorted by layers
     *   (text, images, ...). A frame can also react to events, and register
@@ -155,7 +151,7 @@ namespace gui
     *   frame::set_focus.
     *   - `OnFocusLost`: Triggered when the frame looses focus, see
     *   frame::set_focus.
-    *   - `OnHide`: Triggered when uiobject::hide is called, or when the frame
+    *   - `OnHide`: Triggered when region::hide is called, or when the frame
     *   is hidden indirectly (for example if its parent is itself hidden). This
     *   will only fire if the frame was previously shown.
     *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
@@ -209,7 +205,7 @@ namespace gui
     *   dragged onto the frame, and when one of the mouse button registered for
     *   dragging (see frame::register_for_drag) is released. This enables
     *   the "drop" in "drag and drop" operations.
-    *   - `OnShow`: Triggered when uiobject::show is called, or when the frame
+    *   - `OnShow`: Triggered when region::show is called, or when the frame
     *   is shown indirectly (for example if its parent is itself shown). This
     *   will only fire if the frame was previously hidden.
     *   - `OnSizeChanged`: Triggered whenever the size of the frame changes, either
@@ -291,10 +287,10 @@ namespace gui
         /// Destructor.
         ~frame() override;
 
-        /// Renders this widget on the current render target.
+        /// Renders this region on the current render target.
         void render() const override;
 
-        /// Updates this widget's logic.
+        /// Updates this region's logic.
         /** \param fDelta Time spent since last update
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
@@ -302,9 +298,9 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
@@ -314,10 +310,10 @@ namespace gui
         */
         virtual bool can_use_script(const std::string& sScriptName) const;
 
-        /// Copies an uiobject's parameters into this frame (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this frame (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Creates a new title region for this frame.
         /** \note You can get it by calling get_title_region().
@@ -327,12 +323,12 @@ namespace gui
         /// Disables a layer.
         /** \param mLayerID The id of the layer to disable
         */
-        void disable_draw_layer(layer_type mLayerID);
+        void disable_draw_layer(layer mLayerID);
 
         /// Enables a layer.
         /** \param mLayerID The id of the layer to enable
         */
-        void enable_draw_layer(layer_type mLayerID);
+        void enable_draw_layer(layer mLayerID);
 
         /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
@@ -404,8 +400,8 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        utils::observer_ptr<layered_region> create_region(layer_type mLayer,
-            uiobject_core_attributes mAttr);
+        utils::observer_ptr<layered_region> create_layered_region(layer mLayer,
+            region_core_attributes mAttr);
 
         /// Creates a new region as child of this frame.
         /** \param mLayer The layer on which to create the region
@@ -418,12 +414,13 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer,
-            uiobject_core_attributes mAttr)
+        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
+            region_core_attributes mAttr)
         {
             mAttr.sObjectType = region_type::CLASS_NAME;
 
-            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+            return utils::static_pointer_cast<region_type>(
+                create_layered_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new region as child of this frame.
@@ -437,13 +434,15 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName)
+        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
+            const std::string& sName)
         {
-            uiobject_core_attributes mAttr;
+            region_core_attributes mAttr;
             mAttr.sName = sName;
             mAttr.sObjectType = region_type::CLASS_NAME;
 
-            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+            return utils::static_pointer_cast<region_type>(
+                create_layered_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new frame as child of this frame.
@@ -457,7 +456,7 @@ namespace gui
         *         initialization you require on this frame. If you do not,
         *         the frame's OnLoad callback will not fire.
         */
-        utils::observer_ptr<frame> create_child(uiobject_core_attributes mAttr);
+        utils::observer_ptr<frame> create_child(region_core_attributes mAttr);
 
         /// Creates a new frame as child of this frame.
         /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
@@ -472,7 +471,7 @@ namespace gui
         */
         template<typename frame_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> create_child(uiobject_core_attributes mAttr)
+        utils::observer_ptr<frame_type> create_child(region_core_attributes mAttr)
         {
             mAttr.sObjectType = frame_type::CLASS_NAME;
 
@@ -494,7 +493,7 @@ namespace gui
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         utils::observer_ptr<frame_type> create_child(const std::string& sName)
         {
-            uiobject_core_attributes mAttr;
+            region_core_attributes mAttr;
             mAttr.sName = sName;
             mAttr.sObjectType = frame_type::CLASS_NAME;
 
@@ -1045,10 +1044,10 @@ namespace gui
         */
         void set_movable(bool bIsMovable);
 
-        /// Removes this widget from its parent and return an owning pointer.
-        /** \return An owning pointer to this widget
+        /// Removes this region from its parent and return an owning pointer.
+        /** \return An owning pointer to this region
         */
-        utils::owner_ptr<uiobject> release_from_parent() override;
+        utils::owner_ptr<region> release_from_parent() override;
 
         /// Sets if this frame can be resized by the user.
         /** \param bIsResizable 'true' to allow the user to resize this frame
@@ -1094,13 +1093,13 @@ namespace gui
         /// ends resizing this frame.
         void stop_sizing();
 
-        /// shows this widget.
+        /// shows this region.
         /** \note Its parent must be shown for it to appear on
         *         the screen.
         */
         void show() override;
 
-        /// hides this widget.
+        /// hides this region.
         /** \note All its children won't be visible on the screen
         *         anymore, even if they are still marked as shown.
         */
@@ -1130,7 +1129,7 @@ namespace gui
         bool has_focus() const;
 
         /// Flags this object as rendered by another object.
-        /** \param pRenderer The object that will take care of rendering this widget
+        /** \param pRenderer The object that will take care of rendering this region
         *   \note By default, objects are rendered by the gui::manager.
         *   \note The renderer also takes care of providing inputs.
         *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
@@ -1166,22 +1165,22 @@ namespace gui
                 const_cast<const frame*>(this)->get_top_level_renderer());
         }
 
-        /// Notifies the renderer of this widget that it needs to be redrawn.
+        /// Notifies the renderer of this region that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
         void notify_renderer_need_redraw() override;
 
-        /// Changes this widget's absolute dimensions (in pixels).
+        /// Changes this region's absolute dimensions (in pixels).
         /** \param mDimensions The new dimensions
         */
         void set_dimensions(const vector2f& mDimensions) override;
 
-        /// Changes this widget's absolute width (in pixels).
+        /// Changes this region's absolute width (in pixels).
         /** \param fAbsWidth The new width
         */
         void set_width(float fAbsWidth) override;
 
-        /// Changes this widget's absolute height (in pixels).
+        /// Changes this region's absolute height (in pixels).
         /** \param fAbsHeight The new height
         */
         void set_height(float fAbsHeight) override;
@@ -1195,12 +1194,12 @@ namespace gui
         */
         virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
 
-        /// Notifies this widget that it is now visible on screen.
+        /// Notifies this region that it is now visible on screen.
         /** \note Automatically called by show()/hide().
         */
         void notify_visible() override;
 
-        /// Notifies this widget that it is no longer visible on screen.
+        /// Notifies this region that it is no longer visible on screen.
         /** \note Automatically called by show()/hide().
         */
         void notify_invisible() override;
@@ -1210,7 +1209,7 @@ namespace gui
         */
         virtual void notify_focus(bool bFocus);
 
-        /// Notifies this widget that it has been fully loaded.
+        /// Notifies this region that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
         */
         void notify_loaded() override;
@@ -1221,7 +1220,7 @@ namespace gui
         */
         void notify_layers_need_update();
 
-        /// Tells this widget that the global interface scaling factor has changed.
+        /// Tells this region that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
         /// Creates the associated Lua glue.
@@ -1235,7 +1234,7 @@ namespace gui
         */
         void parse_layout(const layout_node& mNode) final;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Frame";
@@ -1279,9 +1278,9 @@ namespace gui
         child_list  lChildList_;
         region_list lRegionList_;
 
-        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer_type::ENUM_SIZE);
+        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::ENUM_SIZE);
 
-        std::array<layer,num_layers> lLayerList_;
+        std::array<layer_container,num_layers> lLayerList_;
 
         std::unordered_map<std::string, script_signal> lSignalList_;
         event_receiver                                 mEventReceiver_;

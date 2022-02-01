@@ -283,9 +283,11 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_out.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_parser_common.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_region.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_region_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_root.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_parser.cpp
@@ -299,13 +301,9 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_texture.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_uiroot.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_virtual_uiroot.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_virtual_root.cpp
     ${PROJECT_SOURCE_DIR}/src/input_dispatcher.cpp
     ${PROJECT_SOURCE_DIR}/src/input_keys.cpp
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp

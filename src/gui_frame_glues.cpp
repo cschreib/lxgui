@@ -1,20 +1,19 @@
 #include "lxgui/gui_frame.hpp"
 
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sol/state.hpp>
 #include <sol/variadic_args.hpp>
 
-/** A @{UIObject} that can contain other objects and react to events.
+/** A @{Region} that can contain other regions and react to events.
 *   This class, which is at the core of the UI design, can contain
 *   other @{Frame}s as "children", and @{LayeredRegion}s sorted by layers
 *   (text, images, ...). A frame can also react to events, and register
@@ -112,7 +111,7 @@
 *   @{Frame:set_focus}.
 *   - `OnFocusLost`: Triggered when the frame looses focus, see
 *   @{Frame:set_focus}.
-*   - `OnHide`: Triggered when @{UIObject:hide} is called, or when the frame
+*   - `OnHide`: Triggered when @{Region:hide} is called, or when the frame
 *   is hidden indirectly (for example if its parent is itself hidden). This
 *   will only fire if the frame was previously shown.
 *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
@@ -173,7 +172,7 @@
 *   dragged onto the frame, and when one of the mouse button registered for
 *   dragging (see @{Frame:register_for_drag}) is released. This enables
 *   the "drop" in "drag and drop" operations.
-*   - `OnShow`: Triggered when @{UIObject:show} is called, or when the frame
+*   - `OnShow`: Triggered when @{Region:show} is called, or when the frame
 *   is shown indirectly (for example if its parent is itself shown). This
 *   will only fire if the frame was previously hidden.
 *   - `OnSizeChanged`: Triggered whenever the size of the frame changes, either
@@ -216,7 +215,7 @@
 *   multiple virtual frames at once, which will copy their respective content
 *   in the order they are specified.
 *
-*   Inherits all methods from: @{UIObject}.
+*   Inherits all methods from: @{Region}.
 *
 *   Child classes: @{Button}, @{CheckButton}, @{EditBox},
 *   @{ScrollFrame}, @{Slider}, @{StatusBar}.
@@ -230,7 +229,7 @@ namespace gui
 void frame::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<frame>("Frame",
-        sol::base_classes, sol::bases<uiobject>(),
+        sol::base_classes, sol::bases<region>(),
         sol::meta_function::index,
         member_function<&frame::get_lua_member_>(),
         sol::meta_function::new_index,
@@ -256,16 +255,16 @@ void frame::register_on_lua(sol::state& mLua)
     mClass.set_function("create_font_string", [](frame& mSelf, const std::string& sName,
         sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        layer_type mLayer = layer_type::ARTWORK;
+        layer mLayer = layer::ARTWORK;
         if (sLayer.has_value())
-            mLayer = layer::get_layer_type(sLayer.value());
+            mLayer = parse_layer_type(sLayer.value());
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = sName;
-        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
             sInheritance.value_or(""));
 
-        return mSelf.create_region<font_string>(mLayer, std::move(mAttr));
+        return mSelf.create_layered_region<font_string>(mLayer, std::move(mAttr));
     });
 
     /** @function create_texture
@@ -273,16 +272,16 @@ void frame::register_on_lua(sol::state& mLua)
     mClass.set_function("create_texture", [](frame& mSelf, const std::string& sName,
         sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        layer_type mLayer = layer_type::ARTWORK;
+        layer mLayer = layer::ARTWORK;
         if (sLayer.has_value())
-            mLayer = layer::get_layer_type(sLayer.value());
+            mLayer = parse_layer_type(sLayer.value());
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = sName;
-        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
             sInheritance.value_or(""));
 
-        return mSelf.create_region<texture>(mLayer, std::move(mAttr));
+        return mSelf.create_layered_region<texture>(mLayer, std::move(mAttr));
     });
 
     /** @function create_title_region
@@ -293,14 +292,14 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("disable_draw_layer", [](frame& mSelf, const std::string& sLayer)
     {
-        mSelf.disable_draw_layer(layer::get_layer_type(sLayer));
+        mSelf.disable_draw_layer(parse_layer_type(sLayer));
     });
 
     /** @function enable_draw_layer
     */
     mClass.set_function("enable_draw_layer", [](frame& mSelf, const std::string& sLayer)
     {
-        mSelf.enable_draw_layer(layer::get_layer_type(sLayer));
+        mSelf.enable_draw_layer(parse_layer_type(sLayer));
     });
 
     /** @function enable_mouse

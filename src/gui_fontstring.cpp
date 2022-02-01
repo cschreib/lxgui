@@ -4,7 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_localizer.hpp"
 
 #include <sstream>
@@ -28,11 +28,11 @@ void font_string::render() const
 
     if (std::isinf(pText_->get_box_width()))
     {
-        switch (mJustifyH_)
+        switch (mAlignX_)
         {
-            case text::alignment::LEFT   : fX = lBorderList_.left; break;
-            case text::alignment::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
-            case text::alignment::RIGHT  : fX = lBorderList_.right; break;
+            case alignment_x::LEFT   : fX = lBorderList_.left; break;
+            case alignment_x::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
+            case alignment_x::RIGHT  : fX = lBorderList_.right; break;
         }
     }
     else
@@ -40,11 +40,11 @@ void font_string::render() const
 
     if (std::isinf(pText_->get_box_height()))
     {
-        switch (mJustifyV_)
+        switch (mAlignY_)
         {
-            case text::vertical_alignment::TOP    : fY = lBorderList_.top; break;
-            case text::vertical_alignment::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
-            case text::vertical_alignment::BOTTOM : fY = lBorderList_.bottom; break;
+            case alignment_y::TOP    : fY = lBorderList_.top; break;
+            case alignment_y::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
+            case alignment_y::BOTTOM : fY = lBorderList_.bottom; break;
         }
     }
     else
@@ -82,19 +82,19 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # Justify     :\n";
     sStr << sTab << "  #-###\n";
     sStr << sTab << "  |   # horizontal : ";
-    switch (mJustifyH_)
+    switch (mAlignX_)
     {
-        case text::alignment::LEFT :   sStr << "LEFT\n"; break;
-        case text::alignment::CENTER : sStr << "CENTER\n"; break;
-        case text::alignment::RIGHT :  sStr << "RIGHT\n"; break;
+        case alignment_x::LEFT :   sStr << "LEFT\n"; break;
+        case alignment_x::CENTER : sStr << "CENTER\n"; break;
+        case alignment_x::RIGHT :  sStr << "RIGHT\n"; break;
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  |   # vertical   : ";
-    switch (mJustifyV_)
+    switch (mAlignY_)
     {
-        case text::vertical_alignment::TOP :    sStr << "TOP\n"; break;
-        case text::vertical_alignment::MIDDLE : sStr << "MIDDLE\n"; break;
-        case text::vertical_alignment::BOTTOM : sStr << "BOTTOM\n"; break;
+        case alignment_y::TOP :    sStr << "TOP\n"; break;
+        case alignment_y::MIDDLE : sStr << "MIDDLE\n"; break;
+        case alignment_y::BOTTOM : sStr << "BOTTOM\n"; break;
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  #-###\n";
@@ -113,7 +113,7 @@ void font_string::create_glue()
     create_glue_(this);
 }
 
-void font_string::copy_from(const uiobject& mObj)
+void font_string::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -126,8 +126,8 @@ void font_string::copy_from(const uiobject& mObj)
     if (!sFontName.empty() && fHeight != 0)
         this->set_font(sFontName, fHeight);
 
-    this->set_justify_h(pFontString->get_justify_h());
-    this->set_justify_v(pFontString->get_justify_v());
+    this->set_alignment_x(pFontString->get_alignment_x());
+    this->set_alignment_y(pFontString->get_alignment_y());
     this->set_spacing(pFontString->get_spacing());
     this->set_line_spacing(pFontString->get_line_spacing());
     this->set_text(pFontString->get_text());
@@ -169,14 +169,14 @@ bool font_string::is_outlined() const
     return bIsOutlined_;
 }
 
-text::alignment font_string::get_justify_h() const
+alignment_x font_string::get_alignment_x() const
 {
-    return mJustifyH_;
+    return mAlignX_;
 }
 
-text::vertical_alignment font_string::get_justify_v() const
+alignment_y font_string::get_alignment_y() const
 {
-    return mJustifyV_;
+    return mAlignY_;
 }
 
 const color& font_string::get_shadow_color() const
@@ -248,8 +248,8 @@ void font_string::create_text_object_()
     pText_->set_scaling_factor(1.0f/get_manager().get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
-    pText_->set_alignment(mJustifyH_);
-    pText_->set_vertical_alignment(mJustifyV_);
+    pText_->set_alignment_x(mAlignX_);
+    pText_->set_alignment_y(mAlignY_);
     pText_->set_tracking(fSpacing_);
     pText_->enable_word_wrap(bCanWordWrap_, bAddEllipsis_);
     pText_->enable_formatting(bFormattingEnabled_);
@@ -269,14 +269,14 @@ void font_string::set_font(const std::string& sFontName, float fHeight)
     }
 }
 
-void font_string::set_justify_h(text::alignment mJustifyH)
+void font_string::set_alignment_x(alignment_x mJustifyH)
 {
-    if (mJustifyH_ != mJustifyH)
+    if (mAlignX_ != mJustifyH)
     {
-        mJustifyH_ = mJustifyH;
+        mAlignX_ = mJustifyH;
         if (pText_)
         {
-            pText_->set_alignment(mJustifyH_);
+            pText_->set_alignment_x(mAlignX_);
 
             if (!bVirtual_)
                 notify_renderer_need_redraw();
@@ -284,14 +284,14 @@ void font_string::set_justify_h(text::alignment mJustifyH)
     }
 }
 
-void font_string::set_justify_v(text::vertical_alignment mJustifyV)
+void font_string::set_alignment_y(alignment_y mJustifyV)
 {
-    if (mJustifyV_ != mJustifyV)
+    if (mAlignY_ != mJustifyV)
     {
-        mJustifyV_ = mJustifyV;
+        mAlignY_ = mJustifyV;
         if (pText_)
         {
-            pText_->set_vertical_alignment(mJustifyV_);
+            pText_->set_alignment_y(mAlignY_);
 
             if (!bVirtual_)
                 notify_renderer_need_redraw();

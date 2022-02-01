@@ -24,7 +24,7 @@ namespace input
 
 namespace gui
 {
-    class uiobject;
+    class region;
     class frame;
     class manager;
     class renderer;
@@ -33,8 +33,8 @@ namespace gui
     /** This class contains and owns all "root" frames (frames with no parents)
     *   and is responsible for their lifetime, update, and rendering.
     */
-    class uiroot: public frame_renderer, public frame_container,
-                  public utils::enable_observer_from_this<uiroot>
+    class root: public frame_renderer, public frame_container,
+                  public utils::enable_observer_from_this<root>
     {
     public :
 
@@ -42,15 +42,15 @@ namespace gui
         /** \param mBlock   The owner pointer control block
         *   \param mManager The GUI manager
         */
-        explicit uiroot(utils::control_block& mBlock, manager& mManager);
+        explicit root(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
-        ~uiroot() override;
+        ~root() override;
 
-        uiroot(const uiroot&) = delete;
-        uiroot(uiroot&&) = delete;
-        uiroot& operator = (const uiroot&) = delete;
-        uiroot& operator = (uiroot&&) = delete;
+        root(const root&) = delete;
+        root(root&&) = delete;
+        root& operator = (const root&) = delete;
+        root& operator = (root&&) = delete;
 
         /// Returns the width and height of this renderer's main render target (e.g., screen).
         /** \return The render target dimensions
@@ -80,7 +80,7 @@ namespace gui
         */
         bool is_caching_enabled() const;
 
-        /// updates this uiroot and its widgets.
+        /// updates this root and its regions.
         /** \param fDelta The time elapsed since the last call
         */
         void update(float fDelta);
@@ -121,16 +121,16 @@ namespace gui
         */
         bool is_dragged(const frame& mFrame) const { return pDraggedFrame_.get() == &mFrame; }
 
-        /// Start manually moving a uiobject with the mouse.
+        /// Start manually moving a region with the mouse.
         /** \param pObj        The object to move
         *   \param pAnchor     The reference anchor
         *   \param mConstraint The constraint axis if any
         *   \param mApplyConstraintFunc Optional function to implement further constraints
-        *   \note Movement is handled by the uiroot, you don't need to do anything except
+        *   \note Movement is handled by the root, you don't need to do anything except
         *         calling stop_moving() when you are done.
         */
         void start_moving(
-            utils::observer_ptr<uiobject> pObj, anchor* pAnchor = nullptr,
+            utils::observer_ptr<region> pObj, anchor* pAnchor = nullptr,
             constraint mConstraint = constraint::NONE,
             std::function<void()> mApplyConstraintFunc = nullptr
         );
@@ -144,15 +144,15 @@ namespace gui
         /** \param mObj The object to check
         *   \return 'true' if the given object is allowed to move
         */
-        bool is_moving(const uiobject& mObj) const;
+        bool is_moving(const region& mObj) const;
 
-        /// Starts manually resizing a uiobject with the mouse.
+        /// Starts manually resizing a region with the mouse.
         /** \param pObj   The object to resize
         *   \param mPoint The sizing point
-        *   \note Resizing is handled by the uiroot, you don't need to do anything except
+        *   \note Resizing is handled by the root, you don't need to do anything except
         *         calling stop_sizing() when you are done.
         */
-        void start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint);
+        void start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint);
 
         /// Stops sizing for the current object.
         /** \note Does nothing if no object is being resized
@@ -163,7 +163,7 @@ namespace gui
         /** \param mObj The object to check
         *   \return 'true' if the given object is allowed to be resized
         */
-        bool is_sizing(const uiobject& mObj) const;
+        bool is_sizing(const region& mObj) const;
 
         /// Sets whether keyboard input should be focussed.
         /** \param pReceiver The frame that requires focus
@@ -201,16 +201,16 @@ namespace gui
         utils::observer_ptr<frame> get_focussed_frame()
         {
             return utils::const_pointer_cast<frame>(
-                const_cast<const uiroot*>(this)->get_focussed_frame());
+                const_cast<const root*>(this)->get_focussed_frame());
         }
 
-        /// Returns the manager instance associated with this uiroot.
-        /** \return The manager instance associated with this uiroot
+        /// Returns the manager instance associated with this root.
+        /** \return The manager instance associated with this root
         */
         manager& get_manager() { return mManager_; }
 
-        /// Returns the manager instance associated with this uiroot.
-        /** \return The manager instance associated with this uiroot
+        /// Returns the manager instance associated with this root.
+        /** \return The manager instance associated with this root
         */
         const manager& get_manager() const { return mManager_; }
 
@@ -275,9 +275,9 @@ namespace gui
         utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
         utils::observer_ptr<frame> pDraggedFrame_ = nullptr;
 
-        utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
-        utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
-        vector2f                      mMouseMovement_;
+        utils::observer_ptr<region> pMovedObject_ = nullptr;
+        utils::observer_ptr<region> pSizedObject_ = nullptr;
+        vector2f                    mMouseMovement_;
 
         anchor*               pMovedAnchor_ = nullptr;
         vector2f              mMovementStartPosition_;

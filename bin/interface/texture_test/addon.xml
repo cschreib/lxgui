@@ -1,20 +1,20 @@
 <Ui>
     <Frame name="TextureTestFrame">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers>
             <Layer>
                 <Texture name="$parentTexture1" file="|texture.png">
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT"/>
+                        <Anchor point="BOTTOM_LEFT"/>
                     </Anchors>
                 </Texture>
                 <Texture name="$parentTexture2">
                     <Size><AbsDimension x="50" y="50"/></Size>
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeTo="$parentTexture1" relativePoint="TOPLEFT"/>
+                        <Anchor point="BOTTOM_LEFT" relativeTo="$parentTexture1" relativePoint="TOP_LEFT"/>
                     </Anchors>
                     <Gradient orientation="HORIZONTAL">
                         <MinColor r="0.7" g="1"/>

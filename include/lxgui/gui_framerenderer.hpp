@@ -38,7 +38,7 @@ namespace gui
         /// Non-movable
         frame_renderer& operator=(frame_renderer&&) = delete;
 
-        /// Tells this renderer that one of its widget requires redraw.
+        /// Tells this renderer that one of its region requires redraw.
         virtual void notify_strata_needs_redraw(frame_strata mStrata);
 
         /// Tells this renderer that it should (or not) render another frame.

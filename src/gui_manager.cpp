@@ -1,15 +1,15 @@
 #include "lxgui/gui_manager.hpp"
 
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_keybinder.hpp"
@@ -147,8 +147,8 @@ void manager::load_ui()
         return;
 
     pFactory_ = std::make_unique<factory>(*this);
-    pRoot_ = utils::make_owned<uiroot>(*this);
-    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
+    pRoot_ = utils::make_owned<root>(*this);
+    pVirtualRoot_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
 
     create_lua_();
     read_files_();
@@ -222,7 +222,7 @@ void manager::update_ui(float fDelta)
 {
     bUpdating_ = true;
 
-    DEBUG_LOG(" Update widgets...");
+    DEBUG_LOG(" Update regions...");
     pRoot_->update(fDelta);
 
     if (bFirstIteration_)
@@ -246,13 +246,13 @@ std::string manager::print_ui() const
 {
     std::stringstream s;
 
-    s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
+    s << "\n\n######################## Regions ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())
     {
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 
-    s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
+    s << "\n\n#################### Virtual Regions ####################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pVirtualRoot_->get_root_frames())
     {
         s << mFrame.serialize("") << "\n########################\n" << std::endl;

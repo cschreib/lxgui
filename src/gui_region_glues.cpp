@@ -1,11 +1,11 @@
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -16,19 +16,19 @@
 *   Objects of this class offers core functionalities needed by every element
 *   of the interface. They have a name, and a corresponding variable created
 *   in Lua to access them. They can have a parent @{Frame}. They can be placed
-*   on the screen at an absolute position, or relative to other @{UIObject}s.
+*   on the screen at an absolute position, or relative to other @{Region}s.
 *   They can be shown or hidden.
 *
-*   Apart form this, a @{UIObject} does not contain anything, nor can it display
+*   Apart form this, a @{Region} does not contain anything, nor can it display
 *   anything on the screen. Any functionality beyond the list above is implemented
 *   in specialized subclasses (see the full list below).
 *
-*   __Interaction between C++, Lua, and layout files.__ When a @{UIObject} is created,
+*   __Interaction between C++, Lua, and layout files.__ When a @{Region} is created,
 *   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
 *   object lives, this name will be used to refer to it. In particular, as soon
 *   as the object is created, regardless of whether this was done in C++, layout
 *   files, or Lua, a new variable will be created in the Lua state with the exact
-*   same name, `PlayerHealthBar`. This variable is a reference to the @{UIObject},
+*   same name, `PlayerHealthBar`. This variable is a reference to the @{Region},
 *   and can be used to interact with it dynamically. Because of this, each object
 *   must have a unique name, otherwise it could not be accessible from Lua.
 *
@@ -41,10 +41,10 @@
 *   content may change, you can also recycle the object, i.e., keep it alive and
 *   simply change its content when it later reappears.
 *
-*   __Parent-child relationship.__ Parents of @{UIObject}s are @{Frame}s. See
+*   __Parent-child relationship.__ Parents of @{Region}s are @{Frame}s. See
 *   the @{Frame} class documentation for more information. One important aspect
 *   of the parent-child relationship is related to the object name. If a
-*   @{UIObject} has a parent, it can be given a name starting with `"$parent"`.
+*   @{Region} has a parent, it can be given a name starting with `"$parent"`.
 *   The name of the parent will automatically replace the `"$parent"` string.
 *   For example, if an object is named `"$parentButton"` and its parent is named
 *   `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
@@ -56,7 +56,7 @@
 *   powerful for writing generic code which does not rely on the full names of
 *   objects, only on their child-parent relationship.
 *
-*   __Positioning.__ @{UIObject}s have a position on the screen, but this is
+*   __Positioning.__ @{Region}s have a position on the screen, but this is
 *   not parametrized as a simple pair of X and Y coordinates. Instead, objects
 *   are positioned based on a list of "anchors". Anchors are links between
 *   objects, which force one edge or one corner of a given object to match with
@@ -75,7 +75,7 @@
 *   An object which has no anchor will be considered "invalid" and will not be
 *   displayed.
 *
-*   __Sizing.__ There are two ways to specify the size of a @{UIObject}. The
+*   __Sizing.__ There are two ways to specify the size of a @{Region}. The
 *   first and most straightforward approach is to directly set its width and/or
 *   height. This must be specified as an absolute number of pixels. The second
 *   and more versatile method is to use more than one anchor for opposite sides
@@ -90,9 +90,9 @@
 *
 *   __Anchors.__ There are nine available anchor points:
 *
-*   - `TOPLEFT`: constrains the max Y and min X.
-*   - `TOPRIGHT`: constrains the max Y and max X.
-*   - `BOTTOMLEFT`: constrains the min Y and min X.
+*   - `TOP_LEFT`: constrains the max Y and min X.
+*   - `TOP_RIGHT`: constrains the max Y and max X.
+*   - `BOTTOM_LEFT`: constrains the min Y and min X.
 *   - `BOTTOMRIGH`: constrains the min Y and max X.
 *   - `LEFT`: constrains the min X and the midpoint in Y.
 *   - `RIGHT`: constrains the max X and the midpoint in Y.
@@ -100,8 +100,8 @@
 *   - `BOTTOM`: constrains the min Y and the midpoint in X.
 *   - `CENTER`: constrains the midpoint in X and Y.
 *
-*   If you specify two constraints on the same point (for example: `TOPLEFT`
-*   and `BOTTOMLEFT` both constrain the min X coordinate), the most stringent
+*   If you specify two constraints on the same point (for example: `TOP_LEFT`
+*   and `BOTTOM_LEFT` both constrain the min X coordinate), the most stringent
 *   constraint always wins. Constraints on the midpoints are more subtle however,
 *   as they will always be discarded when both the min and max are constrained.
 *   For example, consider an object `A` of fixed size 30x30 and some other object
@@ -121,14 +121,14 @@
 *   Child classes: @{Frame}, @{LayeredRegion}, @{FontString}, @{Texture},
 *   @{Button}, @{CheckButton}, @{EditBox}, @{ScrollFrame},
 *   @{Slider}, @{StatusBar}.
-*   @classmod UIObject
+*   @classmod Region
 */
 
 namespace lxgui {
 namespace gui
 {
 
-void uiobject::set_lua_member_(std::string sKey, sol::stack_object mValue)
+void region::set_lua_member_(std::string sKey, sol::stack_object mValue)
 {
     auto mIter = lLuaMembers_.find(sKey);
     if (mIter == lLuaMembers_.cend())
@@ -141,7 +141,7 @@ void uiobject::set_lua_member_(std::string sKey, sol::stack_object mValue)
     }
 }
 
-sol::object uiobject::get_lua_member_(const std::string& sKey) const
+sol::object region::get_lua_member_(const std::string& sKey) const
 {
     auto mIter = lLuaMembers_.find(sKey);
     if (mIter == lLuaMembers_.cend())
@@ -150,46 +150,46 @@ sol::object uiobject::get_lua_member_(const std::string& sKey) const
     return mIter->second;
 }
 
-void uiobject::register_on_lua(sol::state& mLua)
+void region::register_on_lua(sol::state& mLua)
 {
-    auto mClass = mLua.new_usertype<uiobject>("UIObject",
+    auto mClass = mLua.new_usertype<region>("Region",
         sol::meta_function::index,
-        member_function<&uiobject::get_lua_member_>(),
+        member_function<&region::get_lua_member_>(),
         sol::meta_function::new_index,
-        member_function<&uiobject::set_lua_member_>());
+        member_function<&region::set_lua_member_>());
 
     /** @function get_alpha
     */
-    mClass.set_function("get_alpha", member_function<&uiobject::get_alpha>());
+    mClass.set_function("get_alpha", member_function<&region::get_alpha>());
 
     /** @function get_name
     */
-    mClass.set_function("get_name", member_function<&uiobject::get_name>());
+    mClass.set_function("get_name", member_function<&region::get_name>());
 
     /** @function get_object_type
     */
-    mClass.set_function("get_object_type", member_function<&uiobject::get_object_type>());
+    mClass.set_function("get_object_type", member_function<&region::get_object_type>());
 
     /** @function is_object_type
     */
     mClass.set_function("is_object_type", member_function< // select the right overload for Lua
-        static_cast<bool (uiobject::*)(const std::string&) const>(&uiobject::is_object_type)>());
+        static_cast<bool (region::*)(const std::string&) const>(&region::is_object_type)>());
 
     /** @function set_alpha
     */
-    mClass.set_function("set_alpha", member_function<&uiobject::set_alpha>());
+    mClass.set_function("set_alpha", member_function<&region::set_alpha>());
 
     /** @function clear_all_points
     */
-    mClass.set_function("clear_all_points", member_function<&uiobject::clear_all_points>());
+    mClass.set_function("clear_all_points", member_function<&region::clear_all_points>());
 
     /** @function get_bottom
     */
-    mClass.set_function("get_bottom", member_function<&uiobject::get_bottom>());
+    mClass.set_function("get_bottom", member_function<&region::get_bottom>());
 
     /** @function get_center
     */
-    mClass.set_function("get_center", [](const uiobject& mSelf)
+    mClass.set_function("get_center", [](const region& mSelf)
     {
         vector2f mP = mSelf.get_center();
         return std::make_pair(mP.x, mP.y);
@@ -197,22 +197,22 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_height
     */
-    mClass.set_function("get_height", [](const uiobject& mSelf)
+    mClass.set_function("get_height", [](const region& mSelf)
     {
         return mSelf.get_apparent_dimensions().y;
     });
 
     /** @function get_left
     */
-    mClass.set_function("get_left", member_function<&uiobject::get_left>());
+    mClass.set_function("get_left", member_function<&region::get_left>());
 
     /** @function get_num_point
     */
-    mClass.set_function("get_num_point", member_function<&uiobject::get_num_point>());
+    mClass.set_function("get_num_point", member_function<&region::get_num_point>());
 
     /** @function get_parent
     */
-    mClass.set_function("get_parent", [](uiobject& mSelf)
+    mClass.set_function("get_parent", [](region& mSelf)
     {
         sol::object mParent;
         if (auto* pParent = mSelf.get_parent().get())
@@ -222,9 +222,9 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_point
     */
-    mClass.set_function("get_point", [](const uiobject& mSelf, sol::optional<std::size_t> mPoint)
+    mClass.set_function("get_point", [](const region& mSelf, sol::optional<std::size_t> mPoint)
     {
-        anchor_point mPointValue = anchor_point::TOPLEFT;
+        anchor_point mPointValue = anchor_point::TOP_LEFT;
         if (mPoint.has_value())
         {
             if (mPoint.value() > static_cast<std::size_t>(anchor_point::CENTER))
@@ -245,48 +245,48 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_right
     */
-    mClass.set_function("get_right", member_function<&uiobject::get_right>());
+    mClass.set_function("get_right", member_function<&region::get_right>());
 
     /** @function get_top
     */
-    mClass.set_function("get_top", member_function<&uiobject::get_top>());
+    mClass.set_function("get_top", member_function<&region::get_top>());
 
     /** @function get_width
     */
-    mClass.set_function("get_width", [](const uiobject& mSelf)
+    mClass.set_function("get_width", [](const region& mSelf)
     {
         return mSelf.get_apparent_dimensions().x;
     });
 
     /** @function hide
     */
-    mClass.set_function("hide", member_function<&uiobject::hide>());
+    mClass.set_function("hide", member_function<&region::hide>());
 
     /** @function is_shown
     */
-    mClass.set_function("is_shown", member_function<&uiobject::is_shown>());
+    mClass.set_function("is_shown", member_function<&region::is_shown>());
 
     /** @function is_visible
     */
-    mClass.set_function("is_visible", member_function<&uiobject::is_visible>());
+    mClass.set_function("is_visible", member_function<&region::is_visible>());
 
     /** @function set_all_points
     */
-    mClass.set_function("set_all_points", [](uiobject& mSelf,
-        sol::optional<std::variant<std::string,uiobject*>> mTarget)
+    mClass.set_function("set_all_points", [](region& mSelf,
+        sol::optional<std::variant<std::string,region*>> mTarget)
     {
         mSelf.set_all_points(mTarget.has_value() ?
-            get_object<uiobject>(mSelf.get_manager(), mTarget.value()) :
+            get_object<region>(mSelf.get_manager(), mTarget.value()) :
             nullptr);
     });
 
     /** @function set_height
     */
-    mClass.set_function("set_height", member_function<&uiobject::set_height>());
+    mClass.set_function("set_height", member_function<&region::set_height>());
 
     /** @function set_parent
     */
-    mClass.set_function("set_parent", [](uiobject& mSelf, std::variant<std::string,frame*> mParent)
+    mClass.set_function("set_parent", [](region& mSelf, std::variant<std::string,frame*> mParent)
     {
         utils::observer_ptr<frame> pParent = get_object<frame>(mSelf.get_manager(), mParent);
 
@@ -310,8 +310,8 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_point
     */
-    mClass.set_function("set_point", [](uiobject& mSelf, const std::string& sPoint,
-        sol::optional<std::variant<std::string,uiobject*>> mParent,
+    mClass.set_function("set_point", [](region& mSelf, const std::string& sPoint,
+        sol::optional<std::variant<std::string,region*>> mParent,
         sol::optional<std::string> sRelativePoint,
         sol::optional<float> fXOffset, sol::optional<float> fYOffset)
     {
@@ -319,7 +319,7 @@ void uiobject::register_on_lua(sol::state& mLua)
         anchor_point mPoint = anchor::get_anchor_point(sPoint);
 
         // parent
-        utils::observer_ptr<uiobject> pParent;
+        utils::observer_ptr<region> pParent;
         if (mParent.has_value())
         {
             pParent = get_object(mSelf.get_manager(), mParent.value());
@@ -342,14 +342,15 @@ void uiobject::register_on_lua(sol::state& mLua)
         float fAbsX = fXOffset.value_or(0.0f);
         float fAbsY = fYOffset.value_or(0.0f);
 
-        mSelf.set_point(anchor_data(
-            mPoint, pParent ? pParent->get_name() : "", mParentPoint, vector2f(fAbsX, fAbsY)));
+        mSelf.set_point(
+            mPoint, pParent ? pParent->get_name() : "", mParentPoint,
+            vector2f(fAbsX, fAbsY));
     });
 
     /** @function set_rel_point
     */
-    mClass.set_function("set_rel_point", [](uiobject& mSelf, const std::string& sPoint,
-        sol::optional<std::variant<std::string,uiobject*>> mParent,
+    mClass.set_function("set_rel_point", [](region& mSelf, const std::string& sPoint,
+        sol::optional<std::variant<std::string,region*>> mParent,
         sol::optional<std::string> sRelativePoint,
         sol::optional<float> fXOffset, sol::optional<float> fYOffset)
     {
@@ -357,7 +358,7 @@ void uiobject::register_on_lua(sol::state& mLua)
         anchor_point mPoint = anchor::get_anchor_point(sPoint);
 
         // parent
-        utils::observer_ptr<uiobject> pParent;
+        utils::observer_ptr<region> pParent;
         if (mParent.has_value())
         {
             pParent = get_object(mSelf.get_manager(), mParent.value());
@@ -380,18 +381,18 @@ void uiobject::register_on_lua(sol::state& mLua)
         float fRelX = fXOffset.value_or(0.0f);
         float fRelY = fYOffset.value_or(0.0f);
 
-        mSelf.set_point(anchor_data(
+        mSelf.set_point(
             mPoint, pParent ? pParent->get_name() : "", mParentPoint,
-            vector2f(fRelX, fRelY), anchor_type::REL));
+            vector2f(fRelX, fRelY), anchor_type::REL);
     });
 
     /** @function set_width
     */
-    mClass.set_function("set_width", member_function<&uiobject::set_width>());
+    mClass.set_function("set_width", member_function<&region::set_width>());
 
     /** @function show
     */
-    mClass.set_function("show", member_function<&uiobject::show>());
+    mClass.set_function("show", member_function<&region::show>());
 }
 
 }

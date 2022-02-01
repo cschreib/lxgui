@@ -5,8 +5,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_layoutnode.hpp"
-#include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_virtual_uiroot.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_virtual_root.hpp"
 
 namespace lxgui {
 namespace gui
@@ -63,7 +63,7 @@ void frame::parse_attributes_(const layout_node& mNode)
         else
         {
             gui::out << gui::warning << mNode.get_location() << " : "
-                << "\"frameLevel\" is not allowed for virtual widgets. Ignored." << std::endl;
+                << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
     if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouse"))
@@ -352,7 +352,7 @@ utils::observer_ptr<layered_region> frame::parse_region_(const layout_node& mNod
         if (!sType.empty())
             mAttr.sObjectType = sType;
 
-        auto pRegion = create_region(parse_layer_type(sLayer), mAttr);
+        auto pRegion = create_layered_region(parse_layer_type(sLayer), mAttr);
         if (!pRegion)
             return nullptr;
 

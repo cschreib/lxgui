@@ -11,7 +11,7 @@
 #include <lxgui/gui_scrollframe.hpp>
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
-#include <lxgui/gui_uiroot.hpp>
+#include <lxgui/gui_root.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
@@ -57,15 +57,15 @@ void examples_setup_gui(gui::manager& mManager)
         // again later on, for example when one reloads the GUI (the
         // lua state is destroyed and created again).
 
-        //  - register the needed widgets
+        //  - register the needed region types
         gui::factory& mFactory = mManager.get_factory();
-        mFactory.register_uiobject_type<gui::texture>();
-        mFactory.register_uiobject_type<gui::font_string>();
-        mFactory.register_uiobject_type<gui::button>();
-        mFactory.register_uiobject_type<gui::slider>();
-        mFactory.register_uiobject_type<gui::edit_box>();
-        mFactory.register_uiobject_type<gui::scroll_frame>();
-        mFactory.register_uiobject_type<gui::status_bar>();
+        mFactory.register_region_type<gui::texture>();
+        mFactory.register_region_type<gui::font_string>();
+        mFactory.register_region_type<gui::button>();
+        mFactory.register_region_type<gui::slider>();
+        mFactory.register_region_type<gui::edit_box>();
+        mFactory.register_region_type<gui::scroll_frame>();
+        mFactory.register_region_type<gui::status_bar>();
 
         //  - register additional lua functions (add your own functions here)
         sol::state& mLua = mManager.get_lua();
@@ -100,17 +100,17 @@ void examples_setup_gui(gui::manager& mManager)
     // A "child" frame is owned by another frame.
     utils::observer_ptr<gui::frame> pFrame;
     pFrame = mManager.get_root().create_root_frame<gui::frame>("FPSCounter");
-    pFrame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
-    pFrame->set_point(gui::anchor_data(
-        gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT));
+    pFrame->set_point(gui::anchor_point::TOP_LEFT);
+    pFrame->set_point(gui::anchor_point::BOTTOM_RIGHT,
+        "FontstringTestFrameText", gui::anchor_point::TOP_RIGHT);
 
     // Create a font_string in the frame
     utils::observer_ptr<gui::font_string> pFont;
-    pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
-    pFont->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f(0, -5)));
+    pFont = pFrame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
+    pFont->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f(0, -5));
     pFont->set_font("interface/fonts/main.ttf", 15);
-    pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
-    pFont->set_justify_h(gui::text::alignment::RIGHT);
+    pFont->set_alignment_y(gui::alignment_y::BOTTOM);
+    pFont->set_alignment_x(gui::alignment_x::RIGHT);
     pFont->set_outlined(true);
     pFont->set_text_color(gui::color::RED);
     pFont->notify_loaded();

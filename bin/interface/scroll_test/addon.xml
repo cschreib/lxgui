@@ -34,7 +34,7 @@
         <Frames>
             <Button name="$parentCancelButton" inherits="ButtonTemplate_Button">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-12" y="-12"/>
                         </Offset>
@@ -66,12 +66,12 @@
             </Button>
             <EditBox name="$parentFile" inherits="EditBoxTemplate_EditBox">
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT">
+                    <Anchor point="BOTTOM_LEFT">
                         <Offset>
                             <AbsDimension x="12" y="-12"/>
                         </Offset>
                     </Anchor>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentOkButton" relativePoint="TOPLEFT">
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentOkButton" relativePoint="TOP_LEFT">
                         <Offset>
                             <AbsDimension x="-5"/>
                         </Offset>
@@ -86,12 +86,12 @@
                     <Color a="0.5" r="1" g="1" b="1"/>
                 </ThumbTexture>
                 <Anchors>
-                    <Anchor point="TOPLEFT">
+                    <Anchor point="TOP_LEFT">
                         <Offset>
                             <AbsDimension x="112" y="30"/>
                         </Offset>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentCancelButton" relativePoint="TOPRIGHT">
+                    <Anchor point="BOTTOM_RIGHT" relativeTo="$parentCancelButton" relativePoint="TOP_RIGHT">
                         <Offset>
                             <AbsDimension x="-100" y="-4"/>
                         </Offset>
@@ -106,12 +106,12 @@
                 <Frames>
                     <ScrollFrame name="$parentFolderFrame" enableMouse="true" enableMouseWheel="true">
                         <Anchors>
-                            <Anchor point="TOPLEFT">
+                            <Anchor point="TOP_LEFT">
                                 <Offset>
                                     <AbsDimension x="-100"/>
                                 </Offset>
                             </Anchor>
-                            <Anchor point="BOTTOMRIGHT" relativeTo="$parentThumbTexture" relativePoint="BOTTOMLEFT">
+                            <Anchor point="BOTTOM_RIGHT" relativeTo="$parentThumbTexture" relativePoint="BOTTOM_LEFT">
                                 <Offset>
                                     <AbsDimension x="-16"/>
                                 </Offset>
@@ -147,7 +147,7 @@
                                     <AbsDimension x="6"/>
                                 </Size>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+                                    <Anchor point="TOP_LEFT" relativePoint="TOP_RIGHT">
                                         <Offset>
                                             <AbsDimension x="5" y="8"/>
                                         </Offset>
@@ -177,8 +177,8 @@
                     </ScrollFrame>
                     <ScrollFrame name="$parentFileFrame" enableMouse="true" enableMouseWheel="true">
                         <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="$parentThumbTexture" relativePoint="TOPRIGHT"/>
-                            <Anchor point="BOTTOMRIGHT">
+                            <Anchor point="TOP_LEFT" relativeTo="$parentThumbTexture" relativePoint="TOP_RIGHT"/>
+                            <Anchor point="BOTTOM_RIGHT">
                                 <Offset>
                                     <AbsDimension x="84"/>
                                 </Offset>
@@ -210,7 +210,7 @@
                                     <AbsDimension x="6"/>
                                 </Size>
                                 <Anchors>
-                                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+                                    <Anchor point="TOP_LEFT" relativePoint="TOP_RIGHT">
                                         <Offset>
                                             <AbsDimension x="5" y="8"/>
                                         </Offset>

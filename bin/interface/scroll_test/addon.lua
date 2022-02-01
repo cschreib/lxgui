@@ -30,7 +30,7 @@ function ScrollTest:init_root_folder()
 
     rootFolder:set_text("/")
     rootFolder:set_point("RIGHT", self.Splitter.FolderFrame.Scroll, "RIGHT", -5, 0)
-    rootFolder:set_point("TOPLEFT", self.Splitter.FolderFrame.Scroll, "TOPLEFT", 5, 5)
+    rootFolder:set_point("TOP_LEFT", self.Splitter.FolderFrame.Scroll, "TOP_LEFT", 5, 5)
 
     rootFolder.Develop.Plus:hide()
 
@@ -68,9 +68,9 @@ function ScrollTest:init_root_folder()
 
         if rootFolder.lastFolder then
             rootFolder.lastFolder.nextFolder = folderButton
-            folderButton:set_point("TOPLEFT", rootFolder.lastFolder, "BOTTOMLEFT")
+            folderButton:set_point("TOP_LEFT", rootFolder.lastFolder, "BOTTOM_LEFT")
         else
-            folderButton:set_point("TOPLEFT", rootFolder, "BOTTOMLEFT", 16, 0)
+            folderButton:set_point("TOP_LEFT", rootFolder, "BOTTOM_LEFT", 16, 0)
         end
 
         self.folders[self.lastID] = folderButton
@@ -137,9 +137,9 @@ function ScrollTest:develop_folder(id, toggle)
 
             if parentFolder.lastFolder then
                 parentFolder.lastFolder.nextFolder = folderButton
-                folderButton:set_point("TOPLEFT", parentFolder.lastFolder, "BOTTOMLEFT")
+                folderButton:set_point("TOP_LEFT", parentFolder.lastFolder, "BOTTOM_LEFT")
             else
-                folderButton:set_point("TOPLEFT", parentFolder, "BOTTOMLEFT", 16, 0)
+                folderButton:set_point("TOP_LEFT", parentFolder, "BOTTOM_LEFT", 16, 0)
             end
 
             self.folders[self.lastID] = folderButton
@@ -164,7 +164,7 @@ function ScrollTest:develop_folder(id, toggle)
 
         if parentFolder.nextFolder then
             parentFolder.nextFolder:set_point(
-                "TOPLEFT", parentFolder.lastFolder, "BOTTOMLEFT",
+                "TOP_LEFT", parentFolder.lastFolder, "BOTTOM_LEFT",
                 -16*(parentFolder.lastFolder.level - parentFolder.nextFolder.level), 0
             )
 
@@ -176,7 +176,7 @@ function ScrollTest:develop_folder(id, toggle)
         parentFolder.developed = false
 
         if (parentFolder.lastFolder.nextFolder) then
-            parentFolder.lastFolder.nextFolder:set_point("TOPLEFT", parentFolder, "BOTTOMLEFT")
+            parentFolder.lastFolder.nextFolder:set_point("TOP_LEFT", parentFolder, "BOTTOM_LEFT")
             parentFolder.nextFolder = parentFolder.lastFolder.nextFolder
         end
 
@@ -292,9 +292,9 @@ function ScrollTest:set_folder(id)
         fileButton:get_normal_font_object():set_word_wrap(false)
 
         if self.lastFile then
-            fileButton:set_point("TOPLEFT", self.lastFile, "BOTTOMLEFT")
+            fileButton:set_point("TOP_LEFT", self.lastFile, "BOTTOM_LEFT")
         else
-            fileButton:set_point("TOPLEFT", self.Splitter.FileFrame.Scroll, "TOPLEFT", 5, 5)
+            fileButton:set_point("TOP_LEFT", self.Splitter.FileFrame.Scroll, "TOP_LEFT", 5, 5)
         end
 
         fileButton.IconFrame.Icon:set_texture("|icons.png")

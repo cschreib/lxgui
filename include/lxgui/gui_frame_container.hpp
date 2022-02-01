@@ -2,7 +2,7 @@
 #define LXGUI_GUI_FRAME_CONTAINER_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_uiobject_attributes.hpp"
+#include "lxgui/gui_region_attributes.hpp"
 
 #include <lxgui/utils_view.hpp>
 #include <lxgui/utils_observer.hpp>
@@ -15,7 +15,7 @@ namespace lxgui {
 
 namespace gui
 {
-    class uiobject;
+    class region;
     class frame;
     class registry;
     class frame_renderer;
@@ -67,7 +67,7 @@ namespace gui
         *         you require on this frame. If you do not, the frame's OnLoad
         *         callback will not fire.
         */
-        utils::observer_ptr<frame> create_root_frame(uiobject_core_attributes mAttr)
+        utils::observer_ptr<frame> create_root_frame(region_core_attributes mAttr)
         {
             mAttr.pParent = nullptr;
 
@@ -85,7 +85,7 @@ namespace gui
         */
         template<typename frame_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame> create_root_frame(uiobject_core_attributes mAttr)
+        utils::observer_ptr<frame> create_root_frame(region_core_attributes mAttr)
         {
             mAttr.sObjectType = frame_type::CLASS_NAME;
             mAttr.pParent = nullptr;
@@ -106,7 +106,7 @@ namespace gui
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         utils::observer_ptr<frame> create_root_frame(const std::string& sName)
         {
-            uiobject_core_attributes mAttr;
+            region_core_attributes mAttr;
             mAttr.sName = sName;
             mAttr.sObjectType = frame_type::CLASS_NAME;
 
@@ -166,7 +166,7 @@ namespace gui
     protected :
 
         virtual utils::observer_ptr<frame> create_root_frame_(
-            const uiobject_core_attributes& mAttr);
+            const region_core_attributes& mAttr);
 
         void clear_frames_();
 

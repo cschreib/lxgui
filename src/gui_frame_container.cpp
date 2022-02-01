@@ -17,7 +17,7 @@ frame_container::frame_container(factory& mFactory, registry& mRegistry, frame_r
 }
 
 utils::observer_ptr<frame> frame_container::create_root_frame_(
-    const uiobject_core_attributes& mAttr)
+    const region_core_attributes& mAttr)
 {
     auto pNewFrame = mFactory_.create_frame(mRegistry_, pRenderer_, mAttr);
     if (!pNewFrame)

@@ -41,9 +41,9 @@ namespace gui
         /// Constructor.
         explicit slider(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
@@ -62,10 +62,10 @@ namespace gui
         */
         void fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
-        /// Copies an uiobject's parameters into this slider (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this slider (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Sets the texture to use for the thumb.
         /** \param pTexture The new texture
@@ -147,7 +147,7 @@ namespace gui
         /// Sets the draw layer of this slider's thumb texture.
         /** \param mThumbLayer The layer
         */
-        void set_thumb_draw_layer(layer_type mThumbLayer);
+        void set_thumb_draw_layer(layer mThumbLayer);
 
         /// Sets the draw layer of this slider's thumb texture.
         /** \param sBarLayer The layer
@@ -157,7 +157,7 @@ namespace gui
         /// Returns the draw layer of this slider's thumb texture.
         /** \return The draw layer of this slider's thumb texture
         */
-        layer_type get_thumb_draw_layer() const;
+        layer get_thumb_draw_layer() const;
 
         /// Allows the user to click anywhere in the slider to relocate the thumb.
         /** \param bAllow 'true' to allow it, 'false' to allow clicks on the thumb only
@@ -177,13 +177,13 @@ namespace gui
         */
         bool is_in_region(const vector2f& mPosition) const override;
 
-        /// Returns this widget's Lua glue.
+        /// Returns this region's Lua glue.
         void create_glue() override;
 
-        /// Tells this widget that its borders need updating.
+        /// Tells this region that its borders need updating.
         void notify_borders_need_update() override;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Slider";
@@ -207,7 +207,7 @@ namespace gui
 
         bool bAllowClicksOutsideThumb_ = true;
 
-        layer_type mThumbLayer_ = layer_type::OVERLAY;
+        layer mThumbLayer_ = layer::OVERLAY;
         utils::observer_ptr<texture> pThumbTexture_ = nullptr;
 
         bool bThumbMoved_ = false;

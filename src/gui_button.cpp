@@ -5,7 +5,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 
 namespace lxgui {
@@ -72,7 +72,7 @@ void button::fire_script(const std::string& sScriptName, const event_data& mData
     }
 }
 
-void button::copy_from(const uiobject& mObj)
+void button::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -84,11 +84,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_normal_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_normal_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
@@ -101,11 +101,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_pushed_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
@@ -118,11 +118,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_highlight_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
@@ -135,11 +135,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherTexture->get_name();
         mAttr.lInheritance = {pButton->get_disabled_texture()};
 
-        auto pTexture = this->create_region<texture>(
+        auto pTexture = this->create_layered_region<texture>(
             pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
@@ -152,11 +152,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_normal_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_normal_text()};
 
-        auto pFont = this->create_region<font_string>(
+        auto pFont = this->create_layered_region<font_string>(
             pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
@@ -169,11 +169,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_highlight_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_highlight_text()};
 
-        auto pFont = this->create_region<font_string>(
+        auto pFont = this->create_layered_region<font_string>(
             pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
@@ -186,11 +186,11 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_disabled_text().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pOtherText->get_name();
         mAttr.lInheritance = {pButton->get_disabled_text()};
 
-        auto pFont = this->create_region<font_string>(
+        auto pFont = this->create_layered_region<font_string>(
             pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)

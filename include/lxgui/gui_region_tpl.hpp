@@ -1,11 +1,11 @@
-#ifndef LXGUI_GUI_UIOBJECT_TPL_HPP
+#ifndef LXGUI_GUI_REGION_TPL_HPP
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils_observer.hpp>
-#include <lxgui/gui_uiobject.hpp>
+#include <lxgui/gui_region.hpp>
 #include <lxgui/gui_frame.hpp>
 #include <lxgui/gui_manager.hpp>
-#include <lxgui/gui_uiroot.hpp>
+#include <lxgui/gui_root.hpp>
 #include <lxgui/gui_registry.hpp>
 #include <lxgui/utils_string.hpp>
 #include <sol/state.hpp>
@@ -52,10 +52,10 @@ namespace lxgui {
 namespace gui
 {
 
-inline utils::observer_ptr<uiobject> get_object(manager& mManager,
-    const std::variant<std::string,uiobject*>& mParent)
+inline utils::observer_ptr<region> get_object(manager& mManager,
+    const std::variant<std::string,region*>& mParent)
 {
-    return std::visit([&](const auto& mValue) -> utils::observer_ptr<uiobject>
+    return std::visit([&](const auto& mValue) -> utils::observer_ptr<region>
     {
         using data_type = std::decay_t<decltype(mValue)>;
         if constexpr (std::is_same_v<data_type, std::string>)
@@ -63,9 +63,9 @@ inline utils::observer_ptr<uiobject> get_object(manager& mManager,
             if (utils::has_no_content(mValue))
                 return nullptr;
 
-            auto pParent = mManager.get_root().get_registry().get_uiobject_by_name(mValue);
+            auto pParent = mManager.get_root().get_registry().get_region_by_name(mValue);
             if (!pParent)
-                throw sol::error("no widget with name \""+mValue+"\"");
+                throw sol::error("no region with name \""+mValue+"\"");
 
             return pParent;
         }
@@ -88,13 +88,13 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
             if (utils::has_no_content(mValue))
                 return nullptr;
 
-            auto pParentObject = mManager.get_root().get_registry().get_uiobject_by_name(mValue);
+            auto pParentObject = mManager.get_root().get_registry().get_region_by_name(mValue);
             if (!pParentObject)
-                throw sol::error("no widget with name \""+mValue+"\"");
+                throw sol::error("no region with name \""+mValue+"\"");
 
             auto pParent = down_cast<T>(pParentObject);
             if (!pParent)
-                throw sol::error("widget \""+mValue+"\" is not a "+std::string(T::CLASS_NAME));
+                throw sol::error("region \""+mValue+"\" is not a "+std::string(T::CLASS_NAME));
 
             return pParent;
         }
@@ -152,7 +152,7 @@ constexpr auto member_function()
 #endif
 
 template<typename T>
-void uiobject::create_glue_(T* pSelf)
+void region::create_glue_(T* pSelf)
 {
     get_lua_().globals()[sLuaName_] = observer_from(pSelf);
 }

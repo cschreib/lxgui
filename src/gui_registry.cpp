@@ -1,6 +1,6 @@
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_region.hpp"
 
 #include <lxgui/utils_string.hpp>
 
@@ -8,19 +8,19 @@ namespace lxgui {
 namespace gui
 {
 
-bool registry::check_uiobject_name(std::string_view sName) const
+bool registry::check_region_name(std::string_view sName) const
 {
     if (utils::has_no_content(sName))
     {
         gui::out << gui::error << "gui::registry : "
-            << "Cannot create a uiobject with a blank name." << std::endl;
+            << "Cannot create a region with a blank name." << std::endl;
         return false;
     }
 
     if (utils::is_number(sName[0]))
     {
         gui::out << gui::error << "gui::registry : "
-            << "A widget's name cannot start by a number : \"" << sName
+            << "A region's name cannot start by a number : \"" << sName
             << "\" is forbidden." << std::endl;
         return false;
     }
@@ -29,7 +29,7 @@ bool registry::check_uiobject_name(std::string_view sName) const
     if (uiPos != sName.npos && uiPos != 0)
     {
         gui::out << gui::error << "gui::registry : "
-            << "A widget's name cannot contain the character '$' except at the begining : \""
+            << "A region's name cannot contain the character '$' except at the begining : \""
             << sName << "\" is forbidden." << std::endl;
         return false;
     }
@@ -39,7 +39,7 @@ bool registry::check_uiobject_name(std::string_view sName) const
         if ((std::isalnum(c) == 0) && c != '_' && c != '$')
         {
             gui::out << gui::error << "gui::registry : "
-                << "A widget's name can only contain alphanumeric symbols, or underscores : \""
+                << "A region's name can only contain alphanumeric symbols, or underscores : \""
                 << sName << "\" is forbidden." << std::endl;
             return false;
         }
@@ -48,11 +48,11 @@ bool registry::check_uiobject_name(std::string_view sName) const
     return true;
 }
 
-bool registry::add_uiobject(utils::observer_ptr<uiobject> pObj)
+bool registry::add_region(utils::observer_ptr<region> pObj)
 {
     if (!pObj)
     {
-        gui::out << gui::error << "gui::registry : Adding a null widget." << std::endl;
+        gui::out << gui::error << "gui::registry : Adding a null region." << std::endl;
         return false;
     }
 
@@ -60,7 +60,7 @@ bool registry::add_uiobject(utils::observer_ptr<uiobject> pObj)
     if (iterNamedObj != lNamedObjectList_.end())
     {
         gui::out << gui::warning << "gui::registry : "
-            << "A widget with the name \"" << pObj->get_name()
+            << "A region with the name \"" << pObj->get_name()
             << "\" already exists." << std::endl;
         return false;
     }
@@ -70,12 +70,12 @@ bool registry::add_uiobject(utils::observer_ptr<uiobject> pObj)
     return true;
 }
 
-void registry::remove_uiobject(const uiobject& pObj)
+void registry::remove_region(const region& pObj)
 {
     lNamedObjectList_.erase(pObj.get_name());
 }
 
-utils::observer_ptr<const uiobject> registry::get_uiobject_by_name(std::string_view sName) const
+utils::observer_ptr<const region> registry::get_region_by_name(std::string_view sName) const
 {
     auto iter = lNamedObjectList_.find(std::string{sName});
     if (iter != lNamedObjectList_.end())

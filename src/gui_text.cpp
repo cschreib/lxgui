@@ -500,32 +500,32 @@ float text::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
     return pFont_->get_character_kerning(uiChar1, uiChar2)*fScalingFactor_;
 }
 
-void text::set_alignment(const text::alignment& mAlign)
+void text::set_alignment_x(const alignment_x& mAlignX)
 {
-    if (mAlign_ != mAlign)
+    if (mAlignX_ != mAlignX)
     {
-        mAlign_ = mAlign;
+        mAlignX_ = mAlignX;
         notify_cache_dirty_();
     }
 }
 
-void text::set_vertical_alignment(const text::vertical_alignment& mVertAlign)
+void text::set_alignment_y(const alignment_y& mAlignY)
 {
-    if (mVertAlign_ != mVertAlign)
+    if (mAlignY_ != mAlignY)
     {
-        mVertAlign_ = mVertAlign;
+        mAlignY_ = mAlignY;
         notify_cache_dirty_();
     }
 }
 
-const text::alignment& text::get_alignment() const
+const alignment_x& text::get_alignment_x() const
 {
-    return mAlign_;
+    return mAlignX_;
 }
 
-const text::vertical_alignment& text::get_vertical_alignment() const
+const alignment_y& text::get_alignment_y() const
 {
-    return mVertAlign_;
+    return mAlignY_;
 }
 
 void text::set_tracking(float fTracking)
@@ -932,15 +932,15 @@ void text::update_() const
 
         if (fBoxW_ != 0.0f && !std::isinf(fBoxW_))
         {
-            switch (mAlign_)
+            switch (mAlignX_)
             {
-                case alignment::LEFT :
+                case alignment_x::LEFT :
                     fX0 = 0.0f;
                     break;
-                case alignment::CENTER :
+                case alignment_x::CENTER :
                     fX0 = fBoxW_*0.5f;
                     break;
-                case alignment::RIGHT :
+                case alignment_x::RIGHT :
                     fX0 = fBoxW_;
                     break;
             }
@@ -950,30 +950,30 @@ void text::update_() const
 
         if (!std::isinf(fBoxH_))
         {
-            switch (mVertAlign_)
+            switch (mAlignY_)
             {
-                case vertical_alignment::TOP :
+                case alignment_y::TOP :
                     fY = 0.0f;
                     break;
-                case vertical_alignment::MIDDLE :
+                case alignment_y::MIDDLE :
                     fY = (fBoxH_ - fH_)*0.5f;
                     break;
-                case vertical_alignment::BOTTOM :
+                case alignment_y::BOTTOM :
                     fY = (fBoxH_ - fH_);
                     break;
             }
         }
         else
         {
-            switch (mVertAlign_)
+            switch (mAlignY_)
             {
-                case vertical_alignment::TOP :
+                case alignment_y::TOP :
                     fY = 0.0f;
                     break;
-                case vertical_alignment::MIDDLE :
+                case alignment_y::MIDDLE :
                     fY = -fH_*0.5f;
                     break;
-                case vertical_alignment::BOTTOM :
+                case alignment_y::BOTTOM :
                     fY = -fH_;
                     break;
             }
@@ -987,15 +987,15 @@ void text::update_() const
         for (const auto& mLine : lLineList)
         {
             float fX = 0.0f;
-            switch (mAlign_)
+            switch (mAlignX_)
             {
-                case alignment::LEFT :
+                case alignment_x::LEFT :
                     fX = 0.0f;
                     break;
-                case alignment::CENTER :
+                case alignment_x::CENTER :
                     fX = -mLine.fWidth*0.5f;
                     break;
-                case alignment::RIGHT :
+                case alignment_x::RIGHT :
                     fX = -mLine.fWidth;
                     break;
             }

@@ -5,7 +5,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <sstream>
 #include <algorithm>
@@ -114,7 +114,7 @@ void slider::fire_script(const std::string& sScriptName, const event_data& mData
     }
 }
 
-void slider::copy_from(const uiobject& mObj)
+void slider::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -132,11 +132,12 @@ void slider::copy_from(const uiobject& mObj)
 
     if (const texture* pThumb = pSlider->get_thumb_texture().get())
     {
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sName = pThumb->get_name();
         mAttr.lInheritance = {pSlider->get_thumb_texture()};
 
-        auto pTexture = this->create_region<texture>(pThumb->get_draw_layer(), std::move(mAttr));
+        auto pTexture = this->create_layered_region<texture>(
+            pThumb->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -291,10 +292,10 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture)
 
     pThumbTexture_->set_draw_layer(mThumbLayer_);
     pThumbTexture_->clear_all_points();
-    pThumbTexture_->set_point(anchor_data(
+    pThumbTexture_->set_point(
         anchor_point::CENTER, pThumbTexture_->get_parent().get() == this ? "$parent" : sName_,
         mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
-    ));
+    );
 
     notify_thumb_texture_needs_update_();
 }
@@ -306,10 +307,10 @@ void slider::set_orientation(orientation mOrientation)
         mOrientation_ = mOrientation;
         if (pThumbTexture_)
         {
-            pThumbTexture_->set_point(anchor_data(
+            pThumbTexture_->set_point(
                 anchor_point::CENTER, sName_,
                 mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
-            ));
+            );
         }
 
         notify_thumb_texture_needs_update_();
@@ -332,7 +333,7 @@ void slider::set_orientation(const std::string& sOrientation)
     set_orientation(mOrientation);
 }
 
-void slider::set_thumb_draw_layer(layer_type mThumbLayer)
+void slider::set_thumb_draw_layer(layer mThumbLayer)
 {
     mThumbLayer_ = mThumbLayer;
     if (pThumbTexture_)
@@ -342,20 +343,20 @@ void slider::set_thumb_draw_layer(layer_type mThumbLayer)
 void slider::set_thumb_draw_layer(const std::string& sThumbLayer)
 {
     if (sThumbLayer == "ARTWORK")
-        mThumbLayer_ = layer_type::ARTWORK;
+        mThumbLayer_ = layer::ARTWORK;
     else if (sThumbLayer == "BACKGROUND")
-        mThumbLayer_ = layer_type::BACKGROUND;
+        mThumbLayer_ = layer::BACKGROUND;
     else if (sThumbLayer == "BORDER")
-        mThumbLayer_ = layer_type::BORDER;
+        mThumbLayer_ = layer::BORDER;
     else if (sThumbLayer == "HIGHLIGHT")
-        mThumbLayer_ = layer_type::HIGHLIGHT;
+        mThumbLayer_ = layer::HIGHLIGHT;
     else if (sThumbLayer == "OVERLAY")
-        mThumbLayer_ = layer_type::OVERLAY;
+        mThumbLayer_ = layer::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Unknown layer type : \""+sThumbLayer+"\". Using \"OVERLAY\"." << std::endl;
-        mThumbLayer_ = layer_type::OVERLAY;
+        mThumbLayer_ = layer::OVERLAY;
     }
 
     if (pThumbTexture_)
@@ -387,7 +388,7 @@ slider::orientation slider::get_orientation() const
     return mOrientation_;
 }
 
-layer_type slider::get_thumb_draw_layer() const
+layer slider::get_thumb_draw_layer() const
 {
     return mThumbLayer_;
 }

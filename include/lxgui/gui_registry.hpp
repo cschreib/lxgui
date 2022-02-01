@@ -12,7 +12,7 @@
 namespace lxgui {
 namespace gui
 {
-    class uiobject;
+    class region;
 
     /// Keeps track of created UI objects and records their names for lookup.
     class registry
@@ -26,37 +26,37 @@ namespace gui
         registry& operator = (const registry& mMgr) = default;
         registry& operator = (registry&& mMgr) = default;
 
-        /// Checks the provided string is suitable for naming a widget.
+        /// Checks the provided string is suitable for naming a region.
         /** \param sName The string to test
-        *   \return 'true' if the provided string can be the name of a widget
+        *   \return 'true' if the provided string can be the name of a region
         */
-        bool check_uiobject_name(std::string_view sName) const;
+        bool check_region_name(std::string_view sName) const;
 
-        /// Adds an uiobject to be handled by this registry.
+        /// Adds a region to be handled by this registry.
         /** \param pObj The object to add
-        *   \return 'false' if the name of the widget was already taken
+        *   \return 'false' if the name of the region was already taken
         */
-        bool add_uiobject(utils::observer_ptr<uiobject> pObj);
+        bool add_region(utils::observer_ptr<region> pObj);
 
-        /// Removes an uiobject from this registry.
+        /// Removes a region from this registry.
         /** \param mObj The object to remove
         */
-        void remove_uiobject(const uiobject& mObj);
+        void remove_region(const region& mObj);
 
-        /// Returns the uiobject associated with the given name.
-        /** \param sName    The name of the widget you're after
-        *   \return The uiobject associated with the given name, or nullptr if not found
+        /// Returns the region associated with the given name.
+        /** \param sName    The name of the region you're after
+        *   \return The region associated with the given name, or nullptr if not found
         */
-        utils::observer_ptr<const uiobject> get_uiobject_by_name(std::string_view sName) const;
+        utils::observer_ptr<const region> get_region_by_name(std::string_view sName) const;
 
-        /// Returns the uiobject associated with the given name.
-        /** \param sName    The name of the widget you're after
-        *   \return The uiobject associated with the given name, or nullptr if not found
+        /// Returns the region associated with the given name.
+        /** \param sName    The name of the region you're after
+        *   \return The region associated with the given name, or nullptr if not found
         */
-        utils::observer_ptr<uiobject> get_uiobject_by_name(std::string_view sName)
+        utils::observer_ptr<region> get_region_by_name(std::string_view sName)
         {
-            return utils::const_pointer_cast<uiobject>(
-                const_cast<const registry*>(this)->get_uiobject_by_name(sName));
+            return utils::const_pointer_cast<region>(
+                const_cast<const registry*>(this)->get_region_by_name(sName));
         }
 
     private :
@@ -64,7 +64,7 @@ namespace gui
         template<typename T>
         using string_map = std::unordered_map<std::string,T>;
 
-        string_map<utils::observer_ptr<uiobject>> lNamedObjectList_;
+        string_map<utils::observer_ptr<region>> lNamedObjectList_;
     };
 }
 }

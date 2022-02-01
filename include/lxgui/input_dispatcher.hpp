@@ -43,7 +43,7 @@ namespace input
     *   button is pressed, even if the mouse pointer is currently over
     *   a UI element that should capture mouse input. Likewise, @ref
     *   on_key_pressed will trigger even if a UI element has focus.
-    *   These global events are meant to be consumed by the @ref gui::uiroot,
+    *   These global events are meant to be consumed by the @ref gui::root,
     *   which takes care of forwarding them to UI elements, and determining
     *   if a particular event is allowed to propagate to the elements below
     *   the UI. If you need to react only to events that are not captured by

@@ -3,7 +3,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <sol/state.hpp>
@@ -15,7 +15,7 @@
 *   "disabled".
 *
 *   In addition, you can provide another texture/fontstring for the
-*   "highlight" state (when the mouse is over the button widget).
+*   "highlight" state (when the mouse is over the button region).
 *
 *   Note that there is no fontstring for the "pushed" state: in this
 *   case, the "normal" font is rendered with a slight offset that you
@@ -34,7 +34,7 @@
 *   - `OnEnable`: Triggered by @{Button:enable}.
 *   - `OnDisable`: Triggered by @{Button:disable}.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}.
+*   Inherits all methods from: @{Region}, @{Frame}.
 *
 *   Child classes: @{CheckButton}.
 *   @classmod Button
@@ -47,7 +47,7 @@ namespace gui
 void button::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<button>("Button",
-        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::base_classes, sol::bases<region, frame>(),
         sol::meta_function::index,
         member_function<&button::get_lua_member_>(),
         sol::meta_function::new_index,

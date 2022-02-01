@@ -5,7 +5,7 @@ Documentation for all the GUI object types available in lxgui, along
 with other additional functions exposed by the library.
 ]]
 file = {
-    '../src/gui_uiobject_glues.cpp',
+    '../src/gui_region_glues.cpp',
     '../src/gui_frame_glues.cpp',
     '../src/gui_button_glues.cpp',
     '../src/gui_checkbutton_glues.cpp',

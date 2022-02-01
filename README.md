@@ -4,7 +4,7 @@
 
 - [What is lxgui?](#what-is-lxgui)
     - [In a nutshell](#in-a-nutshell)
-    - [Available GUI widgets](#available-gui-widgets)
+    - [Available GUI region types](#available-gui-region-types)
     - [Demonstration](#demonstration)
     - [Gallery](#gallery)
     - [Front-end and back-ends](#front-end-and-back-ends)
@@ -35,17 +35,17 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Platform independent**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **High-DPI aware**. The interface can be scaled by an arbitrary factor when rendered on the screen. This can be used to improve accessibility for visually-impaired users.
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
-* **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
+* **Fully extensible**. Except for the base GUI region types, every region type is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New region types can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
-* **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of the layout+script files is not required.
+* **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly in C++ if the flexibility of the layout+script files is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
-* **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
+* **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual regions, inheritance, ...).
 
 
-## Available GUI widgets
+## Available GUI region types
 
-* **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
-* **layered_region** (abstract): can be rendered on the screen.
+* **region**: the very base of every GUI element; can be placed on screen, and that's about it.
+* **layered_region**: can be rendered on the screen as part of a draw layer.
 * **frame**: can contain layered_regions (sorted by layer) and other frames, and respond to events.
 * **texture**: can render a texture file, a gradient, or a plain color.
 * **font_string**: can render text.
@@ -56,7 +56,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
-As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
+As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system. You can create a "virtual" frame template, containing any number of children regions and any set of properties, and then instantiate several frames that will "inherit" from this template. This reduces the necessary code, and can help you make consistent GUIs. For example, you can create a "ButtonTemplate", and use it as a base for all the buttons of your GUI. Then if you need to change your buttons to have round instead of square corners, you only need to do the modification to the button template, and it will apply to all buttons.
 
 
 ## Demonstration
@@ -79,13 +79,13 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
 
-To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support XML and YAML layout files, or just one if you need only XML or YAML.
+To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
 
 Available rendering back-ends:
 
- - OpenGL. This back-end depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance. This back-end generally offers the best possible performance, but it also has the largest number of third-party dependencies, hence it can be harder to set up.
+ - OpenGL. This back-end depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance. This back-end generally offers the best possible performance, but it also has the largest number of third-party dependencies, hence it can be harder to set up.
 
  - SFML2. This back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML. It runs a little bit slower than the OpenGL back-end, as the extra layer from SFML adds a bit of overhead. At present, some limitations in the SFML API also prevents using VBOs.
 
@@ -282,6 +282,7 @@ Setting up the GUI in C++ is rather straightforward. The example code below is b
 sf::RenderWindow window;
 
 // Initialize the GUI using the SFML back-end
+// NB: owner_ptr is a lightweight, unique-ownership smart pointer (similar to std::unique_ptr).
 utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
 // Grab a pointer to the SFML input source so we can feed events to it later
@@ -302,15 +303,15 @@ manager->register_lua_glues([](gui::manager& mgr)
 {
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
-    //  - register the needed widgets
+    //  - register the needed region types
     gui::factory& fac = mgr.get_factory();
-    fac.register_uiobject_type<gui::texture>();
-    fac.register_uiobject_type<gui::font_string>();
-    fac.register_uiobject_type<gui::button>();
-    fac.register_uiobject_type<gui::slider>();
-    fac.register_uiobject_type<gui::edit_box>();
-    fac.register_uiobject_type<gui::scroll_frame>();
-    fac.register_uiobject_type<gui::status_bar>();
+    fac.register_region_type<gui::texture>();
+    fac.register_region_type<gui::font_string>();
+    fac.register_region_type<gui::button>();
+    fac.register_region_type<gui::slider>();
+    fac.register_region_type<gui::edit_box>();
+    fac.register_region_type<gui::scroll_frame>();
+    fac.register_region_type<gui::status_bar>();
     //  - register your own additional Lua "glue" functions, if needed.
     // ...
 });
@@ -397,8 +398,8 @@ Then, within this tag, we need to create a frame (which is more or less a GUI co
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
     </Frame>
 ```
@@ -408,13 +409,13 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
-            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
+            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" alignX="RIGHT" alignY="BOTTOM" outline="NORMAL">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-5" y="-5"/>
                         </Offset>
@@ -426,9 +427,9 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
     </Frame>
 ```
 
-We named our FontString `$parentText`. In names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
+We named our FontString `$parentText`. In UI element names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
 
-Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `justifyH` and `justifyV` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
+Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `alignX` and `alignY` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
 
 NB: the GUI positioning is done in "points". By default, on traditional displays a point is equivalent to a pixel, but it can be equivalent to two or more pixels on modern hi-DPI displays. In addition, the GUI can always be rescaled by an arbitrary scaling factor (in the same way that you can zoom on a web page in your browser). This rescaling factor is set to `1.0` by default, but changing its value also changes the number of pixels per points.
 
@@ -468,13 +469,13 @@ Once this is done, we have the full XML file:
 <Ui>
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT"/>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
         </Anchors>
         <Layers><Layer>
-            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
+            <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" alignX="RIGHT" alignY="BOTTOM" outline="NORMAL">
                 <Anchors>
-                    <Anchor point="BOTTOMRIGHT">
+                    <Anchor point="BOTTOM_RIGHT">
                         <Offset>
                             <AbsDimension x="-5" y="-5"/>
                         </Offset>
@@ -527,23 +528,22 @@ ui:
   frame:
     name: FPSCounter
     anchors:
-      - point: TOPLEFT
-      - point: BOTTOMRIGHT
+      - point: TOP_LEFT
+      - point: BOTTOM_RIGHT
 
     layers:
       layer:
-
         font_string:
           name: $parentText
           font: interface/fonts/main.ttf
           text: ""
           font_height: 12
-          justify_h: RIGHT
-          justify_v: BOTTOM
+          align_x: RIGHT
+          align_y: BOTTOM
           outline: NORMAL
           color: {r: 0, g: 1, b: 0}
           anchors:
-            - point: BOTTOMRIGHT
+            - point: BOTTOM_RIGHT
               offset: {abs_dimension: {x: -5, y: -5}}
 
     scripts:
@@ -573,23 +573,23 @@ ui:
 Re-creating the above addon in pure C++ is perfectly possible. This can be done with the following code:
 
 ```c++
-// Root frames (with no parents) are owned by the "uiroot".
-gui::uiroot& root = manager->get_root();
+// Root frames (with no parents) are owned by the UI "root".
+gui::root& root = manager->get_root();
 
 // Create the Frame.
-// NB: observer_ptr is a non-owning smart pointer similar to std::weak_ptr.
-utils::observer_ptr<gui::frame> frame;
-frame = root.create_root_frame<gui::frame>("FPSCounter");
-frame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
-frame->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT));
+// NB: observer_ptr is a lightweight, non-owning smart pointer (vaguely similar to std::weak_ptr).
+utils::observer_ptr<gui::frame> frame =
+    root.create_root_frame<gui::frame>("FPSCounter");
+frame->set_point(gui::anchor_point::TOP_LEFT);
+frame->set_point(gui::anchor_point::BOTTOM_RIGHT);
 
 // Create the FontString as a child region of the frame.
-utils::observer_ptr<gui::font_string> text;
-text = frame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
-text->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5}));
+utils::observer_ptr<gui::font_string> text =
+    frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
+text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
-text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
-text->set_justify_h(gui::text::alignment::RIGHT);
+text->set_alignment_x(gui::alignment_x::RIGHT);
+text->set_alignment_y(gui::alignment_y::BOTTOM);
 text->set_outlined(true);
 text->set_text_color(gui::color::GREEN);
 text->notify_loaded(); // must be called on all objects when they are fully set up
@@ -605,8 +605,7 @@ frame->add_script("OnUpdate", [=](gui::frame& self, const event_data& args) muta
 
     if (timer > update_time)
     {
-        utils::observer_ptr<gui::font_string> text;
-        text = self.get_region<gui::font_string>("Text");
+        utils::observer_ptr<gui::font_string> text = self.get_region<gui::font_string>("Text");
         text->set_text("FPS : "+utils::to_string(std::floor(frames/timer)));
 
         timer = 0.0f;

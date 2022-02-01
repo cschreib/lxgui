@@ -10,7 +10,7 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_addon_registry.hpp"
-#include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
@@ -27,12 +27,8 @@ namespace lxgui {
 namespace gui
 {
 
-layer::layer() : bDisabled(false)
-{
-}
-
 frame::frame(utils::control_block& mBlock, manager& mManager) :
-    region(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
+    base(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -48,7 +44,7 @@ frame::~frame()
 
     if (!bVirtual_)
     {
-        // Tell the renderer to no longer render this widget
+        // Tell the renderer to no longer render this region
         get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
         pRenderer_ = nullptr;
     }
@@ -88,7 +84,7 @@ std::string frame::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << region::serialize(sTab);
+    sStr << base::serialize(sTab);
     if (auto pFrameRenderer = utils::dynamic_pointer_cast<frame>(pRenderer_))
     sStr << sTab << "  # Man. render : " << pFrameRenderer->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
@@ -226,7 +222,7 @@ bool frame::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnUpdate");
 }
 
-void frame::copy_from(const uiobject& mObj)
+void frame::copy_from(const region& mObj)
 {
     base::copy_from(mObj);
 
@@ -278,12 +274,12 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pArt || pArt->is_special()) continue;
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pArt->get_object_type();
         mAttr.sName = pArt->get_raw_name();
         mAttr.lInheritance = {pArt};
 
-        auto pNewArt = create_region(pArt->get_draw_layer(), std::move(mAttr));
+        auto pNewArt = create_layered_region(pArt->get_draw_layer(), std::move(mAttr));
         if (!pNewArt) continue;
 
         pNewArt->notify_loaded();
@@ -308,7 +304,7 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pChild || pChild->is_special()) continue;
 
-        uiobject_core_attributes mAttr;
+        region_core_attributes mAttr;
         mAttr.sObjectType = pChild->get_object_type();
         mAttr.sName = pChild->get_raw_name();
         mAttr.lInheritance = {pChild};
@@ -329,14 +325,13 @@ void frame::create_title_region()
         return;
     }
 
-    uiobject_core_attributes mAttr;
+    region_core_attributes mAttr;
     mAttr.sObjectType = "Region";
     mAttr.bVirtual = is_virtual();
     mAttr.sName = "$parentTitleRegion";
     mAttr.pParent = observer_from(this);
 
-    auto pTitleRegion = utils::static_pointer_cast<region>(
-        get_manager().get_factory().create_uiobject(get_registry(), mAttr));
+    auto pTitleRegion = get_manager().get_factory().create_region(get_registry(), mAttr);
 
     if (!pTitleRegion)
         return;
@@ -504,9 +499,9 @@ void frame::check_position_()
     }
 }
 
-void frame::disable_draw_layer(layer_type mLayerID)
+void frame::disable_draw_layer(layer mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
+    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = true;
@@ -514,9 +509,9 @@ void frame::disable_draw_layer(layer_type mLayerID)
     }
 }
 
-void frame::enable_draw_layer(layer_type mLayerID)
+void frame::enable_draw_layer(layer mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
+    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = false;
@@ -651,8 +646,8 @@ utils::owner_ptr<layered_region> frame::remove_region(
     return pRemovedRegion;
 }
 
-utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
-    uiobject_core_attributes mAttr)
+utils::observer_ptr<layered_region> frame::create_layered_region(layer mLayer,
+    region_core_attributes mAttr)
 {
     mAttr.bVirtual = is_virtual();
     mAttr.pParent = observer_from(this);
@@ -667,7 +662,7 @@ utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
     return add_region(std::move(pRegion));
 }
 
-utils::observer_ptr<frame> frame::create_child(uiobject_core_attributes mAttr)
+utils::observer_ptr<frame> frame::create_child(region_core_attributes mAttr)
 {
     mAttr.bVirtual = is_virtual();
     mAttr.pParent = observer_from(this);
@@ -1422,7 +1417,7 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-utils::owner_ptr<uiobject> frame::release_from_parent()
+utils::owner_ptr<region> frame::release_from_parent()
 {
     utils::observer_ptr<frame> pSelf = observer_from(this);
     if (pParent_)
@@ -1866,25 +1861,5 @@ void frame::update(float fDelta)
     DEBUG_LOG("   .");
 }
 
-layer_type layer::get_layer_type(const std::string& sLayer)
-{
-    if (sLayer == "ARTWORK")
-        return layer_type::ARTWORK;
-    else if (sLayer == "BACKGROUND")
-        return layer_type::BACKGROUND;
-    else if (sLayer == "BORDER")
-        return layer_type::BORDER;
-    else if (sLayer == "HIGHLIGHT")
-        return layer_type::HIGHLIGHT;
-    else if (sLayer == "OVERLAY")
-        return layer_type::OVERLAY;
-    else
-    {
-        gui::out << gui::warning << "layer : Unknown layer type : \""
-            << sLayer << "\". Using \"ARTWORK\"." << std::endl;
-
-        return layer_type::ARTWORK;
-    }
-}
 }
 }

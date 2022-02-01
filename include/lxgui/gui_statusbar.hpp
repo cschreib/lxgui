@@ -43,9 +43,9 @@ namespace gui
         /// Constructor.
         explicit status_bar(utils::control_block& mBlock, manager& mManager);
 
-        /// Prints all relevant information about this widget in a string.
+        /// Prints all relevant information about this region in a string.
         /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
+        *   \return All relevant information about this region
         */
         std::string serialize(const std::string& sTab) const override;
 
@@ -55,10 +55,10 @@ namespace gui
         */
         bool can_use_script(const std::string& sScriptName) const override;
 
-        /// Copies an uiobject's parameters into this status_bar (inheritance).
-        /** \param mObj The uiobject to copy
+        /// Copies a region's parameters into this status_bar (inheritance).
+        /** \param mObj The region to copy
         */
-        void copy_from(const uiobject& mObj) override;
+        void copy_from(const region& mObj) override;
 
         /// Sets this status_bar's minimum value.
         /** \param fMin The minimum value
@@ -84,7 +84,7 @@ namespace gui
         /// Sets the draw layer of this status_bar's bar texture.
         /** \param mBarLayer The layer
         */
-        void set_bar_draw_layer(layer_type mBarLayer);
+        void set_bar_draw_layer(layer mBarLayer);
 
         /// Sets the draw layer of this status_bar's bar texture.
         /** \param sBarLayer The layer
@@ -138,7 +138,7 @@ namespace gui
         /// Returns the draw layer of status_bar's bar texture.
         /** \return The draw layer of status_bar's bar texture
         */
-        layer_type get_bar_draw_layer() const;
+        layer get_bar_draw_layer() const;
 
         /// Returns this status_bar's bar texture.
         /** \return This status_bar's bar texture
@@ -165,10 +165,10 @@ namespace gui
         */
         bool is_reversed() const;
 
-        /// Returns this widget's Lua glue.
+        /// Returns this region's Lua glue.
         void create_glue() override;
 
-        /// Updates this widget's logic.
+        /// Updates this region's logic.
         /** \param fDelta Time spent since last update
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
@@ -176,7 +176,7 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Registers this widget class to the provided Lua state
+        /// Registers this region class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "StatusBar";
@@ -199,7 +199,7 @@ namespace gui
         float fMaxValue_ = 1.0f;
 
         color      mBarColor_ = color::WHITE;
-        layer_type mBarLayer_ = layer_type::ARTWORK;
+        layer mBarLayer_ = layer::ARTWORK;
         utils::observer_ptr<texture> pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
