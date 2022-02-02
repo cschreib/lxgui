@@ -34,8 +34,8 @@ namespace gui
     *   addition to those from frame:
     *
     *   - `OnClick`: Triggered when the button is clicked, either when
-    *   button::click is called, or after the mouse is released after a
-    *   click over the button.
+    *   button::click is called, or just when a mouse button is pressed
+    *   when the cursor is over the button.
     *   - `OnDoubleClick`: Triggered when the button is double-clicked.
     *   - `OnEnable`: Triggered by button::enable.
     *   - `OnDisable`: Triggered by button::disable.

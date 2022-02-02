@@ -1182,26 +1182,12 @@ void frame::remove_script(const std::string& sScriptName)
 
 void frame::on_event_(std::string_view sEventName, const event_data& mEvent)
 {
-    alive_checker mChecker(*this);
+    event_data mData;
+    mData.add(std::string(sEventName));
+    for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
+        mData.add(mEvent.get(i));
 
-    if (has_script("OnEvent"))
-    {
-        // ADDON_LOADED should only be fired if it's this frame's addon
-        if (sEventName == "ADDON_LOADED")
-        {
-            if (!pAddOn_ || pAddOn_->sName != mEvent.get<std::string>(0))
-                return;
-        }
-
-        event_data mData;
-        mData.add(std::string(sEventName));
-        for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
-            mData.add(mEvent.get(i));
-
-        fire_script("OnEvent", mData);
-        if (!mChecker.is_alive())
-            return;
-    }
+    fire_script("OnEvent", mData);
 }
 
 void frame::fire_script(const std::string& sScriptName, const event_data& mData)
@@ -1630,7 +1616,10 @@ void frame::notify_visible()
         }
     }
 
-    lQueuedEventList_.push_back("OnShow");
+    fire_script("OnShow");
+    if (!mChecker.is_alive())
+        return;
+
     notify_renderer_need_redraw();
 }
 
@@ -1654,7 +1643,10 @@ void frame::notify_invisible()
         }
     }
 
-    lQueuedEventList_.push_back("OnHide");
+    fire_script("OnHide");
+    if (!mChecker.is_alive())
+        return;
+
     notify_renderer_need_redraw();
 }
 
@@ -1759,16 +1751,6 @@ void frame::update(float fDelta)
     DEBUG_LOG("  ~");
     base::update(fDelta);
     DEBUG_LOG("   #");
-
-    for (const auto& sEvent : lQueuedEventList_)
-    {
-        DEBUG_LOG("   Event " + *iterEvent);
-        fire_script(sEvent);
-        if (!mChecker.is_alive())
-            return;
-    }
-
-    lQueuedEventList_.clear();
 
     if (bBuildLayerList_)
     {

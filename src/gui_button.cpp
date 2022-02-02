@@ -60,15 +60,15 @@ void button::fire_script(const std::string& sScriptName, const event_data& mData
         }
 
         if (sScriptName == "OnMouseDown")
-            push();
-
-        if (sScriptName == "OnMouseUp")
         {
-            release();
+            push();
             fire_script("OnClick");
             if (!mChecker.is_alive())
                 return;
         }
+
+        if (sScriptName == "OnMouseUp")
+            release();
     }
 }
 

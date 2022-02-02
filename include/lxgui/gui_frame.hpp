@@ -1285,7 +1285,6 @@ namespace gui
         std::unordered_map<std::string, script_signal> lSignalList_;
         event_receiver                                 mEventReceiver_;
 
-        std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegDragList_;
         std::set<std::string>    lRegKeyList_;
 
