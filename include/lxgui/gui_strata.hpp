@@ -1,52 +1,48 @@
 #ifndef LXGUI_GUI_STRATA_HPP
 #define LXGUI_GUI_STRATA_HPP
 
-#include "lxgui/lxgui.hpp"
-#include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_quad.hpp"
-
+#include "lxgui/gui_rendertarget.hpp"
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
+#include "lxgui/utils_observer.hpp"
 
-#include <vector>
 #include <map>
 #include <memory>
+#include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    class frame;
+namespace lxgui { namespace gui {
 
-    enum class frame_strata
-    {
-        PARENT = -1,
-        BACKGROUND = 0,
-        LOW,
-        MEDIUM,
-        HIGH,
-        DIALOG,
-        FULLSCREEN,
-        FULLSCREEN_DIALOG,
-        TOOLTIP
-    };
+class frame;
 
-    struct strata;
+enum class frame_strata {
+    PARENT     = -1,
+    BACKGROUND = 0,
+    LOW,
+    MEDIUM,
+    HIGH,
+    DIALOG,
+    FULLSCREEN,
+    FULLSCREEN_DIALOG,
+    TOOLTIP
+};
 
-    /// Contains gui::frame
-    struct level
-    {
-        std::vector<utils::observer_ptr<frame>> lFrameList;
-        strata* pStrata = nullptr;
-    };
+struct strata;
 
-    /// Contains gui::level
-    struct strata
-    {
-        std::map<int, level>           lLevelList;
-        bool                           bRedraw = true;
-        std::shared_ptr<render_target> pRenderTarget;
-        quad                           mQuad;
-    };
-}
-}
+/// Contains gui::frame
+struct level {
+    std::vector<utils::observer_ptr<frame>> lFrameList;
+    strata*                                 pStrata = nullptr;
+};
+
+/// Contains gui::level
+struct strata {
+    std::map<int, level>           lLevelList;
+    bool                           bRedraw = true;
+    std::shared_ptr<render_target> pRenderTarget;
+    quad                           mQuad;
+};
+
+}} // namespace lxgui::gui
 
 #endif

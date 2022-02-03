@@ -6,26 +6,24 @@
 #include <string>
 #include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    /// A piece of the user interface
-    struct addon
-    {
-        std::string sName;
-        std::string sVersion;
-        std::string sUIVersion;
-        std::string sAuthor;
+namespace lxgui { namespace gui {
 
-        bool bEnabled = true;
+/// A piece of the user interface
+struct addon {
+    std::string sName;
+    std::string sVersion;
+    std::string sUIVersion;
+    std::string sAuthor;
 
-        std::string sMainDirectory;
-        std::string sDirectory;
+    bool bEnabled = true;
 
-        std::vector<std::string> lFileList;
-        std::vector<std::string> lSavedVariableList;
-    };
-}
-}
+    std::string sMainDirectory;
+    std::string sDirectory;
+
+    std::vector<std::string> lFileList;
+    std::vector<std::string> lSavedVariableList;
+};
+
+}} // namespace lxgui::gui
 
 #endif

@@ -1,31 +1,25 @@
 #include "lxgui/gui_factory.hpp"
 
-#include "lxgui/gui_out.hpp"
-#include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_framerenderer.hpp"
+#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui { namespace gui {
 
-factory::factory(manager& mManager) : mManager_(mManager)
-{
-}
+factory::factory(manager& mManager) : mManager_(mManager) {}
 
-utils::owner_ptr<region> factory::create_region(registry& mRegistry,
-    const region_core_attributes& mAttr)
-{
+utils::owner_ptr<region>
+factory::create_region(registry& mRegistry, const region_core_attributes& mAttr) {
     if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomObjectList_.find(mAttr.sObjectType);
-    if (mIter == lCustomObjectList_.end())
-    {
-        gui::out << gui::warning << "gui::factory : Unknown object class : \""
-            << mAttr.sObjectType << "\"." << std::endl;
+    if (mIter == lCustomObjectList_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << mAttr.sObjectType
+                 << "\"." << std::endl;
         return nullptr;
     }
 
@@ -41,17 +35,15 @@ utils::owner_ptr<region> factory::create_region(registry& mRegistry,
     return pNewObject;
 }
 
-utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_renderer* pRenderer,
-    const region_core_attributes& mAttr)
-{
+utils::owner_ptr<frame> factory::create_frame(
+    registry& mRegistry, frame_renderer* pRenderer, const region_core_attributes& mAttr) {
     if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomFrameList_.find(mAttr.sObjectType);
-    if (mIter == lCustomFrameList_.end())
-    {
-        gui::out << gui::warning << "gui::factory : Unknown frame class : \""
-            << mAttr.sObjectType << "\"." << std::endl;
+    if (mIter == lCustomFrameList_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << mAttr.sObjectType
+                 << "\"." << std::endl;
         return nullptr;
     }
 
@@ -70,17 +62,15 @@ utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_rendere
     return pNewFrame;
 }
 
-utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegistry,
-    const region_core_attributes& mAttr)
-{
+utils::owner_ptr<layered_region>
+factory::create_layered_region(registry& mRegistry, const region_core_attributes& mAttr) {
     if (!mRegistry.check_region_name(mAttr.sName))
         return nullptr;
 
     auto mIter = lCustomRegionList_.find(mAttr.sObjectType);
-    if (mIter == lCustomRegionList_.end())
-    {
+    if (mIter == lCustomRegionList_.end()) {
         gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
-            << mAttr.sObjectType << "\"." << std::endl;
+                 << mAttr.sObjectType << "\"." << std::endl;
         return nullptr;
     }
 
@@ -96,19 +86,16 @@ utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegis
     return pNewRegion;
 }
 
-sol::state& factory::get_lua()
-{
+sol::state& factory::get_lua() {
     return mManager_.get_lua();
 }
 
-const sol::state& factory::get_lua() const
-{
+const sol::state& factory::get_lua() const {
     return mManager_.get_lua();
 }
 
-bool factory::finalize_object_(registry& mRegistry, region& mObject,
-    const region_core_attributes& mAttr)
-{
+bool factory::finalize_object_(
+    registry& mRegistry, region& mObject, const region_core_attributes& mAttr) {
     if (mAttr.bVirtual)
         mObject.set_virtual();
 
@@ -117,8 +104,7 @@ bool factory::finalize_object_(registry& mRegistry, region& mObject,
     else
         mObject.set_name_(mAttr.sName);
 
-    if (!mObject.is_virtual() || mAttr.pParent == nullptr)
-    {
+    if (!mObject.is_virtual() || mAttr.pParent == nullptr) {
         if (!mRegistry.add_region(observer_from(&mObject)))
             return false;
     }
@@ -129,16 +115,13 @@ bool factory::finalize_object_(registry& mRegistry, region& mObject,
     return true;
 }
 
-void factory::apply_inheritance_(region& mObject, const region_core_attributes& mAttr)
-{
-    for (const auto& pBase : mAttr.lInheritance)
-    {
-        if (!mObject.is_object_type(pBase->get_object_type()))
-        {
+void factory::apply_inheritance_(region& mObject, const region_core_attributes& mAttr) {
+    for (const auto& pBase : mAttr.lInheritance) {
+        if (!mObject.is_object_type(pBase->get_object_type())) {
             gui::out << gui::warning << "gui::factory : "
-                << "\"" << mObject.get_name() << "\" (" << mObject.get_object_type()
-                << ") cannot inherit from \"" << pBase->get_name() << "\" (" << pBase->get_object_type()
-                << "). Inheritance skipped." << std::endl;
+                     << "\"" << mObject.get_name() << "\" (" << mObject.get_object_type()
+                     << ") cannot inherit from \"" << pBase->get_name() << "\" ("
+                     << pBase->get_object_type() << "). Inheritance skipped." << std::endl;
             continue;
         }
 
@@ -147,5 +130,4 @@ void factory::apply_inheritance_(region& mObject, const region_core_attributes& 
     }
 }
 
-}
-}
+}} // namespace lxgui::gui

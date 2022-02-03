@@ -3,60 +3,54 @@
 
 #include "lxgui/lxgui.hpp"
 
-#include <array>
-#include <vector>
 #include <algorithm>
+#include <array>
 #include <iostream>
+#include <vector>
 
-namespace lxgui {
-namespace utils
-{
-    template<typename C, typename T>
-    auto find(C& v, const T& s)
-    {
-        return std::find(v.begin(), v.end(), s);
-    }
+namespace lxgui { namespace utils {
 
-    template<typename C, typename T>
-    auto find_if(C& v, T&& f)
-    {
-        return std::find_if(v.begin(), v.end(), std::forward<T>(f));
-    }
-}
+template<typename C, typename T>
+auto find(C& v, const T& s) {
+    return std::find(v.begin(), v.end(), s);
 }
 
-namespace std
-{
-    template<class T, std::size_t N>
-    ostream& operator << (ostream& o, const array<T, N>& a)
-    {
-        o << "(";
-        for (std::size_t i = 0; i < N; ++i)
-        {
-            if (i != N-1)
-                o << a[i] << ", ";
-            else
-                o << a[i];
-        }
-        o << ")";
-        return o;
-    }
-
-    template<class T>
-    ostream& operator << (ostream& o, const vector<T>& a)
-    {
-        o << "(";
-        const std::size_t N = a.size();
-        for (std::size_t i = 0; i < N; ++i)
-        {
-            if (i != N-1)
-                o << a[i] << ", ";
-            else
-                o << a[i];
-        }
-        o << ")";
-        return o;
-    }
+template<typename C, typename T>
+auto find_if(C& v, T&& f) {
+    return std::find_if(v.begin(), v.end(), std::forward<T>(f));
 }
+
+}} // namespace lxgui::utils
+
+namespace std {
+
+template<class T, std::size_t N>
+ostream& operator<<(ostream& o, const array<T, N>& a) {
+    o << "(";
+    for (std::size_t i = 0; i < N; ++i) {
+        if (i != N - 1)
+            o << a[i] << ", ";
+        else
+            o << a[i];
+    }
+    o << ")";
+    return o;
+}
+
+template<class T>
+ostream& operator<<(ostream& o, const vector<T>& a) {
+    o << "(";
+    const std::size_t N = a.size();
+    for (std::size_t i = 0; i < N; ++i) {
+        if (i != N - 1)
+            o << a[i] << ", ";
+        else
+            o << a[i];
+    }
+    o << ")";
+    return o;
+}
+
+} // namespace std
 
 #endif

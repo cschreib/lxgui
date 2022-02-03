@@ -1,63 +1,57 @@
 #ifndef LXGUI_INPUT_SDL_SOURCE_HPP
 #define LXGUI_INPUT_SDL_SOURCE_HPP
 
-#include "lxgui/utils.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/input_source.hpp"
+#include "lxgui/utils.hpp"
 
 #include <chrono>
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
 
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Cursor;
 union SDL_Event;
 
-namespace lxgui {
-namespace input {
-namespace sdl
-{
-    class source final : public input::source
-    {
-    public :
+namespace lxgui { namespace input { namespace sdl {
 
-        /// Initializes this input source.
-        /** \param pWindow The window from which to receive input
-        *   \param pRenderer The SDL renderer, or null if using raw OpenGL
-        *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
-        */
-        explicit source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage);
+class source final : public input::source {
+public:
+    /// Initializes this input source.
+    /** \param pWindow The window from which to receive input
+     *   \param pRenderer The SDL renderer, or null if using raw OpenGL
+     *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
+     */
+    explicit source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage);
 
-        source(const source&) = delete;
-        source& operator = (const source&) = delete;
+    source(const source&) = delete;
+    source& operator=(const source&) = delete;
 
-        utils::ustring get_clipboard_content() override;
-        void set_clipboard_content(const utils::ustring& sContent) override;
+    utils::ustring get_clipboard_content() override;
+    void           set_clipboard_content(const utils::ustring& sContent) override;
 
-        void on_sdl_event(const SDL_Event& mEvent);
+    void on_sdl_event(const SDL_Event& mEvent);
 
-        void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
-        void reset_mouse_cursor() override;
+    void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
+    void reset_mouse_cursor() override;
 
-        float get_interface_scaling_factor_hint() const override;
+    float get_interface_scaling_factor_hint() const override;
 
-    private :
+private:
+    gui::vector2ui get_window_pixel_size_() const;
+    void           update_pixel_per_unit_();
+    input::key     from_sdl_(int iSDLKey) const;
 
-        gui::vector2ui get_window_pixel_size_() const;
-        void update_pixel_per_unit_();
-        input::key from_sdl_(int iSDLKey) const;
+    SDL_Window*   pWindow_   = nullptr;
+    SDL_Renderer* pRenderer_ = nullptr;
 
-        SDL_Window* pWindow_ = nullptr;
-        SDL_Renderer* pRenderer_ = nullptr;
+    float fPixelsPerUnit_ = 1.0f;
 
-        float fPixelsPerUnit_ = 1.0f;
+    using wrapped_cursor = std::unique_ptr<SDL_Cursor, void (*)(SDL_Cursor*)>;
+    std::unordered_map<std::string, wrapped_cursor> lCursorMap_;
+};
 
-        using wrapped_cursor = std::unique_ptr<SDL_Cursor, void(*)(SDL_Cursor*)>;
-        std::unordered_map<std::string,wrapped_cursor> lCursorMap_;
-    };
-}
-}
-}
+}}} // namespace lxgui::input::sdl
 
 #endif

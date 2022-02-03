@@ -1,73 +1,62 @@
 #include "lxgui/gui_fontstring.hpp"
 
 #include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
-#include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_renderer.hpp"
 
 #include <sstream>
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui { namespace gui {
 
 font_string::font_string(utils::control_block& mBlock, manager& mManager) :
-    layered_region(mBlock, mManager)
-{
+    layered_region(mBlock, mManager) {
     lType_.push_back(CLASS_NAME);
 }
 
-void font_string::render() const
-{
+void font_string::render() const {
     if (!pText_ || !bReady_ || !is_visible())
         return;
 
     float fX = 0.0f, fY = 0.0f;
 
-    if (std::isinf(pText_->get_box_width()))
-    {
-        switch (mAlignX_)
-        {
-            case alignment_x::LEFT   : fX = lBorderList_.left; break;
-            case alignment_x::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
-            case alignment_x::RIGHT  : fX = lBorderList_.right; break;
+    if (std::isinf(pText_->get_box_width())) {
+        switch (mAlignX_) {
+        case alignment_x::LEFT: fX = lBorderList_.left; break;
+        case alignment_x::CENTER: fX = (lBorderList_.left + lBorderList_.right) / 2; break;
+        case alignment_x::RIGHT: fX = lBorderList_.right; break;
         }
-    }
-    else
+    } else {
         fX = lBorderList_.left;
-
-    if (std::isinf(pText_->get_box_height()))
-    {
-        switch (mAlignY_)
-        {
-            case alignment_y::TOP    : fY = lBorderList_.top; break;
-            case alignment_y::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
-            case alignment_y::BOTTOM : fY = lBorderList_.bottom; break;
-        }
     }
-    else
+
+    if (std::isinf(pText_->get_box_height())) {
+        switch (mAlignY_) {
+        case alignment_y::TOP: fY = lBorderList_.top; break;
+        case alignment_y::MIDDLE: fY = (lBorderList_.top + lBorderList_.bottom) / 2; break;
+        case alignment_y::BOTTOM: fY = lBorderList_.bottom; break;
+        }
+    } else {
         fY = lBorderList_.top;
+    }
 
     fX += mOffset_.x;
     fY += mOffset_.y;
 
     pText_->set_alpha(get_effective_alpha());
 
-    if (bHasShadow_)
-    {
+    if (bHasShadow_) {
         pText_->set_color(mShadowColor_, true);
-        pText_->render(matrix4f::translation(
-            round_to_pixel(vector2f(fX, fY) + mShadowOffset_)));
+        pText_->render(matrix4f::translation(round_to_pixel(vector2f(fX, fY) + mShadowOffset_)));
     }
 
     pText_->set_color(mTextColor_);
     pText_->render(matrix4f::translation(round_to_pixel(vector2f(fX, fY))));
 }
 
-std::string font_string::serialize(const std::string& sTab) const
-{
+std::string font_string::serialize(const std::string& sTab) const {
     std::ostringstream sStr;
 
     sStr << base::serialize(sTab);
@@ -82,39 +71,35 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # Justify     :\n";
     sStr << sTab << "  #-###\n";
     sStr << sTab << "  |   # horizontal : ";
-    switch (mAlignX_)
-    {
-        case alignment_x::LEFT :   sStr << "LEFT\n"; break;
-        case alignment_x::CENTER : sStr << "CENTER\n"; break;
-        case alignment_x::RIGHT :  sStr << "RIGHT\n"; break;
-        default : sStr << "<error>\n"; break;
+    switch (mAlignX_) {
+    case alignment_x::LEFT: sStr << "LEFT\n"; break;
+    case alignment_x::CENTER: sStr << "CENTER\n"; break;
+    case alignment_x::RIGHT: sStr << "RIGHT\n"; break;
+    default: sStr << "<error>\n"; break;
     }
     sStr << sTab << "  |   # vertical   : ";
-    switch (mAlignY_)
-    {
-        case alignment_y::TOP :    sStr << "TOP\n"; break;
-        case alignment_y::MIDDLE : sStr << "MIDDLE\n"; break;
-        case alignment_y::BOTTOM : sStr << "BOTTOM\n"; break;
-        default : sStr << "<error>\n"; break;
+    switch (mAlignY_) {
+    case alignment_y::TOP: sStr << "TOP\n"; break;
+    case alignment_y::MIDDLE: sStr << "MIDDLE\n"; break;
+    case alignment_y::BOTTOM: sStr << "BOTTOM\n"; break;
+    default: sStr << "<error>\n"; break;
     }
     sStr << sTab << "  #-###\n";
     sStr << sTab << "  # NonSpaceW.  : " << bCanNonSpaceWrap_ << "\n";
-    if (bHasShadow_)
-    {
-    sStr << sTab << "  # Shadow off. : (" << mShadowOffset_.x << ", " << mShadowOffset_.y << ")\n";
-    sStr << sTab << "  # Shadow col. : " <<  mShadowColor_ << "\n";
+    if (bHasShadow_) {
+        sStr << sTab << "  # Shadow off. : (" << mShadowOffset_.x << ", " << mShadowOffset_.y
+             << ")\n";
+        sStr << sTab << "  # Shadow col. : " << mShadowColor_ << "\n";
     }
 
     return sStr.str();
 }
 
-void font_string::create_glue()
-{
+void font_string::create_glue() {
     create_glue_(this);
 }
 
-void font_string::copy_from(const region& mObj)
-{
+void font_string::copy_from(const region& mObj) {
     base::copy_from(mObj);
 
     const font_string* pFontString = down_cast<font_string>(&mObj);
@@ -122,7 +107,7 @@ void font_string::copy_from(const region& mObj)
         return;
 
     std::string sFontName = pFontString->get_font_name();
-    float fHeight = pFontString->get_font_height();
+    float       fHeight   = pFontString->get_font_height();
     if (!sFontName.empty() && fHeight != 0)
         this->set_font(sFontName, fHeight);
 
@@ -132,8 +117,7 @@ void font_string::copy_from(const region& mObj)
     this->set_line_spacing(pFontString->get_line_spacing());
     this->set_text(pFontString->get_text());
     this->set_outlined(pFontString->is_outlined());
-    if (pFontString->has_shadow())
-    {
+    if (pFontString->has_shadow()) {
         this->set_shadow(true);
         this->set_shadow_color(pFontString->get_shadow_color());
         this->set_shadow_offset(pFontString->get_shadow_offset());
@@ -142,110 +126,95 @@ void font_string::copy_from(const region& mObj)
     this->set_non_space_wrap(pFontString->can_non_space_wrap());
 }
 
-const std::string& font_string::get_font_name() const
-{
+const std::string& font_string::get_font_name() const {
     return sFontName_;
 }
 
-float font_string::get_font_height() const
-{
+float font_string::get_font_height() const {
     return fHeight_;
 }
 
-void font_string::set_outlined(bool bIsOutlined)
-{
-    if (bIsOutlined_ != bIsOutlined)
-    {
-        bIsOutlined_ = bIsOutlined;
+void font_string::set_outlined(bool bIsOutlined) {
+    if (bIsOutlined_ == bIsOutlined)
+        return;
 
-        create_text_object_();
+    bIsOutlined_ = bIsOutlined;
 
-        notify_renderer_need_redraw();
-    }
+    create_text_object_();
+
+    notify_renderer_need_redraw();
 }
 
-bool font_string::is_outlined() const
-{
+bool font_string::is_outlined() const {
     return bIsOutlined_;
 }
 
-alignment_x font_string::get_alignment_x() const
-{
+alignment_x font_string::get_alignment_x() const {
     return mAlignX_;
 }
 
-alignment_y font_string::get_alignment_y() const
-{
+alignment_y font_string::get_alignment_y() const {
     return mAlignY_;
 }
 
-const color& font_string::get_shadow_color() const
-{
+const color& font_string::get_shadow_color() const {
     return mShadowColor_;
 }
 
-const vector2f& font_string::get_shadow_offset() const
-{
+const vector2f& font_string::get_shadow_offset() const {
     return mShadowOffset_;
 }
 
-const vector2f& font_string::get_offset() const
-{
+const vector2f& font_string::get_offset() const {
     return mOffset_;
 }
 
-float font_string::get_spacing() const
-{
+float font_string::get_spacing() const {
     return fSpacing_;
 }
 
-float font_string::get_line_spacing() const
-{
+float font_string::get_line_spacing() const {
     return fLineSpacing_;
 }
 
-const color& font_string::get_text_color() const
-{
+const color& font_string::get_text_color() const {
     return mTextColor_;
 }
 
-void font_string::notify_scaling_factor_updated()
-{
+void font_string::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
     if (pText_)
         set_font(sFontName_, fHeight_);
 }
 
-void font_string::create_text_object_()
-{
-    if (sFontName_.empty()) return;
+void font_string::create_text_object_() {
+    if (sFontName_.empty())
+        return;
 
     std::size_t uiPixelHeight = static_cast<std::size_t>(
-        std::round(get_manager().get_interface_scaling_factor()*fHeight_));
+        std::round(get_manager().get_interface_scaling_factor() * fHeight_));
 
-    auto& mRenderer = get_manager().get_renderer();
+    auto&       mRenderer  = get_manager().get_renderer();
     const auto& mLocalizer = get_manager().get_localizer();
 
-    const auto& lCodePoints = mLocalizer.get_allowed_code_points();
+    const auto&    lCodePoints        = mLocalizer.get_allowed_code_points();
     const char32_t uiDefaultCodePoint = mLocalizer.get_fallback_code_point();
 
     std::shared_ptr<gui::font> pOutlineFont;
-    if (bIsOutlined_)
-    {
+    if (bIsOutlined_) {
         pOutlineFont = mRenderer.create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
-            std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2*uiPixelHeight))),
+            std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * uiPixelHeight))),
             lCodePoints, uiDefaultCodePoint);
     }
 
     auto pFont = mRenderer.create_atlas_font(
-        "GUI", sFontName_, uiPixelHeight,
-        0u, lCodePoints, uiDefaultCodePoint);
+        "GUI", sFontName_, uiPixelHeight, 0u, lCodePoints, uiDefaultCodePoint);
 
     pText_ = std::unique_ptr<text>(new text(mRenderer, pFont, pOutlineFont));
 
-    pText_->set_scaling_factor(1.0f/get_manager().get_interface_scaling_factor());
+    pText_->set_scaling_factor(1.0f / get_manager().get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment_x(mAlignX_);
@@ -255,240 +224,208 @@ void font_string::create_text_object_()
     pText_->enable_formatting(bFormattingEnabled_);
 }
 
-void font_string::set_font(const std::string& sFontName, float fHeight)
-{
+void font_string::set_font(const std::string& sFontName, float fHeight) {
     sFontName_ = parse_file_name(sFontName);
-    fHeight_ = fHeight;
+    fHeight_   = fHeight;
 
     create_text_object_();
 
-    if (!bVirtual_)
-    {
+    if (!bVirtual_) {
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_alignment_x(alignment_x mJustifyH)
-{
-    if (mAlignX_ != mJustifyH)
-    {
-        mAlignX_ = mJustifyH;
-        if (pText_)
-        {
-            pText_->set_alignment_x(mAlignX_);
+void font_string::set_alignment_x(alignment_x mJustifyH) {
+    if (mAlignX_ == mJustifyH)
+        return;
 
-            if (!bVirtual_)
-                notify_renderer_need_redraw();
-        }
-    }
-}
+    mAlignX_ = mJustifyH;
+    if (pText_) {
+        pText_->set_alignment_x(mAlignX_);
 
-void font_string::set_alignment_y(alignment_y mJustifyV)
-{
-    if (mAlignY_ != mJustifyV)
-    {
-        mAlignY_ = mJustifyV;
-        if (pText_)
-        {
-            pText_->set_alignment_y(mAlignY_);
-
-            if (!bVirtual_)
-                notify_renderer_need_redraw();
-        }
-    }
-}
-
-void font_string::set_shadow_color(const color& mShadowColor)
-{
-    if (mShadowColor_ != mShadowColor)
-    {
-        mShadowColor_ = mShadowColor;
-        if (bHasShadow_ && !bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_shadow_offset(const vector2f& mShadowOffset)
-{
-    if (mShadowOffset_ != mShadowOffset)
-    {
-        mShadowOffset_ = mShadowOffset;
-        if (bHasShadow_ && !bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_offset(const vector2f& mOffset)
-{
-    if (mOffset_ != mOffset)
-    {
-        mOffset_ = mOffset;
         if (!bVirtual_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_spacing(float fSpacing)
-{
-    if (fSpacing_ != fSpacing)
-    {
-        fSpacing_ = fSpacing;
-        if (pText_)
-        {
-            pText_->set_tracking(fSpacing_);
-            if (!bVirtual_)
-                notify_renderer_need_redraw();
-        }
+void font_string::set_alignment_y(alignment_y mJustifyV) {
+    if (mAlignY_ == mJustifyV)
+        return;
+
+    mAlignY_ = mJustifyV;
+    if (pText_) {
+        pText_->set_alignment_y(mAlignY_);
+
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_line_spacing(float fLineSpacing)
-{
+void font_string::set_shadow_color(const color& mShadowColor) {
+    if (mShadowColor_ == mShadowColor)
+        return;
+
+    mShadowColor_ = mShadowColor;
+    if (bHasShadow_ && !bVirtual_)
+        notify_renderer_need_redraw();
+}
+
+void font_string::set_shadow_offset(const vector2f& mShadowOffset) {
+    if (mShadowOffset_ == mShadowOffset)
+        return;
+
+    mShadowOffset_ = mShadowOffset;
+    if (bHasShadow_ && !bVirtual_)
+        notify_renderer_need_redraw();
+}
+
+void font_string::set_offset(const vector2f& mOffset) {
+    if (mOffset_ == mOffset)
+        return;
+
+    mOffset_ = mOffset;
+    if (!bVirtual_)
+        notify_renderer_need_redraw();
+}
+
+void font_string::set_spacing(float fSpacing) {
+    if (fSpacing_ == fSpacing)
+        return;
+
+    fSpacing_ = fSpacing;
+    if (pText_) {
+        pText_->set_tracking(fSpacing_);
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
+    }
+}
+
+void font_string::set_line_spacing(float fLineSpacing) {
     if (fLineSpacing_ == fLineSpacing)
         return;
 
     fLineSpacing_ = fLineSpacing;
-    if (pText_)
-    {
+    if (pText_) {
         pText_->set_line_spacing(fLineSpacing_);
         if (!bVirtual_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_text_color(const color& mTextColor)
-{
-    if (mTextColor_ != mTextColor)
-    {
-        mTextColor_ = mTextColor;
-        if (!bVirtual_)
-            notify_renderer_need_redraw();
-    }
+void font_string::set_text_color(const color& mTextColor) {
+    if (mTextColor_ == mTextColor)
+        return;
+
+    mTextColor_ = mTextColor;
+    if (!bVirtual_)
+        notify_renderer_need_redraw();
 }
 
-bool font_string::can_non_space_wrap() const
-{
+bool font_string::can_non_space_wrap() const {
     return bCanNonSpaceWrap_;
 }
 
-float font_string::get_string_height() const
-{
+float font_string::get_string_height() const {
     if (pText_)
         return pText_->get_text_height();
     else
         return 0.0f;
 }
 
-float font_string::get_string_width() const
-{
+float font_string::get_string_width() const {
     if (pText_)
         return pText_->get_text_width();
     else
         return 0.0f;
 }
 
-float font_string::get_string_width(const utils::ustring& sString) const
-{
+float font_string::get_string_width(const utils::ustring& sString) const {
     if (pText_)
         return pText_->get_string_width(sString);
     else
         return 0.0f;
 }
 
-const utils::ustring& font_string::get_text() const
-{
+const utils::ustring& font_string::get_text() const {
     return sText_;
 }
 
-void font_string::set_non_space_wrap(bool bCanNonSpaceWrap)
-{
-    if (bCanNonSpaceWrap_ != bCanNonSpaceWrap)
-    {
-        bCanNonSpaceWrap_ = bCanNonSpaceWrap;
-        if (!bVirtual_)
-            notify_renderer_need_redraw();
-    }
+void font_string::set_non_space_wrap(bool bCanNonSpaceWrap) {
+    if (bCanNonSpaceWrap_ == bCanNonSpaceWrap)
+        return;
+
+    bCanNonSpaceWrap_ = bCanNonSpaceWrap;
+    if (!bVirtual_)
+        notify_renderer_need_redraw();
 }
 
-bool font_string::has_shadow() const
-{
+bool font_string::has_shadow() const {
     return bHasShadow_;
 }
 
-void font_string::set_shadow(bool bHasShadow)
-{
-    if (bHasShadow_ != bHasShadow)
-    {
-        bHasShadow_ = bHasShadow;
-        if (!bVirtual_)
-            notify_renderer_need_redraw();
-    }
+void font_string::set_shadow(bool bHasShadow) {
+    if (bHasShadow_ == bHasShadow)
+        return;
+
+    bHasShadow_ = bHasShadow;
+    if (!bVirtual_)
+        notify_renderer_need_redraw();
 }
 
-void font_string::set_word_wrap(bool bCanWordWrap, bool bAddEllipsis)
-{
+void font_string::set_word_wrap(bool bCanWordWrap, bool bAddEllipsis) {
     bCanWordWrap_ = bCanWordWrap;
     bAddEllipsis_ = bAddEllipsis;
     if (pText_)
         pText_->enable_word_wrap(bCanWordWrap_, bAddEllipsis_);
 }
 
-bool font_string::can_word_wrap() const
-{
+bool font_string::can_word_wrap() const {
     return bCanWordWrap_;
 }
 
-void font_string::enable_formatting(bool bFormatting)
-{
+void font_string::enable_formatting(bool bFormatting) {
     bFormattingEnabled_ = bFormatting;
     if (pText_)
         pText_->enable_formatting(bFormattingEnabled_);
 }
 
-bool font_string::is_formatting_enabled() const
-{
+bool font_string::is_formatting_enabled() const {
     return bFormattingEnabled_;
 }
 
-void font_string::set_text(const utils::ustring& sText)
-{
-    if (sText_ != sText)
-    {
-        sText_ = sText;
-        if (pText_)
-        {
-            pText_->set_text(sText_);
-            if (!bVirtual_)
-                notify_borders_need_update();
-        }
+void font_string::set_text(const utils::ustring& sText) {
+    if (sText_ == sText)
+        return;
+
+    sText_ = sText;
+    if (pText_) {
+        pText_->set_text(sText_);
+        if (!bVirtual_)
+            notify_borders_need_update();
     }
 }
 
-text* font_string::get_text_object()
-{
+text* font_string::get_text_object() {
     return pText_.get();
 }
 
-const text* font_string::get_text_object() const
-{
+const text* font_string::get_text_object() const {
     return pText_.get();
 }
 
-void font_string::update_borders_()
-{
+void font_string::update_borders_() {
     if (!pText_)
         return base::update_borders_();
 
-    //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
+//#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+#define DEBUG_LOG(msg)
 
-    const bool bOldReady = bReady_;
+    const bool bOldReady      = bReady_;
     const auto lOldBorderList = lBorderList_;
-    bReady_ = true;
+    bReady_                   = true;
 
-    if (!lAnchorList_.empty())
-    {
+    if (!lAnchorList_.empty()) {
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
         float fXCenter = 0.0f, fYCenter = 0.0f;
 
@@ -507,7 +444,7 @@ void font_string::update_borders_()
         else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
             fBoxHeight = fBottom - fTop;
 
-        fBoxWidth = round_to_pixel(fBoxWidth, utils::rounding_method::NEAREST_NOT_ZERO);
+        fBoxWidth  = round_to_pixel(fBoxWidth, utils::rounding_method::NEAREST_NOT_ZERO);
         fBoxHeight = round_to_pixel(fBoxHeight, utils::rounding_method::NEAREST_NOT_ZERO);
 
         pText_->set_dimensions(fBoxWidth, fBoxHeight);
@@ -523,8 +460,7 @@ void font_string::update_borders_()
         if (!make_borders_(fLeft, fRight, fXCenter, fBoxWidth))
             bReady_ = false;
 
-        if (bReady_)
-        {
+        if (bReady_) {
             if (fRight < fLeft)
                 fRight = fLeft + 1.0f;
             if (fBottom < fTop)
@@ -534,12 +470,9 @@ void font_string::update_borders_()
             lBorderList_.right  = fRight;
             lBorderList_.top    = fTop;
             lBorderList_.bottom = fBottom;
-        }
-        else
+        } else
             lBorderList_ = bounds2f::ZERO;
-    }
-    else
-    {
+    } else {
         float fBoxWidth = get_dimensions().x;
         if (fBoxWidth == 0.0)
             fBoxWidth = pText_->get_width();
@@ -549,7 +482,7 @@ void font_string::update_borders_()
             fBoxHeight = pText_->get_height();
 
         lBorderList_ = bounds2f(0.0, 0.0, fBoxWidth, fBoxHeight);
-        bReady_ = false;
+        bReady_      = false;
     }
 
     lBorderList_.left   = round_to_pixel(lBorderList_.left);
@@ -557,13 +490,11 @@ void font_string::update_borders_()
     lBorderList_.top    = round_to_pixel(lBorderList_.top);
     lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
-    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
-    {
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  @");
 }
 
-}
-}
+}} // namespace lxgui::gui

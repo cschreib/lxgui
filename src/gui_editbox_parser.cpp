@@ -1,14 +1,11 @@
 #include "lxgui/gui_editbox.hpp"
 #include "lxgui/gui_fontstring.hpp"
-#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_parser_common.hpp"
 
-namespace lxgui {
-namespace gui
-{
-void edit_box::parse_attributes_(const layout_node& mNode)
-{
+namespace lxgui { namespace gui {
+void edit_box::parse_attributes_(const layout_node& mNode) {
     base::parse_attributes_(mNode);
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("letters"))
@@ -39,8 +36,7 @@ void edit_box::parse_attributes_(const layout_node& mNode)
         set_arrows_ignored(pAttr->get_value<bool>());
 }
 
-void edit_box::parse_all_nodes_before_children_(const layout_node& mNode)
-{
+void edit_box::parse_all_nodes_before_children_(const layout_node& mNode) {
     base::parse_all_nodes_before_children_(mNode);
 
     parse_text_insets_node_(mNode);
@@ -50,30 +46,25 @@ void edit_box::parse_all_nodes_before_children_(const layout_node& mNode)
         set_highlight_color(parse_color_node_(*pHighlightNode));
 }
 
-void edit_box::parse_font_string_node_(const layout_node& mNode)
-{
-    if (const layout_node* pFontStringNode = mNode.try_get_child("FontString"))
-    {
+void edit_box::parse_font_string_node_(const layout_node& mNode) {
+    if (const layout_node* pFontStringNode = mNode.try_get_child("FontString")) {
         layout_node mDefaulted = *pFontStringNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentFontString");
 
         auto pFontString = parse_region_(mDefaulted, "ARTWORK", "FontString");
-        if (pFontString)
-        {
+        if (pFontString) {
             pFontString->set_special();
             set_font_string(utils::static_pointer_cast<font_string>(pFontString));
         }
 
-        if (const layout_node* pErrorNode = mDefaulted.try_get_child("Anchors"))
-        {
+        if (const layout_node* pErrorNode = mDefaulted.try_get_child("Anchors")) {
             gui::out << gui::warning << pErrorNode->get_location() << " : "
-                << "edit_box : font_string's anchors will be ignored." << std::endl;
+                     << "edit_box : font_string's anchors will be ignored." << std::endl;
         }
 
-        if (const layout_node* pErrorNode = mDefaulted.try_get_child("Size"))
-        {
+        if (const layout_node* pErrorNode = mDefaulted.try_get_child("Size")) {
             gui::out << gui::warning << pErrorNode->get_location() << " : "
-                << "edit_box : font_string's Size will be ignored." << std::endl;
+                     << "edit_box : font_string's Size will be ignored." << std::endl;
         }
 
         warn_for_not_accessed_node(mDefaulted);
@@ -81,17 +72,13 @@ void edit_box::parse_font_string_node_(const layout_node& mNode)
     }
 }
 
-void edit_box::parse_text_insets_node_(const layout_node& mNode)
-{
-    if (const layout_node* pTextInsetsNode = mNode.try_get_child("TextInsets"))
-    {
+void edit_box::parse_text_insets_node_(const layout_node& mNode) {
+    if (const layout_node* pTextInsetsNode = mNode.try_get_child("TextInsets")) {
         set_text_insets(bounds2f(
             pTextInsetsNode->get_attribute_value_or<float>("left", 0.0f),
             pTextInsetsNode->get_attribute_value_or<float>("right", 0.0f),
             pTextInsetsNode->get_attribute_value_or<float>("top", 0.0f),
-            pTextInsetsNode->get_attribute_value_or<float>("bottom", 0.0f)
-        ));
+            pTextInsetsNode->get_attribute_value_or<float>("bottom", 0.0f)));
     }
 }
-}
-}
+}} // namespace lxgui::gui

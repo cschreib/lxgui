@@ -1,1333 +1,1348 @@
 #ifndef LXGUI_GUI_FRAME_HPP
 #define LXGUI_GUI_FRAME_HPP
 
-#include "lxgui/lxgui.hpp"
+#include "lxgui/gui_backdrop.hpp"
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_attributes.hpp"
-#include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_event.hpp"
-
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
-#include "lxgui/utils_view.hpp"
 #include "lxgui/utils_signal.hpp"
+#include "lxgui/utils_view.hpp"
 
-#include <sol/protected_function.hpp>
-
-#include <set>
-#include <list>
 #include <functional>
 #include <limits>
+#include <list>
+#include <set>
+#include <sol/protected_function.hpp>
 #include <unordered_map>
 #include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    class frame_renderer;
-    class frame;
+namespace lxgui { namespace gui {
 
-    /// Contains gui::layered_region
-    struct layer_container
-    {
-        bool bDisabled = false;
-        std::vector<utils::observer_ptr<layered_region>> lRegionList;
-    };
+class frame_renderer;
+class frame;
 
-    /// Holds file/line information for a script.
-    struct script_info
-    {
-        std::string sFileName;
-        std::size_t uiLineNbr = 0;
-    };
+/// Contains gui::layered_region
+struct layer_container {
+    bool                                             bDisabled = false;
+    std::vector<utils::observer_ptr<layered_region>> lRegionList;
+};
 
-    /// Signature of frame scripts.
-    using script_signature = void(frame&, const event_data&);
+/// Holds file/line information for a script.
+struct script_info {
+    std::string sFileName;
+    std::size_t uiLineNbr = 0;
+};
 
-    /// Signal type for scripts (used internally).
-    using script_signal = utils::signal<script_signature>;
+/// Signature of frame scripts.
+using script_signature = void(frame&, const event_data&);
 
-    /// C++ function type for UI script handlers.
-    using script_function = script_signal::function_type;
+/// Signal type for scripts (used internally).
+using script_signal = utils::signal<script_signature>;
 
-    /// View into all the connected scripts for a given event.
-    using script_list_view = script_signal::slot_list_view;
+/// C++ function type for UI script handlers.
+using script_function = script_signal::function_type;
 
-    /// A #region that can contain other regions and react to events.
-    /** This class, which is at the core of the UI design, can contain
-    *   other frames as "children", and layered regions sorted by layers
-    *   (text, images, ...). A frame can also react to events, and register
-    *   callbacks to be executed on particular events (key presses, etc.)
-    *   or on every tick.
-    *
-    *   Each frame has an optional "title region", which can be used to
-    *   define and draw a title bar. This title bar can then be used to
-    *   move the frame around the screen using mouse click and drag.
-    *   Furthermore, frames have optional support for resizing by click
-    *   and drag on corners or edges (opt in).
-    *
-    *   Frames can either move freely on the screen, or be "clamped" to the
-    *   screen so they cannot be partly outside of their render area.
-    *
-    *   __Rendering.__ Frames are grouped into different "strata", which are
-    *   rendered sequentially. Frames in a high strata will always be rendered
-    *   above frames in a low strata. Then, within a strata, frames are further
-    *   sorted by "level"; within this particular strata, a frame with a high
-    *   level will always be rendered above all frames with a lower level, but
-    *   it will still remain below other frames in a higher strata. The level
-    *   of a frame is automatically set to the maximum level inside the strata
-    *   when the frame is clicked, which effectively brings the frame to the
-    *   front.
-    *
-    *   __Children and regions.__ When a frame is hidden, all its children
-    *   and regions will also be hidden. Likewise, deleting a frame will
-    *   automatically delete all its children and regions, unless they are
-    *   detached first. Other than this, children and regions do not need to
-    *   be located inside the frame; this is controlled purely by their anchors.
-    *   Therefore, if a child is not anchored to its parent, moving the parent
-    *   will not automatically move the child.
-    *
-    *   __Events.__ Frames can react to events. For this to happen, a callback
-    *   function must be registered to handle the corresponding event. There are
-    *   two types of events. First: hard-coded UI events such as `OnKeyPress`
-    *   or `OnUpdate`, which are automatically triggered by lxgui. Second:
-    *   generic events, which can be triggered from various sources and all
-    *   forwarded to the `OnEvent` callback. Generic events are typically
-    *   generated by whatever application is being driven by lxgui (i.e., your
-    *   game), and they enable application-specific behavior (for example:
-    *   changing the UI when the player is under attack will likely require an
-    *   `"UNDER_ATTACK"` event).
-    *
-    *   To use the first type of events (hard-coded events), all you have to
-    *   do in general is register a callback function using frame::set_script.
-    *   However, some hard-coded events require explicit enabling. In particular:
-    *
-    *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-    *   focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
-    *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
-    *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
-    *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
-    *   require frame::enable_mouse_move.
-    *   - Events related to mouse wheel input (`OnMouseWheel`) require
-    *   frame::enable_mouse_wheel.
-    *
-    *   To use the second type of events (generic events), you have to register
-    *   a callback for `OnEvent` _and_ register the frame for each generic event
-    *   you wish to listen to. This is done with frame::register_event.
-    *
-    *   Some events provide arguments to the registered callback function. For
-    *   example, the application can fire a `"UNIT_ATTACKED"` event when a unit
-    *   is under attack, and pass the ID of the attacked unit as a first argument,
-    *   and the ID of the attacker as a second argument. If a callback
-    *   function is registered using frame::set_script, these arguments can be
-    *   handled and named like regular function parameters. In layout files
-    *   "scripts" handlers, they can be accessed with the hard-coded generic names
-    *   `arg1`, `arg2`, etc.
-    *
-    *   Hard-coded events available to all frames:
-    *
-    *   - `OnChar`: Triggered whenever a character is typed into the frame, and
-    *   the frame has focus (see @ref frame::set_focus).
-    *   - `OnDragStart`: Triggered when one of the mouse button registered for
-    *   dragging (see frame::register_for_drag) has been pressed inside the
-    *   area of the screen occupied by the frame, and a mouse movement is first
-    *   recorded.
-    *   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
-    *   until `OnDragStop` is triggered.
-    *   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
-    *   released.
-    *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
-    *   the screen occupied by the frame. Note: this only takes into account the
-    *   position and size of the frame and its title region, but not the space
-    *   occupied by its children or layered regions. Will not trigger if the
-    *   frame is hidden.
-    *   - `OnEvent`: Triggered when a registered generic event occurs. See
-    *   frame::register_event. To allow distinguishing which event has just
-    *   been fired, the registered callback function is always provided with a
-    *   first argument that is set to a string matching the event name. Further
-    *   arguments can be passed to the callback and are handled as for other events.
-    *   - `OnFocusGained`: Triggered when the frame gains focus, see
-    *   frame::set_focus.
-    *   - `OnFocusLost`: Triggered when the frame looses focus, see
-    *   frame::set_focus.
-    *   - `OnHide`: Triggered when region::hide is called, or when the frame
-    *   is hidden indirectly (for example if its parent is itself hidden). This
-    *   will only fire if the frame was previously shown.
-    *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
-    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
-    *   been registered for capture using @ref frame::enable_key_capture. If no
-    *   frame is focussed, only the topmost frame with
-    *   @ref frame::enable_key_capture will receive the event. If no frame has
-    *   captured the key, then the key is tested for existing key bindings (see
-    *   @ref keybinder). This event provides two arguments to the registered
-    *   callback: a number identifying the key, and the human-readable name of the
-    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-    *   the @ref keybinder.
-    *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
-    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
-    *   been registered for capture using @ref frame::enable_key_capture. If no
-    *   frame is focussed, only the topmost frame with
-    *   @ref frame::enable_key_capture will receive the event. If no frame has
-    *   captured the key, then the key is tested for existing key bindings (see
-    *   @ref keybinder). This event provides two arguments to the registered
-    *   callback: a number identifying the key, and the human-readable name of the
-    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-    *   the @ref keybinder.
-    *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
-    *   screen occupied by the frame. Note: this only takes into account the
-    *   position and size of the frame and its title region, but not the space
-    *   occupied by its children or layered regions. Will not trigger if the
-    *   frame is hidden, unless the frame was just hidden with the mouse
-    *   previously inside the frame. Finally, this _will_ trigger whenever
-    *   the mouse enters another mouse-enabled frame with a higher level/strata,
-    *   even if the mouse is still technically within this frame's region.
-    *   - `OnLoad`: Triggered just after the frame is created. This is where
-    *   you would normally register for events and specific inputs, set up
-    *   initial states for extra logic, or do localization.
-    *   - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
-    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
-    *   trigger if the frame is hidden. This event provides one argument to
-    *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-    *   - `OnMouseUp`: Triggered when any mouse button is released and this frame is
-    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
-    *   trigger if the frame is hidden. This event provides one argument to
-    *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
-    *   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
-    *   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
-    *   provides one argument to the registered callback: a number indicating by
-    *   how many "notches" the wheel has turned in this event. A positive value
-    *   means the wheel has been moved "away" from the user (this would normally
-    *   scroll *up* in a document).
-    *   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
-    *   dragged onto the frame, and when one of the mouse button registered for
-    *   dragging (see frame::register_for_drag) is released. This enables
-    *   the "drop" in "drag and drop" operations.
-    *   - `OnShow`: Triggered when region::show is called, or when the frame
-    *   is shown indirectly (for example if its parent is itself shown). This
-    *   will only fire if the frame was previously hidden.
-    *   - `OnSizeChanged`: Triggered whenever the size of the frame changes, either
-    *   directly or indirectly. Be very careful not to call any function that could
-    *   change the size of the frame inside this callback, as this would generate
-    *   an infinite loop.
-    *   - `OnUpdate`: Triggered on every tick of the game loop. This event provides
-    *   one argument to the registered callback: a floating point number indicating
-    *   how much time has passed since the last call to `OnUpdate` (in seconds).
-    *   For optimal performance, prefer using other events types whenever possible.
-    *   `OnUpdate` callbacks will be executed over and over again, and can quickly
-    *   consume a lot of resources if user unreasonably. If you have to use
-    *   `OnUpdate`, you can mitigate performance problems by artificially reducing
-    *   the update rate: let the callback function only accumulate the time passed,
-    *   and wait until enough time has passed (say, half a second) to execute any
-    *   expensive operation. Then reset the accumulated time, and wait again.
-    *
-    *   Generic events fired natively by lxgui:
-    *
-    *   - `"LUA_ERROR"`: Triggered whenever a callback function or an addon script
-    *   file generates a Lua error. This event provides one argument to the
-    *   registered callback: a string containing the error message.
-    *   - `"ADDON_LOADED"`: Triggered when an addon is fully loaded. This event
-    *   provides one argument to the registered callback: a string containing the
-    *   name of the loaded addon.
-    *   - `"ENTERING_WORLD"`: Triggered once at the start of the program, at the
-    *   end of the first update tick.
-    *
-    *   __Virtual frames.__ Virtual frames are not displayed on the screen,
-    *   and technically are not part of the interface. They are only available
-    *   as "templates" that can be reused by other (virtual or non-virtual)
-    *   frames. This is useful for defining a few frame templates with a
-    *   particular style, and then reuse these templates across the interface
-    *   to ensure a consistent look. When inheriting from a virtual frame,
-    *   the inheriting frame will copy all the registered callbacks, all the
-    *   child frames, and all the layered regions of the virtual frame.
+/// View into all the connected scripts for a given event.
+using script_list_view = script_signal::slot_list_view;
+
+/// A #region that can contain other regions and react to events.
+/** This class, which is at the core of the UI design, can contain
+ *   other frames as "children", and layered regions sorted by layers
+ *   (text, images, ...). A frame can also react to events, and register
+ *   callbacks to be executed on particular events (key presses, etc.)
+ *   or on every tick.
+ *
+ *   Each frame has an optional "title region", which can be used to
+ *   define and draw a title bar. This title bar can then be used to
+ *   move the frame around the screen using mouse click and drag.
+ *   Furthermore, frames have optional support for resizing by click
+ *   and drag on corners or edges (opt in).
+ *
+ *   Frames can either move freely on the screen, or be "clamped" to the
+ *   screen so they cannot be partly outside of their render area.
+ *
+ *   __Rendering.__ Frames are grouped into different "strata", which are
+ *   rendered sequentially. Frames in a high strata will always be rendered
+ *   above frames in a low strata. Then, within a strata, frames are further
+ *   sorted by "level"; within this particular strata, a frame with a high
+ *   level will always be rendered above all frames with a lower level, but
+ *   it will still remain below other frames in a higher strata. The level
+ *   of a frame is automatically set to the maximum level inside the strata
+ *   when the frame is clicked, which effectively brings the frame to the
+ *   front.
+ *
+ *   __Children and regions.__ When a frame is hidden, all its children
+ *   and regions will also be hidden. Likewise, deleting a frame will
+ *   automatically delete all its children and regions, unless they are
+ *   detached first. Other than this, children and regions do not need to
+ *   be located inside the frame; this is controlled purely by their anchors.
+ *   Therefore, if a child is not anchored to its parent, moving the parent
+ *   will not automatically move the child.
+ *
+ *   __Events.__ Frames can react to events. For this to happen, a callback
+ *   function must be registered to handle the corresponding event. There are
+ *   two types of events. First: hard-coded UI events such as `OnKeyPress`
+ *   or `OnUpdate`, which are automatically triggered by lxgui. Second:
+ *   generic events, which can be triggered from various sources and all
+ *   forwarded to the `OnEvent` callback. Generic events are typically
+ *   generated by whatever application is being driven by lxgui (i.e., your
+ *   game), and they enable application-specific behavior (for example:
+ *   changing the UI when the player is under attack will likely require an
+ *   `"UNDER_ATTACK"` event).
+ *
+ *   To use the first type of events (hard-coded events), all you have to
+ *   do in general is register a callback function using frame::set_script.
+ *   However, some hard-coded events require explicit enabling. In particular:
+ *
+ *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
+ *   focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
+ *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
+ *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
+ *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
+ *   require frame::enable_mouse_move.
+ *   - Events related to mouse wheel input (`OnMouseWheel`) require
+ *   frame::enable_mouse_wheel.
+ *
+ *   To use the second type of events (generic events), you have to register
+ *   a callback for `OnEvent` _and_ register the frame for each generic event
+ *   you wish to listen to. This is done with frame::register_event.
+ *
+ *   Some events provide arguments to the registered callback function. For
+ *   example, the application can fire a `"UNIT_ATTACKED"` event when a unit
+ *   is under attack, and pass the ID of the attacked unit as a first argument,
+ *   and the ID of the attacker as a second argument. If a callback
+ *   function is registered using frame::set_script, these arguments can be
+ *   handled and named like regular function parameters. In layout files
+ *   "scripts" handlers, they can be accessed with the hard-coded generic names
+ *   `arg1`, `arg2`, etc.
+ *
+ *   Hard-coded events available to all frames:
+ *
+ *   - `OnChar`: Triggered whenever a character is typed into the frame, and
+ *   the frame has focus (see @ref frame::set_focus).
+ *   - `OnDragStart`: Triggered when one of the mouse button registered for
+ *   dragging (see frame::register_for_drag) has been pressed inside the
+ *   area of the screen occupied by the frame, and a mouse movement is first
+ *   recorded.
+ *   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
+ *   until `OnDragStop` is triggered.
+ *   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
+ *   released.
+ *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
+ *   the screen occupied by the frame. Note: this only takes into account the
+ *   position and size of the frame and its title region, but not the space
+ *   occupied by its children or layered regions. Will not trigger if the
+ *   frame is hidden.
+ *   - `OnEvent`: Triggered when a registered generic event occurs. See
+ *   frame::register_event. To allow distinguishing which event has just
+ *   been fired, the registered callback function is always provided with a
+ *   first argument that is set to a string matching the event name. Further
+ *   arguments can be passed to the callback and are handled as for other events.
+ *   - `OnFocusGained`: Triggered when the frame gains focus, see
+ *   frame::set_focus.
+ *   - `OnFocusLost`: Triggered when the frame looses focus, see
+ *   frame::set_focus.
+ *   - `OnHide`: Triggered when region::hide is called, or when the frame
+ *   is hidden indirectly (for example if its parent is itself hidden). This
+ *   will only fire if the frame was previously shown.
+ *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+ *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+ *   been registered for capture using @ref frame::enable_key_capture. If no
+ *   frame is focussed, only the topmost frame with
+ *   @ref frame::enable_key_capture will receive the event. If no frame has
+ *   captured the key, then the key is tested for existing key bindings (see
+ *   @ref keybinder). This event provides two arguments to the registered
+ *   callback: a number identifying the key, and the human-readable name of the
+ *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+ *   the @ref keybinder.
+ *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
+ *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+ *   been registered for capture using @ref frame::enable_key_capture. If no
+ *   frame is focussed, only the topmost frame with
+ *   @ref frame::enable_key_capture will receive the event. If no frame has
+ *   captured the key, then the key is tested for existing key bindings (see
+ *   @ref keybinder). This event provides two arguments to the registered
+ *   callback: a number identifying the key, and the human-readable name of the
+ *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+ *   the @ref keybinder.
+ *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
+ *   screen occupied by the frame. Note: this only takes into account the
+ *   position and size of the frame and its title region, but not the space
+ *   occupied by its children or layered regions. Will not trigger if the
+ *   frame is hidden, unless the frame was just hidden with the mouse
+ *   previously inside the frame. Finally, this _will_ trigger whenever
+ *   the mouse enters another mouse-enabled frame with a higher level/strata,
+ *   even if the mouse is still technically within this frame's region.
+ *   - `OnLoad`: Triggered just after the frame is created. This is where
+ *   you would normally register for events and specific inputs, set up
+ *   initial states for extra logic, or do localization.
+ *   - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
+ *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
+ *   trigger if the frame is hidden. This event provides one argument to
+ *   the registered callback: a string identifying the mouse button
+ *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+ *   - `OnMouseUp`: Triggered when any mouse button is released and this frame is
+ *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
+ *   trigger if the frame is hidden. This event provides one argument to
+ *   the registered callback: a string identifying the mouse button
+ *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+ *   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
+ *   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
+ *   provides one argument to the registered callback: a number indicating by
+ *   how many "notches" the wheel has turned in this event. A positive value
+ *   means the wheel has been moved "away" from the user (this would normally
+ *   scroll *up* in a document).
+ *   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
+ *   dragged onto the frame, and when one of the mouse button registered for
+ *   dragging (see frame::register_for_drag) is released. This enables
+ *   the "drop" in "drag and drop" operations.
+ *   - `OnShow`: Triggered when region::show is called, or when the frame
+ *   is shown indirectly (for example if its parent is itself shown). This
+ *   will only fire if the frame was previously hidden.
+ *   - `OnSizeChanged`: Triggered whenever the size of the frame changes, either
+ *   directly or indirectly. Be very careful not to call any function that could
+ *   change the size of the frame inside this callback, as this would generate
+ *   an infinite loop.
+ *   - `OnUpdate`: Triggered on every tick of the game loop. This event provides
+ *   one argument to the registered callback: a floating point number indicating
+ *   how much time has passed since the last call to `OnUpdate` (in seconds).
+ *   For optimal performance, prefer using other events types whenever possible.
+ *   `OnUpdate` callbacks will be executed over and over again, and can quickly
+ *   consume a lot of resources if user unreasonably. If you have to use
+ *   `OnUpdate`, you can mitigate performance problems by artificially reducing
+ *   the update rate: let the callback function only accumulate the time passed,
+ *   and wait until enough time has passed (say, half a second) to execute any
+ *   expensive operation. Then reset the accumulated time, and wait again.
+ *
+ *   Generic events fired natively by lxgui:
+ *
+ *   - `"LUA_ERROR"`: Triggered whenever a callback function or an addon script
+ *   file generates a Lua error. This event provides one argument to the
+ *   registered callback: a string containing the error message.
+ *   - `"ADDON_LOADED"`: Triggered when an addon is fully loaded. This event
+ *   provides one argument to the registered callback: a string containing the
+ *   name of the loaded addon.
+ *   - `"ENTERING_WORLD"`: Triggered once at the start of the program, at the
+ *   end of the first update tick.
+ *
+ *   __Virtual frames.__ Virtual frames are not displayed on the screen,
+ *   and technically are not part of the interface. They are only available
+ *   as "templates" that can be reused by other (virtual or non-virtual)
+ *   frames. This is useful for defining a few frame templates with a
+ *   particular style, and then reuse these templates across the interface
+ *   to ensure a consistent look. When inheriting from a virtual frame,
+ *   the inheriting frame will copy all the registered callbacks, all the
+ *   child frames, and all the layered regions of the virtual frame.
+ */
+class frame : public region {
+    using base = region;
+
+public:
+    /// Type of the frame child list (internal).
+    /** \note Constraints on the choice container type:
+     *          - must not invalidate iterators on back insertion
+     *          - must allow forward iteration
+     *          - iterators can be invalidated on removal
+     *          - most common use is iteration, not addition or removal
+     *          - ordering of elements is irrelevant
+     */
+    using child_list      = std::list<utils::owner_ptr<frame>>;
+    using child_list_view = utils::view::
+        adaptor<child_list, utils::view::smart_ptr_dereferencer, utils::view::non_null_filter>;
+    using const_child_list_view = utils::view::adaptor<
+        const child_list,
+        utils::view::smart_ptr_dereferencer,
+        utils::view::non_null_filter>;
+
+    /// Type of the region list (internal).
+    /** \note Constraints on the choice container type:
+     *          - must not invalidate iterators on back insertion
+     *          - must allow forward iteration
+     *          - iterators can be invalidated on removal
+     *          - most common use is iteration, not addition or removal
+     *          - ordering of elements is irrelevant
+     */
+    using region_list      = std::list<utils::owner_ptr<layered_region>>;
+    using region_list_view = utils::view::
+        adaptor<region_list, utils::view::smart_ptr_dereferencer, utils::view::non_null_filter>;
+    using const_region_list_view = utils::view::adaptor<
+        const region_list,
+        utils::view::smart_ptr_dereferencer,
+        utils::view::non_null_filter>;
+
+    /// Constructor.
+    explicit frame(utils::control_block& mBlock, manager& mManager);
+
+    /// Destructor.
+    ~frame() override;
+
+    /// Renders this region on the current render target.
+    void render() const override;
+
+    /// Updates this region's logic.
+    /** \param fDelta Time spent since last update
+     *   \note Triggered callbacks could destroy the frame. If you need
+     *         to use the frame again after calling this function, use
+     *         the helper class alive_checker.
+     */
+    void update(float fDelta) override;
+
+    /// Prints all relevant information about this region in a string.
+    /** \param sTab The offset to give to all lines
+     *   \return All relevant information about this region
+     */
+    std::string serialize(const std::string& sTab) const override;
+
+    /// Returns 'true' if this frame can use a script.
+    /** \param sScriptName The name of the script
+     *   \note This method can be overriden if needed.
+     */
+    virtual bool can_use_script(const std::string& sScriptName) const;
+
+    /// Copies a region's parameters into this frame (inheritance).
+    /** \param mObj The region to copy
+     */
+    void copy_from(const region& mObj) override;
+
+    /// Creates a new title region for this frame.
+    /** \note You can get it by calling get_title_region().
+     */
+    void create_title_region();
+
+    /// Disables a layer.
+    /** \param mLayerID The id of the layer to disable
+     */
+    void disable_draw_layer(layer mLayerID);
+
+    /// Enables a layer.
+    /** \param mLayerID The id of the layer to enable
+     */
+    void enable_draw_layer(layer mLayerID);
+
+    /// Sets if this frame can receive mouse input (click & move).
+    /** \param bIsMouseEnabled 'true' to enable
+     */
+    void enable_mouse(bool bIsMouseEnabled);
+
+    /// Sets if this frame can receive mouse click input.
+    /** \param bIsMouseEnabled 'true' to enable
+     */
+    void enable_mouse_click(bool bIsMouseEnabled);
+
+    /// Sets if this frame can receive mouse move input.
+    /** \param bIsMouseEnabled 'true' to enable
+     */
+    void enable_mouse_move(bool bIsMouseEnabled);
+
+    /// Sets if this frame can receive mouse wheel input.
+    /** \param bIsMouseWheelEnabled 'true' to enable
+     */
+    void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+
+    /// Sets if this frame can receive keyboard input from a specific key.
+    /** \param sKey              The key to capture
+     *   \param bIsCaptureEnabled 'true' to enable
+     *   \note If the frame captures the key, other frames below it will not be able to receive
+     *         the input from this key. The format of the input key name is standard English,
+     *         with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+     *         "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
+     *         simultaneously.
+     *   \see is_key_capture_enabled()
+     */
+    void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
+
+    /// Checks if this frame has a script defined.
+    /** \param sScriptName The name of the script to check
+     *   \return 'true' if this script is defined
+     */
+    bool has_script(const std::string& sScriptName) const;
+
+    /// Adds a layered_region to this frame's children.
+    /** \param pRegion The layered_region to add
+     */
+    utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> pRegion);
+
+    /// Adds a layered_region to this frame's children.
+    /** \param pRegion The layered_region to add
+     */
+    template<
+        typename region_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+    utils::observer_ptr<region_type> add_region(utils::owner_ptr<region_type> pRegion) {
+        return utils::static_pointer_cast<region_type>(
+            add_region(utils::static_pointer_cast<layered_region>(std::move(pRegion))));
+    }
+
+    /// Removes a layered_region from this frame's children.
+    /** \param pRegion The layered_region to remove
+     *   \return A unique_ptr to the region, ignore it to destroy the region.
+     */
+    utils::owner_ptr<layered_region>
+    remove_region(const utils::observer_ptr<layered_region>& pRegion);
+
+    /// Creates a new region as child of this frame.
+    /** \param mLayer The layer on which to create the region
+     *   \param mAttr  The core attributes of the reguion (pParent will be ignored)
+     *   \return The created region.
+     *   \note You don't have the reponsibility to delete this region.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created region.
+     */
+    utils::observer_ptr<layered_region>
+    create_layered_region(layer mLayer, region_core_attributes mAttr);
+
+    /// Creates a new region as child of this frame.
+    /** \param mLayer The layer on which to create the region
+     *   \param mAttr  The core attributes of the reguion (sObjectType and pParent will be ignored)
+     *   \return The created region.
+     *   \note You don't have the reponsibility to delete this region.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created region.
+     */
+    template<
+        typename region_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+    utils::observer_ptr<region_type>
+    create_layered_region(layer mLayer, region_core_attributes mAttr) {
+        mAttr.sObjectType = region_type::CLASS_NAME;
+
+        return utils::static_pointer_cast<region_type>(
+            create_layered_region(mLayer, std::move(mAttr)));
+    }
+
+    /// Creates a new region as child of this frame.
+    /** \param mLayer       The layer on which to create the region
+     *   \param sName        The name of the region
+     *   \return The created region.
+     *   \note You don't have the reponsibility to delete this region.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created region.
+     */
+    template<
+        typename region_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+    utils::observer_ptr<region_type> create_layered_region(layer mLayer, const std::string& sName) {
+        region_core_attributes mAttr;
+        mAttr.sName       = sName;
+        mAttr.sObjectType = region_type::CLASS_NAME;
+
+        return utils::static_pointer_cast<region_type>(
+            create_layered_region(mLayer, std::move(mAttr)));
+    }
+
+    /// Creates a new frame as child of this frame.
+    /** \param mAttr The core attributes of the frame (pParent will be ignored)
+     *   \return The created frame.
+     *   \note You don't have the reponsibility to delete this frame.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created frame. However, you still
+     *         need to call notify_loaded() when you are done with any extra
+     *         initialization you require on this frame. If you do not,
+     *         the frame's OnLoad callback will not fire.
+     */
+    utils::observer_ptr<frame> create_child(region_core_attributes mAttr);
+
+    /// Creates a new frame as child of this frame.
+    /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
+     *   \return The created frame.
+     *   \note You don't have the reponsibility to delete this frame.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created frame. However, you still
+     *         need to call notify_loaded() when you are done with any extra
+     *         initialization you require on this frame. If you do not,
+     *         the frame's OnLoad callback will not fire.
+     */
+    template<
+        typename frame_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+    utils::observer_ptr<frame_type> create_child(region_core_attributes mAttr) {
+        mAttr.sObjectType = frame_type::CLASS_NAME;
+
+        return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+    }
+
+    /// Creates a new frame as child of this frame.
+    /** \param sName The name of the frame
+     *   \return The created frame.
+     *   \note You don't have the reponsibility to delete this frame.
+     *         It will be done automatically when its parent is deleted.
+     *   \note This function takes care of the basic initializing :
+     *         you can directly use the created frame. However, you still
+     *         need to call notify_loaded() when you are done with any extra
+     *         initialization you require on this frame. If you do not,
+     *         the frame's OnLoad callback will not fire.
+     */
+    template<
+        typename frame_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+    utils::observer_ptr<frame_type> create_child(const std::string& sName) {
+        region_core_attributes mAttr;
+        mAttr.sName       = sName;
+        mAttr.sObjectType = frame_type::CLASS_NAME;
+
+        return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+    }
+
+    /// Adds a frame to this frame's children.
+    /** \param pChild The frame to add
+     */
+    utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> pChild);
+
+    /// Adds a frame to this frame's children.
+    /** \param pChild The frame to add
+     */
+    template<
+        typename frame_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+    utils::observer_ptr<frame_type> add_child(utils::owner_ptr<frame_type> pChild) {
+        return utils::static_pointer_cast<frame_type>(
+            add_child(utils::static_pointer_cast<frame>(std::move(pChild))));
+    }
+
+    /// Removes a frame from this frame's children.
+    /** \param pChild The frame to remove
+        \return A unique_ptr to the child, ignore it to destroy the child.
     */
-    class frame : public region
-    {
-        using base = region;
+    utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& pChild);
 
-    public :
+    /// Returns the child list.
+    /** \return The child list
+     */
+    child_list_view get_children();
 
-        /// Type of the frame child list (internal).
-        /** \note Constraints on the choice container type:
-        *          - must not invalidate iterators on back insertion
-        *          - must allow forward iteration
-        *          - iterators can be invalidated on removal
-        *          - most common use is iteration, not addition or removal
-        *          - ordering of elements is irrelevant
-        */
-        using child_list = std::list<utils::owner_ptr<frame>>;
-        using child_list_view = utils::view::adaptor<child_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
-        using const_child_list_view = utils::view::adaptor<const child_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
+    /// Returns the child list.
+    /** \return The child list
+     */
+    const_child_list_view get_children() const;
 
-        /// Type of the region list (internal).
-        /** \note Constraints on the choice container type:
-        *          - must not invalidate iterators on back insertion
-        *          - must allow forward iteration
-        *          - iterators can be invalidated on removal
-        *          - most common use is iteration, not addition or removal
-        *          - ordering of elements is irrelevant
-        */
-        using region_list = std::list<utils::owner_ptr<layered_region>>;
-        using region_list_view = utils::view::adaptor<region_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
-        using const_region_list_view = utils::view::adaptor<const region_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
+    /// Returns one of this frame's children.
+    /** \param sName The name of the child
+     *   \return One of this frame's children
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no child is found, on the
+     *         relative name.
+     */
+    utils::observer_ptr<const frame> get_child(const std::string& sName) const;
 
-        /// Constructor.
-        explicit frame(utils::control_block& mBlock, manager& mManager);
+    /// Returns one of this frame's children.
+    /** \param sName The name of the child
+     *   \return One of this frame's children
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no child is found, on the
+     *         relative name.
+     */
+    utils::observer_ptr<frame> get_child(const std::string& sName) {
+        return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(sName));
+    }
 
-        /// Destructor.
-        ~frame() override;
+    /// Returns one of this frame's children.
+    /** \param sName The name of the child
+     *   \return One of this frame's children
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no child is found, on the
+     *         relative name.
+     */
+    template<
+        typename frame_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+    utils::observer_ptr<const frame_type> get_child(const std::string& sName) const {
+        return down_cast<frame_type>(get_child(sName));
+    }
 
-        /// Renders this region on the current render target.
-        void render() const override;
+    /// Returns one of this frame's children.
+    /** \param sName The name of the child
+     *   \return One of this frame's children
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no child is found, on the
+     *         relative name.
+     */
+    template<
+        typename frame_type,
+        typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+    utils::observer_ptr<frame_type> get_child(const std::string& sName) {
+        return down_cast<frame_type>(get_child(sName));
+    }
 
-        /// Updates this region's logic.
-        /** \param fDelta Time spent since last update
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void update(float fDelta) override;
+    /// Returns the region list.
+    /** \return The region list
+     */
+    region_list_view get_regions();
 
-        /// Prints all relevant information about this region in a string.
-        /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this region
-        */
-        std::string serialize(const std::string& sTab) const override;
+    /// Returns the region list.
+    /** \return The region list
+     */
+    const_region_list_view get_regions() const;
 
-        /// Returns 'true' if this frame can use a script.
-        /** \param sScriptName The name of the script
-        *   \note This method can be overriden if needed.
-        */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+    /// Returns one of this frame's region.
+    /** \param sName The name of the region
+     *   \return One of this frame's region
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no region is found, on the
+     *         relative name.
+     */
+    utils::observer_ptr<const layered_region> get_region(const std::string& sName) const;
 
-        /// Copies a region's parameters into this frame (inheritance).
-        /** \param mObj The region to copy
-        */
-        void copy_from(const region& mObj) override;
+    /// Returns one of this frame's region.
+    /** \param sName The name of the region
+     *   \return One of this frame's region
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no region is found, on the
+     *         relative name.
+     */
+    utils::observer_ptr<layered_region> get_region(const std::string& sName) {
+        return utils::const_pointer_cast<layered_region>(
+            const_cast<const frame*>(this)->get_region(sName));
+    }
 
-        /// Creates a new title region for this frame.
-        /** \note You can get it by calling get_title_region().
-        */
-        void create_title_region();
-
-        /// Disables a layer.
-        /** \param mLayerID The id of the layer to disable
-        */
-        void disable_draw_layer(layer mLayerID);
-
-        /// Enables a layer.
-        /** \param mLayerID The id of the layer to enable
-        */
-        void enable_draw_layer(layer mLayerID);
-
-        /// Sets if this frame can receive mouse input (click & move).
-        /** \param bIsMouseEnabled 'true' to enable
-        */
-        void enable_mouse(bool bIsMouseEnabled);
-
-        /// Sets if this frame can receive mouse click input.
-        /** \param bIsMouseEnabled 'true' to enable
-        */
-        void enable_mouse_click(bool bIsMouseEnabled);
-
-        /// Sets if this frame can receive mouse move input.
-        /** \param bIsMouseEnabled 'true' to enable
-        */
-        void enable_mouse_move(bool bIsMouseEnabled);
-
-        /// Sets if this frame can receive mouse wheel input.
-        /** \param bIsMouseWheelEnabled 'true' to enable
-        */
-        void enable_mouse_wheel(bool bIsMouseWheelEnabled);
-
-        /// Sets if this frame can receive keyboard input from a specific key.
-        /** \param sKey              The key to capture
-        *   \param bIsCaptureEnabled 'true' to enable
-        *   \note If the frame captures the key, other frames below it will not be able to receive
-        *         the input from this key. The format of the input key name is standard English,
-        *         with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
-        *         "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
-        *         simultaneously.
-        *   \see is_key_capture_enabled()
-        */
-        void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
-
-        /// Checks if this frame has a script defined.
-        /** \param sScriptName The name of the script to check
-        *   \return 'true' if this script is defined
-        */
-        bool has_script(const std::string& sScriptName) const;
-
-        /// Adds a layered_region to this frame's children.
-        /** \param pRegion The layered_region to add
-        */
-        utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> pRegion);
-
-        /// Adds a layered_region to this frame's children.
-        /** \param pRegion The layered_region to add
-        */
-        template<typename region_type, typename enable =
+    /// Returns one of this frame's region.
+    /** \param sName The name of the region
+     *   \return One of this frame's region
+     *   \note The provided name can either be the full name or the relative name
+     *         (i.e. without the "$parent" in front). This function first looks
+     *         for matches on the full name, then if no region is found, on the
+     *         relative name.
+     */
+    template<
+        typename region_type,
+        typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> add_region(utils::owner_ptr<region_type> pRegion)
-        {
-            return utils::static_pointer_cast<region_type>(add_region(
-                utils::static_pointer_cast<layered_region>(std::move(pRegion))));
-        }
-
-        /// Removes a layered_region from this frame's children.
-        /** \param pRegion The layered_region to remove
-        *   \return A unique_ptr to the region, ignore it to destroy the region.
-        */
-        utils::owner_ptr<layered_region> remove_region(
-            const utils::observer_ptr<layered_region>& pRegion);
-
-        /// Creates a new region as child of this frame.
-        /** \param mLayer The layer on which to create the region
-        *   \param mAttr  The core attributes of the reguion (pParent will be ignored)
-        *   \return The created region.
-        *   \note You don't have the reponsibility to delete this region.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created region.
-        */
-        utils::observer_ptr<layered_region> create_layered_region(layer mLayer,
-            region_core_attributes mAttr);
-
-        /// Creates a new region as child of this frame.
-        /** \param mLayer The layer on which to create the region
-        *   \param mAttr  The core attributes of the reguion (sObjectType and pParent will be ignored)
-        *   \return The created region.
-        *   \note You don't have the reponsibility to delete this region.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created region.
-        */
-        template<typename region_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
-            region_core_attributes mAttr)
-        {
-            mAttr.sObjectType = region_type::CLASS_NAME;
-
-            return utils::static_pointer_cast<region_type>(
-                create_layered_region(mLayer, std::move(mAttr)));
-        }
-
-        /// Creates a new region as child of this frame.
-        /** \param mLayer       The layer on which to create the region
-        *   \param sName        The name of the region
-        *   \return The created region.
-        *   \note You don't have the reponsibility to delete this region.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created region.
-        */
-        template<typename region_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_layered_region(layer mLayer,
-            const std::string& sName)
-        {
-            region_core_attributes mAttr;
-            mAttr.sName = sName;
-            mAttr.sObjectType = region_type::CLASS_NAME;
-
-            return utils::static_pointer_cast<region_type>(
-                create_layered_region(mLayer, std::move(mAttr)));
-        }
-
-        /// Creates a new frame as child of this frame.
-        /** \param mAttr The core attributes of the frame (pParent will be ignored)
-        *   \return The created frame.
-        *   \note You don't have the reponsibility to delete this frame.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame. However, you still
-        *         need to call notify_loaded() when you are done with any extra
-        *         initialization you require on this frame. If you do not,
-        *         the frame's OnLoad callback will not fire.
-        */
-        utils::observer_ptr<frame> create_child(region_core_attributes mAttr);
-
-        /// Creates a new frame as child of this frame.
-        /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
-        *   \return The created frame.
-        *   \note You don't have the reponsibility to delete this frame.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame. However, you still
-        *         need to call notify_loaded() when you are done with any extra
-        *         initialization you require on this frame. If you do not,
-        *         the frame's OnLoad callback will not fire.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> create_child(region_core_attributes mAttr)
-        {
-            mAttr.sObjectType = frame_type::CLASS_NAME;
-
-            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
-        }
-
-        /// Creates a new frame as child of this frame.
-        /** \param sName The name of the frame
-        *   \return The created frame.
-        *   \note You don't have the reponsibility to delete this frame.
-        *         It will be done automatically when its parent is deleted.
-        *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame. However, you still
-        *         need to call notify_loaded() when you are done with any extra
-        *         initialization you require on this frame. If you do not,
-        *         the frame's OnLoad callback will not fire.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> create_child(const std::string& sName)
-        {
-            region_core_attributes mAttr;
-            mAttr.sName = sName;
-            mAttr.sObjectType = frame_type::CLASS_NAME;
-
-            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
-        }
-
-        /// Adds a frame to this frame's children.
-        /** \param pChild The frame to add
-        */
-        utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> pChild);
-
-        /// Adds a frame to this frame's children.
-        /** \param pChild The frame to add
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> add_child(utils::owner_ptr<frame_type> pChild)
-        {
-            return utils::static_pointer_cast<frame_type>(add_child(
-                utils::static_pointer_cast<frame>(std::move(pChild))));
-        }
-
-        /// Removes a frame from this frame's children.
-        /** \param pChild The frame to remove
-            \return A unique_ptr to the child, ignore it to destroy the child.
-        */
-        utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& pChild);
-
-        /// Returns the child list.
-        /** \return The child list
-        */
-        child_list_view get_children();
-
-        /// Returns the child list.
-        /** \return The child list
-        */
-        const_child_list_view get_children() const;
-
-        /// Returns one of this frame's children.
-        /** \param sName The name of the child
-        *   \return One of this frame's children
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no child is found, on the
-        *         relative name.
-        */
-        utils::observer_ptr<const frame> get_child(const std::string& sName) const;
-
-        /// Returns one of this frame's children.
-        /** \param sName The name of the child
-        *   \return One of this frame's children
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no child is found, on the
-        *         relative name.
-        */
-        utils::observer_ptr<frame> get_child(const std::string& sName)
-        {
-            return utils::const_pointer_cast<frame>(
-                const_cast<const frame*>(this)->get_child(sName));
-        }
-
-        /// Returns one of this frame's children.
-        /** \param sName The name of the child
-        *   \return One of this frame's children
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no child is found, on the
-        *         relative name.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<const frame_type> get_child(const std::string& sName) const
-        {
-            return down_cast<frame_type>(get_child(sName));
-        }
-
-        /// Returns one of this frame's children.
-        /** \param sName The name of the child
-        *   \return One of this frame's children
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no child is found, on the
-        *         relative name.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> get_child(const std::string& sName)
-        {
-            return down_cast<frame_type>(get_child(sName));
-        }
-
-        /// Returns the region list.
-        /** \return The region list
-        */
-        region_list_view get_regions();
-
-        /// Returns the region list.
-        /** \return The region list
-        */
-        const_region_list_view get_regions() const;
-
-        /// Returns one of this frame's region.
-        /** \param sName The name of the region
-        *   \return One of this frame's region
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no region is found, on the
-        *         relative name.
-        */
-        utils::observer_ptr<const layered_region> get_region(const std::string& sName) const;
-
-        /// Returns one of this frame's region.
-        /** \param sName The name of the region
-        *   \return One of this frame's region
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no region is found, on the
-        *         relative name.
-        */
-        utils::observer_ptr<layered_region> get_region(const std::string& sName)
-        {
-            return utils::const_pointer_cast<layered_region>(
-                const_cast<const frame*>(this)->get_region(sName));
-        }
-
-        /// Returns one of this frame's region.
-        /** \param sName The name of the region
-        *   \return One of this frame's region
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no region is found, on the
-        *         relative name.
-        */
-        template<typename region_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> get_region(const std::string& sName)
-        {
-            return down_cast<region_type>(get_region(sName));
-        }
-
-        /// Calculates effective alpha.
-        /** \return Effective alpha (alpha*parent->alpha)
-        */
-        float get_effective_alpha() const;
-
-        /// Calculates effective scale.
-        /** \return Effective scale (scale*parent->scale)
-        */
-        float get_effective_scale() const;
-
-        /// Returns this frame's level.
-        /** \return This frame's level
-        */
-        int get_level() const;
-
-        /// Returns this frame's strata.
-        /** \return This frame's strata
-        */
-        frame_strata get_frame_strata() const;
-
-        /// Returns this frame's top-level parent.
-        /** \return This frame's top-level parent
-        */
-        utils::observer_ptr<const frame> get_top_level_parent() const;
-
-        /// Returns this frame's top-level parent.
-        /** \return This frame's top-level parent
-        */
-        utils::observer_ptr<frame> get_top_level_parent()
-        {
-            return utils::const_pointer_cast<frame>(
-                const_cast<const frame*>(this)->get_top_level_parent());
-        }
-
-        /// Returns this frame's backdrop.
-        /** \return This frame's backdrop
-        */
-        const backdrop* get_backdrop() const;
-
-        /// Returns this frame's backdrop.
-        /** \return This frame's backdrop
-        */
-        backdrop* get_backdrop();
-
-        /// Returns this frame's backdrop, creating it if needed
-        /** \return This frame's backdrop
-        */
-        backdrop& get_or_create_backdrop();
-
-        /// Returns this frame's type.
-        /** \return This frame's type (Frame, Slider, ...)
-        */
-        const std::string& get_frame_type() const;
-
-        /// Returns this frame's absolute hit rect insets.
-        /** \return This frame's absolute hit rect insets
-        */
-        const bounds2f& get_abs_hit_rect_insets() const;
-
-        /// Returns this frame's relative hit rect insets.
-        /** \return This frame's relative hit rect insets
-        */
-        const bounds2f& get_rel_hit_rect_insets() const;
-
-        /// Returns this frame's max dimensions.
-        /** \return This frame's max dimensions
-        */
-        vector2f get_max_dimensions() const;
-
-        /// Returns this frame's min dimensions.
-        /** \return This frame's min dimensions
-        */
-        vector2f get_min_dimensions() const;
-
-        /// Returns the number of children of this frame.
-        /** \return The number of children of this frame
-        *   \note If only an approximate number is acceptable, use get_rough_num_children(),
-        *         which is faster.
-        */
-        std::size_t get_num_children() const;
-
-        /// Returns the approximate number of children of this frame.
-        /** \return The approximate number of children of this frame
-        *   \note The returned number is an *upper bound* on the actual number of children.
-        *         This can be used to reserve enough space for memory allocations.
-        *         If the exact number of children is required, use get_num_children().
-        */
-        std::size_t get_rough_num_children() const;
-
-        /// Returns the number of regions of this frame.
-        /** \return The number of regions of this frame
-        *   \note If only an approximate number is acceptable, use get_rough_num_regions(),
-        *         which is faster.
-        */
-        std::size_t get_num_regions() const;
-
-        /// Returns the approximate number of regions of this frame.
-        /** \return The approximate number of regions of this frame
-        *   \note The returned number is an *upper bound* on the actual number of regions.
-        *         This can be used to reserve enough space for memory allocations.
-        *         If the exact number of regions is required, use get_num_regions().
-        */
-        std::size_t get_rough_num_regions() const;
-
-        /// Returns this frame's scale.
-        /** \return This frame's scale
-        *   \note If you want it's true scale on the screen,
-        *         use get_effective_scale().
-        */
-        float get_scale() const;
-
-        /// Returns this frame's title region.
-        utils::observer_ptr<const region> get_title_region() const { return pTitleRegion_; }
-
-        /// Returns this frame's title region.
-        utils::observer_ptr<region> get_title_region() { return pTitleRegion_; }
-
-        /// Checks if this frame is clamped to screen.
-        /** \return 'true' if this frame is clamed to screen
-        */
-        bool is_clamped_to_screen() const;
-
-        /// Checks if the provided coordinates are inside this frame.
-        /** \param mPosition The coordinates to test
-        *   \return 'true' if the provided coordinates are inside this frame or its title region
-        */
-        bool is_in_region(const vector2f& mPosition) const override;
-
-        /// Find the topmost frame matching the provided predicate.
-        /** \param mPredicate A function returning 'true' if the frame can be selected
-        *   \return The topmost frame, if any, and nullptr otherwise.
-        *   \note For most frames, this can either return 'this' or 'nullptr'. For
-        *         frames responsible for rendering other frames (such as @ref scroll_frame),
-        *         this can return other frames.
-        */
-        virtual utils::observer_ptr<const frame> find_topmost_frame(
-            const std::function<bool(const frame&)>& mPredicate) const;
-
-        /// Find the topmost frame matching the provided predicate.
-        /** \param mPredicate A function returning 'true' if the frame can be selected
-        *   \return The topmost frame, if any, and nullptr otherwise.
-        *   \note For most frames, this can either return 'this' or 'nullptr'. For
-        *         frames responsible for rendering other frames (such as @ref scroll_frame),
-        *         this can return other frames.
-        */
-        utils::observer_ptr<frame> find_topmost_frame(
-            const std::function<bool(const frame&)>& mPredicate)
-        {
-            return utils::const_pointer_cast<frame>(
-                const_cast<const frame*>(this)->find_topmost_frame(mPredicate));
-        }
-
-        /// Checks if this frame can receive mouse movement input.
-        /** \return 'true' if this frame can receive mouse movement input
-        */
-        bool is_mouse_move_enabled() const;
-
-        /// Checks if this frame can receive mouse click input.
-        /** \return 'true' if this frame can receive mouse click input
-        */
-        bool is_mouse_click_enabled() const;
-
-        /// Checks if this frame can receive mouse wheel input.
-        /** \return 'true' if this frame can receive mouse wheel input
-        */
-        bool is_mouse_wheel_enabled() const;
-
-        /// Checks if this frame is registered for drag events with the provided mouse button.
-        /** \return 'true' if this frame is registered for drag events
-        */
-        bool is_registered_for_drag(const std::string& sButton) const;
-
-        /// Checks if this frame can receive keyboard input from a specific key.
-        /** \param sKey The key to check
-        *   \return 'true' if this frame can receive keyboard input from this key
-        *   \see enable_key_capture()
-        */
-        bool is_key_capture_enabled(const std::string& sKey) const;
-
-        /// Checks if this frame can be moved.
-        /** \return 'true' if this frame can be moved
-        */
-        bool is_movable() const;
-
-        /// Checks if this frame can be resized.
-        /** \return 'true' if this frame can be resized
-        */
-        bool is_resizable() const;
-
-        /// Checks if this frame is at top level.
-        /** \return 'true' if this frame is at top level
-        */
-        bool is_top_level() const;
-
-        /// Checks if this frame has been moved by the user.
-        /** \return 'true' if this frame has been moved by the user
-        */
-        bool is_user_placed() const;
-
-        /// Returns the "adjusted" script name: "OnEvent" becomes "on_event"
-        /** \param sScriptName The CamelCase name of the script
-        *   \return the snake_case name of the script
-        */
-        static std::string get_adjusted_script_name(const std::string& sScriptName);
-
-        /// Adds an additional handler script to this frame (executed after existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param sContent    The content ot the script, as Lua code
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note The script_info parameter is used only for displaying error messages.
-        *         This function is meant to be used by the layout file parser. If you want to
-        *         manually define your own script handlers, prefer the other overloads.
-        */
-        utils::connection add_script(const std::string& sScriptName, std::string sContent,
-            script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, sContent, true, mInfo);
-        }
-
-        /// Adds an additional handler script to this frame (executed after existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param mHandler    The handler of the script, as a Lua function
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note This defines a Lua function to be called for the event specified in sScriptName.
-        *         This provides more flexibility compared to using C++ function, but also has a
-        *         larger overhead. If performance is a concern, prefer the other overload taking a
-        *         C++ function instead.
-        */
-        utils::connection add_script(const std::string& sScriptName,
-            sol::protected_function mHandler, script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
-        }
-
-        /// Adds an additional handler script to this frame (executed after existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param mHandler    The handler of the script, as a C++ function
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note This defines a C++ function to be called for the event specified in sScriptName.
-        *         This provides the best performance, but lacks direct access to the Lua
-        *         environment. If this is required, prefer the other overload taking a Lua function
-        *         instead.
-        */
-        utils::connection add_script(const std::string& sScriptName,
-            script_function mHandler, script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, std::move(mHandler), true, mInfo);
-        }
-
-        /// Sets a new handler script for this frame (replacing existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param sContent    The content ot the script, as Lua code
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note The script_info parameter is used only for displaying error messages.
-        *         This function is meant to be used by the layout file parser. If you want to
-        *         manually define your own script handlers, prefer the other overloads.
-        */
-        utils::connection set_script(const std::string& sScriptName, std::string sContent,
-            script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, sContent, false, mInfo);
-        }
-
-        /// Sets a new handler script for this frame (replacing existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param mHandler    The handler of the script, as a Lua function
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note This defines a Lua function to be called for the event specified in sScriptName.
-        *         This provides more flexibility compared to using C++ function, but also has a
-        *         larger overhead. If performance is a concern, prefer the other overload taking a
-        *         C++ function instead.
-        */
-        utils::connection set_script(const std::string& sScriptName,
-            sol::protected_function mHandler, script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
-        }
-
-        /// Sets a new handler script for this frame (replacing existing scripts).
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param mHandler    The handler of the script, as a C++ function
-        *   \param mInfo       The location where this script has been defined
-        *   \return A connection object, to disable the script if needed.
-        *   \note This defines a C++ function to be called for the event specified in sScriptName.
-        *         This provides the best performance, but lacks direct access to the Lua
-        *         environment. If this is required, prefer the other overload taking a Lua function
-        *         instead.
-        */
-        utils::connection set_script(const std::string& sScriptName,
-            script_function mHandler, script_info mInfo = script_info{})
-        {
-            return define_script_(sScriptName, std::move(mHandler), false, mInfo);
-        }
-
-        /// Return a view into this frame's handler scripts, registered for the given event.
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \return An iterable view into the frame's handlers.
-        */
-        script_list_view get_script(const std::string& sScriptName) const;
-
-        /// Removes a script from this frame.
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \note This removes all handler scripts registered to this event, including the ones inherited
-        *         from templates.
-        */
-        void remove_script(const std::string& sScriptName);
-
-        /// Calls a script.
-        /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param mData       Stores scripts arguments
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        virtual void fire_script(const std::string& sScriptName, const event_data& mData = event_data{});
-
-        /// Tells this frame to react to a certain event.
-        /** \param sEventName The name of the event
-        */
-        void register_event(const std::string& sEventName);
-
-        /// Tells the frame not to react to a certain event.
-        /** \param sEventName The name of the event
-        */
-        void unregister_event(const std::string& sEventName);
-
-        /// Tells this frame to react to mouse drag.
-        /** \param lButtonList The list of mouse button allowed
-        */
-        void register_for_drag(const std::vector<std::string>& lButtonList);
-
-        /// Sets if this frame is clamped to screen.
-        /** \param bIsClampedToScreen 'true' if this frame is clamped to screen
-        *   \note If 'true', the frame can't go out of the screen.
-        */
-        void set_clamped_to_screen(bool bIsClampedToScreen);
-
-        /// Sets this frame's strata.
-        /** \param mStrata The new strata
-        */
-        void set_frame_strata(frame_strata mStrata);
-
-        /// Sets this frame's strata.
-        /** \param sStrata The new strata
-        */
-        void set_frame_strata(const std::string& sStrata);
-
-        /// Sets this frames' backdrop.
-        /** \param pBackdrop The new backdrop
-        */
-        void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
-
-        /// Sets this frame's absolute hit rect insets.
-        /** \param lInsets Offsets
-        *   \note This is the zone on which you can click.
-        */
-        void set_abs_hit_rect_insets(const bounds2f& lInsets);
-
-        /// Sets this frame's relative hit rect insets.
-        /** \param lInsets Offsets
-        *   \note This is the zone on which you can click.
-        */
-        void set_rel_hit_rect_insets(const bounds2f& lInsets);
-
-        /// Sets this frame's level.
-        /** \param iLevel The new level
-        */
-        void set_level(int iLevel);
-
-        /// Sets this frame's maximum size.
-        /** \param mMax The maximum dimensions of this frame
-        */
-        void set_max_dimensions(const vector2f& mMax);
-
-        /// Sets this frame's minimum size.
-        /** \param mMin Minimum dimensions of this frame
-        */
-        void set_min_dimensions(const vector2f& mMin);
-
-        /// Sets this frame's maximum height.
-        /** \param fMaxHeight The maximum height this frame can have
-        */
-        void set_max_height(float fMaxHeight);
-
-        /// Sets this frame's maximum width.
-        /** \param fMaxWidth  The maximum width this frame can have
-        */
-        void set_max_width(float fMaxWidth);
-
-        /// Sets this frame's minimum height.
-        /** \param fMinHeight The minimum height this frame can have
-        */
-        void set_min_height(float fMinHeight);
-
-        /// Sets this frame's minimum width.
-        /** \param fMinWidth  The minimum width this frame can have
-        */
-        void set_min_width(float fMinWidth);
-
-        /// Sets if this frame can be moved by the user.
-        /** \param bIsMovable 'true' to allow the user to move this frame
-        */
-        void set_movable(bool bIsMovable);
-
-        /// Removes this region from its parent and return an owning pointer.
-        /** \return An owning pointer to this region
-        */
-        utils::owner_ptr<region> release_from_parent() override;
-
-        /// Sets if this frame can be resized by the user.
-        /** \param bIsResizable 'true' to allow the user to resize this frame
-        */
-        void set_resizable(bool bIsResizable);
-
-        /// Sets this frame's scale.
-        /** \param fScale The new scale
-        */
-        void set_scale(float fScale);
-
-        /// Sets if this frame is at top level.
-        /** \param bIsTopLevel 'true' to put the frame at top level
-        *   \note A top-level frame will be raised to the foreground if it or
-        *         any of its children are clicked. This should typically be
-        *         set to 'true' for any "dialog" or "window" frame, which
-        *         can be moved around, and not for "element" frames (buttons, etc.).
-        */
-        void set_top_level(bool bIsTopLevel);
-
-        /// Increases this frame's level so it's the highest of the strata.
-        /** \note All its children are raised of the same ammount.
-        *   \note Only works for top level frames.
-        */
-        void raise();
-
-        /// Sets if this frame has been moved by the user.
-        /** \param bIsUserPlaced 'true' if this frame has been moved by the user
-        */
-        void set_user_placed(bool bIsUserPlaced);
-
-        /// Starts moving this frame with the mouse.
-        void start_moving();
-
-        /// ends moving this frame.
-        void stop_moving();
-
-        /// Starts resizing this frame with the mouse.
-        /** \param mPoint The corner to move
-        */
-        void start_sizing(const anchor_point& mPoint);
-
-        /// ends resizing this frame.
-        void stop_sizing();
-
-        /// shows this region.
-        /** \note Its parent must be shown for it to appear on
-        *         the screen.
-        */
-        void show() override;
-
-        /// hides this region.
-        /** \note All its children won't be visible on the screen
-        *         anymore, even if they are still marked as shown.
-        */
-        void hide() override;
-
-        /// Enables automatic focus when this frame is shown or raised.
-        /** \param bEnable 'true' to enable auto focus
-        */
-        void enable_auto_focus(bool bEnable);
-
-        /// Checks if automatic focus is enabled.
-        /** \return 'true' if automatic focus is enabled
-        */
-        bool is_auto_focus_enabled() const;
-
-        /// Asks for focus for this frame.
-        /** \param bFocus 'true' to ask for focus, 'false' to release it
-        *   \note Focus can be lost if another frame asks for focus later.
-        *         The focus will be restored automaticallly when that other frame
-        *         releases focus, or it can be requested again by calling set_focus(true).
-        */
-        void set_focus(bool bFocus);
-
-        /// Check if this frame currently has focus.
-        /** \return 'true' if the frame has focus, 'false' otherwise
-        */
-        bool has_focus() const;
-
-        /// Flags this object as rendered by another object.
-        /** \param pRenderer The object that will take care of rendering this region
-        *   \note By default, objects are rendered by the gui::manager.
-        *   \note The renderer also takes care of providing inputs.
-        *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
-        *         parent. If the frame has no parent, this will default to the gui::manager.
-        */
-        void set_renderer(utils::observer_ptr<frame_renderer> pRenderer);
-
-        /// Returns the renderer of this object, nullptr if none.
-        /** \return The renderer of this object, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        utils::observer_ptr<const frame_renderer> get_renderer() const { return pRenderer_; }
-
-        /// Returns the renderer of this object, nullptr if none.
-        /** \return The renderer of this object, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        const utils::observer_ptr<frame_renderer>& get_renderer() { return pRenderer_; }
-
-        /// Returns the renderer of this object or its parents, nullptr if none.
-        /** \return The renderer of this object or its parents, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        utils::observer_ptr<const frame_renderer> get_top_level_renderer() const final;
-
-        /// Returns the renderer of this object or its parents, nullptr if none.
-        /** \return The renderer of this object or its parents, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        utils::observer_ptr<frame_renderer> get_top_level_renderer()
-        {
-            return utils::const_pointer_cast<frame_renderer>(
-                const_cast<const frame*>(this)->get_top_level_renderer());
-        }
-
-        /// Notifies the renderer of this region that it needs to be redrawn.
-        /** \note Automatically called by any shape changing function.
-        */
-        void notify_renderer_need_redraw() override;
-
-        /// Changes this region's absolute dimensions (in pixels).
-        /** \param mDimensions The new dimensions
-        */
-        void set_dimensions(const vector2f& mDimensions) override;
-
-        /// Changes this region's absolute width (in pixels).
-        /** \param fAbsWidth The new width
-        */
-        void set_width(float fAbsWidth) override;
-
-        /// Changes this region's absolute height (in pixels).
-        /** \param fAbsHeight The new height
-        */
-        void set_height(float fAbsHeight) override;
-
-        /// Tells this frame it is being overed by the mouse.
-        /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param mMousePos     The mouse coordinates in pixels
-        *   \note Always use the mouse position set by this function and
-        *         not the one returned by the input_manager, because there
-        *         can be an offset applied (for example with scroll_frame).
-        */
-        virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
-
-        /// Notifies this region that it is now visible on screen.
-        /** \note Automatically called by show()/hide().
-        */
-        void notify_visible() override;
-
-        /// Notifies this region that it is no longer visible on screen.
-        /** \note Automatically called by show()/hide().
-        */
-        void notify_invisible() override;
-
-        /// Notifies this frame that it has received or lost focus.
-        /** \param bFocus 'true' if focus is received, 'false' if lost
-        */
-        virtual void notify_focus(bool bFocus);
-
-        /// Notifies this region that it has been fully loaded.
-        /** \note Calls the "OnLoad" script.
-        */
-        void notify_loaded() override;
-
-        /// Tells this frame to rebuild its layer list.
-        /** \note Automatically called by add_region(), remove_region(), and
-        *         layered_region::set_draw_layer().
-        */
-        void notify_layers_need_update();
-
-        /// Tells this region that the global interface scaling factor has changed.
-        void notify_scaling_factor_updated() override;
-
-        /// Creates the associated Lua glue.
-        void create_glue() override;
-
-        /// Parses data from a layout_node.
-        /** \param mNode The layout node
-        *   \note Derived classes must override parse_all_nodes_before_children_() if
-        *         they need to parse additional blocks, and parse_attributes_() if they
-        *         need to parse additional attributes.
-        */
-        void parse_layout(const layout_node& mNode) final;
-
-        /// Registers this region class to the provided Lua state
-        static void register_on_lua(sol::state& mLua);
-
-        static constexpr const char* CLASS_NAME = "Frame";
-
-    protected :
-
-        // Layout parsing
-        void parse_attributes_(const layout_node& mNode) override;
-        virtual void parse_all_nodes_before_children_(const layout_node& mNode);
-        virtual void parse_resize_bounds_node_(const layout_node& mNode);
-        virtual void parse_title_region_node_(const layout_node& mNode);
-        virtual void parse_backdrop_node_(const layout_node& mNode);
-        virtual void parse_hit_rect_insets_node_(const layout_node& mNode);
-        virtual void parse_layers_node_(const layout_node& mNode);
-        virtual void parse_frames_node_(const layout_node& mNode);
-        virtual void parse_scripts_node_(const layout_node& mNode);
-        utils::observer_ptr<layered_region> parse_region_(const layout_node& mNode,
-            const std::string& sLayer, const std::string& sType);
-        utils::observer_ptr<frame> parse_child_(const layout_node& mNode,
-            const std::string& sType);
-
-        void check_position_();
-
-        void add_level_(int iAmount);
-
-        void propagate_renderer_(bool bRendered);
-
-        void update_borders_() override;
-
-        utils::connection define_script_(const std::string& sScriptName,
-            const std::string& sContent, bool bAppend, const script_info& mInfo);
-
-        utils::connection define_script_(const std::string& sScriptName,
-            sol::protected_function mHandler, bool bAppend, const script_info& mInfo);
-
-        utils::connection define_script_(const std::string& sScriptName,
-            script_function mHandler, bool bAppend, const script_info& mInfo);
-
-        void on_event_(std::string_view sEventName, const event_data& mEvent);
-
-        child_list  lChildList_;
-        region_list lRegionList_;
-
-        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::ENUM_SIZE);
-
-        std::array<layer_container,num_layers> lLayerList_;
-
-        std::unordered_map<std::string, script_signal> lSignalList_;
-        event_receiver                                 mEventReceiver_;
-
-        std::set<std::string>    lRegDragList_;
-        std::set<std::string>    lRegKeyList_;
-
-        int          iLevel_ = 0;
-        frame_strata mStrata_ = frame_strata::MEDIUM;
-        bool         bIsTopLevel_ = false;
-
-        utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
-
-        std::unique_ptr<backdrop> pBackdrop_;
-
-        bool bIsMouseClickEnabled_ = false;
-        bool bIsMouseMoveEnabled_ = false;
-        bool bIsMouseWheelEnabled_ = false;
-        bool bIsMovable_ = false;
-        bool bIsClampedToScreen_ = false;
-        bool bIsResizable_ = false;
-        bool bIsUserPlaced_ = false;
-
-        bool bBuildLayerList_ = false;
-
-        bounds2f lAbsHitRectInsetList_ = bounds2f::ZERO;
-        bounds2f lRelHitRectInsetList_ = bounds2f::ZERO;
-
-        float fMinWidth_ = 0.0f;
-        float fMaxWidth_ = std::numeric_limits<float>::infinity();
-        float fMinHeight_ = 0.0f;
-        float fMaxHeight_ = std::numeric_limits<float>::infinity();
-
-        vector2f mOldSize_;
-
-        float fScale_ = 1.0f;
-
-        bool bMouseInFrame_ = false;
-
-        utils::owner_ptr<region> pTitleRegion_ = nullptr;
-
-        bool bMouseDraggedInFrame_ = false;
-
-        bool bFocus_ = false;
-        bool bAutoFocus_ = false;
-    };
-}
-}
+    utils::observer_ptr<region_type> get_region(const std::string& sName) {
+        return down_cast<region_type>(get_region(sName));
+    }
+
+    /// Calculates effective alpha.
+    /** \return Effective alpha (alpha*parent->alpha)
+     */
+    float get_effective_alpha() const;
+
+    /// Calculates effective scale.
+    /** \return Effective scale (scale*parent->scale)
+     */
+    float get_effective_scale() const;
+
+    /// Returns this frame's level.
+    /** \return This frame's level
+     */
+    int get_level() const;
+
+    /// Returns this frame's strata.
+    /** \return This frame's strata
+     */
+    frame_strata get_frame_strata() const;
+
+    /// Returns this frame's top-level parent.
+    /** \return This frame's top-level parent
+     */
+    utils::observer_ptr<const frame> get_top_level_parent() const;
+
+    /// Returns this frame's top-level parent.
+    /** \return This frame's top-level parent
+     */
+    utils::observer_ptr<frame> get_top_level_parent() {
+        return utils::const_pointer_cast<frame>(
+            const_cast<const frame*>(this)->get_top_level_parent());
+    }
+
+    /// Returns this frame's backdrop.
+    /** \return This frame's backdrop
+     */
+    const backdrop* get_backdrop() const;
+
+    /// Returns this frame's backdrop.
+    /** \return This frame's backdrop
+     */
+    backdrop* get_backdrop();
+
+    /// Returns this frame's backdrop, creating it if needed
+    /** \return This frame's backdrop
+     */
+    backdrop& get_or_create_backdrop();
+
+    /// Returns this frame's type.
+    /** \return This frame's type (Frame, Slider, ...)
+     */
+    const std::string& get_frame_type() const;
+
+    /// Returns this frame's absolute hit rect insets.
+    /** \return This frame's absolute hit rect insets
+     */
+    const bounds2f& get_abs_hit_rect_insets() const;
+
+    /// Returns this frame's relative hit rect insets.
+    /** \return This frame's relative hit rect insets
+     */
+    const bounds2f& get_rel_hit_rect_insets() const;
+
+    /// Returns this frame's max dimensions.
+    /** \return This frame's max dimensions
+     */
+    vector2f get_max_dimensions() const;
+
+    /// Returns this frame's min dimensions.
+    /** \return This frame's min dimensions
+     */
+    vector2f get_min_dimensions() const;
+
+    /// Returns the number of children of this frame.
+    /** \return The number of children of this frame
+     *   \note If only an approximate number is acceptable, use get_rough_num_children(),
+     *         which is faster.
+     */
+    std::size_t get_num_children() const;
+
+    /// Returns the approximate number of children of this frame.
+    /** \return The approximate number of children of this frame
+     *   \note The returned number is an *upper bound* on the actual number of children.
+     *         This can be used to reserve enough space for memory allocations.
+     *         If the exact number of children is required, use get_num_children().
+     */
+    std::size_t get_rough_num_children() const;
+
+    /// Returns the number of regions of this frame.
+    /** \return The number of regions of this frame
+     *   \note If only an approximate number is acceptable, use get_rough_num_regions(),
+     *         which is faster.
+     */
+    std::size_t get_num_regions() const;
+
+    /// Returns the approximate number of regions of this frame.
+    /** \return The approximate number of regions of this frame
+     *   \note The returned number is an *upper bound* on the actual number of regions.
+     *         This can be used to reserve enough space for memory allocations.
+     *         If the exact number of regions is required, use get_num_regions().
+     */
+    std::size_t get_rough_num_regions() const;
+
+    /// Returns this frame's scale.
+    /** \return This frame's scale
+     *   \note If you want it's true scale on the screen,
+     *         use get_effective_scale().
+     */
+    float get_scale() const;
+
+    /// Returns this frame's title region.
+    utils::observer_ptr<const region> get_title_region() const {
+        return pTitleRegion_;
+    }
+
+    /// Returns this frame's title region.
+    utils::observer_ptr<region> get_title_region() {
+        return pTitleRegion_;
+    }
+
+    /// Checks if this frame is clamped to screen.
+    /** \return 'true' if this frame is clamed to screen
+     */
+    bool is_clamped_to_screen() const;
+
+    /// Checks if the provided coordinates are inside this frame.
+    /** \param mPosition The coordinates to test
+     *   \return 'true' if the provided coordinates are inside this frame or its title region
+     */
+    bool is_in_region(const vector2f& mPosition) const override;
+
+    /// Find the topmost frame matching the provided predicate.
+    /** \param mPredicate A function returning 'true' if the frame can be selected
+     *   \return The topmost frame, if any, and nullptr otherwise.
+     *   \note For most frames, this can either return 'this' or 'nullptr'. For
+     *         frames responsible for rendering other frames (such as @ref scroll_frame),
+     *         this can return other frames.
+     */
+    virtual utils::observer_ptr<const frame>
+    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) const;
+
+    /// Find the topmost frame matching the provided predicate.
+    /** \param mPredicate A function returning 'true' if the frame can be selected
+     *   \return The topmost frame, if any, and nullptr otherwise.
+     *   \note For most frames, this can either return 'this' or 'nullptr'. For
+     *         frames responsible for rendering other frames (such as @ref scroll_frame),
+     *         this can return other frames.
+     */
+    utils::observer_ptr<frame>
+    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) {
+        return utils::const_pointer_cast<frame>(
+            const_cast<const frame*>(this)->find_topmost_frame(mPredicate));
+    }
+
+    /// Checks if this frame can receive mouse movement input.
+    /** \return 'true' if this frame can receive mouse movement input
+     */
+    bool is_mouse_move_enabled() const;
+
+    /// Checks if this frame can receive mouse click input.
+    /** \return 'true' if this frame can receive mouse click input
+     */
+    bool is_mouse_click_enabled() const;
+
+    /// Checks if this frame can receive mouse wheel input.
+    /** \return 'true' if this frame can receive mouse wheel input
+     */
+    bool is_mouse_wheel_enabled() const;
+
+    /// Checks if this frame is registered for drag events with the provided mouse button.
+    /** \return 'true' if this frame is registered for drag events
+     */
+    bool is_registered_for_drag(const std::string& sButton) const;
+
+    /// Checks if this frame can receive keyboard input from a specific key.
+    /** \param sKey The key to check
+     *   \return 'true' if this frame can receive keyboard input from this key
+     *   \see enable_key_capture()
+     */
+    bool is_key_capture_enabled(const std::string& sKey) const;
+
+    /// Checks if this frame can be moved.
+    /** \return 'true' if this frame can be moved
+     */
+    bool is_movable() const;
+
+    /// Checks if this frame can be resized.
+    /** \return 'true' if this frame can be resized
+     */
+    bool is_resizable() const;
+
+    /// Checks if this frame is at top level.
+    /** \return 'true' if this frame is at top level
+     */
+    bool is_top_level() const;
+
+    /// Checks if this frame has been moved by the user.
+    /** \return 'true' if this frame has been moved by the user
+     */
+    bool is_user_placed() const;
+
+    /// Returns the "adjusted" script name: "OnEvent" becomes "on_event"
+    /** \param sScriptName The CamelCase name of the script
+     *   \return the snake_case name of the script
+     */
+    static std::string get_adjusted_script_name(const std::string& sScriptName);
+
+    /// Adds an additional handler script to this frame (executed after existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param sContent    The content ot the script, as Lua code
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note The script_info parameter is used only for displaying error messages.
+     *         This function is meant to be used by the layout file parser. If you want to
+     *         manually define your own script handlers, prefer the other overloads.
+     */
+    utils::connection add_script(
+        const std::string& sScriptName, std::string sContent, script_info mInfo = script_info{}) {
+        return define_script_(sScriptName, sContent, true, mInfo);
+    }
+
+    /// Adds an additional handler script to this frame (executed after existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param mHandler    The handler of the script, as a Lua function
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note This defines a Lua function to be called for the event specified in sScriptName.
+     *         This provides more flexibility compared to using C++ function, but also has a
+     *         larger overhead. If performance is a concern, prefer the other overload taking a
+     *         C++ function instead.
+     */
+    utils::connection add_script(
+        const std::string&      sScriptName,
+        sol::protected_function mHandler,
+        script_info             mInfo = script_info{}) {
+        return define_script_(sScriptName, std::move(mHandler), true, mInfo);
+    }
+
+    /// Adds an additional handler script to this frame (executed after existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param mHandler    The handler of the script, as a C++ function
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note This defines a C++ function to be called for the event specified in sScriptName.
+     *         This provides the best performance, but lacks direct access to the Lua
+     *         environment. If this is required, prefer the other overload taking a Lua function
+     *         instead.
+     */
+    utils::connection add_script(
+        const std::string& sScriptName,
+        script_function    mHandler,
+        script_info        mInfo = script_info{}) {
+        return define_script_(sScriptName, std::move(mHandler), true, mInfo);
+    }
+
+    /// Sets a new handler script for this frame (replacing existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param sContent    The content ot the script, as Lua code
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note The script_info parameter is used only for displaying error messages.
+     *         This function is meant to be used by the layout file parser. If you want to
+     *         manually define your own script handlers, prefer the other overloads.
+     */
+    utils::connection set_script(
+        const std::string& sScriptName, std::string sContent, script_info mInfo = script_info{}) {
+        return define_script_(sScriptName, sContent, false, mInfo);
+    }
+
+    /// Sets a new handler script for this frame (replacing existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param mHandler    The handler of the script, as a Lua function
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note This defines a Lua function to be called for the event specified in sScriptName.
+     *         This provides more flexibility compared to using C++ function, but also has a
+     *         larger overhead. If performance is a concern, prefer the other overload taking a
+     *         C++ function instead.
+     */
+    utils::connection set_script(
+        const std::string&      sScriptName,
+        sol::protected_function mHandler,
+        script_info             mInfo = script_info{}) {
+        return define_script_(sScriptName, std::move(mHandler), false, mInfo);
+    }
+
+    /// Sets a new handler script for this frame (replacing existing scripts).
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param mHandler    The handler of the script, as a C++ function
+     *   \param mInfo       The location where this script has been defined
+     *   \return A connection object, to disable the script if needed.
+     *   \note This defines a C++ function to be called for the event specified in sScriptName.
+     *         This provides the best performance, but lacks direct access to the Lua
+     *         environment. If this is required, prefer the other overload taking a Lua function
+     *         instead.
+     */
+    utils::connection set_script(
+        const std::string& sScriptName,
+        script_function    mHandler,
+        script_info        mInfo = script_info{}) {
+        return define_script_(sScriptName, std::move(mHandler), false, mInfo);
+    }
+
+    /// Return a view into this frame's handler scripts, registered for the given event.
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \return An iterable view into the frame's handlers.
+     */
+    script_list_view get_script(const std::string& sScriptName) const;
+
+    /// Removes a script from this frame.
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \note This removes all handler scripts registered to this event, including the ones
+     * inherited from templates.
+     */
+    void remove_script(const std::string& sScriptName);
+
+    /// Calls a script.
+    /** \param sScriptName The name of the script (e.g., "OnEvent")
+     *   \param mData       Stores scripts arguments
+     *   \note Triggered callbacks could destroy the frame. If you need
+     *         to use the frame again after calling this function, use
+     *         the helper class alive_checker.
+     */
+    virtual void
+    fire_script(const std::string& sScriptName, const event_data& mData = event_data{});
+
+    /// Tells this frame to react to a certain event.
+    /** \param sEventName The name of the event
+     */
+    void register_event(const std::string& sEventName);
+
+    /// Tells the frame not to react to a certain event.
+    /** \param sEventName The name of the event
+     */
+    void unregister_event(const std::string& sEventName);
+
+    /// Tells this frame to react to mouse drag.
+    /** \param lButtonList The list of mouse button allowed
+     */
+    void register_for_drag(const std::vector<std::string>& lButtonList);
+
+    /// Sets if this frame is clamped to screen.
+    /** \param bIsClampedToScreen 'true' if this frame is clamped to screen
+     *   \note If 'true', the frame can't go out of the screen.
+     */
+    void set_clamped_to_screen(bool bIsClampedToScreen);
+
+    /// Sets this frame's strata.
+    /** \param mStrata The new strata
+     */
+    void set_frame_strata(frame_strata mStrata);
+
+    /// Sets this frame's strata.
+    /** \param sStrata The new strata
+     */
+    void set_frame_strata(const std::string& sStrata);
+
+    /// Sets this frames' backdrop.
+    /** \param pBackdrop The new backdrop
+     */
+    void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
+
+    /// Sets this frame's absolute hit rect insets.
+    /** \param lInsets Offsets
+     *   \note This is the zone on which you can click.
+     */
+    void set_abs_hit_rect_insets(const bounds2f& lInsets);
+
+    /// Sets this frame's relative hit rect insets.
+    /** \param lInsets Offsets
+     *   \note This is the zone on which you can click.
+     */
+    void set_rel_hit_rect_insets(const bounds2f& lInsets);
+
+    /// Sets this frame's level.
+    /** \param iLevel The new level
+     */
+    void set_level(int iLevel);
+
+    /// Sets this frame's maximum size.
+    /** \param mMax The maximum dimensions of this frame
+     */
+    void set_max_dimensions(const vector2f& mMax);
+
+    /// Sets this frame's minimum size.
+    /** \param mMin Minimum dimensions of this frame
+     */
+    void set_min_dimensions(const vector2f& mMin);
+
+    /// Sets this frame's maximum height.
+    /** \param fMaxHeight The maximum height this frame can have
+     */
+    void set_max_height(float fMaxHeight);
+
+    /// Sets this frame's maximum width.
+    /** \param fMaxWidth  The maximum width this frame can have
+     */
+    void set_max_width(float fMaxWidth);
+
+    /// Sets this frame's minimum height.
+    /** \param fMinHeight The minimum height this frame can have
+     */
+    void set_min_height(float fMinHeight);
+
+    /// Sets this frame's minimum width.
+    /** \param fMinWidth  The minimum width this frame can have
+     */
+    void set_min_width(float fMinWidth);
+
+    /// Sets if this frame can be moved by the user.
+    /** \param bIsMovable 'true' to allow the user to move this frame
+     */
+    void set_movable(bool bIsMovable);
+
+    /// Removes this region from its parent and return an owning pointer.
+    /** \return An owning pointer to this region
+     */
+    utils::owner_ptr<region> release_from_parent() override;
+
+    /// Sets if this frame can be resized by the user.
+    /** \param bIsResizable 'true' to allow the user to resize this frame
+     */
+    void set_resizable(bool bIsResizable);
+
+    /// Sets this frame's scale.
+    /** \param fScale The new scale
+     */
+    void set_scale(float fScale);
+
+    /// Sets if this frame is at top level.
+    /** \param bIsTopLevel 'true' to put the frame at top level
+     *   \note A top-level frame will be raised to the foreground if it or
+     *         any of its children are clicked. This should typically be
+     *         set to 'true' for any "dialog" or "window" frame, which
+     *         can be moved around, and not for "element" frames (buttons, etc.).
+     */
+    void set_top_level(bool bIsTopLevel);
+
+    /// Increases this frame's level so it's the highest of the strata.
+    /** \note All its children are raised of the same ammount.
+     *   \note Only works for top level frames.
+     */
+    void raise();
+
+    /// Sets if this frame has been moved by the user.
+    /** \param bIsUserPlaced 'true' if this frame has been moved by the user
+     */
+    void set_user_placed(bool bIsUserPlaced);
+
+    /// Starts moving this frame with the mouse.
+    void start_moving();
+
+    /// ends moving this frame.
+    void stop_moving();
+
+    /// Starts resizing this frame with the mouse.
+    /** \param mPoint The corner to move
+     */
+    void start_sizing(const anchor_point& mPoint);
+
+    /// ends resizing this frame.
+    void stop_sizing();
+
+    /// shows this region.
+    /** \note Its parent must be shown for it to appear on
+     *         the screen.
+     */
+    void show() override;
+
+    /// hides this region.
+    /** \note All its children won't be visible on the screen
+     *         anymore, even if they are still marked as shown.
+     */
+    void hide() override;
+
+    /// Enables automatic focus when this frame is shown or raised.
+    /** \param bEnable 'true' to enable auto focus
+     */
+    void enable_auto_focus(bool bEnable);
+
+    /// Checks if automatic focus is enabled.
+    /** \return 'true' if automatic focus is enabled
+     */
+    bool is_auto_focus_enabled() const;
+
+    /// Asks for focus for this frame.
+    /** \param bFocus 'true' to ask for focus, 'false' to release it
+     *   \note Focus can be lost if another frame asks for focus later.
+     *         The focus will be restored automaticallly when that other frame
+     *         releases focus, or it can be requested again by calling set_focus(true).
+     */
+    void set_focus(bool bFocus);
+
+    /// Check if this frame currently has focus.
+    /** \return 'true' if the frame has focus, 'false' otherwise
+     */
+    bool has_focus() const;
+
+    /// Flags this object as rendered by another object.
+    /** \param pRenderer The object that will take care of rendering this region
+     *   \note By default, objects are rendered by the gui::manager.
+     *   \note The renderer also takes care of providing inputs.
+     *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
+     *         parent. If the frame has no parent, this will default to the gui::manager.
+     */
+    void set_renderer(utils::observer_ptr<frame_renderer> pRenderer);
+
+    /// Returns the renderer of this object, nullptr if none.
+    /** \return The renderer of this object, nullptr if none
+     *   \note For more informations, see set_renderer().
+     */
+    utils::observer_ptr<const frame_renderer> get_renderer() const {
+        return pRenderer_;
+    }
+
+    /// Returns the renderer of this object, nullptr if none.
+    /** \return The renderer of this object, nullptr if none
+     *   \note For more informations, see set_renderer().
+     */
+    const utils::observer_ptr<frame_renderer>& get_renderer() {
+        return pRenderer_;
+    }
+
+    /// Returns the renderer of this object or its parents, nullptr if none.
+    /** \return The renderer of this object or its parents, nullptr if none
+     *   \note For more informations, see set_renderer().
+     */
+    utils::observer_ptr<const frame_renderer> get_top_level_renderer() const final;
+
+    /// Returns the renderer of this object or its parents, nullptr if none.
+    /** \return The renderer of this object or its parents, nullptr if none
+     *   \note For more informations, see set_renderer().
+     */
+    utils::observer_ptr<frame_renderer> get_top_level_renderer() {
+        return utils::const_pointer_cast<frame_renderer>(
+            const_cast<const frame*>(this)->get_top_level_renderer());
+    }
+
+    /// Notifies the renderer of this region that it needs to be redrawn.
+    /** \note Automatically called by any shape changing function.
+     */
+    void notify_renderer_need_redraw() override;
+
+    /// Changes this region's absolute dimensions (in pixels).
+    /** \param mDimensions The new dimensions
+     */
+    void set_dimensions(const vector2f& mDimensions) override;
+
+    /// Changes this region's absolute width (in pixels).
+    /** \param fAbsWidth The new width
+     */
+    void set_width(float fAbsWidth) override;
+
+    /// Changes this region's absolute height (in pixels).
+    /** \param fAbsHeight The new height
+     */
+    void set_height(float fAbsHeight) override;
+
+    /// Tells this frame it is being overed by the mouse.
+    /** \param bMouseInFrame 'true' if the mouse is above this frame
+     *   \param mMousePos     The mouse coordinates in pixels
+     *   \note Always use the mouse position set by this function and
+     *         not the one returned by the input_manager, because there
+     *         can be an offset applied (for example with scroll_frame).
+     */
+    virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
+
+    /// Notifies this region that it is now visible on screen.
+    /** \note Automatically called by show()/hide().
+     */
+    void notify_visible() override;
+
+    /// Notifies this region that it is no longer visible on screen.
+    /** \note Automatically called by show()/hide().
+     */
+    void notify_invisible() override;
+
+    /// Notifies this frame that it has received or lost focus.
+    /** \param bFocus 'true' if focus is received, 'false' if lost
+     */
+    virtual void notify_focus(bool bFocus);
+
+    /// Notifies this region that it has been fully loaded.
+    /** \note Calls the "OnLoad" script.
+     */
+    void notify_loaded() override;
+
+    /// Tells this frame to rebuild its layer list.
+    /** \note Automatically called by add_region(), remove_region(), and
+     *         layered_region::set_draw_layer().
+     */
+    void notify_layers_need_update();
+
+    /// Tells this region that the global interface scaling factor has changed.
+    void notify_scaling_factor_updated() override;
+
+    /// Creates the associated Lua glue.
+    void create_glue() override;
+
+    /// Parses data from a layout_node.
+    /** \param mNode The layout node
+     *   \note Derived classes must override parse_all_nodes_before_children_() if
+     *         they need to parse additional blocks, and parse_attributes_() if they
+     *         need to parse additional attributes.
+     */
+    void parse_layout(const layout_node& mNode) final;
+
+    /// Registers this region class to the provided Lua state
+    static void register_on_lua(sol::state& mLua);
+
+    static constexpr const char* CLASS_NAME = "Frame";
+
+protected:
+    // Layout parsing
+    void         parse_attributes_(const layout_node& mNode) override;
+    virtual void parse_all_nodes_before_children_(const layout_node& mNode);
+    virtual void parse_resize_bounds_node_(const layout_node& mNode);
+    virtual void parse_title_region_node_(const layout_node& mNode);
+    virtual void parse_backdrop_node_(const layout_node& mNode);
+    virtual void parse_hit_rect_insets_node_(const layout_node& mNode);
+    virtual void parse_layers_node_(const layout_node& mNode);
+    virtual void parse_frames_node_(const layout_node& mNode);
+    virtual void parse_scripts_node_(const layout_node& mNode);
+
+    utils::observer_ptr<layered_region>
+    parse_region_(const layout_node& mNode, const std::string& sLayer, const std::string& sType);
+
+    utils::observer_ptr<frame> parse_child_(const layout_node& mNode, const std::string& sType);
+
+    void check_position_();
+
+    void add_level_(int iAmount);
+
+    void propagate_renderer_(bool bRendered);
+
+    void update_borders_() override;
+
+    utils::connection define_script_(
+        const std::string& sScriptName,
+        const std::string& sContent,
+        bool               bAppend,
+        const script_info& mInfo);
+
+    utils::connection define_script_(
+        const std::string&      sScriptName,
+        sol::protected_function mHandler,
+        bool                    bAppend,
+        const script_info&      mInfo);
+
+    utils::connection define_script_(
+        const std::string& sScriptName,
+        script_function    mHandler,
+        bool               bAppend,
+        const script_info& mInfo);
+
+    void on_event_(std::string_view sEventName, const event_data& mEvent);
+
+    child_list  lChildList_;
+    region_list lRegionList_;
+
+    static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::ENUM_SIZE);
+
+    std::array<layer_container, num_layers> lLayerList_;
+
+    std::unordered_map<std::string, script_signal> lSignalList_;
+    event_receiver                                 mEventReceiver_;
+
+    std::set<std::string> lRegDragList_;
+    std::set<std::string> lRegKeyList_;
+
+    int          iLevel_      = 0;
+    frame_strata mStrata_     = frame_strata::MEDIUM;
+    bool         bIsTopLevel_ = false;
+
+    utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
+
+    std::unique_ptr<backdrop> pBackdrop_;
+
+    bool bIsMouseClickEnabled_ = false;
+    bool bIsMouseMoveEnabled_  = false;
+    bool bIsMouseWheelEnabled_ = false;
+    bool bIsMovable_           = false;
+    bool bIsClampedToScreen_   = false;
+    bool bIsResizable_         = false;
+    bool bIsUserPlaced_        = false;
+
+    bool bBuildLayerList_ = false;
+
+    bounds2f lAbsHitRectInsetList_ = bounds2f::ZERO;
+    bounds2f lRelHitRectInsetList_ = bounds2f::ZERO;
+
+    float fMinWidth_  = 0.0f;
+    float fMaxWidth_  = std::numeric_limits<float>::infinity();
+    float fMinHeight_ = 0.0f;
+    float fMaxHeight_ = std::numeric_limits<float>::infinity();
+
+    vector2f mOldSize_;
+
+    float fScale_ = 1.0f;
+
+    bool bMouseInFrame_ = false;
+
+    utils::owner_ptr<region> pTitleRegion_ = nullptr;
+
+    bool bMouseDraggedInFrame_ = false;
+
+    bool bFocus_     = false;
+    bool bAutoFocus_ = false;
+};
+
+}} // namespace lxgui::gui
 
 #endif

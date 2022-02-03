@@ -1,42 +1,40 @@
 #include "lxgui/gui_root.hpp"
-#include "lxgui/gui_manager.hpp"
+
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_registry.hpp"
-#include "lxgui/input_window.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/input_dispatcher.hpp"
+#include "lxgui/input_window.hpp"
 #include "lxgui/input_world_dispatcher.hpp"
 #include "lxgui/utils_range.hpp"
-
 #include "lxgui/utils_std.hpp"
 
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui { namespace gui {
 
 root::root(utils::control_block& mBlock, manager& mManager) :
     frame_container(mManager.get_factory(), mObjectRegistry_, this),
     utils::enable_observer_from_this<root>(mBlock),
-    mManager_(mManager), mRenderer_(mManager.get_renderer()),
-    mWorldInputDispatcher_(mManager.get_world_input_dispatcher())
-{
-    auto& mWindow = get_manager().get_window();
+    mManager_(mManager),
+    mRenderer_(mManager.get_renderer()),
+    mWorldInputDispatcher_(mManager.get_world_input_dispatcher()) {
+    auto& mWindow      = get_manager().get_window();
     mScreenDimensions_ = mWindow.get_dimensions();
 
-    lConnections_.push_back(mWindow.on_window_resized.connect(
-        [&](auto... mArgs) { on_window_resized_(mArgs...); }));
+    lConnections_.push_back(
+        mWindow.on_window_resized.connect([&](auto... mArgs) { on_window_resized_(mArgs...); }));
 
     auto& mInputDispatcher = get_manager().get_input_dispatcher();
 
-    lConnections_.push_back(mInputDispatcher.on_mouse_moved.connect(
-        [&](auto... mArgs) { on_mouse_moved_(mArgs...); }));
+    lConnections_.push_back(
+        mInputDispatcher.on_mouse_moved.connect([&](auto... mArgs) { on_mouse_moved_(mArgs...); }));
 
-    lConnections_.push_back(mInputDispatcher.on_mouse_wheel.connect(
-        [&](auto... mArgs) { on_mouse_wheel_(mArgs...); }));
+    lConnections_.push_back(
+        mInputDispatcher.on_mouse_wheel.connect([&](auto... mArgs) { on_mouse_wheel_(mArgs...); }));
 
     lConnections_.push_back(mInputDispatcher.on_mouse_drag_start.connect(
         [&](auto... mArgs) { on_drag_start_(mArgs...); }));
@@ -48,75 +46,58 @@ root::root(utils::control_block& mBlock, manager& mManager) :
         [&](auto... mArgs) { on_text_entered_(mArgs...); }));
 
     lConnections_.push_back(mInputDispatcher.on_mouse_pressed.connect(
-        [&](input::mouse_button mButton, const vector2f& mMousePos)
-    {
-        on_mouse_button_state_changed_(mButton, true, false, mMousePos);
-    }));
+        [&](input::mouse_button mButton, const vector2f& mMousePos) {
+            on_mouse_button_state_changed_(mButton, true, false, mMousePos);
+        }));
 
     lConnections_.push_back(mInputDispatcher.on_mouse_released.connect(
-        [&](input::mouse_button mButton, const vector2f& mMousePos)
-    {
-        on_mouse_button_state_changed_(mButton, false, false, mMousePos);
-    }));
+        [&](input::mouse_button mButton, const vector2f& mMousePos) {
+            on_mouse_button_state_changed_(mButton, false, false, mMousePos);
+        }));
 
     lConnections_.push_back(mInputDispatcher.on_mouse_double_clicked.connect(
-        [&](input::mouse_button mButton, const vector2f& mMousePos)
-    {
-        on_mouse_button_state_changed_(mButton, true, true, mMousePos);
-    }));
+        [&](input::mouse_button mButton, const vector2f& mMousePos) {
+            on_mouse_button_state_changed_(mButton, true, true, mMousePos);
+        }));
 
-    lConnections_.push_back(mInputDispatcher.on_key_pressed.connect([&](input::key mKey)
-    {
-        on_key_state_changed_(mKey, true);
-    }));
+    lConnections_.push_back(mInputDispatcher.on_key_pressed.connect(
+        [&](input::key mKey) { on_key_state_changed_(mKey, true); }));
 
-    lConnections_.push_back(mInputDispatcher.on_key_released.connect([&](input::key mKey)
-    {
-        on_key_state_changed_(mKey, false);
-    }));
+    lConnections_.push_back(mInputDispatcher.on_key_released.connect(
+        [&](input::key mKey) { on_key_state_changed_(mKey, false); }));
 }
 
-root::~root()
-{
+root::~root() {
     // Must be done before we destroy the registry
     clear_frames_();
 }
 
-vector2f root::get_target_dimensions() const
-{
-    return vector2f(mScreenDimensions_)/get_manager().get_interface_scaling_factor();
+vector2f root::get_target_dimensions() const {
+    return vector2f(mScreenDimensions_) / get_manager().get_interface_scaling_factor();
 }
 
-void root::render() const
-{
+void root::render() const {
     mRenderer_.set_view(matrix4f::view(get_target_dimensions()));
 
-    if (bEnableCaching_)
-    {
+    if (bEnableCaching_) {
         mRenderer_.render_quad(mScreenQuad_);
-    }
-    else
-    {
-        for (const auto& mStrata : lStrataList_)
-        {
+    } else {
+        for (const auto& mStrata : lStrataList_) {
             render_strata_(mStrata);
         }
     }
 }
 
-void root::create_caching_render_target_()
-{
-    try
-    {
+void root::create_caching_render_target_() {
+    try {
         if (pRenderTarget_)
             pRenderTarget_->set_dimensions(mScreenDimensions_);
         else
             pRenderTarget_ = mRenderer_.create_render_target(mScreenDimensions_);
-    }
-    catch (const utils::exception& e)
-    {
+    } catch (const utils::exception& e) {
         gui::out << gui::error << "gui::root : "
-            << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
+                 << "Unable to create render_target for GUI caching :\n"
+                 << e.get_description() << std::endl;
 
         bEnableCaching_ = false;
         return;
@@ -124,7 +105,7 @@ void root::create_caching_render_target_()
 
     vector2f mScaledDimensions = get_target_dimensions();
 
-    mScreenQuad_.mat = mRenderer_.create_material(pRenderTarget_);
+    mScreenQuad_.mat      = mRenderer_.create_material(pRenderTarget_);
     mScreenQuad_.v[0].pos = vector2f::ZERO;
     mScreenQuad_.v[1].pos = vector2f(mScaledDimensions.x, 0);
     mScreenQuad_.v[2].pos = mScaledDimensions;
@@ -136,8 +117,7 @@ void root::create_caching_render_target_()
     mScreenQuad_.v[3].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void root::create_strata_cache_render_target_(strata& mStrata)
-{
+void root::create_strata_cache_render_target_(strata& mStrata) {
     if (mStrata.pRenderTarget)
         mStrata.pRenderTarget->set_dimensions(mScreenDimensions_);
     else
@@ -145,7 +125,7 @@ void root::create_strata_cache_render_target_(strata& mStrata)
 
     vector2f mScaledDimensions = get_target_dimensions();
 
-    mStrata.mQuad.mat = mRenderer_.create_material(mStrata.pRenderTarget);
+    mStrata.mQuad.mat      = mRenderer_.create_material(mStrata.pRenderTarget);
     mStrata.mQuad.v[0].pos = vector2f::ZERO;
     mStrata.mQuad.v[1].pos = vector2f(mScaledDimensions.x, 0);
     mStrata.mQuad.v[2].pos = mScaledDimensions;
@@ -157,11 +137,9 @@ void root::create_strata_cache_render_target_(strata& mStrata)
     mStrata.mQuad.v[3].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void root::update(float fDelta)
-{
+void root::update(float fDelta) {
     // Update logics on root frames from parent to children.
-    for (auto& mFrame : get_root_frames())
-    {
+    for (auto& mFrame : get_root_frames()) {
         mFrame.update(fDelta);
     }
 
@@ -174,25 +152,20 @@ void root::update(float fDelta)
     if (bRedraw)
         notify_hovered_frame_dirty();
 
-    if (bEnableCaching_)
-    {
+    if (bEnableCaching_) {
         DEBUG_LOG(" Redraw strata...");
 
-        try
-        {
-            for (auto& mStrata : lStrataList_)
-            {
-                if (mStrata.bRedraw)
-                {
+        try {
+            for (auto& mStrata : lStrataList_) {
+                if (mStrata.bRedraw) {
                     if (!mStrata.pRenderTarget)
                         create_strata_cache_render_target_(mStrata);
 
-                    if (mStrata.pRenderTarget)
-                    {
+                    if (mStrata.pRenderTarget) {
                         mRenderer_.begin(mStrata.pRenderTarget);
 
-                        vector2f mView = vector2f(mStrata.pRenderTarget->get_canvas_dimensions())/
-                            get_manager().get_interface_scaling_factor();
+                        vector2f mView = vector2f(mStrata.pRenderTarget->get_canvas_dimensions()) /
+                                         get_manager().get_interface_scaling_factor();
 
                         mRenderer_.set_view(matrix4f::view(mView));
 
@@ -211,112 +184,94 @@ void root::update(float fDelta)
             if (!pRenderTarget_)
                 create_caching_render_target_();
 
-            if (bRedraw && pRenderTarget_)
-            {
+            if (bRedraw && pRenderTarget_) {
                 mRenderer_.begin(pRenderTarget_);
 
-                vector2f mView = vector2f(pRenderTarget_->get_canvas_dimensions())/
-                    get_manager().get_interface_scaling_factor();
+                vector2f mView = vector2f(pRenderTarget_->get_canvas_dimensions()) /
+                                 get_manager().get_interface_scaling_factor();
 
                 mRenderer_.set_view(matrix4f::view(mView));
 
                 pRenderTarget_->clear(color::EMPTY);
 
-                for (auto& mStrata : lStrataList_)
-                {
+                for (auto& mStrata : lStrataList_) {
                     mRenderer_.render_quad(mStrata.mQuad);
                 }
 
                 mRenderer_.end();
             }
-        }
-        catch (const utils::exception& e)
-        {
+        } catch (const utils::exception& e) {
             gui::out << gui::error << "gui::root : "
-                << "Unable to create render_target for strata :\n"
-                << e.get_description() << std::endl;
+                     << "Unable to create render_target for strata :\n"
+                     << e.get_description() << std::endl;
 
             bEnableCaching_ = false;
         }
     }
 }
 
-void root::toggle_caching()
-{
+void root::toggle_caching() {
     bEnableCaching_ = !bEnableCaching_;
 
-    if (bEnableCaching_)
-    {
+    if (bEnableCaching_) {
         for (auto& mStrata : lStrataList_)
             mStrata.bRedraw = true;
     }
 }
 
-void root::enable_caching(bool bEnable)
-{
+void root::enable_caching(bool bEnable) {
     if (bEnableCaching_ != bEnable)
         toggle_caching();
 }
 
-bool root::is_caching_enabled() const
-{
+bool root::is_caching_enabled() const {
     return bEnableCaching_;
 }
 
-void root::notify_scaling_factor_updated()
-{
-    for (auto& mFrame : get_root_frames())
-    {
+void root::notify_scaling_factor_updated() {
+    for (auto& mFrame : get_root_frames()) {
         mFrame.notify_scaling_factor_updated();
     }
 
     if (pRenderTarget_)
         create_caching_render_target_();
 
-    for (auto& mStrata : lStrataList_)
-    {
+    for (auto& mStrata : lStrataList_) {
         if (mStrata.pRenderTarget)
             create_strata_cache_render_target_(mStrata);
     }
 }
 
-void root::update_hovered_frame_()
-{
+void root::update_hovered_frame_() {
     const auto mMousePos = get_manager().get_input_dispatcher().get_mouse_position();
 
-    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-        [&](const frame& mFrame)
-        {
-            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_move_enabled();
-        }
-    );
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame([&](const frame& mFrame) {
+        return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_move_enabled();
+    });
 
     set_hovered_frame_(std::move(pHoveredFrame), mMousePos);
 }
 
-void root::notify_hovered_frame_dirty()
-{
+void root::notify_hovered_frame_dirty() {
     update_hovered_frame_();
 }
 
-void root::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
-    constraint mConstraint, std::function<void()> mApplyConstraintFunc)
-{
-    pSizedObject_ = nullptr;
-    pMovedObject_ = std::move(pObj);
+void root::start_moving(
+    utils::observer_ptr<region> pObj,
+    anchor*                     pAnchor,
+    constraint                  mConstraint,
+    std::function<void()>       mApplyConstraintFunc) {
+    pSizedObject_   = nullptr;
+    pMovedObject_   = std::move(pObj);
     mMouseMovement_ = vector2f::ZERO;
 
-    if (pMovedObject_)
-    {
-        mConstraint_ = mConstraint;
+    if (pMovedObject_) {
+        mConstraint_          = mConstraint;
         mApplyConstraintFunc_ = std::move(mApplyConstraintFunc);
-        if (pAnchor)
-        {
-            pMovedAnchor_ = pAnchor;
+        if (pAnchor) {
+            pMovedAnchor_           = pAnchor;
             mMovementStartPosition_ = pMovedAnchor_->mOffset;
-        }
-        else
-        {
+        } else {
             const bounds2f lBorders = pMovedObject_->get_borders();
 
             pMovedObject_->clear_all_points();
@@ -329,66 +284,61 @@ void root::start_moving(utils::observer_ptr<region> pObj, anchor* pAnchor,
     }
 }
 
-void root::stop_moving()
-{
+void root::stop_moving() {
     pMovedObject_ = nullptr;
     pMovedAnchor_ = nullptr;
 }
 
-bool root::is_moving(const region& mObj) const
-{
+bool root::is_moving(const region& mObj) const {
     return pMovedObject_.get() == &mObj;
 }
 
-void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
-{
+void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint) {
     pMovedObject_   = nullptr;
     pSizedObject_   = std::move(pObj);
     mMouseMovement_ = vector2f::ZERO;
 
-    if (pSizedObject_)
-    {
+    if (pSizedObject_) {
         const bounds2f lBorders = pSizedObject_->get_borders();
 
         anchor_point mOppositePoint = anchor_point::CENTER;
-        vector2f mOffset;
+        vector2f     mOffset;
 
-        switch (mPoint)
-        {
-            case anchor_point::TOP_LEFT :
-            case anchor_point::TOP :
-                mOppositePoint = anchor_point::BOTTOM_RIGHT;
-                mOffset = lBorders.bottom_right();
-                bResizeFromRight_  = false;
-                bResizeFromBottom_ = false;
-                break;
-            case anchor_point::TOP_RIGHT :
-            case anchor_point::RIGHT :
-                mOppositePoint = anchor_point::BOTTOM_LEFT;
-                mOffset = lBorders.bottom_left();
-                bResizeFromRight_  = true;
-                bResizeFromBottom_ = false;
-                break;
-            case anchor_point::BOTTOM_RIGHT :
-            case anchor_point::BOTTOM :
-                mOppositePoint = anchor_point::TOP_LEFT;
-                mOffset = lBorders.top_left();
-                bResizeFromRight_  = true;
-                bResizeFromBottom_ = true;
-                break;
-            case anchor_point::BOTTOM_LEFT :
-            case anchor_point::LEFT :
-                mOppositePoint = anchor_point::TOP_RIGHT;
-                mOffset = lBorders.top_right();
-                bResizeFromRight_  = false;
-                bResizeFromBottom_ = true;
-                break;
-            case anchor_point::CENTER :
-                gui::out << gui::error << "gui::manager : "
-                    << "Cannot resize \"" <<  pSizedObject_->get_name() <<
-                    "\" from its center." << std::endl;
-                pSizedObject_ = nullptr;
-                return;
+        switch (mPoint) {
+        case anchor_point::TOP_LEFT:
+        case anchor_point::TOP:
+            mOppositePoint     = anchor_point::BOTTOM_RIGHT;
+            mOffset            = lBorders.bottom_right();
+            bResizeFromRight_  = false;
+            bResizeFromBottom_ = false;
+            break;
+        case anchor_point::TOP_RIGHT:
+        case anchor_point::RIGHT:
+            mOppositePoint     = anchor_point::BOTTOM_LEFT;
+            mOffset            = lBorders.bottom_left();
+            bResizeFromRight_  = true;
+            bResizeFromBottom_ = false;
+            break;
+        case anchor_point::BOTTOM_RIGHT:
+        case anchor_point::BOTTOM:
+            mOppositePoint     = anchor_point::TOP_LEFT;
+            mOffset            = lBorders.top_left();
+            bResizeFromRight_  = true;
+            bResizeFromBottom_ = true;
+            break;
+        case anchor_point::BOTTOM_LEFT:
+        case anchor_point::LEFT:
+            mOppositePoint     = anchor_point::TOP_RIGHT;
+            mOffset            = lBorders.top_right();
+            bResizeFromRight_  = false;
+            bResizeFromBottom_ = true;
+            break;
+        case anchor_point::CENTER:
+            gui::out << gui::error << "gui::manager : "
+                     << "Cannot resize \"" << pSizedObject_->get_name() << "\" from its center."
+                     << std::endl;
+            pSizedObject_ = nullptr;
+            return;
         }
 
         pSizedObject_->clear_all_points();
@@ -396,45 +346,33 @@ void root::start_sizing(utils::observer_ptr<region> pObj, anchor_point mPoint)
 
         mResizeStart_ = pSizedObject_->get_apparent_dimensions();
 
-        if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT)
-        {
+        if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT) {
             bResizeWidth_  = true;
             bResizeHeight_ = false;
-        }
-        else if (mPoint == anchor_point::TOP || mPoint == anchor_point::BOTTOM)
-        {
+        } else if (mPoint == anchor_point::TOP || mPoint == anchor_point::BOTTOM) {
             bResizeWidth_  = false;
             bResizeHeight_ = true;
-        }
-        else
-        {
+        } else {
             bResizeWidth_  = true;
             bResizeHeight_ = true;
         }
     }
 }
 
-void root::stop_sizing()
-{
+void root::stop_sizing() {
     pSizedObject_ = nullptr;
 }
 
-bool root::is_sizing(const region& mObj) const
-{
+bool root::is_sizing(const region& mObj) const {
     return pSizedObject_.get() == &mObj;
 }
 
-void release_focus_to_list(const frame& mReceiver, std::vector<utils::observer_ptr<frame>>& lList)
-{
+void release_focus_to_list(const frame& mReceiver, std::vector<utils::observer_ptr<frame>>& lList) {
     if (lList.empty())
         return;
 
     // Find receiver in the list
-    auto mIter = utils::find_if(lList,
-        [&](const auto& pPtr) {
-            return pPtr.get() == &mReceiver;
-        }
-    );
+    auto mIter = utils::find_if(lList, [&](const auto& pPtr) { return pPtr.get() == &mReceiver; });
 
     if (mIter == lList.end())
         return;
@@ -443,19 +381,14 @@ void release_focus_to_list(const frame& mReceiver, std::vector<utils::observer_p
     *mIter = nullptr;
 
     // Clean up null entries
-    auto mEndIter = std::remove_if(lList.begin(), lList.end(),
-        [](const auto& pPtr)
-        {
-            return pPtr == nullptr;
-        }
-    );
+    auto mEndIter = std::remove_if(
+        lList.begin(), lList.end(), [](const auto& pPtr) { return pPtr == nullptr; });
 
     lList.erase(mEndIter, lList.end());
 }
 
-void request_focus_to_list(utils::observer_ptr<frame> pReceiver,
-    std::vector<utils::observer_ptr<frame>>& lList)
-{
+void request_focus_to_list(
+    utils::observer_ptr<frame> pReceiver, std::vector<utils::observer_ptr<frame>>& lList) {
     auto* pRawPointer = pReceiver.get();
     if (!pRawPointer)
         return;
@@ -467,14 +400,12 @@ void request_focus_to_list(utils::observer_ptr<frame> pReceiver,
     lList.push_back(std::move(pReceiver));
 }
 
-void root::request_focus(utils::observer_ptr<frame> pReceiver)
-{
+void root::request_focus(utils::observer_ptr<frame> pReceiver) {
     auto pOldFocus = get_focussed_frame();
     request_focus_to_list(std::move(pReceiver), lFocusStack_);
     auto pNewFocus = get_focussed_frame();
 
-    if (pOldFocus != pNewFocus)
-    {
+    if (pOldFocus != pNewFocus) {
         if (pOldFocus)
             pOldFocus->notify_focus(false);
 
@@ -483,14 +414,12 @@ void root::request_focus(utils::observer_ptr<frame> pReceiver)
     }
 }
 
-void root::release_focus(const frame& mReceiver)
-{
+void root::release_focus(const frame& mReceiver) {
     auto pOldFocus = get_focussed_frame();
     release_focus_to_list(mReceiver, lFocusStack_);
     auto pNewFocus = get_focussed_frame();
 
-    if (pOldFocus != pNewFocus)
-    {
+    if (pOldFocus != pNewFocus) {
         if (pOldFocus)
             pOldFocus->notify_focus(false);
 
@@ -499,8 +428,7 @@ void root::release_focus(const frame& mReceiver)
     }
 }
 
-void root::clear_focus()
-{
+void root::clear_focus() {
     auto pOldFocus = get_focussed_frame();
     lFocusStack_.clear();
 
@@ -508,15 +436,12 @@ void root::clear_focus()
         pOldFocus->notify_focus(false);
 }
 
-bool root::is_focused() const
-{
+bool root::is_focused() const {
     return get_focussed_frame() != nullptr;
 }
 
-utils::observer_ptr<const frame> root::get_focussed_frame() const
-{
-    for (const auto& pPtr : utils::range::reverse(lFocusStack_))
-    {
+utils::observer_ptr<const frame> root::get_focussed_frame() const {
+    for (const auto& pPtr : utils::range::reverse(lFocusStack_)) {
         if (pPtr)
             return pPtr;
     }
@@ -524,33 +449,27 @@ utils::observer_ptr<const frame> root::get_focussed_frame() const
     return nullptr;
 }
 
-void root::clear_hovered_frame_()
-{
+void root::clear_hovered_frame_() {
     pHoveredFrame_ = nullptr;
 }
 
-void root::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
-{
+void root::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos) {
     if (pHoveredFrame_ && pFrame != pHoveredFrame_)
         pHoveredFrame_->notify_mouse_in_frame(false, mMousePos);
 
-    if (pFrame)
-    {
+    if (pFrame) {
         pHoveredFrame_ = std::move(pFrame);
         pHoveredFrame_->notify_mouse_in_frame(true, mMousePos);
-    }
-    else
+    } else
         clear_hovered_frame_();
 }
 
-void root::on_window_resized_(const vector2ui& mDimensions)
-{
+void root::on_window_resized_(const vector2ui& mDimensions) {
     // Update internal window size
     mScreenDimensions_ = mDimensions;
 
     // Notify all frames anchored to the window edges
-    for (auto& mFrame : get_root_frames())
-    {
+    for (auto& mFrame : get_root_frames()) {
         mFrame.notify_borders_need_update();
         mFrame.notify_renderer_need_redraw();
     }
@@ -559,8 +478,7 @@ void root::on_window_resized_(const vector2ui& mDimensions)
     if (pRenderTarget_)
         create_caching_render_target_();
 
-    for (auto& mStrata : lStrataList_)
-    {
+    for (auto& mStrata : lStrataList_) {
         if (mStrata.pRenderTarget)
             create_strata_cache_render_target_(mStrata);
     }
@@ -568,32 +486,26 @@ void root::on_window_resized_(const vector2ui& mDimensions)
     notify_hovered_frame_dirty();
 }
 
-void root::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
-{
+void root::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos) {
     notify_hovered_frame_dirty();
 
-    if (pMovedObject_ || pSizedObject_)
-    {
+    if (pMovedObject_ || pSizedObject_) {
         DEBUG_LOG(" Moved object...");
         mMouseMovement_ += mMovement;
     }
 
-    if (pMovedObject_)
-    {
-        switch (mConstraint_)
-        {
-            case constraint::NONE :
-                pMovedAnchor_->mOffset = mMovementStartPosition_ + mMouseMovement_;
-                break;
-            case constraint::X :
-                pMovedAnchor_->mOffset = mMovementStartPosition_ +
-                    vector2f(mMouseMovement_.x, 0.0f);
-                break;
-            case constraint::Y :
-                pMovedAnchor_->mOffset = mMovementStartPosition_ +
-                    vector2f(0.0f, mMouseMovement_.y);
-                break;
-            default : break;
+    if (pMovedObject_) {
+        switch (mConstraint_) {
+        case constraint::NONE:
+            pMovedAnchor_->mOffset = mMovementStartPosition_ + mMouseMovement_;
+            break;
+        case constraint::X:
+            pMovedAnchor_->mOffset = mMovementStartPosition_ + vector2f(mMouseMovement_.x, 0.0f);
+            break;
+        case constraint::Y:
+            pMovedAnchor_->mOffset = mMovementStartPosition_ + vector2f(0.0f, mMouseMovement_.y);
+            break;
+        default: break;
         }
 
         if (mApplyConstraintFunc_)
@@ -603,9 +515,7 @@ void root::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
         // so check again before use
         if (pMovedObject_)
             pMovedObject_->notify_borders_need_update();
-    }
-    else if (pSizedObject_)
-    {
+    } else if (pSizedObject_) {
         float fWidth;
         if (bResizeFromRight_)
             fWidth = std::max(0.0f, mResizeStart_.x + mMouseMovement_.x);
@@ -626,32 +536,25 @@ void root::on_mouse_moved_(const vector2f& mMovement, const vector2f& mMousePos)
             pSizedObject_->set_height(fHeight);
     }
 
-    if (pDraggedFrame_)
-    {
+    if (pDraggedFrame_) {
         event_data mData;
         mData.add(mMousePos.x);
         mData.add(mMousePos.y);
         pDraggedFrame_->fire_script("OnDragMove", mData);
     }
 
-    if (!pHoveredFrame_)
-    {
+    if (!pHoveredFrame_) {
         // Forward to the world
         mWorldInputDispatcher_.on_mouse_moved(mMovement, mMousePos);
     }
 }
 
-void root::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
-{
-    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-        [&](const frame& mFrame)
-        {
-            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_wheel_enabled();
-        }
-    );
+void root::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos) {
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame([&](const frame& mFrame) {
+        return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_wheel_enabled();
+    });
 
-    if (!pHoveredFrame)
-    {
+    if (!pHoveredFrame) {
         // Forward to the world
         mWorldInputDispatcher_.on_mouse_wheel(fWheelScroll, mMousePos);
         return;
@@ -664,32 +567,25 @@ void root::on_mouse_wheel_(float fWheelScroll, const vector2f& mMousePos)
     pHoveredFrame->fire_script("OnMouseWheel", mData);
 }
 
-void root::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos)
-{
-    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-        [&](const frame& mFrame)
-        {
-            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-        }
-    );
+void root::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos) {
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame([&](const frame& mFrame) {
+        return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+    });
 
-    if (!pHoveredFrame)
-    {
+    if (!pHoveredFrame) {
         // Forward to the world
         mWorldInputDispatcher_.on_mouse_drag_start(mButton, mMousePos);
         return;
     }
 
     if (auto* pRegion = pHoveredFrame->get_title_region().get();
-        pRegion && pRegion->is_in_region(mMousePos))
-    {
+        pRegion && pRegion->is_in_region(mMousePos)) {
         pHoveredFrame->start_moving();
     }
 
     std::string sMouseButton = std::string(input::get_mouse_button_codename(mButton));
 
-    if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-    {
+    if (pHoveredFrame->is_registered_for_drag(sMouseButton)) {
         event_data mData;
         mData.add(sMouseButton);
         mData.add(mMousePos.x);
@@ -700,26 +596,20 @@ void root::on_drag_start_(input::mouse_button mButton, const vector2f& mMousePos
     }
 }
 
-void root::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
-{
+void root::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos) {
     stop_moving();
     stop_sizing();
 
-    if (pDraggedFrame_)
-    {
+    if (pDraggedFrame_) {
         pDraggedFrame_->fire_script("OnDragStop");
         pDraggedFrame_ = nullptr;
     }
 
-    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-        [&](const frame& mFrame)
-        {
-            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-        }
-    );
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame([&](const frame& mFrame) {
+        return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+    });
 
-    if (!pHoveredFrame)
-    {
+    if (!pHoveredFrame) {
         // Forward to the world
         mWorldInputDispatcher_.on_mouse_drag_stop(mButton, mMousePos);
         return;
@@ -727,8 +617,7 @@ void root::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
 
     std::string sMouseButton = std::string(input::get_mouse_button_codename(mButton));
 
-    if (pHoveredFrame->is_registered_for_drag(sMouseButton))
-    {
+    if (pHoveredFrame->is_registered_for_drag(sMouseButton)) {
         event_data mData;
         mData.add(sMouseButton);
         mData.add(mMousePos.x);
@@ -738,32 +627,26 @@ void root::on_drag_stop_(input::mouse_button mButton, const vector2f& mMousePos)
     }
 }
 
-void root::on_text_entered_(std::uint32_t uiChar)
-{
-    if (auto pFocus = get_focussed_frame())
-    {
+void root::on_text_entered_(std::uint32_t uiChar) {
+    if (auto pFocus = get_focussed_frame()) {
         event_data mData;
         mData.add(utils::unicode_to_utf8(utils::ustring(1, uiChar)));
         mData.add(uiChar);
 
         pFocus->fire_script("OnChar", mData);
-    }
-    else
-    {
+    } else {
         // Forward to the world
         mWorldInputDispatcher_.on_text_entered(uiChar);
     }
 }
 
-std::string get_key_name(input::key mKey, bool bIsShiftPressed, bool bIsCtrlPressed,
-    bool bIsAltPressed)
-{
+std::string
+get_key_name(input::key mKey, bool bIsShiftPressed, bool bIsCtrlPressed, bool bIsAltPressed) {
     std::string sName;
 
     if (mKey != input::key::K_LCONTROL && mKey != input::key::K_RCONTROL &&
         mKey != input::key::K_LSHIFT && mKey != input::key::K_RSHIFT &&
-        mKey != input::key::K_LMENU && mKey != input::key::K_RMENU)
-    {
+        mKey != input::key::K_LMENU && mKey != input::key::K_RMENU) {
         if (bIsCtrlPressed)
             sName = "Ctrl-";
         if (bIsAltPressed)
@@ -777,12 +660,11 @@ std::string get_key_name(input::key mKey, bool bIsShiftPressed, bool bIsCtrlPres
     return sName;
 }
 
-void root::on_key_state_changed_(input::key mKey, bool bIsDown)
-{
+void root::on_key_state_changed_(input::key mKey, bool bIsDown) {
     const auto& mInputDispatcher = get_manager().get_input_dispatcher();
-    bool bIsShiftPressed = mInputDispatcher.shift_is_pressed();
-    bool bIsCtrlPressed = mInputDispatcher.ctrl_is_pressed();
-    bool bIsAltPressed = mInputDispatcher.alt_is_pressed();
+    bool        bIsShiftPressed  = mInputDispatcher.shift_is_pressed();
+    bool        bIsCtrlPressed   = mInputDispatcher.ctrl_is_pressed();
+    bool        bIsAltPressed    = mInputDispatcher.alt_is_pressed();
 
     std::string sKeyName = get_key_name(mKey, bIsShiftPressed, bIsCtrlPressed, bIsAltPressed);
 
@@ -790,19 +672,13 @@ void root::on_key_state_changed_(input::key mKey, bool bIsDown)
     utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
 
     // If no focussed frame, look top-down for a frame that captures this key
-    if (!pTopmostFrame)
-    {
+    if (!pTopmostFrame) {
         pTopmostFrame = find_topmost_frame(
-            [&](const frame& mFrame)
-            {
-                return mFrame.is_key_capture_enabled(sKeyName);
-            }
-        );
+            [&](const frame& mFrame) { return mFrame.is_key_capture_enabled(sKeyName); });
     }
 
     // If a frame is found, capture input and return
-    if (pTopmostFrame)
-    {
+    if (pTopmostFrame) {
         event_data mData;
         mData.add(static_cast<std::underlying_type_t<input::key>>(mKey));
         mData.add(sKeyName);
@@ -818,16 +694,12 @@ void root::on_key_state_changed_(input::key mKey, bool bIsDown)
         return;
     }
 
-    if (bIsDown)
-    {
+    if (bIsDown) {
         // If no frame is found, try the keybinder
-        try
-        {
+        try {
             if (get_keybinder().on_key_down(mKey, bIsShiftPressed, bIsCtrlPressed, bIsAltPressed))
                 return;
-        }
-        catch (const std::exception& mException)
-        {
+        } catch (const std::exception& mException) {
             std::string sError = mException.what();
             gui::out << gui::error << sError << std::endl;
             get_manager().get_event_emitter().fire_event("LUA_ERROR", {sError});
@@ -842,24 +714,18 @@ void root::on_key_state_changed_(input::key mKey, bool bIsDown)
         mWorldInputDispatcher_.on_key_released(mKey);
 }
 
-void root::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsDown,
-    bool bIsDoubleClick, const vector2f& mMousePos)
-{
-    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame(
-        [&](const frame& mFrame)
-        {
-            return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
-        }
-    );
+void root::on_mouse_button_state_changed_(
+    input::mouse_button mButton, bool bIsDown, bool bIsDoubleClick, const vector2f& mMousePos) {
+    utils::observer_ptr<frame> pHoveredFrame = find_topmost_frame([&](const frame& mFrame) {
+        return mFrame.is_in_region(mMousePos) && mFrame.is_mouse_click_enabled();
+    });
 
-    if (bIsDown && !bIsDoubleClick)
-    {
+    if (bIsDown && !bIsDoubleClick) {
         if (!pHoveredFrame || pHoveredFrame != get_focussed_frame())
             clear_focus();
     }
 
-    if (!pHoveredFrame)
-    {
+    if (!pHoveredFrame) {
         // Forward to the world
         if (bIsDoubleClick)
             mWorldInputDispatcher_.on_mouse_double_clicked(mButton, mMousePos);
@@ -875,22 +741,16 @@ void root::on_mouse_button_state_changed_(input::mouse_button mButton, bool bIsD
     mData.add(mMousePos.x);
     mData.add(mMousePos.y);
 
-    if (bIsDoubleClick)
-    {
+    if (bIsDoubleClick) {
         pHoveredFrame->fire_script("OnDoubleClicked", mData);
-    }
-    else if (bIsDown)
-    {
+    } else if (bIsDown) {
         if (auto* pTopLevel = pHoveredFrame->get_top_level_parent().get())
             pTopLevel->raise();
 
         pHoveredFrame->fire_script("OnMouseDown", mData);
-    }
-    else
-    {
+    } else {
         pHoveredFrame->fire_script("OnMouseUp", mData);
     }
 }
 
-}
-}
+}} // namespace lxgui::gui
