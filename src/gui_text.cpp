@@ -8,8 +8,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_exception.hpp"
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_range.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_range.hpp"
 
 #include <map>
 

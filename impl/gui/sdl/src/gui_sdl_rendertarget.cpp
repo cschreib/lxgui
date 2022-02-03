@@ -1,6 +1,6 @@
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 #include "lxgui/impl/gui_sdl_renderer.hpp"
-#include <lxgui/gui_exception.hpp>
+#include "lxgui/gui_exception.hpp"
 
 #include <iostream>
 

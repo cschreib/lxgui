@@ -1,10 +1,10 @@
 #ifndef LXGUI_GUI_GL_MATERIAL_HPP
 #define LXGUI_GUI_GL_MATERIAL_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/gui_material.hpp>
-#include <lxgui/gui_color.hpp>
-#include <lxgui/gui_bounds2.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/gui_material.hpp"
+#include "lxgui/gui_color.hpp"
+#include "lxgui/gui_bounds2.hpp"
 
 #include <vector>
 #include <memory>

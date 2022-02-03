@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_QUAD_HPP
 #define LXGUI_GUI_QUAD_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 
 #include "lxgui/gui_vertex.hpp"
 #include "lxgui/gui_material.hpp"

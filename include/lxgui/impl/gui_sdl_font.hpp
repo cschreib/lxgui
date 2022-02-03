@@ -3,8 +3,8 @@
 
 #include "lxgui/impl/gui_sdl_material.hpp"
 
-#include <lxgui/utils.hpp>
-#include <lxgui/gui_font.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/gui_font.hpp"
 
 #include <vector>
 

@@ -1,7 +1,7 @@
 #ifndef LXGUI_UTILS_EXCEPTION_HPP
 #define LXGUI_UTILS_EXCEPTION_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
 #include <string>

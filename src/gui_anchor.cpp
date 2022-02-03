@@ -6,7 +6,7 @@
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/utils_string.hpp>
+#include "lxgui/utils_string.hpp"
 #include <sstream>
 
 namespace lxgui {

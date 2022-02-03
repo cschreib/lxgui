@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_CHECKBUTTON_HPP
 #define LXGUI_GUI_CHECKBUTTON_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 #include "lxgui/gui_button.hpp"
 
 namespace lxgui {

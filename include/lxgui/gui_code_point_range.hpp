@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_CODE_POINT_RANGE_HPP
 #define LXGUI_GUI_CODE_POINT_RANGE_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 namespace lxgui {
 namespace gui

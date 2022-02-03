@@ -1,9 +1,9 @@
 #ifndef LXGUI_INPUT_SDL_SOURCE_HPP
 #define LXGUI_INPUT_SDL_SOURCE_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/gui_vector2.hpp>
-#include <lxgui/input_source.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/gui_vector2.hpp"
+#include "lxgui/input_source.hpp"
 
 #include <chrono>
 #include <unordered_map>

@@ -1,11 +1,11 @@
 #ifndef LXGUI_GUI_VIRTUAL_UIROOT_HPP
 #define LXGUI_GUI_VIRTUAL_UIROOT_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_frame_container.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils_observer.hpp"
 
 #include <list>
 #include <memory>

@@ -1,10 +1,10 @@
 #include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
-#include <lxgui/gui_manager.hpp>
-#include <lxgui/gui_out.hpp>
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_filesystem.hpp>
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_filesystem.hpp"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

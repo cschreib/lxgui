@@ -8,7 +8,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <lxgui/utils_filesystem.hpp>
+#include "lxgui/utils_filesystem.hpp"
 #include <sstream>
 
 namespace lxgui {

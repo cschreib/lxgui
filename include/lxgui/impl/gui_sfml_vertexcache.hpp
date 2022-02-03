@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_SFML_VERTEXCACHE_HPP
 #define LXGUI_GUI_SFML_VERTEXCACHE_HPP
 
-#include <lxgui/gui_vertexcache.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/gui_vertexcache.hpp"
+#include "lxgui/utils.hpp"
 
 #include <SFML/Graphics/VertexBuffer.hpp>
 

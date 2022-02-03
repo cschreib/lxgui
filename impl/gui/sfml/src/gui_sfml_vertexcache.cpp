@@ -1,7 +1,7 @@
 #include "lxgui/impl/gui_sfml_vertexcache.hpp"
 
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <SFML/Graphics/Vertex.hpp>
 

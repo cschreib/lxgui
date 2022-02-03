@@ -1,7 +1,7 @@
 #ifndef LXGUI_UTILS_MATHS_HPP
 #define LXGUI_UTILS_MATHS_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
 namespace lxgui {

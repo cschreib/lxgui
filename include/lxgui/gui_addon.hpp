@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_ADDON_HPP
 #define LXGUI_GUI_ADDON_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 #include <string>
 #include <vector>

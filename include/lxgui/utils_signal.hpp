@@ -1,9 +1,9 @@
 #ifndef LXGUI_UTILS_SIGNAL_HPP
 #define LXGUI_UTILS_SIGNAL_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_view.hpp>
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_view.hpp"
+#include "lxgui/utils_observer.hpp"
 
 #include <functional>
 #include <vector>

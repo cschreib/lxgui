@@ -3,8 +3,8 @@
 
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 
-#include <lxgui/gui_renderer.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/gui_renderer.hpp"
+#include "lxgui/utils.hpp"
 
 #include <memory>
 

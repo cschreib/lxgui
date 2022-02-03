@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_EXCEPTION_HPP
 #define LXGUI_GUI_EXCEPTION_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils_exception.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils_exception.hpp"
 
 namespace lxgui {
 namespace gui

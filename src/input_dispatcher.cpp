@@ -5,9 +5,9 @@
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/utils_exception.hpp>
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_std.hpp>
+#include "lxgui/utils_exception.hpp"
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_std.hpp"
 
 #include <iostream>
 

@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_KEYBINDER_HPP
 #define LXGUI_GUI_KEYBINDER_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/utils_signal.hpp"
 

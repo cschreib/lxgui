@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_FACTORY_HPP
 #define LXGUI_GUI_FACTORY_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils_observer.hpp"
 
 #include <string>
 #include <unordered_map>

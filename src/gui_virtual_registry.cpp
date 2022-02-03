@@ -2,7 +2,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"
 
-#include <lxgui/utils_string.hpp>
+#include "lxgui/utils_string.hpp"
 
 namespace lxgui {
 namespace gui

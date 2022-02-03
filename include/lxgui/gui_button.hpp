@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_BUTTON_HPP
 #define LXGUI_GUI_BUTTON_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_string.hpp"
 #include "lxgui/gui_frame.hpp"
 
 #include <string>

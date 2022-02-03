@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_EVENTEMITTER_HPP
 #define LXGUI_GUI_EVENTEMITTER_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils_signal.hpp>
-#include <lxgui/gui_event.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils_signal.hpp"
+#include "lxgui/gui_event.hpp"
 
 #include <unordered_map>
 #include <string>

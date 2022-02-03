@@ -11,8 +11,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_std.hpp>
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_std.hpp"
 
 #include <sol/state.hpp>
 

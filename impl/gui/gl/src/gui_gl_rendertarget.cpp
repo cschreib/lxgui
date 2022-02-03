@@ -1,7 +1,7 @@
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_renderer.hpp"
 
-#include <lxgui/gui_exception.hpp>
+#include "lxgui/gui_exception.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX

@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_COLOR_HPP
 #define LXGUI_GUI_COLOR_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 #include <iosfwd>
 #include <string>

@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_REGION_HPP
 #define LXGUI_GUI_REGION_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_bounds2.hpp"
@@ -10,8 +10,8 @@
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_exception.hpp"
 
-#include <lxgui/utils_maths.hpp>
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils_maths.hpp"
+#include "lxgui/utils_observer.hpp"
 
 #include <array>
 #include <unordered_map>

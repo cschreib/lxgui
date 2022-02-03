@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_FRAME_HPP
 #define LXGUI_GUI_FRAME_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
@@ -9,9 +9,9 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_event.hpp"
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_view.hpp>
-#include <lxgui/utils_signal.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_view.hpp"
+#include "lxgui/utils_signal.hpp"
 
 #include <sol/protected_function.hpp>
 

@@ -1,9 +1,9 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_renderer.hpp"
 
-#include <lxgui/gui_out.hpp>
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX

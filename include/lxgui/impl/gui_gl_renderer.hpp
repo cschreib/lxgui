@@ -6,9 +6,9 @@
     #include "lxgui/impl/gui_gl_vertexcache.hpp"
 #endif
 
-#include <lxgui/gui_renderer.hpp>
-#include <lxgui/gui_matrix4.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_matrix4.hpp"
+#include "lxgui/utils.hpp"
 
 #include <memory>
 #include <array>

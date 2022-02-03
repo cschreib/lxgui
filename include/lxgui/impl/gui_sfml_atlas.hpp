@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_SFML_ATLAS_HPP
 #define LXGUI_GUI_SFML_ATLAS_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/gui_material.hpp>
-#include <lxgui/gui_atlas.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/gui_material.hpp"
+#include "lxgui/gui_atlas.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
 

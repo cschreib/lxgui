@@ -1,7 +1,7 @@
 #ifndef LXGUI_UTILS_STD_HPP
 #define LXGUI_UTILS_STD_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 #include <array>
 #include <vector>

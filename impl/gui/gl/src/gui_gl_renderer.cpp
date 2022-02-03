@@ -5,10 +5,10 @@
 #include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_vertexcache.hpp"
 
-#include <lxgui/gui_quad.hpp>
-#include <lxgui/gui_out.hpp>
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_quad.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX

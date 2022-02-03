@@ -4,10 +4,10 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventemitter.hpp"
 
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_filesystem.hpp>
-#include <lxgui/utils_std.hpp>
-#include <lxgui/utils_range.hpp>
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_std.hpp"
+#include "lxgui/utils_range.hpp"
 
 #include <sol/state.hpp>
 

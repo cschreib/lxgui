@@ -1,7 +1,7 @@
 #ifndef LXGUI_KEYS_HPP
 #define LXGUI_KEYS_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 #include <cstdint>
 #include <string_view>

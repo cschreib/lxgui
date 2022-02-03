@@ -1,10 +1,10 @@
 #ifndef LXGUI_GUI_VIRTUAL_REGISTRY_HPP
 #define LXGUI_GUI_VIRTUAL_REGISTRY_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_registry.hpp"
 
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils_observer.hpp"
 
 #include <vector>
 #include <string_view>

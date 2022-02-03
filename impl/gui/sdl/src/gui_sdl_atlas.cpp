@@ -1,8 +1,8 @@
 #include "lxgui/impl/gui_sdl_atlas.hpp"
 #include "lxgui/impl/gui_sdl_renderer.hpp"
-#include <lxgui/gui_out.hpp>
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <SDL.h>
 #include <SDL_image.h>

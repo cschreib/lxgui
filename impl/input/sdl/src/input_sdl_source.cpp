@@ -1,6 +1,6 @@
 #include "lxgui/impl/input_sdl_source.hpp"
-#include <lxgui/utils_string.hpp>
-#include <lxgui/gui_exception.hpp>
+#include "lxgui/utils_string.hpp"
+#include "lxgui/gui_exception.hpp"
 
 #include <SDL_keycode.h>
 #include <SDL_mouse.h>

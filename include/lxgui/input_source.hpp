@@ -1,7 +1,7 @@
 #ifndef LXGUI_INPUT_SOURCE_HPP
 #define LXGUI_INPUT_SOURCE_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/gui_vector2.hpp"
 

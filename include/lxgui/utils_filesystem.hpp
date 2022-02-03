@@ -1,7 +1,7 @@
 #ifndef LXGUI_UTILS_FILESYSTEM_HPP
 #define LXGUI_UTILS_FILESYSTEM_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
 #include <string>

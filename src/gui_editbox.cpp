@@ -8,8 +8,8 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <lxgui/input_window.hpp>
-#include <lxgui/utils_range.hpp>
+#include "lxgui/input_window.hpp"
+#include "lxgui/utils_range.hpp"
 
 #include <sol/state.hpp>
 

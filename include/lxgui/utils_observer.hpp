@@ -1,7 +1,7 @@
 #ifndef LXGUI_UTILS_OBSERVER_HPP
 #define LXGUI_UTILS_OBSERVER_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include <oup/observable_unique_ptr.hpp>
 
 namespace lxgui {

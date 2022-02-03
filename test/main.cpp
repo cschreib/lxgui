@@ -1,20 +1,20 @@
-#include <lxgui/gui_manager.hpp>
-#include <lxgui/gui_texture.hpp>
-#include <lxgui/gui_fontstring.hpp>
-#include <lxgui/gui_button.hpp>
-#include <lxgui/gui_slider.hpp>
-#include <lxgui/gui_editbox.hpp>
-#include <lxgui/gui_scrollframe.hpp>
-#include <lxgui/gui_statusbar.hpp>
-#include <lxgui/gui_event.hpp>
-#include <lxgui/gui_localizer.hpp>
-#include <lxgui/gui_factory.hpp>
-#include <lxgui/gui_root.hpp>
-#include <lxgui/gui_out.hpp>
-#include <lxgui/input_dispatcher.hpp>
-#include <lxgui/input_world_dispatcher.hpp>
-#include <lxgui/utils_filesystem.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_texture.hpp"
+#include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_button.hpp"
+#include "lxgui/gui_slider.hpp"
+#include "lxgui/gui_editbox.hpp"
+#include "lxgui/gui_scrollframe.hpp"
+#include "lxgui/gui_statusbar.hpp"
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/input_dispatcher.hpp"
+#include "lxgui/input_world_dispatcher.hpp"
+#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <sol/state.hpp>
 
@@ -25,8 +25,8 @@
 
 #if defined(GLSFML_GUI)
     // OpenGL + SFML input
-    #include <lxgui/impl/gui_gl_renderer.hpp>
-    #include <lxgui/impl/input_sfml_source.hpp>
+    #include "lxgui/impl/gui_gl_renderer.hpp"
+    #include "lxgui/impl/input_sfml_source.hpp"
     #include <SFML/Window.hpp>
     #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
@@ -35,8 +35,8 @@
     #endif
 #elif defined(GLSDL_GUI)
     // OpenGL + SDL input
-    #include <lxgui/impl/gui_gl_renderer.hpp>
-    #include <lxgui/impl/input_sdl_source.hpp>
+    #include "lxgui/impl/gui_gl_renderer.hpp"
+    #include "lxgui/impl/input_sdl_source.hpp"
     #define SDL_MAIN_HANDLED
     #include <SDL.h>
     #if defined(LXGUI_PLATFORM_OSX)
@@ -46,14 +46,14 @@
     #endif
 #elif defined(SDL_GUI)
     // SDL
-    #include <lxgui/impl/gui_sdl.hpp>
-    #include <lxgui/impl/input_sdl_source.hpp>
+    #include "lxgui/impl/gui_sdl.hpp"
+    #include "lxgui/impl/input_sdl_source.hpp"
     #define SDL_MAIN_HANDLED
     #include <SDL.h>
 #elif defined(SFML_GUI)
     // SFML
-    #include <lxgui/impl/gui_sfml.hpp>
-    #include <lxgui/impl/input_sfml_source.hpp>
+    #include "lxgui/impl/gui_sfml.hpp"
+    #include "lxgui/impl/input_sfml_source.hpp"
     #include <SFML/Window.hpp>
     #include <SFML/Graphics/RenderWindow.hpp>
 #endif

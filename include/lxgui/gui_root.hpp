@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_UIROOT_HPP
 #define LXGUI_GUI_UIROOT_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_frame_container.hpp"
 #include "lxgui/gui_registry.hpp"
@@ -9,8 +9,8 @@
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_anchor.hpp"
 
-#include <lxgui/utils_observer.hpp>
-#include <lxgui/utils_signal.hpp>
+#include "lxgui/utils_observer.hpp"
+#include "lxgui/utils_signal.hpp"
 
 #include <list>
 #include <memory>

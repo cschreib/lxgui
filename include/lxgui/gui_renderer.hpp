@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_RENDERER_IMPL_HPP
 #define LXGUI_GUI_RENDERER_IMPL_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_code_point_range.hpp"

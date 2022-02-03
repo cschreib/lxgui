@@ -1,10 +1,10 @@
 #ifndef LXGUI_GUI_SFML_RENDERTARGET_HPP
 #define LXGUI_GUI_SFML_RENDERTARGET_HPP
 
-#include <lxgui/gui_rendertarget.hpp>
+#include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
 
-#include <lxgui/utils.hpp>
+#include "lxgui/utils.hpp"
 
 #include <memory>
 

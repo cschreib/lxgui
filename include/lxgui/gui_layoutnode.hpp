@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_LAYOUTNODE_HPP
 #define LXGUI_GUI_LAYOUTNODE_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_view.hpp"
 #include "lxgui/utils_exception.hpp"

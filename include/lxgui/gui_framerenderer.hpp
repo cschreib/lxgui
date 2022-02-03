@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_RENDERER_HPP
 #define LXGUI_GUI_RENDERER_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_observer.hpp"
 #include "lxgui/gui_strata.hpp"
 
 #include <functional>

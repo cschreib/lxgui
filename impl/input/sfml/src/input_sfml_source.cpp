@@ -1,6 +1,6 @@
 #include "lxgui/impl/input_sfml_source.hpp"
-#include <lxgui/utils_string.hpp>
-#include <lxgui/gui_exception.hpp>
+#include "lxgui/utils_string.hpp"
+#include "lxgui/gui_exception.hpp"
 
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Event.hpp>

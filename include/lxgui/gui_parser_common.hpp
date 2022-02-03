@@ -4,7 +4,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/gui_region_attributes.hpp"
 
-#include <lxgui/utils_observer.hpp>
+#include "lxgui/utils_observer.hpp"
 
 namespace lxgui {
 namespace gui

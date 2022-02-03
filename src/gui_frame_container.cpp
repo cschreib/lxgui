@@ -5,7 +5,7 @@
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_factory.hpp"
 
-#include <lxgui/utils_std.hpp>
+#include "lxgui/utils_std.hpp"
 
 namespace lxgui {
 namespace gui

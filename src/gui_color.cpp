@@ -1,6 +1,6 @@
 #include "lxgui/gui_color.hpp"
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_string.hpp"
 #include <cmath>
 #include <algorithm>
 #include <iostream>

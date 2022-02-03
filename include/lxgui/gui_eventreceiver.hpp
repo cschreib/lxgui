@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_EVENTRECEIVER_HPP
 #define LXGUI_GUI_EVENTRECEIVER_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/gui_eventemitter.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 
 #include <vector>
 #include <string>

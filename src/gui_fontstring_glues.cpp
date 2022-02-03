@@ -5,7 +5,7 @@
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/utils_string.hpp>
+#include "lxgui/utils_string.hpp"
 
 #include <sol/state.hpp>
 

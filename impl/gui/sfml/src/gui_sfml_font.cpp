@@ -1,8 +1,8 @@
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/gui_out.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/utils_string.hpp"
 
 namespace lxgui {
 namespace gui {

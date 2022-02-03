@@ -12,9 +12,9 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_std.hpp>
-#include <lxgui/utils_range.hpp>
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_std.hpp"
+#include "lxgui/utils_range.hpp"
 
 #include <sol/state.hpp>
 #include <sol/as_args.hpp>

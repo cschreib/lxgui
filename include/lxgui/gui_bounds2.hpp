@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_BOUNDS2_HPP
 #define LXGUI_GUI_BOUNDS2_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/gui_vector2.hpp"
 
 namespace lxgui {

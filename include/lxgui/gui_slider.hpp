@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_SLIDER_HPP
 #define LXGUI_GUI_SLIDER_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 #include "lxgui/gui_frame.hpp"
 
 namespace lxgui {

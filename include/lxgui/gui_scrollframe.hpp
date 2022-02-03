@@ -1,8 +1,8 @@
 #ifndef LXGUI_GUI_SCROLLFRAME_HPP
 #define LXGUI_GUI_SCROLLFRAME_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 

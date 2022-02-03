@@ -1,13 +1,13 @@
 #ifndef LXGUI_GUI_REGION_TPL_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils_observer.hpp>
-#include <lxgui/gui_region.hpp>
-#include <lxgui/gui_frame.hpp>
-#include <lxgui/gui_manager.hpp>
-#include <lxgui/gui_root.hpp>
-#include <lxgui/gui_registry.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils_observer.hpp"
+#include "lxgui/gui_region.hpp"
+#include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_root.hpp"
+#include "lxgui/gui_registry.hpp"
+#include "lxgui/utils_string.hpp"
 #include <sol/state.hpp>
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
