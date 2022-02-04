@@ -1,47 +1,43 @@
 #include "lxgui/impl/gui_gl_renderer.hpp"
+
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_quad.hpp"
 #include "lxgui/impl/gui_gl_atlas.hpp"
+#include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
-#include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_vertexcache.hpp"
-
-#include "lxgui/gui_quad.hpp"
-#include "lxgui/gui_out.hpp"
-#include "lxgui/gui_exception.hpp"
 #include "lxgui/utils_string.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
-    #define NOMINMAX
-    #include <windows.h>
+#    define NOMINMAX
+#    include <windows.h>
 #endif
 
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
-    #include <GL/glew.h>
-    #if defined(LXGUI_PLATFORM_OSX)
-        #include <OpenGL/gl.h>
-    #else
-        #include <GL/gl.h>
-    #endif
+#    include <GL/glew.h>
+#    if defined(LXGUI_PLATFORM_OSX)
+#        include <OpenGL/gl.h>
+#    else
+#        include <GL/gl.h>
+#    endif
 #else
-    #if defined(LXGUI_PLATFORM_OSX)
-        #include <OpenGLES/ES3/gl.h>
-    #else
-        #include <GLES3/gl3.h>
-    #endif
+#    if defined(LXGUI_PLATFORM_OSX)
+#        include <OpenGLES/ES3/gl.h>
+#    else
+#        include <GLES3/gl3.h>
+#    endif
 #endif
 
-namespace lxgui {
-namespace gui {
-namespace gl
-{
+namespace lxgui { namespace gui { namespace gl {
 
 #if defined(LXGUI_OPENGL3)
 thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_;
 #endif
 
 renderer::renderer(const vector2ui& mWindowDimensions, bool bInitGLEW [[maybe_unused]]) :
-    mWindowDimensions_(mWindowDimensions)
-{
+    mWindowDimensions_(mWindowDimensions) {
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     if (bInitGLEW)
         glewInit();
@@ -56,40 +52,35 @@ renderer::renderer(const vector2ui& mWindowDimensions, bool bInitGLEW [[maybe_un
 #endif
 }
 
-std::string renderer::get_name() const
-{
+std::string renderer::get_name() const {
     std::string sFullVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
-#   if defined(LXGUI_COMPILER_EMSCRIPTEN)
+#    if defined(LXGUI_COMPILER_EMSCRIPTEN)
     return "WebGL (" + sFullVersion + ")";
-#   else
+#    else
     return "OpenGL (" + sFullVersion + ")";
-#   endif
+#    endif
 #else
     return "OpenGL fixed pipeline (" + sFullVersion + ")";
 #endif
 }
 
 #if defined(LXGUI_OPENGL3)
-renderer::shader_cache::~shader_cache()
-{
-    if (uiProgram_ != 0) glDeleteProgram(uiProgram_);
+renderer::shader_cache::~shader_cache() {
+    if (uiProgram_ != 0)
+        glDeleteProgram(uiProgram_);
 }
 #endif
 
-void renderer::begin_(std::shared_ptr<gui::render_target> pTarget)
-{
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) {
     matrix4f mCurrentViewMatrix;
 
-    if (pTarget)
-    {
+    if (pTarget) {
         pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
 
         mCurrentViewMatrix = pCurrentTarget_->get_view_matrix();
-    }
-    else
-    {
+    } else {
         glViewport(0.0f, 0.0f, mWindowDimensions_.x, mWindowDimensions_.y);
 
         mCurrentViewMatrix = matrix4f::view(vector2f(mWindowDimensions_));
@@ -112,25 +103,21 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget)
     set_view_(mCurrentViewMatrix);
 }
 
-void renderer::end_()
-{
-    if (pCurrentTarget_)
-    {
+void renderer::end_() {
+    if (pCurrentTarget_) {
         pCurrentTarget_->end();
         pCurrentTarget_ = nullptr;
     }
 }
 
-void renderer::set_view_(const matrix4f& mViewMatrix)
-{
+void renderer::set_view_(const matrix4f& mViewMatrix) {
     mCurrentViewMatrix_ = mViewMatrix;
 
     matrix4f mCorrectedView = mViewMatrix;
-    if (!pCurrentTarget_)
-    {
+    if (!pCurrentTarget_) {
         // Rendering to main screen, flip Y
         for (std::size_t i = 0; i < 4; ++i)
-            mCorrectedView(i,1) *= -1.0f;
+            mCorrectedView(i, 1) *= -1.0f;
     }
 
 #if defined(LXGUI_OPENGL3)
@@ -143,50 +130,41 @@ void renderer::set_view_(const matrix4f& mViewMatrix)
 #endif
 }
 
-matrix4f renderer::get_view() const
-{
+matrix4f renderer::get_view() const {
     return mCurrentViewMatrix_;
 }
 
-void renderer::render_quads_(const gui::material* pMaterial,
-    const std::vector<std::array<vertex,4>>& lQuadList)
-{
+void renderer::render_quads_(
+    const gui::material* pMaterial, const std::vector<std::array<vertex, 4>>& lQuadList) {
 
 #if !defined(LXGUI_OPENGL3)
     static constexpr std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
-    if (pMat)
-    {
+    if (pMat) {
         pMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        for (const auto& v :lQuadList)
-        {
-            for (std::size_t i = 0; i < 6; ++i)
-            {
+        for (const auto& v : lQuadList) {
+            for (std::size_t i = 0; i < 6; ++i) {
                 std::size_t j = lIDs[i];
-                float a = v[j].col.a;
-                glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
+                float       a = v[j].col.a;
+                glColor4f(v[j].col.r * a, v[j].col.g * a, v[j].col.b * a, a); // Premultipled alpha
                 glTexCoord2f(v[j].uvs.x, v[j].uvs.y);
                 glVertex2f(v[j].pos.x, v[j].pos.y);
             }
         }
         glEnd();
-    }
-    else
-    {
+    } else {
         glDisable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        for (const auto& v : lQuadList)
-        {
-            for (std::size_t i = 0; i < 6; ++i)
-            {
+        for (const auto& v : lQuadList) {
+            for (std::size_t i = 0; i < 6; ++i) {
                 std::size_t j = lIDs[i];
-                float a = v[j].col.a;
-                glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
+                float       a = v[j].col.a;
+                glColor4f(v[j].col.r * a, v[j].col.g * a, v[j].col.b * a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);
             }
         }
@@ -203,35 +181,32 @@ void renderer::render_quads_(const gui::material* pMaterial,
     uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
     // Update vertex data
-    pCache->update(lQuadList[0].data(), lQuadList.size()*4);
+    pCache->update(lQuadList[0].data(), lQuadList.size() * 4);
 
     // Render
     render_cache_(pMaterial, *pCache, matrix4f::IDENTITY);
 #endif
 }
 
-void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
-    const matrix4f& mModelTransform)
-{
+void renderer::render_cache_(
+    const gui::material*     pMaterial,
+    const gui::vertex_cache& mCache,
+    const matrix4f&          mModelTransform) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
+    const gl::material*     pMat     = static_cast<const gl::material*>(pMaterial);
     const gl::vertex_cache& mGLCache = static_cast<const gl::vertex_cache&>(mCache);
 
     // Setup uniforms
     int iType = 0;
-    if (pMat)
-    {
+    if (pMat) {
         iType = 0;
-        if (uiPreviousTexture_ != pMat->get_handle_())
-        {
+        if (uiPreviousTexture_ != pMat->get_handle_()) {
             pMat->bind();
             uiPreviousTexture_ = pMat->get_handle_();
         }
-    }
-    else
-    {
+    } else {
         iType = 1;
     }
 
@@ -243,30 +218,27 @@ void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_c
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName,
-    material::filter mFilter)
-{
+std::shared_ptr<gui::material>
+renderer::create_material_(const std::string& sFileName, material::filter mFilter) {
     if (!utils::ends_with(sFileName, ".png"))
-        throw gui::exception("gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
+        throw gui::exception(
+            "gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
 
     return create_material_png_(sFileName, mFilter);
 }
 
-std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter)
-{
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) {
     return std::make_shared<gl::atlas>(*this, mFilter);
 }
 
-std::size_t renderer::get_texture_max_size() const
-{
+std::size_t renderer::get_texture_max_size() const {
     return material::get_max_size();
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
-    const ub32color* pPixelData, material::filter mFilter)
-{
-    std::shared_ptr<gl::material> pTex = std::make_shared<gl::material>(
-        mDimensions, material::wrap::REPEAT, mFilter);
+std::shared_ptr<gui::material> renderer::create_material(
+    const vector2ui& mDimensions, const ub32color* pPixelData, material::filter mFilter) {
+    std::shared_ptr<gl::material> pTex =
+        std::make_shared<gl::material>(mDimensions, material::wrap::REPEAT, mFilter);
 
     pTex->update_texture(pPixelData);
 
@@ -274,45 +246,40 @@ std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimen
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation)
-{
+    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) {
     auto pTex = std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
-    if (mLocation == pRenderTarget->get_rect())
-    {
+    if (mLocation == pRenderTarget->get_rect()) {
         return std::move(pTex);
-    }
-    else
-    {
-        return std::make_shared<gl::material>(pTex->get_handle_(),
-            pTex->get_canvas_dimensions(), mLocation, pTex->get_filter());
+    } else {
+        return std::make_shared<gl::material>(
+            pTex->get_handle_(), pTex->get_canvas_dimensions(), mLocation, pTex->get_filter());
     }
 }
 
-std::shared_ptr<gui::render_target> renderer::create_render_target(
-    const vector2ui& mDimensions, material::filter mFilter)
-{
+std::shared_ptr<gui::render_target>
+renderer::create_render_target(const vector2ui& mDimensions, material::filter mFilter) {
     return std::make_shared<gl::render_target>(mDimensions, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
-    std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-    char32_t uiDefaultCodePoint)
-{
-    return std::make_shared<gl::font>(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
+std::shared_ptr<gui::font> renderer::create_font_(
+    const std::string&                   sFontFile,
+    std::size_t                          uiSize,
+    std::size_t                          uiOutline,
+    const std::vector<code_point_range>& lCodePoints,
+    char32_t                             uiDefaultCodePoint) {
+    return std::make_shared<gl::font>(
+        sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 }
 
-bool renderer::is_texture_atlas_supported() const
-{
+bool renderer::is_texture_atlas_supported() const {
     return true;
 }
 
-bool renderer::is_texture_vertex_color_supported() const
-{
+bool renderer::is_texture_vertex_color_supported() const {
     return true;
 }
 
-bool renderer::is_vertex_cache_supported() const
-{
+bool renderer::is_vertex_cache_supported() const {
 #if !defined(LXGUI_OPENGL3)
     return false;
 #else
@@ -320,8 +287,7 @@ bool renderer::is_vertex_cache_supported() const
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType)
-{
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
@@ -329,14 +295,12 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
 #endif
 }
 
-void renderer::notify_window_resized(const vector2ui& mNewDimensions)
-{
+void renderer::notify_window_resized(const vector2ui& mNewDimensions) {
     mWindowDimensions_ = mNewDimensions;
 }
 
 #if !defined(LXGUI_OPENGL3)
-bool renderer::is_gl_extension_supported(const std::string& sExtension)
-{
+bool renderer::is_gl_extension_supported(const std::string& sExtension) {
     // Extension names should not have spaces
     if (sExtension.find(' ') != std::string::npos || sExtension.empty())
         return false;
@@ -344,8 +308,7 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
     GLint uiNumExtension = 0;
     glGetIntegerv(GL_NUM_EXTENSIONS, &uiNumExtension);
 
-    for (GLuint uiIndex = 0; uiIndex < static_cast<GLUint>(uiNumExtension); ++uiIndex)
-    {
+    for (GLuint uiIndex = 0; uiIndex < static_cast<GLUint>(uiNumExtension); ++uiIndex) {
         if (sExtension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, uiIndex)))
             return true;
     }
@@ -355,14 +318,14 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
 #endif
 
 #if defined(LXGUI_OPENGL3)
-GLuint create_shader(GLenum mType, const char* sShaderSource)
-{
+GLuint create_shader(GLenum mType, const char* sShaderSource) {
     // Create the shader
     GLuint uiShader = glCreateShader(mType);
-    if (uiShader == 0)
-    {
-        throw gui::exception("gl::renderer", "Could not create "+
-            std::string(mType == GL_VERTEX_SHADER ? "vertex" : "fragment")+" shader.");
+    if (uiShader == 0) {
+        throw gui::exception(
+            "gl::renderer", "Could not create " +
+                                std::string(mType == GL_VERTEX_SHADER ? "vertex" : "fragment") +
+                                " shader.");
     }
 
     glShaderSource(uiShader, 1, &sShaderSource, nullptr);
@@ -371,41 +334,36 @@ GLuint create_shader(GLenum mType, const char* sShaderSource)
     // Check sucess
     GLint iCompiled = 0;
     glGetShaderiv(uiShader, GL_COMPILE_STATUS, &iCompiled);
-    if (iCompiled == 0)
-    {
+    if (iCompiled == 0) {
         GLint iInfoLength = 0;
         glGetProgramiv(uiShader, GL_INFO_LOG_LENGTH, &iInfoLength);
 
         std::vector<char> sErrorMessage(std::max(1, iInfoLength), '\0');
-        if (iInfoLength > 1)
-        {
+        if (iInfoLength > 1) {
             glGetProgramInfoLog(uiShader, iInfoLength, NULL, sErrorMessage.data());
         }
 
         glDeleteShader(uiShader);
-        throw gui::exception("gl::renderer",
-            "Could not compile shader: "+std::string(sErrorMessage.data()));
-   }
+        throw gui::exception(
+            "gl::renderer", "Could not compile shader: " + std::string(sErrorMessage.data()));
+    }
 
-   return uiShader;
+    return uiShader;
 }
 
-GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShaderSource)
-{
-    GLuint uiVertexShader = 0;
+GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShaderSource) {
+    GLuint uiVertexShader   = 0;
     GLuint uiFragmentShader = 0;
-    GLuint uiProgramObject = 0;
+    GLuint uiProgramObject  = 0;
 
-    try
-    {
+    try {
         // Create shaders
-        uiVertexShader = create_shader(GL_VERTEX_SHADER, sVertexShaderSource);
+        uiVertexShader   = create_shader(GL_VERTEX_SHADER, sVertexShaderSource);
         uiFragmentShader = create_shader(GL_FRAGMENT_SHADER, sFragmentShaderSource);
 
         // Create program
         uiProgramObject = glCreateProgram();
-        if (uiProgramObject == 0)
-        {
+        if (uiProgramObject == 0) {
             throw gui::exception("gl::renderer", "Could not create shader program.");
         }
 
@@ -416,26 +374,26 @@ GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShad
         // Check success
         GLint iLinked = 0;
         glGetProgramiv(uiProgramObject, GL_LINK_STATUS, &iLinked);
-        if (iLinked == 0)
-        {
+        if (iLinked == 0) {
             GLint iInfoLength = 0;
             glGetProgramiv(uiProgramObject, GL_INFO_LOG_LENGTH, &iInfoLength);
 
             std::vector<char> sErrorMessage(std::max(1, iInfoLength), '\0');
-            if (iInfoLength > 1)
-            {
+            if (iInfoLength > 1) {
                 glGetProgramInfoLog(uiProgramObject, iInfoLength, NULL, sErrorMessage.data());
             }
 
-            throw gui::exception("gl::renderer",
-                "Could not link shader program: "+std::string(sErrorMessage.data()));
+            throw gui::exception(
+                "gl::renderer",
+                "Could not link shader program: " + std::string(sErrorMessage.data()));
         }
-    }
-    catch (...)
-    {
-        if (uiVertexShader != 0) glDeleteShader(uiVertexShader);
-        if (uiFragmentShader != 0) glDeleteShader(uiFragmentShader);
-        if (uiProgramObject != 0) glDeleteProgram(uiProgramObject);
+    } catch (...) {
+        if (uiVertexShader != 0)
+            glDeleteShader(uiVertexShader);
+        if (uiFragmentShader != 0)
+            glDeleteShader(uiFragmentShader);
+        if (uiProgramObject != 0)
+            glDeleteProgram(uiProgramObject);
         throw;
     }
 
@@ -445,96 +403,83 @@ GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShad
     return uiProgramObject;
 }
 
-void renderer::compile_programs_()
-{
+void renderer::compile_programs_() {
     // Shaders are compiled once, and reused by other renderers
     thread_local bool bShaderCached = false;
 
-    if (!bShaderCached)
-    {
-        char sVertexShader[] =
-            "#version 300 es                                           \n"
-            "layout(location = 0) in vec2 a_position;                  \n"
-            "layout(location = 1) in vec4 a_color;                     \n"
-            "layout(location = 2) in vec2 a_texCoord;                  \n"
-            "uniform mat4 m_proj;                                      \n"
-            "uniform mat4 m_model;                                     \n"
-            "out vec4 v_color;                                         \n"
-            "out vec2 v_texCoord;                                      \n"
-            "void main()                                               \n"
-            "{                                                         \n"
-            "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
-            "    v_color = a_color;                                    \n"
-            "    v_color.rgb *= v_color.a;                             \n"
-            "    v_texCoord = a_texCoord;                              \n"
-            "}                                                         \n";
+    if (!bShaderCached) {
+        char sVertexShader[] = "#version 300 es                                           \n"
+                               "layout(location = 0) in vec2 a_position;                  \n"
+                               "layout(location = 1) in vec4 a_color;                     \n"
+                               "layout(location = 2) in vec2 a_texCoord;                  \n"
+                               "uniform mat4 m_proj;                                      \n"
+                               "uniform mat4 m_model;                                     \n"
+                               "out vec4 v_color;                                         \n"
+                               "out vec2 v_texCoord;                                      \n"
+                               "void main()                                               \n"
+                               "{                                                         \n"
+                               "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
+                               "    v_color = a_color;                                    \n"
+                               "    v_color.rgb *= v_color.a;                             \n"
+                               "    v_texCoord = a_texCoord;                              \n"
+                               "}                                                         \n";
 
-        char sFragmentShader[] =
-            "#version 300 es                                           \n"
-            "precision mediump float;                                  \n"
-            "in vec4 v_color;                                          \n"
-            "in vec2 v_texCoord;                                       \n"
-            "layout(location = 0) out vec4 o_color;                    \n"
-            "uniform mediump int i_type;                               \n"
-            "uniform sampler2D s_texture;                              \n"
-            "void main()                                               \n"
-            "{                                                         \n"
-            "    if (i_type == 0)                                      \n"
-            "        o_color = texture(s_texture, v_texCoord)*v_color; \n"
-            "    else                                                  \n"
-            "        o_color = v_color;                                \n"
-            "}                                                         \n";
+        char sFragmentShader[] = "#version 300 es                                           \n"
+                                 "precision mediump float;                                  \n"
+                                 "in vec4 v_color;                                          \n"
+                                 "in vec2 v_texCoord;                                       \n"
+                                 "layout(location = 0) out vec4 o_color;                    \n"
+                                 "uniform mediump int i_type;                               \n"
+                                 "uniform sampler2D s_texture;                              \n"
+                                 "void main()                                               \n"
+                                 "{                                                         \n"
+                                 "    if (i_type == 0)                                      \n"
+                                 "        o_color = texture(s_texture, v_texCoord)*v_color; \n"
+                                 "    else                                                  \n"
+                                 "        o_color = v_color;                                \n"
+                                 "}                                                         \n";
 
         pShaderCache_ = std::make_shared<shader_cache>();
 
-        try
-        {
+        try {
             pShaderCache_->uiProgram_ = create_program(sVertexShader, sFragmentShader);
-        }
-        catch (...)
-        {
+        } catch (...) {
             pShaderCache_ = nullptr;
             throw;
         }
 
-        pShaderCache_->iSamplerLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "s_texture");
-        pShaderCache_->iProjLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_proj");
+        pShaderCache_->iSamplerLocation_ =
+            glGetUniformLocation(pShaderCache_->uiProgram_, "s_texture");
+        pShaderCache_->iProjLocation_  = glGetUniformLocation(pShaderCache_->uiProgram_, "m_proj");
         pShaderCache_->iModelLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_model");
-        pShaderCache_->iTypeLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "i_type");
+        pShaderCache_->iTypeLocation_  = glGetUniformLocation(pShaderCache_->uiProgram_, "i_type");
 
         pStaticShaderCache_ = pShaderCache_;
-        bShaderCached = true;
-    }
-    else
-    {
+        bShaderCached       = true;
+    } else {
         pShaderCache_ = pStaticShaderCache_.lock();
     }
 }
 
-void renderer::setup_buffers_()
-{
+void renderer::setup_buffers_() {
     static constexpr std::array<std::uint32_t, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
 
-    constexpr std::uint32_t uiNumArrayIndices = 768u;
+    constexpr std::uint32_t    uiNumArrayIndices = 768u;
     std::vector<std::uint32_t> lRepeatedIds(uiNumArrayIndices);
-    for (std::uint32_t i = 0; i < uiNumArrayIndices; ++i)
-    {
-        lRepeatedIds[i] = (i/6)*4 + lQuadIDs[i%6];
+    for (std::uint32_t i = 0; i < uiNumArrayIndices; ++i) {
+        lRepeatedIds[i] = (i / 6) * 4 + lQuadIDs[i % 6];
     }
 
-    for (std::size_t i = 0; i < CACHE_CYCLE_SIZE; ++i)
-    {
-        pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(
-            vertex_cache::type::QUADS));
+    for (std::size_t i = 0; i < CACHE_CYCLE_SIZE; ++i) {
+        pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(
+            create_vertex_cache(vertex_cache::type::QUADS));
         pQuadCache_[i]->update_indices(lQuadIDs.data(), lQuadIDs.size());
 
-        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(
-            vertex_cache::type::QUADS));
+        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(
+            create_vertex_cache(vertex_cache::type::QUADS));
         pArrayCache_[i]->update_indices(lRepeatedIds.data(), lRepeatedIds.size());
     }
 }
 #endif
 
-}
-}
-}
+}}} // namespace lxgui::gui::gl

@@ -1,44 +1,41 @@
 #include "lxgui/impl/gui_gl_atlas.hpp"
+
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_out.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_renderer.hpp"
-
-#include "lxgui/gui_out.hpp"
-#include "lxgui/gui_exception.hpp"
 #include "lxgui/utils_string.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
-    #define NOMINMAX
-    #include <windows.h>
+#    define NOMINMAX
+#    include <windows.h>
 #endif
 
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
-    #include <GL/glew.h>
-    #if defined(LXGUI_PLATFORM_OSX)
-        #include <OpenGL/gl.h>
-    #else
-        #include <GL/gl.h>
-    #endif
+#    include <GL/glew.h>
+#    if defined(LXGUI_PLATFORM_OSX)
+#        include <OpenGL/gl.h>
+#    else
+#        include <GL/gl.h>
+#    endif
 #else
-    #if defined(LXGUI_PLATFORM_OSX)
-        #include <OpenGLES/ES3/gl.h>
-    #else
-        #include <GLES3/gl3.h>
-    #endif
+#    if defined(LXGUI_PLATFORM_OSX)
+#        include <OpenGLES/ES3/gl.h>
+#    else
+#        include <GLES3/gl3.h>
+#    endif
 #endif
 
 #if !defined(GL_CLAMP_TO_EDGE)
-    #define GL_CLAMP_TO_EDGE 0x812F
+#    define GL_CLAMP_TO_EDGE 0x812F
 #endif
 
 #include <cmath>
 
-namespace lxgui {
-namespace gui {
-namespace gl
-{
+namespace lxgui { namespace gui { namespace gl {
 
-atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
-{
+atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) :
+    gui::atlas_page(mFilter) {
     uiSize_ = mRenderer.get_texture_atlas_page_size();
 
     GLint iPreviousID;
@@ -48,21 +45,18 @@ atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui
 
     GLsizei iSize = static_cast<GLsizei>(uiSize_);
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-        iSize, iSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
-    );
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, iSize, iSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    switch (mFilter)
-    {
-    case material::filter::LINEAR :
+    switch (mFilter) {
+    case material::filter::LINEAR:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         break;
-    case material::filter::NONE :
-    default :
+    case material::filter::NONE:
+    default:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         break;
@@ -74,7 +68,8 @@ atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui
     GLuint uiFBO = 0;
     glGenFramebuffers(1, &uiFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, uiTextureHandle_, 0);
+    glFramebufferTexture2D(
+        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, uiTextureHandle_, 0);
 
     float lClearColor[4] = {0, 0, 0, 0};
     glClearBufferfv(GL_COLOR, 0, lClearColor);
@@ -83,14 +78,12 @@ atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui
     glDeleteFramebuffers(1, &uiFBO);
 }
 
-atlas_page::~atlas_page()
-{
+atlas_page::~atlas_page() {
     glDeleteTextures(1, &uiTextureHandle_);
 }
 
-std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const bounds2f& mLocation)
-{
+std::shared_ptr<gui::material>
+atlas_page::add_material_(const gui::material& mMat, const bounds2f& mLocation) {
     const gl::material& mGLMat = static_cast<const gl::material&>(mMat);
 
     GLint iPreviousID;
@@ -99,42 +92,39 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
     GLuint uiFBO = 0;
     glGenFramebuffers(1, &uiFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGLMat.get_handle_(), 0);
+    glFramebufferTexture2D(
+        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGLMat.get_handle_(), 0);
 
-    std::vector<ub32color> lData(mLocation.width()*mLocation.height());
-    glReadPixels(0, 0, mLocation.width(), mLocation.height(), GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
+    std::vector<ub32color> lData(mLocation.width() * mLocation.height());
+    glReadPixels(
+        0, 0, mLocation.width(), mLocation.height(), GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDeleteFramebuffers(1, &uiFBO);
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
-    glTexSubImage2D(GL_TEXTURE_2D, 0,
-        mLocation.left, mLocation.top, mLocation.width(), mLocation.height(),
-        GL_RGBA, GL_UNSIGNED_BYTE, lData.data()
-    );
+    glTexSubImage2D(
+        GL_TEXTURE_2D, 0, mLocation.left, mLocation.top, mLocation.width(), mLocation.height(),
+        GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    return std::make_shared<gl::material>(uiTextureHandle_, vector2ui(uiSize_, uiSize_), mLocation, mFilter_);
+    return std::make_shared<gl::material>(
+        uiTextureHandle_, vector2ui(uiSize_, uiSize_), mLocation, mFilter_);
 }
 
-float atlas_page::get_width() const
-{
+float atlas_page::get_width() const {
     return uiSize_;
 }
 
-float atlas_page::get_height() const
-{
+float atlas_page::get_height() const {
     return uiSize_;
 }
 
 atlas::atlas(renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
-std::unique_ptr<gui::atlas_page> atlas::create_page_()
-{
+std::unique_ptr<gui::atlas_page> atlas::create_page_() {
     return std::make_unique<gl::atlas_page>(mRenderer_, mFilter_);
 }
 
-}
-}
-}
+}}} // namespace lxgui::gui::gl
