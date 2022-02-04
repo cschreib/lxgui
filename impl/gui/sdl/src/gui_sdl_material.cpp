@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 int material::get_premultiplied_alpha_blend_mode() {
     static const SDL_BlendMode mBlend = SDL_ComposeCustomBlendMode(
@@ -308,4 +308,4 @@ SDL_Renderer* material::get_renderer() {
     return pRenderer_;
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

@@ -9,7 +9,7 @@
 #include <list>
 #include <memory>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class registry;
 class manager;
@@ -68,6 +68,6 @@ private:
     virtual_registry mObjectRegistry_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

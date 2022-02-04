@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 dispatcher::dispatcher(source& mSource) : mSource_(mSource) {
     lConnections_.push_back(mSource.on_key_pressed.connect([&](input::key mKey) {
@@ -178,4 +178,4 @@ float dispatcher::get_interface_scaling_factor() const {
     return fScalingFactor_;
 }
 
-}} // namespace lxgui::input
+} // namespace lxgui::input

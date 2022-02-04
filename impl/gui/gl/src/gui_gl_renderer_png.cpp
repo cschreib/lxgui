@@ -8,7 +8,7 @@
 #include <memory>
 #include <png.h>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 [[noreturn]] void raise_error(png_struct* /*png*/, char const* message) {
     throw gui::exception("gui::gl::manager", message);
@@ -107,4 +107,4 @@ renderer::create_material_png_(const std::string& sFileName, material::filter mF
     }
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

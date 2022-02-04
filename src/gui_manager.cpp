@@ -32,7 +32,7 @@
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 manager::manager(
     utils::control_block&          mBlock,
@@ -240,4 +240,4 @@ std::string manager::print_ui() const {
     return s.str();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

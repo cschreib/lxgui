@@ -14,7 +14,7 @@
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 root::root(utils::control_block& mBlock, manager& mManager) :
     frame_container(mManager.get_factory(), mObjectRegistry_, this),
@@ -753,4 +753,4 @@ void root::on_mouse_button_state_changed_(
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

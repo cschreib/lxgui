@@ -5,7 +5,7 @@
 #include "lxgui/impl/gui_sfml_material.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 font::font(
     const std::string&                   sFontFile,
@@ -139,4 +139,4 @@ void font::update_texture(std::shared_ptr<gui::material> pMat) {
     pTexture_ = std::static_pointer_cast<sfml::material>(pMat);
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

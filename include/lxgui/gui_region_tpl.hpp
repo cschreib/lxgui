@@ -48,7 +48,7 @@ void sol_lua_check_access(
         throw sol::error("object has been deleted");
 }
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 inline utils::observer_ptr<region>
 get_object(manager& mManager, const std::variant<std::string, region*>& mParent) {
@@ -135,6 +135,6 @@ void region::create_glue_(T* pSelf) {
     get_lua_().globals()[sLuaName_] = observer_from(pSelf);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

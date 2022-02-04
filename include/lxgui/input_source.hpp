@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 /// The base class for input source implementation
 /** The implementation is responsible for generating the
@@ -115,6 +115,6 @@ protected:
     gui::vector2ui mWindowDimensions_;
 };
 
-}} // namespace lxgui::input
+} // namespace lxgui::input
 
 #endif

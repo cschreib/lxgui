@@ -1,6 +1,6 @@
 #include "lxgui/input_keys.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 std::string_view get_mouse_button_codename(mouse_button mID) {
     switch (mID) {
@@ -301,4 +301,4 @@ std::string_view get_localizable_key_name(key mKey) {
     }
 }
 
-}} // namespace lxgui::input
+} // namespace lxgui::input

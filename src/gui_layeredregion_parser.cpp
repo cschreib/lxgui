@@ -4,7 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void layered_region::parse_layout(const layout_node& mNode) {
     parse_attributes_(mNode);
@@ -21,4 +21,4 @@ void layered_region::parse_attributes_(const layout_node& mNode) {
         set_all_points("$parent");
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

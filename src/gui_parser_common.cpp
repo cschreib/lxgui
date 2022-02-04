@@ -8,7 +8,7 @@
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_virtual_root.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 region_core_attributes parse_core_attributes(
     registry&                  mRegistry,
@@ -99,4 +99,4 @@ void warn_for_not_accessed_node(const layout_node& mNode) {
         warn_for_not_accessed_node(mChild);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

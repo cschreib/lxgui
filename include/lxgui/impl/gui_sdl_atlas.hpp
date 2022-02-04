@@ -14,7 +14,7 @@ struct SDL_Renderer;
 struct SDL_Surface;
 struct SDL_Texture;
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 class renderer;
 
@@ -83,6 +83,6 @@ private:
     renderer& mSDLRenderer_;
 };
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl
 
 #endif

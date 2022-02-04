@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 float round(float fValue, float fUnit, rounding_method mMethod) {
     switch (mMethod) {
@@ -21,4 +21,4 @@ float round(float fValue, float fUnit, rounding_method mMethod) {
     }
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils

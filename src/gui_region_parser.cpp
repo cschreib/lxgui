@@ -5,7 +5,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/utils_std.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 color region::parse_color_node_(const layout_node& mNode) {
     if (const layout_attribute* pAttr = mNode.try_get_attribute("c")) {
@@ -142,4 +142,4 @@ void region::parse_attributes_(const layout_node& mNode) {
         set_all_points("$parent");
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

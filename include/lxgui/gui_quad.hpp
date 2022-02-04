@@ -9,7 +9,7 @@
 #include <array>
 #include <memory>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Specifies the rendering mode of a quad
 enum class blend_mode { NORMAL, ADD, MUL };
@@ -21,6 +21,6 @@ struct quad {
     blend_mode                blend = blend_mode::NORMAL;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

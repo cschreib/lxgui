@@ -13,7 +13,7 @@
 #include <functional>
 #include <sol/state.hpp>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 namespace {
 std::string to_lower(std::string sStr) {
@@ -839,4 +839,4 @@ std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs
         mIter->second);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

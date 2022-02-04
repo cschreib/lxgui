@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 enum class mouse_state { UP = 0, DRAGGED, CLICKED, RELEASED, DOUBLE, LONG };
 
@@ -204,6 +204,6 @@ std::string_view get_localizable_key_name(key mKey);
 constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
 constexpr std::size_t KEY_NUMBER          = static_cast<std::size_t>(key::K_MAXKEY);
 
-}} // namespace lxgui::input
+} // namespace lxgui::input
 
 #endif

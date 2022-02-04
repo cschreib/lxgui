@@ -14,7 +14,7 @@
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 using string       = std::string;
 using string_view  = std::string_view;
@@ -110,7 +110,7 @@ template<typename... Args>
     return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 /** \endcond
  */

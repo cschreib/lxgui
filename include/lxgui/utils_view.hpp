@@ -5,7 +5,7 @@
 
 #include <utility>
 
-namespace lxgui { namespace utils { namespace view {
+namespace lxgui::utils::view {
 
 /// De-reference an iterator normally
 template<typename BaseIterator>
@@ -140,6 +140,6 @@ private:
     filter         mFilter_;
 };
 
-}}} // namespace lxgui::utils::view
+} // namespace lxgui::utils::view
 
 #endif

@@ -4,7 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_std.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 event_receiver::event_receiver(event_emitter& mEmitter) : mEventEmitter_(mEmitter) {}
 
@@ -29,4 +29,4 @@ void event_receiver::unregister_event(const std::string& sEventName) {
     lRegisteredEvents_.erase(mIter);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

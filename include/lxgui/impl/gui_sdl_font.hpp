@@ -9,7 +9,7 @@
 
 struct SDL_Renderer;
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 /// A texture containing characters
 /** This is the SDL implementation of the gui::font.
@@ -110,6 +110,6 @@ private:
     std::vector<range_info>        lRangeList_;
 };
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl
 
 #endif

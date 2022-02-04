@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// An object representing cached vertex data on the GPU
 /** A vertex cache stores vertices and indices that can be used to draw
@@ -67,6 +67,6 @@ protected:
     type mType_ = type::TRIANGLES;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "lxgui/lxgui.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Represents a contiguous range of unicode code points
 struct code_point_range {
@@ -11,6 +11,6 @@ struct code_point_range {
     char32_t uiLast  = 0u;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void step_value(float& fValue, float fStep) {
     // Makes the value a multiple of the step :
@@ -393,4 +393,4 @@ void slider::notify_thumb_texture_needs_update_() {
     update_thumb_texture_();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

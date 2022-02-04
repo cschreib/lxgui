@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace lxgui { namespace utils { namespace range {
+namespace lxgui::utils::range {
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
@@ -380,6 +380,7 @@ template<typename T>
 range_impl::reverse_key_range<T> reverse_key(T& lContainer) {
     return range_impl::reverse_key_range<T>(lContainer);
 }
-}}} // namespace lxgui::utils::range
+
+} // namespace lxgui::utils::range
 
 #endif

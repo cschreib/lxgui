@@ -10,7 +10,7 @@
 
 struct SDL_Renderer;
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 class material;
 
@@ -218,6 +218,6 @@ private:
     std::shared_ptr<gui::sdl::render_target> pCurrentTarget_;
 };
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl
 
 #endif

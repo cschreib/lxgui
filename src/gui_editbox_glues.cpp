@@ -55,7 +55,7 @@
  *   @classmod EditBox
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void edit_box::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<edit_box>(
@@ -227,4 +227,4 @@ void edit_box::register_on_lua(sol::state& mLua) {
         });
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

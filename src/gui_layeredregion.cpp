@@ -8,7 +8,7 @@
 
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 layered_region::layered_region(utils::control_block& mBlock, manager& mManager) :
     base(mBlock, mManager) {
@@ -109,4 +109,4 @@ layer parse_layer_type(const std::string& sLayer) {
     return mLayer;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

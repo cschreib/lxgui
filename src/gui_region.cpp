@@ -16,7 +16,7 @@
 #include <sol/state.hpp>
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 region::region(utils::control_block& mBlock, manager& mManager) :
     utils::enable_observer_from_this<region>(mBlock), mManager_(mManager) {
@@ -853,4 +853,4 @@ const registry& region::get_registry() const {
                         : get_manager().get_root().get_registry();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

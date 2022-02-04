@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class texture;
 
@@ -200,6 +200,6 @@ protected:
     std::array<float, 4>         lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

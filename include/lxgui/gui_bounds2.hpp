@@ -4,7 +4,7 @@
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 template<typename T>
 struct bounds2 {
@@ -157,6 +157,6 @@ O& operator<<(O& mStream, const bounds2<T>& mQuad) {
     return mStream << "(" << mQuad.top_left() << "), (" << mQuad.bottom_right() << ")";
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

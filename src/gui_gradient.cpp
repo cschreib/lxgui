@@ -1,6 +1,6 @@
 #include "lxgui/gui_gradient.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 gradient::gradient(orientation mOrientation, const color& mMinColor, const color& mMaxColor) :
     mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor) {}
@@ -17,4 +17,4 @@ gradient::orientation gradient::get_orientation() const {
     return mOrientation_;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

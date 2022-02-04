@@ -10,7 +10,7 @@
 #include <array>
 #include <memory>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class material;
 
@@ -79,6 +79,6 @@ public:
     virtual void update_texture(std::shared_ptr<material> pMat) = 0;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

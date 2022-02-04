@@ -5,7 +5,7 @@
 
 #include <oup/observable_unique_ptr.hpp>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 template<typename T>
 using owner_ptr = oup::observable_sealed_ptr<T>;
@@ -25,6 +25,6 @@ owner_ptr<T> make_owned(Args&&... args) {
     return oup::make_observable_sealed<T>(std::forward<Args>(args)...);
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

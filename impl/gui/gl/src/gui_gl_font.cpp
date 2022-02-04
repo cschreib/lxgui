@@ -42,7 +42,7 @@ T ft_round(T iValue) {
     return std::round(ft_float<Point>(iValue));
 }
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 namespace {
 
@@ -379,4 +379,4 @@ void font::update_texture(std::shared_ptr<gui::material> pMat) {
     pTexture_ = std::static_pointer_cast<gl::material>(pMat);
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

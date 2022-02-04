@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <vector>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 /// A texture containing characters
 /** This is the SFML implementation of the gui::font.
@@ -94,6 +94,6 @@ private:
     std::vector<code_point_range>   lCodePoints_;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

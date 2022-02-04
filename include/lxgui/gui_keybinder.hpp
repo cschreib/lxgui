@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class event_emitter;
 
@@ -111,6 +111,6 @@ private:
     std::vector<key_binding> lKeyBindings_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

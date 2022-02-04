@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class font;
 class atlas;
@@ -469,6 +469,6 @@ private:
     std::size_t          uiLastFrameBatchCount_ = 0u;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

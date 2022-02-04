@@ -9,7 +9,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 button::button(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager) {
     lType_.push_back(CLASS_NAME);
@@ -443,4 +443,4 @@ const vector2f& button::get_pushed_text_offset() const {
     return mPushedTextOffset_;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

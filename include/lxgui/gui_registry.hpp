@@ -8,7 +8,7 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 
@@ -61,6 +61,6 @@ private:
     string_map<utils::observer_ptr<region>> lNamedObjectList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

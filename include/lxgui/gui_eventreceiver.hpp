@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class event;
 class event_emitter;
@@ -50,6 +50,6 @@ private:
     std::vector<event_connection> lRegisteredEvents_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

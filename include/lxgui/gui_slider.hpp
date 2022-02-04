@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class texture;
 
@@ -210,6 +210,6 @@ protected:
     bool bThumbMoved_ = false;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -16,7 +16,7 @@
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
@@ -1010,4 +1010,4 @@ const std::array<vertex, 4>& text::get_letter_quad(std::size_t uiIndex) const {
     return lQuadList_[uiIndex];
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

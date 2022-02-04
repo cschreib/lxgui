@@ -4,7 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_range.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 // For debugging only
 std::size_t count_frames(const std::array<strata, 8>& lStrataList) {
@@ -201,4 +201,4 @@ void frame_renderer::reset_strata_list_changed_flag_() {
     bStrataListUpdated_ = false;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

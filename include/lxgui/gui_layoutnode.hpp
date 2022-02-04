@@ -11,7 +11,7 @@
 #include <string_view>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// An attribute in a layout file
 /** This is a format-agnostic representation of a GUI layout, as read
@@ -455,6 +455,6 @@ inline bool layout_attribute::get_value<bool>() const {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

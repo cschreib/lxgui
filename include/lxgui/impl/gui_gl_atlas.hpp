@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 class renderer;
 
@@ -73,6 +73,6 @@ protected:
     std::unique_ptr<gui::atlas_page> create_page_() override;
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

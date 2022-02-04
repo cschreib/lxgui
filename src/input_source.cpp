@@ -1,6 +1,6 @@
 #include "lxgui/input_source.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 const source::key_state& source::get_key_state() const {
     return mKeyboard_;
@@ -18,4 +18,4 @@ float source::get_interface_scaling_factor_hint() const {
     return 1.0f;
 }
 
-}} // namespace lxgui::input
+} // namespace lxgui::input

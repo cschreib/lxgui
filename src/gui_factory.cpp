@@ -7,7 +7,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 factory::factory(manager& mManager) : mManager_(mManager) {}
 
@@ -130,4 +130,4 @@ void factory::apply_inheritance_(region& mObject, const region_core_attributes& 
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

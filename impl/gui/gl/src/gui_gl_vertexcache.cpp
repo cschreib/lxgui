@@ -25,7 +25,7 @@
 
 #include <array>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 vertex_cache::vertex_cache(type mType) : gui::vertex_cache(mType) {
     glGenVertexArrays(1, &uiVertexArray_);
@@ -161,4 +161,4 @@ void vertex_cache::render() const {
     glBindVertexArray(0);
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

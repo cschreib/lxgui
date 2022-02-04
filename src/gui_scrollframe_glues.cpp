@@ -33,7 +33,7 @@
  *   @classmod ScrollFrame
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void scroll_frame::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<scroll_frame>(
@@ -93,4 +93,4 @@ void scroll_frame::register_on_lua(sol::state& mLua) {
         "set_vertical_scroll", member_function<&scroll_frame::set_vertical_scroll>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

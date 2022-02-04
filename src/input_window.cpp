@@ -2,7 +2,7 @@
 
 #include "lxgui/input_source.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 window::window(source& mSource) : mSource_(mSource) {
     mConnection_ = mSource.on_window_resized.connect([&](const gui::vector2ui& mDimensions) {
@@ -43,4 +43,4 @@ source& window::get_source() {
     return mSource_;
 }
 
-}} // namespace lxgui::input
+} // namespace lxgui::input

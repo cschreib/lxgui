@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
@@ -325,6 +325,6 @@ private:
     std::shared_ptr<impl> impl_;
 };
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

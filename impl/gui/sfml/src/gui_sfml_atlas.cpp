@@ -5,7 +5,7 @@
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) :
     gui::atlas_page(mFilter) {
@@ -45,4 +45,4 @@ std::unique_ptr<gui::atlas_page> atlas::create_page_() {
     return std::make_unique<sfml::atlas_page>(mRenderer_, mFilter_);
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

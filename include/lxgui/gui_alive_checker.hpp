@@ -5,7 +5,7 @@
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_observer.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 
@@ -40,6 +40,6 @@ private:
     utils::observer_ptr<region> pObject_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 template<typename C, typename T>
 auto find(C& v, const T& s) {
@@ -20,7 +20,7 @@ auto find_if(C& v, T&& f) {
     return std::find_if(v.begin(), v.end(), std::forward<T>(f));
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 namespace std {
 

@@ -9,7 +9,7 @@
 #include <vector>
 #include FT_FREETYPE_H
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 /// A texture containing characters
 /** This is the OpenGL implementation of the gui::font.
@@ -111,6 +111,6 @@ private:
     std::vector<range_info>       lRangeList_;
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

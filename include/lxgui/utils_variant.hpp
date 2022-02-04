@@ -9,7 +9,7 @@
 #include <utility>
 #include <variant>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 /// Empty type, used in the implementation of utils::variant
 struct empty {};
@@ -64,6 +64,6 @@ const T& get(const variant& vValue) {
         return std::get<T>(vValue);
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

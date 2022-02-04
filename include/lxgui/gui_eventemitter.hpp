@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class event;
 
@@ -56,6 +56,6 @@ private:
     std::unordered_map<std::string, event_signal> lRegisteredEventList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

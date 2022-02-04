@@ -8,7 +8,7 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/utils_filesystem.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 backdrop::backdrop(frame& mParent) : mParent_(mParent) {}
 
@@ -555,4 +555,4 @@ void backdrop::update_edge_(color mColor) const {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

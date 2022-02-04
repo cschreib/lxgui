@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class texture;
 
@@ -178,6 +178,6 @@ protected:
     utils::observer_ptr<texture> pScrollTexture_ = nullptr;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

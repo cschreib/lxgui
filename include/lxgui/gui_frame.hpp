@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame_renderer;
 class frame;
@@ -1343,6 +1343,6 @@ protected:
     bool bAutoFocus_ = false;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

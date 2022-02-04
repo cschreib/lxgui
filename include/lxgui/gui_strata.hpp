@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame;
 
@@ -43,6 +43,6 @@ struct strata {
     quad                           mQuad;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

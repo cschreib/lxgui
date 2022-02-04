@@ -3,7 +3,7 @@
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_texture.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void check_button::parse_all_nodes_before_children_(const layout_node& mNode) {
     button::parse_all_nodes_before_children_(mNode);
@@ -43,4 +43,4 @@ void check_button::parse_all_nodes_before_children_(const layout_node& mNode) {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

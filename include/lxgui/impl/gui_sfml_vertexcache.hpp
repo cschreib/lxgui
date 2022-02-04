@@ -7,7 +7,7 @@
 #include <SFML/Graphics/VertexBuffer.hpp>
 #include <memory>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 /** A vertex cache stores vertices and indices that can be used to draw
  *   any shape on the screen. If the type is TRIANGLES, each group of 3
@@ -56,6 +56,6 @@ private:
     sf::VertexBuffer mBuffer_;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

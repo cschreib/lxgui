@@ -3,7 +3,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/impl/input_sdl_source.hpp"
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 utils::owner_ptr<gui::manager>
 create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage) {
@@ -13,4 +13,4 @@ create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDL
         std::unique_ptr<gui::renderer>(new gui::sdl::renderer(pRenderer, false)));
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

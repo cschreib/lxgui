@@ -4,7 +4,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_exception.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Exception to be thrown by GUI code.
 /** \note These exceptions should always be handled.<br>
@@ -20,6 +20,6 @@ public:
         utils::exception(sClassName, sMessage) {}
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

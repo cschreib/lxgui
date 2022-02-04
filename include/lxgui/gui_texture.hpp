@@ -10,7 +10,7 @@
 #include <limits>
 #include <variant>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class renderer;
 
@@ -245,6 +245,6 @@ private:
     quad      mQuad_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

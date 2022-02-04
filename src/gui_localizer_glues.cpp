@@ -222,7 +222,7 @@
 *   @module Localization
 */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void localizer::register_on_lua(sol::state& mSol) {
     /** Returns the preferred languages to display the GUI.
@@ -350,4 +350,4 @@ void localizer::register_on_lua(sol::state& mSol) {
     });
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

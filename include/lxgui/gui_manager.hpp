@@ -20,18 +20,16 @@ class state;
 /** \endcond
  */
 
-namespace lxgui {
-
-namespace input {
+namespace lxgui::input {
 
 class source;
 class window;
 class dispatcher;
 class world_dispatcher;
 
-} // namespace input
+} // namespace lxgui::input
 
-namespace gui {
+namespace lxgui::gui {
 
 class renderer;
 class localizer;
@@ -384,8 +382,6 @@ private:
     bool bUpdating_       = false;
 };
 
-} // namespace gui
-
-} // namespace lxgui
+} // namespace lxgui::gui
 
 #endif

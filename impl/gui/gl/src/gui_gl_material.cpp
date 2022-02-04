@@ -30,7 +30,7 @@
 
 #include <cmath>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 bool        material::ONLY_POWER_OF_TWO = true;
 std::size_t material::MAXIMUM_SIZE      = 128;
@@ -279,4 +279,4 @@ std::size_t material::get_max_size() {
     return MAXIMUM_SIZE;
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

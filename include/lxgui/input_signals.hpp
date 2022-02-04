@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_signal.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 /// Stores signals for input events.
 class signals {
@@ -41,6 +41,6 @@ public:
     utils::signal<void(std::uint32_t)> on_text_entered;
 };
 
-}} // namespace lxgui::input
+} // namespace lxgui::input
 
 #endif

@@ -3,7 +3,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_scrollframe.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void scroll_frame::parse_all_nodes_before_children_(const layout_node& mNode) {
     frame::parse_all_nodes_before_children_(mNode);
@@ -50,4 +50,4 @@ void scroll_frame::parse_scroll_child_node_(const layout_node& mNode) {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

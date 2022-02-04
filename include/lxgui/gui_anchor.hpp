@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 
@@ -169,6 +169,6 @@ private:
     utils::observer_ptr<region> pParent_ = nullptr;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

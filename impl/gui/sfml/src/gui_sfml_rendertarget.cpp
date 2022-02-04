@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 render_target::render_target(const vector2ui& mDimensions, material::filter mFilter) {
     pTexture_ =
@@ -44,4 +44,4 @@ sf::RenderTexture* render_target::get_render_texture() {
     return pRenderTexture_;
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame;
 
@@ -189,6 +189,6 @@ private:
     mutable std::shared_ptr<vertex_cache>      pEdgeCache_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

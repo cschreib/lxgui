@@ -18,7 +18,7 @@ class state;
 /** \endcond
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 struct region_core_attributes;
@@ -140,6 +140,6 @@ private:
     string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> lCustomRegionList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

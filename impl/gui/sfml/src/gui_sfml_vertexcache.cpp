@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Vertex.hpp>
 #include <array>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 vertex_cache::vertex_cache(type mType) :
     gui::vertex_cache(mType), mBuffer_(sf::PrimitiveType::Triangles) {}
@@ -64,4 +64,4 @@ const sf::VertexBuffer& vertex_cache::get_impl() const {
     return mBuffer_;
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

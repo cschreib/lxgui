@@ -10,7 +10,7 @@
 #include <SDL_mouse.h>
 #include <SDL_video.h>
 
-namespace lxgui { namespace input { namespace sdl {
+namespace lxgui::input { namespace sdl {
 
 source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage) :
     pWindow_(pWindow), pRenderer_(pRenderer) {
@@ -315,4 +315,4 @@ void source::on_sdl_event(const SDL_Event& mEvent) {
     }
 }
 
-}}} // namespace lxgui::input::sdl
+}} // namespace lxgui::input::sdl

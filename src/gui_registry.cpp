@@ -4,7 +4,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 bool registry::check_region_name(std::string_view sName) const {
     if (utils::has_no_content(sName)) {
@@ -71,4 +71,4 @@ utils::observer_ptr<const region> registry::get_region_by_name(std::string_view 
         return nullptr;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

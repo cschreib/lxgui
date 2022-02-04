@@ -9,7 +9,7 @@
 
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 font_string::font_string(utils::control_block& mBlock, manager& mManager) :
     layered_region(mBlock, mManager) {
@@ -497,4 +497,4 @@ void font_string::update_borders_() {
     DEBUG_LOG("  @");
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

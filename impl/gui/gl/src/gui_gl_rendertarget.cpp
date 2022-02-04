@@ -23,7 +23,7 @@
 #    endif
 #endif
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 render_target::render_target(const vector2ui& mDimensions, material::filter mFilter) {
     pTexture_ = std::make_shared<gl::material>(mDimensions, material::wrap::REPEAT, mFilter);
@@ -112,4 +112,4 @@ void render_target::check_availability() {
 #endif
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

@@ -9,7 +9,7 @@
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class font_string;
 class texture;
@@ -435,6 +435,6 @@ protected:
     bounds2f lTextInsets_ = bounds2f::ZERO;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

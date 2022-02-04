@@ -8,7 +8,7 @@
 
 #include <functional>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame;
 class font;
@@ -104,6 +104,6 @@ protected:
     bool                  bStrataListUpdated_ = false;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

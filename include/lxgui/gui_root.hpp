@@ -14,15 +14,13 @@
 #include <list>
 #include <memory>
 
-namespace lxgui {
-
-namespace input {
+namespace lxgui::input {
 
 class world_dispatcher;
 
 }
 
-namespace gui {
+namespace lxgui::gui {
 
 class region;
 class frame;
@@ -316,8 +314,6 @@ private:
     std::vector<utils::observer_ptr<frame>> lFocusStack_;
 };
 
-} // namespace gui
-
-} // namespace lxgui
+} // namespace lxgui::gui
 
 #endif

@@ -20,7 +20,7 @@ class Event;
 /** \endcond
  */
 
-namespace lxgui { namespace input { namespace sfml {
+namespace lxgui::input { namespace sfml {
 
 class source final : public input::source {
 public:
@@ -51,6 +51,6 @@ private:
     std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> lCursorMap_;
 };
 
-}}} // namespace lxgui::input::sfml
+}} // namespace lxgui::input::sfml
 
 #endif

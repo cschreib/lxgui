@@ -7,7 +7,7 @@
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_texture.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 void button::parse_attributes_(const layout_node& mNode) {
     frame::parse_attributes_(mNode);
 
@@ -151,4 +151,4 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode) {
         }
     }
 }
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

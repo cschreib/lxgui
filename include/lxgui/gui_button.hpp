@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class texture;
 class font_string;
@@ -326,6 +326,6 @@ protected:
     vector2f mPushedTextOffset_ = vector2f::ZERO;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

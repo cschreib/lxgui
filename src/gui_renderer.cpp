@@ -6,7 +6,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void renderer::begin(std::shared_ptr<render_target> pTarget) {
     uiBatchCount_ = 0;
@@ -345,4 +345,4 @@ std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_targe
 
 void renderer::notify_window_resized(const vector2ui&) {}
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

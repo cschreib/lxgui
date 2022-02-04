@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow) {
     return utils::make_owned<gui::manager>(
@@ -13,4 +13,4 @@ utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow) {
         std::unique_ptr<gui::renderer>(new gui::sfml::renderer(mWindow)));
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

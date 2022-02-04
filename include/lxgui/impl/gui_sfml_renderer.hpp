@@ -18,7 +18,7 @@ class RenderTarget;
 /** \endcond
  */
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 /// SFML implementation of rendering
 class renderer final : public gui::renderer {
@@ -203,6 +203,6 @@ private:
     sf::RenderTarget*                         pCurrentSFMLTarget_ = nullptr;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

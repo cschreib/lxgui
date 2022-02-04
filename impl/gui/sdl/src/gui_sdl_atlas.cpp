@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 atlas_page::atlas_page(renderer& mRenderer, material::filter mFilter) :
     gui::atlas_page(mFilter), mRenderer_(mRenderer) {
@@ -84,4 +84,4 @@ std::unique_ptr<gui::atlas_page> atlas::create_page_() {
     return std::make_unique<sdl::atlas_page>(mSDLRenderer_, mFilter_);
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

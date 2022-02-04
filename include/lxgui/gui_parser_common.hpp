@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame;
 class registry;
@@ -30,6 +30,6 @@ region_core_attributes parse_core_attributes(
  */
 void warn_for_not_accessed_node(const layout_node& mNode);
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

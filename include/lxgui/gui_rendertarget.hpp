@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// A place to render things (the screen, a texture, ...)
 /** \note This is an abstract class that must be inherited
@@ -64,6 +64,6 @@ public:
     virtual vector2ui get_canvas_dimensions() const = 0;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 struct vertex {
     vector2f pos;
@@ -14,6 +14,6 @@ struct vertex {
     color    col;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

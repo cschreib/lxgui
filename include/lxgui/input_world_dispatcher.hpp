@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_signal.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 /// Generates input events for the world, after filtering by the UI.
 /** The implementation is responsible for generating the
@@ -39,6 +39,6 @@ public:
     world_dispatcher& operator=(world_dispatcher&&) = delete;
 };
 
-}} // namespace lxgui::input
+} // namespace lxgui::input
 
 #endif

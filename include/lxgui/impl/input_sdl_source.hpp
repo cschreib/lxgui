@@ -14,7 +14,7 @@ struct SDL_Renderer;
 struct SDL_Cursor;
 union SDL_Event;
 
-namespace lxgui { namespace input { namespace sdl {
+namespace lxgui::input { namespace sdl {
 
 class source final : public input::source {
 public:
@@ -52,6 +52,6 @@ private:
     std::unordered_map<std::string, wrapped_cursor> lCursorMap_;
 };
 
-}}} // namespace lxgui::input::sdl
+}} // namespace lxgui::input::sdl
 
 #endif

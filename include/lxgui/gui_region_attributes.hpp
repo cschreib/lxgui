@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class frame;
 class region;
@@ -23,6 +23,6 @@ struct region_core_attributes {
     std::vector<utils::observer_ptr<const region>> lInheritance;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

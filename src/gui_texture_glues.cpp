@@ -16,7 +16,7 @@
  *   @classmod Texture
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 sol::optional<gradient::orientation> get_gradient_orientation(const std::string& sOrientation) {
     sol::optional<gradient::orientation> mOrientation;
@@ -255,4 +255,4 @@ void texture::register_on_lua(sol::state& mLua) {
             }));
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 struct ub32color {
     using chanel = unsigned char;
@@ -89,6 +89,6 @@ protected:
     bool bIsAtlas_ = false;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

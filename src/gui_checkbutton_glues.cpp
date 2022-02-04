@@ -15,7 +15,7 @@
  *   @classmod CheckButton
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void check_button::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<check_button>(
@@ -80,4 +80,4 @@ void check_button::register_on_lua(sol::state& mLua) {
         member_function<&check_button::set_disabled_checked_texture>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

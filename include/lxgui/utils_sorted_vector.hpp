@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 /// Sorted std::vector wrapper.
 /** This class is a light alternative to std::set.
@@ -221,6 +221,6 @@ public:
     using base::rend;
 };
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

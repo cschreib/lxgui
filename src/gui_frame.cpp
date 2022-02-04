@@ -21,7 +21,7 @@
 #include <sol/variadic_args.hpp>
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 frame::frame(utils::control_block& mBlock, manager& mManager) :
     base(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter()) {
@@ -1611,4 +1611,4 @@ void frame::update(float fDelta) {
     DEBUG_LOG("   .");
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

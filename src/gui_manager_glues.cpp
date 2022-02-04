@@ -24,7 +24,7 @@
  *   @module Manager
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void manager::register_lua_glues(std::function<void(gui::manager&)> pLuaRegs) {
     pLuaRegs_ = std::move(pLuaRegs);
@@ -129,4 +129,4 @@ void manager::create_lua_() {
         pLuaRegs_(*this);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

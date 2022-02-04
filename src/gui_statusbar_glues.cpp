@@ -28,7 +28,7 @@
  *   @classmod StatusBar
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void status_bar::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<status_bar>(
@@ -111,4 +111,4 @@ void status_bar::register_on_lua(sol::state& mLua) {
     mClass.set_function("set_reversed", member_function<&status_bar::set_reversed>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

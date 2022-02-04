@@ -5,7 +5,7 @@
 
 #include <filesystem>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 bool file_exists(const std::string& sFile) {
     return std::filesystem::exists(sFile) && std::filesystem::is_regular_file(sFile);
@@ -66,4 +66,4 @@ std::string get_file_extension(const std::string& sFile) {
     return std::filesystem::path(sFile).extension().u8string();
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils

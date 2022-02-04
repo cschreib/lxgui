@@ -10,7 +10,7 @@
 
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 anchor::anchor(region& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor) {
     if (!mObject.is_virtual()) {
@@ -171,4 +171,4 @@ anchor_point anchor::get_anchor_point(const std::string& sPoint) {
     return anchor_point::TOP_LEFT;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

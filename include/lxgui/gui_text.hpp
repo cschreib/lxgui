@@ -15,7 +15,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class renderer;
 class vertex_cache;
@@ -366,6 +366,6 @@ private:
     mutable std::vector<quad>                  lIconsList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

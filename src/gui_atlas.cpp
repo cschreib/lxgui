@@ -7,7 +7,7 @@
 #include "lxgui/gui_vertex.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 atlas_page::atlas_page(material::filter mFilter) : mFilter_(mFilter) {}
 
@@ -246,4 +246,4 @@ void atlas::add_page_() {
     lPageList_.push_back(std::move(mPage));
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

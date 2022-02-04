@@ -9,7 +9,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_texture.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 scroll_frame::scroll_frame(utils::control_block& mBlock, manager& mManager) :
     frame(mBlock, mManager) {
@@ -304,4 +304,4 @@ vector2f scroll_frame::get_target_dimensions() const {
     return get_apparent_dimensions();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

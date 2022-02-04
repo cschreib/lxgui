@@ -9,7 +9,7 @@
 
 #include <sol/state.hpp>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 utils::connection
 keybinder::register_key_binding(std::string_view sName, sol::protected_function mLuaFunction) {
@@ -129,4 +129,4 @@ bool keybinder::on_key_down(
     return true;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

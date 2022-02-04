@@ -7,7 +7,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 /// Create a new gui::manager using a full SDL implementation.
 /** \param pWindow The SDL render window
@@ -18,6 +18,6 @@ namespace lxgui { namespace gui { namespace sdl {
 utils::owner_ptr<gui::manager>
 create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage = true);
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl
 
 #endif

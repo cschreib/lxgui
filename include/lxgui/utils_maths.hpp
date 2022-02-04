@@ -4,7 +4,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 /// Rounding method for points to pixels conversions.
 enum class rounding_method {
@@ -26,6 +26,6 @@ enum class rounding_method {
  */
 float round(float fValue, float fUnit, rounding_method mMethod);
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

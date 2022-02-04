@@ -18,7 +18,7 @@ namespace {
 const char* LXGUI_UI_VERSION = "0001";
 } // namespace
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 addon_registry::addon_registry(
     sol::state&    mLua,
@@ -268,4 +268,4 @@ void addon_registry::set_current_addon(const addon* pAddOn) {
     pCurrentAddOn_ = pAddOn;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

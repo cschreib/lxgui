@@ -17,7 +17,7 @@ class RenderTexture;
 /** \endcond
  */
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 /// A place to render things (the screen, a texture, ...)
 class render_target final : public gui::render_target {
@@ -77,6 +77,6 @@ private:
     sf::RenderTexture*              pRenderTexture_ = nullptr;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

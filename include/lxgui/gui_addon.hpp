@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// A piece of the user interface
 struct addon {
@@ -24,6 +24,6 @@ struct addon {
     std::vector<std::string> lSavedVariableList;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

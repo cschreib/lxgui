@@ -28,7 +28,7 @@ class state;
 /** \endcond
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 struct addon;
 class manager;
@@ -818,6 +818,6 @@ utils::observer_ptr<ObjectType> observer_from(ObjectType* pSelf) {
         return nullptr;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

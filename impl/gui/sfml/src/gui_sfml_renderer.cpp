@@ -16,7 +16,7 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/VertexBuffer.hpp>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 renderer::renderer(sf::RenderWindow& mWindow) :
     mWindow_(mWindow), mWindowDimensions_(mWindow.getSize().x, mWindow.getSize().y) {}
@@ -224,4 +224,4 @@ void renderer::notify_window_resized(const vector2ui& mNewDimensions) {
     mWindowDimensions_ = mNewDimensions;
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

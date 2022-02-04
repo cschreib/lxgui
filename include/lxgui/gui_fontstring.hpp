@@ -6,7 +6,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// A #layered_region that can draw text on the screen.
 /** This class holds a string and a reference to a font, which
@@ -299,6 +299,6 @@ private:
     vector2f mShadowOffset_ = vector2f::ZERO;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

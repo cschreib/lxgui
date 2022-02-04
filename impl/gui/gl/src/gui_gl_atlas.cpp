@@ -32,7 +32,7 @@
 
 #include <cmath>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) :
     gui::atlas_page(mFilter) {
@@ -127,4 +127,4 @@ std::unique_ptr<gui::atlas_page> atlas::create_page_() {
     return std::make_unique<gl::atlas_page>(mRenderer_, mFilter_);
 }
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 matrix4f build_identity() noexcept {
     matrix4f mId;
@@ -206,4 +206,4 @@ std::ostream& operator<<(std::ostream& o, const matrix4f& m) {
              << "(" << m(3, 0) << ", " << m(3, 1) << ", " << m(3, 2) << ", " << m(3, 3) << ")\n";
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -14,7 +14,7 @@
 #include <limits>
 #include <memory>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 /// Open implementation of rendering
 class renderer final : public gui::renderer {
@@ -237,6 +237,6 @@ private:
 #endif
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

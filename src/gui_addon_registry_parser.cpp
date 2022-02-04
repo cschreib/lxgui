@@ -21,7 +21,7 @@
 
 #include <fstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class file_line_mappings {
 public:
@@ -287,4 +287,4 @@ void addon_registry::parse_layout_file_(const std::string& sFile, const addon& m
     warn_for_not_accessed_node(mRoot);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

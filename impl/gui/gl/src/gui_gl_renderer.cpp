@@ -30,7 +30,7 @@
 #    endif
 #endif
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 #if defined(LXGUI_OPENGL3)
 thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_;
@@ -482,4 +482,4 @@ void renderer::setup_buffers_() {
 }
 #endif
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl

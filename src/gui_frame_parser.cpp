@@ -8,7 +8,7 @@
 #include "lxgui/gui_root.hpp"
 #include "lxgui/gui_virtual_root.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void frame::parse_all_nodes_before_children_(const layout_node& mNode) {
     parse_attributes_(mNode);
@@ -414,4 +414,4 @@ void frame::parse_scripts_node_(const layout_node& mNode) {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

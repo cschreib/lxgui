@@ -14,7 +14,7 @@
 #include <variant>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Utility class to translate strings for display in GUI.
 class localizer {
@@ -263,6 +263,6 @@ public:
     void register_on_lua(sol::state& mState);
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

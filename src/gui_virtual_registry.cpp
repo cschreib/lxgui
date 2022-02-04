@@ -4,7 +4,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 virtual_registry::virtual_registry(const registry& mObjectRegistry) :
     pObjectRegistry_(&mObjectRegistry) {}
@@ -34,4 +34,4 @@ virtual_registry::get_virtual_region_list(std::string_view sNames) const {
     return lInheritance;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 typedef std::vector<std::string> string_vector;
 
@@ -20,6 +20,6 @@ string_vector
             get_file_list(const std::string& sRelPath, bool bWithPath, const std::string& sExtensions);
 std::string get_file_extension(const std::string& sFile);
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils
 
 #endif

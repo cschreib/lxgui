@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Represents color gradients
 class gradient {
@@ -48,6 +48,6 @@ private:
     color       mMinColor_, mMaxColor_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

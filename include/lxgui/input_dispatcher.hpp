@@ -12,15 +12,7 @@
 #include <string>
 #include <vector>
 
-namespace lxgui {
-namespace gui {
-
-class event;
-class event_emitter;
-
-} // namespace gui
-
-namespace input {
+namespace lxgui::input {
 
 class source;
 
@@ -167,7 +159,6 @@ private:
     source& mSource_;
 };
 
-} // namespace input
-} // namespace lxgui
+} // namespace lxgui::input
 
 #endif

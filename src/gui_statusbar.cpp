@@ -9,7 +9,7 @@
 
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 std::array<float, 4> select_uvs(const std::array<float, 8>& uvs) {
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
@@ -293,4 +293,4 @@ void status_bar::notify_bar_texture_needs_update_() {
     bUpdateBarTexture_ = true;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

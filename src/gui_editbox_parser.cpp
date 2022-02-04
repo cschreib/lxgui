@@ -4,7 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_parser_common.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 void edit_box::parse_attributes_(const layout_node& mNode) {
     base::parse_attributes_(mNode);
 
@@ -81,4 +81,4 @@ void edit_box::parse_text_insets_node_(const layout_node& mNode) {
             pTextInsetsNode->get_attribute_value_or<float>("bottom", 0.0f)));
     }
 }
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -7,7 +7,7 @@
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/utils_std.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 frame_container::frame_container(
     factory& mFactory, registry& mRegistry, frame_renderer* pRenderer) :
@@ -63,4 +63,4 @@ void frame_container::clear_frames_() {
     lRootFrameList_.clear();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

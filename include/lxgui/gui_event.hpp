@@ -8,7 +8,7 @@
 #include <initializer_list>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// Stores a variable number of arguments for an event.
 class event_data {
@@ -82,6 +82,6 @@ private:
     std::vector<utils::variant> lArgList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

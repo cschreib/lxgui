@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 /// A class that holds rendering data
 /** This implementation can contain either a plain color
@@ -144,6 +144,6 @@ private:
     static const std::size_t MAXIMUM_SIZE;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

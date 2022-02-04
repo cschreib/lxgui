@@ -1,6 +1,6 @@
 #include "lxgui/gui_material.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 material::material(bool bIsAtlas) : bIsAtlas_(bIsAtlas) {}
 
@@ -34,4 +34,4 @@ bool material::is_in_atlas() const {
     return bIsAtlas_;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

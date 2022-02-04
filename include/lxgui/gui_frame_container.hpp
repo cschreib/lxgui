@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 class frame;
@@ -181,6 +181,6 @@ private:
     root_frame_list lRootFrameList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

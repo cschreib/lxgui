@@ -5,7 +5,7 @@
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 material::material(const vector2ui& mDimensions, bool bRenderTarget, wrap mWrap, filter mFilter) :
     gui::material(false),
@@ -216,4 +216,4 @@ const sf::Texture* material::get_texture() const {
         return &mTexture_;
 }
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml

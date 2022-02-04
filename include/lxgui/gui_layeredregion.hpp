@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// ID of a layer for rendering inside a frame.
 enum class layer {
@@ -107,6 +107,6 @@ protected:
     layer mLayer_ = layer::ARTWORK;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

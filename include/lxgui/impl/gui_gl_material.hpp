@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 /// A class that holds rendering data
 /** This implementation can contain either a plain color
@@ -136,6 +136,6 @@ private:
     static std::size_t MAXIMUM_SIZE;
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

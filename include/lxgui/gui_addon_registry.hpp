@@ -18,7 +18,7 @@ class state;
 /** \endcond
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class localizer;
 class event_emitter;
@@ -92,6 +92,6 @@ private:
     string_map<string_map<addon>> lAddOnList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

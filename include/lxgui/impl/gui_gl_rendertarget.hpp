@@ -8,7 +8,7 @@
 
 #include <memory>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 /// A place to render things (the screen, a texture, ...)
 class render_target final : public gui::render_target {
@@ -75,6 +75,6 @@ private:
     matrix4f mViewMatrix_;
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

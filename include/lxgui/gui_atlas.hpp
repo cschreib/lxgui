@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class renderer;
 class font;
@@ -183,6 +183,6 @@ private:
     std::vector<page_item> lPageList_;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

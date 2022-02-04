@@ -13,7 +13,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRenderer_(pRenderer) {
     int iWindowWidth, iWindowHeight;
@@ -533,4 +533,4 @@ void renderer::notify_window_resized(const vector2ui& mNewDimensions) {
     mWindowDimensions_ = mNewDimensions;
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

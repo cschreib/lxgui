@@ -221,7 +221,7 @@
  *   @classmod Frame
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void frame::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<frame>(
@@ -728,4 +728,4 @@ void frame::register_on_lua(sol::state& mLua) {
     mClass.set_function("unregister_event", member_function<&frame::unregister_event>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

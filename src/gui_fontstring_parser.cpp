@@ -4,7 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void font_string::parse_layout(const layout_node& mNode) {
     layered_region::parse_layout(mNode);
@@ -95,4 +95,4 @@ void font_string::parse_shadow_node_(const layout_node& mNode) {
     }
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

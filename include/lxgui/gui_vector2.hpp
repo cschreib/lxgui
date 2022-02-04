@@ -7,7 +7,7 @@
 #include <cmath>
 #include <type_traits>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 template<typename T>
 struct vector2 {
@@ -180,6 +180,6 @@ O& operator<<(O& mStream, const vector2<T>& mV) {
     return mStream << mV.x << ", " << mV.y;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 const color color::EMPTY(0.0f, 0.0f, 0.0f, 0.0f);
 const color color::WHITE(1.0f, 1.0f, 1.0f);
@@ -254,4 +254,4 @@ std::istream& operator>>(std::istream& mStream, color& mColor) {
     return mStream;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

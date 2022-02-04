@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 /// A #button with two additional states: checked and unchecked.
 /** This region works exactly like a classic #button, but is has two
@@ -109,6 +109,6 @@ protected:
     utils::observer_ptr<texture> pDisabledCheckedTexture_ = nullptr;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

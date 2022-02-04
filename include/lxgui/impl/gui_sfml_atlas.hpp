@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
-namespace lxgui { namespace gui { namespace sfml {
+namespace lxgui::gui::sfml {
 
 class renderer;
 
@@ -68,6 +68,6 @@ protected:
     std::unique_ptr<gui::atlas_page> create_page_() override;
 };
 
-}}} // namespace lxgui::gui::sfml
+} // namespace lxgui::gui::sfml
 
 #endif

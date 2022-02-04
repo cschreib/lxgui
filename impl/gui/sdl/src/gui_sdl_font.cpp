@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 font::font(
     SDL_Renderer*                        pRenderer,
@@ -267,4 +267,4 @@ void font::update_texture(std::shared_ptr<gui::material> pMat) {
     pTexture_ = std::static_pointer_cast<sdl::material>(pMat);
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

@@ -13,7 +13,7 @@
 using sf::Keyboard;
 using sf::Mouse;
 
-namespace lxgui { namespace input { namespace sfml {
+namespace lxgui::input { namespace sfml {
 source::source(sf::Window& mWindow) : mWindow_(mWindow) {
     mWindowDimensions_ = gui::vector2ui(mWindow_.getSize().x, mWindow_.getSize().y);
 }
@@ -213,4 +213,4 @@ void source::on_sfml_event(const sf::Event& mEvent) {
         on_mouse_moved(gui::vector2f(mMouseDelta.x, mMouseDelta.y), mMouse_.mPosition);
     }
 }
-}}} // namespace lxgui::input::sfml
+}} // namespace lxgui::input::sfml

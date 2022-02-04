@@ -3,7 +3,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 virtual_root::virtual_root(manager& mManager, registry& mNonVirtualRegistry) :
     frame_container(mManager.get_factory(), mObjectRegistry_, nullptr),
@@ -15,4 +15,4 @@ virtual_root::~virtual_root() {
     clear_frames_();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

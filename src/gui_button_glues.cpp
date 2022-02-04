@@ -39,7 +39,7 @@
  *   @classmod Button
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void button::register_on_lua(sol::state& mLua) {
     auto mClass = mLua.new_usertype<button>(
@@ -293,4 +293,4 @@ void button::register_on_lua(sol::state& mLua) {
     mClass.set_function("unlock_highlight", member_function<&button::unlock_highlight>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -6,7 +6,7 @@
 #include "lxgui/utils_signal.hpp"
 #include "lxgui/utils_string.hpp"
 
-namespace lxgui { namespace input {
+namespace lxgui::input {
 
 class source;
 
@@ -76,6 +76,6 @@ private:
     utils::scoped_connection mConnection_;
 };
 
-}} // namespace lxgui::input
+} // namespace lxgui::input
 
 #endif

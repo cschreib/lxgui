@@ -8,7 +8,7 @@
 #include <string_view>
 #include <vector>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 class region;
 
@@ -33,6 +33,6 @@ private:
     const registry* pObjectRegistry_ = nullptr;
 };
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

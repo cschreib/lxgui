@@ -1,6 +1,6 @@
 #include "lxgui/utils_exception.hpp"
 
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 exception::exception(const std::string& sMessage) : sMessage_(sMessage) {}
 
@@ -15,4 +15,4 @@ const char* exception::what() const noexcept {
     return sMessage_.c_str();
 }
 
-}} // namespace lxgui::utils
+} // namespace lxgui::utils

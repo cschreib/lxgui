@@ -7,7 +7,7 @@
 #include <limits>
 #include <memory>
 
-namespace lxgui { namespace gui { namespace gl {
+namespace lxgui::gui::gl {
 
 /** A vertex cache stores vertices and indices that can be used to draw
  *   any shape on the screen. If the type is TRIANGLES, each group of 3
@@ -82,6 +82,6 @@ private:
     std::uint32_t uiIndexBuffer_           = std::numeric_limits<std::uint32_t>::max();
 };
 
-}}} // namespace lxgui::gui::gl
+} // namespace lxgui::gui::gl
 
 #endif

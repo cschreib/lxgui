@@ -15,7 +15,7 @@
 
 using namespace lxgui::input;
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 edit_box::edit_box(utils::control_block& mBlock, manager& mManager) :
     frame(mBlock, mManager),
@@ -1178,4 +1178,4 @@ void periodic_timer::update(double dDelta) {
     dElapsed_ += dDelta;
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

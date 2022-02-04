@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <iostream>
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 render_target::render_target(
     SDL_Renderer* pRenderer, const vector2ui& mDimensions, material::filter mFilter) {
@@ -67,4 +67,4 @@ void render_target::check_availability(SDL_Renderer* pRenderer) {
     }
 }
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl

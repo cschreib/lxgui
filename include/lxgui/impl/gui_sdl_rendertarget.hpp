@@ -11,7 +11,7 @@
 struct SDL_Renderer;
 struct SDL_Texture;
 
-namespace lxgui { namespace gui { namespace sdl {
+namespace lxgui::gui::sdl {
 
 /// A place to render things (the screen, a texture, ...)
 class render_target final : public gui::render_target {
@@ -84,6 +84,6 @@ private:
     matrix4f                       mViewMatrix_;
 };
 
-}}} // namespace lxgui::gui::sdl
+} // namespace lxgui::gui::sdl
 
 #endif

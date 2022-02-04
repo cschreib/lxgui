@@ -11,7 +11,7 @@
 
 #include <sstream>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 texture::texture(utils::control_block& mBlock, manager& mManager) :
     layered_region(mBlock, mManager), mRenderer_(mManager.get_renderer()) {
@@ -464,4 +464,4 @@ void texture::update_borders_() {
     mQuad_.v[3].pos = lBorderList_.bottom_left();
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

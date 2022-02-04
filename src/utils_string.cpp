@@ -6,7 +6,7 @@
 
 /** \cond NOT_REMOVE_FROM_DOC
  */
-namespace lxgui { namespace utils {
+namespace lxgui::utils {
 
 string_view trim(string_view s, char cPattern) {
     std::size_t uiStart = s.find_first_not_of(cPattern);
@@ -411,7 +411,8 @@ std::string to_string(const utils::variant& mValue) {
         },
         mValue);
 }
-}} // namespace lxgui::utils
+
+} // namespace lxgui::utils
 
 /** \endcond
  */

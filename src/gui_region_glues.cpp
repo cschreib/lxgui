@@ -122,7 +122,7 @@
  *   @classmod Region
  */
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 void region::set_lua_member_(std::string sKey, sol::stack_object mValue) {
     auto mIter = lLuaMembers_.find(sKey);
@@ -365,4 +365,4 @@ void region::register_on_lua(sol::state& mLua) {
     mClass.set_function("show", member_function<&region::show>());
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui

@@ -7,7 +7,7 @@
 #include <initializer_list>
 #include <iosfwd>
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 struct matrix4f {
     using element_type = float;
@@ -58,6 +58,6 @@ vector2f operator*(const vector2f& v, const matrix4f& m) noexcept;
 
 std::ostream& operator<<(std::ostream& o, const matrix4f& m);
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
 
 #endif

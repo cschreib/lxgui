@@ -6,7 +6,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-namespace lxgui { namespace gui {
+namespace lxgui::gui {
 
 check_button::check_button(utils::control_block& mBlock, manager& mManager) :
     button(mBlock, mManager) {
@@ -144,4 +144,4 @@ void check_button::create_glue() {
     create_glue_(this);
 }
 
-}} // namespace lxgui::gui
+} // namespace lxgui::gui
