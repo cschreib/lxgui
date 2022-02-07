@@ -376,7 +376,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00111">111</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00114">114</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +400,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00117">117</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00120">120</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Closes the UI (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a>). </p>
 <dl class="section note"><dt>Note</dt><dd>The actual closing may be deferred if called from within <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to close the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31" title="Closes the UI (immediately).">close_ui_now()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00160">160</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00163">163</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -445,7 +445,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section note"><dt>Note</dt><dd>All regions will be deleted, and the Lua state will be closed. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not call this function while the manager is running <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a> (i.e., do not call this directly from a frame's callback, C++ or Lua). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00168">168</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00171">171</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -474,7 +474,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00089">89</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00092">92</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -737,7 +737,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section return"><dt>Returns</dt><dd>The current UI scaling factor </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4" title="Sets the global UI scaling factor.">set_interface_scaling_factor()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00084">84</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00087">87</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -819,7 +819,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the GUI Lua state (sol wrapper). </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00122">122</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00125">125</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1162,7 +1162,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section return"><dt>Returns</dt><dd>'true' if interface caching is enabled </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00103">103</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00106">106</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1184,7 +1184,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Checks if the UI has been loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the UI has being loaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00216">216</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00219">219</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1206,7 +1206,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Loads the UI. </p>
 <dl class="section note"><dt>Note</dt><dd>Creates the Lua state and loads addon files (if any). Calling this function if the UI is already loaded will have no effect. If your intent is to re-load the UI, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a> instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00147">147</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1280,7 +1280,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Prints debug informations in the log file. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1region.html#a12689dee39537c8656058c88a23487f4" title="Prints all relevant information about this region in a string.">region::serialize()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00248">248</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1329,7 +1329,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Closes the UI and load it again (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a>). </p>
 <dl class="section note"><dt>Note</dt><dd>The actual re-loading may be deferred if called from within <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to reload the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a619911ce1963c2713a45f748fd00a0de" title="Closes the UI and load it again (immediately).">reload_ui_now()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00188">188</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00191">191</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1352,7 +1352,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31" title="Closes the UI (immediately).">close_ui_now()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI.">load_ui()</a>. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not call this function while the manager is running <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1364cbad58388b5b05d560b3d62fd84c" title="Updates this manager and its regions.">update_ui()</a> (i.e., do not call this directly from a frame's callback, C++ or Lua). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00196">196</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00199">199</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1373,7 +1373,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 
 <p>Renders the UI into the current render target. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00207">207</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00210">210</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1424,7 +1424,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Toggles interface caching. </p>
 <dl class="section note"><dt>Note</dt><dd>Disabled by default. Enabling this will most likely improve performances, at the expense of higher GPU memory usage. The UI will be cached into large render targets, which are only redrawn when the UI changes, rather than redrawn on each frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00096">96</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00099">99</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1452,7 +1452,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00221">221</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00224">224</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1463,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Feb 2 2022 07:59:51 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 7 2022 09:05:48 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
