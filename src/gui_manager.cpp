@@ -77,8 +77,11 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 
     pInputDispatcher_->set_interface_scaling_factor(fScalingFactor_);
 
-    pRoot_->notify_scaling_factor_updated();
-    pRoot_->notify_hovered_frame_dirty();
+    if (pRoot_)
+    {
+        pRoot_->notify_scaling_factor_updated();
+        pRoot_->notify_hovered_frame_dirty();
+    }
 }
 
 float manager::get_interface_scaling_factor() const
