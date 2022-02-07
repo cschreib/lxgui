@@ -1080,5 +1080,9 @@
 		{
 			"build_folder": "$folder/build",
 		},
+		"ClangFormat":
+		{
+		    "format_on_save": true
+		}
 	},
 }
