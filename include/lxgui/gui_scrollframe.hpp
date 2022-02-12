@@ -36,7 +36,7 @@ class scroll_frame : public frame, public frame_renderer {
 
 public:
     /// Constructor.
-    explicit scroll_frame(utils::control_block& mBlock, manager& mManager);
+    explicit scroll_frame(utils::control_block& m_block, manager& m_manager);
 
     /// Destructor.
     ~scroll_frame() override;
@@ -47,18 +47,18 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float fDelta) override;
+    void update(float f_delta) override;
 
     /// Copies a region's parameters into this scroll_frame (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Returns 'true' if this scroll_frame can use a script.
     /** \param sScriptName The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& sScriptName) const override;
+    bool can_use_script(const std::string& s_script_name) const override;
 
     /// Calls a script.
     /** \param sScriptName The name of the script
@@ -68,32 +68,32 @@ public:
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
 
     /// Sets this scroll_frame's scroll child.
     /** \param pFrame The scroll child
      *   \note Creates the render target.
      */
-    void set_scroll_child(utils::owner_ptr<frame> pFrame);
+    void set_scroll_child(utils::owner_ptr<frame> p_frame);
 
     /// Returns this scroll_frame's scroll child.
     /** \return This scroll_frame's scroll child
      */
     const utils::observer_ptr<frame>& get_scroll_child() {
-        return pScrollChild_;
+        return p_scroll_child_;
     }
 
     /// Returns this scroll_frame's scroll child.
     /** \return This scroll_frame's scroll child
      */
     utils::observer_ptr<const frame> get_scroll_child() const {
-        return pScrollChild_;
+        return p_scroll_child_;
     }
 
     /// Sets the horizontal offset of the scroll child.
     /** \param fHorizontalScroll The horizontal offset
      */
-    void set_horizontal_scroll(float fHorizontalScroll);
+    void set_horizontal_scroll(float f_horizontal_scroll);
 
     /// Returns the horizontal offset of the scroll child.
     /** \return The horizontal offset of the scroll child
@@ -108,7 +108,7 @@ public:
     /// Sets the vertical offset of the scroll child.
     /** \param fVerticalScroll The vertical offset
      */
-    void set_vertical_scroll(float fVerticalScroll);
+    void set_vertical_scroll(float f_vertical_scroll);
 
     /// Returns the vertical offset of the scroll child.
     /** \return The vertical offset of the scroll child
@@ -130,16 +130,16 @@ public:
      *         keyboard/mouse/wheel enabled.
      */
     utils::observer_ptr<const frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) const override;
+    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const override;
 
     /// Tells this renderer that one of its region requires redraw.
-    void notify_strata_needs_redraw(frame_strata mStrata) override;
+    void notify_strata_needs_redraw(frame_strata m_strata) override;
 
     /// Tells this renderer that it should (or not) render another frame.
     /** \param pFrame    The frame to render
      *   \param bRendered 'true' if this renderer needs to render that new object
      */
-    void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered) override;
+    void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool b_rendered) override;
 
     /// Returns the width and height of of this renderer's main render target (e.g., screen).
     /** \return The render target dimensions
@@ -153,29 +153,29 @@ public:
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "ScrollFrame";
+    static constexpr const char* class_name = "ScrollFrame";
 
 protected:
-    void         parse_all_nodes_before_children_(const layout_node& mNode) override;
-    virtual void parse_scroll_child_node_(const layout_node& mNode);
+    void         parse_all_nodes_before_children_(const layout_node& m_node) override;
+    virtual void parse_scroll_child_node_(const layout_node& m_node);
 
     void update_scroll_range_();
     void rebuild_scroll_render_target_();
     void render_scroll_strata_list_();
 
-    vector2f mScroll_;
-    vector2f mScrollRange_;
+    vector2f m_scroll_;
+    vector2f m_scroll_range_;
 
-    utils::observer_ptr<frame> pScrollChild_ = nullptr;
+    utils::observer_ptr<frame> p_scroll_child_ = nullptr;
 
-    bool                           bRebuildScrollRenderTarget_ = false;
-    bool                           bRedrawScrollRenderTarget_  = false;
-    bool                           bUpdateScrollRange_         = false;
-    std::shared_ptr<render_target> pScrollRenderTarget_;
+    bool                           b_rebuild_scroll_render_target_ = false;
+    bool                           b_redraw_scroll_render_target_  = false;
+    bool                           b_update_scroll_range_         = false;
+    std::shared_ptr<render_target> p_scroll_render_target_;
 
-    utils::observer_ptr<texture> pScrollTexture_ = nullptr;
+    utils::observer_ptr<texture> p_scroll_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui

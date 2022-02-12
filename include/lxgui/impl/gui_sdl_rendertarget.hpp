@@ -22,9 +22,9 @@ public:
      *   \param mFilter     The filtering to apply to the target texture when displayed
      */
     render_target(
-        SDL_Renderer*    pRenderer,
-        const vector2ui& mDimensions,
-        material::filter mFilter = material::filter::NONE);
+        SDL_Renderer*    p_renderer,
+        const vector2ui& m_dimensions,
+        material::filter m_filter = material::filter::none);
 
     /// Begins rendering on this target.
     void begin() override;
@@ -35,7 +35,7 @@ public:
     /// Clears the content of this render_target.
     /** \param mColor The color to use as background
      */
-    void clear(const color& mColor) override;
+    void clear(const color& m_color) override;
 
     /// Returns this render target's pixel rect.
     /** \return This render target's pixel rect
@@ -47,7 +47,7 @@ public:
      *   \return 'true' if the function had to re-create a
      *           new render target
      */
-    bool set_dimensions(const vector2ui& mDimensions) override;
+    bool set_dimensions(const vector2ui& m_dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
@@ -72,7 +72,7 @@ public:
     /** \param pRenderer The renderer to check for availability
      *   \note If not, this function throws a gui::exception.
      */
-    static void check_availability(SDL_Renderer* pRenderer);
+    static void check_availability(SDL_Renderer* p_renderer);
 
     /// Returns the underlying SDL render texture object.
     /** return The underlying SDL render texture object
@@ -80,8 +80,8 @@ public:
     SDL_Texture* get_render_texture();
 
 private:
-    std::shared_ptr<sdl::material> pTexture_;
-    matrix4f                       mViewMatrix_;
+    std::shared_ptr<sdl::material> p_texture_;
+    matrix4f                       m_view_matrix_;
 };
 
 } // namespace lxgui::gui::sdl

@@ -156,7 +156,7 @@ class region : public utils::enable_observer_from_this<region> {
 
 public:
     /// Contructor.
-    explicit region(utils::control_block& mBlock, manager& mManager);
+    explicit region(utils::control_block& m_block, manager& m_manager);
 
     /// Destructor.
     ~region() override;
@@ -179,18 +179,18 @@ public:
     /// Updates this region's logic.
     /** \param fDelta Time spent since last update
      */
-    virtual void update(float fDelta);
+    virtual void update(float f_delta);
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    virtual std::string serialize(const std::string& sTab) const;
+    virtual std::string serialize(const std::string& s_tab) const;
 
     /// Copies a region's parameters into this region (inheritance).
     /** \param mObj The region to copy
      */
-    virtual void copy_from(const region& mObj);
+    virtual void copy_from(const region& m_obj);
 
     /// Tells this region that its borders need updating.
     virtual void notify_borders_need_update();
@@ -219,14 +219,14 @@ public:
     /** \return This region's parent
      */
     utils::observer_ptr<const frame> get_parent() const {
-        return pParent_;
+        return p_parent_;
     }
 
     /// Returns this region's parent.
     /** \return This region's parent
      */
     const utils::observer_ptr<frame>& get_parent() {
-        return pParent_;
+        return p_parent_;
     }
 
     /// Removes this region from its parent and return an owning pointer.
@@ -245,7 +245,7 @@ public:
     /** \param fAlpha The new alpha value
      *   \note Default is 1.0f.
      */
-    void set_alpha(float fAlpha);
+    void set_alpha(float f_alpha);
 
     /// Returns this region's alpha (opacity).
     /** \return This region's alpha (opacity).
@@ -274,7 +274,7 @@ public:
     /** \param bIsShown 'true' if you want to show this region
      *   \note See show() and hide() for more infos.
      */
-    void set_shown(bool bIsShown);
+    void set_shown(bool b_is_shown);
 
     /// Checks if this region is shown.
     /** \return 'true' if this region is shown
@@ -289,32 +289,32 @@ public:
     /// Changes this region's absolute dimensions (in pixels).
     /** \param mDimensions The new dimensions
      */
-    virtual void set_dimensions(const vector2f& mDimensions);
+    virtual void set_dimensions(const vector2f& m_dimensions);
 
     /// Changes this region's absolute width (in pixels).
     /** \param fAbsWidth The new width
      */
-    virtual void set_width(float fAbsWidth);
+    virtual void set_width(float f_abs_width);
 
     /// Changes this region's absolute height (in pixels).
     /** \param fAbsHeight The new height
      */
-    virtual void set_height(float fAbsHeight);
+    virtual void set_height(float f_abs_height);
 
     /// Changes this region's dimensions (relative to its parent).
     /** \param mDimensions The new dimensions (relative)
      */
-    void set_relative_dimensions(const vector2f& mDimensions);
+    void set_relative_dimensions(const vector2f& m_dimensions);
 
     /// Changes this region's width (relative to its parent).
     /** \param fRelWidth The new width
      */
-    void set_relative_width(float fRelWidth);
+    void set_relative_width(float f_rel_width);
 
     /// Changes this region's height (relative to its parent).
     /** \param fRelHeight The new height
      */
-    void set_relative_height(float fRelHeight);
+    void set_relative_height(float f_rel_height);
 
     /// Returns this region's explicitly-defined width and height (in pixels).
     /** \return This region's explicitly-defined width and height (in pixels)
@@ -359,7 +359,7 @@ public:
     /** \param mPosition The coordinates to test
      *   \return 'true' if the provided coordinates are inside this region
      */
-    virtual bool is_in_region(const vector2f& mPosition) const;
+    virtual bool is_in_region(const vector2f& m_position) const;
 
     /// Returns the type of this region.
     /** \return The type of this region
@@ -370,14 +370,14 @@ public:
     /** \param sType The type to test
      *   \return 'true' if this region is of the provided type
      */
-    bool is_object_type(const std::string& sType) const;
+    bool is_object_type(const std::string& s_type) const;
 
     /// Checks if this region is of the provided type.
     /** \return 'true' if this region is of the provided type
      */
     template<typename ObjectType>
     bool is_object_type() const {
-        return is_object_type(ObjectType::CLASS_NAME);
+        return is_object_type(ObjectType::class_name);
     }
 
     /// Returns an array containing all the types of this region.
@@ -425,7 +425,7 @@ public:
     /** \param pObj A pointer to the object you want to wrap
      *   \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const utils::observer_ptr<region>& pObj);
+    void set_all_points(const utils::observer_ptr<region>& p_obj);
 
     /// Adjusts this regions anchors to fit the provided region.
     /** \param sObjName The name of the object to fit to
@@ -433,28 +433,28 @@ public:
      *         This version is to be used by virtual regions to
      *         preserve the anchor hierarchy.
      */
-    void set_all_points(const std::string& sObjName);
+    void set_all_points(const std::string& s_obj_name);
 
     /// Adds/replaces an anchor.
     /** \param mAnchor The anchor to add
      */
-    void set_point(const anchor_data& mAnchor);
+    void set_point(const anchor_data& m_anchor);
 
     /// Adds/replaces an anchor.
     /** \param mArgs Argument to construct a new anchor_data
      */
     template<typename... Args>
-    void set_point(Args&&... mArgs) {
+    void set_point(Args&&... m_args) {
         constexpr auto set_point_overload =
             static_cast<void (region::*)(const anchor_data&)>(&region::set_point);
-        (this->*set_point_overload)(anchor_data{std::forward<Args>(mArgs)...});
+        (this->*set_point_overload)(anchor_data{std::forward<Args>(m_args)...});
     }
 
     /// Checks if this region depends on another.
     /** \param mObj The region to test
      *   \note Usefull to detect circular refences.
      */
-    bool depends_on(const region& mObj) const;
+    bool depends_on(const region& m_obj) const;
 
     /// Returns the number of defined anchors.
     /** \return The number of defined anchors
@@ -465,13 +465,13 @@ public:
     /** \param mPoint The anchor point
      *   \return A pointer to the anchor, nullptr if none
      */
-    anchor& modify_point(anchor_point mPoint);
+    anchor& modify_point(anchor_point m_point);
 
     /// Returns one of this region's anchor.
     /** \param mPoint The anchor point
      *   \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(anchor_point mPoint) const;
+    const anchor& get_point(anchor_point m_point) const;
 
     /// Returns all of this regions's anchors.
     /** \return All of this regions's anchors
@@ -484,7 +484,7 @@ public:
      *   \return The position of the nearest physical pixel
      */
     float round_to_pixel(
-        float fValue, utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
+        float f_value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
 
     /// Round an absolute position on screen to the nearest physical pixel.
     /** \param mPosition The input absolute position (can be fractional)
@@ -492,21 +492,21 @@ public:
      *   \return The position of the nearest physical pixel
      */
     vector2f round_to_pixel(
-        const vector2f&        mPosition,
-        utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
+        const vector2f&        m_position,
+        utils::rounding_method m_method = utils::rounding_method::nearest) const;
 
     /// Notifies this region that another one is anchored to it.
     /** \param mObj The anchored region
      *   \note Anchored objects get their borders automatically updated
      *         whenever this objet's borders are updated.
      */
-    void add_anchored_object(region& mObj);
+    void add_anchored_object(region& m_obj);
 
     /// Notifies this region that another one is no longer anchored to it.
     /** \param mObj The region no longer anchored
      *   \see add_anchored_object()
      */
-    void remove_anchored_object(region& mObj);
+    void remove_anchored_object(region& m_obj);
 
     /// Checks if this region is virtual.
     /** \return 'true' if this region is virtual
@@ -590,7 +590,7 @@ public:
     /// Sets the addon this frame belongs to.
     /** \param pAddOn The addon this frame belongs to
      */
-    void set_addon(const addon* pAddOn);
+    void set_addon(const addon* p_add_on);
 
     /// Returns this frame's addon.
     /** \return This frame's addon
@@ -609,20 +609,20 @@ public:
      *         "|" in front of a file name, which will then be interpreted as relative
      *         to the addon directory. This function takes care of this transformation.
      */
-    std::string parse_file_name(const std::string& sFileName) const;
+    std::string parse_file_name(const std::string& s_file_name) const;
 
     /// Returns this region's manager.
     /** \return This region's manager
      */
     manager& get_manager() {
-        return mManager_;
+        return m_manager_;
     }
 
     /// Returns this region's manager.
     /** \return This region's manager
      */
     const manager& get_manager() const {
-        return mManager_;
+        return m_manager_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
@@ -644,33 +644,33 @@ public:
     /// Parses data from a layout_node.
     /** \param mNode The layout node
      */
-    virtual void parse_layout(const layout_node& mNode);
+    virtual void parse_layout(const layout_node& m_node);
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
     template<typename ObjectType>
-    friend const ObjectType* down_cast(const region* pSelf);
+    friend const ObjectType* down_cast(const region* p_self);
 
     template<typename ObjectType>
-    friend ObjectType* down_cast(region* pSelf);
+    friend ObjectType* down_cast(region* p_self);
 
-    static constexpr const char* CLASS_NAME = "Region";
+    static constexpr const char* class_name = "Region";
 
 protected:
     // Layout parsing
-    virtual void parse_attributes_(const layout_node& mNode);
-    virtual void parse_size_node_(const layout_node& mNode);
-    virtual void parse_anchor_node_(const layout_node& mNode);
-    color        parse_color_node_(const layout_node& mNode);
+    virtual void parse_attributes_(const layout_node& m_node);
+    virtual void parse_size_node_(const layout_node& m_node);
+    virtual void parse_anchor_node_(const layout_node& m_node);
+    color        parse_color_node_(const layout_node& m_node);
     std::pair<anchor_type, vector2<std::optional<float>>>
-    parse_dimension_(const layout_node& mNode);
+    parse_dimension_(const layout_node& m_node);
 
     void read_anchors_(
-        float& fLeft, float& fRight, float& fTop, float& fBottom, float& fXCenter, float& fYCenter)
+        float& f_left, float& f_right, float& f_top, float& f_bottom, float& f_x_center, float& f_y_center)
         const;
 
-    bool make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
+    bool make_borders_(float& f_min, float& f_max, float f_center, float f_size) const;
 
     virtual void update_borders_();
     virtual void update_anchors_();
@@ -678,23 +678,23 @@ protected:
     sol::state& get_lua_();
 
     template<typename T>
-    void create_glue_(T* pSelf);
+    void create_glue_(T* p_self);
 
-    void        set_lua_member_(std::string sKey, sol::stack_object mValue);
-    sol::object get_lua_member_(const std::string& sKey) const;
+    void        set_lua_member_(std::string s_key, sol::stack_object m_value);
+    sol::object get_lua_member_(const std::string& s_key) const;
 
     /// Sets this region's name.
     /** \param sName This region's name
      *   \note Can only be called once. If you need to set both the name and the parent
      *         at the same time (typically, at creation), use set_name_and_parent_().
      */
-    void set_name_(const std::string& sName);
+    void set_name_(const std::string& s_name);
 
     /// Changes this region's parent.
     /** \param pParent The new parent
      *   \note Default is nullptr.
      */
-    void set_parent_(utils::observer_ptr<frame> pParent);
+    void set_parent_(utils::observer_ptr<frame> p_parent);
 
     /// Sets this region's name and parent at once.
     /** \param sName This region's name
@@ -702,41 +702,41 @@ protected:
      *   \note The name can only be set once. If you need to just change the
      *         parent, call set_parent_().
      */
-    void set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent);
+    void set_name_and_parent_(const std::string& s_name, utils::observer_ptr<frame> p_parent);
 
-    manager& mManager_;
+    manager& m_manager_;
 
-    const addon* pAddOn_ = nullptr;
+    const addon* p_add_on_ = nullptr;
 
-    std::string sName_;
-    std::string sRawName_;
-    std::string sLuaName_;
-    std::size_t uiID_ = std::numeric_limits<std::size_t>::max();
+    std::string s_name_;
+    std::string s_raw_name_;
+    std::string s_lua_name_;
+    std::size_t ui_id_ = std::numeric_limits<std::size_t>::max();
 
-    utils::observer_ptr<frame> pParent_ = nullptr;
+    utils::observer_ptr<frame> p_parent_ = nullptr;
 
-    bool bSpecial_  = false;
-    bool bInherits_ = false;
-    bool bVirtual_  = false;
-    bool bLoaded_   = false;
-    bool bReady_    = true;
+    bool b_special_  = false;
+    bool b_inherits_ = false;
+    bool b_virtual_  = false;
+    bool b_loaded_   = false;
+    bool b_ready_    = true;
 
-    std::vector<std::string> lType_;
+    std::vector<std::string> l_type_;
 
-    std::array<std::optional<anchor>, 9>     lAnchorList_;
-    std::vector<utils::observer_ptr<region>> lPreviousAnchorParentList_;
-    bounds2<bool>                            lDefinedBorderList_;
-    bounds2f                                 lBorderList_;
+    std::array<std::optional<anchor>, 9>     l_anchor_list_;
+    std::vector<utils::observer_ptr<region>> l_previous_anchor_parent_list_;
+    bounds2<bool>                            l_defined_border_list_;
+    bounds2f                                 l_border_list_;
 
-    float fAlpha_     = 1.0f;
-    bool  bIsShown_   = true;
-    bool  bIsVisible_ = true;
+    float f_alpha_     = 1.0f;
+    bool  b_is_shown_   = true;
+    bool  b_is_visible_ = true;
 
-    vector2f mDimensions_;
+    vector2f m_dimensions_;
 
-    std::vector<utils::observer_ptr<region>> lAnchoredObjectList_;
+    std::vector<utils::observer_ptr<region>> l_anchored_object_list_;
 
-    std::unordered_map<std::string, sol::object> lLuaMembers_;
+    std::unordered_map<std::string, sol::object> l_lua_members_;
 };
 
 /// Obtain a pointer to a derived class.
@@ -748,15 +748,15 @@ protected:
  *         called. This indicates a programming error.
  */
 template<typename ObjectType>
-const ObjectType* down_cast(const region* pSelf) {
-    const ObjectType* pObject = dynamic_cast<const ObjectType*>(pSelf);
-    if (pSelf && !pObject && pSelf->is_object_type(ObjectType::CLASS_NAME)) {
+const ObjectType* down_cast(const region* p_self) {
+    const ObjectType* p_object = dynamic_cast<const ObjectType*>(p_self);
+    if (p_self && !p_object && p_self->is_object_type(ObjectType::class_name)) {
         throw gui::exception(
-            pSelf->lType_.back(), "cannot use down_cast() to " +
-                                      std::string(ObjectType::CLASS_NAME) +
+            p_self->l_type_.back(), "cannot use down_cast() to " +
+                                      std::string(ObjectType::class_name) +
                                       " as object is being destroyed");
     }
-    return pObject;
+    return p_object;
 }
 
 /// Obtain a pointer to a derived class.
@@ -768,8 +768,8 @@ const ObjectType* down_cast(const region* pSelf) {
  *         called. This indicates a programming error.
  */
 template<typename ObjectType>
-ObjectType* down_cast(region* pSelf) {
-    return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(pSelf)));
+ObjectType* down_cast(region* p_self) {
+    return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(p_self)));
 }
 
 /// Perform a down cast on an owning pointer.
@@ -778,8 +778,8 @@ ObjectType* down_cast(region* pSelf) {
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& pObject) {
-    return utils::owner_ptr<ObjectType>(std::move(pObject), down_cast<ObjectType>(pObject.get()));
+utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& p_object) {
+    return utils::owner_ptr<ObjectType>(std::move(p_object), down_cast<ObjectType>(p_object.get()));
 }
 
 /// Perform a down cast on an observer pointer.
@@ -788,8 +788,8 @@ utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& pObject) {
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& pObject) {
-    return utils::observer_ptr<ObjectType>(pObject, down_cast<ObjectType>(pObject.get()));
+utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& p_object) {
+    return utils::observer_ptr<ObjectType>(p_object, down_cast<ObjectType>(p_object.get()));
 }
 
 /// Perform a down cast on an observer pointer.
@@ -798,9 +798,9 @@ utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& pOb
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& pObject) {
+utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& p_object) {
     return utils::observer_ptr<ObjectType>(
-        std::move(pObject), down_cast<ObjectType>(pObject.get()));
+        std::move(p_object), down_cast<ObjectType>(p_object.get()));
 }
 
 /// Obtain an observer pointer from a raw pointer (typically 'this')
@@ -811,9 +811,9 @@ utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& pObject)
  *         input pointer.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> observer_from(ObjectType* pSelf) {
-    if (pSelf)
-        return utils::static_pointer_cast<ObjectType>(pSelf->region::observer_from_this());
+utils::observer_ptr<ObjectType> observer_from(ObjectType* p_self) {
+    if (p_self)
+        return utils::static_pointer_cast<ObjectType>(p_self->region::observer_from_this());
     else
         return nullptr;
 }

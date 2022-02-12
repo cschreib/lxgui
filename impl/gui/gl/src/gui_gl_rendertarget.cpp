@@ -25,13 +25,13 @@
 
 namespace lxgui::gui::gl {
 
-render_target::render_target(const vector2ui& mDimensions, material::filter mFilter) {
-    pTexture_ = std::make_shared<gl::material>(mDimensions, material::wrap::REPEAT, mFilter);
+render_target::render_target(const vector2ui& m_dimensions, material::filter m_filter) {
+    p_texture_ = std::make_shared<gl::material>(m_dimensions, material::wrap::repeat, m_filter);
 
-    glGenFramebuffers(1, &uiFBOHandle_);
-    glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
+    glGenFramebuffers(1, &ui_fbo_handle_);
+    glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
     glFramebufferTexture2D(
-        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture_->get_handle_(), 0);
+        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -42,41 +42,41 @@ render_target::render_target(const vector2ui& mDimensions, material::filter mFil
 }
 
 render_target::~render_target() {
-    if (uiFBOHandle_ != 0)
-        glDeleteFramebuffers(1, &uiFBOHandle_);
+    if (ui_fbo_handle_ != 0)
+        glDeleteFramebuffers(1, &ui_fbo_handle_);
 }
 
 void render_target::begin() {
-    vector2f mView = vector2f(pTexture_->get_canvas_dimensions());
-    mViewMatrix_   = matrix4f::view(mView);
+    vector2f m_view = vector2f(p_texture_->get_canvas_dimensions());
+    m_view_matrix_   = matrix4f::view(m_view);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
+    glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
 
-    glViewport(0.0f, 0.0f, mView.x, mView.y);
+    glViewport(0.0f, 0.0f, m_view.x, m_view.y);
 }
 
 void render_target::end() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void render_target::clear(const color& mColor) {
-    glClearColor(mColor.r, mColor.g, mColor.b, mColor.a);
+void render_target::clear(const color& m_color) {
+    glClearColor(m_color.r, m_color.g, m_color.b, m_color.a);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
 bounds2f render_target::get_rect() const {
-    return pTexture_->get_rect();
+    return p_texture_->get_rect();
 }
 
 vector2ui render_target::get_canvas_dimensions() const {
-    return pTexture_->get_canvas_dimensions();
+    return p_texture_->get_canvas_dimensions();
 }
 
-bool render_target::set_dimensions(const vector2ui& mDimensions) {
-    if (pTexture_->set_dimensions(mDimensions)) {
-        glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
+bool render_target::set_dimensions(const vector2ui& m_dimensions) {
+    if (p_texture_->set_dimensions(m_dimensions)) {
+        glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
         glFramebufferTexture2D(
-            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture_->get_handle_(), 0);
+            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -92,11 +92,11 @@ bool render_target::set_dimensions(const vector2ui& mDimensions) {
 }
 
 std::weak_ptr<gl::material> render_target::get_material() {
-    return pTexture_;
+    return p_texture_;
 }
 
 const matrix4f& render_target::get_view_matrix() const {
-    return mViewMatrix_;
+    return m_view_matrix_;
 }
 
 void render_target::check_availability() {

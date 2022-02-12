@@ -2,19 +2,19 @@
 
 namespace lxgui::gui {
 
-gradient::gradient(orientation mOrientation, const color& mMinColor, const color& mMaxColor) :
-    mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor) {}
+gradient::gradient(orientation m_orientation, const color& m_min_color, const color& m_max_color) :
+    m_orientation_(m_orientation), m_min_color_(m_min_color), m_max_color_(m_max_color) {}
 
 const color& gradient::get_min_color() const {
-    return mMinColor_;
+    return m_min_color_;
 }
 
 const color& gradient::get_max_color() const {
-    return mMaxColor_;
+    return m_max_color_;
 }
 
 gradient::orientation gradient::get_orientation() const {
-    return mOrientation_;
+    return m_orientation_;
 }
 
 } // namespace lxgui::gui

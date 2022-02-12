@@ -47,7 +47,7 @@ public:
      *   \param mRegistry The registry in which new frames should be registered
      *   \param pRenderer The frame_renderer that will render these frames (nullptr if none).
      */
-    explicit frame_container(factory& mFactory, registry& mRegistry, frame_renderer* pRenderer);
+    explicit frame_container(factory& m_factory, registry& m_registry, frame_renderer* p_renderer);
 
     virtual ~frame_container()              = default;
     frame_container(const frame_container&) = delete;
@@ -64,10 +64,10 @@ public:
      *         you require on this frame. If you do not, the frame's OnLoad
      *         callback will not fire.
      */
-    utils::observer_ptr<frame> create_root_frame(region_core_attributes mAttr) {
-        mAttr.pParent = nullptr;
+    utils::observer_ptr<frame> create_root_frame(region_core_attributes m_attr) {
+        m_attr.p_parent = nullptr;
 
-        return create_root_frame_(mAttr);
+        return create_root_frame_(m_attr);
     }
 
     /// Creates a new frame, ready for use, and owned by this frame_container.
@@ -80,14 +80,14 @@ public:
      *         callback will not fire.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame> create_root_frame(region_core_attributes mAttr) {
-        mAttr.sObjectType = frame_type::CLASS_NAME;
-        mAttr.pParent     = nullptr;
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<frame> create_root_frame(region_core_attributes m_attr) {
+        m_attr.s_object_type = FrameType::CLASS_NAME;
+        m_attr.p_parent     = nullptr;
 
-        return utils::static_pointer_cast<frame_type>(create_root_frame_(mAttr));
+        return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
     }
 
     /// Creates a new frame, ready for use, and owned by this frame_container.
@@ -100,28 +100,28 @@ public:
      *         callback will not fire.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame> create_root_frame(const std::string& sName) {
-        region_core_attributes mAttr;
-        mAttr.sName       = sName;
-        mAttr.sObjectType = frame_type::CLASS_NAME;
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<frame> create_root_frame(const std::string& s_name) {
+        region_core_attributes m_attr;
+        m_attr.s_name       = s_name;
+        m_attr.s_object_type = FrameType::class_name;
 
-        return utils::static_pointer_cast<frame_type>(create_root_frame_(mAttr));
+        return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
     }
 
     /// Make a frame owned by this frame_container.
     /** \param pFrame The frame to add to the root frame list
      *   \return Raw pointer to the frame
      */
-    utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> pFrame);
+    utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> p_frame);
 
     /// Remove a frame from the list of frames owned by this frame_container.
     /** \param pFrame The frame to be released
      *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
      */
-    utils::owner_ptr<frame> remove_root_frame(const utils::observer_ptr<frame>& pFrame);
+    utils::owner_ptr<frame> remove_root_frame(const utils::observer_ptr<frame>& p_frame);
 
     /// Returns the root frame list.
     /** \return The root frame list
@@ -144,41 +144,41 @@ public:
     /** \return The GUI object factory
      */
     factory& get_factory() {
-        return mFactory_;
+        return m_factory_;
     }
 
     /// Returns the GUI object factory.
     /** \return The GUI object factory
      */
     const factory& get_factory() const {
-        return mFactory_;
+        return m_factory_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     registry& get_registry() {
-        return mRegistry_;
+        return m_registry_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     const registry& get_registry() const {
-        return mRegistry_;
+        return m_registry_;
     }
 
 protected:
-    virtual utils::observer_ptr<frame> create_root_frame_(const region_core_attributes& mAttr);
+    virtual utils::observer_ptr<frame> create_root_frame_(const region_core_attributes& m_attr);
 
     void clear_frames_();
 
 private:
-    factory&        mFactory_;
-    registry&       mRegistry_;
-    frame_renderer* pRenderer_;
+    factory&        m_factory_;
+    registry&       m_registry_;
+    frame_renderer* p_renderer_;
 
-    root_frame_list lRootFrameList_;
+    root_frame_list l_root_frame_list_;
 };
 
 } // namespace lxgui::gui

@@ -9,20 +9,20 @@ namespace lxgui::gui {
 
 /// ID of a layer for rendering inside a frame.
 enum class layer {
-    BACKGROUND  = 0,
-    BORDER      = 1,
-    ARTWORK     = 2,
-    OVERLAY     = 3,
-    HIGHLIGHT   = 4,
-    SPECIALHIGH = 5,
-    ENUM_SIZE
+    background  = 0,
+    border      = 1,
+    artwork     = 2,
+    overlay     = 3,
+    highlight   = 4,
+    specialhigh = 5,
+    enum_size
 };
 
 /// Converts a string representation of a layer into the corresponding enumerator
 /** \param sLayer The layer string (e.g., "ARTWORK")
  *   \return The corresponding enumerator, or "ARTWORK" if parsing failed
  */
-layer parse_layer_type(const std::string& sLayer);
+layer parse_layer_type(const std::string& s_layer);
 
 /// A #region that can be rendered in a layer.
 /** Layered regions can display content on the screen (texture,
@@ -38,13 +38,13 @@ class layered_region : public region {
 
 public:
     /// Constructor.
-    explicit layered_region(utils::control_block& mBlock, manager& mManager);
+    explicit layered_region(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& sTab) const override;
+    std::string serialize(const std::string& s_tab) const override;
 
     /// Creates the associated Lua glue.
     void create_glue() override;
@@ -79,12 +79,12 @@ public:
     /// Sets this layered_region's draw layer.
     /** \param mLayer The new layer
      */
-    virtual void set_draw_layer(layer mLayer);
+    virtual void set_draw_layer(layer m_layer);
 
     /// Sets this layered_region's draw layer.
     /** \param sLayer The new layer
      */
-    virtual void set_draw_layer(const std::string& sLayer);
+    virtual void set_draw_layer(const std::string& s_layer);
 
     /// Notifies the renderer of this region that it needs to be redrawn.
     /** \note Automatically called by any shape changing function.
@@ -94,17 +94,17 @@ public:
     /// Parses data from a layout_node.
     /** \param mNode The layout node
      */
-    void parse_layout(const layout_node& mNode) override;
+    void parse_layout(const layout_node& m_node) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "LayeredRegion";
+    static constexpr const char* class_name = "LayeredRegion";
 
 protected:
-    void parse_attributes_(const layout_node& mNode) override;
+    void parse_attributes_(const layout_node& m_node) override;
 
-    layer mLayer_ = layer::ARTWORK;
+    layer m_layer_ = layer::artwork;
 };
 
 } // namespace lxgui::gui

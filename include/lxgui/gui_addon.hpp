@@ -10,18 +10,18 @@ namespace lxgui::gui {
 
 /// A piece of the user interface
 struct addon {
-    std::string sName;
-    std::string sVersion;
-    std::string sUIVersion;
-    std::string sAuthor;
+    std::string s_name;
+    std::string s_version;
+    std::string s_ui_version;
+    std::string s_author;
 
-    bool bEnabled = true;
+    bool b_enabled = true;
 
-    std::string sMainDirectory;
-    std::string sDirectory;
+    std::string s_main_directory;
+    std::string s_directory;
 
-    std::vector<std::string> lFileList;
-    std::vector<std::string> lSavedVariableList;
+    std::vector<std::string> l_file_list;
+    std::vector<std::string> l_saved_variable_list;
 };
 
 } // namespace lxgui::gui

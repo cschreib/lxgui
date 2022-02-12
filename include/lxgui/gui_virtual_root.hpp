@@ -25,7 +25,7 @@ public:
     /** \param mManager            The GUI manager
      *   \param mNonVirtualRegistry The registry for non-virtual objects (for error messages)
      */
-    explicit virtual_root(manager& mManager, registry& mNonVirtualRegistry);
+    explicit virtual_root(manager& m_manager, registry& m_non_virtual_registry);
 
     /// Destructor.
     ~virtual_root();
@@ -39,33 +39,33 @@ public:
     /** \return The manager instance associated with this root
      */
     manager& get_manager() {
-        return mManager_;
+        return m_manager_;
     }
 
     /// Returns the manager instance associated with this root.
     /** \return The manager instance associated with this root
      */
     const manager& get_manager() const {
-        return mManager_;
+        return m_manager_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     virtual_registry& get_registry() {
-        return mObjectRegistry_;
+        return m_object_registry_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     const virtual_registry& get_registry() const {
-        return mObjectRegistry_;
+        return m_object_registry_;
     }
 
 private:
-    manager&         mManager_;
-    virtual_registry mObjectRegistry_;
+    manager&         m_manager_;
+    virtual_registry m_object_registry_;
 };
 
 } // namespace lxgui::gui

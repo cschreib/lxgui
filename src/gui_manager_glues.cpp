@@ -26,72 +26,72 @@
 
 namespace lxgui::gui {
 
-void manager::register_lua_glues(std::function<void(gui::manager&)> pLuaRegs) {
-    pLuaRegs_ = std::move(pLuaRegs);
+void manager::register_lua_glues(std::function<void(gui::manager&)> p_lua_regs) {
+    p_lua_regs_ = std::move(p_lua_regs);
 }
 
 void manager::create_lua_() {
-    if (pLua_)
+    if (p_lua_)
         return;
 
-    pLua_ = std::unique_ptr<sol::state>(new sol::state());
-    pLua_->open_libraries(
+    p_lua_ = std::unique_ptr<sol::state>(new sol::state());
+    p_lua_->open_libraries(
         sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os,
         sol::lib::string, sol::lib::debug);
 
-    auto& mLua = *pLua_;
+    auto& m_lua = *p_lua_;
 
     /** @function log
      */
-    mLua.set_function(
-        "log", [](const std::string& sMessage) { gui::out << sMessage << std::endl; });
+    m_lua.set_function(
+        "log", [](const std::string& s_message) { gui::out << s_message << std::endl; });
 
     /** @function create_frame
      */
-    mLua.set_function(
+    m_lua.set_function(
         "create_frame",
-        [&](const std::string& sType, const std::string& sName, sol::optional<frame&> pParent,
-            sol::optional<std::string> sInheritance) -> sol::object {
-            region_core_attributes mAttr;
-            mAttr.sName       = sName;
-            mAttr.sObjectType = sType;
-            if (sInheritance.has_value()) {
-                mAttr.lInheritance =
-                    get_virtual_root().get_registry().get_virtual_region_list(sInheritance.value());
+        [&](const std::string& s_type, const std::string& s_name, sol::optional<frame&> p_parent,
+            sol::optional<std::string> s_inheritance) -> sol::object {
+            region_core_attributes m_attr;
+            m_attr.s_name       = s_name;
+            m_attr.s_object_type = s_type;
+            if (s_inheritance.has_value()) {
+                m_attr.l_inheritance =
+                    get_virtual_root().get_registry().get_virtual_region_list(s_inheritance.value());
             }
 
-            utils::observer_ptr<frame> pNewFrame;
-            if (pParent.has_value())
-                pNewFrame = pParent.value().create_child(std::move(mAttr));
+            utils::observer_ptr<frame> p_new_frame;
+            if (p_parent.has_value())
+                p_new_frame = p_parent.value().create_child(std::move(m_attr));
             else
-                pNewFrame = pRoot_->create_root_frame(std::move(mAttr));
+                p_new_frame = p_root_->create_root_frame(std::move(m_attr));
 
-            if (pNewFrame) {
-                pNewFrame->set_addon(get_addon_registry()->get_current_addon());
-                pNewFrame->notify_loaded();
-                return get_lua()[pNewFrame->get_lua_name()];
+            if (p_new_frame) {
+                p_new_frame->set_addon(get_addon_registry()->get_current_addon());
+                p_new_frame->notify_loaded();
+                return get_lua()[p_new_frame->get_lua_name()];
             } else
                 return sol::lua_nil;
         });
 
     /** @function delete_frame
      */
-    mLua.set_function("delete_frame", [&](frame& mFrame) { mFrame.destroy(); });
+    m_lua.set_function("delete_frame", [&](frame& m_frame) { m_frame.destroy(); });
 
     /** @function register_key_binding
      */
-    mLua.set_function(
-        "register_key_binding", [&](std::string sID, sol::protected_function mFunction) {
-            get_root().get_keybinder().register_key_binding(sID, mFunction);
+    m_lua.set_function(
+        "register_key_binding", [&](std::string s_id, sol::protected_function m_function) {
+            get_root().get_keybinder().register_key_binding(s_id, m_function);
         });
 
     /** @function set_key_binding
      */
-    mLua.set_function("set_key_binding", [&](std::string sID, sol::optional<std::string> sKey) {
-        if (sKey.has_value())
-            get_root().get_keybinder().set_key_binding(sID, sKey.value());
+    m_lua.set_function("set_key_binding", [&](std::string s_id, sol::optional<std::string> s_key) {
+        if (s_key.has_value())
+            get_root().get_keybinder().set_key_binding(s_id, s_key.value());
         else
-            get_root().get_keybinder().remove_key_binding(sID);
+            get_root().get_keybinder().remove_key_binding(s_id);
     });
 
     /** Closes the whole GUI and re-loads addons from files.
@@ -99,15 +99,15 @@ void manager::create_lua_() {
      * The GUI will be reloaded at the end of the current update tick, when it is safe to do so.
      * @function reload_ui
      */
-    mLua.set_function("reload_ui", [&]() { reload_ui(); });
+    m_lua.set_function("reload_ui", [&]() { reload_ui(); });
 
     /** Sets the global interface scaling factor.
      *   @function set_interface_scaling_factor
      *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
      * textures, etc.)
      */
-    mLua.set_function("set_interface_scaling_factor", [&](float fScaling) {
-        set_interface_scaling_factor(fScaling);
+    m_lua.set_function("set_interface_scaling_factor", [&](float f_scaling) {
+        set_interface_scaling_factor(f_scaling);
     });
 
     /** Return the global interface scaling factor.
@@ -115,18 +115,18 @@ void manager::create_lua_() {
      *   @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures,
      * etc.)
      */
-    mLua.set_function(
+    m_lua.set_function(
         "get_interface_scaling_factor", [&]() { return get_interface_scaling_factor(); });
 
-    pLocalizer_->register_on_lua(mLua);
+    p_localizer_->register_on_lua(m_lua);
 
     // Base types
-    pFactory_->register_region_type<region>();
-    pFactory_->register_region_type<frame>();
-    pFactory_->register_region_type<layered_region>();
+    p_factory_->register_region_type<region>();
+    p_factory_->register_region_type<frame>();
+    p_factory_->register_region_type<layered_region>();
 
-    if (pLuaRegs_)
-        pLuaRegs_(*this);
+    if (p_lua_regs_)
+        p_lua_regs_(*this);
 }
 
 } // namespace lxgui::gui

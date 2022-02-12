@@ -8,18 +8,18 @@
 
 namespace lxgui::gui {
 
-void renderer::begin(std::shared_ptr<render_target> pTarget) {
-    uiBatchCount_ = 0;
+void renderer::begin(std::shared_ptr<render_target> p_target) {
+    ui_batch_count_ = 0;
 
     if (is_quad_batching_enabled()) {
-        pCurrentMaterial_ = nullptr;
+        p_current_material_ = nullptr;
 
         if (is_vertex_cache_enabled()) {
             try {
-                if (lQuadCache_[0].pCache == nullptr) {
-                    for (std::size_t uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex) {
-                        lQuadCache_[uiIndex].pCache =
-                            create_vertex_cache(vertex_cache::type::QUADS);
+                if (l_quad_cache_[0].p_cache == nullptr) {
+                    for (std::size_t ui_index = 0u; ui_index < batching_cache_cycle_size; ++ui_index) {
+                        l_quad_cache_[ui_index].p_cache =
+                            create_vertex_cache(vertex_cache::type::quads);
                     }
                 }
             } catch (const std::exception& e) {
@@ -29,46 +29,46 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) {
                             "Vertex caches will be disabled."
                          << std::endl;
 
-                bVertexCacheEnabled_ = false;
+                b_vertex_cache_enabled_ = false;
             }
         }
     }
 
-    begin_(std::move(pTarget));
+    begin_(std::move(p_target));
 }
 
 void renderer::end() {
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
-        uiLastFrameBatchCount_ = uiBatchCount_;
+        ui_last_frame_batch_count_ = ui_batch_count_;
     }
 
     end_();
 }
 
-void renderer::set_view(const matrix4f& mViewMatrix) {
+void renderer::set_view(const matrix4f& m_view_matrix) {
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
     }
 
-    set_view_(mViewMatrix);
+    set_view_(m_view_matrix);
 }
 
-void renderer::render_quad(const quad& mQuad) {
-    render_quads(mQuad.mat.get(), {mQuad.v});
+void renderer::render_quad(const quad& m_quad) {
+    render_quads(m_quad.mat.get(), {m_quad.v});
 }
 
-bool renderer::uses_same_texture_(const material* pMat1, const material* pMat2) const {
-    if (pMat1 == pMat2)
+bool renderer::uses_same_texture_(const material* p_mat1, const material* p_mat2) const {
+    if (p_mat1 == p_mat2)
         return true;
 
-    if (pMat1 && pMat2 && pMat1->uses_same_texture(*pMat2))
+    if (p_mat1 && p_mat2 && p_mat1->uses_same_texture(*p_mat2))
         return true;
 
     if (is_texture_vertex_color_supported()) {
-        if (pMat1 && pMat1->is_in_atlas() && !pMat2)
+        if (p_mat1 && p_mat1->is_in_atlas() && !p_mat2)
             return true;
-        if (pMat2 && pMat2->is_in_atlas() && !pMat1)
+        if (p_mat2 && p_mat2->is_in_atlas() && !p_mat1)
             return true;
     }
 
@@ -76,104 +76,104 @@ bool renderer::uses_same_texture_(const material* pMat1, const material* pMat2) 
 }
 
 void renderer::render_quads(
-    const material* pMaterial, const std::vector<std::array<vertex, 4>>& lQuadList) {
-    if (lQuadList.empty())
+    const material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list) {
+    if (l_quad_list.empty())
         return;
 
     if (!is_quad_batching_enabled()) {
         // Render immediately
-        render_quads_(pMaterial, lQuadList);
+        render_quads_(p_material, l_quad_list);
         return;
     }
 
-    if (!uses_same_texture_(pMaterial, pCurrentMaterial_)) {
+    if (!uses_same_texture_(p_material, p_current_material_)) {
         // Render current batch and start a new one
         flush_quad_batch();
-        pCurrentMaterial_ = pMaterial;
+        p_current_material_ = p_material;
     }
 
-    if (lQuadCache_[uiCurrentQuadCache_].lData.empty()) {
+    if (l_quad_cache_[ui_current_quad_cache_].l_data.empty()) {
         // Start a new batch
-        pCurrentMaterial_ = pMaterial;
+        p_current_material_ = p_material;
     }
 
-    if (!pCurrentMaterial_) {
+    if (!p_current_material_) {
         // Previous quads had no material, override with the new one
-        pCurrentMaterial_ = pMaterial;
+        p_current_material_ = p_material;
     }
 
     // Add to the cache
-    auto& mCache = lQuadCache_[uiCurrentQuadCache_];
+    auto& m_cache = l_quad_cache_[ui_current_quad_cache_];
 
-    if (!pMaterial && is_texture_atlas_enabled() && is_texture_vertex_color_supported()) {
+    if (!p_material && is_texture_atlas_enabled() && is_texture_vertex_color_supported()) {
         // To allow quads with no texture to enter the batch
         // with atlas textures, we just change their UV coordinates
         // to map to the first top-left pixel of the atlas, which is always white.
-        mCache.lData.reserve(mCache.lData.size() + lQuadList.size());
-        for (const auto& mOrigQuad : lQuadList) {
-            mCache.lData.push_back(mOrigQuad);
-            auto& mQuad  = mCache.lData.back();
-            mQuad[0].uvs = mQuad[1].uvs = mQuad[2].uvs = mQuad[3].uvs = vector2f(0.0f, 0.0f);
+        m_cache.l_data.reserve(m_cache.l_data.size() + l_quad_list.size());
+        for (const auto& m_orig_quad : l_quad_list) {
+            m_cache.l_data.push_back(m_orig_quad);
+            auto& m_quad  = m_cache.l_data.back();
+            m_quad[0].uvs = m_quad[1].uvs = m_quad[2].uvs = m_quad[3].uvs = vector2f(0.0f, 0.0f);
         }
     } else {
-        mCache.lData.insert(mCache.lData.end(), lQuadList.begin(), lQuadList.end());
+        m_cache.l_data.insert(m_cache.l_data.end(), l_quad_list.begin(), l_quad_list.end());
     }
 }
 
 void renderer::flush_quad_batch() {
-    auto& mCache = lQuadCache_[uiCurrentQuadCache_];
-    if (mCache.lData.empty())
+    auto& m_cache = l_quad_cache_[ui_current_quad_cache_];
+    if (m_cache.l_data.empty())
         return;
 
-    if (mCache.pCache) {
-        mCache.pCache->update(mCache.lData[0].data(), mCache.lData.size() * 4);
-        render_cache_(pCurrentMaterial_, *mCache.pCache, matrix4f::IDENTITY);
+    if (m_cache.p_cache) {
+        m_cache.p_cache->update(m_cache.l_data[0].data(), m_cache.l_data.size() * 4);
+        render_cache_(p_current_material_, *m_cache.p_cache, matrix4f::identity);
     } else {
-        render_quads_(pCurrentMaterial_, mCache.lData);
+        render_quads_(p_current_material_, m_cache.l_data);
     }
 
-    mCache.lData.clear();
-    pCurrentMaterial_ = nullptr;
+    m_cache.l_data.clear();
+    p_current_material_ = nullptr;
 
-    ++uiCurrentQuadCache_;
-    if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
-        uiCurrentQuadCache_ = 0u;
+    ++ui_current_quad_cache_;
+    if (ui_current_quad_cache_ == batching_cache_cycle_size)
+        ui_current_quad_cache_ = 0u;
 
-    ++uiBatchCount_;
+    ++ui_batch_count_;
 }
 
 void renderer::render_cache(
-    const material* pMaterial, const vertex_cache& mCache, const matrix4f& mModelTransform) {
+    const material* p_material, const vertex_cache& m_cache, const matrix4f& m_model_transform) {
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
     }
 
-    render_cache_(pMaterial, mCache, mModelTransform);
+    render_cache_(p_material, m_cache, m_model_transform);
 }
 
 bool renderer::is_quad_batching_enabled() const {
-    return bQuadBatchingEnabled_;
+    return b_quad_batching_enabled_;
 }
 
-void renderer::set_quad_batching_enabled(bool bEnabled) {
-    bQuadBatchingEnabled_ = bEnabled;
+void renderer::set_quad_batching_enabled(bool b_enabled) {
+    b_quad_batching_enabled_ = b_enabled;
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material(const std::string& sFileName, material::filter mFilter) {
-    std::string sBackedName = utils::to_string(static_cast<std::size_t>(mFilter)) + '|' + sFileName;
-    auto        mIter       = lTextureList_.find(sBackedName);
-    if (mIter != lTextureList_.end()) {
-        if (std::shared_ptr<gui::material> pLock = mIter->second.lock())
-            return pLock;
+renderer::create_material(const std::string& s_file_name, material::filter m_filter) {
+    std::string s_backed_name = utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + s_file_name;
+    auto        m_iter       = l_texture_list_.find(s_backed_name);
+    if (m_iter != l_texture_list_.end()) {
+        if (std::shared_ptr<gui::material> p_lock = m_iter->second.lock())
+            return p_lock;
         else
-            lTextureList_.erase(mIter);
+            l_texture_list_.erase(m_iter);
     }
 
     try {
-        std::shared_ptr<gui::material> pTex = create_material_(sFileName, mFilter);
-        lTextureList_[sFileName]            = pTex;
-        return pTex;
+        std::shared_ptr<gui::material> p_tex = create_material_(s_file_name, m_filter);
+        l_texture_list_[s_file_name]            = p_tex;
+        return p_tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
@@ -182,165 +182,165 @@ renderer::create_material(const std::string& sFileName, material::filter mFilter
 
 namespace {
 std::string hash_font_parameters(
-    const std::string&                   sFontFile,
-    std::size_t                          uiSize,
-    std::size_t                          uiOutline,
-    const std::vector<code_point_range>& lCodePoints,
-    char32_t                             uiDefaultCodePoint) {
-    std::string sFontName = sFontFile + "|s" + utils::to_string(uiSize);
-    if (uiOutline > 0u)
-        sFontName += "|o" + utils::to_string(uiOutline);
+    const std::string&                   s_font_file,
+    std::size_t                          ui_size,
+    std::size_t                          ui_outline,
+    const std::vector<code_point_range>& l_code_points,
+    char32_t                             ui_default_code_point) {
+    std::string s_font_name = s_font_file + "|s" + utils::to_string(ui_size);
+    if (ui_outline > 0u)
+        s_font_name += "|o" + utils::to_string(ui_outline);
 
-    for (const code_point_range& mRange : lCodePoints)
-        sFontName +=
-            "|c" + utils::to_string(mRange.uiFirst) + "-" + utils::to_string(mRange.uiLast);
+    for (const code_point_range& m_range : l_code_points)
+        s_font_name +=
+            "|c" + utils::to_string(m_range.ui_first) + "-" + utils::to_string(m_range.ui_last);
 
-    sFontName += "|d" + utils::to_string(uiDefaultCodePoint);
+    s_font_name += "|d" + utils::to_string(ui_default_code_point);
 
-    return sFontName;
+    return s_font_name;
 }
 } // namespace
 
 std::shared_ptr<gui::font> renderer::create_font(
-    const std::string&                   sFontFile,
-    std::size_t                          uiSize,
-    std::size_t                          uiOutline,
-    const std::vector<code_point_range>& lCodePoints,
-    char32_t                             uiDefaultCodePoint) {
-    const std::string sFontName =
-        hash_font_parameters(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
+    const std::string&                   s_font_file,
+    std::size_t                          ui_size,
+    std::size_t                          ui_outline,
+    const std::vector<code_point_range>& l_code_points,
+    char32_t                             ui_default_code_point) {
+    const std::string s_font_name =
+        hash_font_parameters(s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
 
-    auto mIter = lFontList_.find(sFontName);
-    if (mIter != lFontList_.end()) {
-        if (std::shared_ptr<gui::font> pLock = mIter->second.lock())
-            return pLock;
+    auto m_iter = l_font_list_.find(s_font_name);
+    if (m_iter != l_font_list_.end()) {
+        if (std::shared_ptr<gui::font> p_lock = m_iter->second.lock())
+            return p_lock;
         else
-            lFontList_.erase(mIter);
+            l_font_list_.erase(m_iter);
     }
 
-    std::shared_ptr<gui::font> pFont =
-        create_font_(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
+    std::shared_ptr<gui::font> p_font =
+        create_font_(s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
 
-    lFontList_[sFontName] = pFont;
-    return pFont;
+    l_font_list_[s_font_name] = p_font;
+    return p_font;
 }
 
 bool renderer::is_texture_atlas_enabled() const {
-    return bTextureAtlasEnabled_ && is_texture_atlas_supported();
+    return b_texture_atlas_enabled_ && is_texture_atlas_supported();
 }
 
-void renderer::set_texture_atlas_enabled(bool bEnabled) {
-    bTextureAtlasEnabled_ = bEnabled;
+void renderer::set_texture_atlas_enabled(bool b_enabled) {
+    b_texture_atlas_enabled_ = b_enabled;
 }
 
 std::size_t renderer::get_texture_atlas_page_size() const {
-    if (uiTextureAtlasPageSize_ == 0u)
+    if (ui_texture_atlas_page_size_ == 0u)
         return std::min<std::size_t>(4096u, get_texture_max_size());
     else
-        return uiTextureAtlasPageSize_;
+        return ui_texture_atlas_page_size_;
 }
 
-void renderer::set_texture_atlas_page_size(std::size_t uiPageSize) {
-    uiTextureAtlasPageSize_ = uiPageSize;
+void renderer::set_texture_atlas_page_size(std::size_t ui_page_size) {
+    ui_texture_atlas_page_size_ = ui_page_size;
 }
 
 std::size_t renderer::get_num_texture_atlas_pages() const {
-    std::size_t uiCount = 0;
+    std::size_t ui_count = 0;
 
-    for (const auto& mPage : lAtlasList_) {
-        uiCount += mPage.second->get_num_pages();
+    for (const auto& m_page : l_atlas_list_) {
+        ui_count += m_page.second->get_num_pages();
     }
 
-    return uiCount;
+    return ui_count;
 }
 
 bool renderer::is_vertex_cache_enabled() const {
-    return bVertexCacheEnabled_ && is_vertex_cache_supported();
+    return b_vertex_cache_enabled_ && is_vertex_cache_supported();
 }
 
-void renderer::set_vertex_cache_enabled(bool bEnabled) {
-    bVertexCacheEnabled_ = bEnabled;
+void renderer::set_vertex_cache_enabled(bool b_enabled) {
+    b_vertex_cache_enabled_ = b_enabled;
 }
 
 void renderer::auto_detect_settings() {
-    bVertexCacheEnabled_  = true;
-    bTextureAtlasEnabled_ = true;
-    bQuadBatchingEnabled_ = true;
+    b_vertex_cache_enabled_  = true;
+    b_texture_atlas_enabled_ = true;
+    b_quad_batching_enabled_ = true;
 }
 
-atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) {
-    std::shared_ptr<gui::atlas> pAtlas;
+atlas& renderer::get_atlas_(const std::string& s_atlas_category, material::filter m_filter) {
+    std::shared_ptr<gui::atlas> p_atlas;
 
-    std::string sBakedAtlasName =
-        utils::to_string(static_cast<std::size_t>(mFilter)) + '|' + sAtlasCategory;
-    auto mIter = lAtlasList_.find(sBakedAtlasName);
-    if (mIter != lAtlasList_.end()) {
-        pAtlas = mIter->second;
+    std::string s_baked_atlas_name =
+        utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + s_atlas_category;
+    auto m_iter = l_atlas_list_.find(s_baked_atlas_name);
+    if (m_iter != l_atlas_list_.end()) {
+        p_atlas = m_iter->second;
     }
 
-    if (!pAtlas) {
-        pAtlas                       = create_atlas_(mFilter);
-        lAtlasList_[sBakedAtlasName] = pAtlas;
+    if (!p_atlas) {
+        p_atlas                       = create_atlas_(m_filter);
+        l_atlas_list_[s_baked_atlas_name] = p_atlas;
     }
 
-    return *pAtlas;
+    return *p_atlas;
 }
 
 std::shared_ptr<material> renderer::create_atlas_material(
-    const std::string& sAtlasCategory, const std::string& sFileName, material::filter mFilter) {
+    const std::string& s_atlas_category, const std::string& s_file_name, material::filter m_filter) {
     if (!is_texture_atlas_enabled())
-        return create_material(sFileName, mFilter);
+        return create_material(s_file_name, m_filter);
 
-    auto& mAtlas = get_atlas_(sAtlasCategory, mFilter);
+    auto& m_atlas = get_atlas_(s_atlas_category, m_filter);
 
-    auto pTex = mAtlas.fetch_material(sFileName);
-    if (pTex)
-        return pTex;
+    auto p_tex = m_atlas.fetch_material(s_file_name);
+    if (p_tex)
+        return p_tex;
 
-    pTex = create_material(sFileName, mFilter);
-    if (!pTex)
+    p_tex = create_material(s_file_name, m_filter);
+    if (!p_tex)
         return nullptr;
 
-    auto pAddedTex = mAtlas.add_material(sFileName, *pTex);
-    if (pAddedTex)
-        return pAddedTex;
+    auto p_added_tex = m_atlas.add_material(s_file_name, *p_tex);
+    if (p_added_tex)
+        return p_added_tex;
     else
-        return pTex;
+        return p_tex;
 }
 
 std::shared_ptr<font> renderer::create_atlas_font(
-    const std::string&                   sAtlasCategory,
-    const std::string&                   sFontFile,
-    std::size_t                          uiSize,
-    std::size_t                          uiOutline,
-    const std::vector<code_point_range>& lCodePoints,
-    char32_t                             uiDefaultCodePoint) {
+    const std::string&                   s_atlas_category,
+    const std::string&                   s_font_file,
+    std::size_t                          ui_size,
+    std::size_t                          ui_outline,
+    const std::vector<code_point_range>& l_code_points,
+    char32_t                             ui_default_code_point) {
     if (!is_texture_atlas_enabled())
-        return create_font(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
+        return create_font(s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
 
-    auto& mAtlas = get_atlas_(sAtlasCategory, material::filter::NONE);
+    auto& m_atlas = get_atlas_(s_atlas_category, material::filter::none);
 
-    const std::string sFontName =
-        hash_font_parameters(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
+    const std::string s_font_name =
+        hash_font_parameters(s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
 
-    auto pFont = mAtlas.fetch_font(sFontName);
-    if (pFont)
-        return pFont;
+    auto p_font = m_atlas.fetch_font(s_font_name);
+    if (p_font)
+        return p_font;
 
-    pFont = create_font(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
-    if (!pFont)
+    p_font = create_font(s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
+    if (!p_font)
         return nullptr;
 
-    if (mAtlas.add_font(sFontName, pFont))
-        return pFont;
+    if (m_atlas.add_font(s_font_name, p_font))
+        return p_font;
 
-    lFontList_[sFontName] = pFont;
-    return pFont;
+    l_font_list_[s_font_name] = p_font;
+    return p_font;
 }
 
-std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> pRenderTarget) {
-    const auto& mRect = pRenderTarget->get_rect();
-    return create_material(std::move(pRenderTarget), mRect);
+std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> p_render_target) {
+    const auto& m_rect = p_render_target->get_rect();
+    return create_material(std::move(p_render_target), m_rect);
 }
 
 void renderer::notify_window_resized(const vector2ui&) {}

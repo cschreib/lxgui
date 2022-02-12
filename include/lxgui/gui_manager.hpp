@@ -48,17 +48,17 @@ public:
      *   \param pRenderer    The renderer implementation
      */
     manager(
-        utils::control_block&          mBlock,
-        std::unique_ptr<input::source> pInputSource,
-        std::unique_ptr<renderer>      pRenderer);
+        utils::control_block&          m_block,
+        std::unique_ptr<input::source> p_input_source,
+        std::unique_ptr<renderer>      p_renderer);
 
     /// Destructor.
     ~manager() override;
 
-    manager(const manager& mMgr) = delete;
-    manager(manager&& mMgr)      = delete;
-    manager& operator=(const manager& mMgr) = delete;
-    manager& operator=(manager&& mMgr) = delete;
+    manager(const manager& m_mgr) = delete;
+    manager(manager&& m_mgr)      = delete;
+    manager& operator=(const manager& m_mgr) = delete;
+    manager& operator=(manager&& m_mgr) = delete;
 
     /// Sets the global UI scaling factor.
     /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
@@ -74,7 +74,7 @@ public:
      *         the interface to users with poorer eye sight, which would benefit from larger
      *         font sizes and larger icons.
      */
-    void set_interface_scaling_factor(float fScalingFactor);
+    void set_interface_scaling_factor(float f_scaling_factor);
 
     /// Returns the current UI scaling factor.
     /** \return The current UI scaling factor
@@ -86,7 +86,7 @@ public:
     /** \param bEnableCaching 'true' to enable, 'false' to disable
      *   \see toggle_caching()
      */
-    void enable_caching(bool bEnableCaching);
+    void enable_caching(bool b_enable_caching);
 
     /// Toggles interface caching.
     /** \note Disabled by default. Enabling this will most likely improve performances,
@@ -107,7 +107,7 @@ public:
      *   \note If the UI is already loaded, this change will only take effect after
      *         the UI is reloaded, see reload_ui().
      */
-    void add_addon_directory(const std::string& sDirectory);
+    void add_addon_directory(const std::string& s_directory);
 
     /// Clears the addon directory list.
     /** \note This is usefull whenever you need to reload a
@@ -128,7 +128,7 @@ public:
      *         If the UI is already loaded, this change will only take effect after
      *         the UI is reloaded.
      */
-    void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
+    void register_lua_glues(std::function<void(gui::manager&)> p_lua_regs);
 
     /// Prints debug informations in the log file.
     /** \note Calls region::serialize().
@@ -181,7 +181,7 @@ public:
     /// Updates this manager and its regions.
     /** \param fDelta The time elapsed since the last call
      */
-    void update_ui(float fDelta);
+    void update_ui(float f_delta);
 
     /// Returns the GUI Lua state (sol wrapper).
     /** \return The GUI Lua state
@@ -197,140 +197,140 @@ public:
     /** \return The renderer implementation
      */
     const renderer& get_renderer() const {
-        return *pRenderer_;
+        return *p_renderer_;
     }
 
     /// Returns the renderer implementation.
     /** \return The renderer implementation
      */
     renderer& get_renderer() {
-        return *pRenderer_;
+        return *p_renderer_;
     }
 
     /// Returns the window in which this gui is being displayed.
     /** \return The window in which this gui is being displayed
      */
     const input::window& get_window() const {
-        return *pWindow_;
+        return *p_window_;
     }
 
     /// Returns the window in which this gui is being displayed.
     /** \return The window in which this gui is being displayed
      */
     input::window& get_window() {
-        return *pWindow_;
+        return *p_window_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     const input::dispatcher& get_input_dispatcher() const {
-        return *pInputDispatcher_;
+        return *p_input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     input::dispatcher& get_input_dispatcher() {
-        return *pInputDispatcher_;
+        return *p_input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     const input::world_dispatcher& get_world_input_dispatcher() const {
-        return *pWorldInputDispatcher_;
+        return *p_world_input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     input::world_dispatcher& get_world_input_dispatcher() {
-        return *pWorldInputDispatcher_;
+        return *p_world_input_dispatcher_;
     }
 
     /// Returns the gui event emitter.
     /** \return The gui event emitter
      */
     const event_emitter& get_event_emitter() const {
-        return *pEventEmitter_;
+        return *p_event_emitter_;
     }
 
     /// Returns the gui event emitter.
     /** \return The gui event emitter
      */
     event_emitter& get_event_emitter() {
-        return *pEventEmitter_;
+        return *p_event_emitter_;
     }
 
     /// Returns the object used for localizing strings.
     /** \return The current localizer
      */
     localizer& get_localizer() {
-        return *pLocalizer_;
+        return *p_localizer_;
     }
 
     /// Returns the object used for localizing strings.
     /** \return The current localizer
      */
     const localizer& get_localizer() const {
-        return *pLocalizer_;
+        return *p_localizer_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     root& get_root() {
-        return *pRoot_;
+        return *p_root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     const root& get_root() const {
-        return *pRoot_;
+        return *p_root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     virtual_root& get_virtual_root() {
-        return *pVirtualRoot_;
+        return *p_virtual_root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     const virtual_root& get_virtual_root() const {
-        return *pVirtualRoot_;
+        return *p_virtual_root_;
     }
 
     /// Returns the UI object factory, which is used to create new objects.
     /** \return The factory object
      */
     factory& get_factory() {
-        return *pFactory_;
+        return *p_factory_;
     }
 
     /// Returns the UI object factory, which is used to create new objects.
     /** \return The factory object
      */
     const factory& get_factory() const {
-        return *pFactory_;
+        return *p_factory_;
     }
 
     /// Returns the addon registry, which keeps track of loaded addons.
     /** \return The registry object
      */
     addon_registry* get_addon_registry() {
-        return pAddOnRegistry_.get();
+        return p_add_on_registry_.get();
     }
 
     /// Returns the addon registry, which keeps track of loaded addons.
     /** \return The registry object
      */
     const addon_registry* get_addon_registry() const {
-        return pAddOnRegistry_.get();
+        return p_add_on_registry_.get();
     }
 
 private:
@@ -351,35 +351,35 @@ private:
     void read_files_();
 
     // Persistent state
-    float                              fScalingFactor_     = 1.0f;
-    float                              fBaseScalingFactor_ = 1.0f;
-    bool                               bEnableCaching_     = false;
-    std::function<void(gui::manager&)> pLuaRegs_;
-    std::vector<std::string>           lGUIDirectoryList_;
+    float                              f_scaling_factor_     = 1.0f;
+    float                              f_base_scaling_factor_ = 1.0f;
+    bool                               b_enable_caching_     = false;
+    std::function<void(gui::manager&)> p_lua_regs_;
+    std::vector<std::string>           l_gui_directory_list_;
 
     // Implementations
-    std::unique_ptr<input::source> pInputSource_;
-    std::unique_ptr<renderer>      pRenderer_;
+    std::unique_ptr<input::source> p_input_source_;
+    std::unique_ptr<renderer>      p_renderer_;
 
     // IO
-    std::unique_ptr<input::window>           pWindow_;
-    std::unique_ptr<input::dispatcher>       pInputDispatcher_;
-    std::unique_ptr<input::world_dispatcher> pWorldInputDispatcher_;
-    std::unique_ptr<event_emitter>           pEventEmitter_;
+    std::unique_ptr<input::window>           p_window_;
+    std::unique_ptr<input::dispatcher>       p_input_dispatcher_;
+    std::unique_ptr<input::world_dispatcher> p_world_input_dispatcher_;
+    std::unique_ptr<event_emitter>           p_event_emitter_;
 
     // UI state
-    std::unique_ptr<factory>        pFactory_;
-    std::unique_ptr<localizer>      pLocalizer_;
-    std::unique_ptr<sol::state>     pLua_;
-    utils::owner_ptr<root>          pRoot_;
-    utils::owner_ptr<virtual_root>  pVirtualRoot_;
-    std::unique_ptr<addon_registry> pAddOnRegistry_;
+    std::unique_ptr<factory>        p_factory_;
+    std::unique_ptr<localizer>      p_localizer_;
+    std::unique_ptr<sol::state>     p_lua_;
+    utils::owner_ptr<root>          p_root_;
+    utils::owner_ptr<virtual_root>  p_virtual_root_;
+    std::unique_ptr<addon_registry> p_add_on_registry_;
 
-    bool bLoaded_         = false;
-    bool bReloadUI_       = false;
-    bool bCloseUI_        = false;
-    bool bFirstIteration_ = true;
-    bool bUpdating_       = false;
+    bool b_loaded_         = false;
+    bool b_reload_ui_       = false;
+    bool b_close_ui_        = false;
+    bool b_first_iteration_ = true;
+    bool b_updating_       = false;
 };
 
 } // namespace lxgui::gui

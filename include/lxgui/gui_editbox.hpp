@@ -23,11 +23,11 @@ class periodic_timer {
 public:
     enum class start_type {
         /// The timer will start if you call Start()
-        PAUSED,
+        paused,
         /// The timer starts immediatly after it is created
-        NOW,
+        now,
         /// The timer will start when you first call Ticks()
-        FIRST_TICK
+        first_tick
     };
 
     /// Default constructor
@@ -35,7 +35,7 @@ public:
      *   \param mType     See TimerType
      *   \param bTicks    The timer ticks immediately
      */
-    periodic_timer(double dDuration, start_type mType, bool bTicks);
+    periodic_timer(double d_duration, start_type m_type, bool b_ticks);
 
     /// Returns the time elapsed since the last tick.
     /** \return The time elapsed since last tick
@@ -72,15 +72,15 @@ public:
     /// Updates this timer (adds time).
     /** \param dDelta The time elapsed since last update
      */
-    void update(double dDelta);
+    void update(double d_delta);
 
 private:
-    double dElapsed_   = 0.0;
-    double dDuration_  = 0.0;
-    bool   bPaused_    = true;
-    bool   bFirstTick_ = true;
+    double d_elapsed_   = 0.0;
+    double d_duration_  = 0.0;
+    bool   b_paused_    = true;
+    bool   b_first_tick_ = true;
 
-    start_type mType_ = start_type::PAUSED;
+    start_type m_type_ = start_type::paused;
 };
 
 /// A #frame with an editable text box.
@@ -131,12 +131,12 @@ class edit_box : public frame {
 
 public:
     /// Constructor.
-    explicit edit_box(utils::control_block& mBlock, manager& mManager);
+    explicit edit_box(utils::control_block& m_block, manager& m_manager);
 
     /// Copies a region's parameters into this edit_box (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Updates this region's logic.
     /** \param fDelta Time spent since last update
@@ -144,7 +144,7 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float fDelta) override;
+    void update(float f_delta) override;
 
     /// Calls a script.
     /** \param sScriptName The name of the script
@@ -154,18 +154,18 @@ public:
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
+    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
 
     /// Returns 'true' if this edit_box can use a script.
     /** \param sScriptName The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& sScriptName) const override;
+    bool can_use_script(const std::string& s_script_name) const override;
 
     /// Sets the content of this edit_box.
     /** \param sText The content of this edit_box
      */
-    void set_text(const utils::ustring& sText);
+    void set_text(const utils::ustring& s_text);
 
     /// Returns the content of this edit_box.
     /** \return The content of this edit_box
@@ -179,9 +179,9 @@ public:
      *   \note Will select (uiEnd - uiStart) characters
      */
     void highlight_text(
-        std::size_t uiStart      = 0u,
-        std::size_t uiEnd        = std::numeric_limits<std::size_t>::max(),
-        bool        bForceUpdate = false);
+        std::size_t ui_start      = 0u,
+        std::size_t ui_end        = std::numeric_limits<std::size_t>::max(),
+        bool        b_force_update = false);
 
     /// Deselects the selected text, if any.
     void unlight_text();
@@ -189,12 +189,12 @@ public:
     /// Sets the color of the highlight quad.
     /** \param mColor The color
      */
-    void set_highlight_color(const color& mColor);
+    void set_highlight_color(const color& m_color);
 
     /// Inserts some text after the cursor.
     /** \param sText The text to insert
      */
-    void insert_after_cursor(const utils::ustring& sText);
+    void insert_after_cursor(const utils::ustring& s_text);
 
     /// Returns the current position of the cursor.
     /** \return The position of the cursor (0: before first character,
@@ -206,12 +206,12 @@ public:
     /** \param uiPos The new cursor position (0: before first character,
                      get_num-letters(): after last character).
     */
-    void set_cursor_position(std::size_t uiPos);
+    void set_cursor_position(std::size_t ui_pos);
 
     /// Sets the maximum number of letters to allow in this edit_box.
     /** \param uiMaxLetters The max number of letters
      */
-    void set_max_letters(std::size_t uiMaxLetters);
+    void set_max_letters(std::size_t ui_max_letters);
 
     /// Returns the maximum number of letters to allow in this edit_box.
     /** \return the maximum number of letters to allow in this edit_box
@@ -226,7 +226,7 @@ public:
     /// Sets the carret's blink speed.
     /** \param dBlinkSpeed The number of seconds to wait between each blink
      */
-    void set_blink_speed(double dBlinkSpeed);
+    void set_blink_speed(double d_blink_speed);
 
     /// Returns the carret's blink speed.
     /** \return the carret's blink speed (time in seconds between each blink)
@@ -236,19 +236,19 @@ public:
     /// Makes this edit_box allow numeric characters only.
     /** \param bNumericOnly 'true' to only allow numeric characters
      */
-    void set_numeric_only(bool bNumericOnly);
+    void set_numeric_only(bool b_numeric_only);
 
     /// Makes this edit_box allow positive numbers only.
     /** \param bPositiveOnly 'true' to only allow positive numbers
      *   \note Only workds if set_numeric_only(true) has been called.
      */
-    void set_positive_only(bool bPositiveOnly);
+    void set_positive_only(bool b_positive_only);
 
     /// Makes this edit_box allow integer numbers only.
     /** \param bIntegerOnly 'true' to only allow integer numbers
      *   \note Only workds if set_numeric_only(true) has been called.
      */
-    void set_integer_only(bool bIntegerOnly);
+    void set_integer_only(bool b_integer_only);
 
     /// Checks if this edit_box allows numeric characters only.
     /** \return 'true' if this edit_box allows numeric characters only
@@ -270,7 +270,7 @@ public:
      *   \note In password mode, the content of the edit_box is replaced
      *         by stars (*).
      */
-    void enable_password_mode(bool bEnable);
+    void enable_password_mode(bool b_enable);
 
     /// Checks if this edit_box is in password mode.
     /** \return 'true' if this edit_box is in password mode
@@ -285,7 +285,7 @@ public:
      *         Scrolling in a single line edit_box is done horizontally, while
      *         it is only done vertically in a multi line one.
      */
-    void set_multi_line(bool bMultiLine);
+    void set_multi_line(bool b_multi_line);
 
     /// Checks if this edit_box can have several lines in it.
     /** \return 'true' if this edit_box can have several lines in it
@@ -295,7 +295,7 @@ public:
     /// Sets the maximum number of history lines this edit_box can keep.
     /** \param uiMaxHistoryLines The max number of history lines
      */
-    void set_max_history_lines(std::size_t uiMaxHistoryLines);
+    void set_max_history_lines(std::size_t ui_max_history_lines);
 
     /// Returns the maximum number of history lines this edit_box can keep.
     /** \return The maximum number of history lines this edit_box can keep
@@ -306,7 +306,7 @@ public:
     /** \param sHistoryLine The content of this history line
      *   \note This option is only available to single line edit_boxes.
      */
-    void add_history_line(const utils::ustring& sHistoryLine);
+    void add_history_line(const utils::ustring& s_history_line);
 
     /// Returns the history line list.
     /** \return The history line list
@@ -320,14 +320,14 @@ public:
     /// Sets whether keyboard arrows move the carret or not.
     /** \param bArrowsIgnored 'true' to ignore arrow keys
      */
-    void set_arrows_ignored(bool bArrowsIgnored);
+    void set_arrows_ignored(bool b_arrows_ignored);
 
     /// Sets the insets used to render the content text.
     /** \param lInsets (left, right, top, bottom)
      *   \note Positive insets will reduce the text area, while
      *         negative ones will enlarge it
      */
-    void set_text_insets(const bounds2f& lInsets);
+    void set_text_insets(const bounds2f& l_insets);
 
     /// Returns the text insets.
     /** \return The text insets
@@ -338,31 +338,31 @@ public:
     /** \return The font_string used to render the content
      */
     const utils::observer_ptr<font_string>& get_font_string() {
-        return pFontString_;
+        return p_font_string_;
     }
 
     /// Returns the font_string used to render the content.
     /** \return The font_string used to render the content
      */
     utils::observer_ptr<const font_string> get_font_string() const {
-        return pFontString_;
+        return p_font_string_;
     }
 
     /// Sets the font_string to use to render the content.
     /** \param pFont The font_string to use to render the content
      */
-    void set_font_string(utils::observer_ptr<font_string> pFont);
+    void set_font_string(utils::observer_ptr<font_string> p_font);
 
     /// Sets the font (file and size) to render the content.
     /** \param sFontName The file path to the .ttf file
      *   \param fHeight   The font height
      */
-    void set_font(const std::string& sFontName, float fHeight);
+    void set_font(const std::string& s_font_name, float f_height);
 
     /// Notifies this frame that it has received or lost focus.
     /** \param bFocus 'true' if focus is received, 'false' if lost
      */
-    void notify_focus(bool bFocus) override;
+    void notify_focus(bool b_focus) override;
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
@@ -371,15 +371,15 @@ public:
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "EditBox";
+    static constexpr const char* class_name = "EditBox";
 
 protected:
-    void parse_attributes_(const layout_node& mNode) override;
-    void parse_all_nodes_before_children_(const layout_node& mNode) override;
-    void parse_font_string_node_(const layout_node& mNode);
-    void parse_text_insets_node_(const layout_node& mNode);
+    void parse_attributes_(const layout_node& m_node) override;
+    void parse_all_nodes_before_children_(const layout_node& m_node) override;
+    void parse_font_string_node_(const layout_node& m_node);
+    void parse_text_insets_node_(const layout_node& m_node);
 
     void create_font_string_();
     void create_highlight_();
@@ -390,49 +390,49 @@ protected:
     void update_font_string_();
     void update_carret_position_();
 
-    bool        add_char_(char32_t sChar);
+    bool        add_char_(char32_t s_char);
     bool        remove_char_();
-    std::size_t get_letter_id_at_(const vector2f& mPosition) const;
-    bool        move_carret_at_(const vector2f& mPosition);
-    bool        move_carret_horizontally_(bool bForward = true);
-    bool        move_carret_vertically_(bool bDown = true);
+    std::size_t get_letter_id_at_(const vector2f& m_position) const;
+    bool        move_carret_at_(const vector2f& m_position);
+    bool        move_carret_horizontally_(bool b_forward = true);
+    bool        move_carret_vertically_(bool b_down = true);
 
-    void process_key_(input::key uiKey, bool bShiftIsPressed, bool bCtrlIsPressed);
+    void process_key_(input::key ui_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed);
 
-    utils::ustring           sUnicodeText_;
-    utils::ustring           sDisplayedText_;
-    utils::ustring::iterator iterCarretPos_;
-    utils::ustring::iterator iterCarretPosOld_;
+    utils::ustring           s_unicode_text_;
+    utils::ustring           s_displayed_text_;
+    utils::ustring::iterator iter_carret_pos_;
+    utils::ustring::iterator iter_carret_pos_old_;
 
-    std::size_t uiDisplayPos_   = 0;
-    std::size_t uiNumLetters_   = 0;
-    std::size_t uiMaxLetters_   = std::numeric_limits<std::size_t>::max();
-    bool        bNumericOnly_   = false;
-    bool        bPositiveOnly_  = false;
-    bool        bIntegerOnly_   = false;
-    bool        bPasswordMode_  = false;
-    bool        bMultiLine_     = false;
-    bool        bArrowsIgnored_ = false;
+    std::size_t ui_display_pos_   = 0;
+    std::size_t ui_num_letters_   = 0;
+    std::size_t ui_max_letters_   = std::numeric_limits<std::size_t>::max();
+    bool        b_numeric_only_   = false;
+    bool        b_positive_only_  = false;
+    bool        b_integer_only_   = false;
+    bool        b_password_mode_  = false;
+    bool        b_multi_line_     = false;
+    bool        b_arrows_ignored_ = false;
 
-    std::string sComboKey_;
+    std::string s_combo_key_;
 
-    utils::observer_ptr<texture> pHighlight_          = nullptr;
-    color                        mHighlightColor_     = color(1.0f, 1.0f, 1.0f, 0.5f);
-    std::size_t                  uiSelectionStartPos_ = 0u;
-    std::size_t                  uiSelectionEndPos_   = 0u;
-    bool                         bSelectedText_       = false;
+    utils::observer_ptr<texture> p_highlight_          = nullptr;
+    color                        m_highlight_color_     = color(1.0f, 1.0f, 1.0f, 0.5f);
+    std::size_t                  ui_selection_start_pos_ = 0u;
+    std::size_t                  ui_selection_end_pos_   = 0u;
+    bool                         b_selected_text_       = false;
 
-    utils::observer_ptr<texture> pCarret_     = nullptr;
-    double                       dBlinkSpeed_ = 0.5;
-    periodic_timer               mCarretTimer_;
+    utils::observer_ptr<texture> p_carret_     = nullptr;
+    double                       d_blink_speed_ = 0.5;
+    periodic_timer               m_carret_timer_;
 
-    std::vector<utils::ustring> lHistoryLineList_;
-    std::size_t                 uiMaxHistoryLines_    = std::numeric_limits<std::size_t>::max();
-    std::size_t                 uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
+    std::vector<utils::ustring> l_history_line_list_;
+    std::size_t                 ui_max_history_lines_    = std::numeric_limits<std::size_t>::max();
+    std::size_t                 ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
 
-    utils::observer_ptr<font_string> pFontString_ = nullptr;
+    utils::observer_ptr<font_string> p_font_string_ = nullptr;
 
-    bounds2f lTextInsets_ = bounds2f::ZERO;
+    bounds2f l_text_insets_ = bounds2f::zero;
 };
 
 } // namespace lxgui::gui

@@ -69,227 +69,227 @@
 
 namespace lxgui::gui {
 
-void font_string::register_on_lua(sol::state& mLua) {
-    auto mClass = mLua.new_usertype<font_string>(
+void font_string::register_on_lua(sol::state& m_lua) {
+    auto m_class = m_lua.new_usertype<font_string>(
         "FontString", sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index, member_function<&font_string::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&font_string::set_lua_member_>());
 
     /** @function get_font
      */
-    mClass.set_function("get_font", member_function<&font_string::get_font_name>());
+    m_class.set_function("get_font", member_function<&font_string::get_font_name>());
 
     /** @function get_alignment_x
      */
-    mClass.set_function("get_alignment_x", [](const font_string& mSelf) {
-        alignment_x mAlignment = mSelf.get_alignment_x();
-        switch (mAlignment) {
-        case alignment_x::LEFT: return "LEFT";
-        case alignment_x::CENTER: return "CENTER";
-        case alignment_x::RIGHT: return "RIGHT";
+    m_class.set_function("get_alignment_x", [](const font_string& m_self) {
+        alignment_x m_alignment = m_self.get_alignment_x();
+        switch (m_alignment) {
+        case alignment_x::left: return "LEFT";
+        case alignment_x::center: return "CENTER";
+        case alignment_x::right: return "RIGHT";
         default: return "UNKNOWN";
         }
     });
 
     /** @function get_alignment_y
      */
-    mClass.set_function("get_alignment_y", [](const font_string& mSelf) {
-        alignment_y mAlignment = mSelf.get_alignment_y();
-        switch (mAlignment) {
-        case alignment_y::TOP: return "TOP";
-        case alignment_y::MIDDLE: return "MIDDLE";
-        case alignment_y::BOTTOM: return "BOTTOM";
+    m_class.set_function("get_alignment_y", [](const font_string& m_self) {
+        alignment_y m_alignment = m_self.get_alignment_y();
+        switch (m_alignment) {
+        case alignment_y::top: return "TOP";
+        case alignment_y::middle: return "MIDDLE";
+        case alignment_y::bottom: return "BOTTOM";
         default: return "UNKNOWN";
         }
     });
 
     /** @function get_shadow_color
      */
-    mClass.set_function("get_shadow_color", [](const font_string& mSelf) {
-        const color& mShadowColor = mSelf.get_shadow_color();
-        return std::make_tuple(mShadowColor.r, mShadowColor.g, mShadowColor.b, mShadowColor.a);
+    m_class.set_function("get_shadow_color", [](const font_string& m_self) {
+        const color& m_shadow_color = m_self.get_shadow_color();
+        return std::make_tuple(m_shadow_color.r, m_shadow_color.g, m_shadow_color.b, m_shadow_color.a);
     });
 
     /** @function get_shadow_offset
      */
-    mClass.set_function("get_shadow_offset", [](const font_string& mSelf) {
-        const vector2f& mShadowOffsets = mSelf.get_shadow_offset();
-        return std::make_pair(mShadowOffsets.x, mShadowOffsets.y);
+    m_class.set_function("get_shadow_offset", [](const font_string& m_self) {
+        const vector2f& m_shadow_offsets = m_self.get_shadow_offset();
+        return std::make_pair(m_shadow_offsets.x, m_shadow_offsets.y);
     });
 
     /** @function get_spacing
      */
-    mClass.set_function("get_spacing", member_function<&font_string::get_spacing>());
+    m_class.set_function("get_spacing", member_function<&font_string::get_spacing>());
 
     /** @function get_line_spacing
      */
-    mClass.set_function("get_line_spacing", member_function<&font_string::get_line_spacing>());
+    m_class.set_function("get_line_spacing", member_function<&font_string::get_line_spacing>());
 
     /** @function get_text_color
      */
-    mClass.set_function("get_text_color", [](const font_string& mSelf) {
-        const color& mTextColor = mSelf.get_text_color();
-        return std::make_tuple(mTextColor.r, mTextColor.g, mTextColor.b, mTextColor.a);
+    m_class.set_function("get_text_color", [](const font_string& m_self) {
+        const color& m_text_color = m_self.get_text_color();
+        return std::make_tuple(m_text_color.r, m_text_color.g, m_text_color.b, m_text_color.a);
     });
 
     /** @function set_font
      */
-    mClass.set_function(
-        "set_font", [](font_string& mSelf, const std::string& sFile, float fHeight,
-                       sol::optional<std::string> sFlags) {
-            mSelf.set_font(sFile, fHeight);
+    m_class.set_function(
+        "set_font", [](font_string& m_self, const std::string& s_file, float f_height,
+                       sol::optional<std::string> s_flags) {
+            m_self.set_font(s_file, f_height);
 
-            if (sFlags.has_value()) {
-                if (sFlags.value().find("OUTLINE") != std::string::npos ||
-                    sFlags.value().find("THICKOUTLINE") != std::string::npos) {
-                    mSelf.set_outlined(true);
-                } else if (sFlags.value().empty()) {
-                    mSelf.set_outlined(false);
+            if (s_flags.has_value()) {
+                if (s_flags.value().find("OUTLINE") != std::string::npos ||
+                    s_flags.value().find("THICKOUTLINE") != std::string::npos) {
+                    m_self.set_outlined(true);
+                } else if (s_flags.value().empty()) {
+                    m_self.set_outlined(false);
                 } else {
                     gui::out << gui::warning << "EditBox:set_font : "
-                             << "Unknown flags : \"" << sFlags.value() << "\"." << std::endl;
+                             << "Unknown flags : \"" << s_flags.value() << "\"." << std::endl;
                 }
             } else {
-                mSelf.set_outlined(false);
+                m_self.set_outlined(false);
             }
         });
 
     /** @function set_alignment_x
      */
-    mClass.set_function("set_alignment_x", [](font_string& mSelf, const std::string& sJustifyH) {
-        if (sJustifyH == "LEFT")
-            mSelf.set_alignment_x(alignment_x::LEFT);
-        else if (sJustifyH == "CENTER")
-            mSelf.set_alignment_x(alignment_x::CENTER);
-        else if (sJustifyH == "RIGHT")
-            mSelf.set_alignment_x(alignment_x::RIGHT);
+    m_class.set_function("set_alignment_x", [](font_string& m_self, const std::string& s_justify_h) {
+        if (s_justify_h == "LEFT")
+            m_self.set_alignment_x(alignment_x::left);
+        else if (s_justify_h == "CENTER")
+            m_self.set_alignment_x(alignment_x::center);
+        else if (s_justify_h == "RIGHT")
+            m_self.set_alignment_x(alignment_x::right);
         else {
             gui::out << gui::warning << "font_string:set_alignment_x : "
-                     << "Unknown justify behavior : \"" << sJustifyH << "\"." << std::endl;
+                     << "Unknown justify behavior : \"" << s_justify_h << "\"." << std::endl;
         }
     });
 
     /** @function set_alignment_y
      */
-    mClass.set_function("set_alignment_y", [](font_string& mSelf, const std::string& sJustifyV) {
-        if (sJustifyV == "TOP")
-            mSelf.set_alignment_y(alignment_y::TOP);
-        else if (sJustifyV == "MIDDLE")
-            mSelf.set_alignment_y(alignment_y::MIDDLE);
-        else if (sJustifyV == "BOTTOM")
-            mSelf.set_alignment_y(alignment_y::BOTTOM);
+    m_class.set_function("set_alignment_y", [](font_string& m_self, const std::string& s_justify_v) {
+        if (s_justify_v == "TOP")
+            m_self.set_alignment_y(alignment_y::top);
+        else if (s_justify_v == "MIDDLE")
+            m_self.set_alignment_y(alignment_y::middle);
+        else if (s_justify_v == "BOTTOM")
+            m_self.set_alignment_y(alignment_y::bottom);
         else {
             gui::out << gui::warning << "font_string:set_alignment_y : "
-                     << "Unknown justify behavior : \"" << sJustifyV << "\"." << std::endl;
+                     << "Unknown justify behavior : \"" << s_justify_v << "\"." << std::endl;
         }
     });
 
     /** @function set_shadow_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_shadow_color",
         sol::overload(
-            [](font_string& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                mSelf.set_shadow_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                m_self.set_shadow_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](font_string& mSelf, const std::string& sColor) {
-                mSelf.set_shadow_color(color(sColor));
+            [](font_string& m_self, const std::string& s_color) {
+                m_self.set_shadow_color(color(s_color));
             }));
 
     /** @function set_shadow_offset
      */
-    mClass.set_function(
-        "set_shadow_offset", [](font_string& mSelf, float fXOffset, float fYOffset) {
-            mSelf.set_shadow_offset(vector2f(fXOffset, fYOffset));
+    m_class.set_function(
+        "set_shadow_offset", [](font_string& m_self, float f_x_offset, float f_y_offset) {
+            m_self.set_shadow_offset(vector2f(f_x_offset, f_y_offset));
         });
 
     /** @function set_spacing
      */
-    mClass.set_function("set_spacing", member_function<&font_string::set_spacing>());
+    m_class.set_function("set_spacing", member_function<&font_string::set_spacing>());
 
     /** @function set_line_spacing
      */
-    mClass.set_function("set_line_spacing", member_function<&font_string::set_line_spacing>());
+    m_class.set_function("set_line_spacing", member_function<&font_string::set_line_spacing>());
 
     /** @function set_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_text_color",
         sol::overload(
-            [](font_string& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                mSelf.set_text_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                m_self.set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](font_string& mSelf, const std::string& sColor) {
-                mSelf.set_text_color(color(sColor));
+            [](font_string& m_self, const std::string& s_color) {
+                m_self.set_text_color(color(s_color));
             }));
 
     /** @function can_non_space_wrap
      */
-    mClass.set_function("can_non_space_wrap", member_function<&font_string::can_non_space_wrap>());
+    m_class.set_function("can_non_space_wrap", member_function<&font_string::can_non_space_wrap>());
 
     /** @function can_word_wrap
      */
-    mClass.set_function("can_word_wrap", member_function<&font_string::can_word_wrap>());
+    m_class.set_function("can_word_wrap", member_function<&font_string::can_word_wrap>());
 
     /** @function enable_formatting
      */
-    mClass.set_function("enable_formatting", member_function<&font_string::enable_formatting>());
+    m_class.set_function("enable_formatting", member_function<&font_string::enable_formatting>());
 
     /** @function get_string_height
      */
-    mClass.set_function("get_string_height", member_function<&font_string::get_string_height>());
+    m_class.set_function("get_string_height", member_function<&font_string::get_string_height>());
 
     /** @function get_string_width
      */
-    mClass.set_function(
-        "get_string_width", [](const font_string& mSelf, sol::optional<std::string> sText) {
-            if (sText.has_value())
-                return mSelf.get_string_width(utils::utf8_to_unicode(sText.value()));
+    m_class.set_function(
+        "get_string_width", [](const font_string& m_self, sol::optional<std::string> s_text) {
+            if (s_text.has_value())
+                return m_self.get_string_width(utils::utf8_to_unicode(s_text.value()));
             else
-                return mSelf.get_string_width();
+                return m_self.get_string_width();
         });
 
     /** @function get_text
      */
-    mClass.set_function("get_text", [](const font_string& mSelf) {
-        return utils::unicode_to_utf8(mSelf.get_text());
+    m_class.set_function("get_text", [](const font_string& m_self) {
+        return utils::unicode_to_utf8(m_self.get_text());
     });
 
     /** @function is_formatting_enabled
      */
-    mClass.set_function(
+    m_class.set_function(
         "is_formatting_enabled", member_function<&font_string::is_formatting_enabled>());
 
     /** @function set_non_space_wrap
      */
-    mClass.set_function("set_non_space_wrap", member_function<&font_string::set_non_space_wrap>());
+    m_class.set_function("set_non_space_wrap", member_function<&font_string::set_non_space_wrap>());
 
     /** @function set_word_wrap
      */
-    mClass.set_function(
-        "set_word_wrap", [](font_string& mSelf, bool bWrap, sol::optional<bool> bEllipsis) {
-            mSelf.set_word_wrap(bWrap, bEllipsis.value_or(false));
+    m_class.set_function(
+        "set_word_wrap", [](font_string& m_self, bool b_wrap, sol::optional<bool> b_ellipsis) {
+            m_self.set_word_wrap(b_wrap, b_ellipsis.value_or(false));
         });
 
     /** @function set_text
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_text",
         sol::overload(
-            [](font_string& mSelf, bool bValue) {
-                mSelf.set_text(utils::utf8_to_unicode(
-                    mSelf.get_manager().get_localizer().localize(bValue ? "{true}" : "{false}")));
+            [](font_string& m_self, bool b_value) {
+                m_self.set_text(utils::utf8_to_unicode(
+                    m_self.get_manager().get_localizer().localize(b_value ? "{true}" : "{false}")));
             },
-            [](font_string& mSelf, int iValue) {
-                mSelf.set_text(utils::utf8_to_unicode(
-                    mSelf.get_manager().get_localizer().format_string("{:L}", iValue)));
+            [](font_string& m_self, int i_value) {
+                m_self.set_text(utils::utf8_to_unicode(
+                    m_self.get_manager().get_localizer().format_string("{:L}", i_value)));
             },
-            [](font_string& mSelf, double dValue) {
-                mSelf.set_text(utils::utf8_to_unicode(
-                    mSelf.get_manager().get_localizer().format_string("{:L}", dValue)));
+            [](font_string& m_self, double d_value) {
+                m_self.set_text(utils::utf8_to_unicode(
+                    m_self.get_manager().get_localizer().format_string("{:L}", d_value)));
             },
-            [](font_string& mSelf, const std::string& sText) {
-                mSelf.set_text(utils::utf8_to_unicode(sText));
+            [](font_string& m_self, const std::string& s_text) {
+                m_self.set_text(utils::utf8_to_unicode(s_text));
             }));
 }
 

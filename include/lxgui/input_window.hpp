@@ -16,7 +16,7 @@ public:
     /// Initializes this window with a chosen input source.
     /** \param mSource The input source
      */
-    explicit window(source& mSource);
+    explicit window(source& m_source);
 
     // Non-copiable, non-movable
     window(const window&) = delete;
@@ -32,14 +32,14 @@ public:
     /// Replace the content of the clipboard.
     /** \param sContent The new clipboard content
      */
-    void set_clipboard_content(const utils::ustring& sContent);
+    void set_clipboard_content(const utils::ustring& s_content);
 
     /// Sets the mouse cursor to a given image on disk.
     /** \param sFileName The cursor image
      *   \param mHotSpot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
-    void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot);
+    void set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot);
 
     /// Sets the mouse cursor back to the default (arrow).
     void reset_mouse_cursor();
@@ -72,8 +72,8 @@ public:
     utils::signal<void(const gui::vector2ui&)> on_window_resized;
 
 private:
-    source&                  mSource_;
-    utils::scoped_connection mConnection_;
+    source&                  m_source_;
+    utils::scoped_connection m_connection_;
 };
 
 } // namespace lxgui::input

@@ -10,78 +10,80 @@
 
 namespace lxgui::gui::sdl {
 
-atlas_page::atlas_page(renderer& mRenderer, material::filter mFilter) :
-    gui::atlas_page(mFilter), mRenderer_(mRenderer) {
+atlas_page::atlas_page(renderer& m_renderer, material::filter m_filter) :
+    gui::atlas_page(m_filter), m_renderer_(m_renderer) {
     // Set filtering
-    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == material::filter::NONE ? "0" : "1") ==
+    if (SDL_SetHint(
+            SDL_HINT_RENDER_SCALE_QUALITY, m_filter == material::filter::none ? "0" : "1") ==
         SDL_FALSE) {
         throw gui::exception("gui::sdl::atlas_page", "Could not set filtering hint");
     }
 
-    uiSize_ = mRenderer_.get_texture_atlas_page_size();
+    ui_size_ = m_renderer_.get_texture_atlas_page_size();
 
-    pTexture_ = SDL_CreateTexture(
-        mRenderer_.get_sdl_renderer(), SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
-        uiSize_, uiSize_);
+    p_texture_ = SDL_CreateTexture(
+        m_renderer_.get_sdl_renderer(), SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
+        ui_size_, ui_size_);
 
-    if (pTexture_ == nullptr) {
+    if (p_texture_ == nullptr) {
         throw gui::exception(
             "gui::sdl::material", "Could not create texture with dimensions " +
-                                      utils::to_string(uiSize_) + " x " +
-                                      utils::to_string(uiSize_) + ".");
+                                      utils::to_string(ui_size_) + " x " +
+                                      utils::to_string(ui_size_) + ".");
     }
 }
 
 atlas_page::~atlas_page() {
-    if (pTexture_)
-        SDL_DestroyTexture(pTexture_);
+    if (p_texture_)
+        SDL_DestroyTexture(p_texture_);
 }
 
 std::shared_ptr<gui::material>
-atlas_page::add_material_(const gui::material& mMat, const bounds2f& mLocation) {
-    const sdl::material& mSDLMat = static_cast<const sdl::material&>(mMat);
+atlas_page::add_material_(const gui::material& m_mat, const bounds2f& m_location) {
+    const sdl::material& m_sdl_mat = static_cast<const sdl::material&>(m_mat);
 
-    std::size_t      uiTexturePitch = 0;
-    const ub32color* pTexturePixels = nullptr;
+    std::size_t      ui_texture_pitch = 0;
+    const ub32color* p_texture_pixels = nullptr;
 
     try {
-        pTexturePixels = mSDLMat.lock_pointer(&uiTexturePitch);
+        p_texture_pixels = m_sdl_mat.lock_pointer(&ui_texture_pitch);
 
-        SDL_Rect mUpdateRect;
-        mUpdateRect.x = mLocation.left;
-        mUpdateRect.y = mLocation.top;
-        mUpdateRect.w = mLocation.width();
-        mUpdateRect.h = mLocation.height();
+        SDL_Rect m_update_rect;
+        m_update_rect.x = m_location.left;
+        m_update_rect.y = m_location.top;
+        m_update_rect.w = m_location.width();
+        m_update_rect.h = m_location.height();
 
-        if (SDL_UpdateTexture(pTexture_, &mUpdateRect, pTexturePixels, uiTexturePitch * 4) != 0) {
+        if (SDL_UpdateTexture(p_texture_, &m_update_rect, p_texture_pixels, ui_texture_pitch * 4) !=
+            0) {
             throw gui::exception("sdl::atlas_page", "Failed to upload texture to atlas.");
         }
 
-        mSDLMat.unlock_pointer();
-        pTexturePixels = nullptr;
+        m_sdl_mat.unlock_pointer();
+        p_texture_pixels = nullptr;
     } catch (...) {
-        if (pTexturePixels)
-            mSDLMat.unlock_pointer();
+        if (p_texture_pixels)
+            m_sdl_mat.unlock_pointer();
         throw;
     }
 
     return std::make_shared<sdl::material>(
-        mRenderer_.get_sdl_renderer(), pTexture_, mLocation, mFilter_);
+        m_renderer_.get_sdl_renderer(), p_texture_, m_location, m_filter_);
 }
 
-float atlas_page::get_width() const {
-    return uiSize_;
+float atlas_page::get_width_() const {
+    return ui_size_;
 }
 
-float atlas_page::get_height() const {
-    return uiSize_;
+float atlas_page::get_height_() const {
+    return ui_size_;
 }
 
-atlas::atlas(renderer& mRenderer, material::filter mFilter) :
-    gui::atlas(mRenderer, mFilter), mSDLRenderer_(mRenderer) {}
+atlas::atlas(renderer& m_renderer, material::filter m_filter) :
+    gui::atlas(m_renderer, m_filter), m_sdl_renderer_(m_renderer) {}
 
 std::unique_ptr<gui::atlas_page> atlas::create_page_() {
-    return std::make_unique<sdl::atlas_page>(mSDLRenderer_, mFilter_);
+    return std::make_unique<sdl::atlas_page>(m_sdl_renderer_, m_filter_);
 }
 
 } // namespace lxgui::gui::sdl

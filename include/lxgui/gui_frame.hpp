@@ -27,14 +27,14 @@ class frame;
 
 /// Contains gui::layered_region
 struct layer_container {
-    bool                                             bDisabled = false;
-    std::vector<utils::observer_ptr<layered_region>> lRegionList;
+    bool                                             b_disabled = false;
+    std::vector<utils::observer_ptr<layered_region>> l_region_list;
 };
 
 /// Holds file/line information for a script.
 struct script_info {
-    std::string sFileName;
-    std::size_t uiLineNbr = 0;
+    std::string s_file_name;
+    std::size_t ui_line_nbr = 0;
 };
 
 /// Signature of frame scripts.
@@ -275,7 +275,7 @@ public:
         utils::view::non_null_filter>;
 
     /// Constructor.
-    explicit frame(utils::control_block& mBlock, manager& mManager);
+    explicit frame(utils::control_block& m_block, manager& m_manager);
 
     /// Destructor.
     ~frame() override;
@@ -289,24 +289,24 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float fDelta) override;
+    void update(float f_delta) override;
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& sTab) const override;
+    std::string serialize(const std::string& s_tab) const override;
 
     /// Returns 'true' if this frame can use a script.
     /** \param sScriptName The name of the script
      *   \note This method can be overriden if needed.
      */
-    virtual bool can_use_script(const std::string& sScriptName) const;
+    virtual bool can_use_script(const std::string& s_script_name) const;
 
     /// Copies a region's parameters into this frame (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Creates a new title region for this frame.
     /** \note You can get it by calling get_title_region().
@@ -316,32 +316,32 @@ public:
     /// Disables a layer.
     /** \param mLayerID The id of the layer to disable
      */
-    void disable_draw_layer(layer mLayerID);
+    void disable_draw_layer(layer m_layer_id);
 
     /// Enables a layer.
     /** \param mLayerID The id of the layer to enable
      */
-    void enable_draw_layer(layer mLayerID);
+    void enable_draw_layer(layer m_layer_id);
 
     /// Sets if this frame can receive mouse input (click & move).
     /** \param bIsMouseEnabled 'true' to enable
      */
-    void enable_mouse(bool bIsMouseEnabled);
+    void enable_mouse(bool b_is_mouse_enabled);
 
     /// Sets if this frame can receive mouse click input.
     /** \param bIsMouseEnabled 'true' to enable
      */
-    void enable_mouse_click(bool bIsMouseEnabled);
+    void enable_mouse_click(bool b_is_mouse_enabled);
 
     /// Sets if this frame can receive mouse move input.
     /** \param bIsMouseEnabled 'true' to enable
      */
-    void enable_mouse_move(bool bIsMouseEnabled);
+    void enable_mouse_move(bool b_is_mouse_enabled);
 
     /// Sets if this frame can receive mouse wheel input.
     /** \param bIsMouseWheelEnabled 'true' to enable
      */
-    void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+    void enable_mouse_wheel(bool b_is_mouse_wheel_enabled);
 
     /// Sets if this frame can receive keyboard input from a specific key.
     /** \param sKey              The key to capture
@@ -353,29 +353,29 @@ public:
      *         simultaneously.
      *   \see is_key_capture_enabled()
      */
-    void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
+    void enable_key_capture(const std::string& s_key, bool b_is_capture_enabled);
 
     /// Checks if this frame has a script defined.
     /** \param sScriptName The name of the script to check
      *   \return 'true' if this script is defined
      */
-    bool has_script(const std::string& sScriptName) const;
+    bool has_script(const std::string& s_script_name) const;
 
     /// Adds a layered_region to this frame's children.
     /** \param pRegion The layered_region to add
      */
-    utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> pRegion);
+    utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> p_region);
 
     /// Adds a layered_region to this frame's children.
     /** \param pRegion The layered_region to add
      */
     template<
-        typename region_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-    utils::observer_ptr<region_type> add_region(utils::owner_ptr<region_type> pRegion) {
-        return utils::static_pointer_cast<region_type>(
-            add_region(utils::static_pointer_cast<layered_region>(std::move(pRegion))));
+        typename RegionType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
+    utils::observer_ptr<RegionType> add_region(utils::owner_ptr<RegionType> p_region) {
+        return utils::static_pointer_cast<RegionType>(
+            add_region(utils::static_pointer_cast<layered_region>(std::move(p_region))));
     }
 
     /// Removes a layered_region from this frame's children.
@@ -383,7 +383,7 @@ public:
      *   \return A unique_ptr to the region, ignore it to destroy the region.
      */
     utils::owner_ptr<layered_region>
-    remove_region(const utils::observer_ptr<layered_region>& pRegion);
+    remove_region(const utils::observer_ptr<layered_region>& p_region);
 
     /// Creates a new region as child of this frame.
     /** \param mLayer The layer on which to create the region
@@ -395,7 +395,7 @@ public:
      *         you can directly use the created region.
      */
     utils::observer_ptr<layered_region>
-    create_layered_region(layer mLayer, region_core_attributes mAttr);
+    create_layered_region(layer m_layer, region_core_attributes m_attr);
 
     /// Creates a new region as child of this frame.
     /** \param mLayer The layer on which to create the region
@@ -407,15 +407,15 @@ public:
      *         you can directly use the created region.
      */
     template<
-        typename region_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-    utils::observer_ptr<region_type>
-    create_layered_region(layer mLayer, region_core_attributes mAttr) {
-        mAttr.sObjectType = region_type::CLASS_NAME;
+        typename RegionType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
+    utils::observer_ptr<RegionType>
+    create_layered_region(layer m_layer, region_core_attributes m_attr) {
+        m_attr.s_object_type = RegionType::class_name;
 
-        return utils::static_pointer_cast<region_type>(
-            create_layered_region(mLayer, std::move(mAttr)));
+        return utils::static_pointer_cast<RegionType>(
+            create_layered_region(m_layer, std::move(m_attr)));
     }
 
     /// Creates a new region as child of this frame.
@@ -428,16 +428,16 @@ public:
      *         you can directly use the created region.
      */
     template<
-        typename region_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-    utils::observer_ptr<region_type> create_layered_region(layer mLayer, const std::string& sName) {
-        region_core_attributes mAttr;
-        mAttr.sName       = sName;
-        mAttr.sObjectType = region_type::CLASS_NAME;
+        typename RegionType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
+    utils::observer_ptr<RegionType> create_layered_region(layer m_layer, const std::string& s_name) {
+        region_core_attributes m_attr;
+        m_attr.s_name       = s_name;
+        m_attr.s_object_type = RegionType::class_name;
 
-        return utils::static_pointer_cast<region_type>(
-            create_layered_region(mLayer, std::move(mAttr)));
+        return utils::static_pointer_cast<RegionType>(
+            create_layered_region(m_layer, std::move(m_attr)));
     }
 
     /// Creates a new frame as child of this frame.
@@ -451,7 +451,7 @@ public:
      *         initialization you require on this frame. If you do not,
      *         the frame's OnLoad callback will not fire.
      */
-    utils::observer_ptr<frame> create_child(region_core_attributes mAttr);
+    utils::observer_ptr<frame> create_child(region_core_attributes m_attr);
 
     /// Creates a new frame as child of this frame.
     /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
@@ -465,13 +465,13 @@ public:
      *         the frame's OnLoad callback will not fire.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame_type> create_child(region_core_attributes mAttr) {
-        mAttr.sObjectType = frame_type::CLASS_NAME;
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<FrameType> create_child(region_core_attributes m_attr) {
+        m_attr.s_object_type = FrameType::class_name;
 
-        return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+        return utils::static_pointer_cast<FrameType>(create_child(std::move(m_attr)));
     }
 
     /// Creates a new frame as child of this frame.
@@ -486,39 +486,39 @@ public:
      *         the frame's OnLoad callback will not fire.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame_type> create_child(const std::string& sName) {
-        region_core_attributes mAttr;
-        mAttr.sName       = sName;
-        mAttr.sObjectType = frame_type::CLASS_NAME;
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<FrameType> create_child(const std::string& s_name) {
+        region_core_attributes m_attr;
+        m_attr.s_name       = s_name;
+        m_attr.s_object_type = FrameType::class_name;
 
-        return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+        return utils::static_pointer_cast<FrameType>(create_child(std::move(m_attr)));
     }
 
     /// Adds a frame to this frame's children.
     /** \param pChild The frame to add
      */
-    utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> pChild);
+    utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> p_child);
 
     /// Adds a frame to this frame's children.
     /** \param pChild The frame to add
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame_type> add_child(utils::owner_ptr<frame_type> pChild) {
-        return utils::static_pointer_cast<frame_type>(
-            add_child(utils::static_pointer_cast<frame>(std::move(pChild))));
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<FrameType> add_child(utils::owner_ptr<FrameType> p_child) {
+        return utils::static_pointer_cast<FrameType>(
+            add_child(utils::static_pointer_cast<frame>(std::move(p_child))));
     }
 
     /// Removes a frame from this frame's children.
     /** \param pChild The frame to remove
         \return A unique_ptr to the child, ignore it to destroy the child.
     */
-    utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& pChild);
+    utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& p_child);
 
     /// Returns the child list.
     /** \return The child list
@@ -538,7 +538,7 @@ public:
      *         for matches on the full name, then if no child is found, on the
      *         relative name.
      */
-    utils::observer_ptr<const frame> get_child(const std::string& sName) const;
+    utils::observer_ptr<const frame> get_child(const std::string& s_name) const;
 
     /// Returns one of this frame's children.
     /** \param sName The name of the child
@@ -548,8 +548,8 @@ public:
      *         for matches on the full name, then if no child is found, on the
      *         relative name.
      */
-    utils::observer_ptr<frame> get_child(const std::string& sName) {
-        return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(sName));
+    utils::observer_ptr<frame> get_child(const std::string& s_name) {
+        return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(s_name));
     }
 
     /// Returns one of this frame's children.
@@ -561,11 +561,11 @@ public:
      *         relative name.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<const frame_type> get_child(const std::string& sName) const {
-        return down_cast<frame_type>(get_child(sName));
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<const FrameType> get_child(const std::string& s_name) const {
+        return down_cast<FrameType>(get_child(s_name));
     }
 
     /// Returns one of this frame's children.
@@ -577,11 +577,11 @@ public:
      *         relative name.
      */
     template<
-        typename frame_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-    utils::observer_ptr<frame_type> get_child(const std::string& sName) {
-        return down_cast<frame_type>(get_child(sName));
+        typename FrameType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
+    utils::observer_ptr<FrameType> get_child(const std::string& s_name) {
+        return down_cast<FrameType>(get_child(s_name));
     }
 
     /// Returns the region list.
@@ -602,7 +602,7 @@ public:
      *         for matches on the full name, then if no region is found, on the
      *         relative name.
      */
-    utils::observer_ptr<const layered_region> get_region(const std::string& sName) const;
+    utils::observer_ptr<const layered_region> get_region(const std::string& s_name) const;
 
     /// Returns one of this frame's region.
     /** \param sName The name of the region
@@ -612,9 +612,9 @@ public:
      *         for matches on the full name, then if no region is found, on the
      *         relative name.
      */
-    utils::observer_ptr<layered_region> get_region(const std::string& sName) {
+    utils::observer_ptr<layered_region> get_region(const std::string& s_name) {
         return utils::const_pointer_cast<layered_region>(
-            const_cast<const frame*>(this)->get_region(sName));
+            const_cast<const frame*>(this)->get_region(s_name));
     }
 
     /// Returns one of this frame's region.
@@ -626,11 +626,11 @@ public:
      *         relative name.
      */
     template<
-        typename region_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-    utils::observer_ptr<region_type> get_region(const std::string& sName) {
-        return down_cast<region_type>(get_region(sName));
+        typename RegionType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
+    utils::observer_ptr<RegionType> get_region(const std::string& s_name) {
+        return down_cast<RegionType>(get_region(s_name));
     }
 
     /// Calculates effective alpha.
@@ -745,12 +745,12 @@ public:
 
     /// Returns this frame's title region.
     utils::observer_ptr<const region> get_title_region() const {
-        return pTitleRegion_;
+        return p_title_region_;
     }
 
     /// Returns this frame's title region.
     utils::observer_ptr<region> get_title_region() {
-        return pTitleRegion_;
+        return p_title_region_;
     }
 
     /// Checks if this frame is clamped to screen.
@@ -762,7 +762,7 @@ public:
     /** \param mPosition The coordinates to test
      *   \return 'true' if the provided coordinates are inside this frame or its title region
      */
-    bool is_in_region(const vector2f& mPosition) const override;
+    bool is_in_region(const vector2f& m_position) const override;
 
     /// Find the topmost frame matching the provided predicate.
     /** \param mPredicate A function returning 'true' if the frame can be selected
@@ -772,7 +772,7 @@ public:
      *         this can return other frames.
      */
     virtual utils::observer_ptr<const frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) const;
+    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const;
 
     /// Find the topmost frame matching the provided predicate.
     /** \param mPredicate A function returning 'true' if the frame can be selected
@@ -782,9 +782,9 @@ public:
      *         this can return other frames.
      */
     utils::observer_ptr<frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) {
+    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) {
         return utils::const_pointer_cast<frame>(
-            const_cast<const frame*>(this)->find_topmost_frame(mPredicate));
+            const_cast<const frame*>(this)->find_topmost_frame(m_predicate));
     }
 
     /// Checks if this frame can receive mouse movement input.
@@ -805,14 +805,14 @@ public:
     /// Checks if this frame is registered for drag events with the provided mouse button.
     /** \return 'true' if this frame is registered for drag events
      */
-    bool is_registered_for_drag(const std::string& sButton) const;
+    bool is_registered_for_drag(const std::string& s_button) const;
 
     /// Checks if this frame can receive keyboard input from a specific key.
     /** \param sKey The key to check
      *   \return 'true' if this frame can receive keyboard input from this key
      *   \see enable_key_capture()
      */
-    bool is_key_capture_enabled(const std::string& sKey) const;
+    bool is_key_capture_enabled(const std::string& s_key) const;
 
     /// Checks if this frame can be moved.
     /** \return 'true' if this frame can be moved
@@ -838,7 +838,7 @@ public:
     /** \param sScriptName The CamelCase name of the script
      *   \return the snake_case name of the script
      */
-    static std::string get_adjusted_script_name(const std::string& sScriptName);
+    static std::string get_adjusted_script_name(const std::string& s_script_name);
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
     /** \param sScriptName The name of the script (e.g., "OnEvent")
@@ -850,8 +850,8 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection add_script(
-        const std::string& sScriptName, std::string sContent, script_info mInfo = script_info{}) {
-        return define_script_(sScriptName, sContent, true, mInfo);
+        const std::string& s_script_name, std::string s_content, script_info m_info = script_info{}) {
+        return define_script_(s_script_name, s_content, true, m_info);
     }
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
@@ -865,10 +865,10 @@ public:
      *         C++ function instead.
      */
     utils::connection add_script(
-        const std::string&      sScriptName,
-        sol::protected_function mHandler,
-        script_info             mInfo = script_info{}) {
-        return define_script_(sScriptName, std::move(mHandler), true, mInfo);
+        const std::string&      s_script_name,
+        sol::protected_function m_handler,
+        script_info             m_info = script_info{}) {
+        return define_script_(s_script_name, std::move(m_handler), true, m_info);
     }
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
@@ -882,10 +882,10 @@ public:
      *         instead.
      */
     utils::connection add_script(
-        const std::string& sScriptName,
-        script_function    mHandler,
-        script_info        mInfo = script_info{}) {
-        return define_script_(sScriptName, std::move(mHandler), true, mInfo);
+        const std::string& s_script_name,
+        script_function    m_handler,
+        script_info        m_info = script_info{}) {
+        return define_script_(s_script_name, std::move(m_handler), true, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
@@ -898,8 +898,8 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection set_script(
-        const std::string& sScriptName, std::string sContent, script_info mInfo = script_info{}) {
-        return define_script_(sScriptName, sContent, false, mInfo);
+        const std::string& s_script_name, std::string s_content, script_info m_info = script_info{}) {
+        return define_script_(s_script_name, s_content, false, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
@@ -913,10 +913,10 @@ public:
      *         C++ function instead.
      */
     utils::connection set_script(
-        const std::string&      sScriptName,
-        sol::protected_function mHandler,
-        script_info             mInfo = script_info{}) {
-        return define_script_(sScriptName, std::move(mHandler), false, mInfo);
+        const std::string&      s_script_name,
+        sol::protected_function m_handler,
+        script_info             m_info = script_info{}) {
+        return define_script_(s_script_name, std::move(m_handler), false, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
@@ -930,24 +930,24 @@ public:
      *         instead.
      */
     utils::connection set_script(
-        const std::string& sScriptName,
-        script_function    mHandler,
-        script_info        mInfo = script_info{}) {
-        return define_script_(sScriptName, std::move(mHandler), false, mInfo);
+        const std::string& s_script_name,
+        script_function    m_handler,
+        script_info        m_info = script_info{}) {
+        return define_script_(s_script_name, std::move(m_handler), false, m_info);
     }
 
     /// Return a view into this frame's handler scripts, registered for the given event.
     /** \param sScriptName The name of the script (e.g., "OnEvent")
      *   \return An iterable view into the frame's handlers.
      */
-    script_list_view get_script(const std::string& sScriptName) const;
+    script_list_view get_script(const std::string& s_script_name) const;
 
     /// Removes a script from this frame.
     /** \param sScriptName The name of the script (e.g., "OnEvent")
      *   \note This removes all handler scripts registered to this event, including the ones
      * inherited from templates.
      */
-    void remove_script(const std::string& sScriptName);
+    void remove_script(const std::string& s_script_name);
 
     /// Calls a script.
     /** \param sScriptName The name of the script (e.g., "OnEvent")
@@ -957,95 +957,95 @@ public:
      *         the helper class alive_checker.
      */
     virtual void
-    fire_script(const std::string& sScriptName, const event_data& mData = event_data{});
+    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{});
 
     /// Tells this frame to react to a certain event.
     /** \param sEventName The name of the event
      */
-    void register_event(const std::string& sEventName);
+    void register_event(const std::string& s_event_name);
 
     /// Tells the frame not to react to a certain event.
     /** \param sEventName The name of the event
      */
-    void unregister_event(const std::string& sEventName);
+    void unregister_event(const std::string& s_event_name);
 
     /// Tells this frame to react to mouse drag.
     /** \param lButtonList The list of mouse button allowed
      */
-    void register_for_drag(const std::vector<std::string>& lButtonList);
+    void register_for_drag(const std::vector<std::string>& l_button_list);
 
     /// Sets if this frame is clamped to screen.
     /** \param bIsClampedToScreen 'true' if this frame is clamped to screen
      *   \note If 'true', the frame can't go out of the screen.
      */
-    void set_clamped_to_screen(bool bIsClampedToScreen);
+    void set_clamped_to_screen(bool b_is_clamped_to_screen);
 
     /// Sets this frame's strata.
     /** \param mStrata The new strata
      */
-    void set_frame_strata(frame_strata mStrata);
+    void set_frame_strata(frame_strata m_strata);
 
     /// Sets this frame's strata.
     /** \param sStrata The new strata
      */
-    void set_frame_strata(const std::string& sStrata);
+    void set_frame_strata(const std::string& s_strata);
 
     /// Sets this frames' backdrop.
     /** \param pBackdrop The new backdrop
      */
-    void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
+    void set_backdrop(std::unique_ptr<backdrop> p_backdrop);
 
     /// Sets this frame's absolute hit rect insets.
     /** \param lInsets Offsets
      *   \note This is the zone on which you can click.
      */
-    void set_abs_hit_rect_insets(const bounds2f& lInsets);
+    void set_abs_hit_rect_insets(const bounds2f& l_insets);
 
     /// Sets this frame's relative hit rect insets.
     /** \param lInsets Offsets
      *   \note This is the zone on which you can click.
      */
-    void set_rel_hit_rect_insets(const bounds2f& lInsets);
+    void set_rel_hit_rect_insets(const bounds2f& l_insets);
 
     /// Sets this frame's level.
     /** \param iLevel The new level
      */
-    void set_level(int iLevel);
+    void set_level(int i_level);
 
     /// Sets this frame's maximum size.
     /** \param mMax The maximum dimensions of this frame
      */
-    void set_max_dimensions(const vector2f& mMax);
+    void set_max_dimensions(const vector2f& m_max);
 
     /// Sets this frame's minimum size.
     /** \param mMin Minimum dimensions of this frame
      */
-    void set_min_dimensions(const vector2f& mMin);
+    void set_min_dimensions(const vector2f& m_min);
 
     /// Sets this frame's maximum height.
     /** \param fMaxHeight The maximum height this frame can have
      */
-    void set_max_height(float fMaxHeight);
+    void set_max_height(float f_max_height);
 
     /// Sets this frame's maximum width.
     /** \param fMaxWidth  The maximum width this frame can have
      */
-    void set_max_width(float fMaxWidth);
+    void set_max_width(float f_max_width);
 
     /// Sets this frame's minimum height.
     /** \param fMinHeight The minimum height this frame can have
      */
-    void set_min_height(float fMinHeight);
+    void set_min_height(float f_min_height);
 
     /// Sets this frame's minimum width.
     /** \param fMinWidth  The minimum width this frame can have
      */
-    void set_min_width(float fMinWidth);
+    void set_min_width(float f_min_width);
 
     /// Sets if this frame can be moved by the user.
     /** \param bIsMovable 'true' to allow the user to move this frame
      */
-    void set_movable(bool bIsMovable);
+    void set_movable(bool b_is_movable);
 
     /// Removes this region from its parent and return an owning pointer.
     /** \return An owning pointer to this region
@@ -1055,12 +1055,12 @@ public:
     /// Sets if this frame can be resized by the user.
     /** \param bIsResizable 'true' to allow the user to resize this frame
      */
-    void set_resizable(bool bIsResizable);
+    void set_resizable(bool b_is_resizable);
 
     /// Sets this frame's scale.
     /** \param fScale The new scale
      */
-    void set_scale(float fScale);
+    void set_scale(float f_scale);
 
     /// Sets if this frame is at top level.
     /** \param bIsTopLevel 'true' to put the frame at top level
@@ -1069,7 +1069,7 @@ public:
      *         set to 'true' for any "dialog" or "window" frame, which
      *         can be moved around, and not for "element" frames (buttons, etc.).
      */
-    void set_top_level(bool bIsTopLevel);
+    void set_top_level(bool b_is_top_level);
 
     /// Increases this frame's level so it's the highest of the strata.
     /** \note All its children are raised of the same ammount.
@@ -1080,7 +1080,7 @@ public:
     /// Sets if this frame has been moved by the user.
     /** \param bIsUserPlaced 'true' if this frame has been moved by the user
      */
-    void set_user_placed(bool bIsUserPlaced);
+    void set_user_placed(bool b_is_user_placed);
 
     /// Starts moving this frame with the mouse.
     void start_moving();
@@ -1091,7 +1091,7 @@ public:
     /// Starts resizing this frame with the mouse.
     /** \param mPoint The corner to move
      */
-    void start_sizing(const anchor_point& mPoint);
+    void start_sizing(const anchor_point& m_point);
 
     /// ends resizing this frame.
     void stop_sizing();
@@ -1111,7 +1111,7 @@ public:
     /// Enables automatic focus when this frame is shown or raised.
     /** \param bEnable 'true' to enable auto focus
      */
-    void enable_auto_focus(bool bEnable);
+    void enable_auto_focus(bool b_enable);
 
     /// Checks if automatic focus is enabled.
     /** \return 'true' if automatic focus is enabled
@@ -1124,7 +1124,7 @@ public:
      *         The focus will be restored automaticallly when that other frame
      *         releases focus, or it can be requested again by calling set_focus(true).
      */
-    void set_focus(bool bFocus);
+    void set_focus(bool b_focus);
 
     /// Check if this frame currently has focus.
     /** \return 'true' if the frame has focus, 'false' otherwise
@@ -1138,14 +1138,14 @@ public:
      *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
      *         parent. If the frame has no parent, this will default to the gui::manager.
      */
-    void set_renderer(utils::observer_ptr<frame_renderer> pRenderer);
+    void set_renderer(utils::observer_ptr<frame_renderer> p_renderer);
 
     /// Returns the renderer of this object, nullptr if none.
     /** \return The renderer of this object, nullptr if none
      *   \note For more informations, see set_renderer().
      */
     utils::observer_ptr<const frame_renderer> get_renderer() const {
-        return pRenderer_;
+        return p_renderer_;
     }
 
     /// Returns the renderer of this object, nullptr if none.
@@ -1153,7 +1153,7 @@ public:
      *   \note For more informations, see set_renderer().
      */
     const utils::observer_ptr<frame_renderer>& get_renderer() {
-        return pRenderer_;
+        return p_renderer_;
     }
 
     /// Returns the renderer of this object or its parents, nullptr if none.
@@ -1179,17 +1179,17 @@ public:
     /// Changes this region's absolute dimensions (in pixels).
     /** \param mDimensions The new dimensions
      */
-    void set_dimensions(const vector2f& mDimensions) override;
+    void set_dimensions(const vector2f& m_dimensions) override;
 
     /// Changes this region's absolute width (in pixels).
     /** \param fAbsWidth The new width
      */
-    void set_width(float fAbsWidth) override;
+    void set_width(float f_abs_width) override;
 
     /// Changes this region's absolute height (in pixels).
     /** \param fAbsHeight The new height
      */
-    void set_height(float fAbsHeight) override;
+    void set_height(float f_abs_height) override;
 
     /// Tells this frame it is being overed by the mouse.
     /** \param bMouseInFrame 'true' if the mouse is above this frame
@@ -1198,7 +1198,7 @@ public:
      *         not the one returned by the input_manager, because there
      *         can be an offset applied (for example with scroll_frame).
      */
-    virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
+    virtual void notify_mouse_in_frame(bool b_mouse_in_frame, const vector2f& m_mouse_pos);
 
     /// Notifies this region that it is now visible on screen.
     /** \note Automatically called by show()/hide().
@@ -1213,7 +1213,7 @@ public:
     /// Notifies this frame that it has received or lost focus.
     /** \param bFocus 'true' if focus is received, 'false' if lost
      */
-    virtual void notify_focus(bool bFocus);
+    virtual void notify_focus(bool b_focus);
 
     /// Notifies this region that it has been fully loaded.
     /** \note Calls the "OnLoad" script.
@@ -1238,109 +1238,109 @@ public:
      *         they need to parse additional blocks, and parse_attributes_() if they
      *         need to parse additional attributes.
      */
-    void parse_layout(const layout_node& mNode) final;
+    void parse_layout(const layout_node& m_node) final;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "Frame";
+    static constexpr const char* class_name = "Frame";
 
 protected:
     // Layout parsing
-    void         parse_attributes_(const layout_node& mNode) override;
-    virtual void parse_all_nodes_before_children_(const layout_node& mNode);
-    virtual void parse_resize_bounds_node_(const layout_node& mNode);
-    virtual void parse_title_region_node_(const layout_node& mNode);
-    virtual void parse_backdrop_node_(const layout_node& mNode);
-    virtual void parse_hit_rect_insets_node_(const layout_node& mNode);
-    virtual void parse_layers_node_(const layout_node& mNode);
-    virtual void parse_frames_node_(const layout_node& mNode);
-    virtual void parse_scripts_node_(const layout_node& mNode);
+    void         parse_attributes_(const layout_node& m_node) override;
+    virtual void parse_all_nodes_before_children_(const layout_node& m_node);
+    virtual void parse_resize_bounds_node_(const layout_node& m_node);
+    virtual void parse_title_region_node_(const layout_node& m_node);
+    virtual void parse_backdrop_node_(const layout_node& m_node);
+    virtual void parse_hit_rect_insets_node_(const layout_node& m_node);
+    virtual void parse_layers_node_(const layout_node& m_node);
+    virtual void parse_frames_node_(const layout_node& m_node);
+    virtual void parse_scripts_node_(const layout_node& m_node);
 
     utils::observer_ptr<layered_region>
-    parse_region_(const layout_node& mNode, const std::string& sLayer, const std::string& sType);
+    parse_region_(const layout_node& m_node, const std::string& s_layer, const std::string& s_type);
 
-    utils::observer_ptr<frame> parse_child_(const layout_node& mNode, const std::string& sType);
+    utils::observer_ptr<frame> parse_child_(const layout_node& m_node, const std::string& s_type);
 
     void check_position_();
 
-    void add_level_(int iAmount);
+    void add_level_(int i_amount);
 
-    void propagate_renderer_(bool bRendered);
+    void propagate_renderer_(bool b_rendered);
 
     void update_borders_() override;
 
     utils::connection define_script_(
-        const std::string& sScriptName,
-        const std::string& sContent,
-        bool               bAppend,
-        const script_info& mInfo);
+        const std::string& s_script_name,
+        const std::string& s_content,
+        bool               b_append,
+        const script_info& m_info);
 
     utils::connection define_script_(
-        const std::string&      sScriptName,
-        sol::protected_function mHandler,
-        bool                    bAppend,
-        const script_info&      mInfo);
+        const std::string&      s_script_name,
+        sol::protected_function m_handler,
+        bool                    b_append,
+        const script_info&      m_info);
 
     utils::connection define_script_(
-        const std::string& sScriptName,
-        script_function    mHandler,
-        bool               bAppend,
-        const script_info& mInfo);
+        const std::string& s_script_name,
+        script_function    m_handler,
+        bool               b_append,
+        const script_info& m_info);
 
-    void on_event_(std::string_view sEventName, const event_data& mEvent);
+    void on_event_(std::string_view s_event_name, const event_data& m_event);
 
-    child_list  lChildList_;
-    region_list lRegionList_;
+    child_list  l_child_list_;
+    region_list l_region_list_;
 
-    static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::ENUM_SIZE);
+    static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::enum_size);
 
-    std::array<layer_container, num_layers> lLayerList_;
+    std::array<layer_container, num_layers> l_layer_list_;
 
-    std::unordered_map<std::string, script_signal> lSignalList_;
-    event_receiver                                 mEventReceiver_;
+    std::unordered_map<std::string, script_signal> l_signal_list_;
+    event_receiver                                 m_event_receiver_;
 
-    std::set<std::string> lRegDragList_;
-    std::set<std::string> lRegKeyList_;
+    std::set<std::string> l_reg_drag_list_;
+    std::set<std::string> l_reg_key_list_;
 
-    int          iLevel_      = 0;
-    frame_strata mStrata_     = frame_strata::MEDIUM;
-    bool         bIsTopLevel_ = false;
+    int          i_level_      = 0;
+    frame_strata m_strata_     = frame_strata::medium;
+    bool         b_is_top_level_ = false;
 
-    utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> p_renderer_ = nullptr;
 
-    std::unique_ptr<backdrop> pBackdrop_;
+    std::unique_ptr<backdrop> p_backdrop_;
 
-    bool bIsMouseClickEnabled_ = false;
-    bool bIsMouseMoveEnabled_  = false;
-    bool bIsMouseWheelEnabled_ = false;
-    bool bIsMovable_           = false;
-    bool bIsClampedToScreen_   = false;
-    bool bIsResizable_         = false;
-    bool bIsUserPlaced_        = false;
+    bool b_is_mouse_click_enabled_ = false;
+    bool b_is_mouse_move_enabled_  = false;
+    bool b_is_mouse_wheel_enabled_ = false;
+    bool b_is_movable_           = false;
+    bool b_is_clamped_to_screen_   = false;
+    bool b_is_resizable_         = false;
+    bool b_is_user_placed_        = false;
 
-    bool bBuildLayerList_ = false;
+    bool b_build_layer_list_ = false;
 
-    bounds2f lAbsHitRectInsetList_ = bounds2f::ZERO;
-    bounds2f lRelHitRectInsetList_ = bounds2f::ZERO;
+    bounds2f l_abs_hit_rect_inset_list_ = bounds2f::zero;
+    bounds2f l_rel_hit_rect_inset_list_ = bounds2f::zero;
 
-    float fMinWidth_  = 0.0f;
-    float fMaxWidth_  = std::numeric_limits<float>::infinity();
-    float fMinHeight_ = 0.0f;
-    float fMaxHeight_ = std::numeric_limits<float>::infinity();
+    float f_min_width_  = 0.0f;
+    float f_max_width_  = std::numeric_limits<float>::infinity();
+    float f_min_height_ = 0.0f;
+    float f_max_height_ = std::numeric_limits<float>::infinity();
 
-    vector2f mOldSize_;
+    vector2f m_old_size_;
 
-    float fScale_ = 1.0f;
+    float f_scale_ = 1.0f;
 
-    bool bMouseInFrame_ = false;
+    bool b_mouse_in_frame_ = false;
 
-    utils::owner_ptr<region> pTitleRegion_ = nullptr;
+    utils::owner_ptr<region> p_title_region_ = nullptr;
 
-    bool bMouseDraggedInFrame_ = false;
+    bool b_mouse_dragged_in_frame_ = false;
 
-    bool bFocus_     = false;
-    bool bAutoFocus_ = false;
+    bool b_focus_     = false;
+    bool b_auto_focus_ = false;
 };
 
 } // namespace lxgui::gui

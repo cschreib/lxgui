@@ -17,7 +17,7 @@ public:
     /** \param mDimensions The dimensions of the render_target
      *   \param mFilter     The filtering to apply to the target texture when displayed
      */
-    render_target(const vector2ui& mDimensions, material::filter mFilter = material::filter::NONE);
+    render_target(const vector2ui& m_dimensions, material::filter m_filter = material::filter::none);
 
     /// Destructor.
     ~render_target() override;
@@ -31,7 +31,7 @@ public:
     /// Clears the content of this render_target.
     /** \param mColor The color to use as background
      */
-    void clear(const color& mColor) override;
+    void clear(const color& m_color) override;
 
     /// Returns this render target's pixel rect.
     /** \return This render target's pixel rect
@@ -42,7 +42,7 @@ public:
     /** \param mDimensions The new dimensions (in pixels)
      *   \return 'true' if the function had to re-create a new render target
      */
-    bool set_dimensions(const vector2ui& mDimensions) override;
+    bool set_dimensions(const vector2ui& m_dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
@@ -69,10 +69,10 @@ public:
     static void check_availability();
 
 private:
-    std::uint32_t                 uiFBOHandle_ = 0;
-    std::shared_ptr<gl::material> pTexture_;
+    std::uint32_t                 ui_fbo_handle_ = 0;
+    std::shared_ptr<gl::material> p_texture_;
 
-    matrix4f mViewMatrix_;
+    matrix4f m_view_matrix_;
 };
 
 } // namespace lxgui::gui::gl

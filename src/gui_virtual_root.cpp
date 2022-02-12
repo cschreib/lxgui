@@ -5,10 +5,10 @@
 
 namespace lxgui::gui {
 
-virtual_root::virtual_root(manager& mManager, registry& mNonVirtualRegistry) :
-    frame_container(mManager.get_factory(), mObjectRegistry_, nullptr),
-    mManager_(mManager),
-    mObjectRegistry_(mNonVirtualRegistry) {}
+virtual_root::virtual_root(manager& m_manager, registry& m_non_virtual_registry) :
+    frame_container(m_manager.get_factory(), m_object_registry_, nullptr),
+    m_manager_(m_manager),
+    m_object_registry_(m_non_virtual_registry) {}
 
 virtual_root::~virtual_root() {
     // Must be done before we destroy the registry

@@ -18,12 +18,12 @@ namespace sol {
 
 template<typename T>
 struct unique_usertype_traits<lxgui::utils::observer_ptr<T>> {
-    static T* get(lua_State*, const lxgui::utils::observer_ptr<T>& pPointer) noexcept {
-        return pPointer.get();
+    static T* get(lua_State*, const lxgui::utils::observer_ptr<T>& p_pointer) noexcept {
+        return p_pointer.get();
     }
 
-    static bool is_null(lua_State*, const lxgui::utils::observer_ptr<T>& pPointer) noexcept {
-        return pPointer.expired();
+    static bool is_null(lua_State*, const lxgui::utils::observer_ptr<T>& p_pointer) noexcept {
+        return p_pointer.expired();
     }
 };
 
@@ -33,68 +33,70 @@ struct unique_usertype_traits<lxgui::utils::observer_ptr<T>> {
 
 template<typename T>
 void sol_lua_check_access(
-    sol::types<T>, lua_State* pLua, int iIndex, sol::stack::record& /*mTracking*/) {
+    sol::types<T>, lua_State* p_lua, int i_index, sol::stack::record& /*mTracking*/) {
     // NB: not sure why, but using mTracking here leads to issues later on, so
     // ignore it for now.
 
-    sol::optional<lxgui::utils::observer_ptr<T>&> mOptional =
+    sol::optional<lxgui::utils::observer_ptr<T>&> m_optional =
         sol::stack::check_get<lxgui::utils::observer_ptr<T>&>(
-            pLua, iIndex, sol::no_panic /*, mTracking*/);
+            p_lua, i_index, sol::no_panic /*, mTracking*/);
 
-    if (!mOptional.has_value())
+    if (!m_optional.has_value())
         return;
 
-    if (mOptional->expired())
+    if (m_optional->expired())
         throw sol::error("object has been deleted");
 }
 
 namespace lxgui::gui {
 
 inline utils::observer_ptr<region>
-get_object(manager& mManager, const std::variant<std::string, region*>& mParent) {
+get_object(manager& m_manager, const std::variant<std::string, region*>& m_parent) {
     return std::visit(
-        [&](const auto& mValue) -> utils::observer_ptr<region> {
-            using data_type = std::decay_t<decltype(mValue)>;
+        [&](const auto& m_value) -> utils::observer_ptr<region> {
+            using data_type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<data_type, std::string>) {
-                if (utils::has_no_content(mValue))
+                if (utils::has_no_content(m_value))
                     return nullptr;
 
-                auto pParent = mManager.get_root().get_registry().get_region_by_name(mValue);
-                if (!pParent)
-                    throw sol::error("no region with name \"" + mValue + "\"");
+                auto p_parent = m_manager.get_root().get_registry().get_region_by_name(m_value);
+                if (!p_parent)
+                    throw sol::error("no region with name \"" + m_value + "\"");
 
-                return pParent;
+                return p_parent;
             } else {
-                return observer_from(mValue);
+                return observer_from(m_value);
             }
         },
-        mParent);
+        m_parent);
 }
 
 template<typename T>
-utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::string, T*>& mParent) {
+utils::observer_ptr<T>
+get_object(manager& m_manager, const std::variant<std::string, T*>& m_parent) {
     return std::visit(
-        [&](const auto& mValue) -> utils::observer_ptr<T> {
-            using data_type = std::decay_t<decltype(mValue)>;
+        [&](const auto& m_value) -> utils::observer_ptr<T> {
+            using data_type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<data_type, std::string>) {
-                if (utils::has_no_content(mValue))
+                if (utils::has_no_content(m_value))
                     return nullptr;
 
-                auto pParentObject = mManager.get_root().get_registry().get_region_by_name(mValue);
-                if (!pParentObject)
-                    throw sol::error("no region with name \"" + mValue + "\"");
+                auto p_parent_object =
+                    m_manager.get_root().get_registry().get_region_by_name(m_value);
+                if (!p_parent_object)
+                    throw sol::error("no region with name \"" + m_value + "\"");
 
-                auto pParent = down_cast<T>(pParentObject);
-                if (!pParent)
+                auto p_parent = down_cast<T>(p_parent_object);
+                if (!p_parent)
                     throw sol::error(
-                        "region \"" + mValue + "\" is not a " + std::string(T::CLASS_NAME));
+                        "region \"" + m_value + "\" is not a " + std::string(T::class_name));
 
-                return pParent;
+                return p_parent;
             } else {
-                return observer_from(mValue);
+                return observer_from(m_value);
             }
         },
-        mParent);
+        m_parent);
 }
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
@@ -131,8 +133,8 @@ constexpr auto member_function() {
 #endif
 
 template<typename T>
-void region::create_glue_(T* pSelf) {
-    get_lua_().globals()[sLuaName_] = observer_from(pSelf);
+void region::create_glue_(T* p_self) {
+    get_lua_().globals()[s_lua_name_] = observer_from(p_self);
 }
 
 } // namespace lxgui::gui

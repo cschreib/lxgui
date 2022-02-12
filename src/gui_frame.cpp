@@ -23,23 +23,23 @@
 
 namespace lxgui::gui {
 
-frame::frame(utils::control_block& mBlock, manager& mManager) :
-    base(mBlock, mManager), mEventReceiver_(mManager.get_event_emitter()) {
-    lType_.push_back(CLASS_NAME);
+frame::frame(utils::control_block& m_block, manager& m_manager) :
+    base(m_block, m_manager), m_event_receiver_(m_manager.get_event_emitter()) {
+    l_type_.push_back(class_name);
 }
 
 frame::~frame() {
     // Disable callbacks
-    lSignalList_.clear();
+    l_signal_list_.clear();
 
     // Children must be destroyed first
-    lChildList_.clear();
-    lRegionList_.clear();
+    l_child_list_.clear();
+    l_region_list_.clear();
 
-    if (!bVirtual_) {
+    if (!b_virtual_) {
         // Tell the renderer to no longer render this region
         get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
-        pRenderer_ = nullptr;
+        p_renderer_ = nullptr;
     }
 
     get_manager().get_root().notify_hovered_frame_dirty();
@@ -48,20 +48,20 @@ frame::~frame() {
 }
 
 void frame::render() const {
-    if (!bIsVisible_ || !bReady_)
+    if (!b_is_visible_ || !b_ready_)
         return;
 
-    if (pBackdrop_)
-        pBackdrop_->render();
+    if (p_backdrop_)
+        p_backdrop_->render();
 
     // Render child regions
-    for (const auto& mLayer : lLayerList_) {
-        if (mLayer.bDisabled)
+    for (const auto& m_layer : l_layer_list_) {
+        if (m_layer.b_disabled)
             continue;
 
-        for (const auto& pRegion : mLayer.lRegionList) {
-            if (pRegion->is_shown())
-                pRegion->render();
+        for (const auto& p_region : m_layer.l_region_list) {
+            if (p_region->is_shown())
+                p_region->render();
         }
     }
 }
@@ -70,464 +70,465 @@ void frame::create_glue() {
     create_glue_(this);
 }
 
-std::string frame::serialize(const std::string& sTab) const {
-    std::ostringstream sStr;
+std::string frame::serialize(const std::string& s_tab) const {
+    std::ostringstream s_str;
 
-    sStr << base::serialize(sTab);
-    if (auto pFrameRenderer = utils::dynamic_pointer_cast<frame>(pRenderer_))
-        sStr << sTab << "  # Man. render : " << pFrameRenderer->get_name() << "\n";
-    sStr << sTab << "  # Strata      : ";
-    switch (mStrata_) {
-    case frame_strata::PARENT: sStr << "PARENT\n"; break;
-    case frame_strata::BACKGROUND: sStr << "BACKGROUND\n"; break;
-    case frame_strata::LOW: sStr << "LOW\n"; break;
-    case frame_strata::MEDIUM: sStr << "MEDIUM\n"; break;
-    case frame_strata::HIGH: sStr << "HIGH\n"; break;
-    case frame_strata::DIALOG: sStr << "DIALOG\n"; break;
-    case frame_strata::FULLSCREEN: sStr << "FULLSCREEN\n"; break;
-    case frame_strata::FULLSCREEN_DIALOG: sStr << "FULLSCREEN_DIALOG\n"; break;
-    case frame_strata::TOOLTIP: sStr << "TOOLTIP\n"; break;
+    s_str << base::serialize(s_tab);
+    if (auto p_frame_renderer = utils::dynamic_pointer_cast<frame>(p_renderer_))
+        s_str << s_tab << "  # Man. render : " << p_frame_renderer->get_name() << "\n";
+    s_str << s_tab << "  # Strata      : ";
+    switch (m_strata_) {
+    case frame_strata::parent: s_str << "PARENT\n"; break;
+    case frame_strata::background: s_str << "BACKGROUND\n"; break;
+    case frame_strata::low: s_str << "LOW\n"; break;
+    case frame_strata::medium: s_str << "MEDIUM\n"; break;
+    case frame_strata::high: s_str << "HIGH\n"; break;
+    case frame_strata::dialog: s_str << "DIALOG\n"; break;
+    case frame_strata::fullscreen: s_str << "FULLSCREEN\n"; break;
+    case frame_strata::fullscreen_dialog: s_str << "FULLSCREEN_DIALOG\n"; break;
+    case frame_strata::tooltip: s_str << "TOOLTIP\n"; break;
     }
-    sStr << sTab << "  # Level       : " << iLevel_ << "\n";
-    sStr << sTab << "  # TopLevel    : " << bIsTopLevel_;
-    if (!bIsTopLevel_ && get_top_level_parent())
-        sStr << " (" << get_top_level_parent()->get_name() << ")\n";
+    s_str << s_tab << "  # Level       : " << i_level_ << "\n";
+    s_str << s_tab << "  # TopLevel    : " << b_is_top_level_;
+    if (!b_is_top_level_ && get_top_level_parent())
+        s_str << " (" << get_top_level_parent()->get_name() << ")\n";
     else
-        sStr << "\n";
-    if (!bIsMouseClickEnabled_ && !bIsMouseMoveEnabled_ && !!bIsMouseWheelEnabled_)
-        sStr << sTab << "  # Inputs      : none\n";
+        s_str << "\n";
+    if (!b_is_mouse_click_enabled_ && !b_is_mouse_move_enabled_ && !!b_is_mouse_wheel_enabled_)
+        s_str << s_tab << "  # Inputs      : none\n";
     else {
-        sStr << sTab << "  # Inputs      :\n";
-        sStr << sTab << "  |-###\n";
-        if (bIsMouseClickEnabled_)
-            sStr << sTab << "  |   # mouse click\n";
-        if (bIsMouseMoveEnabled_)
-            sStr << sTab << "  |   # mouse move\n";
-        if (bIsMouseWheelEnabled_)
-            sStr << sTab << "  |   # mouse wheel\n";
-        sStr << sTab << "  |-###\n";
+        s_str << s_tab << "  # Inputs      :\n";
+        s_str << s_tab << "  |-###\n";
+        if (b_is_mouse_click_enabled_)
+            s_str << s_tab << "  |   # mouse click\n";
+        if (b_is_mouse_move_enabled_)
+            s_str << s_tab << "  |   # mouse move\n";
+        if (b_is_mouse_wheel_enabled_)
+            s_str << s_tab << "  |   # mouse wheel\n";
+        s_str << s_tab << "  |-###\n";
     }
-    sStr << sTab << "  # Movable     : " << bIsMovable_ << "\n";
-    sStr << sTab << "  # Resizable   : " << bIsResizable_ << "\n";
-    sStr << sTab << "  # Clamped     : " << bIsClampedToScreen_ << "\n";
-    sStr << sTab << "  # HRect inset :\n";
-    sStr << sTab << "  |-###\n";
-    sStr << sTab << "  |   # left   : " << lAbsHitRectInsetList_.left << "\n";
-    sStr << sTab << "  |   # right  : " << lAbsHitRectInsetList_.right << "\n";
-    sStr << sTab << "  |   # top    : " << lAbsHitRectInsetList_.top << "\n";
-    sStr << sTab << "  |   # bottom : " << lAbsHitRectInsetList_.bottom << "\n";
-    sStr << sTab << "  |-###\n";
-    sStr << sTab << "  # Min width   : " << fMinWidth_ << "\n";
-    sStr << sTab << "  # Max width   : " << fMaxWidth_ << "\n";
-    sStr << sTab << "  # Min height  : " << fMinHeight_ << "\n";
-    sStr << sTab << "  # Max height  : " << fMaxHeight_ << "\n";
-    sStr << sTab << "  # Scale       : " << fScale_ << "\n";
-    if (pTitleRegion_) {
-        sStr << sTab << "  # Title reg.  :\n";
-        sStr << sTab << "  |-###\n";
-        sStr << pTitleRegion_->serialize(sTab + "  | ");
-        sStr << sTab << "  |-###\n";
+    s_str << s_tab << "  # Movable     : " << b_is_movable_ << "\n";
+    s_str << s_tab << "  # Resizable   : " << b_is_resizable_ << "\n";
+    s_str << s_tab << "  # Clamped     : " << b_is_clamped_to_screen_ << "\n";
+    s_str << s_tab << "  # HRect inset :\n";
+    s_str << s_tab << "  |-###\n";
+    s_str << s_tab << "  |   # left   : " << l_abs_hit_rect_inset_list_.left << "\n";
+    s_str << s_tab << "  |   # right  : " << l_abs_hit_rect_inset_list_.right << "\n";
+    s_str << s_tab << "  |   # top    : " << l_abs_hit_rect_inset_list_.top << "\n";
+    s_str << s_tab << "  |   # bottom : " << l_abs_hit_rect_inset_list_.bottom << "\n";
+    s_str << s_tab << "  |-###\n";
+    s_str << s_tab << "  # Min width   : " << f_min_width_ << "\n";
+    s_str << s_tab << "  # Max width   : " << f_max_width_ << "\n";
+    s_str << s_tab << "  # Min height  : " << f_min_height_ << "\n";
+    s_str << s_tab << "  # Max height  : " << f_max_height_ << "\n";
+    s_str << s_tab << "  # Scale       : " << f_scale_ << "\n";
+    if (p_title_region_) {
+        s_str << s_tab << "  # Title reg.  :\n";
+        s_str << s_tab << "  |-###\n";
+        s_str << p_title_region_->serialize(s_tab + "  | ");
+        s_str << s_tab << "  |-###\n";
     }
-    if (pBackdrop_) {
-        const bounds2f& lInsets = pBackdrop_->get_background_insets();
+    if (p_backdrop_) {
+        const bounds2f& l_insets = p_backdrop_->get_background_insets();
 
-        sStr << sTab << "  # Backdrop    :\n";
-        sStr << sTab << "  |-###\n";
-        sStr << sTab << "  |   # Background : " << pBackdrop_->get_background_file() << "\n";
-        sStr << sTab << "  |   # Tilling    : " << pBackdrop_->is_background_tilling() << "\n";
-        if (pBackdrop_->is_background_tilling())
-            sStr << sTab << "  |   # Tile size  : " << pBackdrop_->get_tile_size() << "\n";
-        sStr << sTab << "  |   # BG Insets  :\n";
-        sStr << sTab << "  |   |-###\n";
-        sStr << sTab << "  |   |   # left   : " << lInsets.left << "\n";
-        sStr << sTab << "  |   |   # right  : " << lInsets.right << "\n";
-        sStr << sTab << "  |   |   # top    : " << lInsets.top << "\n";
-        sStr << sTab << "  |   |   # bottom : " << lInsets.bottom << "\n";
-        sStr << sTab << "  |   |-###\n";
-        sStr << sTab << "  |   # Edge       : " << pBackdrop_->get_edge_file() << "\n";
-        sStr << sTab << "  |   # Edge size  : " << pBackdrop_->get_edge_size() << "\n";
-        sStr << sTab << "  |-###\n";
+        s_str << s_tab << "  # Backdrop    :\n";
+        s_str << s_tab << "  |-###\n";
+        s_str << s_tab << "  |   # Background : " << p_backdrop_->get_background_file() << "\n";
+        s_str << s_tab << "  |   # Tilling    : " << p_backdrop_->is_background_tilling() << "\n";
+        if (p_backdrop_->is_background_tilling())
+            s_str << s_tab << "  |   # Tile size  : " << p_backdrop_->get_tile_size() << "\n";
+        s_str << s_tab << "  |   # BG Insets  :\n";
+        s_str << s_tab << "  |   |-###\n";
+        s_str << s_tab << "  |   |   # left   : " << l_insets.left << "\n";
+        s_str << s_tab << "  |   |   # right  : " << l_insets.right << "\n";
+        s_str << s_tab << "  |   |   # top    : " << l_insets.top << "\n";
+        s_str << s_tab << "  |   |   # bottom : " << l_insets.bottom << "\n";
+        s_str << s_tab << "  |   |-###\n";
+        s_str << s_tab << "  |   # Edge       : " << p_backdrop_->get_edge_file() << "\n";
+        s_str << s_tab << "  |   # Edge size  : " << p_backdrop_->get_edge_size() << "\n";
+        s_str << s_tab << "  |-###\n";
     }
 
-    if (!lRegionList_.empty()) {
-        if (lChildList_.size() == 1)
-            sStr << sTab << "  # Region : \n";
+    if (!l_region_list_.empty()) {
+        if (l_child_list_.size() == 1)
+            s_str << s_tab << "  # Region : \n";
         else
-            sStr << sTab << "  # Regions     : " << lRegionList_.size() << "\n";
-        sStr << sTab << "  |-###\n";
+            s_str << s_tab << "  # Regions     : " << l_region_list_.size() << "\n";
+        s_str << s_tab << "  |-###\n";
 
-        for (auto& mRegion : get_regions()) {
-            sStr << mRegion.serialize(sTab + "  | ");
-            sStr << sTab << "  |-###\n";
+        for (auto& m_region : get_regions()) {
+            s_str << m_region.serialize(s_tab + "  | ");
+            s_str << s_tab << "  |-###\n";
         }
     }
 
-    if (!lChildList_.empty()) {
-        if (lChildList_.size() == 1)
-            sStr << sTab << "  # Child : \n";
+    if (!l_child_list_.empty()) {
+        if (l_child_list_.size() == 1)
+            s_str << s_tab << "  # Child : \n";
         else
-            sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
-        sStr << sTab << "  |-###\n";
+            s_str << s_tab << "  # Children    : " << l_child_list_.size() << "\n";
+        s_str << s_tab << "  |-###\n";
 
-        for (const auto& mChild : get_children()) {
-            sStr << mChild.serialize(sTab + "  | ");
-            sStr << sTab << "  |-###\n";
+        for (const auto& m_child : get_children()) {
+            s_str << m_child.serialize(s_tab + "  | ");
+            s_str << s_tab << "  |-###\n";
         }
     }
 
-    return sStr.str();
+    return s_str.str();
 }
 
-bool frame::can_use_script(const std::string& sScriptName) const {
-    return (sScriptName == "OnChar") || (sScriptName == "OnDragStart") ||
-           (sScriptName == "OnDragStop") || (sScriptName == "OnDragMove") ||
-           (sScriptName == "OnEnter") || (sScriptName == "OnEvent") ||
-           (sScriptName == "OnFocusGained") || (sScriptName == "OnFocusLost") ||
-           (sScriptName == "OnHide") || (sScriptName == "OnKeyDown") ||
-           (sScriptName == "OnKeyUp") || (sScriptName == "OnLeave") || (sScriptName == "OnLoad") ||
-           (sScriptName == "OnMouseDown") || (sScriptName == "OnMouseUp") ||
-           (sScriptName == "OnDoubleClick") || (sScriptName == "OnMouseWheel") ||
-           (sScriptName == "OnReceiveDrag") || (sScriptName == "OnShow") ||
-           (sScriptName == "OnSizeChanged") || (sScriptName == "OnUpdate");
+bool frame::can_use_script(const std::string& s_script_name) const {
+    return (s_script_name == "OnChar") || (s_script_name == "OnDragStart") ||
+           (s_script_name == "OnDragStop") || (s_script_name == "OnDragMove") ||
+           (s_script_name == "OnEnter") || (s_script_name == "OnEvent") ||
+           (s_script_name == "OnFocusGained") || (s_script_name == "OnFocusLost") ||
+           (s_script_name == "OnHide") || (s_script_name == "OnKeyDown") ||
+           (s_script_name == "OnKeyUp") || (s_script_name == "OnLeave") ||
+           (s_script_name == "OnLoad") || (s_script_name == "OnMouseDown") ||
+           (s_script_name == "OnMouseUp") || (s_script_name == "OnDoubleClick") ||
+           (s_script_name == "OnMouseWheel") || (s_script_name == "OnReceiveDrag") ||
+           (s_script_name == "OnShow") || (s_script_name == "OnSizeChanged") ||
+           (s_script_name == "OnUpdate");
 }
 
-void frame::copy_from(const region& mObj) {
-    base::copy_from(mObj);
+void frame::copy_from(const region& m_obj) {
+    base::copy_from(m_obj);
 
-    const frame* pFrame = down_cast<frame>(&mObj);
-    if (!pFrame)
+    const frame* p_frame = down_cast<frame>(&m_obj);
+    if (!p_frame)
         return;
 
-    for (const auto& mItem : pFrame->lSignalList_) {
-        for (const auto& mFunction : pFrame->get_script(mItem.first)) {
-            this->add_script(mItem.first, mFunction);
+    for (const auto& m_item : p_frame->l_signal_list_) {
+        for (const auto& m_function : p_frame->get_script(m_item.first)) {
+            this->add_script(m_item.first, m_function);
         }
     }
 
-    this->set_frame_strata(pFrame->get_frame_strata());
+    this->set_frame_strata(p_frame->get_frame_strata());
 
-    utils::observer_ptr<const frame> pHighParent = observer_from(this);
+    utils::observer_ptr<const frame> p_high_parent = observer_from(this);
 
-    for (int i = 0; i < pFrame->get_level(); ++i) {
-        if (!pHighParent->get_parent())
+    for (int i = 0; i < p_frame->get_level(); ++i) {
+        if (!p_high_parent->get_parent())
             break;
 
-        pHighParent = pHighParent->get_parent();
+        p_high_parent = p_high_parent->get_parent();
     }
 
-    this->set_level(pHighParent->get_level() + pFrame->get_level());
+    this->set_level(p_high_parent->get_level() + p_frame->get_level());
 
-    this->set_top_level(pFrame->is_top_level());
+    this->set_top_level(p_frame->is_top_level());
 
-    this->enable_mouse_click(pFrame->is_mouse_click_enabled());
-    this->enable_mouse_move(pFrame->is_mouse_move_enabled());
-    this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
+    this->enable_mouse_click(p_frame->is_mouse_click_enabled());
+    this->enable_mouse_move(p_frame->is_mouse_move_enabled());
+    this->enable_mouse_wheel(p_frame->is_mouse_wheel_enabled());
 
-    this->set_movable(pFrame->is_movable());
-    this->set_clamped_to_screen(pFrame->is_clamped_to_screen());
-    this->set_resizable(pFrame->is_resizable());
+    this->set_movable(p_frame->is_movable());
+    this->set_clamped_to_screen(p_frame->is_clamped_to_screen());
+    this->set_resizable(p_frame->is_resizable());
 
-    this->set_abs_hit_rect_insets(pFrame->get_abs_hit_rect_insets());
-    this->set_rel_hit_rect_insets(pFrame->get_rel_hit_rect_insets());
+    this->set_abs_hit_rect_insets(p_frame->get_abs_hit_rect_insets());
+    this->set_rel_hit_rect_insets(p_frame->get_rel_hit_rect_insets());
 
-    this->set_max_dimensions(pFrame->get_max_dimensions());
-    this->set_min_dimensions(pFrame->get_min_dimensions());
+    this->set_max_dimensions(p_frame->get_max_dimensions());
+    this->set_min_dimensions(p_frame->get_min_dimensions());
 
-    this->set_scale(pFrame->get_scale());
+    this->set_scale(p_frame->get_scale());
 
-    for (const auto& pArt : pFrame->lRegionList_) {
-        if (!pArt || pArt->is_special())
+    for (const auto& p_art : p_frame->l_region_list_) {
+        if (!p_art || p_art->is_special())
             continue;
 
-        region_core_attributes mAttr;
-        mAttr.sObjectType  = pArt->get_object_type();
-        mAttr.sName        = pArt->get_raw_name();
-        mAttr.lInheritance = {pArt};
+        region_core_attributes m_attr;
+        m_attr.s_object_type = p_art->get_object_type();
+        m_attr.s_name        = p_art->get_raw_name();
+        m_attr.l_inheritance = {p_art};
 
-        auto pNewArt = create_layered_region(pArt->get_draw_layer(), std::move(mAttr));
-        if (!pNewArt)
+        auto p_new_art = create_layered_region(p_art->get_draw_layer(), std::move(m_attr));
+        if (!p_new_art)
             continue;
 
-        pNewArt->notify_loaded();
+        p_new_art->notify_loaded();
     }
 
-    bBuildLayerList_ = true;
+    b_build_layer_list_ = true;
 
-    if (pFrame->pBackdrop_) {
-        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
-        pBackdrop_->copy_from(*pFrame->pBackdrop_);
+    if (p_frame->p_backdrop_) {
+        p_backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+        p_backdrop_->copy_from(*p_frame->p_backdrop_);
     }
 
-    if (pFrame->pTitleRegion_) {
+    if (p_frame->p_title_region_) {
         this->create_title_region();
-        if (pTitleRegion_)
-            pTitleRegion_->copy_from(*pFrame->pTitleRegion_);
+        if (p_title_region_)
+            p_title_region_->copy_from(*p_frame->p_title_region_);
     }
 
-    for (const auto& pChild : pFrame->lChildList_) {
-        if (!pChild || pChild->is_special())
+    for (const auto& p_child : p_frame->l_child_list_) {
+        if (!p_child || p_child->is_special())
             continue;
 
-        region_core_attributes mAttr;
-        mAttr.sObjectType  = pChild->get_object_type();
-        mAttr.sName        = pChild->get_raw_name();
-        mAttr.lInheritance = {pChild};
+        region_core_attributes m_attr;
+        m_attr.s_object_type = p_child->get_object_type();
+        m_attr.s_name        = p_child->get_raw_name();
+        m_attr.l_inheritance = {p_child};
 
-        auto pNewChild = create_child(std::move(mAttr));
-        if (!pNewChild)
+        auto p_new_child = create_child(std::move(m_attr));
+        if (!p_new_child)
             continue;
 
-        pNewChild->notify_loaded();
+        p_new_child->notify_loaded();
     }
 }
 
 void frame::create_title_region() {
-    if (pTitleRegion_) {
-        gui::out << gui::warning << "gui::" << lType_.back()
-                 << " : \"" + sName_ + "\" already has a title region." << std::endl;
+    if (p_title_region_) {
+        gui::out << gui::warning << "gui::" << l_type_.back()
+                 << " : \"" + s_name_ + "\" already has a title region." << std::endl;
         return;
     }
 
-    region_core_attributes mAttr;
-    mAttr.sObjectType = "Region";
-    mAttr.bVirtual    = is_virtual();
-    mAttr.sName       = "$parentTitleRegion";
-    mAttr.pParent     = observer_from(this);
+    region_core_attributes m_attr;
+    m_attr.s_object_type = "Region";
+    m_attr.b_virtual     = is_virtual();
+    m_attr.s_name        = "$parentTitleRegion";
+    m_attr.p_parent      = observer_from(this);
 
-    auto pTitleRegion = get_manager().get_factory().create_region(get_registry(), mAttr);
+    auto p_title_region = get_manager().get_factory().create_region(get_registry(), m_attr);
 
-    if (!pTitleRegion)
+    if (!p_title_region)
         return;
 
-    pTitleRegion->set_special();
+    p_title_region->set_special();
 
-    if (!pTitleRegion->is_virtual()) {
+    if (!p_title_region->is_virtual()) {
         // Add shortcut to region as entry in Lua table
-        auto& mLua                          = get_lua_();
-        mLua[get_lua_name()]["TitleRegion"] = mLua[pTitleRegion->get_lua_name()];
+        auto& m_lua                          = get_lua_();
+        m_lua[get_lua_name()]["TitleRegion"] = m_lua[p_title_region->get_lua_name()];
     }
 
-    pTitleRegion_ = std::move(pTitleRegion);
-    pTitleRegion_->notify_loaded();
+    p_title_region_ = std::move(p_title_region);
+    p_title_region_->notify_loaded();
 }
 
-utils::observer_ptr<const frame> frame::get_child(const std::string& sName) const {
-    for (const auto& pChild : lChildList_) {
-        if (!pChild)
+utils::observer_ptr<const frame> frame::get_child(const std::string& s_name) const {
+    for (const auto& p_child : l_child_list_) {
+        if (!p_child)
             continue;
 
-        if (pChild->get_name() == sName)
-            return pChild;
+        if (p_child->get_name() == s_name)
+            return p_child;
 
-        const std::string& sRawName = pChild->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
-            return pChild;
+        const std::string& s_raw_name = p_child->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent") && s_raw_name.substr(7) == s_name)
+            return p_child;
     }
 
     return nullptr;
 }
 
 frame::region_list_view frame::get_regions() {
-    return region_list_view(lRegionList_);
+    return region_list_view(l_region_list_);
 }
 
 frame::const_region_list_view frame::get_regions() const {
-    return const_region_list_view(lRegionList_);
+    return const_region_list_view(l_region_list_);
 }
 
-utils::observer_ptr<const layered_region> frame::get_region(const std::string& sName) const {
-    for (const auto& pRegion : lRegionList_) {
-        if (!pRegion)
+utils::observer_ptr<const layered_region> frame::get_region(const std::string& s_name) const {
+    for (const auto& p_region : l_region_list_) {
+        if (!p_region)
             continue;
 
-        if (pRegion->get_name() == sName)
-            return pRegion;
+        if (p_region->get_name() == s_name)
+            return p_region;
 
-        const std::string& sRawName = pRegion->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
-            return pRegion;
+        const std::string& s_raw_name = p_region->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent") && s_raw_name.substr(7) == s_name)
+            return p_region;
     }
 
     return nullptr;
 }
 
-void frame::set_dimensions(const vector2f& mDimensions) {
+void frame::set_dimensions(const vector2f& m_dimensions) {
     base::set_dimensions(vector2f(
-        std::min(std::max(mDimensions.x, fMinWidth_), fMaxWidth_),
-        std::min(std::max(mDimensions.y, fMinHeight_), fMaxHeight_)));
+        std::min(std::max(m_dimensions.x, f_min_width_), f_max_width_),
+        std::min(std::max(m_dimensions.y, f_min_height_), f_max_height_)));
 }
 
-void frame::set_width(float fAbsWidth) {
-    base::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
+void frame::set_width(float f_abs_width) {
+    base::set_width(std::min(std::max(f_abs_width, f_min_width_), f_max_width_));
 }
 
-void frame::set_height(float fAbsHeight) {
-    base::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
+void frame::set_height(float f_abs_height) {
+    base::set_height(std::min(std::max(f_abs_height, f_min_height_), f_max_height_));
 }
 
 void frame::check_position_() {
-    if (lBorderList_.right - lBorderList_.left < fMinWidth_) {
-        lBorderList_.right = lBorderList_.left + fMinWidth_;
-    } else if (lBorderList_.right - lBorderList_.left > fMaxWidth_) {
-        lBorderList_.right = lBorderList_.left + fMaxWidth_;
+    if (l_border_list_.right - l_border_list_.left < f_min_width_) {
+        l_border_list_.right = l_border_list_.left + f_min_width_;
+    } else if (l_border_list_.right - l_border_list_.left > f_max_width_) {
+        l_border_list_.right = l_border_list_.left + f_max_width_;
     }
 
-    if (lBorderList_.bottom - lBorderList_.top < fMinHeight_) {
-        lBorderList_.bottom = lBorderList_.top + fMinHeight_;
-    } else if (lBorderList_.bottom - lBorderList_.top > fMaxHeight_) {
-        lBorderList_.bottom = lBorderList_.top + fMaxHeight_;
+    if (l_border_list_.bottom - l_border_list_.top < f_min_height_) {
+        l_border_list_.bottom = l_border_list_.top + f_min_height_;
+    } else if (l_border_list_.bottom - l_border_list_.top > f_max_height_) {
+        l_border_list_.bottom = l_border_list_.top + f_max_height_;
     }
 
-    if (bIsClampedToScreen_) {
-        vector2f mScreenDimensions = get_top_level_renderer()->get_target_dimensions();
+    if (b_is_clamped_to_screen_) {
+        vector2f m_screen_dimensions = get_top_level_renderer()->get_target_dimensions();
 
-        if (lBorderList_.right > mScreenDimensions.x) {
-            float fWidth = lBorderList_.right - lBorderList_.left;
-            if (fWidth > mScreenDimensions.x) {
-                lBorderList_.left  = 0;
-                lBorderList_.right = mScreenDimensions.x;
+        if (l_border_list_.right > m_screen_dimensions.x) {
+            float f_width = l_border_list_.right - l_border_list_.left;
+            if (f_width > m_screen_dimensions.x) {
+                l_border_list_.left  = 0;
+                l_border_list_.right = m_screen_dimensions.x;
             } else {
-                lBorderList_.right = mScreenDimensions.x;
-                lBorderList_.left  = mScreenDimensions.x - fWidth;
+                l_border_list_.right = m_screen_dimensions.x;
+                l_border_list_.left  = m_screen_dimensions.x - f_width;
             }
         }
 
-        if (lBorderList_.left < 0) {
-            float fWidth = lBorderList_.right - lBorderList_.left;
-            if (lBorderList_.right - lBorderList_.left > mScreenDimensions.x) {
-                lBorderList_.left  = 0;
-                lBorderList_.right = mScreenDimensions.x;
+        if (l_border_list_.left < 0) {
+            float f_width = l_border_list_.right - l_border_list_.left;
+            if (l_border_list_.right - l_border_list_.left > m_screen_dimensions.x) {
+                l_border_list_.left  = 0;
+                l_border_list_.right = m_screen_dimensions.x;
             } else {
-                lBorderList_.left  = 0;
-                lBorderList_.right = fWidth;
+                l_border_list_.left  = 0;
+                l_border_list_.right = f_width;
             }
         }
 
-        if (lBorderList_.bottom > mScreenDimensions.y) {
-            float fHeight = lBorderList_.bottom - lBorderList_.top;
-            if (fHeight > mScreenDimensions.y) {
-                lBorderList_.top    = 0;
-                lBorderList_.bottom = mScreenDimensions.y;
+        if (l_border_list_.bottom > m_screen_dimensions.y) {
+            float f_height = l_border_list_.bottom - l_border_list_.top;
+            if (f_height > m_screen_dimensions.y) {
+                l_border_list_.top    = 0;
+                l_border_list_.bottom = m_screen_dimensions.y;
             } else {
-                lBorderList_.bottom = mScreenDimensions.y;
-                lBorderList_.top    = mScreenDimensions.y - fHeight;
+                l_border_list_.bottom = m_screen_dimensions.y;
+                l_border_list_.top    = m_screen_dimensions.y - f_height;
             }
         }
 
-        if (lBorderList_.top < 0) {
-            float fHeight = lBorderList_.bottom - lBorderList_.top;
-            if (fHeight > mScreenDimensions.y) {
-                lBorderList_.top    = 0;
-                lBorderList_.bottom = mScreenDimensions.y;
+        if (l_border_list_.top < 0) {
+            float f_height = l_border_list_.bottom - l_border_list_.top;
+            if (f_height > m_screen_dimensions.y) {
+                l_border_list_.top    = 0;
+                l_border_list_.bottom = m_screen_dimensions.y;
             } else {
-                lBorderList_.top    = 0;
-                lBorderList_.bottom = fHeight;
+                l_border_list_.top    = 0;
+                l_border_list_.bottom = f_height;
             }
         }
     }
 }
 
-void frame::disable_draw_layer(layer mLayerID) {
-    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
-    if (!mLayer.bDisabled) {
-        mLayer.bDisabled = true;
+void frame::disable_draw_layer(layer m_layer_id) {
+    layer_container& m_layer = l_layer_list_[static_cast<std::size_t>(m_layer_id)];
+    if (!m_layer.b_disabled) {
+        m_layer.b_disabled = true;
         notify_renderer_need_redraw();
     }
 }
 
-void frame::enable_draw_layer(layer mLayerID) {
-    layer_container& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
-    if (!mLayer.bDisabled) {
-        mLayer.bDisabled = false;
+void frame::enable_draw_layer(layer m_layer_id) {
+    layer_container& m_layer = l_layer_list_[static_cast<std::size_t>(m_layer_id)];
+    if (!m_layer.b_disabled) {
+        m_layer.b_disabled = false;
         notify_renderer_need_redraw();
     }
 }
 
-void frame::enable_mouse(bool bIsMouseEnabled) {
-    enable_mouse_click(bIsMouseEnabled);
-    enable_mouse_move(bIsMouseEnabled);
+void frame::enable_mouse(bool b_is_mouse_enabled) {
+    enable_mouse_click(b_is_mouse_enabled);
+    enable_mouse_move(b_is_mouse_enabled);
 }
 
-void frame::enable_mouse_click(bool bIsMouseEnabled) {
-    bIsMouseClickEnabled_ = bIsMouseEnabled;
+void frame::enable_mouse_click(bool b_is_mouse_enabled) {
+    b_is_mouse_click_enabled_ = b_is_mouse_enabled;
 }
 
-void frame::enable_mouse_move(bool bIsMouseEnabled) {
-    bIsMouseMoveEnabled_ = bIsMouseEnabled;
+void frame::enable_mouse_move(bool b_is_mouse_enabled) {
+    b_is_mouse_move_enabled_ = b_is_mouse_enabled;
 }
 
-void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled) {
-    bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
+void frame::enable_mouse_wheel(bool b_is_mouse_wheel_enabled) {
+    b_is_mouse_wheel_enabled_ = b_is_mouse_wheel_enabled;
 }
 
-void frame::enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled) {
-    if (bIsCaptureEnabled)
-        lRegKeyList_.erase(sKey);
+void frame::enable_key_capture(const std::string& s_key, bool b_is_capture_enabled) {
+    if (b_is_capture_enabled)
+        l_reg_key_list_.erase(s_key);
     else
-        lRegKeyList_.insert(sKey);
+        l_reg_key_list_.insert(s_key);
 }
 
 void frame::notify_loaded() {
     base::notify_loaded();
 
-    if (!bVirtual_) {
-        alive_checker mChecker(*this);
+    if (!b_virtual_) {
+        alive_checker m_checker(*this);
         fire_script("OnLoad");
-        if (!mChecker.is_alive())
+        if (!m_checker.is_alive())
             return;
     }
 }
 
 void frame::notify_layers_need_update() {
-    bBuildLayerList_ = true;
+    b_build_layer_list_ = true;
 }
 
-bool frame::has_script(const std::string& sScriptName) const {
-    const auto mIter = lSignalList_.find(sScriptName);
-    if (mIter == lSignalList_.end())
+bool frame::has_script(const std::string& s_script_name) const {
+    const auto m_iter = l_signal_list_.find(s_script_name);
+    if (m_iter == l_signal_list_.end())
         return false;
 
-    return !mIter->second.empty();
+    return !m_iter->second.empty();
 }
 
-utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_region> pRegion) {
-    if (!pRegion)
+utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_region> p_region) {
+    if (!p_region)
         return nullptr;
 
-    pRegion->set_parent_(observer_from(this));
+    p_region->set_parent_(observer_from(this));
 
-    utils::observer_ptr<layered_region> pAddedRegion = pRegion;
-    lRegionList_.push_back(std::move(pRegion));
+    utils::observer_ptr<layered_region> p_added_region = p_region;
+    l_region_list_.push_back(std::move(p_region));
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
 
-    if (!bVirtual_) {
+    if (!b_virtual_) {
         // Add shortcut to region as entry in Lua table
-        std::string sRawName = pAddedRegion->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent")) {
-            sRawName.erase(0, std::string("$parent").size());
-            auto& mLua                     = get_lua_();
-            mLua[get_lua_name()][sRawName] = mLua[pAddedRegion->get_lua_name()];
+        std::string s_raw_name = p_added_region->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent")) {
+            s_raw_name.erase(0, std::string("$parent").size());
+            auto& m_lua                       = get_lua_();
+            m_lua[get_lua_name()][s_raw_name] = m_lua[p_added_region->get_lua_name()];
         }
     }
 
-    return pAddedRegion;
+    return p_added_region;
 }
 
 utils::owner_ptr<layered_region>
-frame::remove_region(const utils::observer_ptr<layered_region>& pRegion) {
-    if (!pRegion)
+frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
+    if (!p_region)
         return nullptr;
 
-    layered_region* pRawPointer = pRegion.get();
+    layered_region* p_raw_pointer = p_region.get();
 
-    auto mIter =
-        utils::find_if(lRegionList_, [&](auto& pObj) { return pObj.get() == pRawPointer; });
+    auto m_iter =
+        utils::find_if(l_region_list_, [&](auto& p_obj) { return p_obj.get() == p_raw_pointer; });
 
-    if (mIter == lRegionList_.end()) {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                 << "Trying to remove \"" << pRegion->get_name() << "\" from \"" << sName_
+    if (m_iter == l_region_list_.end()) {
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+                 << "Trying to remove \"" << p_region->get_name() << "\" from \"" << s_name_
                  << "\"'s children, "
                     "but it was not one of this frame's children."
                  << std::endl;
@@ -535,790 +536,796 @@ frame::remove_region(const utils::observer_ptr<layered_region>& pRegion) {
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    auto pRemovedRegion = std::move(*mIter);
+    auto p_removed_region = std::move(*m_iter);
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
-    pRemovedRegion->set_parent_(nullptr);
+    p_removed_region->set_parent_(nullptr);
 
-    if (!bVirtual_) {
+    if (!b_virtual_) {
         // Remove shortcut to region
-        std::string sRawName = pRemovedRegion->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent")) {
-            sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua               = get_lua_();
-            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        std::string s_raw_name = p_removed_region->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent")) {
+            s_raw_name.erase(0, std::string("$parent").size());
+            sol::state& m_lua                 = get_lua_();
+            m_lua[get_lua_name()][s_raw_name] = sol::lua_nil;
         }
     }
 
-    return pRemovedRegion;
+    return p_removed_region;
 }
 
 utils::observer_ptr<layered_region>
-frame::create_layered_region(layer mLayer, region_core_attributes mAttr) {
-    mAttr.bVirtual = is_virtual();
-    mAttr.pParent  = observer_from(this);
+frame::create_layered_region(layer m_layer, region_core_attributes m_attr) {
+    m_attr.b_virtual = is_virtual();
+    m_attr.p_parent  = observer_from(this);
 
-    auto pRegion = get_manager().get_factory().create_layered_region(get_registry(), mAttr);
+    auto p_region = get_manager().get_factory().create_layered_region(get_registry(), m_attr);
 
-    if (!pRegion)
+    if (!p_region)
         return nullptr;
 
-    pRegion->set_draw_layer(mLayer);
+    p_region->set_draw_layer(m_layer);
 
-    return add_region(std::move(pRegion));
+    return add_region(std::move(p_region));
 }
 
-utils::observer_ptr<frame> frame::create_child(region_core_attributes mAttr) {
-    mAttr.bVirtual = is_virtual();
-    mAttr.pParent  = observer_from(this);
+utils::observer_ptr<frame> frame::create_child(region_core_attributes m_attr) {
+    m_attr.b_virtual = is_virtual();
+    m_attr.p_parent  = observer_from(this);
 
-    auto pNewFrame = get_manager().get_factory().create_frame(
-        get_registry(), get_top_level_renderer().get(), mAttr);
+    auto p_new_frame = get_manager().get_factory().create_frame(
+        get_registry(), get_top_level_renderer().get(), m_attr);
 
-    if (!pNewFrame)
+    if (!p_new_frame)
         return nullptr;
 
-    pNewFrame->set_level(get_level() + 1);
+    p_new_frame->set_level(get_level() + 1);
 
-    return add_child(std::move(pNewFrame));
+    return add_child(std::move(p_new_frame));
 }
 
-utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild) {
-    if (!pChild)
+utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> p_child) {
+    if (!p_child)
         return nullptr;
 
-    pChild->set_parent_(observer_from(this));
+    p_child->set_parent_(observer_from(this));
 
-    if (is_visible() && pChild->is_shown())
-        pChild->notify_visible();
+    if (is_visible() && p_child->is_shown())
+        p_child->notify_visible();
     else
-        pChild->notify_invisible();
+        p_child->notify_invisible();
 
-    utils::observer_ptr<frame> pAddedChild = pChild;
-    lChildList_.push_back(std::move(pChild));
+    utils::observer_ptr<frame> p_added_child = p_child;
+    l_child_list_.push_back(std::move(p_child));
 
-    if (!bVirtual_) {
-        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer =
-            pAddedChild->get_top_level_renderer();
-        utils::observer_ptr<frame_renderer> pNewTopLevelRenderer = get_top_level_renderer();
-        if (pOldTopLevelRenderer != pNewTopLevelRenderer) {
-            pOldTopLevelRenderer->notify_rendered_frame(pAddedChild, false);
-            pNewTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
+    if (!b_virtual_) {
+        utils::observer_ptr<frame_renderer> p_old_top_level_renderer =
+            p_added_child->get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> p_new_top_level_renderer = get_top_level_renderer();
+        if (p_old_top_level_renderer != p_new_top_level_renderer) {
+            p_old_top_level_renderer->notify_rendered_frame(p_added_child, false);
+            p_new_top_level_renderer->notify_rendered_frame(p_added_child, true);
         }
 
         // Add shortcut to child as entry in Lua table
-        std::string sRawName = pAddedChild->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent")) {
-            sRawName.erase(0, std::string("$parent").size());
-            auto& mLua                     = get_lua_();
-            mLua[get_lua_name()][sRawName] = mLua[pAddedChild->get_lua_name()];
+        std::string s_raw_name = p_added_child->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent")) {
+            s_raw_name.erase(0, std::string("$parent").size());
+            auto& m_lua                       = get_lua_();
+            m_lua[get_lua_name()][s_raw_name] = m_lua[p_added_child->get_lua_name()];
         }
     }
 
-    return pAddedChild;
+    return p_added_child;
 }
 
-utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pChild) {
-    if (!pChild)
+utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_child) {
+    if (!p_child)
         return nullptr;
 
-    frame* pRawPointer = pChild.get();
-    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) { return pObj.get() == pRawPointer; });
+    frame* p_raw_pointer = p_child.get();
+    auto   m_iter =
+        utils::find_if(l_child_list_, [&](auto& p_obj) { return p_obj.get() == p_raw_pointer; });
 
-    if (mIter == lChildList_.end()) {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                 << "Trying to remove \"" << pChild->get_name() << "\" from \"" << sName_
+    if (m_iter == l_child_list_.end()) {
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+                 << "Trying to remove \"" << p_child->get_name() << "\" from \"" << s_name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    auto pRemovedChild = std::move(*mIter);
+    auto p_removed_child = std::move(*m_iter);
 
-    bool bNotifyRenderer = false;
-    if (!bVirtual_) {
-        utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
-        bNotifyRenderer =
-            !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager().get_root();
-        if (bNotifyRenderer) {
-            pTopLevelRenderer->notify_rendered_frame(pChild, false);
-            pChild->propagate_renderer_(false);
+    bool b_notify_renderer = false;
+    if (!b_virtual_) {
+        utils::observer_ptr<frame_renderer> p_top_level_renderer = get_top_level_renderer();
+        b_notify_renderer =
+            !p_child->get_renderer() && p_top_level_renderer.get() != &get_manager().get_root();
+        if (b_notify_renderer) {
+            p_top_level_renderer->notify_rendered_frame(p_child, false);
+            p_child->propagate_renderer_(false);
         }
     }
 
-    pRemovedChild->set_parent_(nullptr);
+    p_removed_child->set_parent_(nullptr);
 
-    if (!bVirtual_) {
-        if (bNotifyRenderer) {
-            get_manager().get_root().notify_rendered_frame(pChild, true);
-            pChild->propagate_renderer_(true);
+    if (!b_virtual_) {
+        if (b_notify_renderer) {
+            get_manager().get_root().notify_rendered_frame(p_child, true);
+            p_child->propagate_renderer_(true);
         }
 
         // Remove shortcut to child
-        std::string sRawName = pRemovedChild->get_raw_name();
-        if (utils::starts_with(sRawName, "$parent")) {
-            sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua               = get_lua_();
-            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        std::string s_raw_name = p_removed_child->get_raw_name();
+        if (utils::starts_with(s_raw_name, "$parent")) {
+            s_raw_name.erase(0, std::string("$parent").size());
+            sol::state& m_lua                 = get_lua_();
+            m_lua[get_lua_name()][s_raw_name] = sol::lua_nil;
         }
     }
 
-    return pRemovedChild;
+    return p_removed_child;
 }
 
 frame::child_list_view frame::get_children() {
-    return child_list_view(lChildList_);
+    return child_list_view(l_child_list_);
 }
 
 frame::const_child_list_view frame::get_children() const {
-    return const_child_list_view(lChildList_);
+    return const_child_list_view(l_child_list_);
 }
 
 float frame::get_effective_alpha() const {
-    if (pParent_)
-        return fAlpha_ * pParent_->get_effective_alpha();
+    if (p_parent_)
+        return f_alpha_ * p_parent_->get_effective_alpha();
     else
-        return fAlpha_;
+        return f_alpha_;
 }
 
 float frame::get_effective_scale() const {
-    if (pParent_)
-        return fScale_ * pParent_->get_effective_scale();
+    if (p_parent_)
+        return f_scale_ * p_parent_->get_effective_scale();
     else
-        return fScale_;
+        return f_scale_;
 }
 
 int frame::get_level() const {
-    return iLevel_;
+    return i_level_;
 }
 
 frame_strata frame::get_frame_strata() const {
-    return mStrata_;
+    return m_strata_;
 }
 
 utils::observer_ptr<const frame> frame::get_top_level_parent() const {
-    auto pFrame = observer_from(this);
+    auto p_frame = observer_from(this);
     do {
-        if (pFrame->is_top_level())
-            return pFrame;
+        if (p_frame->is_top_level())
+            return p_frame;
 
-        pFrame = pFrame->get_parent();
-    } while (pFrame);
+        p_frame = p_frame->get_parent();
+    } while (p_frame);
 
     return nullptr;
 }
 
 const backdrop* frame::get_backdrop() const {
-    return pBackdrop_.get();
+    return p_backdrop_.get();
 }
 
 backdrop* frame::get_backdrop() {
-    return pBackdrop_.get();
+    return p_backdrop_.get();
 }
 
 backdrop& frame::get_or_create_backdrop() {
-    if (!pBackdrop_)
-        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+    if (!p_backdrop_)
+        p_backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
 
-    return *pBackdrop_;
+    return *p_backdrop_;
 }
 
 const std::string& frame::get_frame_type() const {
-    return lType_.back();
+    return l_type_.back();
 }
 
 const bounds2f& frame::get_abs_hit_rect_insets() const {
-    return lAbsHitRectInsetList_;
+    return l_abs_hit_rect_inset_list_;
 }
 
 const bounds2f& frame::get_rel_hit_rect_insets() const {
-    return lRelHitRectInsetList_;
+    return l_rel_hit_rect_inset_list_;
 }
 
 vector2f frame::get_max_dimensions() const {
-    return vector2f(fMaxWidth_, fMaxHeight_);
+    return vector2f(f_max_width_, f_max_height_);
 }
 
 vector2f frame::get_min_dimensions() const {
-    return vector2f(fMinWidth_, fMinHeight_);
+    return vector2f(f_min_width_, f_min_height_);
 }
 
 std::size_t frame::get_num_children() const {
-    return std::count_if(lChildList_.begin(), lChildList_.end(), [](const auto& pChild) {
-        return pChild != nullptr;
+    return std::count_if(l_child_list_.begin(), l_child_list_.end(), [](const auto& p_child) {
+        return p_child != nullptr;
     });
 }
 
 std::size_t frame::get_rough_num_children() const {
-    return lChildList_.size();
+    return l_child_list_.size();
 }
 
 std::size_t frame::get_num_regions() const {
-    return std::count_if(lRegionList_.begin(), lRegionList_.end(), [](const auto& pRegion) {
-        return pRegion != nullptr;
+    return std::count_if(l_region_list_.begin(), l_region_list_.end(), [](const auto& p_region) {
+        return p_region != nullptr;
     });
 }
 
 std::size_t frame::get_rough_num_regions() const {
-    return lRegionList_.size();
+    return l_region_list_.size();
 }
 
 float frame::get_scale() const {
-    return fScale_;
+    return f_scale_;
 }
 
 bool frame::is_clamped_to_screen() const {
-    return bIsClampedToScreen_;
+    return b_is_clamped_to_screen_;
 }
 
-bool frame::is_in_region(const vector2f& mPosition) const {
-    if (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition))
+bool frame::is_in_region(const vector2f& m_position) const {
+    if (p_title_region_ && p_title_region_->is_in_region(m_position))
         return true;
 
-    bool bIsInXRange = lBorderList_.left + lAbsHitRectInsetList_.left <= mPosition.x &&
-                       mPosition.x <= lBorderList_.right - lAbsHitRectInsetList_.right - 1.0f;
-    bool bIsInYRange = lBorderList_.top + lAbsHitRectInsetList_.top <= mPosition.y &&
-                       mPosition.y <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1.0f;
+    bool b_is_in_x_range =
+        l_border_list_.left + l_abs_hit_rect_inset_list_.left <= m_position.x &&
+        m_position.x <= l_border_list_.right - l_abs_hit_rect_inset_list_.right - 1.0f;
+    bool b_is_in_y_range =
+        l_border_list_.top + l_abs_hit_rect_inset_list_.top <= m_position.y &&
+        m_position.y <= l_border_list_.bottom - l_abs_hit_rect_inset_list_.bottom - 1.0f;
 
-    return bIsInXRange && bIsInYRange;
+    return b_is_in_x_range && b_is_in_y_range;
 }
 
 utils::observer_ptr<const frame>
-frame::find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) const {
-    if (mPredicate(*this))
+frame::find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const {
+    if (m_predicate(*this))
         return observer_from(this);
 
     return nullptr;
 }
 
 bool frame::is_mouse_click_enabled() const {
-    return bIsMouseClickEnabled_;
+    return b_is_mouse_click_enabled_;
 }
 
 bool frame::is_mouse_move_enabled() const {
-    return bIsMouseMoveEnabled_;
+    return b_is_mouse_move_enabled_;
 }
 
 bool frame::is_mouse_wheel_enabled() const {
-    return bIsMouseWheelEnabled_;
+    return b_is_mouse_wheel_enabled_;
 }
 
-bool frame::is_registered_for_drag(const std::string& sButton) const {
-    return lRegDragList_.find(sButton) != lRegDragList_.end();
+bool frame::is_registered_for_drag(const std::string& s_button) const {
+    return l_reg_drag_list_.find(s_button) != l_reg_drag_list_.end();
 }
 
-bool frame::is_key_capture_enabled(const std::string& sKey) const {
-    return lRegKeyList_.find(sKey) != lRegKeyList_.end();
+bool frame::is_key_capture_enabled(const std::string& s_key) const {
+    return l_reg_key_list_.find(s_key) != l_reg_key_list_.end();
 }
 
 bool frame::is_movable() const {
-    return bIsMovable_;
+    return b_is_movable_;
 }
 
 bool frame::is_resizable() const {
-    return bIsResizable_;
+    return b_is_resizable_;
 }
 
 bool frame::is_top_level() const {
-    return bIsTopLevel_;
+    return b_is_top_level_;
 }
 
 bool frame::is_user_placed() const {
-    return bIsUserPlaced_;
+    return b_is_user_placed_;
 }
 
-std::string frame::get_adjusted_script_name(const std::string& sScriptName) {
-    std::string sAdjustedName = sScriptName;
-    for (auto iter = sAdjustedName.begin(); iter != sAdjustedName.end(); ++iter) {
+std::string frame::get_adjusted_script_name(const std::string& s_script_name) {
+    std::string s_adjusted_name = s_script_name;
+    for (auto iter = s_adjusted_name.begin(); iter != s_adjusted_name.end(); ++iter) {
         if ('A' <= *iter && *iter <= 'Z') {
             *iter = std::tolower(*iter);
-            if (iter != sAdjustedName.begin())
-                iter = sAdjustedName.insert(iter, '_');
+            if (iter != s_adjusted_name.begin())
+                iter = s_adjusted_name.insert(iter, '_');
         }
     }
 
-    return sAdjustedName;
+    return s_adjusted_name;
 }
 
 std::string hijack_sol_error_line(
-    std::string sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr) {
-    auto uiPos1 = sOriginalMessage.find("[string \"" + sFile);
-    if (uiPos1 == std::string::npos)
-        return sOriginalMessage;
+    std::string s_original_message, const std::string& s_file, std::size_t ui_line_nbr) {
+    auto ui_pos1 = s_original_message.find("[string \"" + s_file);
+    if (ui_pos1 == std::string::npos)
+        return s_original_message;
 
-    auto uiPos2 = sOriginalMessage.find_first_of('"', uiPos1 + 9);
-    if (uiPos2 == std::string::npos)
-        return sOriginalMessage;
+    auto ui_pos2 = s_original_message.find_first_of('"', ui_pos1 + 9);
+    if (ui_pos2 == std::string::npos)
+        return s_original_message;
 
-    sOriginalMessage.erase(uiPos1, uiPos2 - uiPos1 + 2);
-    sOriginalMessage.insert(uiPos1, sFile);
+    s_original_message.erase(ui_pos1, ui_pos2 - ui_pos1 + 2);
+    s_original_message.insert(ui_pos1, s_file);
 
-    auto uiPos3 = sOriginalMessage.find_first_of(':', uiPos1 + sFile.size());
-    if (uiPos3 == std::string::npos)
-        return sOriginalMessage;
+    auto ui_pos3 = s_original_message.find_first_of(':', ui_pos1 + s_file.size());
+    if (ui_pos3 == std::string::npos)
+        return s_original_message;
 
-    auto uiPos4 = sOriginalMessage.find_first_of(":>", uiPos3 + 1);
-    if (uiPos4 == std::string::npos)
-        return sOriginalMessage;
+    auto ui_pos4 = s_original_message.find_first_of(":>", ui_pos3 + 1);
+    if (ui_pos4 == std::string::npos)
+        return s_original_message;
 
-    std::size_t uiOffset = 0;
-    if (!utils::from_string(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1), uiOffset))
-        return sOriginalMessage;
+    std::size_t ui_offset = 0;
+    if (!utils::from_string(
+            s_original_message.substr(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1), ui_offset))
+        return s_original_message;
 
-    sOriginalMessage.erase(uiPos3 + 1, uiPos4 - uiPos3 - 1);
-    sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset - 1));
-    uiPos4 = sOriginalMessage.find_first_of(':', uiPos3 + 1);
+    s_original_message.erase(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1);
+    s_original_message.insert(ui_pos3 + 1, utils::to_string(ui_line_nbr + ui_offset - 1));
+    ui_pos4 = s_original_message.find_first_of(':', ui_pos3 + 1);
 
-    auto uiPos5 = sOriginalMessage.find("[string \"" + sFile, uiPos4);
-    if (uiPos5 == std::string::npos)
-        return sOriginalMessage;
+    auto ui_pos5 = s_original_message.find("[string \"" + s_file, ui_pos4);
+    if (ui_pos5 == std::string::npos)
+        return s_original_message;
 
-    std::string sMessage = sOriginalMessage.substr(uiPos4 + 1);
-    sOriginalMessage.erase(uiPos4 + 1);
-    sOriginalMessage += hijack_sol_error_line(sMessage, sFile, uiLineNbr);
+    std::string s_message = s_original_message.substr(ui_pos4 + 1);
+    s_original_message.erase(ui_pos4 + 1);
+    s_original_message += hijack_sol_error_line(s_message, s_file, ui_line_nbr);
 
-    return sOriginalMessage;
+    return s_original_message;
 }
 
 std::string hijack_sol_error_message(
-    std::string_view sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr) {
-    std::string sNewError;
-    for (auto sLine : utils::cut(sOriginalMessage, "\n")) {
-        if (!sNewError.empty())
-            sNewError += '\n';
+    std::string_view s_original_message, const std::string& s_file, std::size_t ui_line_nbr) {
+    std::string s_new_error;
+    for (auto s_line : utils::cut(s_original_message, "\n")) {
+        if (!s_new_error.empty())
+            s_new_error += '\n';
 
-        sNewError += hijack_sol_error_line(std::string{sLine}, sFile, uiLineNbr);
+        s_new_error += hijack_sol_error_line(std::string{s_line}, s_file, ui_line_nbr);
     }
 
-    return sNewError;
+    return s_new_error;
 }
 
 utils::connection frame::define_script_(
-    const std::string& sScriptName,
-    const std::string& sContent,
-    bool               bAppend,
-    const script_info& mInfo) {
+    const std::string& s_script_name,
+    const std::string& s_content,
+    bool               b_append,
+    const script_info& m_info) {
     // Create the Lua function from the provided string
-    sol::state& mLua = get_lua_();
+    sol::state& m_lua = get_lua_();
 
-    std::string sStr = "return function(self";
+    std::string s_str = "return function(self";
 
-    constexpr std::size_t uiMaxArgs = 9;
-    for (std::size_t i = 0; i < uiMaxArgs; ++i)
-        sStr += ", arg" + utils::to_string(i + 1);
+    constexpr std::size_t ui_max_args = 9;
+    for (std::size_t i = 0; i < ui_max_args; ++i)
+        s_str += ", arg" + utils::to_string(i + 1);
 
-    sStr += ") " + sContent + " end";
+    s_str += ") " + s_content + " end";
 
-    auto mResult = mLua.do_string(sStr, mInfo.sFileName);
+    auto m_result = m_lua.do_string(s_str, m_info.s_file_name);
 
-    if (!mResult.valid()) {
-        sol::error  mError = mResult;
-        std::string sError =
-            hijack_sol_error_message(mError.what(), mInfo.sFileName, mInfo.uiLineNbr);
+    if (!m_result.valid()) {
+        sol::error  m_error = m_result;
+        std::string s_error =
+            hijack_sol_error_message(m_error.what(), m_info.s_file_name, m_info.ui_line_nbr);
 
-        gui::out << gui::error << sError << std::endl;
+        gui::out << gui::error << s_error << std::endl;
 
-        get_manager().get_event_emitter().fire_event("LUA_ERROR", {sError});
+        get_manager().get_event_emitter().fire_event("LUA_ERROR", {s_error});
         return {};
     }
 
-    sol::protected_function mHandler = mResult;
+    sol::protected_function m_handler = m_result;
 
     // Forward it as any other Lua function
-    return define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
+    return define_script_(s_script_name, std::move(m_handler), b_append, m_info);
 }
 
 utils::connection frame::define_script_(
-    const std::string&      sScriptName,
-    sol::protected_function mHandler,
-    bool                    bAppend,
-    const script_info&      mInfo) {
-    auto mWrappedHandler = [mHandler = std::move(mHandler),
-                            mInfo](frame& mSelf, const event_data& mArgs) {
-        sol::state& mLua = mSelf.get_manager().get_lua();
-        lua_State*  pLua = mLua.lua_state();
+    const std::string&      s_script_name,
+    sol::protected_function m_handler,
+    bool                    b_append,
+    const script_info&      m_info) {
+    auto m_wrapped_handler = [m_handler = std::move(m_handler),
+                              m_info](frame& m_self, const event_data& m_args) {
+        sol::state& m_lua = m_self.get_manager().get_lua();
+        lua_State*  p_lua = m_lua.lua_state();
 
-        std::vector<sol::object> lArgs;
+        std::vector<sol::object> l_args;
 
         // Set arguments
-        for (std::size_t i = 0; i < mArgs.get_num_param(); ++i) {
-            const utils::variant& mArg = mArgs.get(i);
-            if (std::holds_alternative<utils::empty>(mArg))
-                lArgs.emplace_back(sol::lua_nil);
+        for (std::size_t i = 0; i < m_args.get_num_param(); ++i) {
+            const utils::variant& m_arg = m_args.get(i);
+            if (std::holds_alternative<utils::empty>(m_arg))
+                l_args.emplace_back(sol::lua_nil);
             else
-                lArgs.emplace_back(pLua, sol::in_place, mArg);
+                l_args.emplace_back(p_lua, sol::in_place, m_arg);
         }
 
         // Get a reference to self
-        sol::object mSelfLua = mLua[mSelf.get_lua_name()];
-        if (mSelfLua == sol::lua_nil)
+        sol::object m_self_lua = m_lua[m_self.get_lua_name()];
+        if (m_self_lua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
         // Call the function
-        auto mResult = mHandler(mSelfLua, sol::as_args(lArgs));
+        auto m_result = m_handler(m_self_lua, sol::as_args(l_args));
         // WARNING: after this point, the frame (mSelf) may be deleted.
         // Do not use any member variable or member function directly.
 
         // Handle errors
-        if (!mResult.valid()) {
-            sol::error  mError = mResult;
-            std::string sError =
-                hijack_sol_error_message(mError.what(), mInfo.sFileName, mInfo.uiLineNbr);
+        if (!m_result.valid()) {
+            sol::error  m_error = m_result;
+            std::string s_error =
+                hijack_sol_error_message(m_error.what(), m_info.s_file_name, m_info.ui_line_nbr);
 
-            throw gui::exception(sError);
+            throw gui::exception(s_error);
         }
     };
 
-    return define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
+    return define_script_(s_script_name, std::move(m_wrapped_handler), b_append, m_info);
 }
 
 utils::connection frame::define_script_(
-    const std::string& sScriptName,
-    script_function    mHandler,
-    bool               bAppend,
+    const std::string& s_script_name,
+    script_function    m_handler,
+    bool               b_append,
     const script_info& /*mInfo*/) {
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
-        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+        std::string s_adjusted_name = get_adjusted_script_name(s_script_name);
 
-        get_lua_()[get_lua_name()][sAdjustedName].set_function(
-            [=](frame& mSelf, sol::variadic_args mVArgs) {
-                event_data mData;
-                for (auto&& mArg : mVArgs) {
-                    lxgui::utils::variant mVariant;
-                    if (!mArg.is<sol::lua_nil_t>())
-                        mVariant = mArg;
+        get_lua_()[get_lua_name()][s_adjusted_name].set_function(
+            [=](frame& m_self, sol::variadic_args m_v_args) {
+                event_data m_data;
+                for (auto&& m_arg : m_v_args) {
+                    lxgui::utils::variant m_variant;
+                    if (!m_arg.is<sol::lua_nil_t>())
+                        m_variant = m_arg;
 
-                    mData.add(std::move(mVariant));
+                    m_data.add(std::move(m_variant));
                 }
 
-                mSelf.fire_script(sScriptName, mData);
+                m_self.fire_script(s_script_name, m_data);
             });
     }
 
-    auto& lHandlerList = lSignalList_[sScriptName];
-    if (!bAppend) {
+    auto& l_handler_list = l_signal_list_[s_script_name];
+    if (!b_append) {
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
         // They will be deleted later, when we know it is safe.
-        lHandlerList.disconnect_all();
+        l_handler_list.disconnect_all();
     }
 
     // TODO: add file/line info if the handler comes from C++
     // https://github.com/cschreib/lxgui/issues/96
-    return lHandlerList.connect(std::move(mHandler));
+    return l_handler_list.connect(std::move(m_handler));
 }
 
-script_list_view frame::get_script(const std::string& sScriptName) const {
-    auto iterH = lSignalList_.find(sScriptName);
-    if (iterH == lSignalList_.end())
-        throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
+script_list_view frame::get_script(const std::string& s_script_name) const {
+    auto iter_h = l_signal_list_.find(s_script_name);
+    if (iter_h == l_signal_list_.end())
+        throw gui::exception(l_type_.back(), "no script registered for " + s_script_name);
 
-    return iterH->second.slots();
+    return iter_h->second.slots();
 }
 
-void frame::remove_script(const std::string& sScriptName) {
-    auto iterH = lSignalList_.find(sScriptName);
-    if (iterH == lSignalList_.end())
+void frame::remove_script(const std::string& s_script_name) {
+    auto iter_h = l_signal_list_.find(s_script_name);
+    if (iter_h == l_signal_list_.end())
         return;
 
     // Just disable existing scripts, it may not be safe to modify the handler list
     // if this script is being defined during a handler execution.
     // They will be deleted later, when we know it is safe.
-    iterH->second.disconnect_all();
+    iter_h->second.disconnect_all();
 
     if (!is_virtual()) {
-        std::string sAdjustedName                 = get_adjusted_script_name(sScriptName);
-        get_lua_()[get_lua_name()][sAdjustedName] = sol::lua_nil;
+        std::string s_adjusted_name                 = get_adjusted_script_name(s_script_name);
+        get_lua_()[get_lua_name()][s_adjusted_name] = sol::lua_nil;
     }
 }
 
-void frame::on_event_(std::string_view sEventName, const event_data& mEvent) {
-    event_data mData;
-    mData.add(std::string(sEventName));
-    for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
-        mData.add(mEvent.get(i));
+void frame::on_event_(std::string_view s_event_name, const event_data& m_event) {
+    event_data m_data;
+    m_data.add(std::string(s_event_name));
+    for (std::size_t i = 0; i < m_event.get_num_param(); ++i)
+        m_data.add(m_event.get(i));
 
-    fire_script("OnEvent", mData);
+    fire_script("OnEvent", m_data);
 }
 
-void frame::fire_script(const std::string& sScriptName, const event_data& mData) {
+void frame::fire_script(const std::string& s_script_name, const event_data& m_data) {
     if (!is_loaded())
         return;
 
-    auto iterH = lSignalList_.find(sScriptName);
-    if (iterH == lSignalList_.end())
+    auto iter_h = l_signal_list_.find(s_script_name);
+    if (iter_h == l_signal_list_.end())
         return;
 
     // Make a copy of useful pointers: in case the frame is deleted, we will need this
-    auto&       mEventEmitter  = get_manager().get_event_emitter();
-    auto&       mAddonRegistry = *get_manager().get_addon_registry();
-    const auto* pOldAddOn      = mAddonRegistry.get_current_addon();
-    mAddonRegistry.set_current_addon(get_addon());
+    auto&       m_event_emitter  = get_manager().get_event_emitter();
+    auto&       m_addon_registry = *get_manager().get_addon_registry();
+    const auto* p_old_add_on     = m_addon_registry.get_current_addon();
+    m_addon_registry.set_current_addon(get_addon());
 
     try {
         // Call the handlers
-        iterH->second(*this, mData);
-    } catch (const std::exception& mException) {
-        std::string sError = mException.what();
-        gui::out << gui::error << sError << std::endl;
-        mEventEmitter.fire_event("LUA_ERROR", {sError});
+        iter_h->second(*this, m_data);
+    } catch (const std::exception& m_exception) {
+        std::string s_error = m_exception.what();
+        gui::out << gui::error << s_error << std::endl;
+        m_event_emitter.fire_event("LUA_ERROR", {s_error});
     }
 
-    mAddonRegistry.set_current_addon(pOldAddOn);
+    m_addon_registry.set_current_addon(p_old_add_on);
 }
 
-void frame::register_event(const std::string& sEventName) {
-    if (bVirtual_)
+void frame::register_event(const std::string& s_event_name) {
+    if (b_virtual_)
         return;
 
-    mEventReceiver_.register_event(
-        sEventName, [=](const event_data& mEvent) { return on_event_(sEventName, mEvent); });
+    m_event_receiver_.register_event(
+        s_event_name, [=](const event_data& m_event) { return on_event_(s_event_name, m_event); });
 }
 
-void frame::unregister_event(const std::string& sEventName) {
-    if (bVirtual_)
+void frame::unregister_event(const std::string& s_event_name) {
+    if (b_virtual_)
         return;
 
-    mEventReceiver_.unregister_event(sEventName);
+    m_event_receiver_.unregister_event(s_event_name);
 }
 
-void frame::register_for_drag(const std::vector<std::string>& lButtonList) {
-    lRegDragList_.clear();
-    for (const auto& sButton : lButtonList)
-        lRegDragList_.insert(sButton);
+void frame::register_for_drag(const std::vector<std::string>& l_button_list) {
+    l_reg_drag_list_.clear();
+    for (const auto& s_button : l_button_list)
+        l_reg_drag_list_.insert(s_button);
 }
 
-void frame::set_clamped_to_screen(bool bIsClampedToScreen) {
-    bIsClampedToScreen_ = bIsClampedToScreen;
+void frame::set_clamped_to_screen(bool b_is_clamped_to_screen) {
+    b_is_clamped_to_screen_ = b_is_clamped_to_screen;
 }
 
-void frame::set_frame_strata(frame_strata mStrata) {
-    if (mStrata == frame_strata::PARENT) {
-        if (!bVirtual_) {
-            if (pParent_)
-                mStrata = pParent_->get_frame_strata();
+void frame::set_frame_strata(frame_strata m_strata) {
+    if (m_strata == frame_strata::parent) {
+        if (!b_virtual_) {
+            if (p_parent_)
+                m_strata = p_parent_->get_frame_strata();
             else
-                mStrata = frame_strata::MEDIUM;
+                m_strata = frame_strata::medium;
         }
     }
 
-    std::swap(mStrata_, mStrata);
+    std::swap(m_strata_, m_strata);
 
-    if (mStrata_ != mStrata && !bVirtual_) {
+    if (m_strata_ != m_strata && !b_virtual_) {
         get_top_level_renderer()->notify_frame_strata_changed(
-            observer_from(this), mStrata, mStrata_);
+            observer_from(this), m_strata, m_strata_);
     }
 }
 
-void frame::set_frame_strata(const std::string& sStrata) {
-    frame_strata mStrata;
+void frame::set_frame_strata(const std::string& s_strata) {
+    frame_strata m_strata;
 
-    if (sStrata == "BACKGROUND")
-        mStrata = frame_strata::BACKGROUND;
-    else if (sStrata == "LOW")
-        mStrata = frame_strata::LOW;
-    else if (sStrata == "MEDIUM")
-        mStrata = frame_strata::MEDIUM;
-    else if (sStrata == "HIGH")
-        mStrata = frame_strata::HIGH;
-    else if (sStrata == "DIALOG")
-        mStrata = frame_strata::DIALOG;
-    else if (sStrata == "FULLSCREEN")
-        mStrata = frame_strata::FULLSCREEN;
-    else if (sStrata == "FULLSCREEN_DIALOG")
-        mStrata = frame_strata::FULLSCREEN_DIALOG;
-    else if (sStrata == "TOOLTIP")
-        mStrata = frame_strata::TOOLTIP;
-    else if (sStrata == "PARENT") {
-        if (bVirtual_) {
-            mStrata = frame_strata::PARENT;
+    if (s_strata == "BACKGROUND")
+        m_strata = frame_strata::background;
+    else if (s_strata == "LOW")
+        m_strata = frame_strata::low;
+    else if (s_strata == "MEDIUM")
+        m_strata = frame_strata::medium;
+    else if (s_strata == "HIGH")
+        m_strata = frame_strata::high;
+    else if (s_strata == "DIALOG")
+        m_strata = frame_strata::dialog;
+    else if (s_strata == "FULLSCREEN")
+        m_strata = frame_strata::fullscreen;
+    else if (s_strata == "FULLSCREEN_DIALOG")
+        m_strata = frame_strata::fullscreen_dialog;
+    else if (s_strata == "TOOLTIP")
+        m_strata = frame_strata::tooltip;
+    else if (s_strata == "PARENT") {
+        if (b_virtual_) {
+            m_strata = frame_strata::parent;
         } else {
-            if (pParent_)
-                mStrata = pParent_->get_frame_strata();
+            if (p_parent_)
+                m_strata = p_parent_->get_frame_strata();
             else
-                mStrata = frame_strata::MEDIUM;
+                m_strata = frame_strata::medium;
         }
     } else {
-        gui::out << gui::warning << "gui::" << lType_.back()
-                 << " : Unknown strata : \"" + sStrata + "\"." << std::endl;
+        gui::out << gui::warning << "gui::" << l_type_.back()
+                 << " : Unknown strata : \"" + s_strata + "\"." << std::endl;
         return;
     }
 
-    set_frame_strata(mStrata);
+    set_frame_strata(m_strata);
 }
 
-void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop) {
-    pBackdrop_ = std::move(pBackdrop);
+void frame::set_backdrop(std::unique_ptr<backdrop> p_backdrop) {
+    p_backdrop_ = std::move(p_backdrop);
     notify_renderer_need_redraw();
 }
 
-void frame::set_abs_hit_rect_insets(const bounds2f& lInsets) {
-    lAbsHitRectInsetList_ = lInsets;
+void frame::set_abs_hit_rect_insets(const bounds2f& l_insets) {
+    l_abs_hit_rect_inset_list_ = l_insets;
 }
 
-void frame::set_rel_hit_rect_insets(const bounds2f& lInsets) {
-    lRelHitRectInsetList_ = lInsets;
+void frame::set_rel_hit_rect_insets(const bounds2f& l_insets) {
+    l_rel_hit_rect_inset_list_ = l_insets;
 }
 
-void frame::set_level(int iLevel) {
-    if (iLevel == iLevel_)
+void frame::set_level(int i_level) {
+    if (i_level == i_level_)
         return;
 
-    std::swap(iLevel, iLevel_);
+    std::swap(i_level, i_level_);
 
-    if (!bVirtual_) {
-        get_top_level_renderer()->notify_frame_level_changed(observer_from(this), iLevel, iLevel_);
+    if (!b_virtual_) {
+        get_top_level_renderer()->notify_frame_level_changed(
+            observer_from(this), i_level, i_level_);
     }
 }
 
-void frame::set_max_dimensions(const vector2f& mMax) {
-    set_max_width(mMax.x);
-    set_max_height(mMax.y);
+void frame::set_max_dimensions(const vector2f& m_max) {
+    set_max_width(m_max.x);
+    set_max_height(m_max.y);
 }
 
-void frame::set_min_dimensions(const vector2f& mMin) {
-    set_min_width(mMin.x);
-    set_min_height(mMin.y);
+void frame::set_min_dimensions(const vector2f& m_min) {
+    set_min_width(m_min.x);
+    set_min_height(m_min.y);
 }
 
-void frame::set_max_height(float fMaxHeight) {
-    if (fMaxHeight < 0.0f)
-        fMaxHeight = std::numeric_limits<float>::infinity();
+void frame::set_max_height(float f_max_height) {
+    if (f_max_height < 0.0f)
+        f_max_height = std::numeric_limits<float>::infinity();
 
-    if (fMaxHeight >= fMinHeight_)
-        fMaxHeight_ = fMaxHeight;
+    if (f_max_height >= f_min_height_)
+        f_max_height_ = f_max_height;
 
-    if (fMaxHeight_ != fMaxHeight && !bVirtual_)
+    if (f_max_height_ != f_max_height && !b_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_max_width(float fMaxWidth) {
-    if (fMaxWidth < 0.0f)
-        fMaxWidth = std::numeric_limits<float>::infinity();
+void frame::set_max_width(float f_max_width) {
+    if (f_max_width < 0.0f)
+        f_max_width = std::numeric_limits<float>::infinity();
 
-    if (fMaxWidth >= fMinWidth_)
-        fMaxWidth_ = fMaxWidth;
+    if (f_max_width >= f_min_width_)
+        f_max_width_ = f_max_width;
 
-    if (fMaxWidth_ != fMaxWidth && !bVirtual_)
+    if (f_max_width_ != f_max_width && !b_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_min_height(float fMinHeight) {
-    if (fMinHeight <= fMaxHeight_)
-        fMinHeight_ = fMinHeight;
+void frame::set_min_height(float f_min_height) {
+    if (f_min_height <= f_max_height_)
+        f_min_height_ = f_min_height;
 
-    if (fMinHeight_ != fMinHeight && !bVirtual_)
+    if (f_min_height_ != f_min_height && !b_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_min_width(float fMinWidth) {
-    if (fMinWidth <= fMaxWidth_)
-        fMinWidth_ = fMinWidth;
+void frame::set_min_width(float f_min_width) {
+    if (f_min_width <= f_max_width_)
+        f_min_width_ = f_min_width;
 
-    if (fMinWidth_ != fMinWidth && !bVirtual_)
+    if (f_min_width_ != f_min_width && !b_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_movable(bool bIsMovable) {
-    bIsMovable_ = bIsMovable;
+void frame::set_movable(bool b_is_movable) {
+    b_is_movable_ = b_is_movable;
 }
 
 utils::owner_ptr<region> frame::release_from_parent() {
-    utils::observer_ptr<frame> pSelf = observer_from(this);
-    if (pParent_)
-        return pParent_->remove_child(pSelf);
+    utils::observer_ptr<frame> p_self = observer_from(this);
+    if (p_parent_)
+        return p_parent_->remove_child(p_self);
     else
-        return get_manager().get_root().remove_root_frame(pSelf);
+        return get_manager().get_root().remove_root_frame(p_self);
 }
 
-void frame::set_resizable(bool bIsResizable) {
-    bIsResizable_ = bIsResizable;
+void frame::set_resizable(bool b_is_resizable) {
+    b_is_resizable_ = b_is_resizable;
 }
 
-void frame::set_scale(float fScale) {
-    fScale_ = fScale;
-    if (fScale_ != fScale)
+void frame::set_scale(float f_scale) {
+    f_scale_ = f_scale;
+    if (f_scale_ != f_scale)
         notify_renderer_need_redraw();
 }
 
-void frame::set_top_level(bool bIsTopLevel) {
-    bIsTopLevel_ = bIsTopLevel;
+void frame::set_top_level(bool b_is_top_level) {
+    b_is_top_level_ = b_is_top_level;
 }
 
 void frame::raise() {
-    if (!bIsTopLevel_)
+    if (!b_is_top_level_)
         return;
 
-    int  iOldLevel         = iLevel_;
-    auto pTopLevelRenderer = get_top_level_renderer();
-    iLevel_                = pTopLevelRenderer->get_highest_level(mStrata_) + 1;
+    int  i_old_level          = i_level_;
+    auto p_top_level_renderer = get_top_level_renderer();
+    i_level_                  = p_top_level_renderer->get_highest_level(m_strata_) + 1;
 
-    if (iLevel_ > iOldLevel) {
+    if (i_level_ > i_old_level) {
         if (!is_virtual()) {
-            pTopLevelRenderer->notify_frame_level_changed(observer_from(this), iOldLevel, iLevel_);
+            p_top_level_renderer->notify_frame_level_changed(
+                observer_from(this), i_old_level, i_level_);
         }
 
-        int iAmount = iLevel_ - iOldLevel;
+        int i_amount = i_level_ - i_old_level;
 
-        for (auto& mChild : get_children())
-            mChild.add_level_(iAmount);
+        for (auto& m_child : get_children())
+            m_child.add_level_(i_amount);
     } else
-        iLevel_ = iOldLevel;
+        i_level_ = i_old_level;
 }
 
-void frame::enable_auto_focus(bool bEnable) {
-    bAutoFocus_ = bEnable;
+void frame::enable_auto_focus(bool b_enable) {
+    b_auto_focus_ = b_enable;
 }
 
 bool frame::is_auto_focus_enabled() const {
-    return bAutoFocus_;
+    return b_auto_focus_;
 }
 
-void frame::set_focus(bool bFocus) {
-    auto& mRoot = get_manager().get_root();
-    if (bFocus)
-        mRoot.request_focus(observer_from(this));
+void frame::set_focus(bool b_focus) {
+    auto& m_root = get_manager().get_root();
+    if (b_focus)
+        m_root.request_focus(observer_from(this));
     else
-        mRoot.release_focus(*this);
+        m_root.release_focus(*this);
 }
 
 bool frame::has_focus() const {
-    return bFocus_;
+    return b_focus_;
 }
 
-void frame::notify_focus(bool bFocus) {
-    if (bFocus_ == bFocus)
+void frame::notify_focus(bool b_focus) {
+    if (b_focus_ == b_focus)
         return;
 
-    bFocus_ = bFocus;
+    b_focus_ = b_focus;
 
-    if (bFocus_)
+    if (b_focus_)
         fire_script("OnFocusGained");
     else
         fire_script("OnFocusLost");
 }
 
-void frame::add_level_(int iAmount) {
-    int iOldLevel = iLevel_;
-    iLevel_ += iAmount;
+void frame::add_level_(int i_amount) {
+    int i_old_level = i_level_;
+    i_level_ += i_amount;
 
     if (!is_virtual()) {
         get_top_level_renderer()->notify_frame_level_changed(
-            observer_from(this), iOldLevel, iLevel_);
+            observer_from(this), i_old_level, i_level_);
     }
 
-    for (auto& mChild : get_children())
-        mChild.add_level_(iAmount);
+    for (auto& m_child : get_children())
+        m_child.add_level_(i_amount);
 }
 
-void frame::set_user_placed(bool bIsUserPlaced) {
-    bIsUserPlaced_ = bIsUserPlaced;
+void frame::set_user_placed(bool b_is_user_placed) {
+    b_is_user_placed_ = b_is_user_placed;
 }
 
 void frame::start_moving() {
-    if (!bIsMovable_)
+    if (!b_is_movable_)
         return;
 
     set_user_placed(true);
@@ -1330,12 +1337,12 @@ void frame::stop_moving() {
         get_manager().get_root().stop_moving();
 }
 
-void frame::start_sizing(const anchor_point& mPoint) {
-    if (!bIsResizable_)
+void frame::start_sizing(const anchor_point& m_point) {
+    if (!b_is_resizable_)
         return;
 
     set_user_placed(true);
-    get_manager().get_root().start_sizing(observer_from(this), mPoint);
+    get_manager().get_root().start_sizing(observer_from(this), m_point);
 }
 
 void frame::stop_sizing() {
@@ -1343,28 +1350,28 @@ void frame::stop_sizing() {
         get_manager().get_root().stop_sizing();
 }
 
-void frame::propagate_renderer_(bool bRendered) {
-    auto pTopLevelRenderer = get_top_level_renderer();
-    for (const auto& pChild : lChildList_) {
-        if (!pChild)
+void frame::propagate_renderer_(bool b_rendered) {
+    auto p_top_level_renderer = get_top_level_renderer();
+    for (const auto& p_child : l_child_list_) {
+        if (!p_child)
             continue;
 
-        if (!pChild->get_renderer())
-            pTopLevelRenderer->notify_rendered_frame(pChild, bRendered);
+        if (!p_child->get_renderer())
+            p_top_level_renderer->notify_rendered_frame(p_child, b_rendered);
 
-        pChild->propagate_renderer_(bRendered);
+        p_child->propagate_renderer_(b_rendered);
     }
 }
 
-void frame::set_renderer(utils::observer_ptr<frame_renderer> pRenderer) {
-    if (pRenderer == pRenderer_)
+void frame::set_renderer(utils::observer_ptr<frame_renderer> p_renderer) {
+    if (p_renderer == p_renderer_)
         return;
 
     get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
 
     propagate_renderer_(false);
 
-    pRenderer_ = std::move(pRenderer);
+    p_renderer_ = std::move(p_renderer);
 
     get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
 
@@ -1372,240 +1379,244 @@ void frame::set_renderer(utils::observer_ptr<frame_renderer> pRenderer) {
 }
 
 utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const {
-    if (pRenderer_)
-        return pRenderer_;
-    else if (pParent_)
-        return pParent_->get_top_level_renderer();
+    if (p_renderer_)
+        return p_renderer_;
+    else if (p_parent_)
+        return p_parent_->get_top_level_renderer();
     else
         return get_manager().get_root().observer_from_this();
 }
 
 void frame::notify_visible() {
-    alive_checker mChecker(*this);
+    alive_checker m_checker(*this);
 
-    if (bAutoFocus_) {
+    if (b_auto_focus_) {
         set_focus(true);
-        if (!mChecker.is_alive())
+        if (!m_checker.is_alive())
             return;
     }
 
     base::notify_visible();
 
-    for (auto& mRegion : get_regions()) {
-        if (mRegion.is_shown()) {
-            mRegion.notify_visible();
-            if (!mChecker.is_alive())
+    for (auto& m_region : get_regions()) {
+        if (m_region.is_shown()) {
+            m_region.notify_visible();
+            if (!m_checker.is_alive())
                 return;
         }
     }
 
-    for (auto& mChild : get_children()) {
-        if (mChild.is_shown()) {
-            mChild.notify_visible();
-            if (!mChecker.is_alive())
+    for (auto& m_child : get_children()) {
+        if (m_child.is_shown()) {
+            m_child.notify_visible();
+            if (!m_checker.is_alive())
                 return;
         }
     }
 
     fire_script("OnShow");
-    if (!mChecker.is_alive())
+    if (!m_checker.is_alive())
         return;
 
     notify_renderer_need_redraw();
 }
 
 void frame::notify_invisible() {
-    alive_checker mChecker(*this);
+    alive_checker m_checker(*this);
 
     set_focus(false);
-    if (!mChecker.is_alive())
+    if (!m_checker.is_alive())
         return;
 
     base::notify_invisible();
 
-    for (auto& mChild : get_children()) {
-        if (mChild.is_shown()) {
-            mChild.notify_invisible();
-            if (!mChecker.is_alive())
+    for (auto& m_child : get_children()) {
+        if (m_child.is_shown()) {
+            m_child.notify_invisible();
+            if (!m_checker.is_alive())
                 return;
         }
     }
 
     fire_script("OnHide");
-    if (!mChecker.is_alive())
+    if (!m_checker.is_alive())
         return;
 
     notify_renderer_need_redraw();
 }
 
 void frame::notify_renderer_need_redraw() {
-    if (bVirtual_)
+    if (b_virtual_)
         return;
 
-    get_top_level_renderer()->notify_strata_needs_redraw(mStrata_);
+    get_top_level_renderer()->notify_strata_needs_redraw(m_strata_);
 }
 
 void frame::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
-    if (pTitleRegion_)
-        pTitleRegion_->notify_scaling_factor_updated();
+    if (p_title_region_)
+        p_title_region_->notify_scaling_factor_updated();
 
-    for (auto& mChild : get_children())
-        mChild.notify_scaling_factor_updated();
+    for (auto& m_child : get_children())
+        m_child.notify_scaling_factor_updated();
 
-    for (auto& mRegion : get_regions())
-        mRegion.notify_scaling_factor_updated();
+    for (auto& m_region : get_regions())
+        m_region.notify_scaling_factor_updated();
 }
 
 void frame::show() {
-    if (bIsShown_)
+    if (b_is_shown_)
         return;
 
-    bool bWasVisible_ = bIsVisible_;
+    bool b_was_visible = b_is_visible_;
     base::show();
 
-    if (!bWasVisible_)
+    if (!b_was_visible)
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::hide() {
-    if (!bIsShown_)
+    if (!b_is_shown_)
         return;
 
-    bool bWasVisible_ = bIsVisible_;
+    bool b_was_visible = b_is_visible_;
     base::hide();
 
-    if (bWasVisible_)
+    if (b_was_visible)
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& /*mPosition*/) {
-    alive_checker mChecker(*this);
+void frame::notify_mouse_in_frame(bool b_mouse_inframe, const vector2f& /*mPosition*/) {
+    alive_checker m_checker(*this);
 
-    if (bMouseInframe) {
-        if (!bMouseInFrame_) {
+    if (b_mouse_inframe) {
+        if (!b_mouse_in_frame_) {
             fire_script("OnEnter");
-            if (!mChecker.is_alive())
+            if (!m_checker.is_alive())
                 return;
         }
 
-        bMouseInFrame_ = true;
+        b_mouse_in_frame_ = true;
     } else {
-        if (bMouseInFrame_) {
+        if (b_mouse_in_frame_) {
             fire_script("OnLeave");
-            if (!mChecker.is_alive())
+            if (!m_checker.is_alive())
                 return;
         }
 
-        bMouseInFrame_ = false;
+        b_mouse_in_frame_ = false;
     }
 }
 
 void frame::update_borders_() {
-    const bool bOldReady      = bReady_;
-    const auto lOldBorderList = lBorderList_;
+    const bool b_old_ready       = b_ready_;
+    const auto l_old_border_list = l_border_list_;
 
     base::update_borders_();
 
     check_position_();
 
-    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady) {
+    if (l_border_list_ != l_old_border_list || b_ready_ != b_old_ready) {
         get_manager().get_root().notify_hovered_frame_dirty();
-        if (pBackdrop_)
-            pBackdrop_->notify_borders_updated();
+        if (p_backdrop_)
+            p_backdrop_->notify_borders_updated();
     }
 }
 
-void frame::update(float fDelta) {
+void frame::update(float f_delta) {
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-    alive_checker mChecker(*this);
+    alive_checker m_checker(*this);
 
     DEBUG_LOG("  ~");
-    base::update(fDelta);
+    base::update(f_delta);
     DEBUG_LOG("   #");
 
-    if (bBuildLayerList_) {
+    if (b_build_layer_list_) {
         DEBUG_LOG("   Build layers");
         // Clear layers' content
-        for (auto& mLayer : lLayerList_)
-            mLayer.lRegionList.clear();
+        for (auto& m_layer : l_layer_list_)
+            m_layer.l_region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
-        for (const auto& pRegion : lRegionList_) {
-            if (pRegion && pRegion->get_object_type() != "font_string")
-                lLayerList_[static_cast<std::size_t>(pRegion->get_draw_layer())]
-                    .lRegionList.push_back(pRegion);
+        for (const auto& p_region : l_region_list_) {
+            if (p_region && p_region->get_object_type() != "font_string")
+                l_layer_list_[static_cast<std::size_t>(p_region->get_draw_layer())]
+                    .l_region_list.push_back(p_region);
         }
 
-        for (const auto& pRegion : lRegionList_) {
-            if (pRegion && pRegion->get_object_type() == "font_string")
-                lLayerList_[static_cast<std::size_t>(pRegion->get_draw_layer())]
-                    .lRegionList.push_back(pRegion);
+        for (const auto& p_region : l_region_list_) {
+            if (p_region && p_region->get_object_type() == "font_string")
+                l_layer_list_[static_cast<std::size_t>(p_region->get_draw_layer())]
+                    .l_region_list.push_back(p_region);
         }
 
-        bBuildLayerList_ = false;
+        b_build_layer_list_ = false;
     }
 
     if (is_visible()) {
         DEBUG_LOG("   On update");
-        event_data mData;
-        mData.add(fDelta);
-        fire_script("OnUpdate", mData);
-        if (!mChecker.is_alive())
+        event_data m_data;
+        m_data.add(f_delta);
+        fire_script("OnUpdate", m_data);
+        if (!m_checker.is_alive())
             return;
     }
 
-    if (pTitleRegion_)
-        pTitleRegion_->update(fDelta);
+    if (p_title_region_)
+        p_title_region_->update(f_delta);
 
     // Update regions
     DEBUG_LOG("   Update regions");
-    for (auto& mRegion : get_regions())
-        mRegion.update(fDelta);
+    for (auto& m_region : get_regions())
+        m_region.update(f_delta);
 
     // Remove deleted regions
     {
-        auto mIterRemove = std::remove_if(
-            lRegionList_.begin(), lRegionList_.end(), [](auto& pObj) { return pObj == nullptr; });
+        auto m_iter_remove =
+            std::remove_if(l_region_list_.begin(), l_region_list_.end(), [](auto& p_obj) {
+                return p_obj == nullptr;
+            });
 
-        lRegionList_.erase(mIterRemove, lRegionList_.end());
+        l_region_list_.erase(m_iter_remove, l_region_list_.end());
     }
 
     // Update children
     DEBUG_LOG("   Update children");
-    for (auto& mChild : get_children()) {
-        mChild.update(fDelta);
-        if (!mChecker.is_alive())
+    for (auto& m_child : get_children()) {
+        m_child.update(f_delta);
+        if (!m_checker.is_alive())
             return;
     }
 
     // Remove deleted children
     {
-        auto mIterRemove = std::remove_if(
-            lChildList_.begin(), lChildList_.end(), [](auto& pObj) { return pObj == nullptr; });
+        auto m_iter_remove =
+            std::remove_if(l_child_list_.begin(), l_child_list_.end(), [](auto& p_obj) {
+                return p_obj == nullptr;
+            });
 
-        lChildList_.erase(mIterRemove, lChildList_.end());
+        l_child_list_.erase(m_iter_remove, l_child_list_.end());
     }
 
     // Remove empty handlers
-    for (auto mIterList = lSignalList_.begin(); mIterList != lSignalList_.end();) {
-        if (mIterList->second.empty())
-            mIterList = lSignalList_.erase(mIterList);
+    for (auto m_iter_list = l_signal_list_.begin(); m_iter_list != l_signal_list_.end();) {
+        if (m_iter_list->second.empty())
+            m_iter_list = l_signal_list_.erase(m_iter_list);
         else
-            ++mIterList;
+            ++m_iter_list;
     }
 
-    vector2f mNewSize = get_apparent_dimensions();
-    if (mOldSize_ != mNewSize) {
+    vector2f m_new_size = get_apparent_dimensions();
+    if (m_old_size_ != m_new_size) {
         DEBUG_LOG("   On size changed");
         fire_script("OnSizeChanged");
-        if (!mChecker.is_alive())
+        if (!m_checker.is_alive())
             return;
 
-        mOldSize_ = mNewSize;
+        m_old_size_ = m_new_size;
     }
 
     DEBUG_LOG("   .");

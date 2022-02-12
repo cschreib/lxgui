@@ -20,7 +20,7 @@ namespace lxgui::gui::sfml {
 /** \param mWindow The SFML render window
  *   \return The new gui::manager instance
  */
-utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow);
+utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& m_window);
 
 } // namespace lxgui::gui::sfml
 

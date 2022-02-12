@@ -24,11 +24,11 @@ public:
      *   \param uiDefaultCodePoint The character to display as fallback
      */
     font(
-        const std::string&                   sFontFile,
-        std::size_t                          uiSize,
-        std::size_t                          uiOutline,
-        const std::vector<code_point_range>& lCodePoints,
-        char32_t                             uiDefaultCodePoint);
+        const std::string&                   s_font_file,
+        std::size_t                          ui_size,
+        std::size_t                          ui_outline,
+        const std::vector<code_point_range>& l_code_points,
+        char32_t                             ui_default_code_point);
 
     /// Get the size of the font in pixels.
     /** \return The size of the font in pixels
@@ -41,25 +41,25 @@ public:
      *   \note The uv coordinates are normalised, i.e. they range from
      *         0 to 1. They are arranged as {u1, v1, u2, v2}.
      */
-    bounds2f get_character_uvs(char32_t uiChar) const override;
+    bounds2f get_character_uvs(char32_t ui_char) const override;
 
     /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
     /** \param uiChar The unicode character
      *   \return The rect coordinates of this character (in pixels, relative to the baseline)
      */
-    bounds2f get_character_bounds(char32_t uiChar) const override;
+    bounds2f get_character_bounds(char32_t ui_char) const override;
 
     /// Returns the width of a character in pixels.
     /** \param uiChar The unicode character
      *   \return The width of the character in pixels.
      */
-    float get_character_width(char32_t uiChar) const override;
+    float get_character_width(char32_t ui_char) const override;
 
     /// Returns the height of a character in pixels.
     /** \param uiChar The unicode character
      *   \return The height of the character in pixels.
      */
-    float get_character_height(char32_t uiChar) const override;
+    float get_character_height(char32_t ui_char) const override;
 
     /// Return the kerning amount between two characters.
     /** \param uiChar1 The first unicode character
@@ -70,7 +70,7 @@ public:
      *         the two to be closer than with 'VW'. This has no effect
      *         for fixed width fonts (like Courrier, etc).
      */
-    float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const override;
+    float get_character_kerning(char32_t ui_char1, char32_t ui_char2) const override;
 
     /// Returns the underlying material to use for rendering.
     /** \return The underlying material to use for rendering
@@ -80,18 +80,18 @@ public:
     /// Update the material to use for rendering.
     /** \param pMat The material to use for rendering
      */
-    void update_texture(std::shared_ptr<gui::material> pMat) override;
+    void update_texture(std::shared_ptr<gui::material> p_mat) override;
 
 private:
-    char32_t get_character_(char32_t uiChar) const;
+    char32_t get_character_(char32_t ui_char) const;
 
-    sf::Font    mFont_;
-    std::size_t uiSize_             = 0u;
-    std::size_t uiOutline_          = 0u;
-    char32_t    uiDefaultCodePoint_ = 0u;
+    sf::Font    m_font_;
+    std::size_t ui_size_             = 0u;
+    std::size_t ui_outline_          = 0u;
+    char32_t    ui_default_code_point_ = 0u;
 
-    std::shared_ptr<sfml::material> pTexture_;
-    std::vector<code_point_range>   lCodePoints_;
+    std::shared_ptr<sfml::material> p_texture_;
+    std::vector<code_point_range>   l_code_points_;
 };
 
 } // namespace lxgui::gui::sfml

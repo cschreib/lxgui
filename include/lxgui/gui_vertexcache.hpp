@@ -29,8 +29,8 @@ class vertex_cache {
 public:
     /// The type of vertex data contained in a vertex_cache.
     enum class type {
-        TRIANGLES, /// 3 vertices per element
-        QUADS /// 4 vertices per element
+        triangles, /// 3 vertices per element
+        quads /// 4 vertices per element
     };
 
     /// Constructor.
@@ -38,7 +38,7 @@ public:
      *   \details A default constructed vertex cache holds no data. Use update()
      *            to store vertices to be rendered.
      */
-    explicit vertex_cache(type mType);
+    explicit vertex_cache(type m_type);
 
     /// Destructor.
     virtual ~vertex_cache() = default;
@@ -61,10 +61,10 @@ public:
      *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
      *         If the type if QUADS, uiNumVertex must be a multiple of 4.
      */
-    virtual void update(const vertex* lVertexData, std::size_t uiNumVertex) = 0;
+    virtual void update(const vertex* l_vertex_data, std::size_t ui_num_vertex) = 0;
 
 protected:
-    type mType_ = type::TRIANGLES;
+    type m_type_ = type::triangles;
 };
 
 } // namespace lxgui::gui

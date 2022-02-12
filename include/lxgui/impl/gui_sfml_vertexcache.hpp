@@ -31,7 +31,7 @@ public:
      *            to store vertices to be rendered. The size hint can enable the cache to be
      *            pre-allocated, which will avoid a reallocation when update() is called.
      */
-    explicit vertex_cache(type mType);
+    explicit vertex_cache(type m_type);
 
     /// Update the data stored in the cache to form new triangles.
     /** \param lVertexData The vertices to cache
@@ -39,7 +39,7 @@ public:
      *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
      *         If the type if QUADS, uiNumVertex must be a multiple of 4.
      */
-    void update(const vertex* lVertexData, std::size_t uiNumVertex) override;
+    void update(const vertex* l_vertex_data, std::size_t ui_num_vertex) override;
 
     /// Returns the number of vertices currently stored in the cache.
     /** \return The number of vertices currently stored in the cache
@@ -52,8 +52,8 @@ public:
     const sf::VertexBuffer& get_impl() const;
 
 private:
-    std::size_t      uiNumVertex_ = 0u;
-    sf::VertexBuffer mBuffer_;
+    std::size_t      ui_num_vertex_ = 0u;
+    sf::VertexBuffer m_buffer_;
 };
 
 } // namespace lxgui::gui::sfml

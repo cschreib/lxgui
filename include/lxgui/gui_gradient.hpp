@@ -10,7 +10,7 @@ namespace lxgui::gui {
 /// Represents color gradients
 class gradient {
 public:
-    enum class orientation { HORIZONTAL, VERTICAL };
+    enum class orientation { horizontal, vertical };
 
     /// Default constructor.
     /** \note Makes an empty gradient.
@@ -22,7 +22,7 @@ public:
      *   \param mMinColor    This gradient's min color
      *   \param mMaxColor    This gradient's max color
      */
-    gradient(orientation mOrientation, const color& mMinColor, const color& mMaxColor);
+    gradient(orientation m_orientation, const color& m_min_color, const color& m_max_color);
 
     /// Returns the gradient's min colors.
     /** \return The gradient's min colors
@@ -44,8 +44,8 @@ public:
     orientation get_orientation() const;
 
 private:
-    orientation mOrientation_ = orientation::HORIZONTAL;
-    color       mMinColor_, mMaxColor_;
+    orientation m_orientation_ = orientation::horizontal;
+    color       m_min_color_, m_max_color_;
 };
 
 } // namespace lxgui::gui

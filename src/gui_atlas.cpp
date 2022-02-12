@@ -9,57 +9,57 @@
 
 namespace lxgui::gui {
 
-atlas_page::atlas_page(material::filter mFilter) : mFilter_(mFilter) {}
+atlas_page::atlas_page(material::filter m_filter) : m_filter_(m_filter) {}
 
-std::shared_ptr<material> atlas_page::fetch_material(const std::string& sFileName) const {
-    auto mIter = lTextureList_.find(sFileName);
-    if (mIter != lTextureList_.end()) {
-        if (std::shared_ptr<gui::material> pLock = mIter->second.lock())
-            return pLock;
+std::shared_ptr<material> atlas_page::fetch_material(const std::string& s_file_name) const {
+    auto m_iter = l_texture_list_.find(s_file_name);
+    if (m_iter != l_texture_list_.end()) {
+        if (std::shared_ptr<gui::material> p_lock = m_iter->second.lock())
+            return p_lock;
     }
 
     return nullptr;
 }
 
 std::shared_ptr<gui::material>
-atlas_page::add_material(const std::string& sFileName, const material& mMat) {
+atlas_page::add_material(const std::string& s_file_name, const material& m_mat) {
     try {
-        const auto mRect     = mMat.get_rect();
-        const auto mLocation = find_location_(mRect.width(), mRect.height());
-        if (!mLocation.has_value())
+        const auto m_rect     = m_mat.get_rect();
+        const auto m_location = find_location_(m_rect.width(), m_rect.height());
+        if (!m_location.has_value())
             return nullptr;
 
-        std::shared_ptr<gui::material> pTex = add_material_(mMat, mLocation.value());
-        lTextureList_[sFileName]            = pTex;
-        return pTex;
+        std::shared_ptr<gui::material> p_tex = add_material_(m_mat, m_location.value());
+        l_texture_list_[s_file_name]         = p_tex;
+        return p_tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
     }
 }
 
-std::shared_ptr<font> atlas_page::fetch_font(const std::string& sFontName) const {
-    auto mIter = lFontList_.find(sFontName);
-    if (mIter != lFontList_.end()) {
-        if (std::shared_ptr<gui::font> pLock = mIter->second.lock())
-            return pLock;
+std::shared_ptr<font> atlas_page::fetch_font(const std::string& s_font_name) const {
+    auto m_iter = l_font_list_.find(s_font_name);
+    if (m_iter != l_font_list_.end()) {
+        if (std::shared_ptr<gui::font> p_lock = m_iter->second.lock())
+            return p_lock;
     }
 
     return nullptr;
 }
 
-bool atlas_page::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) {
+bool atlas_page::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> p_font) {
     try {
-        if (const auto pMat = pFont->get_texture().lock()) {
-            const auto mRect     = pMat->get_rect();
-            const auto mLocation = find_location_(mRect.width(), mRect.height());
-            if (!mLocation.has_value())
+        if (const auto p_mat = p_font->get_texture().lock()) {
+            const auto m_rect     = p_mat->get_rect();
+            const auto m_location = find_location_(m_rect.width(), m_rect.height());
+            if (!m_location.has_value())
                 return false;
 
-            std::shared_ptr<gui::material> pTex = add_material_(*pMat, mLocation.value());
-            pFont->update_texture(pTex);
+            std::shared_ptr<gui::material> p_tex = add_material_(*p_mat, m_location.value());
+            p_font->update_texture(p_tex);
 
-            lFontList_[sFontName] = std::move(pFont);
+            l_font_list_[s_font_name] = std::move(p_font);
             return true;
         } else
             return false;
@@ -70,84 +70,84 @@ bool atlas_page::add_font(const std::string& sFontName, std::shared_ptr<gui::fon
 }
 
 bool atlas_page::empty() const {
-    for (const auto& pMat : lTextureList_) {
-        if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
+    for (const auto& p_mat : l_texture_list_) {
+        if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock())
             return false;
     }
 
-    for (const auto& pFont : lFontList_) {
-        if (std::shared_ptr<gui::font> pLock = pFont.second.lock())
+    for (const auto& p_font : l_font_list_) {
+        if (std::shared_ptr<gui::font> p_lock = p_font.second.lock())
             return false;
     }
 
     return true;
 }
 
-std::optional<bounds2f> atlas_page::find_location_(float fWidth, float fHeight) const {
-    constexpr float fPadding = 1.0f; // pixels
+std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height) const {
+    constexpr float f_padding = 1.0f; // pixels
 
-    bounds2f mStartQuad(0, fWidth, 0, fHeight);
+    bounds2f mStartQuad(0, f_width, 0, f_height);
     if (empty())
         return mStartQuad;
 
-    const float fAtlasWidth  = get_width();
-    const float fAtlasHeight = get_height();
+    const float fAtlasWidth  = get_width_();
+    const float fAtlasHeight = get_height_();
 
-    std::vector<bounds2f> lOccupiedSpace;
-    lOccupiedSpace.reserve(lTextureList_.size());
+    std::vector<bounds2f> l_occupied_space;
+    l_occupied_space.reserve(l_texture_list_.size());
 
     float fMaxWidth  = 0.0f;
     float fMaxHeight = 0.0f;
 
-    auto apply_padding = [&](bounds2f mRect) {
-        mRect.right += fPadding;
-        mRect.bottom += fPadding;
-        return mRect;
+    auto apply_padding = [&](bounds2f m_rect) {
+        m_rect.right += f_padding;
+        m_rect.bottom += f_padding;
+        return m_rect;
     };
 
-    for (const auto& pMat : lTextureList_) {
-        if (std::shared_ptr<gui::material> pLock = pMat.second.lock()) {
-            lOccupiedSpace.push_back(apply_padding(pLock->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, lOccupiedSpace.back().right);
-            fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
+    for (const auto& p_mat : l_texture_list_) {
+        if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock()) {
+            l_occupied_space.push_back(apply_padding(p_lock->get_rect()));
+            fMaxWidth  = std::max(fMaxWidth, l_occupied_space.back().right);
+            fMaxHeight = std::max(fMaxHeight, l_occupied_space.back().bottom);
         }
     }
 
-    for (const auto& pFont : lFontList_) {
-        if (std::shared_ptr<gui::font> pLock = pFont.second.lock()) {
-            lOccupiedSpace.push_back(apply_padding(pLock->get_texture().lock()->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, lOccupiedSpace.back().right);
-            fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
+    for (const auto& p_font : l_font_list_) {
+        if (std::shared_ptr<gui::font> p_lock = p_font.second.lock()) {
+            l_occupied_space.push_back(apply_padding(p_lock->get_texture().lock()->get_rect()));
+            fMaxWidth  = std::max(fMaxWidth, l_occupied_space.back().right);
+            fMaxHeight = std::max(fMaxHeight, l_occupied_space.back().bottom);
         }
     }
 
     float    fBestArea = std::numeric_limits<float>::infinity();
     bounds2f mBestQuad;
 
-    for (const auto& mRectSource : lOccupiedSpace) {
-        auto mTestPosition = [&](const vector2f& mPos) {
-            const bounds2f mTestQuad = mStartQuad + mPos;
-            if (mTestQuad.right > fAtlasWidth || mTestQuad.bottom > fAtlasHeight)
+    for (const auto& m_rect_source : l_occupied_space) {
+        auto m_test_position = [&](const vector2f& m_pos) {
+            const bounds2f m_test_quad = mStartQuad + m_pos;
+            if (m_test_quad.right > fAtlasWidth || m_test_quad.bottom > fAtlasHeight)
                 return;
 
-            const float fNewMaxWidth  = std::max(fMaxWidth, mTestQuad.right);
-            const float fNewMaxHeight = std::max(fMaxHeight, mTestQuad.bottom);
-            const float fNewArea      = fNewMaxWidth * fNewMaxHeight;
+            const float f_new_max_width  = std::max(fMaxWidth, m_test_quad.right);
+            const float f_new_max_height = std::max(fMaxHeight, m_test_quad.bottom);
+            const float f_new_area       = f_new_max_width * f_new_max_height;
 
-            if (fNewArea >= fBestArea)
+            if (f_new_area >= fBestArea)
                 return;
 
-            for (const auto& mRectOther : lOccupiedSpace) {
-                if (mTestQuad.overlaps(mRectOther))
+            for (const auto& m_rect_other : l_occupied_space) {
+                if (m_test_quad.overlaps(m_rect_other))
                     return;
             }
 
-            fBestArea = fNewArea;
-            mBestQuad = mTestQuad;
+            fBestArea = f_new_area;
+            mBestQuad = m_test_quad;
         };
 
-        mTestPosition(mRectSource.top_right());
-        mTestPosition(mRectSource.bottom_left());
+        m_test_position(m_rect_source.top_right());
+        m_test_position(m_rect_source.bottom_left());
     }
 
     if (std::isfinite(fBestArea))
@@ -156,38 +156,38 @@ std::optional<bounds2f> atlas_page::find_location_(float fWidth, float fHeight) 
         return std::nullopt;
 }
 
-atlas::atlas(renderer& mRenderer, material::filter mFilter) :
-    mRenderer_(mRenderer), mFilter_(mFilter) {}
+atlas::atlas(renderer& m_renderer, material::filter m_filter) :
+    m_renderer_(m_renderer), m_filter_(m_filter) {}
 
-std::shared_ptr<gui::material> atlas::fetch_material(const std::string& sFileName) const {
-    for (const auto& mPageItem : lPageList_) {
-        auto pTex = mPageItem.pPage->fetch_material(sFileName);
-        if (pTex)
-            return pTex;
+std::shared_ptr<gui::material> atlas::fetch_material(const std::string& s_file_name) const {
+    for (const auto& m_page_item : l_page_list_) {
+        auto p_tex = m_page_item.p_page->fetch_material(s_file_name);
+        if (p_tex)
+            return p_tex;
     }
 
     return nullptr;
 }
 
 std::shared_ptr<gui::material>
-atlas::add_material(const std::string& sFileName, const material& mMat) {
+atlas::add_material(const std::string& s_file_name, const material& m_mat) {
     try {
-        for (const auto& mPageItem : lPageList_) {
-            auto pTex = mPageItem.pPage->add_material(sFileName, mMat);
-            if (pTex)
-                return pTex;
+        for (const auto& m_page_item : l_page_list_) {
+            auto p_tex = m_page_item.p_page->add_material(s_file_name, m_mat);
+            if (p_tex)
+                return p_tex;
 
-            if (mPageItem.pPage->empty()) {
-                gui::out << gui::warning << "Could not fit texture '" << sFileName
+            if (m_page_item.p_page->empty()) {
+                gui::out << gui::warning << "Could not fit texture '" << s_file_name
                          << "' on any atlas page." << std::endl;
                 return nullptr;
             }
         }
 
         add_page_();
-        auto pTex = lPageList_.back().pPage->add_material(sFileName, mMat);
-        if (pTex)
-            return pTex;
+        auto p_tex = l_page_list_.back().p_page->add_material(s_file_name, m_mat);
+        if (p_tex)
+            return p_tex;
 
         return nullptr;
     } catch (const std::exception& e) {
@@ -196,24 +196,24 @@ atlas::add_material(const std::string& sFileName, const material& mMat) {
     }
 }
 
-std::shared_ptr<gui::font> atlas::fetch_font(const std::string& sFontName) const {
-    for (const auto& mPageItem : lPageList_) {
-        auto pFont = mPageItem.pPage->fetch_font(sFontName);
-        if (pFont)
-            return pFont;
+std::shared_ptr<gui::font> atlas::fetch_font(const std::string& s_font_name) const {
+    for (const auto& m_page_item : l_page_list_) {
+        auto p_font = m_page_item.p_page->fetch_font(s_font_name);
+        if (p_font)
+            return p_font;
     }
 
     return nullptr;
 }
 
-bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) {
+bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> p_font) {
     try {
-        for (const auto& mPageItem : lPageList_) {
-            if (mPageItem.pPage->add_font(sFontName, pFont))
+        for (const auto& m_page_item : l_page_list_) {
+            if (m_page_item.p_page->add_font(s_font_name, p_font))
                 return true;
 
-            if (mPageItem.pPage->empty()) {
-                gui::out << gui::warning << "Could not fit font '" << sFontName
+            if (m_page_item.p_page->empty()) {
+                gui::out << gui::warning << "Could not fit font '" << s_font_name
                          << "' on any atlas page." << std::endl;
                 return false;
             }
@@ -221,7 +221,7 @@ bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pF
 
         add_page_();
 
-        return lPageList_.back().pPage->add_font(sFontName, std::move(pFont));
+        return l_page_list_.back().p_page->add_font(s_font_name, std::move(p_font));
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return false;
@@ -229,21 +229,21 @@ bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pF
 }
 
 std::size_t atlas::get_num_pages() const {
-    return lPageList_.size();
+    return l_page_list_.size();
 }
 
 void atlas::add_page_() {
-    page_item mPage;
-    mPage.pPage = create_page_();
+    page_item m_page;
+    m_page.p_page = create_page_();
 
     // Add a white pixel as the first material in the atlas.
     // This can be used for optimizing quad batching, to render
     // quads with no texture.
-    ub32color mPixel(255, 255, 255, 255);
-    auto      pTex      = mRenderer_.create_material(vector2ui(1u, 1u), &mPixel);
-    mPage.pNoTextureMat = mPage.pPage->add_material("", *pTex);
+    ub32color m_pixel(255, 255, 255, 255);
+    auto      p_tex         = m_renderer_.create_material(vector2ui(1u, 1u), &m_pixel);
+    m_page.p_no_texture_mat = m_page.p_page->add_material("", *p_tex);
 
-    lPageList_.push_back(std::move(mPage));
+    l_page_list_.push_back(std::move(m_page));
 }
 
 } // namespace lxgui::gui

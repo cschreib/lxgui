@@ -36,13 +36,13 @@ public:
     frame_renderer& operator=(frame_renderer&&) = delete;
 
     /// Tells this renderer that one of its region requires redraw.
-    virtual void notify_strata_needs_redraw(frame_strata mStrata);
+    virtual void notify_strata_needs_redraw(frame_strata m_strata);
 
     /// Tells this renderer that it should (or not) render another frame.
     /** \param pFrame    The frame to render
      *   \param bRendered 'true' if this renderer needs to render that new object
      */
-    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered);
+    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool b_rendered);
 
     /// Tells this renderer that a frame has changed strata.
     /** \param pFrame The frame which has changed
@@ -50,7 +50,7 @@ public:
      *   \param mNewStrata The new frame strata
      */
     virtual void notify_frame_strata_changed(
-        const utils::observer_ptr<frame>& pFrame, frame_strata mOldStrata, frame_strata mNewStrata);
+        const utils::observer_ptr<frame>& p_frame, frame_strata m_old_strata, frame_strata m_new_strata);
 
     /// Tells this renderer that a frame has changed level.
     /** \param pFrame The frame which has changed
@@ -58,7 +58,7 @@ public:
      *   \param iNewLevel The new frame level
      */
     virtual void notify_frame_level_changed(
-        const utils::observer_ptr<frame>& pFrame, int iOldLevel, int iNewLevel);
+        const utils::observer_ptr<frame>& p_frame, int i_old_level, int i_new_level);
 
     /// Returns the width and height of of this renderer's main render target (e.g., screen).
     /** \return The render target dimensions
@@ -70,16 +70,16 @@ public:
      *   \return The topmost frame, or nullptr if none
      */
     utils::observer_ptr<const frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) const;
+    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const;
 
     /// Find the top-most frame matching the provided predicate
     /** \param mPredicate A function returning 'true' if the frame can be selected
      *   \return The topmost frame, or nullptr if none
      */
     utils::observer_ptr<frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& mPredicate) {
+    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) {
         return utils::const_pointer_cast<frame>(
-            const_cast<const frame_renderer*>(this)->find_topmost_frame(mPredicate));
+            const_cast<const frame_renderer*>(this)->find_topmost_frame(m_predicate));
     }
 
     /// Returns the highest level on the provided strata.
@@ -89,19 +89,19 @@ public:
     int get_highest_level(frame_strata mframe_strata) const;
 
 protected:
-    void add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
-    void remove_from_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
-    void add_to_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame);
-    void remove_from_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame);
+    void add_to_strata_list_(strata& m_strata, const utils::observer_ptr<frame>& p_frame);
+    void remove_from_strata_list_(strata& m_strata, const utils::observer_ptr<frame>& p_frame);
+    void add_to_level_list_(level& m_level, const utils::observer_ptr<frame>& p_frame);
+    void remove_from_level_list_(level& m_level, const utils::observer_ptr<frame>& p_frame);
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();
-    void notify_strata_needs_redraw_(strata& mStrata);
+    void notify_strata_needs_redraw_(strata& m_strata);
 
-    void render_strata_(const strata& mStrata) const;
+    void render_strata_(const strata& m_strata) const;
 
-    std::array<strata, 8> lStrataList_;
-    bool                  bStrataListUpdated_ = false;
+    std::array<strata, 8> l_strata_list_;
+    bool                  b_strata_list_updated_ = false;
 };
 
 } // namespace lxgui::gui

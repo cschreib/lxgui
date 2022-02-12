@@ -30,52 +30,52 @@ public:
     /** \return This node's location in the file as {file}:{line}
      */
     std::string_view get_location() const noexcept {
-        return sLocation_;
+        return s_location_;
     }
 
     /// Returns this node's value location in the file as {file}:{line}.
     /** \return This node's value location in the file as {file}:{line}
      */
     std::string_view get_value_location() const noexcept {
-        return sValueLocation_;
+        return s_value_location_;
     }
 
     /// Returns the file from in which this node is located.
     /** \return The file from in which this node is located
      */
     std::string_view get_filename() const noexcept {
-        auto uiPos = sLocation_.find(':');
+        auto ui_pos = s_location_.find(':');
         return std::string_view(
-            sLocation_.c_str(), uiPos == sLocation_.npos ? sLocation_.size() : uiPos);
+            s_location_.c_str(), ui_pos == s_location_.npos ? s_location_.size() : ui_pos);
     }
 
     /// Returns the line number on which this node is located.
     /** \return The line number on which this node is located
      */
     std::size_t get_line_number() const noexcept {
-        std::size_t uiLine = std::numeric_limits<std::size_t>::max();
-        auto        uiPos  = sLocation_.find(':');
-        if (uiPos != sLocation_.npos && uiPos < sLocation_.size() - 1)
-            utils::from_string(sLocation_.substr(uiPos + 1), uiLine);
-        return uiLine;
+        std::size_t ui_line = std::numeric_limits<std::size_t>::max();
+        auto        ui_pos  = s_location_.find(':');
+        if (ui_pos != s_location_.npos && ui_pos < s_location_.size() - 1)
+            utils::from_string(s_location_.substr(ui_pos + 1), ui_line);
+        return ui_line;
     }
 
     /// Returns the line number on which this node's value is located.
     /** \return The line number on which this node's value is located
      */
     std::size_t get_value_line_number() const noexcept {
-        std::size_t uiLine = std::numeric_limits<std::size_t>::max();
-        auto        uiPos  = sValueLocation_.find(':');
-        if (uiPos != sValueLocation_.npos && uiPos < sValueLocation_.size() - 1)
-            utils::from_string(sValueLocation_.substr(uiPos + 1), uiLine);
-        return uiLine;
+        std::size_t ui_line = std::numeric_limits<std::size_t>::max();
+        auto        ui_pos  = s_value_location_.find(':');
+        if (ui_pos != s_value_location_.npos && ui_pos < s_value_location_.size() - 1)
+            utils::from_string(s_value_location_.substr(ui_pos + 1), ui_line);
+        return ui_line;
     }
 
     /// Returns this node's name.
     /** \return This node's name
      */
     std::string_view get_name() const noexcept {
-        return sName_;
+        return s_name_;
     }
 
     /// Returns this node's value as string.
@@ -83,20 +83,20 @@ public:
      *   \note Returns an empty string if none
      */
     std::string_view get_value() const noexcept {
-        bAccessed_ = true;
-        return sValue_;
+        b_accessed_ = true;
+        return s_value_;
     }
 
     /// Returns this node's value as string, or a default value if empty.
     /** \return This node's value as string, or a default value if empty
      *   \note Returns an empty string if none
      */
-    std::string_view get_value_or(std::string_view sFallback) const noexcept {
-        bAccessed_ = true;
-        if (sValue_.empty())
-            return sFallback;
+    std::string_view get_value_or(std::string_view s_fallback) const noexcept {
+        b_accessed_ = true;
+        if (s_value_.empty())
+            return s_fallback;
         else
-            return sValue_;
+            return s_value_;
     }
 
     /// Returns this node's value converted to a specific type.
@@ -106,15 +106,15 @@ public:
      */
     template<typename T>
     T get_value() const {
-        bAccessed_ = true;
-        T mValue{};
-        if (!utils::from_string(sValue_, mValue)) {
+        b_accessed_ = true;
+        T m_value{};
+        if (!utils::from_string(s_value_, m_value)) {
             throw utils::exception(
                 std::string(get_location()) + ": could not parse value for '" +
-                std::string(sName_) + "': '" + std::string(sValue_) + "'");
+                std::string(s_name_) + "': '" + std::string(s_value_) + "'");
         }
 
-        return mValue;
+        return m_value;
     }
 
     /// Returns this node's value converted to a specific type, or a default value.
@@ -122,75 +122,75 @@ public:
      *   \note Will return the default value if the value could not be converted.
      */
     template<typename T>
-    T get_value_or(T mFallback) const noexcept {
-        bAccessed_ = true;
-        T mValue{};
-        if (!utils::from_string(sValue_, mValue))
-            mValue = mFallback;
+    T get_value_or(T m_fallback) const noexcept {
+        b_accessed_ = true;
+        T m_value{};
+        if (!utils::from_string(s_value_, m_value))
+            m_value = m_fallback;
 
-        return mValue;
+        return m_value;
     }
 
     /// Set this node's location.
     /** \param sLocation The new location
      */
-    void set_location(std::string sLocation) noexcept {
-        sLocation_ = std::move(sLocation);
+    void set_location(std::string s_location) noexcept {
+        s_location_ = std::move(s_location);
     }
 
     /// Set this node's value location.
     /** \param sLocation The new value location
      */
-    void set_value_location(std::string sLocation) noexcept {
-        sValueLocation_ = std::move(sLocation);
+    void set_value_location(std::string s_location) noexcept {
+        s_value_location_ = std::move(s_location);
     }
 
     /// Set this node's name.
     /** \param sName The new name
      */
-    void set_name(std::string sName) noexcept {
-        sName_ = std::move(sName);
+    void set_name(std::string s_name) noexcept {
+        s_name_ = std::move(s_name);
     }
 
     /// Set this node's value.
     /** \param sValue The new value
      */
-    void set_value(std::string sValue) noexcept {
-        sValue_ = std::move(sValue);
+    void set_value(std::string s_value) noexcept {
+        s_value_ = std::move(s_value);
     }
 
     /// Flag this node as "not accessed" for later warnings.
     void mark_as_not_accessed() const {
-        bAccessed_ = false;
+        b_accessed_ = false;
     }
 
     /// Flag this node as "fully accessed" for later warnings; no check will be done.
     void bypass_access_check() const {
-        bAccessBypass_ = true;
+        b_access_bypass_ = true;
     }
 
     /// Check if this node was accessed by the parser.
     /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
      */
     bool was_accessed() const {
-        return bAccessed_;
+        return b_accessed_;
     }
 
     /// Check if this node should be bypassed for access checks.
     /** \return 'true' if this node should be bypassed, 'false' otherwise.
      */
     bool is_access_check_bypassed() const {
-        return bAccessBypass_;
+        return b_access_bypass_;
     }
 
 protected:
-    std::string sName_;
-    std::string sValue_;
-    std::string sLocation_;
-    std::string sValueLocation_;
+    std::string s_name_;
+    std::string s_value_;
+    std::string s_location_;
+    std::string s_value_location_;
 
-    mutable bool bAccessed_     = false;
-    mutable bool bAccessBypass_ = false;
+    mutable bool b_accessed_     = false;
+    mutable bool b_access_bypass_ = false;
 };
 
 /// An node in a layout file
@@ -214,32 +214,32 @@ public:
     /** \return The number of children of this node
      */
     std::size_t get_children_count() const noexcept {
-        return lChildList_.size();
+        return l_child_list_.size();
     }
 
     /// Returns a specific child of this node, by index
     /** \param uiIndex The index (starting from 0) of this child
      *   \return The child at the specified index
      */
-    const layout_node& get_child(std::size_t uiIndex) const noexcept {
-        bAccessed_ = true;
-        return lChildList_[uiIndex];
+    const layout_node& get_child(std::size_t ui_index) const noexcept {
+        b_accessed_ = true;
+        return l_child_list_[ui_index];
     }
 
     /// Returns a view to the list of children.
     /** \return A view to the list of children
      */
     children_view get_children() const noexcept {
-        bAccessed_ = true;
-        return children_view(lChildList_);
+        b_accessed_ = true;
+        return children_view(l_child_list_);
     }
 
     template<typename BaseIterator>
     struct name_filter {
-        std::string_view sFilter;
+        std::string_view s_filter;
 
-        bool is_included(const BaseIterator& mIter) const {
-            return mIter->get_name() == sFilter;
+        bool is_included(const BaseIterator& m_iter) const {
+            return m_iter->get_name() == s_filter;
         }
     };
 
@@ -250,19 +250,19 @@ public:
     /** \param sName The name to look for
      *   \return A view to the list of children with a given name
      */
-    filtered_children_view get_children(std::string_view sName) const noexcept {
-        bAccessed_ = true;
-        return filtered_children_view(lChildList_, {}, {sName});
+    filtered_children_view get_children(std::string_view s_name) const noexcept {
+        b_accessed_ = true;
+        return filtered_children_view(l_child_list_, {}, {s_name});
     }
 
     /// Returns the first child with a given name, or null if none.
     /** \param sName The name to look for
      *   \return The first child with a given name, or null if none
      */
-    const layout_node* try_get_child(std::string_view sName) const noexcept {
-        bAccessed_ = true;
-        for (const layout_node& mNode : get_children(sName)) {
-            return &mNode;
+    const layout_node* try_get_child(std::string_view s_name) const noexcept {
+        b_accessed_ = true;
+        for (const layout_node& m_node : get_children(s_name)) {
+            return &m_node;
         }
 
         return nullptr;
@@ -274,23 +274,23 @@ public:
      *   \note Will throw if no child is found with this name. Use try_get_child()
      *         to avoid throwing.
      */
-    const layout_node& get_child(std::string_view sName) const {
-        bAccessed_ = true;
-        if (const layout_node* pChild = try_get_child(sName))
-            return *pChild;
+    const layout_node& get_child(std::string_view s_name) const {
+        b_accessed_ = true;
+        if (const layout_node* p_child = try_get_child(s_name))
+            return *p_child;
         else
             throw utils::exception(
-                std::string(get_location()) + ": no child found with name '" + std::string(sName) +
-                "' in '" + std::string(sName_) + "'");
+                std::string(get_location()) + ": no child found with name '" + std::string(s_name) +
+                "' in '" + std::string(s_name_) + "'");
     }
 
     /// Checks if at least one child exists with the given name
     /** \param sName The name to look for
      *   \return 'true' if at least one child exists, 'false' otherwise
      */
-    bool has_child(std::string_view sName) const noexcept {
-        bAccessed_ = true;
-        return try_get_child(sName) != nullptr;
+    bool has_child(std::string_view s_name) const noexcept {
+        b_accessed_ = true;
+        return try_get_child(s_name) != nullptr;
     }
 
     /// Returns the attribute with the provided name, or null if none.
@@ -299,11 +299,11 @@ public:
      *   \note Will throw if no child is found with this name. Use get_attribute_value_or()
      *         to avoid throwing.
      */
-    const layout_attribute* try_get_attribute(std::string_view sName) const noexcept {
-        bAccessed_ = true;
-        for (const layout_attribute& mNode : lAttrList_) {
-            if (mNode.get_name() == sName)
-                return &mNode;
+    const layout_attribute* try_get_attribute(std::string_view s_name) const noexcept {
+        b_accessed_ = true;
+        for (const layout_attribute& m_node : l_attr_list_) {
+            if (m_node.get_name() == s_name)
+                return &m_node;
         }
 
         return nullptr;
@@ -315,23 +315,23 @@ public:
      *   \note Will throw if no attribute is found with this name. Use try_get_attribute()
      *         to avoid throwing.
      */
-    const layout_attribute& get_attribute(std::string_view sName) const {
-        bAccessed_ = true;
-        if (const layout_attribute* pAttr = try_get_attribute(sName))
-            return *pAttr;
+    const layout_attribute& get_attribute(std::string_view s_name) const {
+        b_accessed_ = true;
+        if (const layout_attribute* p_attr = try_get_attribute(s_name))
+            return *p_attr;
         else
             throw utils::exception(
                 std::string(get_location()) + ": no attribute found with name '" +
-                std::string(sName) + "' in '" + std::string(sName_) + "'");
+                std::string(s_name) + "' in '" + std::string(s_name_) + "'");
     }
 
     /// Checks if a given attribute has been specified
     /** \param sName The name to look for
      *   \return 'true' if attribute is specified, 'false' otherwise
      */
-    bool has_attribute(std::string_view sName) const noexcept {
-        bAccessed_ = true;
-        return try_get_attribute(sName) != nullptr;
+    bool has_attribute(std::string_view s_name) const noexcept {
+        b_accessed_ = true;
+        return try_get_attribute(s_name) != nullptr;
     }
 
     /// Returns the value of the attribute with the provided name, throws if none.
@@ -340,9 +340,9 @@ public:
      *   \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
      *         to avoid throwing.
      */
-    std::string_view get_attribute_value(std::string_view sName) const {
-        bAccessed_ = true;
-        return get_attribute(sName).get_value();
+    std::string_view get_attribute_value(std::string_view s_name) const {
+        b_accessed_ = true;
+        return get_attribute(s_name).get_value();
     }
 
     /// Returns the value of the attribute with the provided name, throws if none.
@@ -352,9 +352,9 @@ public:
      *         to avoid throwing.
      */
     template<typename T>
-    T get_attribute_value(std::string_view sName) const {
-        bAccessed_ = true;
-        return get_attribute(sName).get_value<T>();
+    T get_attribute_value(std::string_view s_name) const {
+        b_accessed_ = true;
+        return get_attribute(s_name).get_value<T>();
     }
 
     /// Returns the value of the attribute with the provided name, or a default value if none.
@@ -363,12 +363,12 @@ public:
      *   \return The value of the attribute with the provided name, or a default value if none
      */
     std::string_view
-    get_attribute_value_or(std::string_view sName, std::string_view sFallback) const noexcept {
-        bAccessed_ = true;
-        if (const auto* pAttr = try_get_attribute(sName))
-            return pAttr->get_value_or(sFallback);
+    get_attribute_value_or(std::string_view s_name, std::string_view s_fallback) const noexcept {
+        b_accessed_ = true;
+        if (const auto* p_attr = try_get_attribute(s_name))
+            return p_attr->get_value_or(s_fallback);
         else
-            return sFallback;
+            return s_fallback;
     }
 
     /// Returns the value of the attribute with the provided name, or a default value if none.
@@ -377,12 +377,12 @@ public:
      *   \return The value of the attribute with the provided name, or a default value if none
      */
     template<typename T>
-    T get_attribute_value_or(std::string_view sName, T mFallback) const noexcept {
-        bAccessed_ = true;
-        if (const auto* pAttr = try_get_attribute(sName))
-            return pAttr->get_value_or<T>(mFallback);
+    T get_attribute_value_or(std::string_view s_name, T m_fallback) const noexcept {
+        b_accessed_ = true;
+        if (const auto* p_attr = try_get_attribute(s_name))
+            return p_attr->get_value_or<T>(m_fallback);
         else
-            return mFallback;
+            return m_fallback;
     }
 
     using attribute_list = std::vector<layout_attribute>;
@@ -393,22 +393,22 @@ public:
     /** \return A view to the list of attributes
      */
     attribute_view get_attributes() const noexcept {
-        bAccessed_ = true;
-        return attribute_view(lAttrList_);
+        b_accessed_ = true;
+        return attribute_view(l_attr_list_);
     }
 
     /// Add a new child to this node
     /** \return A reference to the added child
      */
     layout_node& add_child() {
-        return lChildList_.emplace_back();
+        return l_child_list_.emplace_back();
     }
 
     /// Add a new attribute to this node
     /** \return A reference to the added attribute
      */
     layout_attribute& add_attribute() {
-        return lAttrList_.emplace_back();
+        return l_attr_list_.emplace_back();
     }
 
     /// Returns the value of the attribute with the provided name, or set it if none.
@@ -418,40 +418,40 @@ public:
      *   \note This will modify the layout node object if the value is missing. If you need
      *         a non-modifying alternative, use get_attribute_value_or().
      */
-    std::string_view get_or_set_attribute_value(std::string_view sName, std::string_view sValue) {
-        bAccessed_ = true;
-        if (const auto* pAttr = try_get_attribute(sName))
-            return pAttr->get_value();
+    std::string_view get_or_set_attribute_value(std::string_view s_name, std::string_view s_value) {
+        b_accessed_ = true;
+        if (const auto* p_attr = try_get_attribute(s_name))
+            return p_attr->get_value();
         else {
-            auto& mAttr = add_attribute();
-            mAttr.set_name(std::string(sName));
-            mAttr.set_value(std::string(sValue));
-            return sValue;
+            auto& m_attr = add_attribute();
+            m_attr.set_name(std::string(s_name));
+            m_attr.set_value(std::string(s_value));
+            return s_value;
         }
     }
 
 private:
-    child_list     lChildList_;
-    attribute_list lAttrList_;
+    child_list     l_child_list_;
+    attribute_list l_attr_list_;
 };
 
 template<>
 inline std::string layout_attribute::get_value<std::string>() const {
-    bAccessed_ = true;
-    return sValue_;
+    b_accessed_ = true;
+    return s_value_;
 }
 
 template<>
 inline bool layout_attribute::get_value<bool>() const {
-    bAccessed_ = true;
-    if (sValue_ == "true")
+    b_accessed_ = true;
+    if (s_value_ == "true")
         return true;
-    else if (sValue_ == "false")
+    else if (s_value_ == "false")
         return false;
     else {
         throw utils::exception(
-            std::string(get_location()) + ": could not parse value for '" + std::string(sName_) +
-            "': '" + std::string(sValue_) + "'");
+            std::string(get_location()) + ": could not parse value for '" + std::string(s_name_) +
+            "': '" + std::string(s_value_) + "'");
     }
 }
 

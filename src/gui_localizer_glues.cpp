@@ -86,7 +86,7 @@
 *   The translation must then refer to these dynamic elements to include them in the
 *   displayed test. Dynamic elements are always indicated with pairs of braces `{}`.
 *   Inside the braces, you can supply additional modifiers which will affect how the
-*   data is being displayed. This follows the [fmtlib](https://fmt.dev/latest/syntax.html)
+*   data is being displayed. This follows the [&](https://fmt.dev/latest/syntax.html)
 *   syntax. For example, the message above can be represented with the string
 *
 *       ["player_lost_hp"] = "{} has lost {} HP.",
@@ -224,14 +224,14 @@
 
 namespace lxgui::gui {
 
-void localizer::register_on_lua(sol::state& mSol) {
+void localizer::register_on_lua(sol::state& m_sol) {
     /** Returns the preferred languages to display the GUI.
      *   @see set_preferred_languages
      *   @function get_preferred_languages
      *   @treturn table A table listing the languages selected to display the UI
      *
      */
-    mSol.set_function(
+    m_sol.set_function(
         "get_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Sets the preferred languages to display the GUI.
@@ -244,7 +244,7 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @function set_preferred_languages
      *   @tparam table languages A table listing the languages to use to display the GUI
      */
-    mSol.set_function(
+    m_sol.set_function(
         "set_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Removes all allowed code points.
@@ -254,7 +254,7 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
      *   @function clear_allowed_code_points
      */
-    mSol.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
+    m_sol.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
 
     /** Adds a new range to the set of allowed code points.
      *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
@@ -262,8 +262,8 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @tparam integer last The last code point in the range
      *   @function add_allowed_code_points
      */
-    mSol.set_function("add_allowed_code_points", [&](char32_t uiFirst, char32_t uiLast) {
-        add_allowed_code_points(code_point_range{uiFirst, uiLast});
+    m_sol.set_function("add_allowed_code_points", [&](char32_t ui_first, char32_t ui_last) {
+        add_allowed_code_points(code_point_range{ui_first, ui_last});
     });
 
     /** Adds a new range to the set of allowed code points from a Unicode group.
@@ -275,8 +275,8 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @tparam string group The name of the Unicode code group to allow
      *   @function add_allowed_code_points_for_group
      */
-    mSol.set_function("add_allowed_code_points_for_group", [&](const std::string& sGroupName) {
-        add_allowed_code_points_for_group(sGroupName);
+    m_sol.set_function("add_allowed_code_points_for_group", [&](const std::string& s_group_name) {
+        add_allowed_code_points_for_group(s_group_name);
     });
 
     /** Adds a new range to the set of allowed code points for a given language.
@@ -287,8 +287,8 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @tparam string language The language code (e.g., "en", "ru", etc.)
      *   @function add_allowed_code_points_for_language
      */
-    mSol.set_function("add_allowed_code_points_for_language", [&](const std::string& sLanguage) {
-        add_allowed_code_points_for_language(sLanguage);
+    m_sol.set_function("add_allowed_code_points_for_language", [&](const std::string& s_language) {
+        add_allowed_code_points_for_language(s_language);
     });
 
     /** Attempts to automatically detect the set of allowed code points based on preferred
@@ -297,31 +297,31 @@ void localizer::register_on_lua(sol::state& mSol) {
      * effect until the GUI is re-loaded, see @{Manager.reload_ui}.
      *   @function auto_detect_allowed_code_points
      */
-    mSol.set_function(
+    m_sol.set_function(
         "auto_detect_allowed_code_points", [&]() { auto_detect_allowed_code_points(); });
 
     /** Sets the default character to display if a character is missing from a font.
      *   @tparam integer character The Unicode UTF-32 code point of the character to display
      *   @function set_fallback_code_point
      */
-    mSol.set_function("set_fallback_code_point", [&](char32_t uiCodePoint) {
-        set_fallback_code_point(uiCodePoint);
+    m_sol.set_function("set_fallback_code_point", [&](char32_t ui_code_point) {
+        set_fallback_code_point(ui_code_point);
     });
 
     /** Loads translations from a folder.
      *   @function load_translations
      *   @tparam string folder The folder to search for translations
      */
-    mSol.set_function("load_translations", [&](const std::string& sFolderPath) {
-        load_translations(sFolderPath);
+    m_sol.set_function("load_translations", [&](const std::string& s_folder_path) {
+        load_translations(s_folder_path);
     });
 
     /** Loads translations form a file.
      *   @function load_translation_file
      *   @tparam string filename The file from which to read new translations
      */
-    mSol.set_function("load_translation_file", [&](const std::string& sFilename) {
-        load_translation_file(sFilename);
+    m_sol.set_function("load_translation_file", [&](const std::string& s_filename) {
+        load_translation_file(s_filename);
     });
 
     /** Translate a string or message, with arguments.
@@ -332,9 +332,10 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @param ... Data to display in the translatable string (e.g., the player's health value).
      *   @treturn string The translated message encoded as UTF-8.
      */
-    mSol.set_function("localize_string", [&](const std::string& sKey, sol::variadic_args mVArgs) {
-        return localize(sKey, mVArgs);
-    });
+    m_sol.set_function(
+        "localize_string", [&](const std::string& s_key, sol::variadic_args m_v_args) {
+            return localize(s_key, m_v_args);
+        });
 
     /** Format a string with arguments.
      *   The arguments are passed as individual parameters after the string to translate.
@@ -345,8 +346,8 @@ void localizer::register_on_lua(sol::state& mSol) {
      *   @param ... Data to display in the formatted string (e.g., the player's health value).
      *   @treturn string The formatted string encoded as UTF-8.
      */
-    mSol.set_function("format_string", [&](const std::string& sKey, sol::variadic_args mVArgs) {
-        return format_string(sKey, mVArgs);
+    m_sol.set_function("format_string", [&](const std::string& s_key, sol::variadic_args m_v_args) {
+        return format_string(s_key, m_v_args);
     });
 }
 

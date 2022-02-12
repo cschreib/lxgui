@@ -17,7 +17,7 @@ public:
     event_data() = default;
 
     /// List constructor.
-    event_data(std::initializer_list<utils::variant> lData);
+    event_data(std::initializer_list<utils::variant> l_data);
 
     // Copiable, movable
     event_data(const event_data&) = default;
@@ -29,28 +29,28 @@ public:
     /** \param mValue The value
      */
     template<typename T>
-    void add(T&& mValue) {
-        lArgList_.push_back(std::forward<T>(mValue));
+    void add(T&& m_value) {
+        l_arg_list_.push_back(std::forward<T>(m_value));
     }
 
     /// Returns a parameter of this event.
     /** \param uiIndex The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
-    const utils::variant& get(std::size_t uiIndex) const {
-        if (uiIndex >= lArgList_.size())
+    const utils::variant& get(std::size_t ui_index) const {
+        if (ui_index >= l_arg_list_.size())
             throw gui::exception("event_data", "index past size of data");
-        return lArgList_[uiIndex];
+        return l_arg_list_[ui_index];
     }
 
     /// Returns a parameter of this event.
     /** \param uiIndex The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
-    utils::variant& get(std::size_t uiIndex) {
-        if (uiIndex >= lArgList_.size())
+    utils::variant& get(std::size_t ui_index) {
+        if (ui_index >= l_arg_list_.size())
             throw gui::exception("event_data", "index past size of data");
-        return lArgList_[uiIndex];
+        return l_arg_list_[ui_index];
     }
 
     /// Returns a parameter of this event.
@@ -58,8 +58,8 @@ public:
      *   \return A parameter of this event
      */
     template<typename T>
-    const T& get(std::size_t uiIndex) const {
-        return utils::get<T>(this->get(uiIndex));
+    const T& get(std::size_t ui_index) const {
+        return utils::get<T>(this->get(ui_index));
     }
 
     /// Returns a parameter of this event.
@@ -67,19 +67,19 @@ public:
      *   \return A parameter of this event
      */
     template<typename T>
-    T& get(std::size_t uiIndex) {
-        return utils::get<T>(this->get(uiIndex));
+    T& get(std::size_t ui_index) {
+        return utils::get<T>(this->get(ui_index));
     }
 
     /// Returns the number of parameters.
     /** \return The number of parameters
      */
     std::size_t get_num_param() const {
-        return lArgList_.size();
+        return l_arg_list_.size();
     }
 
 private:
-    std::vector<utils::variant> lArgList_;
+    std::vector<utils::variant> l_arg_list_;
 };
 
 } // namespace lxgui::gui

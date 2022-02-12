@@ -44,11 +44,11 @@ using variant = std::variant<
  *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
-T& get(variant& vValue) {
+T& get(variant& v_value) {
     if constexpr (std::is_enum_v<T>)
-        return reinterpret_cast<T&>(std::get<std::underlying_type_t<T>>(vValue));
+        return reinterpret_cast<T&>(std::get<std::underlying_type_t<T>>(v_value));
     else
-        return std::get<T>(vValue);
+        return std::get<T>(v_value);
 }
 
 /// Retreive the value stored in an utils::variant
@@ -57,11 +57,11 @@ T& get(variant& vValue) {
  *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
-const T& get(const variant& vValue) {
+const T& get(const variant& v_value) {
     if constexpr (std::is_enum_v<T>)
-        return reinterpret_cast<const T&>(std::get<std::underlying_type_t<T>>(vValue));
+        return reinterpret_cast<const T&>(std::get<std::underlying_type_t<T>>(v_value));
     else
-        return std::get<T>(vValue);
+        return std::get<T>(v_value);
 }
 
 } // namespace lxgui::utils

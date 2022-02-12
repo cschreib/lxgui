@@ -21,7 +21,7 @@ class region;
 class alive_checker {
 public:
     /// Contructor.
-    explicit alive_checker(region& mObject) : pObject_(mObject.observer_from_this()) {}
+    explicit alive_checker(region& m_object) : p_object_(m_object.observer_from_this()) {}
 
     // Non-copiable, non-movable
     alive_checker(const alive_checker&) = delete;
@@ -33,11 +33,11 @@ public:
     /** \return 'true' if the region is alive, 'false' otherwise
      */
     bool is_alive() const {
-        return !pObject_.expired();
+        return !p_object_.expired();
     }
 
 private:
-    utils::observer_ptr<region> pObject_;
+    utils::observer_ptr<region> p_object_;
 };
 
 } // namespace lxgui::gui

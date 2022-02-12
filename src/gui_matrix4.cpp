@@ -6,20 +6,20 @@
 namespace lxgui::gui {
 
 matrix4f build_identity() noexcept {
-    matrix4f mId;
+    matrix4f m_id;
     for (std::size_t row = 0u; row < 4u; ++row) {
         for (std::size_t col = 0u; col < 4u; ++col)
-            mId(row, col) = (row == col ? 1.0f : 0.0f);
+            m_id(row, col) = (row == col ? 1.0f : 0.0f);
     }
 
-    return mId;
+    return m_id;
 }
 
-const matrix4f matrix4f::IDENTITY = build_identity();
+const matrix4f matrix4f::identity = build_identity();
 
-matrix4f::matrix4f(std::initializer_list<element_type> mList) noexcept {
-    const std::size_t length = std::min<std::size_t>(mList.size(), 16u);
-    std::copy(mList.begin(), mList.begin() + length, data);
+matrix4f::matrix4f(std::initializer_list<element_type> m_list) noexcept {
+    const std::size_t length = std::min<std::size_t>(m_list.size(), 16u);
+    std::copy(m_list.begin(), m_list.begin() + length, data);
 }
 
 matrix4f::matrix4f(const element_type* mat) noexcept {
@@ -94,17 +94,17 @@ matrix4f matrix4f::invert(const matrix4f& m) noexcept {
     element_type t20 = (v4 * m10 - v2 * m11 + v0 * m13);
     element_type t30 = -(v3 * m10 - v1 * m11 + v0 * m12);
 
-    element_type invDet = 1.0f / (t00 * m00 + t10 * m01 + t20 * m02 + t30 * m03);
+    element_type inv_det = 1.0f / (t00 * m00 + t10 * m01 + t20 * m02 + t30 * m03);
 
-    element_type d00 = t00 * invDet;
-    element_type d10 = t10 * invDet;
-    element_type d20 = t20 * invDet;
-    element_type d30 = t30 * invDet;
+    element_type d00 = t00 * inv_det;
+    element_type d10 = t10 * inv_det;
+    element_type d20 = t20 * inv_det;
+    element_type d30 = t30 * inv_det;
 
-    element_type d01 = -(v5 * m01 - v4 * m02 + v3 * m03) * invDet;
-    element_type d11 = (v5 * m00 - v2 * m02 + v1 * m03) * invDet;
-    element_type d21 = -(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
-    element_type d31 = (v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+    element_type d01 = -(v5 * m01 - v4 * m02 + v3 * m03) * inv_det;
+    element_type d11 = (v5 * m00 - v2 * m02 + v1 * m03) * inv_det;
+    element_type d21 = -(v4 * m00 - v2 * m01 + v0 * m03) * inv_det;
+    element_type d31 = (v3 * m00 - v1 * m01 + v0 * m02) * inv_det;
 
     v0 = m10 * m31 - m11 * m30;
     v1 = m10 * m32 - m12 * m30;
@@ -113,10 +113,10 @@ matrix4f matrix4f::invert(const matrix4f& m) noexcept {
     v4 = m11 * m33 - m13 * m31;
     v5 = m12 * m33 - m13 * m32;
 
-    element_type d02 = (v5 * m01 - v4 * m02 + v3 * m03) * invDet;
-    element_type d12 = -(v5 * m00 - v2 * m02 + v1 * m03) * invDet;
-    element_type d22 = (v4 * m00 - v2 * m01 + v0 * m03) * invDet;
-    element_type d32 = -(v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+    element_type d02 = (v5 * m01 - v4 * m02 + v3 * m03) * inv_det;
+    element_type d12 = -(v5 * m00 - v2 * m02 + v1 * m03) * inv_det;
+    element_type d22 = (v4 * m00 - v2 * m01 + v0 * m03) * inv_det;
+    element_type d32 = -(v3 * m00 - v1 * m01 + v0 * m02) * inv_det;
 
     v0 = m21 * m10 - m20 * m11;
     v1 = m22 * m10 - m20 * m12;
@@ -125,10 +125,10 @@ matrix4f matrix4f::invert(const matrix4f& m) noexcept {
     v4 = m23 * m11 - m21 * m13;
     v5 = m23 * m12 - m22 * m13;
 
-    element_type d03 = -(v5 * m01 - v4 * m02 + v3 * m03) * invDet;
-    element_type d13 = (v5 * m00 - v2 * m02 + v1 * m03) * invDet;
-    element_type d23 = -(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
-    element_type d33 = (v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+    element_type d03 = -(v5 * m01 - v4 * m02 + v3 * m03) * inv_det;
+    element_type d13 = (v5 * m00 - v2 * m02 + v1 * m03) * inv_det;
+    element_type d23 = -(v4 * m00 - v2 * m01 + v0 * m03) * inv_det;
+    element_type d33 = (v3 * m00 - v1 * m01 + v0 * m02) * inv_det;
 
     return {d00, d01, d02, d03, d10, d11, d12, d13, d20, d21, d22, d23, d30, d31, d32, d33};
 }
@@ -180,10 +180,10 @@ matrix4f operator*(const matrix4f& m1, const matrix4f& m2) noexcept {
 vector2f operator*(const matrix4f& m, const vector2f& v) noexcept {
     vector2f r;
 
-    const float fInvW = 1.0f / (m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3));
+    const float f_inv_w = 1.0f / (m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3));
 
-    r.x = (m(0, 0) * v.x + m(0, 1) * v.y + m(0, 3)) * fInvW;
-    r.y = (m(1, 0) * v.x + m(1, 1) * v.y + m(1, 3)) * fInvW;
+    r.x = (m(0, 0) * v.x + m(0, 1) * v.y + m(0, 3)) * f_inv_w;
+    r.y = (m(1, 0) * v.x + m(1, 1) * v.y + m(1, 3)) * f_inv_w;
 
     return r;
 }
@@ -191,10 +191,10 @@ vector2f operator*(const matrix4f& m, const vector2f& v) noexcept {
 vector2f operator*(const vector2f& v, const matrix4f& m) noexcept {
     vector2f r;
 
-    const float fInvW = 1.0f / (m(0, 3) * v.x + m(1, 3) * v.y + m(3, 3));
+    const float f_inv_w = 1.0f / (m(0, 3) * v.x + m(1, 3) * v.y + m(3, 3));
 
-    r.x = (m(0, 0) * v.x + m(1, 0) * v.y + m(3, 0)) * fInvW;
-    r.y = (m(0, 1) * v.x + m(1, 1) * v.y + m(3, 1)) * fInvW;
+    r.x = (m(0, 0) * v.x + m(1, 0) * v.y + m(3, 0)) * f_inv_w;
+    r.y = (m(0, 1) * v.x + m(1, 1) * v.y + m(3, 1)) * f_inv_w;
 
     return r;
 }

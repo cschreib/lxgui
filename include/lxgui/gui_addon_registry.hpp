@@ -36,11 +36,11 @@ public:
      *   \param mVirtualRoot  The virtual root, to create new virtual frames into
      */
     addon_registry(
-        sol::state&    mLua,
-        localizer&     mLocalizer,
-        event_emitter& mEventEmitter,
-        root&          mRoot,
-        virtual_root&  mVirtualRoot);
+        sol::state&    m_lua,
+        localizer&     m_localizer,
+        event_emitter& m_event_emitter,
+        root&          m_root,
+        virtual_root&  m_virtual_root);
 
     addon_registry(const addon_registry&) = delete;
     addon_registry(addon_registry&&)      = delete;
@@ -52,7 +52,7 @@ public:
      *         listing all enabled (and possibly disabled) addons.
      *         Each addon is then a sub-directory.
      */
-    void load_addon_directory(const std::string& sDirectory);
+    void load_addon_directory(const std::string& s_directory);
 
     /// Returns the addon that is being parsed.
     /** \return The addon that is being parsed
@@ -66,30 +66,30 @@ public:
      *         For regions created manually, after the loading stage, this is
      *         also set by @ref frame, before each call to a handler function.
      */
-    void set_current_addon(const addon* pAddOn);
+    void set_current_addon(const addon* p_add_on);
 
     /// Save Lua variables registred for saving for all addons.
     void save_variables() const;
 
 private:
-    void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
-    void load_addon_files_(const addon& mAddOn);
+    void load_addon_toc_(const std::string& s_add_on_name, const std::string& s_add_on_directory);
+    void load_addon_files_(const addon& m_add_on);
 
-    void save_variables_(const addon& mAddOn) const noexcept;
+    void save_variables_(const addon& m_add_on) const noexcept;
 
-    void parse_layout_file_(const std::string& sFile, const addon& mAddOn);
+    void parse_layout_file_(const std::string& s_file, const addon& m_add_on);
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    sol::state&    mLua_;
-    localizer&     mLocalizer_;
-    event_emitter& mEventEmitter_;
-    root&          mRoot_;
-    virtual_root&  mVirtualRoot_;
+    sol::state&    m_lua_;
+    localizer&     m_localizer_;
+    event_emitter& m_event_emitter_;
+    root&          m_root_;
+    virtual_root&  m_virtual_root_;
 
-    const addon*                  pCurrentAddOn_ = nullptr;
-    string_map<string_map<addon>> lAddOnList_;
+    const addon*                  p_current_add_on_ = nullptr;
+    string_map<string_map<addon>> l_add_on_list_;
 };
 
 } // namespace lxgui::gui

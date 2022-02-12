@@ -124,160 +124,160 @@
 
 namespace lxgui::gui {
 
-void region::set_lua_member_(std::string sKey, sol::stack_object mValue) {
-    auto mIter = lLuaMembers_.find(sKey);
-    if (mIter == lLuaMembers_.cend()) {
-        lLuaMembers_.insert(mIter, {std::move(sKey), mValue});
+void region::set_lua_member_(std::string s_key, sol::stack_object m_value) {
+    auto m_iter = l_lua_members_.find(s_key);
+    if (m_iter == l_lua_members_.cend()) {
+        l_lua_members_.insert(m_iter, {std::move(s_key), m_value});
     } else {
-        mIter->second = sol::object(mValue);
+        m_iter->second = sol::object(m_value);
     }
 }
 
-sol::object region::get_lua_member_(const std::string& sKey) const {
-    auto mIter = lLuaMembers_.find(sKey);
-    if (mIter == lLuaMembers_.cend())
+sol::object region::get_lua_member_(const std::string& s_key) const {
+    auto m_iter = l_lua_members_.find(s_key);
+    if (m_iter == l_lua_members_.cend())
         return sol::lua_nil;
 
-    return mIter->second;
+    return m_iter->second;
 }
 
-void region::register_on_lua(sol::state& mLua) {
-    auto mClass = mLua.new_usertype<region>(
+void region::register_on_lua(sol::state& m_lua) {
+    auto m_class = m_lua.new_usertype<region>(
         "Region", sol::meta_function::index, member_function<&region::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&region::set_lua_member_>());
 
     /** @function get_alpha
      */
-    mClass.set_function("get_alpha", member_function<&region::get_alpha>());
+    m_class.set_function("get_alpha", member_function<&region::get_alpha>());
 
     /** @function get_name
      */
-    mClass.set_function("get_name", member_function<&region::get_name>());
+    m_class.set_function("get_name", member_function<&region::get_name>());
 
     /** @function get_object_type
      */
-    mClass.set_function("get_object_type", member_function<&region::get_object_type>());
+    m_class.set_function("get_object_type", member_function<&region::get_object_type>());
 
     /** @function is_object_type
      */
-    mClass.set_function(
+    m_class.set_function(
         "is_object_type",
         member_function< // select the right overload for Lua
             static_cast<bool (region::*)(const std::string&) const>(&region::is_object_type)>());
 
     /** @function set_alpha
      */
-    mClass.set_function("set_alpha", member_function<&region::set_alpha>());
+    m_class.set_function("set_alpha", member_function<&region::set_alpha>());
 
     /** @function clear_all_points
      */
-    mClass.set_function("clear_all_points", member_function<&region::clear_all_points>());
+    m_class.set_function("clear_all_points", member_function<&region::clear_all_points>());
 
     /** @function get_bottom
      */
-    mClass.set_function("get_bottom", member_function<&region::get_bottom>());
+    m_class.set_function("get_bottom", member_function<&region::get_bottom>());
 
     /** @function get_center
      */
-    mClass.set_function("get_center", [](const region& mSelf) {
-        vector2f mP = mSelf.get_center();
-        return std::make_pair(mP.x, mP.y);
+    m_class.set_function("get_center", [](const region& m_self) {
+        vector2f m_p = m_self.get_center();
+        return std::make_pair(m_p.x, m_p.y);
     });
 
     /** @function get_height
      */
-    mClass.set_function(
-        "get_height", [](const region& mSelf) { return mSelf.get_apparent_dimensions().y; });
+    m_class.set_function(
+        "get_height", [](const region& m_self) { return m_self.get_apparent_dimensions().y; });
 
     /** @function get_left
      */
-    mClass.set_function("get_left", member_function<&region::get_left>());
+    m_class.set_function("get_left", member_function<&region::get_left>());
 
     /** @function get_num_point
      */
-    mClass.set_function("get_num_point", member_function<&region::get_num_point>());
+    m_class.set_function("get_num_point", member_function<&region::get_num_point>());
 
     /** @function get_parent
      */
-    mClass.set_function("get_parent", [](region& mSelf) {
-        sol::object mParent;
-        if (auto* pParent = mSelf.get_parent().get())
-            mParent = mSelf.get_manager().get_lua()[pParent->get_lua_name()];
-        return mParent;
+    m_class.set_function("get_parent", [](region& m_self) {
+        sol::object m_parent;
+        if (auto* p_parent = m_self.get_parent().get())
+            m_parent = m_self.get_manager().get_lua()[p_parent->get_lua_name()];
+        return m_parent;
     });
 
     /** @function get_point
      */
-    mClass.set_function("get_point", [](const region& mSelf, sol::optional<std::size_t> mPoint) {
-        anchor_point mPointValue = anchor_point::TOP_LEFT;
-        if (mPoint.has_value()) {
-            if (mPoint.value() > static_cast<std::size_t>(anchor_point::CENTER))
+    m_class.set_function("get_point", [](const region& m_self, sol::optional<std::size_t> m_point) {
+        anchor_point m_point_value = anchor_point::top_left;
+        if (m_point.has_value()) {
+            if (m_point.value() > static_cast<std::size_t>(anchor_point::center))
                 throw sol::error("requested anchor point is invalid");
 
-            mPointValue = static_cast<anchor_point>(mPoint.value());
+            m_point_value = static_cast<anchor_point>(m_point.value());
         }
 
-        const anchor& mAnchor = mSelf.get_point(mPointValue);
+        const anchor& m_anchor = m_self.get_point(m_point_value);
 
         return std::make_tuple(
-            anchor::get_string_point(mAnchor.mPoint), mAnchor.get_parent(),
-            anchor::get_string_point(mAnchor.mParentPoint), mAnchor.mOffset.x, mAnchor.mOffset.y);
+            anchor::get_string_point(m_anchor.m_point), m_anchor.get_parent(),
+            anchor::get_string_point(m_anchor.m_parent_point), m_anchor.m_offset.x, m_anchor.m_offset.y);
     });
 
     /** @function get_right
      */
-    mClass.set_function("get_right", member_function<&region::get_right>());
+    m_class.set_function("get_right", member_function<&region::get_right>());
 
     /** @function get_top
      */
-    mClass.set_function("get_top", member_function<&region::get_top>());
+    m_class.set_function("get_top", member_function<&region::get_top>());
 
     /** @function get_width
      */
-    mClass.set_function(
-        "get_width", [](const region& mSelf) { return mSelf.get_apparent_dimensions().x; });
+    m_class.set_function(
+        "get_width", [](const region& m_self) { return m_self.get_apparent_dimensions().x; });
 
     /** @function hide
      */
-    mClass.set_function("hide", member_function<&region::hide>());
+    m_class.set_function("hide", member_function<&region::hide>());
 
     /** @function is_shown
      */
-    mClass.set_function("is_shown", member_function<&region::is_shown>());
+    m_class.set_function("is_shown", member_function<&region::is_shown>());
 
     /** @function is_visible
      */
-    mClass.set_function("is_visible", member_function<&region::is_visible>());
+    m_class.set_function("is_visible", member_function<&region::is_visible>());
 
     /** @function set_all_points
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_all_points",
-        [](region& mSelf, sol::optional<std::variant<std::string, region*>> mTarget) {
-            mSelf.set_all_points(
-                mTarget.has_value() ? get_object<region>(mSelf.get_manager(), mTarget.value())
+        [](region& m_self, sol::optional<std::variant<std::string, region*>> m_target) {
+            m_self.set_all_points(
+                m_target.has_value() ? get_object<region>(m_self.get_manager(), m_target.value())
                                     : nullptr);
         });
 
     /** @function set_height
      */
-    mClass.set_function("set_height", member_function<&region::set_height>());
+    m_class.set_function("set_height", member_function<&region::set_height>());
 
     /** @function set_parent
      */
-    mClass.set_function("set_parent", [](region& mSelf, std::variant<std::string, frame*> mParent) {
-        utils::observer_ptr<frame> pParent = get_object<frame>(mSelf.get_manager(), mParent);
+    m_class.set_function("set_parent", [](region& m_self, std::variant<std::string, frame*> m_parent) {
+        utils::observer_ptr<frame> p_parent = get_object<frame>(m_self.get_manager(), m_parent);
 
-        if (pParent) {
-            if (mSelf.is_object_type<frame>())
-                pParent->add_child(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
+        if (p_parent) {
+            if (m_self.is_object_type<frame>())
+                p_parent->add_child(utils::static_pointer_cast<frame>(m_self.release_from_parent()));
             else
-                pParent->add_region(
-                    utils::static_pointer_cast<layered_region>(mSelf.release_from_parent()));
+                p_parent->add_region(
+                    utils::static_pointer_cast<layered_region>(m_self.release_from_parent()));
         } else {
-            if (mSelf.is_object_type<frame>()) {
-                mSelf.get_manager().get_root().add_root_frame(
-                    utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
+            if (m_self.is_object_type<frame>()) {
+                m_self.get_manager().get_root().add_root_frame(
+                    utils::static_pointer_cast<frame>(m_self.release_from_parent()));
             } else
                 throw sol::error("set_parent(nil) can only be called on frames");
         }
@@ -285,84 +285,84 @@ void region::register_on_lua(sol::state& mLua) {
 
     /** @function set_point
      */
-    mClass.set_function(
-        "set_point", [](region& mSelf, const std::string& sPoint,
-                        sol::optional<std::variant<std::string, region*>> mParent,
-                        sol::optional<std::string> sRelativePoint, sol::optional<float> fXOffset,
-                        sol::optional<float> fYOffset) {
+    m_class.set_function(
+        "set_point", [](region& m_self, const std::string& s_point,
+                        sol::optional<std::variant<std::string, region*>> m_parent,
+                        sol::optional<std::string> s_relative_point, sol::optional<float> f_x_offset,
+                        sol::optional<float> f_y_offset) {
             // point
-            anchor_point mPoint = anchor::get_anchor_point(sPoint);
+            anchor_point m_point = anchor::get_anchor_point(s_point);
 
             // parent
-            utils::observer_ptr<region> pParent;
-            if (mParent.has_value()) {
-                pParent = get_object(mSelf.get_manager(), mParent.value());
+            utils::observer_ptr<region> p_parent;
+            if (m_parent.has_value()) {
+                p_parent = get_object(m_self.get_manager(), m_parent.value());
             } else
-                pParent = mSelf.get_parent();
+                p_parent = m_self.get_parent();
 
-            if (pParent && pParent->depends_on(mSelf)) {
+            if (p_parent && p_parent->depends_on(m_self)) {
                 throw sol::error(
-                    "cyclic anchor dependency detected! \"" + mSelf.get_name() + "\" and \"" +
-                    pParent->get_name() + "\" depend on eachothers (directly or indirectly)");
+                    "cyclic anchor dependency detected! \"" + m_self.get_name() + "\" and \"" +
+                    p_parent->get_name() + "\" depend on eachothers (directly or indirectly)");
             }
 
             // relativePoint
-            anchor_point mParentPoint = mPoint;
-            if (sRelativePoint.has_value())
-                mParentPoint = anchor::get_anchor_point(sRelativePoint.value());
+            anchor_point m_parent_point = m_point;
+            if (s_relative_point.has_value())
+                m_parent_point = anchor::get_anchor_point(s_relative_point.value());
 
             // x, y
-            float fAbsX = fXOffset.value_or(0.0f);
-            float fAbsY = fYOffset.value_or(0.0f);
+            float f_abs_x = f_x_offset.value_or(0.0f);
+            float f_abs_y = f_y_offset.value_or(0.0f);
 
-            mSelf.set_point(
-                mPoint, pParent ? pParent->get_name() : "", mParentPoint, vector2f(fAbsX, fAbsY));
+            m_self.set_point(
+                m_point, p_parent ? p_parent->get_name() : "", m_parent_point, vector2f(f_abs_x, f_abs_y));
         });
 
     /** @function set_rel_point
      */
-    mClass.set_function(
-        "set_rel_point", [](region& mSelf, const std::string& sPoint,
-                            sol::optional<std::variant<std::string, region*>> mParent,
-                            sol::optional<std::string>                        sRelativePoint,
-                            sol::optional<float> fXOffset, sol::optional<float> fYOffset) {
+    m_class.set_function(
+        "set_rel_point", [](region& m_self, const std::string& s_point,
+                            sol::optional<std::variant<std::string, region*>> m_parent,
+                            sol::optional<std::string>                        s_relative_point,
+                            sol::optional<float> f_x_offset, sol::optional<float> f_y_offset) {
             // point
-            anchor_point mPoint = anchor::get_anchor_point(sPoint);
+            anchor_point m_point = anchor::get_anchor_point(s_point);
 
             // parent
-            utils::observer_ptr<region> pParent;
-            if (mParent.has_value()) {
-                pParent = get_object(mSelf.get_manager(), mParent.value());
+            utils::observer_ptr<region> p_parent;
+            if (m_parent.has_value()) {
+                p_parent = get_object(m_self.get_manager(), m_parent.value());
             } else
-                pParent = mSelf.get_parent();
+                p_parent = m_self.get_parent();
 
-            if (pParent && pParent->depends_on(mSelf)) {
+            if (p_parent && p_parent->depends_on(m_self)) {
                 throw sol::error(
-                    "cyclic anchor dependency detected! \"" + mSelf.get_name() + "\" and \"" +
-                    pParent->get_name() + "\" depend on eachothers (directly or indirectly)");
+                    "cyclic anchor dependency detected! \"" + m_self.get_name() + "\" and \"" +
+                    p_parent->get_name() + "\" depend on eachothers (directly or indirectly)");
             }
 
             // relativePoint
-            anchor_point mParentPoint = mPoint;
-            if (sRelativePoint.has_value())
-                mParentPoint = anchor::get_anchor_point(sRelativePoint.value());
+            anchor_point m_parent_point = m_point;
+            if (s_relative_point.has_value())
+                m_parent_point = anchor::get_anchor_point(s_relative_point.value());
 
             // x, y
-            float fRelX = fXOffset.value_or(0.0f);
-            float fRelY = fYOffset.value_or(0.0f);
+            float f_rel_x = f_x_offset.value_or(0.0f);
+            float f_rel_y = f_y_offset.value_or(0.0f);
 
-            mSelf.set_point(
-                mPoint, pParent ? pParent->get_name() : "", mParentPoint, vector2f(fRelX, fRelY),
-                anchor_type::REL);
+            m_self.set_point(
+                m_point, p_parent ? p_parent->get_name() : "", m_parent_point, vector2f(f_rel_x, f_rel_y),
+                anchor_type::rel);
         });
 
     /** @function set_width
      */
-    mClass.set_function("set_width", member_function<&region::set_width>());
+    m_class.set_function("set_width", member_function<&region::set_width>());
 
     /** @function show
      */
-    mClass.set_function("show", member_function<&region::show>());
+    m_class.set_function("show", member_function<&region::show>());
 }
 
 } // namespace lxgui::gui

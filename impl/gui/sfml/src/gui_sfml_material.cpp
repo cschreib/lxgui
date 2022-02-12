@@ -7,192 +7,192 @@
 
 namespace lxgui::gui::sfml {
 
-material::material(const vector2ui& mDimensions, bool bRenderTarget, wrap mWrap, filter mFilter) :
+material::material(const vector2ui& m_dimensions, bool b_render_target, wrap m_wrap, filter m_filter) :
     gui::material(false),
-    mDimensions_(mDimensions),
-    mCanvasDimensions_(mDimensions),
-    mWrap_(mWrap),
-    mFilter_(mFilter) {
-    if (mDimensions_.x > sf::Texture::getMaximumSize() ||
-        mDimensions_.y > sf::Texture::getMaximumSize()) {
+    m_dimensions_(m_dimensions),
+    m_canvas_dimensions_(m_dimensions),
+    m_wrap_(m_wrap),
+    m_filter_(m_filter) {
+    if (m_dimensions_.x > sf::Texture::getMaximumSize() ||
+        m_dimensions_.y > sf::Texture::getMaximumSize()) {
         throw gui::exception(
             "gui::sfml::material", "Texture dimensions not supported by graphics card : (" +
-                                       utils::to_string(mDimensions_.x) + " x " +
-                                       utils::to_string(mDimensions_.y) + ").");
+                                       utils::to_string(m_dimensions_.x) + " x " +
+                                       utils::to_string(m_dimensions_.y) + ").");
     }
 
-    bRenderTarget_ = bRenderTarget;
+    b_render_target_ = b_render_target;
 
-    if (bRenderTarget_) {
-        if (!mRenderTexture_.create(mDimensions_.x, mDimensions_.y)) {
+    if (b_render_target_) {
+        if (!m_render_texture_.create(m_dimensions_.x, m_dimensions_.y)) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create render target with dimensions " +
-                                           utils::to_string(mDimensions_.x) + " x " +
-                                           utils::to_string(mDimensions_.y) + ".");
+                                           utils::to_string(m_dimensions_.x) + " x " +
+                                           utils::to_string(m_dimensions_.y) + ".");
         }
-        mRenderTexture_.setSmooth(mFilter == filter::LINEAR);
-        mRenderTexture_.setRepeated(mWrap == wrap::REPEAT);
+        m_render_texture_.setSmooth(m_filter == filter::linear);
+        m_render_texture_.setRepeated(m_wrap == wrap::repeat);
     } else {
-        if (!mTexture_.create(mDimensions_.x, mDimensions_.y)) {
+        if (!m_texture_.create(m_dimensions_.x, m_dimensions_.y)) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create texture with dimensions " +
-                                           utils::to_string(mDimensions_.x) + " x " +
-                                           utils::to_string(mDimensions_.y) + ".");
+                                           utils::to_string(m_dimensions_.x) + " x " +
+                                           utils::to_string(m_dimensions_.y) + ".");
         }
-        mTexture_.setSmooth(mFilter == filter::LINEAR);
-        mTexture_.setRepeated(mWrap == wrap::REPEAT);
+        m_texture_.setSmooth(m_filter == filter::linear);
+        m_texture_.setRepeated(m_wrap == wrap::repeat);
     }
 
-    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+    m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
 
-material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::material(false) {
-    bRenderTarget_ = false;
-    mTexture_.loadFromImage(mData);
-    mTexture_.setSmooth(mFilter == filter::LINEAR);
-    mTexture_.setRepeated(mWrap == wrap::REPEAT);
+material::material(const sf::Image& m_data, wrap m_wrap, filter m_filter) : gui::material(false) {
+    b_render_target_ = false;
+    m_texture_.loadFromImage(m_data);
+    m_texture_.setSmooth(m_filter == filter::linear);
+    m_texture_.setRepeated(m_wrap == wrap::repeat);
 
-    mDimensions_       = vector2ui(mTexture_.getSize().x, mTexture_.getSize().y);
-    mCanvasDimensions_ = mDimensions_;
-    mWrap_             = mWrap;
-    mFilter_           = mFilter;
+    m_dimensions_       = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
+    m_canvas_dimensions_ = m_dimensions_;
+    m_wrap_             = m_wrap;
+    m_filter_           = m_filter;
 
-    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+    m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
 
-material::material(const std::string& sFileName, wrap mWrap, filter mFilter) :
+material::material(const std::string& s_file_name, wrap m_wrap, filter m_filter) :
     gui::material(false) {
-    bRenderTarget_ = false;
-    sf::Image mData;
-    if (!mData.loadFromFile(sFileName))
-        throw utils::exception("gui::sfml::material", "loading failed: '" + sFileName + "'.");
+    b_render_target_ = false;
+    sf::Image m_data;
+    if (!m_data.loadFromFile(s_file_name))
+        throw utils::exception("gui::sfml::material", "loading failed: '" + s_file_name + "'.");
 
-    premultiply_alpha(mData);
-    mTexture_.loadFromImage(mData);
-    mTexture_.setSmooth(mFilter == filter::LINEAR);
-    mTexture_.setRepeated(mWrap == wrap::REPEAT);
+    premultiply_alpha(m_data);
+    m_texture_.loadFromImage(m_data);
+    m_texture_.setSmooth(m_filter == filter::linear);
+    m_texture_.setRepeated(m_wrap == wrap::repeat);
 
-    mDimensions_       = vector2ui(mTexture_.getSize().x, mTexture_.getSize().y);
-    mCanvasDimensions_ = mDimensions_;
-    mWrap_             = mWrap;
-    mFilter_           = mFilter;
+    m_dimensions_       = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
+    m_canvas_dimensions_ = m_dimensions_;
+    m_wrap_             = m_wrap;
+    m_filter_           = m_filter;
 
-    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+    m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
 
-material::material(const sf::Texture& mTexture, const bounds2f& mLocation, filter mFilter) :
+material::material(const sf::Texture& m_texture, const bounds2f& m_location, filter m_filter) :
     gui::material(true) {
-    mRect_         = mLocation;
-    mFilter_       = mFilter;
-    pAtlasTexture_ = &mTexture;
+    m_rect_         = m_location;
+    m_filter_       = m_filter;
+    p_atlas_texture_ = &m_texture;
 }
 
-void material::set_wrap(wrap mWrap) {
-    if (pAtlasTexture_) {
+void material::set_wrap(wrap m_wrap) {
+    if (p_atlas_texture_) {
         throw gui::exception(
             "gui::sfml::material", "A material in an atlas cannot change its wrapping mode.");
     }
 
-    mWrap_ = mWrap;
+    m_wrap_ = m_wrap;
 
-    if (bRenderTarget_)
-        mRenderTexture_.setRepeated(mWrap == wrap::REPEAT);
+    if (b_render_target_)
+        m_render_texture_.setRepeated(m_wrap == wrap::repeat);
     else
-        mTexture_.setRepeated(mWrap == wrap::REPEAT);
+        m_texture_.setRepeated(m_wrap == wrap::repeat);
 }
 
-void material::set_filter(filter mFilter) {
-    if (pAtlasTexture_) {
+void material::set_filter(filter m_filter) {
+    if (p_atlas_texture_) {
         throw gui::exception(
             "gui::sfml::material", "A material in an atlas cannot change its filtering.");
     }
 
-    mFilter_ = mFilter;
+    m_filter_ = m_filter;
 
-    if (bRenderTarget_)
-        mRenderTexture_.setSmooth(mFilter == filter::LINEAR);
+    if (b_render_target_)
+        m_render_texture_.setSmooth(m_filter == filter::linear);
     else
-        mTexture_.setSmooth(mFilter == filter::LINEAR);
+        m_texture_.setSmooth(m_filter == filter::linear);
 }
 
 material::filter material::get_filter() const {
-    return mFilter_;
+    return m_filter_;
 }
 
-void material::update_texture(const ub32color* pData) {
-    if (bRenderTarget_)
+void material::update_texture(const ub32color* p_data) {
+    if (b_render_target_)
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
 
-    if (pAtlasTexture_)
+    if (p_atlas_texture_)
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be updated.");
 
-    mTexture_.update(
-        reinterpret_cast<const sf::Uint8*>(pData), mRect_.width(), mRect_.height(), mRect_.left,
-        mRect_.top);
+    m_texture_.update(
+        reinterpret_cast<const sf::Uint8*>(p_data), m_rect_.width(), m_rect_.height(), m_rect_.left,
+        m_rect_.top);
 }
 
-void material::premultiply_alpha(sf::Image& mData) {
-    const std::size_t uiWidth  = mData.getSize().x;
-    const std::size_t uiHeight = mData.getSize().y;
-    for (std::size_t x = 0; x < uiWidth; ++x)
-        for (std::size_t y = 0; y < uiHeight; ++y) {
-            sf::Color c = mData.getPixel(x, y);
+void material::premultiply_alpha(sf::Image& m_data) {
+    const std::size_t ui_width  = m_data.getSize().x;
+    const std::size_t ui_height = m_data.getSize().y;
+    for (std::size_t x = 0; x < ui_width; ++x)
+        for (std::size_t y = 0; y < ui_height; ++y) {
+            sf::Color c = m_data.getPixel(x, y);
             float     a = c.a / 255.0f;
             c.r *= a;
             c.g *= a;
             c.b *= a;
-            mData.setPixel(x, y, c);
+            m_data.setPixel(x, y, c);
         }
 }
 
 bounds2f material::get_rect() const {
-    return mRect_;
+    return m_rect_;
 }
 
 vector2ui material::get_canvas_dimensions() const {
-    if (pAtlasTexture_)
-        return vector2ui(pAtlasTexture_->getSize().x, pAtlasTexture_->getSize().y);
+    if (p_atlas_texture_)
+        return vector2ui(p_atlas_texture_->getSize().x, p_atlas_texture_->getSize().y);
     else
-        return mCanvasDimensions_;
+        return m_canvas_dimensions_;
 }
 
-bool material::uses_same_texture(const gui::material& mOther) const {
-    return pAtlasTexture_ &&
-           pAtlasTexture_ == static_cast<const sfml::material&>(mOther).pAtlasTexture_;
+bool material::uses_same_texture(const gui::material& m_other) const {
+    return p_atlas_texture_ &&
+           p_atlas_texture_ == static_cast<const sfml::material&>(m_other).p_atlas_texture_;
 }
 
-bool material::set_dimensions(const vector2ui& mDimensions) {
-    if (pAtlasTexture_) {
+bool material::set_dimensions(const vector2ui& m_dimensions) {
+    if (p_atlas_texture_) {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
     }
 
-    if (!bRenderTarget_)
+    if (!b_render_target_)
         return false;
 
-    if (mDimensions.x > sf::Texture::getMaximumSize() ||
-        mDimensions.y > sf::Texture::getMaximumSize())
+    if (m_dimensions.x > sf::Texture::getMaximumSize() ||
+        m_dimensions.y > sf::Texture::getMaximumSize())
         return false;
 
-    mDimensions_ = mDimensions;
-    mRect_       = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+    m_dimensions_ = m_dimensions;
+    m_rect_       = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 
-    if (mDimensions_.x > mCanvasDimensions_.x || mDimensions_.y > mCanvasDimensions_.y) {
+    if (m_dimensions_.x > m_canvas_dimensions_.x || m_dimensions_.y > m_canvas_dimensions_.y) {
         // SFML is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
-        if (mDimensions_.x > mCanvasDimensions_.x)
-            mCanvasDimensions_.x = mDimensions_.x + mDimensions_.x / 2;
-        if (mDimensions_.y > mCanvasDimensions_.y)
-            mCanvasDimensions_.y = mDimensions_.y + mDimensions_.y / 2;
+        if (m_dimensions_.x > m_canvas_dimensions_.x)
+            m_canvas_dimensions_.x = m_dimensions_.x + m_dimensions_.x / 2;
+        if (m_dimensions_.y > m_canvas_dimensions_.y)
+            m_canvas_dimensions_.y = m_dimensions_.y + m_dimensions_.y / 2;
 
-        if (!mRenderTexture_.create(mCanvasDimensions_.x, mCanvasDimensions_.y)) {
+        if (!m_render_texture_.create(m_canvas_dimensions_.x, m_canvas_dimensions_.y)) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create render target with dimensions " +
-                                           utils::to_string(mCanvasDimensions_.x) + " x " +
-                                           utils::to_string(mCanvasDimensions_.y) + ".");
+                                           utils::to_string(m_canvas_dimensions_.x) + " x " +
+                                           utils::to_string(m_canvas_dimensions_.y) + ".");
         }
 
-        mRenderTexture_.setSmooth(mFilter_ == filter::LINEAR);
-        mRenderTexture_.setRepeated(mWrap_ == wrap::REPEAT);
+        m_render_texture_.setSmooth(m_filter_ == filter::linear);
+        m_render_texture_.setRepeated(m_wrap_ == wrap::repeat);
 
         return true;
     } else {
@@ -201,19 +201,19 @@ bool material::set_dimensions(const vector2ui& mDimensions) {
 }
 
 sf::RenderTexture* material::get_render_texture() {
-    if (!bRenderTarget_)
+    if (!b_render_target_)
         return nullptr;
 
-    return &mRenderTexture_;
+    return &m_render_texture_;
 }
 
 const sf::Texture* material::get_texture() const {
-    if (bRenderTarget_)
-        return &mRenderTexture_.getTexture();
-    else if (pAtlasTexture_)
-        return pAtlasTexture_;
+    if (b_render_target_)
+        return &m_render_texture_.getTexture();
+    else if (p_atlas_texture_)
+        return p_atlas_texture_;
     else
-        return &mTexture_;
+        return &m_texture_;
 }
 
 } // namespace lxgui::gui::sfml

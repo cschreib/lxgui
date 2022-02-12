@@ -37,30 +37,30 @@ class manager;
 class factory {
 private:
     template<typename T>
-    static utils::owner_ptr<region> create_new_object_(manager& pMgr) {
-        return utils::make_owned<T>(pMgr);
+    static utils::owner_ptr<region> create_new_object(manager& p_mgr) {
+        return utils::make_owned<T>(p_mgr);
     }
 
     template<typename T>
-    static utils::owner_ptr<frame> create_new_frame_(manager& pMgr) {
-        return utils::make_owned<T>(pMgr);
+    static utils::owner_ptr<frame> create_new_frame(manager& p_mgr) {
+        return utils::make_owned<T>(p_mgr);
     }
 
     template<typename T>
-    static utils::owner_ptr<layered_region> create_new_layered_region_(manager& pMgr) {
-        return utils::make_owned<T>(pMgr);
+    static utils::owner_ptr<layered_region> create_new_layered_region(manager& p_mgr) {
+        return utils::make_owned<T>(p_mgr);
     }
 
 public:
     /// Constructor.
     /** \param mManager The GUI manager
      */
-    explicit factory(manager& mManager);
+    explicit factory(manager& m_manager);
 
-    factory(const factory& mMgr) = delete;
-    factory(factory&& mMgr)      = delete;
-    factory& operator=(const factory& mMgr) = delete;
-    factory& operator=(factory&& mMgr) = delete;
+    factory(const factory& m_mgr) = delete;
+    factory(factory&& m_mgr)      = delete;
+    factory& operator=(const factory& m_mgr) = delete;
+    factory& operator=(factory&& m_mgr) = delete;
 
     /// Creates a new region.
     /** \param mRegistry The registry in which to register this object
@@ -70,7 +70,7 @@ public:
      *         object is directly usable.
      */
     utils::owner_ptr<region>
-    create_region(registry& mRegistry, const region_core_attributes& mAttr);
+    create_region(registry& m_registry, const region_core_attributes& m_attr);
 
     /// Creates a new frame.
     /** \param mRegistry The registry in which to register this frame
@@ -84,7 +84,7 @@ public:
      *         callback will not fire.
      */
     utils::owner_ptr<frame> create_frame(
-        registry& mRegistry, frame_renderer* pRenderer, const region_core_attributes& mAttr);
+        registry& m_registry, frame_renderer* p_renderer, const region_core_attributes& m_attr);
 
     /// Creates a new layered_region.
     /** \param mRegistry The registry in which to register this region
@@ -94,24 +94,24 @@ public:
      *         region is directly usable.
      */
     utils::owner_ptr<layered_region>
-    create_layered_region(registry& mRegistry, const region_core_attributes& mAttr);
+    create_layered_region(registry& m_registry, const region_core_attributes& m_attr);
 
     /// Registers a new object type.
     /** \note Set the first template argument as the C++ type of this object.
      */
     template<
-        typename object_type,
-        typename enable =
-            typename std::enable_if<std::is_base_of<gui::region, object_type>::value>::type>
+        typename ObjectType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::region, ObjectType>::value>::type>
     void register_region_type() {
-        if constexpr (std::is_base_of_v<gui::layered_region, object_type>)
-            lCustomRegionList_[object_type::CLASS_NAME] = &create_new_layered_region_<object_type>;
-        else if constexpr (std::is_base_of_v<gui::frame, object_type>)
-            lCustomFrameList_[object_type::CLASS_NAME] = &create_new_frame_<object_type>;
+        if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>)
+            l_custom_region_list_[ObjectType::class_name] = &create_new_layered_region<ObjectType>;
+        else if constexpr (std::is_base_of_v<gui::frame, ObjectType>)
+            l_custom_frame_list_[ObjectType::class_name] = &create_new_frame<ObjectType>;
         else
-            lCustomObjectList_[object_type::CLASS_NAME] = &create_new_object_<object_type>;
+            l_custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
 
-        object_type::register_on_lua(get_lua());
+        ObjectType::register_on_lua(get_lua());
     }
 
     /// Returns the GUI Lua state (sol wrapper).
@@ -126,18 +126,18 @@ public:
 
 private:
     bool
-    finalize_object_(registry& mRegistry, region& mObject, const region_core_attributes& mAttr);
+    finalize_object_(registry& m_registry, region& m_object, const region_core_attributes& m_attr);
 
-    void apply_inheritance_(region& mObject, const region_core_attributes& mAttr);
+    void apply_inheritance_(region& m_object, const region_core_attributes& m_attr);
 
-    manager& mManager_;
+    manager& m_manager_;
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    string_map<std::function<utils::owner_ptr<region>(manager&)>>         lCustomObjectList_;
-    string_map<std::function<utils::owner_ptr<frame>(manager&)>>          lCustomFrameList_;
-    string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> lCustomRegionList_;
+    string_map<std::function<utils::owner_ptr<region>(manager&)>>         l_custom_object_list_;
+    string_map<std::function<utils::owner_ptr<frame>(manager&)>>          l_custom_frame_list_;
+    string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> l_custom_region_list_;
 };
 
 } // namespace lxgui::gui

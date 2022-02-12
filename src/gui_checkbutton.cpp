@@ -8,100 +8,100 @@
 
 namespace lxgui::gui {
 
-check_button::check_button(utils::control_block& mBlock, manager& mManager) :
-    button(mBlock, mManager) {
-    lType_.push_back(CLASS_NAME);
+check_button::check_button(utils::control_block& m_block, manager& m_manager) :
+    button(m_block, m_manager) {
+    l_type_.push_back(class_name);
 }
 
-std::string check_button::serialize(const std::string& sTab) const {
-    return base::serialize(sTab);
+std::string check_button::serialize(const std::string& s_tab) const {
+    return base::serialize(s_tab);
 }
 
-void check_button::copy_from(const region& mObj) {
-    base::copy_from(mObj);
+void check_button::copy_from(const region& m_obj) {
+    base::copy_from(m_obj);
 
-    const check_button* pButton = down_cast<check_button>(&mObj);
-    if (!pButton)
+    const check_button* p_button = down_cast<check_button>(&m_obj);
+    if (!p_button)
         return;
 
-    if (const texture* pCheckedTexture = pButton->get_checked_texture().get()) {
-        region_core_attributes mAttr;
-        mAttr.sName        = pCheckedTexture->get_name();
-        mAttr.lInheritance = {pButton->get_checked_texture()};
+    if (const texture* p_checked_texture = p_button->get_checked_texture().get()) {
+        region_core_attributes m_attr;
+        m_attr.s_name        = p_checked_texture->get_name();
+        m_attr.l_inheritance = {p_button->get_checked_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pCheckedTexture->get_draw_layer(), std::move(mAttr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_checked_texture->get_draw_layer(), std::move(m_attr));
 
-        if (pTexture) {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_checked_texture(pTexture);
+        if (p_texture) {
+            p_texture->set_special();
+            p_texture->notify_loaded();
+            this->set_checked_texture(p_texture);
         }
     }
 
-    if (const texture* pDisabledTexture = pButton->get_disabled_checked_texture().get()) {
-        region_core_attributes mAttr;
-        mAttr.sName        = pDisabledTexture->get_name();
-        mAttr.lInheritance = {pButton->get_disabled_checked_texture()};
+    if (const texture* p_disabled_texture = p_button->get_disabled_checked_texture().get()) {
+        region_core_attributes m_attr;
+        m_attr.s_name        = p_disabled_texture->get_name();
+        m_attr.l_inheritance = {p_button->get_disabled_checked_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pDisabledTexture->get_draw_layer(), std::move(mAttr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_disabled_texture->get_draw_layer(), std::move(m_attr));
 
-        if (pTexture) {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_disabled_checked_texture(pTexture);
+        if (p_texture) {
+            p_texture->set_special();
+            p_texture->notify_loaded();
+            this->set_disabled_checked_texture(p_texture);
         }
     }
 }
 
 void check_button::check() {
-    if (!bChecked_) {
-        if (mState_ == state::DISABLED) {
-            if (pDisabledCheckedTexture_)
-                pDisabledCheckedTexture_->show();
-            else if (pCheckedTexture_)
-                pCheckedTexture_->show();
+    if (!b_checked_) {
+        if (m_state_ == state::disabled) {
+            if (p_disabled_checked_texture_)
+                p_disabled_checked_texture_->show();
+            else if (p_checked_texture_)
+                p_checked_texture_->show();
         } else {
-            if (pCheckedTexture_)
-                pCheckedTexture_->show();
+            if (p_checked_texture_)
+                p_checked_texture_->show();
         }
 
-        bChecked_ = true;
+        b_checked_ = true;
     }
 }
 
 void check_button::uncheck() {
-    if (bChecked_) {
-        if (pDisabledCheckedTexture_)
-            pDisabledCheckedTexture_->hide();
+    if (b_checked_) {
+        if (p_disabled_checked_texture_)
+            p_disabled_checked_texture_->hide();
 
-        if (pCheckedTexture_)
-            pCheckedTexture_->hide();
+        if (p_checked_texture_)
+            p_checked_texture_->hide();
 
-        bChecked_ = false;
+        b_checked_ = false;
     }
 }
 
 void check_button::disable() {
     base::disable();
 
-    if (is_enabled() && is_checked() && pDisabledCheckedTexture_) {
-        if (pCheckedTexture_)
-            pCheckedTexture_->hide();
+    if (is_enabled() && is_checked() && p_disabled_checked_texture_) {
+        if (p_checked_texture_)
+            p_checked_texture_->hide();
 
-        pDisabledCheckedTexture_->show();
+        p_disabled_checked_texture_->show();
     }
 }
 
 void check_button::enable() {
     base::enable();
 
-    if (!is_enabled() && is_checked() && pDisabledCheckedTexture_) {
-        if (pCheckedTexture_)
-            pCheckedTexture_->show();
+    if (!is_enabled() && is_checked() && p_disabled_checked_texture_) {
+        if (p_checked_texture_)
+            p_checked_texture_->show();
 
-        pDisabledCheckedTexture_->hide();
+        p_disabled_checked_texture_->hide();
     }
 }
 
@@ -115,29 +115,29 @@ void check_button::release() {
 }
 
 bool check_button::is_checked() const {
-    return bChecked_;
+    return b_checked_;
 }
 
-void check_button::set_checked_texture(utils::observer_ptr<texture> pTexture) {
-    pCheckedTexture_ = std::move(pTexture);
-    if (!pCheckedTexture_)
+void check_button::set_checked_texture(utils::observer_ptr<texture> p_texture) {
+    p_checked_texture_ = std::move(p_texture);
+    if (!p_checked_texture_)
         return;
 
-    pCheckedTexture_->set_shown(
-        is_checked() && (mState_ != state::DISABLED || !pDisabledCheckedTexture_));
+    p_checked_texture_->set_shown(
+        is_checked() && (m_state_ != state::disabled || !p_disabled_checked_texture_));
 }
 
-void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> pTexture) {
-    pDisabledCheckedTexture_ = std::move(pTexture);
-    if (!pDisabledCheckedTexture_)
+void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> p_texture) {
+    p_disabled_checked_texture_ = std::move(p_texture);
+    if (!p_disabled_checked_texture_)
         return;
 
-    if (pCheckedTexture_) {
-        pCheckedTexture_->set_shown(
-            is_checked() && (mState_ != state::DISABLED || !pDisabledCheckedTexture_));
+    if (p_checked_texture_) {
+        p_checked_texture_->set_shown(
+            is_checked() && (m_state_ != state::disabled || !p_disabled_checked_texture_));
     }
 
-    pDisabledCheckedTexture_->set_shown(is_checked() && mState_ == state::DISABLED);
+    p_disabled_checked_texture_->set_shown(is_checked() && m_state_ == state::disabled);
 }
 
 void check_button::create_glue() {

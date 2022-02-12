@@ -13,84 +13,84 @@
 
 namespace lxgui::gui {
 
-texture::texture(utils::control_block& mBlock, manager& mManager) :
-    layered_region(mBlock, mManager), mRenderer_(mManager.get_renderer()) {
-    lType_.push_back(CLASS_NAME);
+texture::texture(utils::control_block& m_block, manager& m_manager) :
+    layered_region(m_block, m_manager), m_renderer_(m_manager.get_renderer()) {
+    l_type_.push_back(class_name);
 }
 
 std::string texture::serialize(const std::string& sTab) const {
-    std::ostringstream sStr;
-    sStr << base::serialize(sTab);
+    std::ostringstream s_str;
+    s_str << base::serialize(sTab);
 
     std::visit(
-        [&](const auto& mData) {
-            using content_type = std::decay_t<decltype(mData)>;
+        [&](const auto& m_data) {
+            using content_type = std::decay_t<decltype(m_data)>;
 
             if constexpr (std::is_same_v<content_type, std::string>) {
-                sStr << sTab << "  # File        : " << mData << "\n";
+                s_str << sTab << "  # File        : " << m_data << "\n";
             } else if constexpr (std::is_same_v<content_type, gradient>) {
-                sStr << sTab << "  # Gradient    :\n";
-                sStr << sTab << "  #-###\n";
-                sStr << sTab << "  |   # min color   : " << mData.get_min_color() << "\n";
-                sStr << sTab << "  |   # max color   : " << mData.get_max_color() << "\n";
-                sStr << sTab << "  |   # orientation : ";
-                switch (mData.get_orientation()) {
-                case gradient::orientation::HORIZONTAL: sStr << "HORIZONTAL\n"; break;
-                case gradient::orientation::VERTICAL: sStr << "VERTICAL\n"; break;
-                default: sStr << "<error>\n"; break;
+                s_str << sTab << "  # Gradient    :\n";
+                s_str << sTab << "  #-###\n";
+                s_str << sTab << "  |   # min color   : " << m_data.get_min_color() << "\n";
+                s_str << sTab << "  |   # max color   : " << m_data.get_max_color() << "\n";
+                s_str << sTab << "  |   # orientation : ";
+                switch (m_data.get_orientation()) {
+                case gradient::orientation::horizontal: s_str << "HORIZONTAL\n"; break;
+                case gradient::orientation::vertical: s_str << "VERTICAL\n"; break;
+                default: s_str << "<error>\n"; break;
                 }
-                sStr << sTab << "  #-###\n";
+                s_str << sTab << "  #-###\n";
             } else if constexpr (std::is_same_v<content_type, color>) {
-                sStr << sTab << "  # Color       : " << mData << "\n";
+                s_str << sTab << "  # Color       : " << m_data << "\n";
             }
         },
-        mContent_);
+        m_content_);
 
-    sStr << sTab << "  # Tex. coord. :\n";
-    sStr << sTab << "  #-###\n";
-    sStr << sTab << "  |   # top-left     : (" << mQuad_.v[0].uvs << ")\n";
-    sStr << sTab << "  |   # top-right    : (" << mQuad_.v[1].uvs << ")\n";
-    sStr << sTab << "  |   # bottom-right : (" << mQuad_.v[2].uvs << ")\n";
-    sStr << sTab << "  |   # bottom-left  : (" << mQuad_.v[3].uvs << ")\n";
-    sStr << sTab << "  #-###\n";
-    sStr << sTab << "  # TexCModRect : " << bTexCoordModifiesRect_ << "\n";
+    s_str << sTab << "  # Tex. coord. :\n";
+    s_str << sTab << "  #-###\n";
+    s_str << sTab << "  |   # top-left     : (" << m_quad_.v[0].uvs << ")\n";
+    s_str << sTab << "  |   # top-right    : (" << m_quad_.v[1].uvs << ")\n";
+    s_str << sTab << "  |   # bottom-right : (" << m_quad_.v[2].uvs << ")\n";
+    s_str << sTab << "  |   # bottom-left  : (" << m_quad_.v[3].uvs << ")\n";
+    s_str << sTab << "  #-###\n";
+    s_str << sTab << "  # TexCModRect : " << b_tex_coord_modifies_rect_ << "\n";
 
-    sStr << sTab << "  # Blend mode  : ";
-    switch (mBlendMode_) {
-    case blend_mode::NONE: sStr << "NONE\n"; break;
-    case blend_mode::BLEND: sStr << "BLEND\n"; break;
-    case blend_mode::KEY: sStr << "KEY\n"; break;
-    case blend_mode::ADD: sStr << "ADD\n"; break;
-    case blend_mode::MOD: sStr << "MOD\n"; break;
-    default: sStr << "<error>\n"; break;
+    s_str << sTab << "  # Blend mode  : ";
+    switch (m_blend_mode_) {
+    case blend_mode::none: s_str << "NONE\n"; break;
+    case blend_mode::blend: s_str << "BLEND\n"; break;
+    case blend_mode::key: s_str << "KEY\n"; break;
+    case blend_mode::add: s_str << "ADD\n"; break;
+    case blend_mode::mod: s_str << "MOD\n"; break;
+    default: s_str << "<error>\n"; break;
     }
 
-    sStr << sTab << "  # Filter      : ";
-    switch (mFilter_) {
-    case material::filter::NONE: sStr << "NONE\n"; break;
-    case material::filter::LINEAR: sStr << "LINEAR\n"; break;
-    default: sStr << "<error>\n"; break;
+    s_str << sTab << "  # Filter      : ";
+    switch (m_filter_) {
+    case material::filter::none: s_str << "NONE\n"; break;
+    case material::filter::linear: s_str << "LINEAR\n"; break;
+    default: s_str << "<error>\n"; break;
     }
 
-    sStr << sTab << "  # Desaturated : " << bIsDesaturated_ << "\n";
+    s_str << sTab << "  # Desaturated : " << b_is_desaturated_ << "\n";
 
-    return sStr.str();
+    return s_str.str();
 }
 
 void texture::render() const {
     if (!is_visible())
         return;
 
-    float fAlpha = get_effective_alpha();
+    float f_alpha = get_effective_alpha();
 
-    if (fAlpha != 1.0f) {
-        quad mBlendedQuad = mQuad_;
+    if (f_alpha != 1.0f) {
+        quad m_blended_quad = m_quad_;
         for (std::size_t i = 0; i < 4; ++i)
-            mBlendedQuad.v[i].col.a *= fAlpha;
+            m_blended_quad.v[i].col.a *= f_alpha;
 
-        mRenderer_.render_quad(mBlendedQuad);
+        m_renderer_.render_quad(m_blended_quad);
     } else {
-        mRenderer_.render_quad(mQuad_);
+        m_renderer_.render_quad(m_quad_);
     }
 }
 
@@ -98,313 +98,313 @@ void texture::create_glue() {
     create_glue_(this);
 }
 
-void texture::copy_from(const region& mObj) {
-    base::copy_from(mObj);
+void texture::copy_from(const region& m_obj) {
+    base::copy_from(m_obj);
 
-    const texture* pTexture = down_cast<texture>(&mObj);
-    if (!pTexture)
+    const texture* p_texture = down_cast<texture>(&m_obj);
+    if (!p_texture)
         return;
 
-    if (pTexture->has_texture_file())
-        this->set_texture(pTexture->get_texture_file());
-    else if (pTexture->has_gradient())
-        this->set_gradient(pTexture->get_gradient());
-    else if (pTexture->has_solid_color())
-        this->set_solid_color(pTexture->get_solid_color());
+    if (p_texture->has_texture_file())
+        this->set_texture(p_texture->get_texture_file());
+    else if (p_texture->has_gradient())
+        this->set_gradient(p_texture->get_gradient());
+    else if (p_texture->has_solid_color())
+        this->set_solid_color(p_texture->get_solid_color());
 
-    this->set_blend_mode(pTexture->get_blend_mode());
-    this->set_tex_coord(pTexture->get_tex_coord());
-    this->set_tex_coord_modifies_rect(pTexture->get_tex_coord_modifies_rect());
-    this->set_desaturated(pTexture->is_desaturated());
+    this->set_blend_mode(p_texture->get_blend_mode());
+    this->set_tex_coord(p_texture->get_tex_coord());
+    this->set_tex_coord_modifies_rect(p_texture->get_tex_coord_modifies_rect());
+    this->set_desaturated(p_texture->is_desaturated());
 }
 
 texture::blend_mode texture::get_blend_mode() const {
-    return mBlendMode_;
+    return m_blend_mode_;
 }
 
 material::filter texture::get_filter_mode() const {
-    return mFilter_;
+    return m_filter_;
 }
 
 bool texture::has_solid_color() const {
-    return std::holds_alternative<color>(mContent_);
+    return std::holds_alternative<color>(m_content_);
 }
 
 const color& texture::get_solid_color() const {
-    return std::get<color>(mContent_);
+    return std::get<color>(m_content_);
 }
 
 bool texture::has_gradient() const {
-    return std::holds_alternative<gradient>(mContent_);
+    return std::holds_alternative<gradient>(m_content_);
 }
 
 const gradient& texture::get_gradient() const {
-    return std::get<gradient>(mContent_);
+    return std::get<gradient>(m_content_);
 }
 
 std::array<float, 8> texture::get_tex_coord() const {
-    std::array<float, 8> mCoords{};
+    std::array<float, 8> m_coords{};
 
-    if (mQuad_.mat) {
+    if (m_quad_.mat) {
         for (std::size_t i = 0; i < 4; ++i) {
-            const vector2f lUV = mQuad_.mat->get_local_uv(mQuad_.v[i].uvs, true);
-            mCoords[2 * i + 0] = lUV.x;
-            mCoords[2 * i + 1] = lUV.y;
+            const vector2f l_uv = m_quad_.mat->get_local_uv(m_quad_.v[i].uvs, true);
+            m_coords[2 * i + 0] = l_uv.x;
+            m_coords[2 * i + 1] = l_uv.y;
         }
     } else {
         for (std::size_t i = 0; i < 4; ++i) {
-            mCoords[2 * i + 0] = mQuad_.v[i].uvs.x;
-            mCoords[2 * i + 1] = mQuad_.v[i].uvs.y;
+            m_coords[2 * i + 0] = m_quad_.v[i].uvs.x;
+            m_coords[2 * i + 1] = m_quad_.v[i].uvs.y;
         }
     }
 
-    return mCoords;
+    return m_coords;
 }
 
 bool texture::get_tex_coord_modifies_rect() const {
-    return bTexCoordModifiesRect_;
+    return b_tex_coord_modifies_rect_;
 }
 
 bool texture::has_texture_file() const {
-    return std::holds_alternative<std::string>(mContent_);
+    return std::holds_alternative<std::string>(m_content_);
 }
 
 const std::string& texture::get_texture_file() const {
-    return std::get<std::string>(mContent_);
+    return std::get<std::string>(m_content_);
 }
 
-color texture::get_vertex_color(std::size_t uiIndex) const {
-    if (uiIndex >= 4) {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
-                 << "Vertex index out of bound (" << uiIndex << ")." << std::endl;
-        return color::WHITE;
+color texture::get_vertex_color(std::size_t ui_index) const {
+    if (ui_index >= 4) {
+        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+                 << "Vertex index out of bound (" << ui_index << ")." << std::endl;
+        return color::white;
     }
 
-    return mQuad_.v[uiIndex].col;
+    return m_quad_.v[ui_index].col;
 }
 
 bool texture::is_desaturated() const {
-    return bIsDesaturated_;
+    return b_is_desaturated_;
 }
 
-void texture::set_blend_mode(blend_mode mBlendMode) {
-    if (mBlendMode != blend_mode::BLEND) {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+void texture::set_blend_mode(blend_mode m_blend_mode) {
+    if (m_blend_mode != blend_mode::blend) {
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
                  << "texture::set_blend_mode other than \"BLEND\" is not yet implemented."
                  << std::endl;
         return;
     }
 
-    if (mBlendMode_ == mBlendMode)
+    if (m_blend_mode_ == m_blend_mode)
         return;
 
-    mBlendMode_ = mBlendMode;
+    m_blend_mode_ = m_blend_mode;
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_blend_mode(const std::string& sBlendMode) {
-    blend_mode mNewBlendMode = blend_mode::BLEND;
+void texture::set_blend_mode(const std::string& s_blend_mode) {
+    blend_mode m_new_blend_mode = blend_mode::blend;
 
-    if (sBlendMode == "BLEND")
-        mBlendMode_ = blend_mode::BLEND;
-    else if (sBlendMode == "ADD")
-        mBlendMode_ = blend_mode::ADD;
-    else if (sBlendMode == "MOD")
-        mBlendMode_ = blend_mode::MOD;
-    else if (sBlendMode == "KEY")
-        mBlendMode_ = blend_mode::KEY;
-    else if (sBlendMode == "NONE")
-        mBlendMode_ = blend_mode::NONE;
+    if (s_blend_mode == "BLEND")
+        m_blend_mode_ = blend_mode::blend;
+    else if (s_blend_mode == "ADD")
+        m_blend_mode_ = blend_mode::add;
+    else if (s_blend_mode == "MOD")
+        m_blend_mode_ = blend_mode::mod;
+    else if (s_blend_mode == "KEY")
+        m_blend_mode_ = blend_mode::key;
+    else if (s_blend_mode == "NONE")
+        m_blend_mode_ = blend_mode::none;
     else {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                 << "Unknown blending : \"" << sBlendMode << "\". Using \"BLEND\"." << std::endl;
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+                 << "Unknown blending : \"" << s_blend_mode << "\". Using \"BLEND\"." << std::endl;
     }
 
-    set_blend_mode(mNewBlendMode);
+    set_blend_mode(m_new_blend_mode);
 }
 
-void texture::set_filter_mode(material::filter mFilter) {
-    if (mFilter_ == mFilter)
+void texture::set_filter_mode(material::filter m_filter) {
+    if (m_filter_ == m_filter)
         return;
 
-    mFilter_ = mFilter;
+    m_filter_ = m_filter;
 
-    if (std::holds_alternative<std::string>(mContent_)) {
+    if (std::holds_alternative<std::string>(m_content_)) {
         // Force re-load of the material
-        std::string sFileName = std::get<std::string>(mContent_);
-        mContent_             = std::string{};
-        set_texture(sFileName);
+        std::string s_file_name = std::get<std::string>(m_content_);
+        m_content_              = std::string{};
+        set_texture(s_file_name);
     }
 }
 
-void texture::set_filter_mode(const std::string& sFilter) {
-    material::filter mNewFilter = material::filter::NONE;
+void texture::set_filter_mode(const std::string& s_filter) {
+    material::filter m_new_filter = material::filter::none;
 
-    if (sFilter == "NONE")
-        mNewFilter = material::filter::NONE;
-    else if (sFilter == "LINEAR")
-        mNewFilter = material::filter::LINEAR;
+    if (s_filter == "NONE")
+        m_new_filter = material::filter::none;
+    else if (s_filter == "LINEAR")
+        m_new_filter = material::filter::linear;
     else {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                 << "Unknown filtering : \"" << sFilter << "\". Using \"NONE\"." << std::endl;
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+                 << "Unknown filtering : \"" << s_filter << "\". Using \"NONE\"." << std::endl;
     }
 
-    set_filter_mode(mNewFilter);
+    set_filter_mode(m_new_filter);
 }
 
-void texture::set_desaturated(bool bIsDesaturated) {
-    if (bIsDesaturated_ == bIsDesaturated)
+void texture::set_desaturated(bool b_is_desaturated) {
+    if (b_is_desaturated_ == b_is_desaturated)
         return;
 
-    bIsDesaturated_ = bIsDesaturated;
-    if (bIsDesaturated) {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+    b_is_desaturated_ = b_is_desaturated;
+    if (b_is_desaturated) {
+        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
                  << "Texture de-saturation is not yet implemented." << std::endl;
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_gradient(const gradient& mGradient) {
-    mContent_ = mGradient;
+void texture::set_gradient(const gradient& m_gradient) {
+    m_content_ = m_gradient;
 
-    mQuad_.mat = nullptr;
+    m_quad_.mat = nullptr;
 
-    if (mGradient.get_orientation() == gradient::orientation::HORIZONTAL) {
-        mQuad_.v[0].col = mGradient.get_min_color();
-        mQuad_.v[1].col = mGradient.get_max_color();
-        mQuad_.v[2].col = mGradient.get_max_color();
-        mQuad_.v[3].col = mGradient.get_min_color();
+    if (m_gradient.get_orientation() == gradient::orientation::horizontal) {
+        m_quad_.v[0].col = m_gradient.get_min_color();
+        m_quad_.v[1].col = m_gradient.get_max_color();
+        m_quad_.v[2].col = m_gradient.get_max_color();
+        m_quad_.v[3].col = m_gradient.get_min_color();
     } else {
-        mQuad_.v[0].col = mGradient.get_min_color();
-        mQuad_.v[1].col = mGradient.get_min_color();
-        mQuad_.v[2].col = mGradient.get_max_color();
-        mQuad_.v[3].col = mGradient.get_max_color();
+        m_quad_.v[0].col = m_gradient.get_min_color();
+        m_quad_.v[1].col = m_gradient.get_min_color();
+        m_quad_.v[2].col = m_gradient.get_max_color();
+        m_quad_.v[3].col = m_gradient.get_max_color();
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_rect(const std::array<float, 4>& lTextureRect) {
-    if (mQuad_.mat) {
-        mQuad_.v[0].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[0], lTextureRect[1]), true);
-        mQuad_.v[1].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[2], lTextureRect[1]), true);
-        mQuad_.v[2].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[2], lTextureRect[3]), true);
-        mQuad_.v[3].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[0], lTextureRect[3]), true);
+void texture::set_tex_rect(const std::array<float, 4>& l_texture_rect) {
+    if (m_quad_.mat) {
+        m_quad_.v[0].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[0], l_texture_rect[1]), true);
+        m_quad_.v[1].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[2], l_texture_rect[1]), true);
+        m_quad_.v[2].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[2], l_texture_rect[3]), true);
+        m_quad_.v[3].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[0], l_texture_rect[3]), true);
 
-        if (bTexCoordModifiesRect_)
+        if (b_tex_coord_modifies_rect_)
             update_dimensions_from_tex_coord_();
     } else {
-        mQuad_.v[0].uvs = vector2f(lTextureRect[0], lTextureRect[1]);
-        mQuad_.v[1].uvs = vector2f(lTextureRect[2], lTextureRect[1]);
-        mQuad_.v[2].uvs = vector2f(lTextureRect[2], lTextureRect[3]);
-        mQuad_.v[3].uvs = vector2f(lTextureRect[0], lTextureRect[3]);
+        m_quad_.v[0].uvs = vector2f(l_texture_rect[0], l_texture_rect[1]);
+        m_quad_.v[1].uvs = vector2f(l_texture_rect[2], l_texture_rect[1]);
+        m_quad_.v[2].uvs = vector2f(l_texture_rect[2], l_texture_rect[3]);
+        m_quad_.v[3].uvs = vector2f(l_texture_rect[0], l_texture_rect[3]);
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord(const std::array<float, 8>& lTextureCoords) {
-    if (mQuad_.mat) {
-        mQuad_.v[0].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[0], lTextureCoords[1]), true);
-        mQuad_.v[1].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[2], lTextureCoords[3]), true);
-        mQuad_.v[2].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[4], lTextureCoords[5]), true);
-        mQuad_.v[3].uvs =
-            mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[6], lTextureCoords[7]), true);
+void texture::set_tex_coord(const std::array<float, 8>& l_texture_coords) {
+    if (m_quad_.mat) {
+        m_quad_.v[0].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[0], l_texture_coords[1]), true);
+        m_quad_.v[1].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[2], l_texture_coords[3]), true);
+        m_quad_.v[2].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[4], l_texture_coords[5]), true);
+        m_quad_.v[3].uvs =
+            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[6], l_texture_coords[7]), true);
 
-        if (bTexCoordModifiesRect_)
+        if (b_tex_coord_modifies_rect_)
             update_dimensions_from_tex_coord_();
     } else {
-        mQuad_.v[0].uvs = vector2f(lTextureCoords[0], lTextureCoords[1]);
-        mQuad_.v[1].uvs = vector2f(lTextureCoords[2], lTextureCoords[3]);
-        mQuad_.v[2].uvs = vector2f(lTextureCoords[4], lTextureCoords[5]);
-        mQuad_.v[3].uvs = vector2f(lTextureCoords[6], lTextureCoords[7]);
+        m_quad_.v[0].uvs = vector2f(l_texture_coords[0], l_texture_coords[1]);
+        m_quad_.v[1].uvs = vector2f(l_texture_coords[2], l_texture_coords[3]);
+        m_quad_.v[2].uvs = vector2f(l_texture_coords[4], l_texture_coords[5]);
+        m_quad_.v[3].uvs = vector2f(l_texture_coords[6], l_texture_coords[7]);
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord_modifies_rect(bool bTexCoordModifiesRect) {
-    if (bTexCoordModifiesRect_ != bTexCoordModifiesRect) {
-        bTexCoordModifiesRect_ = bTexCoordModifiesRect;
+void texture::set_tex_coord_modifies_rect(bool b_tex_coord_modifies_rect) {
+    if (b_tex_coord_modifies_rect_ != b_tex_coord_modifies_rect) {
+        b_tex_coord_modifies_rect_ = b_tex_coord_modifies_rect;
 
-        if (bTexCoordModifiesRect_ && mQuad_.mat)
+        if (b_tex_coord_modifies_rect_ && m_quad_.mat)
             update_dimensions_from_tex_coord_();
     }
 }
 
 void texture::update_dimensions_from_tex_coord_() {
-    vector2f mExtent = mQuad_.v[2].uvs - mQuad_.v[0].uvs;
-    set_dimensions(mExtent * vector2f(mQuad_.mat->get_canvas_dimensions()));
+    vector2f m_extent = m_quad_.v[2].uvs - m_quad_.v[0].uvs;
+    set_dimensions(m_extent * vector2f(m_quad_.mat->get_canvas_dimensions()));
 }
 
-void texture::set_texture(const std::string& sFile) {
-    std::string sParsedFile = parse_file_name(sFile);
-    mContent_               = sParsedFile;
+void texture::set_texture(const std::string& s_file) {
+    std::string s_parsed_file = parse_file_name(s_file);
+    m_content_                = s_parsed_file;
 
-    if (sParsedFile.empty())
+    if (s_parsed_file.empty())
         return;
 
-    auto& mRenderer = get_manager().get_renderer();
+    auto& m_renderer = get_manager().get_renderer();
 
-    std::shared_ptr<gui::material> pMat;
-    if (utils::file_exists(sParsedFile))
-        pMat = mRenderer.create_atlas_material("GUI", sParsedFile, mFilter_);
+    std::shared_ptr<gui::material> p_mat;
+    if (utils::file_exists(s_parsed_file))
+        p_mat = m_renderer.create_atlas_material("GUI", s_parsed_file, m_filter_);
 
-    mQuad_.mat = pMat;
+    m_quad_.mat = p_mat;
 
-    if (pMat) {
-        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
-        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
-        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
-        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
+    if (p_mat) {
+        m_quad_.v[0].uvs = m_quad_.mat->get_canvas_uv(vector2f(0, 0), true);
+        m_quad_.v[1].uvs = m_quad_.mat->get_canvas_uv(vector2f(1, 0), true);
+        m_quad_.v[2].uvs = m_quad_.mat->get_canvas_uv(vector2f(1, 1), true);
+        m_quad_.v[3].uvs = m_quad_.mat->get_canvas_uv(vector2f(0, 1), true);
 
         if (!is_apparent_width_defined())
-            set_width(mQuad_.mat->get_rect().width());
+            set_width(m_quad_.mat->get_rect().width());
 
         if (!is_apparent_height_defined())
-            set_height(mQuad_.mat->get_rect().height());
+            set_height(m_quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
-                 << "Cannot load file \"" << sParsedFile << "\" for \"" << sName_
+        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+                 << "Cannot load file \"" << s_parsed_file << "\" for \"" << s_name_
                  << "\".\nUsing white texture instead." << std::endl;
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_texture(std::shared_ptr<render_target> pRenderTarget) {
-    mContent_ = std::string{};
+void texture::set_texture(std::shared_ptr<render_target> p_render_target) {
+    m_content_ = std::string{};
 
-    auto& mRenderer = get_manager().get_renderer();
+    auto& m_renderer = get_manager().get_renderer();
 
-    std::shared_ptr<gui::material> pMat;
-    if (pRenderTarget)
-        pMat = mRenderer.create_material(std::move(pRenderTarget));
+    std::shared_ptr<gui::material> p_mat;
+    if (p_render_target)
+        p_mat = m_renderer.create_material(std::move(p_render_target));
 
-    mQuad_.mat = pMat;
+    m_quad_.mat = p_mat;
 
-    if (pMat) {
-        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
-        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
-        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
-        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
+    if (p_mat) {
+        m_quad_.v[0].uvs = m_quad_.mat->get_canvas_uv(vector2f(0, 0), true);
+        m_quad_.v[1].uvs = m_quad_.mat->get_canvas_uv(vector2f(1, 0), true);
+        m_quad_.v[2].uvs = m_quad_.mat->get_canvas_uv(vector2f(1, 1), true);
+        m_quad_.v[3].uvs = m_quad_.mat->get_canvas_uv(vector2f(0, 1), true);
 
         if (!is_apparent_width_defined())
-            set_width(mQuad_.mat->get_rect().width());
+            set_width(m_quad_.mat->get_rect().width());
 
         if (!is_apparent_height_defined())
-            set_height(mQuad_.mat->get_rect().height());
+            set_height(m_quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
+        gui::out << gui::error << "gui::" << l_type_.back() << " : "
                  << "Cannot create a texture from render target.\n"
                     "Using white texture instead."
                  << std::endl;
@@ -413,44 +413,44 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_solid_color(const color& mColor) {
-    mContent_ = mColor;
+void texture::set_solid_color(const color& m_color) {
+    m_content_ = m_color;
 
-    mQuad_.mat      = nullptr;
-    mQuad_.v[0].col = mColor;
-    mQuad_.v[1].col = mColor;
-    mQuad_.v[2].col = mColor;
-    mQuad_.v[3].col = mColor;
-
-    notify_renderer_need_redraw();
-}
-
-void texture::set_quad(const quad& mQuad) {
-    mContent_ = std::string{};
-
-    mQuad_           = mQuad;
-    vector2f mExtent = mQuad_.v[2].pos - mQuad_.v[0].pos;
-    set_dimensions(mExtent);
+    m_quad_.mat      = nullptr;
+    m_quad_.v[0].col = m_color;
+    m_quad_.v[1].col = m_color;
+    m_quad_.v[2].col = m_color;
+    m_quad_.v[3].col = m_color;
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_vertex_color(const color& mColor, std::size_t uiIndex) {
-    if (uiIndex == std::numeric_limits<std::size_t>::max()) {
+void texture::set_quad(const quad& m_quad) {
+    m_content_ = std::string{};
+
+    m_quad_           = m_quad;
+    vector2f m_extent = m_quad_.v[2].pos - m_quad_.v[0].pos;
+    set_dimensions(m_extent);
+
+    notify_renderer_need_redraw();
+}
+
+void texture::set_vertex_color(const color& m_color, std::size_t ui_index) {
+    if (ui_index == std::numeric_limits<std::size_t>::max()) {
         for (std::size_t i = 0; i < 4; ++i)
-            mQuad_.v[i].col = mColor;
+            m_quad_.v[i].col = m_color;
 
         notify_renderer_need_redraw();
         return;
     }
 
-    if (uiIndex >= 4) {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
-                 << "Vertex index out of bound (" << uiIndex << ")." << std::endl;
+    if (ui_index >= 4) {
+        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+                 << "Vertex index out of bound (" << ui_index << ")." << std::endl;
         return;
     }
 
-    mQuad_.v[uiIndex].col = mColor;
+    m_quad_.v[ui_index].col = m_color;
 
     notify_renderer_need_redraw();
 }
@@ -458,10 +458,10 @@ void texture::set_vertex_color(const color& mColor, std::size_t uiIndex) {
 void texture::update_borders_() {
     base::update_borders_();
 
-    mQuad_.v[0].pos = lBorderList_.top_left();
-    mQuad_.v[1].pos = lBorderList_.top_right();
-    mQuad_.v[2].pos = lBorderList_.bottom_right();
-    mQuad_.v[3].pos = lBorderList_.bottom_left();
+    m_quad_.v[0].pos = l_border_list_.top_left();
+    m_quad_.v[1].pos = l_border_list_.top_right();
+    m_quad_.v[2].pos = l_border_list_.bottom_right();
+    m_quad_.v[3].pos = l_border_list_.bottom_left();
 }
 
 } // namespace lxgui::gui

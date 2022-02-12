@@ -8,72 +8,72 @@
 namespace lxgui::gui::sfml {
 
 font::font(
-    const std::string&                   sFontFile,
-    std::size_t                          uiSize,
-    std::size_t                          uiOutline,
-    const std::vector<code_point_range>& lCodePoints,
-    char32_t                             uiDefaultCodePoint) :
-    uiSize_(uiSize),
-    uiOutline_(uiOutline),
-    uiDefaultCodePoint_(uiDefaultCodePoint),
-    lCodePoints_(lCodePoints) {
-    if (!mFont_.loadFromFile(sFontFile)) {
-        throw gui::exception("gui::sfml::font", "Could not load font file '" + sFontFile + "'.");
+    const std::string&                   s_font_file,
+    std::size_t                          ui_size,
+    std::size_t                          ui_outline,
+    const std::vector<code_point_range>& l_code_points,
+    char32_t                             ui_default_code_point) :
+    ui_size_(ui_size),
+    ui_outline_(ui_outline),
+    ui_default_code_point_(ui_default_code_point),
+    l_code_points_(l_code_points) {
+    if (!m_font_.loadFromFile(s_font_file)) {
+        throw gui::exception("gui::sfml::font", "Could not load font file '" + s_font_file + "'.");
     }
 
     // Need to request in advance the glyphs that we will use
     // in order for SFLM to draw them on its internal texture
-    for (const code_point_range& mRange : lCodePoints_) {
-        for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint) {
-            mFont_.getGlyph(uiCodePoint, uiSize_, false, uiOutline);
+    for (const code_point_range& m_range : l_code_points_) {
+        for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last; ++ui_code_point) {
+            m_font_.getGlyph(ui_code_point, ui_size_, false, ui_outline);
         }
     }
 
-    sf::Image mData = mFont_.getTexture(uiSize_).copyToImage();
-    sfml::material::premultiply_alpha(mData);
-    pTexture_ = std::make_shared<sfml::material>(mData);
+    sf::Image m_data = m_font_.getTexture(ui_size_).copyToImage();
+    sfml::material::premultiply_alpha(m_data);
+    p_texture_ = std::make_shared<sfml::material>(m_data);
 }
 
 std::size_t font::get_size() const {
-    return uiSize_;
+    return ui_size_;
 }
 
-char32_t font::get_character_(char32_t uiChar) const {
-    for (const auto& mRange : lCodePoints_) {
-        if (uiChar < mRange.uiFirst || uiChar > mRange.uiLast)
+char32_t font::get_character_(char32_t ui_char) const {
+    for (const auto& m_range : l_code_points_) {
+        if (ui_char < m_range.ui_first || ui_char > m_range.ui_last)
             continue;
 
-        return uiChar;
+        return ui_char;
     }
 
-    if (uiChar != uiDefaultCodePoint_)
-        return get_character_(uiDefaultCodePoint_);
+    if (ui_char != ui_default_code_point_)
+        return get_character_(ui_default_code_point_);
     else
         return 0;
 }
 
-bounds2f font::get_character_uvs(char32_t uiChar) const {
-    uiChar = get_character_(uiChar);
-    if (uiChar == 0)
+bounds2f font::get_character_uvs(char32_t ui_char) const {
+    ui_char = get_character_(ui_char);
+    if (ui_char == 0)
         return bounds2f{};
 
-    const sf::IntRect& mSFRect  = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).textureRect;
-    const bounds2f&    mTexRect = pTexture_->get_rect();
+    const sf::IntRect& m_sf_rect  = m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).textureRect;
+    const bounds2f&    m_tex_rect = p_texture_->get_rect();
 
-    bounds2f mRect;
-    mRect.left   = mSFRect.left / mTexRect.width();
-    mRect.right  = (mSFRect.left + mSFRect.width) / mTexRect.width();
-    mRect.top    = mSFRect.top / mTexRect.height();
-    mRect.bottom = (mSFRect.top + mSFRect.height) / mTexRect.height();
+    bounds2f m_rect;
+    m_rect.left   = m_sf_rect.left / m_tex_rect.width();
+    m_rect.right  = (m_sf_rect.left + m_sf_rect.width) / m_tex_rect.width();
+    m_rect.top    = m_sf_rect.top / m_tex_rect.height();
+    m_rect.bottom = (m_sf_rect.top + m_sf_rect.height) / m_tex_rect.height();
 
-    vector2f mTopLeft     = pTexture_->get_canvas_uv(mRect.top_left(), true);
-    vector2f mBottomRight = pTexture_->get_canvas_uv(mRect.bottom_right(), true);
-    return bounds2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
+    vector2f m_top_left     = p_texture_->get_canvas_uv(m_rect.top_left(), true);
+    vector2f m_bottom_right = p_texture_->get_canvas_uv(m_rect.bottom_right(), true);
+    return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
 }
 
-bounds2f font::get_character_bounds(char32_t uiChar) const {
-    uiChar = get_character_(uiChar);
-    if (uiChar == 0)
+bounds2f font::get_character_bounds(char32_t ui_char) const {
+    ui_char = get_character_(ui_char);
+    if (ui_char == 0)
         return bounds2f{};
 
 #if defined(SFML_HAS_OUTLINE_GLYPH_FIX)
@@ -92,51 +92,51 @@ bounds2f font::get_character_bounds(char32_t uiChar) const {
 #else
     // TODO: this should use the font ascender + descender for fYOffset
     // https://github.com/cschreib/lxgui/issues/97
-    const float          fYOffset = uiSize_;
-    const float          fOffset  = static_cast<float>(uiOutline_);
-    const sf::FloatRect& mSFRect  = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
+    const float          f_y_offset = ui_size_;
+    const float          f_offset  = static_cast<float>(ui_outline_);
+    const sf::FloatRect& m_sf_rect  = m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).bounds;
 
-    bounds2f mRect;
-    mRect.left   = mSFRect.left - fOffset;
-    mRect.right  = mSFRect.left - fOffset + mSFRect.width;
-    mRect.top    = mSFRect.top - fOffset + fYOffset;
-    mRect.bottom = mSFRect.top - fOffset + fYOffset + mSFRect.height;
+    bounds2f m_rect;
+    m_rect.left   = m_sf_rect.left - f_offset;
+    m_rect.right  = m_sf_rect.left - f_offset + m_sf_rect.width;
+    m_rect.top    = m_sf_rect.top - f_offset + f_y_offset;
+    m_rect.bottom = m_sf_rect.top - f_offset + f_y_offset + m_sf_rect.height;
 #endif
 
-    return mRect;
+    return m_rect;
 }
 
-float font::get_character_width(char32_t uiChar) const {
-    uiChar = get_character_(uiChar);
-    if (uiChar == 0)
+float font::get_character_width(char32_t ui_char) const {
+    ui_char = get_character_(ui_char);
+    if (ui_char == 0)
         return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).advance;
+    return m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).advance;
 }
 
-float font::get_character_height(char32_t uiChar) const {
-    uiChar = get_character_(uiChar);
-    if (uiChar == 0)
+float font::get_character_height(char32_t ui_char) const {
+    ui_char = get_character_(ui_char);
+    if (ui_char == 0)
         return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds.height;
+    return m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).bounds.height;
 }
 
-float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const {
-    uiChar1 = get_character_(uiChar1);
-    uiChar2 = get_character_(uiChar2);
-    if (uiChar1 == 0 || uiChar2 == 0)
+float font::get_character_kerning(char32_t ui_char1, char32_t ui_char2) const {
+    ui_char1 = get_character_(ui_char1);
+    ui_char2 = get_character_(ui_char2);
+    if (ui_char1 == 0 || ui_char2 == 0)
         return 0.0f;
 
-    return mFont_.getKerning(uiChar1, uiChar2, uiSize_);
+    return m_font_.getKerning(ui_char1, ui_char2, ui_size_);
 }
 
 std::weak_ptr<gui::material> font::get_texture() const {
-    return pTexture_;
+    return p_texture_;
 }
 
-void font::update_texture(std::shared_ptr<gui::material> pMat) {
-    pTexture_ = std::static_pointer_cast<sfml::material>(pMat);
+void font::update_texture(std::shared_ptr<gui::material> p_mat) {
+    p_texture_ = std::static_pointer_cast<sfml::material>(p_mat);
 }
 
 } // namespace lxgui::gui::sfml

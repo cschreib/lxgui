@@ -10,27 +10,27 @@
 
 namespace lxgui::gui {
 
-layered_region::layered_region(utils::control_block& mBlock, manager& mManager) :
-    base(mBlock, mManager) {
-    lType_.push_back(CLASS_NAME);
+layered_region::layered_region(utils::control_block& m_block, manager& m_manager) :
+    base(m_block, m_manager) {
+    l_type_.push_back(class_name);
 }
 
-std::string layered_region::serialize(const std::string& sTab) const {
-    std::ostringstream sStr;
-    sStr << base::serialize(sTab);
+std::string layered_region::serialize(const std::string& s_tab) const {
+    std::ostringstream s_str;
+    s_str << base::serialize(s_tab);
 
-    sStr << sTab << "  # Layer       : ";
-    switch (mLayer_) {
-    case layer::BACKGROUND: sStr << "BACKGROUND\n"; break;
-    case layer::BORDER: sStr << "BORDER\n"; break;
-    case layer::ARTWORK: sStr << "ARTWORK\n"; break;
-    case layer::OVERLAY: sStr << "OVERLAY\n"; break;
-    case layer::HIGHLIGHT: sStr << "HIGHLIGHT\n"; break;
-    case layer::SPECIALHIGH: sStr << "SPECIALHIGH\n"; break;
-    default: sStr << "<error>\n"; break;
+    s_str << s_tab << "  # Layer       : ";
+    switch (m_layer_) {
+    case layer::background: s_str << "BACKGROUND\n"; break;
+    case layer::border: s_str << "BORDER\n"; break;
+    case layer::artwork: s_str << "ARTWORK\n"; break;
+    case layer::overlay: s_str << "OVERLAY\n"; break;
+    case layer::highlight: s_str << "HIGHLIGHT\n"; break;
+    case layer::specialhigh: s_str << "SPECIALHIGH\n"; break;
+    default: s_str << "<error>\n"; break;
     }
 
-    return sStr.str();
+    return s_str.str();
 }
 
 void layered_region::create_glue() {
@@ -38,75 +38,75 @@ void layered_region::create_glue() {
 }
 
 utils::owner_ptr<region> layered_region::release_from_parent() {
-    if (!pParent_)
+    if (!p_parent_)
         return nullptr;
 
-    return pParent_->remove_region(
+    return p_parent_->remove_region(
         utils::static_pointer_cast<layered_region>(observer_from_this()));
 }
 
 void layered_region::show() {
-    if (!bIsShown_) {
-        bIsShown_ = true;
+    if (!b_is_shown_) {
+        b_is_shown_ = true;
         notify_renderer_need_redraw();
     }
 }
 
 void layered_region::hide() {
-    if (bIsShown_) {
-        bIsShown_ = false;
+    if (b_is_shown_) {
+        b_is_shown_ = false;
         notify_renderer_need_redraw();
     }
 }
 
 bool layered_region::is_visible() const {
-    return pParent_->is_visible() && bIsShown_;
+    return p_parent_->is_visible() && b_is_shown_;
 }
 
 layer layered_region::get_draw_layer() const {
-    return mLayer_;
+    return m_layer_;
 }
 
-void layered_region::set_draw_layer(layer mLayer) {
-    if (mLayer_ != mLayer) {
-        mLayer_ = mLayer;
+void layered_region::set_draw_layer(layer m_layer) {
+    if (m_layer_ != m_layer) {
+        m_layer_ = m_layer;
         notify_renderer_need_redraw();
-        pParent_->notify_layers_need_update();
+        p_parent_->notify_layers_need_update();
     }
 }
 
-void layered_region::set_draw_layer(const std::string& sLayer) {
-    set_draw_layer(parse_layer_type(sLayer));
+void layered_region::set_draw_layer(const std::string& s_layer) {
+    set_draw_layer(parse_layer_type(s_layer));
 }
 
 void layered_region::notify_renderer_need_redraw() {
-    if (bVirtual_)
+    if (b_virtual_)
         return;
 
-    if (pParent_)
-        pParent_->notify_renderer_need_redraw();
+    if (p_parent_)
+        p_parent_->notify_renderer_need_redraw();
 }
 
-layer parse_layer_type(const std::string& sLayer) {
-    layer mLayer;
-    if (sLayer == "ARTWORK")
-        mLayer = layer::ARTWORK;
-    else if (sLayer == "BACKGROUND")
-        mLayer = layer::BACKGROUND;
-    else if (sLayer == "BORDER")
-        mLayer = layer::BORDER;
-    else if (sLayer == "HIGHLIGHT")
-        mLayer = layer::HIGHLIGHT;
-    else if (sLayer == "OVERLAY")
-        mLayer = layer::OVERLAY;
+layer parse_layer_type(const std::string& s_layer) {
+    layer m_layer;
+    if (s_layer == "ARTWORK")
+        m_layer = layer::artwork;
+    else if (s_layer == "BACKGROUND")
+        m_layer = layer::background;
+    else if (s_layer == "BORDER")
+        m_layer = layer::border;
+    else if (s_layer == "HIGHLIGHT")
+        m_layer = layer::highlight;
+    else if (s_layer == "OVERLAY")
+        m_layer = layer::overlay;
     else {
         gui::out << gui::warning << "gui::parse_layer_type : "
-                 << "Unknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
+                 << "Unknown layer type : \"" << s_layer << "\". Using \"ARTWORK\"." << std::endl;
 
-        mLayer = layer::ARTWORK;
+        m_layer = layer::artwork;
     }
 
-    return mLayer;
+    return m_layer;
 }
 
 } // namespace lxgui::gui

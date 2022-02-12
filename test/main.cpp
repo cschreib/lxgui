@@ -79,14 +79,14 @@ using namespace lxgui;
 using timing_clock = std::chrono::high_resolution_clock;
 
 struct main_loop_context {
-    bool                     bRunning = true;
-    bool                     bFocus   = true;
-    float                    fDelta   = 0.1f;
-    timing_clock::time_point mPrevTime;
-    std::size_t              uiFrameCount     = 0;
-    float                    fAccumulatedTime = 0.0;
+    bool                     b_running = true;
+    bool                     b_focus   = true;
+    float                    f_delta   = 0.1f;
+    timing_clock::time_point m_prev_time;
+    std::size_t              ui_frame_count     = 0;
+    float                    f_accumulated_time = 0.0;
 
-    gui::manager* pManager = nullptr;
+    gui::manager* p_manager = nullptr;
 
 #if defined(SDL_GUI)
     SDL_Renderer* pRenderer = nullptr;
@@ -96,18 +96,18 @@ struct main_loop_context {
 #elif defined(SFML_GUI)
     sf::RenderWindow* pWindow = nullptr;
 #elif defined(GLSFML_GUI)
-    sf::Window* pWindow = nullptr;
+    sf::Window* p_window = nullptr;
 #endif
 };
 
-void main_loop(void* pTypeErasedData) {
+void main_loop(void* p_type_erased_data) {
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
     try {
 #endif
 
-        main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
+        main_loop_context& m_context = *reinterpret_cast<main_loop_context*>(p_type_erased_data);
 
-        input::dispatcher& mInputDispatcher = mContext.pManager->get_input_dispatcher();
+        input::dispatcher& m_input_dispatcher = m_context.p_manager->get_input_dispatcher();
 
 #if defined(SDL_GUI) || defined(GLSDL_GUI)
         // Get events from SDL
@@ -134,28 +134,28 @@ void main_loop(void* pTypeErasedData) {
         }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     // Get events from SFML
-    sf::Event mEvent{};
-    while (mContext.pWindow->pollEvent(mEvent)) {
-        if (mEvent.type == sf::Event::Closed) {
+    sf::Event m_event{};
+    while (m_context.p_window->pollEvent(m_event)) {
+        if (m_event.type == sf::Event::Closed) {
 #    if defined(LXGUI_COMPILER_EMSCRIPTEN)
             emscripten_cancel_main_loop();
             return;
 #    else
-            mContext.bRunning = false;
+            m_context.b_running = false;
             return;
 #    endif
-        } else if (mEvent.type == sf::Event::LostFocus)
-            mContext.bFocus = false;
-        else if (mEvent.type == sf::Event::GainedFocus)
-            mContext.bFocus = true;
+        } else if (m_event.type == sf::Event::LostFocus)
+            m_context.b_focus = false;
+        else if (m_event.type == sf::Event::GainedFocus)
+            m_context.b_focus = true;
 
         // Feed events to the GUI.
         // NB: Do not use raw keyboard/mouse events from SFML directly. See below.
-        static_cast<input::sfml::source&>(mInputDispatcher.get_source()).on_sfml_event(mEvent);
+        static_cast<input::sfml::source&>(m_input_dispatcher.get_source()).on_sfml_event(m_event);
     }
 #endif
 
-        if (!mContext.bFocus) {
+        if (!m_context.b_focus) {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             return;
         }
@@ -165,8 +165,8 @@ void main_loop(void* pTypeErasedData) {
 #endif
 
         // Update the gui
-        timing_clock::time_point mStart = timing_clock::now();
-        mContext.pManager->update_ui(mContext.fDelta);
+        timing_clock::time_point m_start = timing_clock::now();
+        m_context.p_manager->update_ui(m_context.f_delta);
 
         // Clear the window
 #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
@@ -180,28 +180,28 @@ void main_loop(void* pTypeErasedData) {
 #endif
 
         // Render the gui
-        mContext.pManager->render_ui();
+        m_context.p_manager->render_ui();
 
         // Display the window
 #if defined(SDL_GUI)
         SDL_RenderPresent(mContext.pRenderer);
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
-    mContext.pWindow->display();
+    m_context.p_window->display();
 #elif defined(GLSDL_GUI)
     SDL_GL_SwapWindow(mContext.pWindow);
 #endif
-        timing_clock::time_point mEnd = timing_clock::now();
-        mContext.fAccumulatedTime +=
-            std::chrono::duration_cast<std::chrono::microseconds>(mEnd - mStart).count() / 1e6;
+        timing_clock::time_point m_end = timing_clock::now();
+        m_context.f_accumulated_time +=
+            std::chrono::duration_cast<std::chrono::microseconds>(m_end - m_start).count() / 1e6;
 
-        timing_clock::time_point mCurrentTime = timing_clock::now();
-        mContext.fDelta =
-            std::chrono::duration_cast<std::chrono::microseconds>(mCurrentTime - mContext.mPrevTime)
-                .count() /
-            1e6;
-        mContext.mPrevTime = mCurrentTime;
+        timing_clock::time_point m_current_time = timing_clock::now();
+        m_context.f_delta = std::chrono::duration_cast<std::chrono::microseconds>(
+                                m_current_time - m_context.m_prev_time)
+                                .count() /
+                            1e6;
+        m_context.m_prev_time = m_current_time;
 
-        ++mContext.uiFrameCount;
+        ++m_context.ui_frame_count;
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
     } catch (const std::exception& e) {
@@ -217,28 +217,28 @@ void main_loop(void* pTypeErasedData) {
 }
 
 int main(int argc, char* argv[]) {
-    auto* pOldCoutBuffer = std::cout.rdbuf();
+    auto* p_old_cout_buffer = std::cout.rdbuf();
 
     try {
         // -------------------------------------------------
         // Read test configuration
         // -------------------------------------------------
 
-        std::size_t uiWindowWidth  = 800u;
-        std::size_t uiWindowHeight = 600u;
-        bool        bFullScreen    = false;
-        float       fScaleFactor   = 1.0f;
-        bool        bPrintToLog    = false;
+        std::size_t ui_window_width  = 800u;
+        std::size_t ui_window_height = 600u;
+        bool        b_full_screen    = false;
+        float       f_scale_factor   = 1.0f;
+        bool        b_print_to_log   = false;
 
         // Read some configuration data
         if (utils::file_exists("config.lua")) {
-            sol::state mLua;
-            mLua.do_file("config.lua");
-            uiWindowWidth  = mLua["window_width"].get_or(std::size_t{800u});
-            uiWindowHeight = mLua["window_height"].get_or(std::size_t{600u});
-            bFullScreen    = mLua["fullscreen"].get_or(false);
-            fScaleFactor   = mLua["scale_factor"].get_or(1.0);
-            bPrintToLog    = mLua["print_to_log"].get_or(false);
+            sol::state m_lua;
+            m_lua.do_file("config.lua");
+            ui_window_width  = m_lua["window_width"].get_or(std::size_t{800u});
+            ui_window_height = m_lua["window_height"].get_or(std::size_t{600u});
+            b_full_screen    = m_lua["fullscreen"].get_or(false);
+            f_scale_factor   = m_lua["scale_factor"].get_or(1.0);
+            b_print_to_log   = m_lua["print_to_log"].get_or(false);
         }
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
@@ -247,19 +247,19 @@ int main(int argc, char* argv[]) {
         bPrintToLog = false;
 #endif
 
-        std::fstream mLogCout("cout.txt", std::ios::out);
-        std::fstream mGUI("gui.txt", std::ios::out);
-        if (!bPrintToLog) {
+        std::fstream m_log_cout("cout.txt", std::ios::out);
+        std::fstream m_gui("gui.txt", std::ios::out);
+        if (!b_print_to_log) {
             // Redirect output from the gui library to the standard output
             gui::out.rdbuf(std::cout.rdbuf());
         } else {
             // Redirect output from the standard output to a file
-            mLogCout.open("cout.txt", std::ios::out);
-            std::cout.rdbuf(mLogCout.rdbuf());
+            m_log_cout.open("cout.txt", std::ios::out);
+            std::cout.rdbuf(m_log_cout.rdbuf());
 
             // Redirect output from the gui library to a log file
-            mGUI.open("gui.txt", std::ios::out);
-            gui::out.rdbuf(mGUI.rdbuf());
+            m_gui.open("gui.txt", std::ios::out);
+            gui::out.rdbuf(m_gui.rdbuf());
         }
 
         // -------------------------------------------------
@@ -267,10 +267,10 @@ int main(int argc, char* argv[]) {
         // -------------------------------------------------
 
         std::cout << "Creating window..." << std::endl;
-        const std::string sWindowTitle = "test";
+        const std::string s_window_title = "test";
 
 #if defined(GLSFML_GUI)
-        sf::Window mWindow;
+        sf::Window m_window;
 #elif defined(SDL_GUI) || defined(GLSDL_GUI)
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             throw gui::exception(
@@ -324,12 +324,12 @@ int main(int argc, char* argv[]) {
 #endif
 
 #if defined(GLSFML_GUI) || defined(SFML_GUI)
-        if (bFullScreen)
-            mWindow.create(
-                sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), sWindowTitle,
+        if (b_full_screen)
+            m_window.create(
+                sf::VideoMode(ui_window_width, ui_window_height, 32), s_window_title,
                 sf::Style::Fullscreen);
         else
-            mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), sWindowTitle);
+            m_window.create(sf::VideoMode(ui_window_width, ui_window_height, 32), s_window_title);
 #endif
 
         // -------------------------------------------------
@@ -337,15 +337,15 @@ int main(int argc, char* argv[]) {
         // -------------------------------------------------
 
         std::cout << "Creating gui manager..." << std::endl;
-        utils::owner_ptr<gui::manager> pManager;
+        utils::owner_ptr<gui::manager> p_manager;
 
 #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         // Define the input manager
-        std::unique_ptr<input::source> pInputSource;
+        std::unique_ptr<input::source> p_input_source;
 
 #    if defined(GLSFML_GUI)
         // Use SFML
-        pInputSource = std::make_unique<input::sfml::source>(mWindow);
+        p_input_source = std::make_unique<input::sfml::source>(m_window);
 #    elif defined(GLSDL_GUI)
         // Use SDL
         {
@@ -357,88 +357,88 @@ int main(int argc, char* argv[]) {
 #    endif
 
         // Define the GUI renderer
-        std::unique_ptr<gui::renderer> pRenderer =
-            std::make_unique<gui::gl::renderer>(pInputSource->get_window_dimensions());
+        std::unique_ptr<gui::renderer> p_renderer =
+            std::make_unique<gui::gl::renderer>(p_input_source->get_window_dimensions());
 
-        pManager = utils::make_owned<gui::manager>(
+        p_manager = utils::make_owned<gui::manager>(
             // Provide the input source
-            std::move(pInputSource),
+            std::move(p_input_source),
             // Provide the GUI renderer implementation
-            std::move(pRenderer));
+            std::move(p_renderer));
 #elif defined(SDL_GUI)
         // Use full SDL implementation
         pManager            = gui::sdl::create_manager(pWindow.get(), pRenderer.get());
 #elif defined(SFML_GUI)
         // Use full SFML implementation
-        pManager         = gui::sfml::create_manager(mWindow);
+        pManager           = gui::sfml::create_manager(mWindow);
 #endif
 
         // Automatically select best settings
-        gui::renderer& mGUIRenderer = pManager->get_renderer();
-        mGUIRenderer.auto_detect_settings();
+        gui::renderer& m_gui_renderer = p_manager->get_renderer();
+        m_gui_renderer.auto_detect_settings();
 
         std::cout << " Preferred languages: ";
-        for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
-            std::cout << sLanguage << ", ";
+        for (const auto& s_language : p_manager->get_localizer().get_preferred_languages())
+            std::cout << s_language << ", ";
         std::cout << std::endl;
-        std::size_t uiCodePoints = 0u;
-        for (const auto& mRange : pManager->get_localizer().get_allowed_code_points())
-            uiCodePoints += static_cast<std::size_t>(mRange.uiLast - mRange.uiFirst) + 1;
-        std::cout << " Required Unicode code points: " << uiCodePoints << std::endl;
+        std::size_t ui_code_points = 0u;
+        for (const auto& m_range : p_manager->get_localizer().get_allowed_code_points())
+            ui_code_points += static_cast<std::size_t>(m_range.ui_last - m_range.ui_first) + 1;
+        std::cout << " Required Unicode code points: " << ui_code_points << std::endl;
         std::cout << " Renderer settings:" << std::endl;
-        std::cout << "  Renderer: " << mGUIRenderer.get_name() << std::endl;
-        std::cout << "  Max texture size: " << mGUIRenderer.get_texture_max_size() << std::endl;
-        std::cout << "  Vertex cache supported: " << mGUIRenderer.is_vertex_cache_supported()
+        std::cout << "  Renderer: " << m_gui_renderer.get_name() << std::endl;
+        std::cout << "  Max texture size: " << m_gui_renderer.get_texture_max_size() << std::endl;
+        std::cout << "  Vertex cache supported: " << m_gui_renderer.is_vertex_cache_supported()
                   << std::endl;
-        std::cout << "  Vertex cache enabled: " << mGUIRenderer.is_vertex_cache_enabled()
+        std::cout << "  Vertex cache enabled: " << m_gui_renderer.is_vertex_cache_enabled()
                   << std::endl;
-        std::cout << "  Texture atlas supported: " << mGUIRenderer.is_texture_atlas_supported()
+        std::cout << "  Texture atlas supported: " << m_gui_renderer.is_texture_atlas_supported()
                   << std::endl;
-        std::cout << "  Texture atlas enabled: " << mGUIRenderer.is_texture_atlas_enabled()
+        std::cout << "  Texture atlas enabled: " << m_gui_renderer.is_texture_atlas_enabled()
                   << std::endl;
-        std::cout << "  Texture atlas page size: " << mGUIRenderer.get_texture_atlas_page_size()
+        std::cout << "  Texture atlas page size: " << m_gui_renderer.get_texture_atlas_page_size()
                   << std::endl;
         std::cout << "  Texture per-vertex color supported: "
-                  << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
-        std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled()
+                  << m_gui_renderer.is_texture_vertex_color_supported() << std::endl;
+        std::cout << "  Quad batching enabled: " << m_gui_renderer.is_quad_batching_enabled()
                   << std::endl;
 
-        pManager->set_interface_scaling_factor(fScaleFactor);
+        p_manager->set_interface_scaling_factor(f_scale_factor);
 
         // Load files :
         //  - first set the directory in which the interface is located
-        pManager->add_addon_directory("interface");
+        p_manager->add_addon_directory("interface");
         //  - register Lua "glues" (C++ functions and classes callable from Lua)
-        pManager->register_lua_glues([](gui::manager& mManager) {
+        p_manager->register_lua_glues([](gui::manager& m_manager) {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
             //  - register the needed region types
-            gui::factory& mFactory = mManager.get_factory();
-            mFactory.register_region_type<gui::texture>();
-            mFactory.register_region_type<gui::font_string>();
-            mFactory.register_region_type<gui::button>();
-            mFactory.register_region_type<gui::slider>();
-            mFactory.register_region_type<gui::edit_box>();
-            mFactory.register_region_type<gui::scroll_frame>();
-            mFactory.register_region_type<gui::status_bar>();
+            gui::factory& m_factory = m_manager.get_factory();
+            m_factory.register_region_type<gui::texture>();
+            m_factory.register_region_type<gui::font_string>();
+            m_factory.register_region_type<gui::button>();
+            m_factory.register_region_type<gui::slider>();
+            m_factory.register_region_type<gui::edit_box>();
+            m_factory.register_region_type<gui::scroll_frame>();
+            m_factory.register_region_type<gui::status_bar>();
             //  - register additional lua functions
-            sol::state& mLua = mManager.get_lua();
-            mLua.set_function("get_folder_list", [](const std::string& sDir) {
-                return sol::as_table(utils::get_directory_list(sDir));
+            sol::state& m_lua = m_manager.get_lua();
+            m_lua.set_function("get_folder_list", [](const std::string& s_dir) {
+                return sol::as_table(utils::get_directory_list(s_dir));
             });
-            mLua.set_function("get_file_list", [](const std::string& sDir) {
-                return sol::as_table(utils::get_file_list(sDir));
+            m_lua.set_function("get_file_list", [](const std::string& s_dir) {
+                return sol::as_table(utils::get_file_list(s_dir));
             });
         });
 
         //  - and load all files
         std::cout << " Reading gui files..." << std::endl;
-        pManager->load_ui();
+        p_manager->load_ui();
 
         // Create context for the main loop
-        main_loop_context mContext;
-        mContext.pManager = pManager.get();
+        main_loop_context m_context;
+        m_context.p_manager = p_manager.get();
 
 #if defined(SDL_GUI)
         mContext.pRenderer = pRenderer.get();
@@ -446,7 +446,7 @@ int main(int argc, char* argv[]) {
         mContext.pWindow    = pWindow.get();
         mContext.pGLContext = mGLContext.pContext;
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
-        mContext.pWindow = &mWindow;
+        m_context.p_window = &m_window;
 #endif
 
         // -------------------------------------------------
@@ -456,23 +456,24 @@ int main(int argc, char* argv[]) {
         // Create the Frame
         // A "root" frame has no parent and is directly owned by the gui::manager.
         // A "child" frame is owned by another frame.
-        utils::observer_ptr<gui::frame> pFrame;
-        pFrame = pManager->get_root().create_root_frame<gui::frame>("FPSCounter");
-        pFrame->set_point(gui::anchor_point::TOP_LEFT);
-        pFrame->set_point(
-            gui::anchor_point::BOTTOM_RIGHT, "FontstringTestFrameText",
-            gui::anchor_point::TOP_RIGHT);
+        utils::observer_ptr<gui::frame> p_frame;
+        p_frame = p_manager->get_root().create_root_frame<gui::frame>("FPSCounter");
+        p_frame->set_point(gui::anchor_point::top_left);
+        p_frame->set_point(
+            gui::anchor_point::bottom_right, "FontstringTestFrameText",
+            gui::anchor_point::top_right);
 
         // Create the FontString
-        utils::observer_ptr<gui::font_string> pFont;
-        pFont = pFrame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
-        pFont->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f(0, -5));
-        pFont->set_font("interface/fonts/main.ttf", 15);
-        pFont->set_alignment_y(gui::alignment_y::BOTTOM);
-        pFont->set_alignment_x(gui::alignment_x::RIGHT);
-        pFont->set_outlined(true);
-        pFont->set_text_color(gui::color::RED);
-        pFont->notify_loaded();
+        utils::observer_ptr<gui::font_string> p_font;
+        p_font =
+            p_frame->create_layered_region<gui::font_string>(gui::layer::artwork, "$parentText");
+        p_font->set_point(gui::anchor_point::bottom_right, gui::vector2f(0, -5));
+        p_font->set_font("interface/fonts/main.ttf", 15);
+        p_font->set_alignment_y(gui::alignment_y::bottom);
+        p_font->set_alignment_x(gui::alignment_x::right);
+        p_font->set_outlined(true);
+        p_font->set_text_color(gui::color::red);
+        p_font->notify_loaded();
 
         // Create the scripts
         // In Lua
@@ -498,29 +499,31 @@ int main(int argc, char* argv[]) {
 
         // Or in C++:
 
-        float fTimer = 1.0f;
-        pFrame->add_script(
-            "OnUpdate", [=, &mContext](gui::frame& mSelf, const gui::event_data& mData) mutable {
-                float fDelta = mData.get<float>(0);
-                fTimer += fDelta;
+        float f_timer = 1.0f;
+        p_frame->add_script(
+            "OnUpdate",
+            [f_timer, &m_context](gui::frame& m_self, const gui::event_data& m_data) mutable {
+                float f_delta = m_data.get<float>(0);
+                f_timer += f_delta;
 
-                if (fTimer > 0.5f) {
-                    float fFrameTime = 1e6 * mContext.fAccumulatedTime / mContext.uiFrameCount;
+                if (f_timer > 0.5f) {
+                    float f_frame_time =
+                        1e6 * m_context.f_accumulated_time / m_context.ui_frame_count;
 
-                    if (auto pText = mSelf.get_region<gui::font_string>("Text")) {
-                        pText->set_text(
+                    if (auto p_text = m_self.get_region<gui::font_string>("Text")) {
+                        p_text->set_text(
                             U"(created in C++)\nFrame time (us) : " +
-                            utils::to_ustring(std::round(fFrameTime)));
+                            utils::to_ustring(std::round(f_frame_time)));
                     }
 
-                    fTimer                    = 0.0f;
-                    mContext.uiFrameCount     = 0;
-                    mContext.fAccumulatedTime = 0;
+                    f_timer                      = 0.0f;
+                    m_context.ui_frame_count     = 0;
+                    m_context.f_accumulated_time = 0;
                 }
             });
 
         // Tell the Frame is has been fully loaded, and call "OnLoad"
-        pFrame->notify_loaded();
+        p_frame->notify_loaded();
 
         // -------------------------------------------------
         // Reacting to inputs in your game
@@ -538,37 +541,37 @@ int main(int argc, char* argv[]) {
         //  - input::source: simple raw events, with no processing or filtering applied.
         //    Use this if you need the raw inputs. Usage:
         //    Usage: pManager->get_input_dispatcher().get_source().
-        input::world_dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
-        mWorldInputDispatcher.on_key_pressed.connect([&](input::key mKey) {
+        input::world_dispatcher& m_world_input_dispatcher = p_manager->get_world_input_dispatcher();
+        m_world_input_dispatcher.on_key_pressed.connect([&](input::key m_key) {
             // Process keyboard inputs for the game...
-            switch (mKey) {
-            case input::key::K_ESCAPE: {
+            switch (m_key) {
+            case input::key::k_escape: {
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
                 return;
 #else
-                mContext.bRunning = false;
+                m_context.b_running = false;
                 return;
 #endif
             }
-            case input::key::K_P: gui::out << mContext.pManager->print_ui() << std::endl; break;
-            case input::key::K_K: gui::out << "###" << std::endl; break;
-            case input::key::K_C: mContext.pManager->get_root().toggle_caching(); break;
-            case input::key::K_R: mContext.pManager->reload_ui(); break;
-            case input::key::K_B:
-                mContext.pManager->get_renderer().set_quad_batching_enabled(
-                    !mContext.pManager->get_renderer().is_quad_batching_enabled());
+            case input::key::k_p: gui::out << m_context.p_manager->print_ui() << std::endl; break;
+            case input::key::k_k: gui::out << "###" << std::endl; break;
+            case input::key::k_c: m_context.p_manager->get_root().toggle_caching(); break;
+            case input::key::k_r: m_context.p_manager->reload_ui(); break;
+            case input::key::k_b:
+                m_context.p_manager->get_renderer().set_quad_batching_enabled(
+                    !m_context.p_manager->get_renderer().is_quad_batching_enabled());
                 break;
-            case input::key::K_A:
-                mContext.pManager->get_renderer().set_texture_atlas_enabled(
-                    !mContext.pManager->get_renderer().is_texture_atlas_enabled());
+            case input::key::k_a:
+                m_context.p_manager->get_renderer().set_texture_atlas_enabled(
+                    !m_context.p_manager->get_renderer().is_texture_atlas_enabled());
                 break;
             default: break;
             }
         });
 
-        mWorldInputDispatcher.on_mouse_pressed.connect(
-            [&](input::mouse_button mButton, const gui::vector2f& mMousePos) {
+        m_world_input_dispatcher.on_mouse_pressed.connect(
+            [&](input::mouse_button m_button, const gui::vector2f& m_mouse_pos) {
                 // Process mouse inputs for the game...
             });
 
@@ -576,15 +579,15 @@ int main(int argc, char* argv[]) {
         // Start the main loop
         // -------------------------------------------------
 
-        mContext.mPrevTime = timing_clock::now();
+        m_context.m_prev_time = timing_clock::now();
 
         std::cout << "Entering loop..." << std::endl;
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
         emscripten_set_main_loop_arg(main_loop, &mContext, -1, 1);
 #else
-        while (mContext.bRunning) {
-            main_loop(&mContext);
+        while (m_context.b_running) {
+            main_loop(&m_context);
         }
 #endif
 
@@ -598,7 +601,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << "End of program." << std::endl;
-    std::cout.rdbuf(pOldCoutBuffer);
+    std::cout.rdbuf(p_old_cout_buffer);
 
     return 0;
 }

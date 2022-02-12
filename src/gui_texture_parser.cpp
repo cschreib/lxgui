@@ -5,70 +5,70 @@
 
 namespace lxgui::gui {
 
-void texture::parse_layout(const layout_node& mNode) {
-    layered_region::parse_layout(mNode);
+void texture::parse_layout(const layout_node& m_node) {
+    layered_region::parse_layout(m_node);
 
-    parse_tex_coords_node_(mNode);
+    parse_tex_coords_node_(m_node);
 
-    if (const layout_node* pColorNode = mNode.try_get_child("Color"))
-        set_solid_color(parse_color_node_(*pColorNode));
+    if (const layout_node* p_color_node = m_node.try_get_child("Color"))
+        set_solid_color(parse_color_node_(*p_color_node));
 
-    parse_gradient_node_(mNode);
+    parse_gradient_node_(m_node);
 }
 
-void texture::parse_attributes_(const layout_node& mNode) {
-    layered_region::parse_attributes_(mNode);
+void texture::parse_attributes_(const layout_node& m_node) {
+    layered_region::parse_attributes_(m_node);
 
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("filter"))
-        set_filter_mode(pAttr->get_value<std::string>());
+    if (const layout_attribute* p_attr = m_node.try_get_attribute("filter"))
+        set_filter_mode(p_attr->get_value<std::string>());
 
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("file"))
-        set_texture(pAttr->get_value<std::string>());
+    if (const layout_attribute* p_attr = m_node.try_get_attribute("file"))
+        set_texture(p_attr->get_value<std::string>());
 }
 
-void texture::parse_tex_coords_node_(const layout_node& mNode) {
-    if (const layout_node* pTexCoordsNode = mNode.try_get_child("TexCoords")) {
+void texture::parse_tex_coords_node_(const layout_node& m_node) {
+    if (const layout_node* p_tex_coords_node = m_node.try_get_child("TexCoords")) {
         set_tex_rect(
-            {pTexCoordsNode->get_attribute_value_or<float>("left", 0.0f),
-             pTexCoordsNode->get_attribute_value_or<float>("top", 0.0f),
-             pTexCoordsNode->get_attribute_value_or<float>("right", 1.0f),
-             pTexCoordsNode->get_attribute_value_or<float>("bottom", 1.0f)});
+            {p_tex_coords_node->get_attribute_value_or<float>("left", 0.0f),
+             p_tex_coords_node->get_attribute_value_or<float>("top", 0.0f),
+             p_tex_coords_node->get_attribute_value_or<float>("right", 1.0f),
+             p_tex_coords_node->get_attribute_value_or<float>("bottom", 1.0f)});
     }
 }
 
-void texture::parse_gradient_node_(const layout_node& mNode) {
-    if (const layout_node* pGradientNode = mNode.try_get_child("Gradient")) {
-        std::string sOrientation =
-            pGradientNode->get_attribute_value_or<std::string>("orientation", "HORIZONTAL");
+void texture::parse_gradient_node_(const layout_node& m_node) {
+    if (const layout_node* p_gradient_node = m_node.try_get_child("Gradient")) {
+        std::string s_orientation =
+            p_gradient_node->get_attribute_value_or<std::string>("orientation", "HORIZONTAL");
 
-        gradient::orientation mOrient;
-        if (sOrientation == "HORIZONTAL")
-            mOrient = gradient::orientation::HORIZONTAL;
-        else if (sOrientation == "VERTICAL")
-            mOrient = gradient::orientation::VERTICAL;
+        gradient::orientation m_orient;
+        if (s_orientation == "HORIZONTAL")
+            m_orient = gradient::orientation::horizontal;
+        else if (s_orientation == "VERTICAL")
+            m_orient = gradient::orientation::vertical;
         else {
-            gui::out << gui::warning << pGradientNode->get_location()
+            gui::out << gui::warning << p_gradient_node->get_location()
                      << " : "
                         "Unknown gradient orientation for " +
-                            sName_ + " : \"" + sOrientation +
+                            s_name_ + " : \"" + s_orientation +
                             "\". "
                             "No gradient will be shown for this texture."
                      << std::endl;
             return;
         }
 
-        const layout_node* pMinColorNode = pGradientNode->try_get_child("MinColor");
-        if (!pMinColorNode) {
-            gui::out << gui::warning << mNode.get_location()
+        const layout_node* p_min_color_node = p_gradient_node->try_get_child("MinColor");
+        if (!p_min_color_node) {
+            gui::out << gui::warning << m_node.get_location()
                      << " : "
                         "Gradient requires MinColor child node."
                      << std::endl;
             return;
         }
 
-        const layout_node* pMaxColorNode = pGradientNode->try_get_child("MaxColor");
-        if (!pMaxColorNode) {
-            gui::out << gui::warning << mNode.get_location()
+        const layout_node* p_max_color_node = p_gradient_node->try_get_child("MaxColor");
+        if (!p_max_color_node) {
+            gui::out << gui::warning << m_node.get_location()
                      << " : "
                         "Gradient requires MaxColor child node."
                      << std::endl;
@@ -76,7 +76,7 @@ void texture::parse_gradient_node_(const layout_node& mNode) {
         }
 
         set_gradient(gradient(
-            mOrient, parse_color_node_(*pMinColorNode), parse_color_node_(*pMaxColorNode)));
+            m_orient, parse_color_node_(*p_min_color_node), parse_color_node_(*p_max_color_node)));
     }
 }
 

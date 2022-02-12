@@ -69,7 +69,7 @@ public:
     scoped_connection() = default;
 
     /// Conversion constructor from a raw connection.
-    scoped_connection(connection mConnection) noexcept : connection(std::move(mConnection)) {}
+    scoped_connection(connection m_connection) noexcept : connection(std::move(m_connection)) {}
 
     /// Destructor, disconnects.
     ~scoped_connection() noexcept {
@@ -272,8 +272,8 @@ public:
      *         when it should no longer be called. The RAII helper class @ref scoped_connection
      *         can do this safely.
      */
-    connection connect(function_type mFunction) {
-        impl_->slots.push_back(utils::make_owned<slot>(std::move(mFunction)));
+    connection connect(function_type m_function) {
+        impl_->slots.push_back(utils::make_owned<slot>(std::move(m_function)));
         return connection(impl_->slots.back());
     }
 

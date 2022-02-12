@@ -9,13 +9,13 @@ namespace lxgui::utils {
 /// Rounding method for points to pixels conversions.
 enum class rounding_method {
     /// Equivalent to round()
-    NEAREST,
+    nearest,
     /// Equivalent to round() but only returns 0 if input is exactly 0
-    NEAREST_NOT_ZERO,
+    nearest_not_zero,
     /// Equivalent to ceil()
-    UP,
+    up,
     /// Equivalent to floor()
-    DOWN
+    down
 };
 
 /// Round a floating point value to a specific unit and using a specific rounding method.
@@ -24,7 +24,7 @@ enum class rounding_method {
  *   \param mMethod The rounding method
  *   \return The rounded value
  */
-float round(float fValue, float fUnit, rounding_method mMethod);
+float round(float f_value, float f_unit, rounding_method m_method);
 
 } // namespace lxgui::utils
 

@@ -10,57 +10,59 @@
 namespace lxgui::gui {
 
 frame_container::frame_container(
-    factory& mFactory, registry& mRegistry, frame_renderer* pRenderer) :
-    mFactory_(mFactory), mRegistry_(mRegistry), pRenderer_(pRenderer) {}
+    factory& m_factory, registry& m_registry, frame_renderer* p_renderer) :
+    m_factory_(m_factory), m_registry_(m_registry), p_renderer_(p_renderer) {}
 
 utils::observer_ptr<frame>
-frame_container::create_root_frame_(const region_core_attributes& mAttr) {
-    auto pNewFrame = mFactory_.create_frame(mRegistry_, pRenderer_, mAttr);
-    if (!pNewFrame)
+frame_container::create_root_frame_(const region_core_attributes& m_attr) {
+    auto p_new_frame = m_factory_.create_frame(m_registry_, p_renderer_, m_attr);
+    if (!p_new_frame)
         return nullptr;
 
-    return add_root_frame(std::move(pNewFrame));
+    return add_root_frame(std::move(p_new_frame));
 }
 
-utils::observer_ptr<frame> frame_container::add_root_frame(utils::owner_ptr<frame> pFrame) {
-    utils::observer_ptr<frame> pAddedFrame = pFrame;
-    lRootFrameList_.push_back(std::move(pFrame));
-    return pAddedFrame;
+utils::observer_ptr<frame> frame_container::add_root_frame(utils::owner_ptr<frame> p_frame) {
+    utils::observer_ptr<frame> p_added_frame = p_frame;
+    l_root_frame_list_.push_back(std::move(p_frame));
+    return p_added_frame;
 }
 
 utils::owner_ptr<frame>
-frame_container::remove_root_frame(const utils::observer_ptr<frame>& pFrame) {
-    frame* pFrameRaw = pFrame.get();
-    if (!pFrameRaw)
+frame_container::remove_root_frame(const utils::observer_ptr<frame>& p_frame) {
+    frame* p_frame_raw = p_frame.get();
+    if (!p_frame_raw)
         return nullptr;
 
-    auto mIter =
-        utils::find_if(lRootFrameList_, [&](const auto& pObj) { return pObj.get() == pFrameRaw; });
+    auto m_iter = utils::find_if(
+        l_root_frame_list_, [&](const auto& p_obj) { return p_obj.get() == p_frame_raw; });
 
-    if (mIter == lRootFrameList_.end())
+    if (m_iter == l_root_frame_list_.end())
         return nullptr;
 
     // NB: the iterator is not removed yet; it will be removed later in garbage_collect().
-    return std::move(*mIter);
+    return std::move(*m_iter);
 }
 
 frame_container::root_frame_list_view frame_container::get_root_frames() {
-    return root_frame_list_view(lRootFrameList_);
+    return root_frame_list_view(l_root_frame_list_);
 }
 
 frame_container::const_root_frame_list_view frame_container::get_root_frames() const {
-    return const_root_frame_list_view(lRootFrameList_);
+    return const_root_frame_list_view(l_root_frame_list_);
 }
 
 void frame_container::garbage_collect() {
-    auto mIterRemove = std::remove_if(
-        lRootFrameList_.begin(), lRootFrameList_.end(), [](auto& pObj) { return pObj == nullptr; });
+    auto m_iter_remove =
+        std::remove_if(l_root_frame_list_.begin(), l_root_frame_list_.end(), [](auto& p_obj) {
+            return p_obj == nullptr;
+        });
 
-    lRootFrameList_.erase(mIterRemove, lRootFrameList_.end());
+    l_root_frame_list_.erase(m_iter_remove, l_root_frame_list_.end());
 }
 
 void frame_container::clear_frames_() {
-    lRootFrameList_.clear();
+    l_root_frame_list_.clear();
 }
 
 } // namespace lxgui::gui

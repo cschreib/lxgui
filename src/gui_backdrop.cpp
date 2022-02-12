@@ -10,548 +10,558 @@
 
 namespace lxgui::gui {
 
-backdrop::backdrop(frame& mParent) : mParent_(mParent) {}
+backdrop::backdrop(frame& m_parent) : m_parent_(m_parent) {}
 
-void backdrop::copy_from(const backdrop& mBackdrop) {
-    this->set_background(mBackdrop.get_background_file());
-    this->set_edge(mBackdrop.get_edge_file());
+void backdrop::copy_from(const backdrop& m_backdrop) {
+    this->set_background(m_backdrop.get_background_file());
+    this->set_edge(m_backdrop.get_edge_file());
 
-    this->set_background_tilling(mBackdrop.is_background_tilling());
-    this->set_tile_size(mBackdrop.get_tile_size());
+    this->set_background_tilling(m_backdrop.is_background_tilling());
+    this->set_tile_size(m_backdrop.get_tile_size());
 
-    if (mBackdrop.sBackgroundFile_.empty())
-        this->set_background_color(mBackdrop.get_background_color());
+    if (m_backdrop.s_background_file_.empty())
+        this->set_background_color(m_backdrop.get_background_color());
 
-    this->set_background_insets(mBackdrop.get_background_insets());
+    this->set_background_insets(m_backdrop.get_background_insets());
 
-    if (mBackdrop.sEdgeFile_.empty())
-        this->set_edge_color(mBackdrop.get_edge_color());
+    if (m_backdrop.s_edge_file_.empty())
+        this->set_edge_color(m_backdrop.get_edge_color());
 
-    this->set_edge_size(mBackdrop.get_edge_size());
-    this->set_edge_insets(mBackdrop.get_edge_insets());
+    this->set_edge_size(m_backdrop.get_edge_size());
+    this->set_edge_insets(m_backdrop.get_edge_insets());
 }
 
-void backdrop::set_background(const std::string& sBackgroundFile) {
-    if (sBackgroundFile_ == sBackgroundFile)
+void backdrop::set_background(const std::string& s_background_file) {
+    if (s_background_file_ == s_background_file)
         return;
 
-    bCacheDirty_      = true;
-    mBackgroundColor_ = color::EMPTY;
+    b_cache_dirty_      = true;
+    m_background_color_ = color::empty;
 
-    if (sBackgroundFile.empty()) {
-        pBackgroundTexture_ = nullptr;
-        sBackgroundFile_    = "";
+    if (s_background_file.empty()) {
+        p_background_texture_ = nullptr;
+        s_background_file_    = "";
         return;
     }
 
-    if (!utils::file_exists(sBackgroundFile)) {
-        pBackgroundTexture_ = nullptr;
-        sBackgroundFile_    = "";
+    if (!utils::file_exists(s_background_file)) {
+        p_background_texture_ = nullptr;
+        s_background_file_    = "";
 
         gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << sBackgroundFile << "\" for " << mParent_.get_name()
-                 << "'s backdrop background file.\n"
+                 << "Cannot find file : \"" << s_background_file << "\" for "
+                 << m_parent_.get_name() << "'s backdrop background file.\n"
                  << "No background will be drawn." << std::endl;
 
         return;
     }
 
-    auto& mRenderer     = mParent_.get_manager().get_renderer();
-    pBackgroundTexture_ = mRenderer.create_atlas_material("GUI", sBackgroundFile);
+    auto& m_renderer      = m_parent_.get_manager().get_renderer();
+    p_background_texture_ = m_renderer.create_atlas_material("GUI", s_background_file);
 
-    fTileSize_ = fOriginalTileSize_ = static_cast<float>(pBackgroundTexture_->get_rect().width());
-    sBackgroundFile_                = sBackgroundFile;
+    f_tile_size_ = f_original_tile_size_ =
+        static_cast<float>(p_background_texture_->get_rect().width());
+    s_background_file_ = s_background_file;
 }
 
 const std::string& backdrop::get_background_file() const {
-    return sBackgroundFile_;
+    return s_background_file_;
 }
 
-void backdrop::set_background_color(const color& mColor) {
-    if (mBackgroundColor_ == mColor)
+void backdrop::set_background_color(const color& m_color) {
+    if (m_background_color_ == m_color)
         return;
 
-    bCacheDirty_ = true;
+    b_cache_dirty_ = true;
 
-    pBackgroundTexture_ = nullptr;
-    mBackgroundColor_   = mColor;
-    sBackgroundFile_    = "";
+    p_background_texture_ = nullptr;
+    m_background_color_   = m_color;
+    s_background_file_    = "";
 
-    fTileSize_ = fOriginalTileSize_ = 256.0f;
+    f_tile_size_ = f_original_tile_size_ = 256.0f;
 }
 
 color backdrop::get_background_color() const {
-    return mBackgroundColor_;
+    return m_background_color_;
 }
 
-void backdrop::set_background_tilling(bool bBackgroundTilling) {
-    if (bBackgroundTilling_ == bBackgroundTilling)
+void backdrop::set_background_tilling(bool b_background_tilling) {
+    if (b_background_tilling_ == b_background_tilling)
         return;
 
-    bBackgroundTilling_ = bBackgroundTilling;
-    bCacheDirty_        = true;
+    b_background_tilling_ = b_background_tilling;
+    b_cache_dirty_        = true;
 }
 
 bool backdrop::is_background_tilling() const {
-    return bBackgroundTilling_;
+    return b_background_tilling_;
 }
 
-void backdrop::set_tile_size(float fTileSize) {
-    if (fTileSize_ == fTileSize)
+void backdrop::set_tile_size(float f_tile_size) {
+    if (f_tile_size_ == f_tile_size)
         return;
 
-    fTileSize_   = fTileSize;
-    bCacheDirty_ = true;
+    f_tile_size_   = f_tile_size;
+    b_cache_dirty_ = true;
 }
 
 float backdrop::get_tile_size() const {
-    return fTileSize_;
+    return f_tile_size_;
 }
 
-void backdrop::set_background_insets(const bounds2f& lInsets) {
-    if (lBackgroundInsets_ == lInsets)
+void backdrop::set_background_insets(const bounds2f& l_insets) {
+    if (l_background_insets_ == l_insets)
         return;
 
-    lBackgroundInsets_ = lInsets;
-    bCacheDirty_       = true;
+    l_background_insets_ = l_insets;
+    b_cache_dirty_       = true;
 }
 
 const bounds2f& backdrop::get_background_insets() const {
-    return lBackgroundInsets_;
+    return l_background_insets_;
 }
 
-void backdrop::set_edge_insets(const bounds2f& lInsets) {
-    if (lEdgeInsets_ == lInsets)
+void backdrop::set_edge_insets(const bounds2f& l_insets) {
+    if (l_edge_insets_ == l_insets)
         return;
 
-    lEdgeInsets_ = lInsets;
-    bCacheDirty_ = true;
+    l_edge_insets_ = l_insets;
+    b_cache_dirty_ = true;
 }
 
 const bounds2f& backdrop::get_edge_insets() const {
-    return lEdgeInsets_;
+    return l_edge_insets_;
 }
 
-void backdrop::set_edge(const std::string& sEdgeFile) {
-    if (sEdgeFile == sEdgeFile_)
+void backdrop::set_edge(const std::string& s_edge_file) {
+    if (s_edge_file == s_edge_file_)
         return;
 
-    bCacheDirty_ = true;
-    mEdgeColor_  = color::EMPTY;
+    b_cache_dirty_ = true;
+    m_edge_color_  = color::empty;
 
-    if (sEdgeFile.empty()) {
-        pEdgeTexture_ = nullptr;
-        sEdgeFile_    = "";
+    if (s_edge_file.empty()) {
+        p_edge_texture_ = nullptr;
+        s_edge_file_    = "";
         return;
     }
 
-    if (!utils::file_exists(sEdgeFile)) {
-        pEdgeTexture_ = nullptr;
-        sEdgeFile_    = "";
+    if (!utils::file_exists(s_edge_file)) {
+        p_edge_texture_ = nullptr;
+        s_edge_file_    = "";
 
         gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << sEdgeFile << "\" for " << mParent_.get_name()
+                 << "Cannot find file : \"" << s_edge_file << "\" for " << m_parent_.get_name()
                  << "'s backdrop edge.\nNo edge will be drawn." << std::endl;
 
         return;
     }
 
-    auto& mRenderer = mParent_.get_manager().get_renderer();
-    pEdgeTexture_   = mRenderer.create_atlas_material("GUI", sEdgeFile);
+    auto& m_renderer = m_parent_.get_manager().get_renderer();
+    p_edge_texture_  = m_renderer.create_atlas_material("GUI", s_edge_file);
 
-    if (pEdgeTexture_->get_rect().width() / pEdgeTexture_->get_rect().height() != 8.0f) {
-        pEdgeTexture_ = nullptr;
-        sEdgeFile_    = "";
+    if (p_edge_texture_->get_rect().width() / p_edge_texture_->get_rect().height() != 8.0f) {
+        p_edge_texture_ = nullptr;
+        s_edge_file_    = "";
 
         gui::out << gui::error << "backdrop : "
                  << "An edge texture width must be exactly 8 times greater than its height "
-                 << "(in " << sEdgeFile << ").\nNo edge will be drawn for " << mParent_.get_name()
-                 << "'s backdrop." << std::endl;
+                 << "(in " << s_edge_file << ").\nNo edge will be drawn for "
+                 << m_parent_.get_name() << "'s backdrop." << std::endl;
 
         return;
     }
 
-    fEdgeSize_ = fOriginalEdgeSize_ = pEdgeTexture_->get_rect().height();
-    sEdgeFile_                      = sEdgeFile;
+    f_edge_size_ = f_original_edge_size_ = p_edge_texture_->get_rect().height();
+    s_edge_file_                         = s_edge_file;
 }
 
 const std::string& backdrop::get_edge_file() const {
-    return sEdgeFile_;
+    return s_edge_file_;
 }
 
-void backdrop::set_edge_color(const color& mColor) {
-    if (mEdgeColor_ == mColor)
+void backdrop::set_edge_color(const color& m_color) {
+    if (m_edge_color_ == m_color)
         return;
 
-    bCacheDirty_  = true;
-    pEdgeTexture_ = nullptr;
-    mEdgeColor_   = mColor;
-    sEdgeFile_    = "";
+    b_cache_dirty_  = true;
+    p_edge_texture_ = nullptr;
+    m_edge_color_   = m_color;
+    s_edge_file_    = "";
 
-    if (fEdgeSize_ == 0.0f)
-        fEdgeSize_ = 1.0f;
+    if (f_edge_size_ == 0.0f)
+        f_edge_size_ = 1.0f;
 
-    fOriginalEdgeSize_ = 1.0f;
+    f_original_edge_size_ = 1.0f;
 }
 
 color backdrop::get_edge_color() const {
-    return mEdgeColor_;
+    return m_edge_color_;
 }
 
-void backdrop::set_edge_size(float fEdgeSize) {
-    if (fEdgeSize_ == fEdgeSize)
+void backdrop::set_edge_size(float f_edge_size) {
+    if (f_edge_size_ == f_edge_size)
         return;
 
-    fEdgeSize_   = fEdgeSize;
-    bCacheDirty_ = true;
+    f_edge_size_   = f_edge_size;
+    b_cache_dirty_ = true;
 }
 
 float backdrop::get_edge_size() const {
-    return fEdgeSize_;
+    return f_edge_size_;
 }
 
-void backdrop::set_vertex_color(const color& mColor) {
-    if (mVertexColor_ == mColor)
+void backdrop::set_vertex_color(const color& m_color) {
+    if (m_vertex_color_ == m_color)
         return;
 
-    mVertexColor_ = mColor;
-    bCacheDirty_  = true;
+    m_vertex_color_ = m_color;
+    b_cache_dirty_  = true;
 }
 
 void backdrop::render() const {
-    float fAlpha = mParent_.get_effective_alpha();
-    if (fAlpha != fCacheAlpha_)
-        bCacheDirty_ = true;
+    float f_alpha = m_parent_.get_effective_alpha();
+    if (f_alpha != f_cache_alpha_)
+        b_cache_dirty_ = true;
 
-    auto& mRenderer = mParent_.get_manager().get_renderer();
-    bool  bUseVertexCache =
-        mRenderer.is_vertex_cache_enabled() && !mRenderer.is_quad_batching_enabled();
+    auto& m_renderer = m_parent_.get_manager().get_renderer();
+    bool  b_use_vertex_cache =
+        m_renderer.is_vertex_cache_enabled() && !m_renderer.is_quad_batching_enabled();
 
-    bool bHasBackground = pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY;
-    bool bHasEdge       = pEdgeTexture_ || mEdgeColor_ != color::EMPTY;
+    bool b_has_background = p_background_texture_ || m_background_color_ != color::empty;
+    bool b_has_edge       = p_edge_texture_ || m_edge_color_ != color::empty;
 
-    if (bHasBackground) {
-        if ((bUseVertexCache && !pBackgroundCache_) ||
-            (!bUseVertexCache && lBackgroundQuads_.empty()))
-            bCacheDirty_ = true;
+    if (b_has_background) {
+        if ((b_use_vertex_cache && !p_background_cache_) ||
+            (!b_use_vertex_cache && l_background_quads_.empty()))
+            b_cache_dirty_ = true;
     }
 
-    if (bHasEdge) {
-        if ((bUseVertexCache && !pEdgeCache_) || (!bUseVertexCache && lEdgeQuads_.empty()))
-            bCacheDirty_ = true;
+    if (b_has_edge) {
+        if ((b_use_vertex_cache && !p_edge_cache_) ||
+            (!b_use_vertex_cache && l_edge_quads_.empty()))
+            b_cache_dirty_ = true;
     }
 
     update_cache_();
 
-    if (bHasBackground) {
-        if (bUseVertexCache && pBackgroundCache_)
-            mRenderer.render_cache(pBackgroundTexture_.get(), *pBackgroundCache_);
+    if (b_has_background) {
+        if (b_use_vertex_cache && p_background_cache_)
+            m_renderer.render_cache(p_background_texture_.get(), *p_background_cache_);
         else
-            mRenderer.render_quads(pBackgroundTexture_.get(), lBackgroundQuads_);
+            m_renderer.render_quads(p_background_texture_.get(), l_background_quads_);
     }
 
-    if (bHasEdge) {
-        if (bUseVertexCache && pEdgeCache_)
-            mRenderer.render_cache(pEdgeTexture_.get(), *pEdgeCache_);
+    if (b_has_edge) {
+        if (b_use_vertex_cache && p_edge_cache_)
+            m_renderer.render_cache(p_edge_texture_.get(), *p_edge_cache_);
         else
-            mRenderer.render_quads(pEdgeTexture_.get(), lEdgeQuads_);
+            m_renderer.render_quads(p_edge_texture_.get(), l_edge_quads_);
     }
 }
 
 void backdrop::notify_borders_updated() const {
-    bCacheDirty_ = true;
+    b_cache_dirty_ = true;
 }
 
 void backdrop::update_cache_() const {
-    if (!bCacheDirty_)
+    if (!b_cache_dirty_)
         return;
 
-    lBackgroundQuads_.clear();
-    lEdgeQuads_.clear();
+    l_background_quads_.clear();
+    l_edge_quads_.clear();
 
-    color mColor = mVertexColor_;
+    color m_color = m_vertex_color_;
 
-    float fAlpha = mParent_.get_effective_alpha();
-    mColor.a *= fAlpha;
+    float f_alpha = m_parent_.get_effective_alpha();
+    m_color.a *= f_alpha;
 
-    update_background_(mColor);
-    update_edge_(mColor);
+    update_background_(m_color);
+    update_edge_(m_color);
 
-    fCacheAlpha_ = fAlpha;
-    bCacheDirty_ = false;
+    f_cache_alpha_ = f_alpha;
+    b_cache_dirty_ = false;
 }
 
 void repeat_wrap(
-    const frame&                        mParent,
-    std::vector<std::array<vertex, 4>>& lOutput,
-    const bounds2f&                     mSourceUVs,
-    float                               fTileSize,
-    bool                                bRotated,
-    const color                         mColor,
-    const bounds2f&                     mDestination) {
-    const auto  mDTopLeft   = mDestination.top_left();
-    const auto  mSTopLeft   = mSourceUVs.top_left();
-    const float fDestWidth  = mDestination.width();
-    const float fDestHeight = mDestination.height();
+    const frame&                        m_parent,
+    std::vector<std::array<vertex, 4>>& l_output,
+    const bounds2f&                     m_source_u_vs,
+    float                               f_tile_size,
+    bool                                b_rotated,
+    const color                         m_color,
+    const bounds2f&                     m_destination) {
+    const auto  m_d_top_left  = m_destination.top_left();
+    const auto  m_s_top_left  = m_source_u_vs.top_left();
+    const float f_dest_width  = m_destination.width();
+    const float f_dest_height = m_destination.height();
 
-    float fSY = 0.0f;
-    while (fSY < fDestHeight) {
-        float fDHeight = fTileSize;
-        float fSHeight = mSourceUVs.height();
-        if (fSY + fTileSize > fDestHeight)
-            fDHeight = fDestHeight - fSY;
+    float f_sy = 0.0f;
+    while (f_sy < f_dest_height) {
+        float f_d_height = f_tile_size;
+        float f_s_height = m_source_u_vs.height();
+        if (f_sy + f_tile_size > f_dest_height)
+            f_d_height = f_dest_height - f_sy;
 
-        float fSX = 0.0f;
-        while (fSX < fDestWidth) {
-            float fDWidth = fTileSize;
-            float fSWidth = mSourceUVs.width();
-            if (fSX + fTileSize > fDestWidth)
-                fDWidth = fDestWidth - fSX;
+        float f_sx = 0.0f;
+        while (f_sx < f_dest_width) {
+            float f_d_width = f_tile_size;
+            float f_s_width = m_source_u_vs.width();
+            if (f_sx + f_tile_size > f_dest_width)
+                f_d_width = f_dest_width - f_sx;
 
-            lOutput.emplace_back();
-            auto& mQuad = lOutput.back();
+            l_output.emplace_back();
+            auto& m_quad = l_output.back();
 
-            mQuad[0].pos = mParent.round_to_pixel(mDTopLeft + vector2f(fSX, fSY));
-            mQuad[1].pos = mParent.round_to_pixel(mDTopLeft + vector2f(fSX + fDWidth, fSY));
-            mQuad[2].pos =
-                mParent.round_to_pixel(mDTopLeft + vector2f(fSX + fDWidth, fSY + fDHeight));
-            mQuad[3].pos = mParent.round_to_pixel(mDTopLeft + vector2f(fSX, fSY + fDHeight));
+            m_quad[0].pos = m_parent.round_to_pixel(m_d_top_left + vector2f(f_sx, f_sy));
+            m_quad[1].pos =
+                m_parent.round_to_pixel(m_d_top_left + vector2f(f_sx + f_d_width, f_sy));
+            m_quad[2].pos = m_parent.round_to_pixel(
+                m_d_top_left + vector2f(f_sx + f_d_width, f_sy + f_d_height));
+            m_quad[3].pos =
+                m_parent.round_to_pixel(m_d_top_left + vector2f(f_sx, f_sy + f_d_height));
 
-            if (bRotated) {
-                fSHeight *= fDWidth / fTileSize;
-                fSWidth *= fDHeight / fTileSize;
-                mQuad[0].uvs = mSTopLeft + vector2f(0.0f, fSHeight);
-                mQuad[1].uvs = mSTopLeft + vector2f(0.0f, 0.0f);
-                mQuad[2].uvs = mSTopLeft + vector2f(fSWidth, 0.0f);
-                mQuad[3].uvs = mSTopLeft + vector2f(fSWidth, fSHeight);
+            if (b_rotated) {
+                f_s_height *= f_d_width / f_tile_size;
+                f_s_width *= f_d_height / f_tile_size;
+                m_quad[0].uvs = m_s_top_left + vector2f(0.0f, f_s_height);
+                m_quad[1].uvs = m_s_top_left + vector2f(0.0f, 0.0f);
+                m_quad[2].uvs = m_s_top_left + vector2f(f_s_width, 0.0f);
+                m_quad[3].uvs = m_s_top_left + vector2f(f_s_width, f_s_height);
             } else {
-                fSWidth *= fDWidth / fTileSize;
-                fSHeight *= fDHeight / fTileSize;
-                mQuad[0].uvs = mSTopLeft + vector2f(0.0f, 0.0f);
-                mQuad[1].uvs = mSTopLeft + vector2f(fSWidth, 0.0f);
-                mQuad[2].uvs = mSTopLeft + vector2f(fSWidth, fSHeight);
-                mQuad[3].uvs = mSTopLeft + vector2f(0.0f, fSHeight);
+                f_s_width *= f_d_width / f_tile_size;
+                f_s_height *= f_d_height / f_tile_size;
+                m_quad[0].uvs = m_s_top_left + vector2f(0.0f, 0.0f);
+                m_quad[1].uvs = m_s_top_left + vector2f(f_s_width, 0.0f);
+                m_quad[2].uvs = m_s_top_left + vector2f(f_s_width, f_s_height);
+                m_quad[3].uvs = m_s_top_left + vector2f(0.0f, f_s_height);
             }
 
-            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+            m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = m_color;
 
-            fSX += fDWidth;
+            f_sx += f_d_width;
         }
 
-        fSY += fDHeight;
+        f_sy += f_d_height;
     }
 }
 
-void backdrop::update_background_(color mColor) const {
-    if (!pBackgroundTexture_ && mBackgroundColor_ == color::EMPTY)
+void backdrop::update_background_(color m_color) const {
+    if (!p_background_texture_ && m_background_color_ == color::empty)
         return;
 
-    if (!pBackgroundTexture_)
-        mColor *= mBackgroundColor_;
+    if (!p_background_texture_)
+        m_color *= m_background_color_;
 
-    auto mBorders = mParent_.get_borders();
-    mBorders.left += lBackgroundInsets_.left;
-    mBorders.right -= lBackgroundInsets_.right;
-    mBorders.top += lBackgroundInsets_.top;
-    mBorders.bottom -= lBackgroundInsets_.bottom;
+    auto m_borders = m_parent_.get_borders();
+    m_borders.left += l_background_insets_.left;
+    m_borders.right -= l_background_insets_.right;
+    m_borders.top += l_background_insets_.top;
+    m_borders.bottom -= l_background_insets_.bottom;
 
-    auto& mRenderer = mParent_.get_manager().get_renderer();
+    auto& m_renderer = m_parent_.get_manager().get_renderer();
 
-    if (pBackgroundTexture_) {
-        const vector2f mCanvasTL  = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
-        const vector2f mCanvasBR  = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
-        const bounds2f mCanvasUVs = bounds2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+    if (p_background_texture_) {
+        const vector2f m_canvas_tl =
+            p_background_texture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+        const vector2f m_canvas_br =
+            p_background_texture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+        const bounds2f m_canvas_u_vs =
+            bounds2f(m_canvas_tl.x, m_canvas_br.x, m_canvas_tl.y, m_canvas_br.y);
 
-        float fRoundedTileSize =
-            mParent_.round_to_pixel(fTileSize_, utils::rounding_method::NEAREST_NOT_ZERO);
+        float f_rounded_tile_size =
+            m_parent_.round_to_pixel(f_tile_size_, utils::rounding_method::nearest_not_zero);
 
-        if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fRoundedTileSize > 1.0f) {
+        if (p_background_texture_->is_in_atlas() && b_background_tilling_ &&
+            f_rounded_tile_size > 1.0f) {
             repeat_wrap(
-                mParent_, lBackgroundQuads_, mCanvasUVs, fRoundedTileSize, false, mColor, mBorders);
+                m_parent_, l_background_quads_, m_canvas_u_vs, f_rounded_tile_size, false, m_color,
+                m_borders);
         } else {
-            lBackgroundQuads_.emplace_back();
-            auto& mQuad = lBackgroundQuads_.back();
+            l_background_quads_.emplace_back();
+            auto& m_quad = l_background_quads_.back();
 
-            mQuad[0].pos = mParent_.round_to_pixel(mBorders.top_left());
-            mQuad[1].pos = mParent_.round_to_pixel(mBorders.top_right());
-            mQuad[2].pos = mParent_.round_to_pixel(mBorders.bottom_right());
-            mQuad[3].pos = mParent_.round_to_pixel(mBorders.bottom_left());
-            mQuad[0].uvs = mCanvasUVs.top_left();
-            mQuad[1].uvs = mCanvasUVs.top_right();
-            mQuad[2].uvs = mCanvasUVs.bottom_right();
-            mQuad[3].uvs = mCanvasUVs.bottom_left();
-            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+            m_quad[0].pos = m_parent_.round_to_pixel(m_borders.top_left());
+            m_quad[1].pos = m_parent_.round_to_pixel(m_borders.top_right());
+            m_quad[2].pos = m_parent_.round_to_pixel(m_borders.bottom_right());
+            m_quad[3].pos = m_parent_.round_to_pixel(m_borders.bottom_left());
+            m_quad[0].uvs = m_canvas_u_vs.top_left();
+            m_quad[1].uvs = m_canvas_u_vs.top_right();
+            m_quad[2].uvs = m_canvas_u_vs.bottom_right();
+            m_quad[3].uvs = m_canvas_u_vs.bottom_left();
+            m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = m_color;
         }
     } else {
-        lBackgroundQuads_.emplace_back();
-        auto& mQuad = lBackgroundQuads_.back();
+        l_background_quads_.emplace_back();
+        auto& m_quad = l_background_quads_.back();
 
-        mQuad[0].pos = mParent_.round_to_pixel(mBorders.top_left());
-        mQuad[1].pos = mParent_.round_to_pixel(mBorders.top_right());
-        mQuad[2].pos = mParent_.round_to_pixel(mBorders.bottom_right());
-        mQuad[3].pos = mParent_.round_to_pixel(mBorders.bottom_left());
-        mQuad[0].uvs = vector2f(0.0f, 0.0f);
-        mQuad[1].uvs = vector2f(0.0f, 0.0f);
-        mQuad[2].uvs = vector2f(0.0f, 0.0f);
-        mQuad[3].uvs = vector2f(0.0f, 0.0f);
+        m_quad[0].pos = m_parent_.round_to_pixel(m_borders.top_left());
+        m_quad[1].pos = m_parent_.round_to_pixel(m_borders.top_right());
+        m_quad[2].pos = m_parent_.round_to_pixel(m_borders.bottom_right());
+        m_quad[3].pos = m_parent_.round_to_pixel(m_borders.bottom_left());
+        m_quad[0].uvs = vector2f(0.0f, 0.0f);
+        m_quad[1].uvs = vector2f(0.0f, 0.0f);
+        m_quad[2].uvs = vector2f(0.0f, 0.0f);
+        m_quad[3].uvs = vector2f(0.0f, 0.0f);
 
-        mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+        m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = m_color;
     }
 
-    if (mRenderer.is_vertex_cache_enabled() && !mRenderer.is_quad_batching_enabled()) {
-        if (!pBackgroundCache_)
-            pBackgroundCache_ = mRenderer.create_vertex_cache(vertex_cache::type::QUADS);
+    if (m_renderer.is_vertex_cache_enabled() && !m_renderer.is_quad_batching_enabled()) {
+        if (!p_background_cache_)
+            p_background_cache_ = m_renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        pBackgroundCache_->update(lBackgroundQuads_[0].data(), lBackgroundQuads_.size() * 4);
-        lBackgroundQuads_.clear();
+        p_background_cache_->update(l_background_quads_[0].data(), l_background_quads_.size() * 4);
+        l_background_quads_.clear();
     }
 }
 
 void backdrop::update_edge_(color mColor) const {
-    if (!pEdgeTexture_ && mEdgeColor_ == color::EMPTY)
+    if (!p_edge_texture_ && m_edge_color_ == color::empty)
         return;
 
-    if (!pEdgeTexture_)
-        mColor *= mEdgeColor_;
+    if (!p_edge_texture_)
+        mColor *= m_edge_color_;
 
-    constexpr float fUVStep  = 1.0f / 8.0f;
-    auto            mBorders = mParent_.get_borders();
-    mBorders.left += lEdgeInsets_.left;
-    mBorders.right -= lEdgeInsets_.right;
-    mBorders.top += lEdgeInsets_.top;
-    mBorders.bottom -= lEdgeInsets_.bottom;
+    constexpr float f_uv_step = 1.0f / 8.0f;
+    auto            m_borders = m_parent_.get_borders();
+    m_borders.left += l_edge_insets_.left;
+    m_borders.right -= l_edge_insets_.right;
+    m_borders.top += l_edge_insets_.top;
+    m_borders.bottom -= l_edge_insets_.bottom;
 
-    auto&       mRenderer = mParent_.get_manager().get_renderer();
-    const float fRoundedEdgeSize =
-        mParent_.round_to_pixel(fEdgeSize_, utils::rounding_method::NEAREST_NOT_ZERO);
+    auto&       m_renderer = m_parent_.get_manager().get_renderer();
+    const float f_rounded_edge_size =
+        m_parent_.round_to_pixel(f_edge_size_, utils::rounding_method::nearest_not_zero);
 
-    auto repeat_wrap_edge = [&](const bounds2f& mSourceUVs, bool bRotated,
-                                const bounds2f& mDestination) {
-        if (pEdgeTexture_) {
-            const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
-            const vector2f mCanvasBR =
-                pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
-            const bounds2f mCanvasUVs =
-                bounds2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+    auto repeat_wrap_edge = [&](const bounds2f& m_source_u_vs, bool b_rotated,
+                                const bounds2f& m_destination) {
+        if (p_edge_texture_) {
+            const vector2f m_canvas_tl =
+                p_edge_texture_->get_canvas_uv(m_source_u_vs.top_left(), true);
+            const vector2f m_canvas_br =
+                p_edge_texture_->get_canvas_uv(m_source_u_vs.bottom_right(), true);
+            const bounds2f m_canvas_u_vs =
+                bounds2f(m_canvas_tl.x, m_canvas_br.x, m_canvas_tl.y, m_canvas_br.y);
 
-            if (pEdgeTexture_->is_in_atlas() && fRoundedEdgeSize > 1.0f) {
+            if (p_edge_texture_->is_in_atlas() && f_rounded_edge_size > 1.0f) {
                 repeat_wrap(
-                    mParent_, lEdgeQuads_, mCanvasUVs, fRoundedEdgeSize, bRotated, mColor,
-                    mDestination);
+                    m_parent_, l_edge_quads_, m_canvas_u_vs, f_rounded_edge_size, b_rotated, mColor,
+                    m_destination);
             } else {
-                lEdgeQuads_.emplace_back();
-                auto& mQuad = lEdgeQuads_.back();
+                l_edge_quads_.emplace_back();
+                auto& m_quad = l_edge_quads_.back();
 
-                mQuad[0].pos = mParent_.round_to_pixel(mDestination.top_left());
-                mQuad[1].pos = mParent_.round_to_pixel(mDestination.top_right());
-                mQuad[2].pos = mParent_.round_to_pixel(mDestination.bottom_right());
-                mQuad[3].pos = mParent_.round_to_pixel(mDestination.bottom_left());
+                m_quad[0].pos = m_parent_.round_to_pixel(m_destination.top_left());
+                m_quad[1].pos = m_parent_.round_to_pixel(m_destination.top_right());
+                m_quad[2].pos = m_parent_.round_to_pixel(m_destination.bottom_right());
+                m_quad[3].pos = m_parent_.round_to_pixel(m_destination.bottom_left());
 
-                if (fRoundedEdgeSize <= 1.0f) {
-                    mQuad[0].uvs = mCanvasUVs.top_left();
-                    mQuad[1].uvs = mCanvasUVs.top_right();
-                    mQuad[2].uvs = mCanvasUVs.bottom_right();
-                    mQuad[3].uvs = mCanvasUVs.bottom_left();
+                if (f_rounded_edge_size <= 1.0f) {
+                    m_quad[0].uvs = m_canvas_u_vs.top_left();
+                    m_quad[1].uvs = m_canvas_u_vs.top_right();
+                    m_quad[2].uvs = m_canvas_u_vs.bottom_right();
+                    m_quad[3].uvs = m_canvas_u_vs.bottom_left();
                 } else {
-                    if (bRotated) {
-                        float fFactor = mDestination.width() / fRoundedEdgeSize;
-                        mQuad[0].uvs =
-                            mCanvasUVs.top_left() + vector2f(0.0, fFactor * mCanvasUVs.height());
-                        mQuad[1].uvs = mCanvasUVs.top_left();
-                        mQuad[2].uvs = mCanvasUVs.top_right();
-                        mQuad[3].uvs =
-                            mCanvasUVs.top_right() + vector2f(0.0, fFactor * mCanvasUVs.height());
+                    if (b_rotated) {
+                        float f_factor = m_destination.width() / f_rounded_edge_size;
+                        m_quad[0].uvs  = m_canvas_u_vs.top_left() +
+                                        vector2f(0.0, f_factor * m_canvas_u_vs.height());
+                        m_quad[1].uvs = m_canvas_u_vs.top_left();
+                        m_quad[2].uvs = m_canvas_u_vs.top_right();
+                        m_quad[3].uvs = m_canvas_u_vs.top_right() +
+                                        vector2f(0.0, f_factor * m_canvas_u_vs.height());
                     } else {
-                        float fFactor = mDestination.height() / fRoundedEdgeSize;
-                        mQuad[0].uvs  = mCanvasUVs.top_left();
-                        mQuad[1].uvs  = mCanvasUVs.top_right();
-                        mQuad[2].uvs =
-                            mCanvasUVs.top_right() + vector2f(0.0, fFactor * mCanvasUVs.height());
-                        mQuad[3].uvs =
-                            mCanvasUVs.top_left() + vector2f(0.0, fFactor * mCanvasUVs.height());
+                        float f_factor = m_destination.height() / f_rounded_edge_size;
+                        m_quad[0].uvs  = m_canvas_u_vs.top_left();
+                        m_quad[1].uvs  = m_canvas_u_vs.top_right();
+                        m_quad[2].uvs  = m_canvas_u_vs.top_right() +
+                                        vector2f(0.0, f_factor * m_canvas_u_vs.height());
+                        m_quad[3].uvs = m_canvas_u_vs.top_left() +
+                                        vector2f(0.0, f_factor * m_canvas_u_vs.height());
                     }
                 }
 
-                mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+                m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = mColor;
             }
         } else {
-            lEdgeQuads_.emplace_back();
-            auto& mQuad = lEdgeQuads_.back();
+            l_edge_quads_.emplace_back();
+            auto& m_quad = l_edge_quads_.back();
 
-            mQuad[0].pos = mParent_.round_to_pixel(mDestination.top_left());
-            mQuad[1].pos = mParent_.round_to_pixel(mDestination.top_right());
-            mQuad[2].pos = mParent_.round_to_pixel(mDestination.bottom_right());
-            mQuad[3].pos = mParent_.round_to_pixel(mDestination.bottom_left());
-            mQuad[0].uvs = vector2f(0.0f, 0.0f);
-            mQuad[1].uvs = vector2f(0.0f, 0.0f);
-            mQuad[2].uvs = vector2f(0.0f, 0.0f);
-            mQuad[3].uvs = vector2f(0.0f, 0.0f);
-            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+            m_quad[0].pos = m_parent_.round_to_pixel(m_destination.top_left());
+            m_quad[1].pos = m_parent_.round_to_pixel(m_destination.top_right());
+            m_quad[2].pos = m_parent_.round_to_pixel(m_destination.bottom_right());
+            m_quad[3].pos = m_parent_.round_to_pixel(m_destination.bottom_left());
+            m_quad[0].uvs = vector2f(0.0f, 0.0f);
+            m_quad[1].uvs = vector2f(0.0f, 0.0f);
+            m_quad[2].uvs = vector2f(0.0f, 0.0f);
+            m_quad[3].uvs = vector2f(0.0f, 0.0f);
+            m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = mColor;
         }
     };
 
     // Left edge
     repeat_wrap_edge(
-        bounds2f(0.0f, fUVStep, 0.0f, 1.0f), false,
+        bounds2f(0.0f, f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.left, mBorders.left + fRoundedEdgeSize, mBorders.top + fRoundedEdgeSize,
-            mBorders.bottom - fRoundedEdgeSize));
+            m_borders.left, m_borders.left + f_rounded_edge_size,
+            m_borders.top + f_rounded_edge_size, m_borders.bottom - f_rounded_edge_size));
 
     // Right edge
     repeat_wrap_edge(
-        bounds2f(fUVStep, 2.0f * fUVStep, 0.0f, 1.0f), false,
+        bounds2f(f_uv_step, 2.0f * f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.right - fRoundedEdgeSize, mBorders.right, mBorders.top + fRoundedEdgeSize,
-            mBorders.bottom - fRoundedEdgeSize));
+            m_borders.right - f_rounded_edge_size, m_borders.right,
+            m_borders.top + f_rounded_edge_size, m_borders.bottom - f_rounded_edge_size));
 
     // Top edge
     repeat_wrap_edge(
-        bounds2f(2.0f * fUVStep, 3.0f * fUVStep, 0.0f, 1.0f), true,
+        bounds2f(2.0f * f_uv_step, 3.0f * f_uv_step, 0.0f, 1.0f), true,
         bounds2f(
-            mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize, mBorders.top,
-            mBorders.top + fRoundedEdgeSize));
+            m_borders.left + f_rounded_edge_size, m_borders.right - f_rounded_edge_size,
+            m_borders.top, m_borders.top + f_rounded_edge_size));
 
     // Bottom edge
     repeat_wrap_edge(
-        bounds2f(3.0f * fUVStep, 4.0f * fUVStep, 0.0f, 1.0f), true,
+        bounds2f(3.0f * f_uv_step, 4.0f * f_uv_step, 0.0f, 1.0f), true,
         bounds2f(
-            mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize,
-            mBorders.bottom - fRoundedEdgeSize, mBorders.bottom));
+            m_borders.left + f_rounded_edge_size, m_borders.right - f_rounded_edge_size,
+            m_borders.bottom - f_rounded_edge_size, m_borders.bottom));
 
     // Top-left corner
     repeat_wrap_edge(
-        bounds2f(4.0f * fUVStep, 5.0f * fUVStep, 0.0f, 1.0f), false,
+        bounds2f(4.0f * f_uv_step, 5.0f * f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.left, mBorders.left + fRoundedEdgeSize, mBorders.top,
-            mBorders.top + fRoundedEdgeSize));
+            m_borders.left, m_borders.left + f_rounded_edge_size, m_borders.top,
+            m_borders.top + f_rounded_edge_size));
 
     // Top-right corner
     repeat_wrap_edge(
-        bounds2f(5.0f * fUVStep, 6.0f * fUVStep, 0.0f, 1.0f), false,
+        bounds2f(5.0f * f_uv_step, 6.0f * f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.right - fRoundedEdgeSize, mBorders.right, mBorders.top,
-            mBorders.top + fRoundedEdgeSize));
+            m_borders.right - f_rounded_edge_size, m_borders.right, m_borders.top,
+            m_borders.top + f_rounded_edge_size));
 
     // Bottom-left corner
     repeat_wrap_edge(
-        bounds2f(6.0f * fUVStep, 7.0f * fUVStep, 0.0f, 1.0f), false,
+        bounds2f(6.0f * f_uv_step, 7.0f * f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.left, mBorders.left + fRoundedEdgeSize, mBorders.bottom - fRoundedEdgeSize,
-            mBorders.bottom));
+            m_borders.left, m_borders.left + f_rounded_edge_size,
+            m_borders.bottom - f_rounded_edge_size, m_borders.bottom));
 
     // Bottom-right corner
     repeat_wrap_edge(
-        bounds2f(7.0f * fUVStep, 8.0f * fUVStep, 0.0f, 1.0f), false,
+        bounds2f(7.0f * f_uv_step, 8.0f * f_uv_step, 0.0f, 1.0f), false,
         bounds2f(
-            mBorders.right - fRoundedEdgeSize, mBorders.right, mBorders.bottom - fRoundedEdgeSize,
-            mBorders.bottom));
+            m_borders.right - f_rounded_edge_size, m_borders.right,
+            m_borders.bottom - f_rounded_edge_size, m_borders.bottom));
 
-    if (mRenderer.is_vertex_cache_enabled() && !mRenderer.is_quad_batching_enabled()) {
-        if (!pEdgeCache_)
-            pEdgeCache_ = mRenderer.create_vertex_cache(vertex_cache::type::QUADS);
+    if (m_renderer.is_vertex_cache_enabled() && !m_renderer.is_quad_batching_enabled()) {
+        if (!p_edge_cache_)
+            p_edge_cache_ = m_renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        pEdgeCache_->update(lEdgeQuads_[0].data(), lEdgeQuads_.size() * 4);
-        lEdgeQuads_.clear();
+        p_edge_cache_->update(l_edge_quads_[0].data(), l_edge_quads_.size() * 4);
+        l_edge_quads_.clear();
     }
 }
 

@@ -37,13 +37,13 @@ namespace lxgui::input {
 class source {
 public:
     struct key_state {
-        std::array<bool, KEY_NUMBER> lKeyState = {};
+        std::array<bool, key_number> l_key_state = {};
     };
 
     struct mouse_state {
-        std::array<bool, MOUSE_BUTTON_NUMBER> lButtonState = {};
-        gui::vector2f                         mPosition;
-        float                                 fWheel = 0.0f;
+        std::array<bool, mouse_button_number> l_button_state = {};
+        gui::vector2f                         m_position;
+        float                                 f_wheel = 0.0f;
     };
 
     /// Constructor.
@@ -77,14 +77,14 @@ public:
     /// Replace the content of the clipboard.
     /** \param sContent The new clipboard content
      */
-    virtual void set_clipboard_content(const utils::ustring& sContent) = 0;
+    virtual void set_clipboard_content(const utils::ustring& s_content) = 0;
 
     /// Sets the mouse cursor to a given image on disk.
     /** \param sFileName The cursor image
      *   \param mHotSpot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
-    virtual void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) = 0;
+    virtual void set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) = 0;
 
     /// Sets the mouse cursor back to the default (arrow).
     virtual void reset_mouse_cursor() = 0;
@@ -109,10 +109,10 @@ public:
     utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
 
 protected:
-    key_state   mKeyboard_;
-    mouse_state mMouse_;
+    key_state   m_keyboard_;
+    mouse_state m_mouse_;
 
-    gui::vector2ui mWindowDimensions_;
+    gui::vector2ui m_window_dimensions_;
 };
 
 } // namespace lxgui::input

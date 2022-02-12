@@ -30,11 +30,11 @@ public:
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*    pRenderer,
-        const vector2ui& mDimensions,
-        bool             bRenderTarget = false,
-        wrap             mWrap         = wrap::REPEAT,
-        filter           mFilter       = filter::NONE);
+        SDL_Renderer*    p_renderer,
+        const vector2ui& m_dimensions,
+        bool             b_render_target = false,
+        wrap             m_wrap         = wrap::repeat,
+        filter           m_filter       = filter::none);
 
     /// Constructor for textures.
     /** \param pRenderer     The SDL render to create the material for
@@ -44,11 +44,11 @@ public:
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*      pRenderer,
-        const std::string& sFileName,
-        bool               bPreMultipliedAlphaSupported,
-        wrap               mWrap   = wrap::REPEAT,
-        filter             mFilter = filter::NONE);
+        SDL_Renderer*      p_renderer,
+        const std::string& s_file_name,
+        bool               b_pre_multiplied_alpha_supported,
+        wrap               m_wrap   = wrap::repeat,
+        filter             m_filter = filter::none);
 
     /// Constructor for atlas textures.
     /** \param pRenderer The SDL render to create the material for
@@ -57,10 +57,10 @@ public:
      *   \param mFilter   Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*   pRenderer,
-        SDL_Texture*    pTexture,
-        const bounds2f& mRect,
-        filter          mFilter = filter::NONE);
+        SDL_Renderer*   p_renderer,
+        SDL_Texture*    p_texture,
+        const bounds2f& m_rect,
+        filter          m_filter = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -90,20 +90,20 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    bool uses_same_texture(const gui::material& mOther) const override;
+    bool uses_same_texture(const gui::material& m_other) const override;
 
     /// Resizes this texture.
     /** \param mDimensions The new texture dimensions
      *   \return 'true' if the function had to re-create a new texture object
      *   \note All the previous data that was stored in this texture will be lost.
      */
-    bool set_dimensions(const vector2ui& mDimensions);
+    bool set_dimensions(const vector2ui& m_dimensions);
 
     /// Premultiplies an image by its alpha component.
     /** \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(SDL_Surface* pData);
+    static void premultiply_alpha(SDL_Surface* p_data);
 
     /// Returns the SDL blend mode corresponding to pre-multiplied alpha.
     /** \returns the SDL blend mode corresponding to pre-multiplied alpha
@@ -113,14 +113,14 @@ public:
     /// Sets the wrap mode of this texture.
     /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
      */
-    void set_wrap(wrap mWrap);
+    void set_wrap(wrap m_wrap);
 
     /// Sets the filter mode of this texture.
     /** \param mFilter Use texture filtering or not
      *   \note When texture filtering is disabled, enlarged textures get pixelated.
      *         Else, the GPU uses an averaging algorithm to blur the pixels.
      */
-    void set_filter(filter mFilter);
+    void set_filter(filter m_filter);
 
     /// Returns the filter mode of this texture.
     /** \return The filter mode of this texture
@@ -153,26 +153,26 @@ public:
      *   \note The pointer is owned by this class, you must not delete it.
      *         Make sure you call unlock_pointer() when you are done.
      */
-    ub32color* lock_pointer(std::size_t* pPitch = nullptr);
+    ub32color* lock_pointer(std::size_t* p_pitch = nullptr);
 
     /// \copydoc lock_pointer
-    const ub32color* lock_pointer(std::size_t* pPitch = nullptr) const;
+    const ub32color* lock_pointer(std::size_t* p_pitch = nullptr) const;
 
     /// Stops modifying the texture data and update the texture in GPU memory.
     void unlock_pointer() const;
 
 private:
-    SDL_Renderer* pRenderer_ = nullptr;
+    SDL_Renderer* p_renderer_ = nullptr;
 
-    vector2ui mDimensions_;
-    vector2ui mCanvasDimensions_;
-    bounds2f  mRect_;
-    wrap      mWrap_         = wrap::REPEAT;
-    filter    mFilter_       = filter::NONE;
-    bool      bRenderTarget_ = false;
+    vector2ui m_dimensions_;
+    vector2ui m_canvas_dimensions_;
+    bounds2f  m_rect_;
+    wrap      m_wrap_         = wrap::repeat;
+    filter    m_filter_       = filter::none;
+    bool      b_render_target_ = false;
 
-    SDL_Texture* pTexture_ = nullptr;
-    bool         bIsOwner_ = false;
+    SDL_Texture* p_texture_ = nullptr;
+    bool         b_is_owner_ = false;
 };
 
 } // namespace lxgui::gui::sdl

@@ -26,7 +26,7 @@ public:
     /** \param mDimensions The dimensions of the render_target
      *   \param mFilter     The filtering to apply to the target texture when displayed
      */
-    render_target(const vector2ui& mDimensions, material::filter mFilter = material::filter::NONE);
+    render_target(const vector2ui& m_dimensions, material::filter m_filter = material::filter::none);
 
     /// Begins rendering on this target.
     void begin() override;
@@ -37,7 +37,7 @@ public:
     /// Clears the content of this render_target.
     /** \param mColor The color to use as background
      */
-    void clear(const color& mColor) override;
+    void clear(const color& m_color) override;
 
     /// Returns this render target's pixel rect.
     /** \return This render target's pixel rect
@@ -49,7 +49,7 @@ public:
      *   \return 'true' if the function had to re-create a
      *           new render target
      */
-    bool set_dimensions(const vector2ui& mDimensions) override;
+    bool set_dimensions(const vector2ui& m_dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
@@ -73,8 +73,8 @@ public:
 private:
     void update_view_matrix_() const;
 
-    std::shared_ptr<sfml::material> pTexture_;
-    sf::RenderTexture*              pRenderTexture_ = nullptr;
+    std::shared_ptr<sfml::material> p_texture_;
+    sf::RenderTexture*              p_render_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui::sfml

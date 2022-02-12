@@ -31,7 +31,7 @@ public:
      *            to store vertices to be rendered. The size hint can enable the cache to be
      *            pre-allocated, which will avoid a reallocation when update() is called.
      */
-    explicit vertex_cache(type mType);
+    explicit vertex_cache(type m_type);
 
     /// Destructor.
     ~vertex_cache() override;
@@ -40,13 +40,13 @@ public:
     /** \param lVertexData The vertices to cache
      *   \param uiNumVertex The number of vertices to cache
      */
-    void update_data(const vertex* lVertexData, std::size_t uiNumVertex);
+    void update_data(const vertex* l_vertex_data, std::size_t ui_num_vertex);
 
     /// Update the indices stored in the cache, reusing existing data.
     /** \param lVertexIndices The indices to use for drawing triangles
      *   \param uiNumIndices The number of indices to cache
      */
-    void update_indices(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices);
+    void update_indices(const std::uint32_t* l_vertex_indices, std::size_t ui_num_indices);
 
     /// Update the indices stored in the cache, but only if the current index cache is smaller.
     /** \param lVertexIndices The indices to use for drawing triangles
@@ -56,7 +56,7 @@ public:
      *         were set in previous calls of update_indices() are assumed to not change
      *         value.
      */
-    void update_indices_if_grow(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices);
+    void update_indices_if_grow(const std::uint32_t* l_vertex_indices, std::size_t ui_num_indices);
 
     /// Update the data stored in the cache to form new triangles.
     /** \param lVertexData The vertices to cache
@@ -64,7 +64,7 @@ public:
      *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
      *         If the type if QUADS, uiNumVertex must be a multiple of 4.
      */
-    void update(const vertex* lVertexData, std::size_t uiNumVertex) override;
+    void update(const vertex* l_vertex_data, std::size_t ui_num_vertex) override;
 
     /// Renders the cache.
     /** \note This does not bind the material, just binds the cache and renders it
@@ -73,13 +73,13 @@ public:
     void render() const;
 
 private:
-    std::size_t   uiCurrentSizeVertex_     = 0u;
-    std::size_t   uiCurrentSizeIndex_      = 0u;
-    std::size_t   uiCurrentCapacityVertex_ = 0u;
-    std::size_t   uiCurrentCapacityIndex_  = 0u;
-    std::uint32_t uiVertexArray_           = std::numeric_limits<std::uint32_t>::max();
-    std::uint32_t uiVertexBuffer_          = std::numeric_limits<std::uint32_t>::max();
-    std::uint32_t uiIndexBuffer_           = std::numeric_limits<std::uint32_t>::max();
+    std::size_t   ui_current_size_vertex_     = 0u;
+    std::size_t   ui_current_size_index_      = 0u;
+    std::size_t   ui_current_capacity_vertex_ = 0u;
+    std::size_t   ui_current_capacity_index_  = 0u;
+    std::uint32_t ui_vertex_array_           = std::numeric_limits<std::uint32_t>::max();
+    std::uint32_t ui_vertex_buffer_          = std::numeric_limits<std::uint32_t>::max();
+    std::uint32_t ui_index_buffer_           = std::numeric_limits<std::uint32_t>::max();
 };
 
 } // namespace lxgui::gui::gl

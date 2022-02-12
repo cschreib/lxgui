@@ -20,15 +20,15 @@ class layout_node;
  *   \return Filled-in core attributes structure.
  */
 region_core_attributes parse_core_attributes(
-    registry&                  mRegistry,
-    virtual_registry&          mVirtualRegistry,
-    const layout_node&         mNode,
-    utils::observer_ptr<frame> pParent);
+    registry&                  m_registry,
+    virtual_registry&          m_virtual_registry,
+    const layout_node&         m_node,
+    utils::observer_ptr<frame> p_parent);
 
 /// Emit a warning if this node (or any of its attributes/children) was not read.
 /** \param mNode The node to check
  */
-void warn_for_not_accessed_node(const layout_node& mNode);
+void warn_for_not_accessed_node(const layout_node& m_node);
 
 } // namespace lxgui::gui
 

@@ -46,7 +46,7 @@ public:
     /// Initializes this dispatcher with a chosen input source.
     /** \param mSource The input source
      */
-    explicit dispatcher(source& mSource);
+    explicit dispatcher(source& m_source);
 
     // Non-copiable, non-movable
     dispatcher(const dispatcher&) = delete;
@@ -63,13 +63,13 @@ public:
     /** \param mKey   The ID code of the key you are interested in
      *   \return 'true' if the key is being pressed
      */
-    bool key_is_down(key mKey) const;
+    bool key_is_down(key m_key) const;
 
     /// Returns elapsed time since the key has been pressed.
     /** \param mKey The ID code of the key you are interested in
      *   \return Elapsed time since the key has been pressed
      */
-    double get_key_down_duration(key mKey) const;
+    double get_key_down_duration(key m_key) const;
 
     /// Checks if Alt is beeing pressed.
     /** \return 'true' if Alt is beeing pressed
@@ -90,13 +90,13 @@ public:
     /** \param mID The ID code of the mouse button you are interested in
      *   \return 'true' if the mouse button is being pressed
      */
-    bool mouse_is_down(mouse_button mID) const;
+    bool mouse_is_down(mouse_button m_id) const;
 
     /// Returns elapsed time since the mouse button has been pressed.
     /** \param mKey The ID code of the mouse button you are interested in
      *   \return Elapsed time since the mouse button has been pressed
      */
-    double get_mouse_down_duration(mouse_button mKey) const;
+    double get_mouse_down_duration(mouse_button m_key) const;
 
     /// Returns the position of the mouse in pixels.
     /** \return The position of the mouse in pixels
@@ -111,7 +111,7 @@ public:
     /// Sets the double click maximum time.
     /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
      */
-    void set_doubleclick_time(double dDoubleClickTime);
+    void set_doubleclick_time(double d_double_click_time);
 
     /// Returns the double click maximum time.
     /** \return The double click maximum time
@@ -123,7 +123,7 @@ public:
      *   \note This is the conversion factor between UI units and pixels in the display.
      *         This factor should match gui::renderer::get_interface_scaling_factor().
      */
-    void set_interface_scaling_factor(float fScalingFactor);
+    void set_interface_scaling_factor(float f_scaling_factor);
 
     /// Return the current interface scaling factor.
     /** \return The current interface scaling factor
@@ -141,22 +141,22 @@ public:
     source& get_source();
 
 private:
-    std::vector<utils::scoped_connection> lConnections_;
+    std::vector<utils::scoped_connection> l_connections_;
 
     using timer      = std::chrono::high_resolution_clock;
     using time_point = timer::time_point;
 
-    std::array<time_point, KEY_NUMBER>          lKeyPressedTime_   = {};
-    std::array<time_point, MOUSE_BUTTON_NUMBER> lMousePressedTime_ = {};
+    std::array<time_point, key_number>          l_key_pressed_time_   = {};
+    std::array<time_point, mouse_button_number> l_mouse_pressed_time_ = {};
 
-    float fScalingFactor_ = 1.0f;
+    float f_scaling_factor_ = 1.0f;
 
-    double dDoubleClickTime_ = 0.25;
+    double d_double_click_time_ = 0.25;
 
-    bool         bMouseDragged_    = false;
-    mouse_button mMouseDragButton_ = mouse_button::LEFT;
+    bool         b_mouse_dragged_    = false;
+    mouse_button m_mouse_drag_button_ = mouse_button::left;
 
-    source& mSource_;
+    source& m_source_;
 };
 
 } // namespace lxgui::input

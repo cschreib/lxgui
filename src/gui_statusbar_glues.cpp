@@ -30,38 +30,38 @@
 
 namespace lxgui::gui {
 
-void status_bar::register_on_lua(sol::state& mLua) {
-    auto mClass = mLua.new_usertype<status_bar>(
+void status_bar::register_on_lua(sol::state& m_lua) {
+    auto m_class = m_lua.new_usertype<status_bar>(
         "StatusBar", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
         member_function<&status_bar::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&status_bar::set_lua_member_>());
 
     /** @function get_min_max_values
      */
-    mClass.set_function("get_min_max_values", [](const status_bar& mSelf) {
-        return std::make_pair(mSelf.get_min_value(), mSelf.get_max_value());
+    m_class.set_function("get_min_max_values", [](const status_bar& m_self) {
+        return std::make_pair(m_self.get_min_value(), m_self.get_max_value());
     });
 
     /** @function get_orientation
      */
-    mClass.set_function("get_orientation", [](const status_bar& mSelf) {
-        switch (mSelf.get_orientation()) {
-        case status_bar::orientation::VERTICAL: return "VERTICAL";
-        case status_bar::orientation::HORIZONTAL: return "HORIZONTAL";
+    m_class.set_function("get_orientation", [](const status_bar& m_self) {
+        switch (m_self.get_orientation()) {
+        case status_bar::orientation::vertical: return "VERTICAL";
+        case status_bar::orientation::horizontal: return "HORIZONTAL";
         default: return "";
         }
     });
 
     /** @function get_status_bar_color
      */
-    mClass.set_function("get_status_bar_color", [](const status_bar& mSelf) {
-        const color& mColor = mSelf.get_bar_color();
-        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+    m_class.set_function("get_status_bar_color", [](const status_bar& m_self) {
+        const color& m_color = m_self.get_bar_color();
+        return std::make_tuple(m_color.r, m_color.g, m_color.b, m_color.a);
     });
 
     /** @function get_status_bar_texture
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_status_bar_texture",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<texture>& (status_bar::*)()>(
@@ -69,46 +69,46 @@ void status_bar::register_on_lua(sol::state& mLua) {
 
     /** @function get_value
      */
-    mClass.set_function("get_value", member_function<&status_bar::get_value>());
+    m_class.set_function("get_value", member_function<&status_bar::get_value>());
 
     /** @function is_reversed
      */
-    mClass.set_function("is_reversed", member_function<&status_bar::is_reversed>());
+    m_class.set_function("is_reversed", member_function<&status_bar::is_reversed>());
 
     /** @function set_min_max_values
      */
-    mClass.set_function("set_min_max_values", member_function<&status_bar::set_min_max_values>());
+    m_class.set_function("set_min_max_values", member_function<&status_bar::set_min_max_values>());
 
     /** @function set_orientation
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_orientation",
         member_function< // select the right overload for Lua
             static_cast<void (status_bar::*)(const std::string&)>(&status_bar::set_orientation)>());
 
     /** @function set_status_bar_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_status_bar_color",
         sol::overload(
-            [](status_bar& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                mSelf.set_bar_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](status_bar& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                m_self.set_bar_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](status_bar& mSelf, const std::string& sColor) {
-                mSelf.set_bar_color(color(sColor));
+            [](status_bar& m_self, const std::string& s_color) {
+                m_self.set_bar_color(color(s_color));
             }));
 
     /** @function set_status_bar_texture
      */
-    mClass.set_function("set_status_bar_texture", member_function<&status_bar::set_bar_texture>());
+    m_class.set_function("set_status_bar_texture", member_function<&status_bar::set_bar_texture>());
 
     /** @function set_value
      */
-    mClass.set_function("set_value", member_function<&status_bar::set_value>());
+    m_class.set_function("set_value", member_function<&status_bar::set_value>());
 
     /** @function set_reversed
      */
-    mClass.set_function("set_reversed", member_function<&status_bar::set_reversed>());
+    m_class.set_function("set_reversed", member_function<&status_bar::set_reversed>());
 }
 
 } // namespace lxgui::gui

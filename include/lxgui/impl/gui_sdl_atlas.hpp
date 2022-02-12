@@ -25,7 +25,7 @@ class renderer;
 class atlas_page final : public gui::atlas_page {
 public:
     /// Constructor.
-    explicit atlas_page(renderer& mRenderer, material::filter mFilter);
+    explicit atlas_page(renderer& m_renderer, material::filter m_filter);
 
     /// Destructor.
     ~atlas_page() override;
@@ -37,22 +37,22 @@ protected:
      *   \return A new material pointing to inside this page
      */
     std::shared_ptr<gui::material>
-    add_material_(const gui::material& mMat, const bounds2f& mLocation) override;
+    add_material_(const gui::material& m_mat, const bounds2f& m_location) override;
 
     /// Return the width of this page (in pixels).
     /** \return The width of this page (in pixels)
      */
-    float get_width() const override;
+    float get_width_() const override;
 
     /// Return the height of this page (in pixels).
     /** \return The height of this page (in pixels)
      */
-    float get_height() const override;
+    float get_height_() const override;
 
 private:
-    renderer&    mRenderer_;
-    SDL_Texture* pTexture_ = nullptr;
-    std::size_t  uiSize_   = 0u;
+    renderer&    m_renderer_;
+    SDL_Texture* p_texture_ = nullptr;
+    std::size_t  ui_size_   = 0u;
 };
 
 /// A class that holds rendering data
@@ -66,7 +66,7 @@ public:
     /** \param mRenderer The renderer with witch to create this atlas
      *   \param mFilter   Use texture filtering or not (see set_filter())
      */
-    explicit atlas(renderer& mRenderer, material::filter mFilter);
+    explicit atlas(renderer& m_renderer, material::filter m_filter);
 
     atlas(const atlas& tex) = delete;
     atlas(atlas&& tex)      = delete;
@@ -80,7 +80,7 @@ protected:
     std::unique_ptr<gui::atlas_page> create_page_() override;
 
 private:
-    renderer& mSDLRenderer_;
+    renderer& m_sdl_renderer_;
 };
 
 } // namespace lxgui::gui::sdl

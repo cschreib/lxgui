@@ -41,38 +41,38 @@
 
 namespace lxgui::gui {
 
-void button::register_on_lua(sol::state& mLua) {
-    auto mClass = mLua.new_usertype<button>(
+void button::register_on_lua(sol::state& m_lua) {
+    auto m_class = m_lua.new_usertype<button>(
         "Button", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
         member_function<&button::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&button::set_lua_member_>());
 
     /** @function click
      */
-    mClass.set_function("click", [](button& mSelf) { mSelf.fire_script("OnClick"); });
+    m_class.set_function("click", [](button& m_self) { m_self.fire_script("OnClick"); });
 
     /** @function disable
      */
-    mClass.set_function("disable", member_function<&button::disable>());
+    m_class.set_function("disable", member_function<&button::disable>());
 
     /** @function enable
      */
-    mClass.set_function("enable", member_function<&button::enable>());
+    m_class.set_function("enable", member_function<&button::enable>());
 
     /** @function get_button_state
      */
-    mClass.set_function("get_button_state", [](const button& mSelf) {
-        switch (mSelf.get_button_state()) {
-        case button::state::UP: return "NORMAL";
-        case button::state::DOWN: return "PUSHED";
-        case button::state::DISABLED: return "DISABLED";
+    m_class.set_function("get_button_state", [](const button& m_self) {
+        switch (m_self.get_button_state()) {
+        case button::state::up: return "NORMAL";
+        case button::state::down: return "PUSHED";
+        case button::state::disabled: return "DISABLED";
         default: return "UNKNOWN";
         }
     });
 
     /** @function get_disabled_font_object
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_disabled_font_object",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<font_string>& (button::*)()>(
@@ -80,12 +80,12 @@ void button::register_on_lua(sol::state& mLua) {
 
     /** @function get_disabled_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_disabled_text_color",
-        [](const button& mSelf) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (auto pFontString = mSelf.get_disabled_text()) {
-                const color& mColor = pFontString->get_text_color();
-                return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+        [](const button& m_self) -> sol::optional<std::tuple<float, float, float, float>> {
+            if (auto p_font_string = m_self.get_disabled_text()) {
+                const color& m_color = p_font_string->get_text_color();
+                return std::make_tuple(m_color.r, m_color.g, m_color.b, m_color.a);
             }
 
             return sol::nullopt;
@@ -93,14 +93,14 @@ void button::register_on_lua(sol::state& mLua) {
 
     /** @function get_disabled_texture
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_disabled_texture", member_function< // select the right overload for Lua
                                     static_cast<const utils::observer_ptr<texture>& (button::*)()>(
                                         &button::get_disabled_texture)>());
 
     /** @function get_highlight_font_object
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_highlight_font_object",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<font_string>& (button::*)()>(
@@ -108,12 +108,12 @@ void button::register_on_lua(sol::state& mLua) {
 
     /** @function get_highlight_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_highlight_text_color",
-        [](const button& mSelf) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (auto pFontString = mSelf.get_highlight_text()) {
-                const color& mColor = pFontString->get_text_color();
-                return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+        [](const button& m_self) -> sol::optional<std::tuple<float, float, float, float>> {
+            if (auto p_font_string = m_self.get_highlight_text()) {
+                const color& m_color = p_font_string->get_text_color();
+                return std::make_tuple(m_color.r, m_color.g, m_color.b, m_color.a);
             }
 
             return sol::nullopt;
@@ -121,14 +121,14 @@ void button::register_on_lua(sol::state& mLua) {
 
     /** @function get_highlight_texture
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_highlight_texture", member_function< // select the right overload for Lua
                                      static_cast<const utils::observer_ptr<texture>& (button::*)()>(
                                          &button::get_highlight_texture)>());
 
     /** @function get_normal_font_object
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_normal_font_object",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<font_string>& (button::*)()>(
@@ -136,161 +136,161 @@ void button::register_on_lua(sol::state& mLua) {
 
     /** @function get_normal_texture
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_normal_texture", member_function< // select the right overload for Lua
                                   static_cast<const utils::observer_ptr<texture>& (button::*)()>(
                                       &button::get_normal_texture)>());
 
     /** @function get_pushed_text_offset
      */
-    mClass.set_function("get_pushed_text_offset", [](const button& mSelf) {
-        vector2f lOffset = mSelf.get_pushed_text_offset();
-        return std::make_pair(lOffset.x, lOffset.y);
+    m_class.set_function("get_pushed_text_offset", [](const button& m_self) {
+        vector2f l_offset = m_self.get_pushed_text_offset();
+        return std::make_pair(l_offset.x, l_offset.y);
     });
 
     /** @function get_pushed_texture
      */
-    mClass.set_function(
+    m_class.set_function(
         "get_pushed_texture", member_function< // select the right overload for Lua
                                   static_cast<const utils::observer_ptr<texture>& (button::*)()>(
                                       &button::get_pushed_texture)>());
 
     /** @function get_text
      */
-    mClass.set_function(
-        "get_text", [](const button& mSelf) { return utils::unicode_to_utf8(mSelf.get_text()); });
+    m_class.set_function(
+        "get_text", [](const button& m_self) { return utils::unicode_to_utf8(m_self.get_text()); });
 
     /** @function get_text_height
      */
-    mClass.set_function("get_text_height", [](const button& mSelf) -> sol::optional<float> {
-        if (auto pCurrentFont = mSelf.get_current_font_string())
-            return pCurrentFont->get_string_height();
+    m_class.set_function("get_text_height", [](const button& m_self) -> sol::optional<float> {
+        if (auto p_current_font = m_self.get_current_font_string())
+            return p_current_font->get_string_height();
 
         return sol::nullopt;
     });
 
     /** @function get_text_width
      */
-    mClass.set_function("get_text_width", [](const button& mSelf) -> sol::optional<float> {
-        if (auto pCurrentFont = mSelf.get_current_font_string())
-            return pCurrentFont->get_string_width();
+    m_class.set_function("get_text_width", [](const button& m_self) -> sol::optional<float> {
+        if (auto p_current_font = m_self.get_current_font_string())
+            return p_current_font->get_string_width();
 
         return sol::nullopt;
     });
 
     /** @function is_enabled
      */
-    mClass.set_function("is_enabled", member_function<&button::is_enabled>());
+    m_class.set_function("is_enabled", member_function<&button::is_enabled>());
 
     /** @function lock_highlight
      */
-    mClass.set_function("lock_highlight", member_function<&button::lock_highlight>());
+    m_class.set_function("lock_highlight", member_function<&button::lock_highlight>());
 
     /** @function set_button_state
      */
-    mClass.set_function("set_button_state", [](button& mSelf, const std::string& sState) {
-        if (sState == "NORMAL") {
-            mSelf.enable();
-            mSelf.release();
-        } else if (sState == "PUSHED") {
-            mSelf.enable();
-            mSelf.push();
-        } else if (sState == "DISABLED") {
-            mSelf.disable();
-            mSelf.release();
+    m_class.set_function("set_button_state", [](button& m_self, const std::string& s_state) {
+        if (s_state == "NORMAL") {
+            m_self.enable();
+            m_self.release();
+        } else if (s_state == "PUSHED") {
+            m_self.enable();
+            m_self.push();
+        } else if (s_state == "DISABLED") {
+            m_self.disable();
+            m_self.release();
         } else {
             gui::out << gui::warning << "Button:set_button_state"
-                     << " : Unknown button state : \"" + sState + "\"." << std::endl;
+                     << " : Unknown button state : \"" + s_state + "\"." << std::endl;
         }
     });
 
     /** @function set_disabled_font_object
      */
-    mClass.set_function("set_disabled_font_object", member_function<&button::set_disabled_text>());
+    m_class.set_function("set_disabled_font_object", member_function<&button::set_disabled_text>());
 
     /** @function set_disabled_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_disabled_text_color",
         sol::overload(
-            [](button& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                if (auto pFontString = mSelf.get_disabled_text())
-                    pFontString->set_text_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                if (auto p_font_string = m_self.get_disabled_text())
+                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& mSelf, const std::string& sColor) {
-                if (auto pFontString = mSelf.get_disabled_text())
-                    pFontString->set_text_color(color(sColor));
+            [](button& m_self, const std::string& s_color) {
+                if (auto p_font_string = m_self.get_disabled_text())
+                    p_font_string->set_text_color(color(s_color));
             }));
 
     /** @function set_disabled_texture
      */
-    mClass.set_function("set_disabled_texture", member_function<&button::set_disabled_texture>());
+    m_class.set_function("set_disabled_texture", member_function<&button::set_disabled_texture>());
 
     /** @function set_highlight_font_object
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_highlight_font_object", member_function<&button::set_highlight_text>());
 
     /** @function set_highlight_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_highlight_text_color",
         sol::overload(
-            [](button& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                if (auto pFontString = mSelf.get_highlight_text())
-                    pFontString->set_text_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                if (auto p_font_string = m_self.get_highlight_text())
+                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& mSelf, const std::string& sColor) {
-                if (auto pFontString = mSelf.get_highlight_text())
-                    pFontString->set_text_color(color(sColor));
+            [](button& m_self, const std::string& s_color) {
+                if (auto p_font_string = m_self.get_highlight_text())
+                    p_font_string->set_text_color(color(s_color));
             }));
 
     /** @function set_highlight_texture
      */
-    mClass.set_function("set_highlight_texture", member_function<&button::set_highlight_texture>());
+    m_class.set_function("set_highlight_texture", member_function<&button::set_highlight_texture>());
 
     /** @function set_normal_font_object
      */
-    mClass.set_function("set_normal_font_object", member_function<&button::set_normal_text>());
+    m_class.set_function("set_normal_font_object", member_function<&button::set_normal_text>());
 
     /** @function set_normal_text_color
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_normal_text_color",
         sol::overload(
-            [](button& mSelf, float fR, float fG, float fB, sol::optional<float> fA) {
-                if (auto pFontString = mSelf.get_normal_text())
-                    pFontString->set_text_color(color(fR, fG, fB, fA.value_or(1.0f)));
+            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+                if (auto p_font_string = m_self.get_normal_text())
+                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& mSelf, const std::string& sColor) {
-                if (auto pFontString = mSelf.get_normal_text())
-                    pFontString->set_text_color(color(sColor));
+            [](button& m_self, const std::string& s_color) {
+                if (auto p_font_string = m_self.get_normal_text())
+                    p_font_string->set_text_color(color(s_color));
             }));
 
     /** @function set_normal_texture
      */
-    mClass.set_function("set_normal_texture", member_function<&button::set_normal_texture>());
+    m_class.set_function("set_normal_texture", member_function<&button::set_normal_texture>());
 
     /** @function set_pushed_text_offset
      */
-    mClass.set_function(
-        "set_pushed_text_offset", [](button& mSelf, float fXOffset, float fYOffset) {
-            mSelf.set_pushed_text_offset(vector2f(fXOffset, fYOffset));
+    m_class.set_function(
+        "set_pushed_text_offset", [](button& m_self, float f_x_offset, float f_y_offset) {
+            m_self.set_pushed_text_offset(vector2f(f_x_offset, f_y_offset));
         });
 
     /** @function set_pushed_texture
      */
-    mClass.set_function("set_pushed_texture", member_function<&button::set_pushed_texture>());
+    m_class.set_function("set_pushed_texture", member_function<&button::set_pushed_texture>());
 
     /** @function set_text
      */
-    mClass.set_function("set_text", [](button& mSelf, const std::string& sText) {
-        mSelf.set_text(utils::utf8_to_unicode(sText));
+    m_class.set_function("set_text", [](button& m_self, const std::string& s_text) {
+        m_self.set_text(utils::utf8_to_unicode(s_text));
     });
 
     /** @function unlock_highlight
      */
-    mClass.set_function("unlock_highlight", member_function<&button::unlock_highlight>());
+    m_class.set_function("unlock_highlight", member_function<&button::unlock_highlight>());
 }
 
 } // namespace lxgui::gui

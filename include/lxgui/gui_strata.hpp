@@ -16,31 +16,31 @@ namespace lxgui::gui {
 class frame;
 
 enum class frame_strata {
-    PARENT     = -1,
-    BACKGROUND = 0,
-    LOW,
-    MEDIUM,
-    HIGH,
-    DIALOG,
-    FULLSCREEN,
-    FULLSCREEN_DIALOG,
-    TOOLTIP
+    parent     = -1,
+    background = 0,
+    low,
+    medium,
+    high,
+    dialog,
+    fullscreen,
+    fullscreen_dialog,
+    tooltip
 };
 
 struct strata;
 
 /// Contains gui::frame
 struct level {
-    std::vector<utils::observer_ptr<frame>> lFrameList;
-    strata*                                 pStrata = nullptr;
+    std::vector<utils::observer_ptr<frame>> l_frame_list;
+    strata*                                 p_strata = nullptr;
 };
 
 /// Contains gui::level
 struct strata {
-    std::map<int, level>           lLevelList;
-    bool                           bRedraw = true;
-    std::shared_ptr<render_target> pRenderTarget;
-    quad                           mQuad;
+    std::map<int, level>           l_level_list;
+    bool                           b_redraw = true;
+    std::shared_ptr<render_target> p_render_target;
+    quad                           m_quad;
 };
 
 } // namespace lxgui::gui

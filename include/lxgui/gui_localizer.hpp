@@ -22,15 +22,15 @@ class localizer {
     using mapped_item = std::variant<std::string, sol::protected_function>;
     using map_type    = std::unordered_map<hash_type, mapped_item>;
 
-    std::locale                   mLocale_;
-    std::vector<std::string>      lLanguages_;
-    std::vector<code_point_range> lCodePoints_;
-    char32_t                      uiDefaultCodePoint_ = U'\u25a1'; // '□'
-    sol::state                    mLua_;
-    map_type                      lMap_;
+    std::locale                   m_locale_;
+    std::vector<std::string>      l_languages_;
+    std::vector<code_point_range> l_code_points_;
+    char32_t                      ui_default_code_point_ = U'\u25a1'; // '□'
+    sol::state                    m_lua_;
+    map_type                      l_map_;
 
-    bool                     is_key_valid_(std::string_view sKey) const;
-    map_type::const_iterator find_key_(std::string_view sKey) const;
+    bool                     is_key_valid_(std::string_view s_key) const;
+    map_type::const_iterator find_key_(std::string_view s_key) const;
     void                     reset_language_fallback_();
 
 public:
@@ -55,7 +55,7 @@ public:
      *         the locale after the UI has been loaded: close the UI, set the locale, and load the
      *         UI again.
      */
-    void set_locale(const std::locale& mLocale);
+    void set_locale(const std::locale& m_locale);
 
     /// Changes the current language (used to translate messages and strings).
     /** \param lLanguages A list of languages
@@ -70,7 +70,7 @@ public:
      *         the language after the UI has been loaded: close the UI, set the language, and load
      *         the UI again.
      */
-    void set_preferred_languages(const std::vector<std::string>& lLanguages);
+    void set_preferred_languages(const std::vector<std::string>& l_languages);
 
     /// Attempts to automatically detect the current language (used to translate messages and
     /// strings).
@@ -99,7 +99,7 @@ public:
     /** \param mRange The new range to allow
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points(const code_point_range& mRange);
+    void add_allowed_code_points(const code_point_range& m_range);
 
     /// Adds a new range to the set of allowed code points from a Unicode group.
     /** \param sUnicodeGroup The name of the Unicode code group to allow
@@ -109,7 +109,7 @@ public:
      *         ranges of code point they correspond to, and is therefore more user-friendly.
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points_for_group(const std::string& sUnicodeGroup);
+    void add_allowed_code_points_for_group(const std::string& s_unicode_group);
 
     /// Adds a new range to the set of allowed code points for a given language.
     /** \param sLanguageCode The language code (e.g., "en", "ru", etc.)
@@ -118,7 +118,7 @@ public:
      *         typically composed of just two letters, but sometimes more.
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points_for_language(const std::string& sLanguageCode);
+    void add_allowed_code_points_for_language(const std::string& s_language_code);
 
     /// Attempts to automatically detect the set of allowed code points based on preferred
     /// languages.
@@ -140,7 +140,7 @@ public:
     /// Sets the default character to display if a character is missing from a font.
     /** \param uiCodePoint The Unicode UTF-32 code point of the character to display
      */
-    void set_fallback_code_point(char32_t uiCodePoint);
+    void set_fallback_code_point(char32_t ui_code_point);
 
     /// Returns the default character to display if a character is missing from a font.
     /** \return The default character to display if a character is missing from a font
@@ -155,7 +155,7 @@ public:
      *         It then loads translations from this file using load_translation_file() (see the
      *         documentation of this function for more information).
      */
-    void load_translations(const std::string& sFolderPath);
+    void load_translations(const std::string& s_folder_path);
 
     /// Loads new translations from a file.
     /** \param sFilename The path to the file to load translations from
@@ -175,7 +175,7 @@ public:
      *         must return a translated string. See localize() for more information on
      *         translation arguments.
      */
-    void load_translation_file(const std::string& sFilename);
+    void load_translation_file(const std::string& s_filename);
 
     /// Removes all previously loaded translations.
     /** \note After calling this function, it is highly recommended to always include at least
@@ -190,7 +190,7 @@ public:
      *   \return The formatted string.
      *   \details The string to format must follow the rules of libfmt format strings.
      */
-    std::string format_string(std::string_view sMessage, sol::variadic_args mVArgs) const;
+    std::string format_string(std::string_view s_message, sol::variadic_args m_v_args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param sMessage The string to format (e.g., "Player {0} has {1} HP.").
@@ -199,8 +199,8 @@ public:
      *   \details The string to format must follow the rules of libfmt format strings.
      */
     template<typename... Args>
-    std::string format_string(std::string_view sMessage, Args&&... mArgs) const {
-        return fmt::format(mLocale_, sMessage, std::forward<Args>(mArgs)...);
+    std::string format_string(std::string_view s_message, Args&&... m_args) const {
+        return fmt::format(m_locale_, s_message, std::forward<Args>(m_args)...);
     }
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
@@ -209,7 +209,7 @@ public:
      * translation input arguments from a Sol Lua state. \return The translated string, or sKey if
      * not found or an error occurred. \note See the other overload for more information.
      */
-    std::string localize(std::string_view sKey, sol::variadic_args mVArgs) const;
+    std::string localize(std::string_view s_key, sol::variadic_args m_v_args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param sKey  The key identifying the sentence / text to translate (e.g., "{player_health}").
@@ -223,36 +223,36 @@ public:
      *            the proper place for the selected language.
      */
     template<typename... Args>
-    std::string localize(std::string_view sKey, Args&&... mArgs) const {
-        if (!is_key_valid_(sKey))
-            return std::string{sKey};
+    std::string localize(std::string_view s_key, Args&&... m_args) const {
+        if (!is_key_valid_(s_key))
+            return std::string{s_key};
 
-        auto mIter = find_key_(sKey);
-        if (mIter == lMap_.end())
-            return std::string{sKey};
+        auto m_iter = find_key_(s_key);
+        if (m_iter == l_map_.end())
+            return std::string{s_key};
 
         return std::visit(
-            [&](const auto& mItem) {
-                constexpr bool bIsString =
-                    std::is_same_v<std::decay_t<decltype(mItem)>, std::string>;
-                if constexpr (bIsString) {
+            [&](const auto& m_item) {
+                constexpr bool b_is_string =
+                    std::is_same_v<std::decay_t<decltype(m_item)>, std::string>;
+                if constexpr (b_is_string) {
                     if constexpr (sizeof...(Args) == 0)
-                        return mItem;
+                        return m_item;
                     else
-                        return fmt::format(mLocale_, mItem, std::forward<Args>(mArgs)...);
+                        return fmt::format(m_locale_, m_item, std::forward<Args>(m_args)...);
                 } else {
-                    auto mResult = mItem(std::forward<Args>(mArgs)...);
-                    if (mResult.valid() && mResult.begin() != mResult.end()) {
-                        auto&& mFirst = *mResult.begin();
-                        if (mFirst.template is<std::string>())
-                            return mFirst.template as<std::string>();
+                    auto m_result = m_item(std::forward<Args>(m_args)...);
+                    if (m_result.valid() && m_result.begin() != m_result.end()) {
+                        auto&& m_first = *m_result.begin();
+                        if (m_first.template is<std::string>())
+                            return m_first.template as<std::string>();
                         else
-                            return std::string{sKey};
+                            return std::string{s_key};
                     } else
-                        return std::string{sKey};
+                        return std::string{s_key};
                 }
             },
-            mIter->second);
+            m_iter->second);
     }
 
     /// Registers this localizer on a Lua state.
@@ -260,7 +260,7 @@ public:
      *   \note Only one localizer object can be registered on any Lua state.
      *         Registering enables Lua functions such as "get_locale()".
      */
-    void register_on_lua(sol::state& mState);
+    void register_on_lua(sol::state& m_state);
 };
 
 } // namespace lxgui::gui

@@ -24,7 +24,7 @@ public:
      *   \param mFilter     Use texture filtering or not (see set_filter())
      */
     material(
-        const vector2ui& mDimensions, wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
+        const vector2ui& m_dimensions, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
 
     /// Constructor for atlas textures.
     /** \param uiTextureHandle   The handle to the texture object of the atlas
@@ -33,10 +33,10 @@ public:
      *   \param mFilter           Use texture filtering or not (see set_filter())
      */
     material(
-        std::uint32_t    uiTextureHandle,
-        const vector2ui& mCanvasDimensions,
-        const bounds2f   mRect,
-        filter           mFilter = filter::NONE);
+        std::uint32_t    ui_texture_handle,
+        const vector2ui& m_canvas_dimensions,
+        const bounds2f   m_rect,
+        filter           m_filter = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -66,33 +66,33 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    bool uses_same_texture(const gui::material& mOther) const override;
+    bool uses_same_texture(const gui::material& m_other) const override;
 
     /// Resizes this texture.
     /** \param mDimensions The new texture dimensions
      *   \return 'true' if the function had to re-create a new texture object
      *   \note All the previous data that was stored in this texture will be lost.
      */
-    bool set_dimensions(const vector2ui& mDimensions);
+    bool set_dimensions(const vector2ui& m_dimensions);
 
     /// Premultiplies the texture by alpha component.
     /** \param lData The pixel data to pre-multiply
      *   \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(std::vector<ub32color>& lData);
+    static void premultiply_alpha(std::vector<ub32color>& l_data);
 
     /// Sets the wrap mode of this texture.
     /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
      */
-    void set_wrap(wrap mWrap);
+    void set_wrap(wrap m_wrap);
 
     /// Sets the filter mode of this texture.
     /** \param mFilter Use texture filtering or not
      *   \note When texture filtering is disabled, enlarged textures get pixelated.
      *         Else, the GPU uses an averaging algorithm to blur the pixels.
      */
-    void set_filter(filter mFilter);
+    void set_filter(filter m_filter);
 
     /// Returns the filter mode of this texture.
     /** \return The filter mode of this texture
@@ -105,12 +105,12 @@ public:
     /// Updates the texture that is in GPU memory.
     /** \param pData The new pixel data
      */
-    void update_texture(const ub32color* pData);
+    void update_texture(const ub32color* p_data);
 
     /// Returns the OpenGL texture handle.
     /** \note For internal use.
      */
-    std::uint32_t get_handle_() const;
+    std::uint32_t get_handle() const;
 
     /// Checks if the machine is capable of using some features.
     /** \note The function checks for non power of two capability.
@@ -125,15 +125,15 @@ public:
     static std::size_t get_max_size();
 
 private:
-    vector2ui     mCanvasDimensions_;
-    wrap          mWrap_           = wrap::REPEAT;
-    filter        mFilter_         = filter::NONE;
-    std::uint32_t uiTextureHandle_ = 0u;
-    bounds2f      mRect_;
-    bool          bIsOwner_ = false;
+    vector2ui     m_canvas_dimensions_;
+    wrap          m_wrap_           = wrap::repeat;
+    filter        m_filter_         = filter::none;
+    std::uint32_t ui_texture_handle_ = 0u;
+    bounds2f      m_rect_;
+    bool          b_is_owner_ = false;
 
-    static bool        ONLY_POWER_OF_TWO;
-    static std::size_t MAXIMUM_SIZE;
+    static bool        only_power_of_two;
+    static std::size_t maximum_size;
 };
 
 } // namespace lxgui::gui::gl

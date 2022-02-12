@@ -14,13 +14,13 @@ class region;
 
 /// Struct holding all the core information about a region necessary for its creation.
 struct region_core_attributes {
-    std::string sObjectType;
-    std::string sName;
-    bool        bVirtual = false;
+    std::string s_object_type;
+    std::string s_name;
+    bool        b_virtual = false;
 
-    utils::observer_ptr<frame> pParent = nullptr;
+    utils::observer_ptr<frame> p_parent = nullptr;
 
-    std::vector<utils::observer_ptr<const region>> lInheritance;
+    std::vector<utils::observer_ptr<const region>> l_inheritance;
 };
 
 } // namespace lxgui::gui

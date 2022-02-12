@@ -21,100 +21,100 @@ namespace lxgui::gui {
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
 namespace parser {
-enum class color_action { NONE, SET, RESET };
+enum class color_action { none, set, reset };
 
 struct format {
-    color        mColor       = color::WHITE;
-    color_action mColorAction = color_action::NONE;
+    color        m_color        = color::white;
+    color_action m_color_action = color_action::none;
 };
 
 struct texture {
-    std::string               sFileName;
-    float                     fWidth  = 0.0f;
-    float                     fHeight = 0.0f;
-    std::shared_ptr<material> pMaterial;
+    std::string               s_file_name;
+    float                     f_width  = 0.0f;
+    float                     f_height = 0.0f;
+    std::shared_ptr<material> p_material;
 };
 
 using item = std::variant<char32_t, format, texture>;
 
 struct line {
-    std::vector<item> lContent;
-    float             fWidth = 0.0f;
+    std::vector<item> l_content;
+    float             f_width = 0.0f;
 };
 
 std::vector<item>
-parse_string(renderer& mRenderer, const utils::ustring_view& sCaption, bool bFormattingEnabled) {
-    std::vector<item> lContent;
-    for (auto iterChar = sCaption.begin(); iterChar != sCaption.end(); ++iterChar) {
+parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_formatting_enabled) {
+    std::vector<item> l_content;
+    for (auto iter_char = sCaption.begin(); iter_char != sCaption.end(); ++iter_char) {
         // Read format tags
-        if (*iterChar == U'|' && bFormattingEnabled) {
-            ++iterChar;
-            if (iterChar == sCaption.end())
+        if (*iter_char == U'|' && b_formatting_enabled) {
+            ++iter_char;
+            if (iter_char == sCaption.end())
                 break;
 
-            if (*iterChar != U'|') {
-                if (*iterChar == U'r') {
-                    format mFormat;
-                    mFormat.mColorAction = color_action::RESET;
-                    lContent.push_back(mFormat);
-                } else if (*iterChar == U'c') {
-                    format mFormat;
-                    mFormat.mColorAction = color_action::SET;
+            if (*iter_char != U'|') {
+                if (*iter_char == U'r') {
+                    format m_format;
+                    m_format.m_color_action = color_action::reset;
+                    l_content.push_back(m_format);
+                } else if (*iter_char == U'c') {
+                    format m_format;
+                    m_format.m_color_action = color_action::set;
 
-                    auto mReadTwo = [&](float& fOut) {
-                        ++iterChar;
-                        if (iterChar == sCaption.end())
+                    auto m_read_two = [&](float& f_out) {
+                        ++iter_char;
+                        if (iter_char == sCaption.end())
                             return false;
-                        utils::ustring sColorPart(2, U'0');
-                        sColorPart[0] = *iterChar;
-                        ++iterChar;
-                        if (iterChar == sCaption.end())
+                        utils::ustring s_color_part(2, U'0');
+                        s_color_part[0] = *iter_char;
+                        ++iter_char;
+                        if (iter_char == sCaption.end())
                             return false;
-                        sColorPart[1] = *iterChar;
-                        fOut = utils::hex_to_uint(utils::unicode_to_utf8(sColorPart)) / 255.0f;
+                        s_color_part[1] = *iter_char;
+                        f_out = utils::hex_to_uint(utils::unicode_to_utf8(s_color_part)) / 255.0f;
                         return true;
                     };
 
-                    if (!mReadTwo(mFormat.mColor.a))
+                    if (!m_read_two(m_format.m_color.a))
                         break;
-                    if (!mReadTwo(mFormat.mColor.r))
+                    if (!m_read_two(m_format.m_color.r))
                         break;
-                    if (!mReadTwo(mFormat.mColor.g))
+                    if (!m_read_two(m_format.m_color.g))
                         break;
-                    if (!mReadTwo(mFormat.mColor.b))
-                        break;
-
-                    lContent.push_back(mFormat);
-                } else if (*iterChar == U'T') {
-                    ++iterChar;
-
-                    const auto uiBegin = iterChar - sCaption.begin();
-                    const auto uiPos   = sCaption.find(U"|t", uiBegin);
-                    if (uiPos == sCaption.npos)
+                    if (!m_read_two(m_format.m_color.b))
                         break;
 
-                    const std::string sExtracted =
-                        utils::unicode_to_utf8(sCaption.substr(uiBegin, uiPos - uiBegin));
+                    l_content.push_back(m_format);
+                } else if (*iter_char == U'T') {
+                    ++iter_char;
 
-                    const auto lWords = utils::cut(sExtracted, ":");
-                    if (!lWords.empty()) {
-                        texture mTexture;
-                        mTexture.pMaterial = mRenderer.create_material(std::string{lWords[0]});
-                        mTexture.fWidth    = mTexture.fHeight =
+                    const auto ui_begin = iter_char - sCaption.begin();
+                    const auto ui_pos   = sCaption.find(U"|t", ui_begin);
+                    if (ui_pos == sCaption.npos)
+                        break;
+
+                    const std::string s_extracted =
+                        utils::unicode_to_utf8(sCaption.substr(ui_begin, ui_pos - ui_begin));
+
+                    const auto l_words = utils::cut(s_extracted, ":");
+                    if (!l_words.empty()) {
+                        texture m_texture;
+                        m_texture.p_material = m_renderer.create_material(std::string{l_words[0]});
+                        m_texture.f_width    = m_texture.f_height =
                             std::numeric_limits<float>::quiet_NaN();
 
-                        if (lWords.size() == 2) {
-                            utils::from_string(lWords[1], mTexture.fWidth);
-                            mTexture.fHeight = mTexture.fWidth;
-                        } else if (lWords.size() > 2) {
-                            utils::from_string(lWords[1], mTexture.fWidth);
-                            utils::from_string(lWords[2], mTexture.fHeight);
+                        if (l_words.size() == 2) {
+                            utils::from_string(l_words[1], m_texture.f_width);
+                            m_texture.f_height = m_texture.f_width;
+                        } else if (l_words.size() > 2) {
+                            utils::from_string(l_words[1], m_texture.f_width);
+                            utils::from_string(l_words[2], m_texture.f_height);
                         }
 
-                        lContent.push_back(mTexture);
+                        l_content.push_back(m_texture);
                     }
 
-                    iterChar += sExtracted.size() + 1;
+                    iter_char += s_extracted.size() + 1;
                 }
 
                 continue;
@@ -122,247 +122,249 @@ parse_string(renderer& mRenderer, const utils::ustring_view& sCaption, bool bFor
         }
 
         // Add characters
-        lContent.push_back(*iterChar);
+        l_content.push_back(*iter_char);
     }
 
-    return lContent;
+    return l_content;
 }
 
-bool is_whitespace(const item& mItem) {
+bool is_whitespace(const item& m_item) {
     return std::visit(
-        [](const auto& mValue) {
-            using type = std::decay_t<decltype(mValue)>;
+        [](const auto& m_value) {
+            using type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<type, char32_t>) {
-                return utils::is_whitespace(mValue);
+                return utils::is_whitespace(m_value);
             } else {
                 return false;
             }
         },
-        mItem);
+        m_item);
 }
 
-bool is_word(const item& mItem) {
+bool is_word(const item& m_item) {
     return std::visit(
-        [](const auto& mValue) {
-            using type = std::decay_t<decltype(mValue)>;
+        [](const auto& m_value) {
+            using type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<type, char32_t>) {
-                return !utils::is_whitespace(mValue);
+                return !utils::is_whitespace(m_value);
             } else {
                 return false;
             }
         },
-        mItem);
+        m_item);
 }
 
-bool is_character(const item& mItem) {
-    return mItem.index() == 0u;
+bool is_character(const item& m_item) {
+    return m_item.index() == 0u;
 }
 
-bool is_format(const item& mItem) {
-    return mItem.index() == 1u;
+bool is_format(const item& m_item) {
+    return m_item.index() == 1u;
 }
 
-bool is_character(const item& mItem, char32_t uiChar) {
-    return mItem.index() == 0u && std::get<char32_t>(mItem) == uiChar;
+bool is_character(const item& m_item, char32_t ui_char) {
+    return m_item.index() == 0u && std::get<char32_t>(m_item) == ui_char;
 }
 
-float get_width(const text& mText, const item& mItem) {
+float get_width(const text& m_text, const item& m_item) {
     return std::visit(
-        [&](const auto& mValue) {
-            using type = std::decay_t<decltype(mValue)>;
+        [&](const auto& m_value) {
+            using type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<type, char32_t>) {
-                return mText.get_character_width(mValue);
+                return m_text.get_character_width(m_value);
             } else if constexpr (std::is_same_v<type, texture>) {
-                if (std::isnan(mValue.fWidth))
-                    return mText.get_line_height();
+                if (std::isnan(m_value.f_width))
+                    return m_text.get_line_height();
                 else
-                    return mValue.fWidth * mText.get_scaling_factor();
+                    return m_value.f_width * m_text.get_scaling_factor();
             } else {
                 return 0.0f;
             }
         },
-        mItem);
+        m_item);
 }
 
-float get_kerning(const text& mText, const item& mItem1, const item& mItem2) {
+float get_kerning(const text& mText, const item& m_item1, const item& m_item2) {
     return std::visit(
-        [&](const auto& mValue1) {
-            using type1 = std::decay_t<decltype(mValue1)>;
+        [&](const auto& m_value1) {
+            using type1 = std::decay_t<decltype(m_value1)>;
             if constexpr (std::is_same_v<type1, char32_t>) {
                 return std::visit(
-                    [&](const auto& mValue2) {
-                        using type2 = std::decay_t<decltype(mValue2)>;
+                    [&](const auto& m_value2) {
+                        using type2 = std::decay_t<decltype(m_value2)>;
                         if constexpr (std::is_same_v<type2, char32_t>) {
-                            return mText.get_character_kerning(mValue1, mValue2);
+                            return mText.get_character_kerning(m_value1, m_value2);
                         } else {
                             return 0.0f;
                         }
                     },
-                    mItem2);
+                    m_item2);
             } else {
                 return 0.0f;
             }
         },
-        mItem1);
+        m_item1);
 }
 
-float get_tracking(const text& mText, const item& mItem) {
+float get_tracking(const text& m_text, const item& m_item) {
     return std::visit(
-        [&](const auto& mValue) {
-            using type = std::decay_t<decltype(mValue)>;
+        [&](const auto& m_value) {
+            using type = std::decay_t<decltype(m_value)>;
             if constexpr (std::is_same_v<type, char32_t>) {
-                if (mValue != U'\n')
-                    return mText.get_tracking();
+                if (m_value != U'\n')
+                    return m_text.get_tracking();
                 else
                     return 0.0f;
             } else {
                 return 0.0f;
             }
         },
-        mItem);
+        m_item);
 }
 
 std::pair<float, float> get_advance(
-    const text&                       mText,
-    std::vector<item>::const_iterator iterChar,
-    std::vector<item>::const_iterator iterBegin) {
-    float fAdvance = parser::get_width(mText, *iterChar);
-    float fKerning = 0.0f;
+    const text&                       m_text,
+    std::vector<item>::const_iterator iter_char,
+    std::vector<item>::const_iterator iter_begin) {
+    float f_advance = parser::get_width(m_text, *iter_char);
+    float f_kerning = 0.0f;
 
-    auto iterPrev = iterChar;
-    while (iterPrev != iterBegin) {
-        --iterPrev;
-        if (parser::is_format(*iterPrev))
+    auto iter_prev = iter_char;
+    while (iter_prev != iter_begin) {
+        --iter_prev;
+        if (parser::is_format(*iter_prev))
             continue;
 
-        fKerning = parser::get_tracking(mText, *iterChar);
+        f_kerning = parser::get_tracking(m_text, *iter_char);
 
-        if (!parser::is_whitespace(*iterChar) && !parser::is_whitespace(*iterPrev))
-            fKerning += parser::get_kerning(mText, *iterPrev, *iterChar);
+        if (!parser::is_whitespace(*iter_char) && !parser::is_whitespace(*iter_prev))
+            f_kerning += parser::get_kerning(m_text, *iter_prev, *iter_char);
 
         break;
     }
 
-    return std::make_pair(fKerning, fAdvance);
+    return std::make_pair(f_kerning, f_advance);
 }
 
 float get_full_advance(
-    const text&                       mText,
-    std::vector<item>::const_iterator iterChar,
-    std::vector<item>::const_iterator iterBegin) {
-    const auto mAdvance = get_advance(mText, iterChar, iterBegin);
-    return mAdvance.first + mAdvance.second;
+    const text&                       m_text,
+    std::vector<item>::const_iterator iter_char,
+    std::vector<item>::const_iterator iter_begin) {
+    const auto m_advance = get_advance(m_text, iter_char, iter_begin);
+    return m_advance.first + m_advance.second;
 }
 
-float get_string_width(const text& mText, const std::vector<item>& lContent) {
-    float fWidth    = 0.0f;
-    float fMaxWidth = 0.0f;
+float get_string_width(const text& m_text, const std::vector<item>& l_content) {
+    float f_width     = 0.0f;
+    float f_max_width = 0.0f;
 
-    for (auto iterChar : utils::range::iterator(lContent)) {
-        if (parser::is_character(*iterChar, U'\n')) {
-            if (fWidth > fMaxWidth)
-                fMaxWidth = fWidth;
+    for (auto iter_char : utils::range::iterator(l_content)) {
+        if (parser::is_character(*iter_char, U'\n')) {
+            if (f_width > f_max_width)
+                f_max_width = f_width;
 
-            fWidth = 0.0f;
+            f_width = 0.0f;
         } else {
-            fWidth += parser::get_full_advance(mText, iterChar, lContent.begin());
+            f_width += parser::get_full_advance(m_text, iter_char, l_content.begin());
         }
     }
 
-    if (fWidth > fMaxWidth)
-        fMaxWidth = fWidth;
+    if (f_width > f_max_width)
+        f_max_width = f_width;
 
-    return fMaxWidth;
+    return f_max_width;
 }
 } // namespace parser
 /** \endcond
  */
 
 text::text(
-    renderer&                  mRenderer,
-    std::shared_ptr<gui::font> pFont,
-    std::shared_ptr<gui::font> pOutlineFont) :
-    mRenderer_(mRenderer), pFont_(std::move(pFont)), pOutlineFont_(std::move(pOutlineFont)) {
-    if (!pFont_)
+    renderer&                  m_renderer,
+    std::shared_ptr<gui::font> p_font,
+    std::shared_ptr<gui::font> p_outline_font) :
+    m_renderer_(m_renderer),
+    p_font_(std::move(p_font)),
+    p_outline_font_(std::move(p_outline_font)) {
+    if (!p_font_)
         return;
 
-    bReady_ = true;
+    b_ready_ = true;
 }
 
 float text::get_line_height() const {
-    if (pFont_)
-        return pFont_->get_size() * fScalingFactor_;
+    if (p_font_)
+        return p_font_->get_size() * f_scaling_factor_;
     else
         return 0.0;
 }
 
-void text::set_scaling_factor(float fScalingFactor) {
-    if (fScalingFactor_ == fScalingFactor)
+void text::set_scaling_factor(float f_scaling_factor) {
+    if (f_scaling_factor_ == f_scaling_factor)
         return;
 
-    fScalingFactor_ = fScalingFactor;
+    f_scaling_factor_ = f_scaling_factor;
     notify_cache_dirty_();
 }
 
 float text::get_scaling_factor() const {
-    return fScalingFactor_;
+    return f_scaling_factor_;
 }
 
-void text::set_text(const utils::ustring& sText) {
-    if (sUnicodeText_ != sText) {
-        sUnicodeText_ = sText;
+void text::set_text(const utils::ustring& s_text) {
+    if (s_unicode_text_ != s_text) {
+        s_unicode_text_ = s_text;
         notify_cache_dirty_();
     }
 }
 
 const utils::ustring& text::get_text() const {
-    return sUnicodeText_;
+    return s_unicode_text_;
 }
 
-void text::set_color(const color& mColor, bool bForceColor) {
-    if (mColor_ != mColor || bForceColor_ != bForceColor) {
-        mColor_      = mColor;
-        bForceColor_ = bForceColor;
-        if (mRenderer_.is_vertex_cache_enabled())
+void text::set_color(const color& m_color, bool b_force_color) {
+    if (m_color_ != m_color || b_force_color_ != b_force_color) {
+        m_color_       = m_color;
+        b_force_color_ = b_force_color;
+        if (m_renderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
 }
 
 const color& text::get_color() const {
-    return mColor_;
+    return m_color_;
 }
 
-void text::set_alpha(float fAlpha) {
-    if (fAlpha == fAlpha_)
+void text::set_alpha(float f_alpha) {
+    if (f_alpha == f_alpha_)
         return;
 
-    fAlpha_ = fAlpha;
-    if (mRenderer_.is_vertex_cache_enabled())
+    f_alpha_ = f_alpha;
+    if (m_renderer_.is_vertex_cache_enabled())
         notify_cache_dirty_();
 }
 
 float text::get_alpha() const {
-    return fAlpha_;
+    return f_alpha_;
 }
 
-void text::set_dimensions(float fW, float fH) {
-    if (fBoxW_ != fW || fBoxH_ != fH) {
-        fBoxW_ = fW;
-        fBoxH_ = fH;
+void text::set_dimensions(float f_w, float f_h) {
+    if (f_box_w_ != f_w || f_box_h_ != f_h) {
+        f_box_w_ = f_w;
+        f_box_h_ = f_h;
         notify_cache_dirty_();
     }
 }
 
-void text::set_box_width(float fBoxW) {
-    if (fBoxW_ != fBoxW) {
-        fBoxW_ = fBoxW;
+void text::set_box_width(float f_box_w) {
+    if (f_box_w_ != f_box_w) {
+        f_box_w_ = f_box_w;
         notify_cache_dirty_();
     }
 }
 
-void text::set_box_height(float fBoxH) {
-    if (fBoxH_ != fBoxH) {
-        fBoxH_ = fBoxH;
+void text::set_box_height(float f_box_h) {
+    if (f_box_h_ != f_box_h) {
+        f_box_h_ = f_box_h;
         notify_cache_dirty_();
     }
 }
@@ -370,644 +372,648 @@ void text::set_box_height(float fBoxH) {
 float text::get_width() const {
     update_();
 
-    return fW_;
+    return f_w_;
 }
 
 float text::get_height() const {
     update_();
 
-    return fH_;
+    return f_h_;
 }
 
 float text::get_box_width() const {
-    return fBoxW_;
+    return f_box_w_;
 }
 
 float text::get_box_height() const {
-    return fBoxH_;
+    return f_box_h_;
 }
 
 float text::get_text_width() const {
-    return get_string_width(sUnicodeText_);
+    return get_string_width(s_unicode_text_);
 }
 
 float text::get_text_height() const {
-    if (!bReady_)
+    if (!b_ready_)
         return 0.0f;
 
-    std::size_t count   = std::count(sUnicodeText_.begin(), sUnicodeText_.end(), U'\n');
-    float       fHeight = (1.0f + count * fLineSpacing_) * get_line_height();
+    std::size_t count    = std::count(s_unicode_text_.begin(), s_unicode_text_.end(), U'\n');
+    float       f_height = (1.0f + count * f_line_spacing_) * get_line_height();
 
-    return fHeight;
+    return f_height;
 }
 
 std::size_t text::get_num_lines() const {
     update_();
-    return uiNumLines_;
+    return ui_num_lines_;
 }
 
-float text::get_string_width(const std::string& sString) const {
-    return get_string_width(utils::utf8_to_unicode(sString));
+float text::get_string_width(const std::string& s_string) const {
+    return get_string_width(utils::utf8_to_unicode(s_string));
 }
 
-float text::get_string_width(const utils::ustring& sString) const {
-    if (!bReady_)
+float text::get_string_width(const utils::ustring& s_string) const {
+    if (!b_ready_)
         return 0.0f;
 
     return parser::get_string_width(
-        *this, parser::parse_string(mRenderer_, sString, bFormattingEnabled_));
+        *this, parser::parse_string(m_renderer_, s_string, b_formatting_enabled_));
 }
 
-float text::get_character_width(char32_t uiChar) const {
-    if (bReady_) {
-        if (uiChar == U'\t')
-            return 4.0f * pFont_->get_character_width(U' ') * fScalingFactor_;
+float text::get_character_width(char32_t ui_char) const {
+    if (b_ready_) {
+        if (ui_char == U'\t')
+            return 4.0f * p_font_->get_character_width(U' ') * f_scaling_factor_;
         else
-            return pFont_->get_character_width(uiChar) * fScalingFactor_;
+            return p_font_->get_character_width(ui_char) * f_scaling_factor_;
     } else
         return 0.0f;
 }
 
-float text::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const {
-    return pFont_->get_character_kerning(uiChar1, uiChar2) * fScalingFactor_;
+float text::get_character_kerning(char32_t ui_char1, char32_t ui_char2) const {
+    return p_font_->get_character_kerning(ui_char1, ui_char2) * f_scaling_factor_;
 }
 
-void text::set_alignment_x(const alignment_x& mAlignX) {
-    if (mAlignX_ != mAlignX) {
-        mAlignX_ = mAlignX;
+void text::set_alignment_x(const alignment_x& m_align_x) {
+    if (m_align_x_ != m_align_x) {
+        m_align_x_ = m_align_x;
         notify_cache_dirty_();
     }
 }
 
-void text::set_alignment_y(const alignment_y& mAlignY) {
-    if (mAlignY_ != mAlignY) {
-        mAlignY_ = mAlignY;
+void text::set_alignment_y(const alignment_y& m_align_y) {
+    if (m_align_y_ != m_align_y) {
+        m_align_y_ = m_align_y;
         notify_cache_dirty_();
     }
 }
 
 const alignment_x& text::get_alignment_x() const {
-    return mAlignX_;
+    return m_align_x_;
 }
 
 const alignment_y& text::get_alignment_y() const {
-    return mAlignY_;
+    return m_align_y_;
 }
 
-void text::set_tracking(float fTracking) {
-    if (fTracking_ != fTracking) {
-        fTracking_ = fTracking;
+void text::set_tracking(float f_tracking) {
+    if (f_tracking_ != f_tracking) {
+        f_tracking_ = f_tracking;
         notify_cache_dirty_();
     }
 }
 
 float text::get_tracking() const {
-    return fTracking_;
+    return f_tracking_;
 }
 
-void text::set_line_spacing(float fLineSpacing) {
-    if (fLineSpacing_ != fLineSpacing) {
-        fLineSpacing_ = fLineSpacing;
+void text::set_line_spacing(float f_line_spacing) {
+    if (f_line_spacing_ != f_line_spacing) {
+        f_line_spacing_ = f_line_spacing;
         notify_cache_dirty_();
     }
 }
 
 float text::get_line_spacing() const {
-    return fLineSpacing_;
+    return f_line_spacing_;
 }
 
-void text::set_remove_starting_spaces(bool bRemoveStartingSpaces) {
-    if (bRemoveStartingSpaces_ != bRemoveStartingSpaces) {
-        bRemoveStartingSpaces_ = bRemoveStartingSpaces;
+void text::set_remove_starting_spaces(bool b_remove_starting_spaces) {
+    if (b_remove_starting_spaces_ != b_remove_starting_spaces) {
+        b_remove_starting_spaces_ = b_remove_starting_spaces;
         notify_cache_dirty_();
     }
 }
 
 bool text::get_remove_starting_spaces() const {
-    return bRemoveStartingSpaces_;
+    return b_remove_starting_spaces_;
 }
 
-void text::enable_word_wrap(bool bWrap, bool bAddEllipsis) {
-    if (bWordWrap_ != bWrap || bAddEllipsis_ != bAddEllipsis) {
-        bWordWrap_    = bWrap;
-        bAddEllipsis_ = bAddEllipsis;
+void text::enable_word_wrap(bool b_wrap, bool b_add_ellipsis) {
+    if (b_word_wrap_ != b_wrap || b_add_ellipsis_ != b_add_ellipsis) {
+        b_word_wrap_    = b_wrap;
+        b_add_ellipsis_ = b_add_ellipsis;
         notify_cache_dirty_();
     }
 }
 
 bool text::is_word_wrap_enabled() const {
-    return bWordWrap_;
+    return b_word_wrap_;
 }
 
-void text::enable_formatting(bool bFormatting) {
-    if (bFormatting != bFormattingEnabled_) {
-        bFormattingEnabled_ = bFormatting;
-        if (mRenderer_.is_vertex_cache_enabled())
+void text::enable_formatting(bool b_formatting) {
+    if (b_formatting != b_formatting_enabled_) {
+        b_formatting_enabled_ = b_formatting;
+        if (m_renderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
 }
 
-void text::render(const matrix4f& mTransform) const {
-    if (!bReady_ || sUnicodeText_.empty())
+void text::render(const matrix4f& m_transform) const {
+    if (!b_ready_ || s_unicode_text_.empty())
         return;
 
-    bool bUseVertexCache =
-        mRenderer_.is_vertex_cache_enabled() && !mRenderer_.is_quad_batching_enabled();
+    bool b_use_vertex_cache =
+        m_renderer_.is_vertex_cache_enabled() && !m_renderer_.is_quad_batching_enabled();
 
-    if ((bUseVertexCache && !pVertexCache_) || (bUseVertexCache && lQuadList_.empty()))
-        bUpdateCache_ = true;
+    if ((b_use_vertex_cache && !p_vertex_cache_) || (b_use_vertex_cache && l_quad_list_.empty()))
+        b_update_cache_ = true;
 
     update_();
 
-    if (pOutlineFont_) {
-        if (const auto pMat = pOutlineFont_->get_texture().lock()) {
-            if (bUseVertexCache && pOutlineVertexCache_) {
-                mRenderer_.render_cache(pMat.get(), *pOutlineVertexCache_, mTransform);
+    if (p_outline_font_) {
+        if (const auto p_mat = p_outline_font_->get_texture().lock()) {
+            if (b_use_vertex_cache && p_outline_vertex_cache_) {
+                m_renderer_.render_cache(p_mat.get(), *p_outline_vertex_cache_, m_transform);
             } else {
-                std::vector<std::array<vertex, 4>> lQuadsCopy = lOutlineQuadList_;
-                for (auto& mQuad : lQuadsCopy)
+                std::vector<std::array<vertex, 4>> l_quads_copy = l_outline_quad_list_;
+                for (auto& m_quad : l_quads_copy)
                     for (std::size_t i = 0; i < 4; ++i) {
-                        mQuad[i].pos = mQuad[i].pos * mTransform;
-                        mQuad[i].col.a *= fAlpha_;
+                        m_quad[i].pos = m_quad[i].pos * m_transform;
+                        m_quad[i].col.a *= f_alpha_;
                     }
 
-                mRenderer_.render_quads(pMat.get(), lQuadsCopy);
+                m_renderer_.render_quads(p_mat.get(), l_quads_copy);
             }
         }
     }
 
-    if (const auto pMat = pFont_->get_texture().lock()) {
-        if (bUseVertexCache && pVertexCache_) {
-            mRenderer_.render_cache(pMat.get(), *pVertexCache_, mTransform);
+    if (const auto p_mat = p_font_->get_texture().lock()) {
+        if (b_use_vertex_cache && p_vertex_cache_) {
+            m_renderer_.render_cache(p_mat.get(), *p_vertex_cache_, m_transform);
         } else {
-            std::vector<std::array<vertex, 4>> lQuadsCopy = lQuadList_;
-            for (auto& mQuad : lQuadsCopy)
+            std::vector<std::array<vertex, 4>> l_quads_copy = l_quad_list_;
+            for (auto& m_quad : l_quads_copy)
                 for (std::size_t i = 0; i < 4; ++i) {
-                    mQuad[i].pos = mQuad[i].pos * mTransform;
+                    m_quad[i].pos = m_quad[i].pos * m_transform;
 
-                    if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY) {
-                        mQuad[i].col = mColor_;
+                    if (!b_formatting_enabled_ || b_force_color_ || m_quad[i].col == color::empty) {
+                        m_quad[i].col = m_color_;
                     }
 
-                    mQuad[i].col.a *= fAlpha_;
+                    m_quad[i].col.a *= f_alpha_;
                 }
 
-            mRenderer_.render_quads(pMat.get(), lQuadsCopy);
+            m_renderer_.render_quads(p_mat.get(), l_quads_copy);
         }
 
-        for (auto mQuad : lIconsList_) {
+        for (auto m_quad : l_icons_list_) {
             for (std::size_t i = 0; i < 4; ++i) {
-                mQuad.v[i].pos = mQuad.v[i].pos * mTransform;
-                mQuad.v[i].col.a *= fAlpha_;
+                m_quad.v[i].pos = m_quad.v[i].pos * m_transform;
+                m_quad.v[i].col.a *= f_alpha_;
             }
 
-            mRenderer_.render_quad(mQuad);
+            m_renderer_.render_quad(m_quad);
         }
     }
 }
 
 void text::notify_cache_dirty_() const {
-    bUpdateCache_ = true;
+    b_update_cache_ = true;
 }
 
-float text::round_to_pixel_(float fValue, utils::rounding_method mMethod) const {
-    return utils::round(fValue, fScalingFactor_, mMethod);
+float text::round_to_pixel_(float f_value, utils::rounding_method m_method) const {
+    return utils::round(f_value, f_scaling_factor_, m_method);
 }
 
 void text::update_() const {
-    if (!bReady_ || !bUpdateCache_)
+    if (!b_ready_ || !b_update_cache_)
         return;
 
     // Update the line list, read format tags, do word wrapping, ...
-    std::vector<parser::line> lLineList;
+    std::vector<parser::line> l_line_list;
 
     DEBUG_LOG("     Get max line nbr");
-    std::size_t uiMaxLineNbr = 0;
-    if (fBoxH_ != 0.0f && !std::isinf(fBoxH_)) {
-        if (fBoxH_ < get_line_height()) {
-            uiMaxLineNbr = 0;
+    std::size_t ui_max_line_nbr = 0;
+    if (f_box_h_ != 0.0f && !std::isinf(f_box_h_)) {
+        if (f_box_h_ < get_line_height()) {
+            ui_max_line_nbr = 0;
         } else {
-            float fRemaining = fBoxH_ - get_line_height();
-            uiMaxLineNbr     = 1 + static_cast<std::size_t>(
-                                   std::floor(fRemaining / (get_line_height() * fLineSpacing_)));
+            float f_remaining = f_box_h_ - get_line_height();
+            ui_max_line_nbr   = 1 + static_cast<std::size_t>(std::floor(
+                                      f_remaining / (get_line_height() * f_line_spacing_)));
         }
     } else
-        uiMaxLineNbr = std::numeric_limits<std::size_t>::max();
+        ui_max_line_nbr = std::numeric_limits<std::size_t>::max();
 
-    if (uiMaxLineNbr != 0) {
-        auto lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
-        for (auto iterManual : utils::range::iterator(lManualLineList)) {
+    if (ui_max_line_nbr != 0) {
+        auto l_manual_line_list = utils::cut_each(s_unicode_text_, U"\n");
+        for (auto iter_manual : utils::range::iterator(l_manual_line_list)) {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
-            std::vector<parser::item> lParsedContent =
-                parser::parse_string(mRenderer_, *iterManual, bFormattingEnabled_);
+            std::vector<parser::item> l_parsed_content =
+                parser::parse_string(m_renderer_, *iter_manual, b_formatting_enabled_);
 
             // Make a temporary line array
-            std::vector<parser::line> lLines;
+            std::vector<parser::line> l_lines;
 
-            auto         iterLineBegin = lParsedContent.begin();
-            parser::line mLine;
-            mLine.fWidth = 0.0f;
+            auto         iter_line_begin = l_parsed_content.begin();
+            parser::line m_line;
+            m_line.f_width = 0.0f;
 
-            bool bDone = false;
-            for (auto iterChar1 = lParsedContent.begin(); iterChar1 != lParsedContent.end();
-                 ++iterChar1) {
+            bool b_done = false;
+            for (auto iter_char1 = l_parsed_content.begin(); iter_char1 != l_parsed_content.end();
+                 ++iter_char1) {
                 DEBUG_LOG("      Get width");
-                mLine.fWidth += parser::get_full_advance(*this, iterChar1, iterLineBegin);
-                mLine.lContent.push_back(*iterChar1);
+                m_line.f_width += parser::get_full_advance(*this, iter_char1, iter_line_begin);
+                m_line.l_content.push_back(*iter_char1);
 
-                if (round_to_pixel_(mLine.fWidth - fBoxW_) > 0) {
+                if (round_to_pixel_(m_line.f_width - f_box_w_) > 0) {
                     DEBUG_LOG(
                         "      Box break " + utils::to_string(mLine.fWidth) + " > " +
                         utils::to_string(fBoxW_));
 
                     // Whoops, the line is too long...
-                    auto mIterSpace = std::find_if(
-                        mLine.lContent.begin(), mLine.lContent.end(), &parser::is_whitespace);
+                    auto m_iter_space = std::find_if(
+                        m_line.l_content.begin(), m_line.l_content.end(), &parser::is_whitespace);
 
-                    if (mIterSpace != mLine.lContent.end() && bWordWrap_) {
+                    if (m_iter_space != m_line.l_content.end() && b_word_wrap_) {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
-                        auto                      iterChar2 = iterChar1 + 1;
-                        std::vector<parser::item> lErasedContent;
-                        std::size_t               uiCharToErase  = 0;
-                        float                     fLastWordWidth = 0.0f;
-                        bool                      bLastWasWord   = false;
-                        while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin) {
-                            --iterChar2;
+                        auto                      iter_char2 = iter_char1 + 1;
+                        std::vector<parser::item> l_erased_content;
+                        std::size_t               ui_char_to_erase  = 0;
+                        float                     f_last_word_width = 0.0f;
+                        bool                      b_last_was_word   = false;
+                        while (m_line.f_width > f_box_w_ && iter_char2 != iter_line_begin) {
+                            --iter_char2;
 
-                            if (parser::is_whitespace(*iterChar2)) {
-                                if (!bLastWasWord || bRemoveStartingSpaces_ ||
-                                    mLine.fWidth - fLastWordWidth > fBoxW_) {
-                                    fLastWordWidth +=
-                                        parser::get_full_advance(*this, iterChar2, iterLineBegin);
-                                    lErasedContent.insert(lErasedContent.begin(), *iterChar2);
-                                    ++uiCharToErase;
+                            if (parser::is_whitespace(*iter_char2)) {
+                                if (!b_last_was_word || b_remove_starting_spaces_ ||
+                                    m_line.f_width - f_last_word_width > f_box_w_) {
+                                    f_last_word_width += parser::get_full_advance(
+                                        *this, iter_char2, iter_line_begin);
+                                    l_erased_content.insert(l_erased_content.begin(), *iter_char2);
+                                    ++ui_char_to_erase;
 
-                                    mLine.fWidth -= fLastWordWidth;
-                                    fLastWordWidth = 0.0f;
+                                    m_line.f_width -= f_last_word_width;
+                                    f_last_word_width = 0.0f;
                                 } else
                                     break;
                             } else {
-                                fLastWordWidth +=
-                                    parser::get_full_advance(*this, iterChar2, iterLineBegin);
-                                lErasedContent.insert(lErasedContent.begin(), *iterChar2);
-                                ++uiCharToErase;
+                                f_last_word_width +=
+                                    parser::get_full_advance(*this, iter_char2, iter_line_begin);
+                                l_erased_content.insert(l_erased_content.begin(), *iter_char2);
+                                ++ui_char_to_erase;
 
-                                bLastWasWord = true;
+                                b_last_was_word = true;
                             }
                         }
 
-                        if (bRemoveStartingSpaces_) {
-                            while (iterChar2 != iterChar1 + 1 &&
-                                   parser::is_whitespace(*iterChar2)) {
-                                --uiCharToErase;
-                                lErasedContent.erase(lErasedContent.begin());
-                                ++iterChar2;
+                        if (b_remove_starting_spaces_) {
+                            while (iter_char2 != iter_char1 + 1 &&
+                                   parser::is_whitespace(*iter_char2)) {
+                                --ui_char_to_erase;
+                                l_erased_content.erase(l_erased_content.begin());
+                                ++iter_char2;
                             }
                         }
 
-                        mLine.fWidth -= fLastWordWidth;
-                        mLine.lContent.erase(
-                            mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
-                        lLines.push_back(mLine);
+                        m_line.f_width -= f_last_word_width;
+                        m_line.l_content.erase(
+                            m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
+                        l_lines.push_back(m_line);
 
-                        mLine.fWidth   = parser::get_string_width(*this, lErasedContent);
-                        mLine.lContent = lErasedContent;
-                        iterLineBegin  = iterChar1 - (mLine.lContent.size() - 1u);
+                        m_line.f_width   = parser::get_string_width(*this, l_erased_content);
+                        m_line.l_content = l_erased_content;
+                        iter_line_begin  = iter_char1 - (m_line.l_content.size() - 1u);
                     } else {
                         DEBUG_LOG("       Single word");
                         // There is only one word on this line, or word
                         // wrap is disabled. Anyway, this line is just
                         // too long for the text box : our only option
                         // is to truncate it.
-                        if (bAddEllipsis_) {
+                        if (b_add_ellipsis_) {
                             DEBUG_LOG("       Ellipsis");
                             // FIXME: this doesn't account for kerning between the "..." and prev
                             // char
-                            float       fWordWidth    = get_string_width(U"...");
-                            auto        iterChar2     = iterChar1 + 1;
-                            std::size_t uiCharToErase = 0;
-                            while (mLine.fWidth + fWordWidth > fBoxW_ &&
-                                   iterChar2 != iterLineBegin) {
-                                --iterChar2;
-                                mLine.fWidth -=
-                                    parser::get_full_advance(*this, iterChar2, iterLineBegin);
-                                ++uiCharToErase;
+                            float       f_word_width     = get_string_width(U"...");
+                            auto        iter_char2       = iter_char1 + 1;
+                            std::size_t ui_char_to_erase = 0;
+                            while (m_line.f_width + f_word_width > f_box_w_ &&
+                                   iter_char2 != iter_line_begin) {
+                                --iter_char2;
+                                m_line.f_width -=
+                                    parser::get_full_advance(*this, iter_char2, iter_line_begin);
+                                ++ui_char_to_erase;
                             }
 
                             DEBUG_LOG(
                                 "       Char to erase : " + utils::to_string(uiCharToErase) +
                                 " / " + utils::to_string(mLine.lContent.size()));
 
-                            mLine.lContent.erase(
-                                mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
-                            mLine.lContent.push_back(U'.');
-                            mLine.lContent.push_back(U'.');
-                            mLine.lContent.push_back(U'.');
-                            mLine.fWidth += fWordWidth;
+                            m_line.l_content.erase(
+                                m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
+                            m_line.l_content.push_back(U'.');
+                            m_line.l_content.push_back(U'.');
+                            m_line.l_content.push_back(U'.');
+                            m_line.f_width += f_word_width;
                         } else {
                             DEBUG_LOG("       Truncate");
-                            auto        iterChar2     = iterChar1 + 1;
-                            std::size_t uiCharToErase = 0;
-                            while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin) {
-                                --iterChar2;
-                                mLine.fWidth -=
-                                    parser::get_full_advance(*this, iterChar2, iterLineBegin);
-                                ++uiCharToErase;
+                            auto        iter_char2       = iter_char1 + 1;
+                            std::size_t ui_char_to_erase = 0;
+                            while (m_line.f_width > f_box_w_ && iter_char2 != iter_line_begin) {
+                                --iter_char2;
+                                m_line.f_width -=
+                                    parser::get_full_advance(*this, iter_char2, iter_line_begin);
+                                ++ui_char_to_erase;
                             }
 
-                            mLine.lContent.erase(
-                                mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
+                            m_line.l_content.erase(
+                                m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
                         }
 
-                        if (!bWordWrap_) {
+                        if (!b_word_wrap_) {
                             DEBUG_LOG("       Display single line");
                             // Word wrap is disabled, so we can only display one line anyway.
-                            lLineList.push_back(mLine);
-                            bDone = true;
+                            l_line_list.push_back(m_line);
+                            b_done = true;
                             break;
                         }
 
                         // Add the line
-                        lLines.push_back(mLine);
-                        mLine.fWidth = 0.0f;
-                        mLine.lContent.clear();
+                        l_lines.push_back(m_line);
+                        m_line.f_width = 0.0f;
+                        m_line.l_content.clear();
 
                         DEBUG_LOG("       Continue");
 
                         // Skip all following content (which we cannot display) until next
                         // whitespace
-                        auto iterTemp = iterChar1;
-                        iterChar1 =
-                            std::find_if(iterChar1, lParsedContent.end(), &parser::is_whitespace);
+                        auto iter_temp = iter_char1;
+                        iter_char1     = std::find_if(
+                            iter_char1, l_parsed_content.end(), &parser::is_whitespace);
 
-                        if (iterChar1 == lParsedContent.end())
+                        if (iter_char1 == l_parsed_content.end())
                             break;
 
                         // Apply the format tags that were cut
-                        for (; iterTemp != iterChar1; ++iterTemp) {
+                        for (; iter_temp != iter_char1; ++iter_temp) {
                             std::visit(
-                                [&](const auto& mValue) {
-                                    using type = std::decay_t<decltype(mValue)>;
+                                [&](const auto& m_value) {
+                                    using type = std::decay_t<decltype(m_value)>;
                                     if constexpr (std::is_same_v<type, parser::format>) {
-                                        mLine.lContent.push_back(mValue);
+                                        m_line.l_content.push_back(m_value);
                                     }
                                 },
-                                *iterTemp);
+                                *iter_temp);
                         }
 
                         // Look for the next word
-                        iterChar1 = std::find_if(iterChar1, lParsedContent.end(), &parser::is_word);
-                        if (iterChar1 != lParsedContent.end())
+                        iter_char1 =
+                            std::find_if(iter_char1, l_parsed_content.end(), &parser::is_word);
+                        if (iter_char1 != l_parsed_content.end())
                             break;
 
-                        --iterChar1;
-                        iterLineBegin = iterChar1;
+                        --iter_char1;
+                        iter_line_begin = iter_char1;
                     }
                 }
             }
 
-            if (bDone)
+            if (b_done)
                 break;
 
             DEBUG_LOG("     End");
 
-            lLines.push_back(mLine);
+            l_lines.push_back(m_line);
 
             // Add the maximum number of line to this text
-            for (auto& sLine : lLines) {
-                lLineList.push_back(std::move(sLine));
-                if (lLineList.size() == uiMaxLineNbr) {
-                    bDone = true;
+            for (auto& s_line : l_lines) {
+                l_line_list.push_back(std::move(s_line));
+                if (l_line_list.size() == ui_max_line_nbr) {
+                    b_done = true;
                     break;
                 }
             }
 
-            if (bDone)
+            if (b_done)
                 break;
             DEBUG_LOG("     .");
         }
     }
 
-    uiNumLines_ = lLineList.size();
+    ui_num_lines_ = l_line_list.size();
 
-    lQuadList_.clear();
-    lOutlineQuadList_.clear();
-    lIconsList_.clear();
+    l_quad_list_.clear();
+    l_outline_quad_list_.clear();
+    l_icons_list_.clear();
 
-    if (!lLineList.empty()) {
-        if (fBoxW_ == 0.0f || std::isinf(fBoxW_)) {
-            fW_ = 0.0f;
-            for (const auto& mLine : lLineList)
-                fW_ = std::max(fW_, mLine.fWidth);
+    if (!l_line_list.empty()) {
+        if (f_box_w_ == 0.0f || std::isinf(f_box_w_)) {
+            f_w_ = 0.0f;
+            for (const auto& m_line : l_line_list)
+                f_w_ = std::max(f_w_, m_line.f_width);
         } else
-            fW_ = fBoxW_;
+            f_w_ = f_box_w_;
 
-        fH_ = (1.0f + static_cast<float>(lLineList.size() - 1) * fLineSpacing_) * get_line_height();
+        f_h_ = (1.0f + static_cast<float>(l_line_list.size() - 1) * f_line_spacing_) *
+               get_line_height();
 
-        float fY  = 0.0f;
-        float fX0 = 0.0f;
+        float fY   = 0.0f;
+        float f_x0 = 0.0f;
 
-        if (fBoxW_ != 0.0f && !std::isinf(fBoxW_)) {
-            switch (mAlignX_) {
-            case alignment_x::LEFT: fX0 = 0.0f; break;
-            case alignment_x::CENTER: fX0 = fBoxW_ * 0.5f; break;
-            case alignment_x::RIGHT: fX0 = fBoxW_; break;
+        if (f_box_w_ != 0.0f && !std::isinf(f_box_w_)) {
+            switch (m_align_x_) {
+            case alignment_x::left: f_x0 = 0.0f; break;
+            case alignment_x::center: f_x0 = f_box_w_ * 0.5f; break;
+            case alignment_x::right: f_x0 = f_box_w_; break;
             }
         } else
-            fX0 = 0.0f;
+            f_x0 = 0.0f;
 
-        if (!std::isinf(fBoxH_)) {
-            switch (mAlignY_) {
-            case alignment_y::TOP: fY = 0.0f; break;
-            case alignment_y::MIDDLE: fY = (fBoxH_ - fH_) * 0.5f; break;
-            case alignment_y::BOTTOM: fY = (fBoxH_ - fH_); break;
+        if (!std::isinf(f_box_h_)) {
+            switch (m_align_y_) {
+            case alignment_y::top: fY = 0.0f; break;
+            case alignment_y::middle: fY = (f_box_h_ - f_h_) * 0.5f; break;
+            case alignment_y::bottom: fY = (f_box_h_ - f_h_); break;
             }
         } else {
-            switch (mAlignY_) {
-            case alignment_y::TOP: fY = 0.0f; break;
-            case alignment_y::MIDDLE: fY = -fH_ * 0.5f; break;
-            case alignment_y::BOTTOM: fY = -fH_; break;
+            switch (m_align_y_) {
+            case alignment_y::top: fY = 0.0f; break;
+            case alignment_y::middle: fY = -f_h_ * 0.5f; break;
+            case alignment_y::bottom: fY = -f_h_; break;
             }
         }
 
-        fX0 = round_to_pixel_(fX0);
-        fY  = round_to_pixel_(fY);
+        f_x0 = round_to_pixel_(f_x0);
+        fY   = round_to_pixel_(fY);
 
-        std::vector<color> lColorStack;
+        std::vector<color> l_color_stack;
 
-        for (const auto& mLine : lLineList) {
+        for (const auto& m_line : l_line_list) {
             float fX = 0.0f;
-            switch (mAlignX_) {
-            case alignment_x::LEFT: fX = 0.0f; break;
-            case alignment_x::CENTER: fX = -mLine.fWidth * 0.5f; break;
-            case alignment_x::RIGHT: fX = -mLine.fWidth; break;
+            switch (m_align_x_) {
+            case alignment_x::left: fX = 0.0f; break;
+            case alignment_x::center: fX = -m_line.f_width * 0.5f; break;
+            case alignment_x::right: fX = -m_line.f_width; break;
             }
 
-            fX = round_to_pixel_(fX) + fX0;
+            fX = round_to_pixel_(fX) + f_x0;
 
-            for (auto iterChar : utils::range::iterator(mLine.lContent)) {
-                const auto mAdvance = parser::get_advance(*this, iterChar, mLine.lContent.begin());
+            for (auto iter_char : utils::range::iterator(m_line.l_content)) {
+                const auto m_advance =
+                    parser::get_advance(*this, iter_char, m_line.l_content.begin());
 
-                fX += mAdvance.first;
+                fX += m_advance.first;
 
                 std::visit(
-                    [&](const auto& mValue) {
-                        using type = std::decay_t<decltype(mValue)>;
+                    [&](const auto& m_value) {
+                        using type = std::decay_t<decltype(m_value)>;
                         if constexpr (std::is_same_v<type, parser::format>) {
-                            switch (mValue.mColorAction) {
-                            case parser::color_action::SET:
-                                lColorStack.push_back(mValue.mColor);
+                            switch (m_value.m_color_action) {
+                            case parser::color_action::set:
+                                l_color_stack.push_back(m_value.m_color);
                                 break;
-                            case parser::color_action::RESET: lColorStack.pop_back(); break;
+                            case parser::color_action::reset: l_color_stack.pop_back(); break;
                             default: break;
                             }
                         } else if constexpr (std::is_same_v<type, parser::texture>) {
-                            float fTexWidth = 0.0f, fTexHeight = 0.0f;
-                            if (std::isnan(mValue.fWidth)) {
-                                fTexWidth  = get_line_height();
-                                fTexHeight = get_line_height();
+                            float f_tex_width = 0.0f, f_tex_height = 0.0f;
+                            if (std::isnan(m_value.f_width)) {
+                                f_tex_width  = get_line_height();
+                                f_tex_height = get_line_height();
                             } else {
-                                fTexWidth  = mValue.fWidth * get_scaling_factor();
-                                fTexHeight = mValue.fHeight * get_scaling_factor();
+                                f_tex_width  = m_value.f_width * get_scaling_factor();
+                                f_tex_height = m_value.f_height * get_scaling_factor();
                             }
 
-                            fTexWidth  = round_to_pixel_(fTexWidth);
-                            fTexHeight = round_to_pixel_(fTexHeight);
+                            f_tex_width  = round_to_pixel_(f_tex_width);
+                            f_tex_height = round_to_pixel_(f_tex_height);
 
-                            quad mIcon;
-                            mIcon.mat      = mValue.pMaterial;
-                            mIcon.v[0].pos = vector2f(0.0f, 0.0f);
-                            mIcon.v[1].pos = vector2f(fTexWidth, 0.0f);
-                            mIcon.v[2].pos = vector2f(fTexWidth, fTexHeight);
-                            mIcon.v[3].pos = vector2f(0.0f, fTexHeight);
-                            if (mIcon.mat) {
-                                mIcon.v[0].uvs =
-                                    mIcon.mat->get_canvas_uv(vector2f(0.0f, 0.0f), true);
-                                mIcon.v[1].uvs =
-                                    mIcon.mat->get_canvas_uv(vector2f(1.0f, 0.0f), true);
-                                mIcon.v[2].uvs =
-                                    mIcon.mat->get_canvas_uv(vector2f(1.0f, 1.0f), true);
-                                mIcon.v[3].uvs =
-                                    mIcon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
+                            quad m_icon;
+                            m_icon.mat      = m_value.p_material;
+                            m_icon.v[0].pos = vector2f(0.0f, 0.0f);
+                            m_icon.v[1].pos = vector2f(f_tex_width, 0.0f);
+                            m_icon.v[2].pos = vector2f(f_tex_width, f_tex_height);
+                            m_icon.v[3].pos = vector2f(0.0f, f_tex_height);
+                            if (m_icon.mat) {
+                                m_icon.v[0].uvs =
+                                    m_icon.mat->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+                                m_icon.v[1].uvs =
+                                    m_icon.mat->get_canvas_uv(vector2f(1.0f, 0.0f), true);
+                                m_icon.v[2].uvs =
+                                    m_icon.mat->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+                                m_icon.v[3].uvs =
+                                    m_icon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
                             }
 
                             for (std::size_t i = 0; i < 4; ++i) {
-                                mIcon.v[i].pos +=
+                                m_icon.v[i].pos +=
                                     vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                             }
 
-                            lIconsList_.push_back(mIcon);
+                            l_icons_list_.push_back(m_icon);
                         } else if constexpr (std::is_same_v<type, char32_t>) {
-                            if (pOutlineFont_) {
-                                std::array<vertex, 4> lVertexList =
-                                    create_outline_letter_quad_(mValue);
+                            if (p_outline_font_) {
+                                std::array<vertex, 4> l_vertex_list =
+                                    create_outline_letter_quad_(m_value);
                                 for (std::size_t i = 0; i < 4; ++i) {
-                                    lVertexList[i].pos +=
+                                    l_vertex_list[i].pos +=
                                         vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                                    lVertexList[i].col = color::BLACK;
+                                    l_vertex_list[i].col = color::black;
                                 }
 
-                                lOutlineQuadList_.push_back(lVertexList);
+                                l_outline_quad_list_.push_back(l_vertex_list);
                             }
 
-                            std::array<vertex, 4> lVertexList = create_letter_quad_(mValue);
+                            std::array<vertex, 4> l_vertex_list = create_letter_quad_(m_value);
                             for (std::size_t i = 0; i < 4; ++i) {
-                                lVertexList[i].pos +=
+                                l_vertex_list[i].pos +=
                                     vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                                lVertexList[i].col =
-                                    lColorStack.empty() ? color::EMPTY : lColorStack.back();
+                                l_vertex_list[i].col =
+                                    l_color_stack.empty() ? color::empty : l_color_stack.back();
                             }
 
-                            lQuadList_.push_back(lVertexList);
+                            l_quad_list_.push_back(l_vertex_list);
                         }
                     },
-                    *iterChar);
+                    *iter_char);
 
-                fX += mAdvance.second;
+                fX += m_advance.second;
             }
 
-            fY += get_line_height() * fLineSpacing_;
+            fY += get_line_height() * f_line_spacing_;
         }
     } else {
-        fW_ = 0.0f;
-        fH_ = 0.0f;
+        f_w_ = 0.0f;
+        f_h_ = 0.0f;
     }
 
-    if (mRenderer_.is_vertex_cache_enabled() && !mRenderer_.is_quad_batching_enabled()) {
-        if (!pOutlineVertexCache_)
-            pOutlineVertexCache_ = mRenderer_.create_vertex_cache(vertex_cache::type::QUADS);
+    if (m_renderer_.is_vertex_cache_enabled() && !m_renderer_.is_quad_batching_enabled()) {
+        if (!p_outline_vertex_cache_)
+            p_outline_vertex_cache_ = m_renderer_.create_vertex_cache(vertex_cache::type::quads);
 
-        pOutlineVertexCache_->update(lOutlineQuadList_[0].data(), lOutlineQuadList_.size() * 4);
+        p_outline_vertex_cache_->update(
+            l_outline_quad_list_[0].data(), l_outline_quad_list_.size() * 4);
 
-        if (!pVertexCache_)
-            pVertexCache_ = mRenderer_.create_vertex_cache(vertex_cache::type::QUADS);
+        if (!p_vertex_cache_)
+            p_vertex_cache_ = m_renderer_.create_vertex_cache(vertex_cache::type::quads);
 
-        std::vector<std::array<vertex, 4>> lQuadsCopy = lQuadList_;
-        for (auto& mQuad : lQuadsCopy)
+        std::vector<std::array<vertex, 4>> l_quads_copy = l_quad_list_;
+        for (auto& m_quad : l_quads_copy)
             for (std::size_t i = 0; i < 4; ++i) {
-                if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY) {
-                    mQuad[i].col = mColor_;
+                if (!b_formatting_enabled_ || b_force_color_ || m_quad[i].col == color::empty) {
+                    m_quad[i].col = m_color_;
                 }
 
-                mQuad[i].col.a *= fAlpha_;
+                m_quad[i].col.a *= f_alpha_;
             }
 
-        pVertexCache_->update(lQuadsCopy[0].data(), lQuadsCopy.size() * 4);
+        p_vertex_cache_->update(l_quads_copy[0].data(), l_quads_copy.size() * 4);
     }
 
-    bUpdateCache_ = false;
+    b_update_cache_ = false;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(gui::font& mFont, char32_t uiChar) const {
-    bounds2f mQuad = mFont.get_character_bounds(uiChar) * fScalingFactor_;
+std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t ui_char) const {
+    bounds2f m_quad = m_font.get_character_bounds(ui_char) * f_scaling_factor_;
 
-    std::array<vertex, 4> lVertexList;
-    lVertexList[0].pos = mQuad.top_left();
-    lVertexList[1].pos = mQuad.top_right();
-    lVertexList[2].pos = mQuad.bottom_right();
-    lVertexList[3].pos = mQuad.bottom_left();
+    std::array<vertex, 4> l_vertex_list;
+    l_vertex_list[0].pos = m_quad.top_left();
+    l_vertex_list[1].pos = m_quad.top_right();
+    l_vertex_list[2].pos = m_quad.bottom_right();
+    l_vertex_list[3].pos = m_quad.bottom_left();
 
-    bounds2f mUVs      = mFont.get_character_uvs(uiChar);
-    lVertexList[0].uvs = mUVs.top_left();
-    lVertexList[1].uvs = mUVs.top_right();
-    lVertexList[2].uvs = mUVs.bottom_right();
-    lVertexList[3].uvs = mUVs.bottom_left();
+    bounds2f m_u_vs      = m_font.get_character_uvs(ui_char);
+    l_vertex_list[0].uvs = m_u_vs.top_left();
+    l_vertex_list[1].uvs = m_u_vs.top_right();
+    l_vertex_list[2].uvs = m_u_vs.bottom_right();
+    l_vertex_list[3].uvs = m_u_vs.bottom_left();
 
-    return lVertexList;
+    return l_vertex_list;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(char32_t uiChar) const {
-    return create_letter_quad_(*pFont_, uiChar);
+std::array<vertex, 4> text::create_letter_quad_(char32_t ui_char) const {
+    return create_letter_quad_(*p_font_, ui_char);
 }
 
-std::array<vertex, 4> text::create_outline_letter_quad_(char32_t uiChar) const {
-    return create_letter_quad_(*pOutlineFont_, uiChar);
+std::array<vertex, 4> text::create_outline_letter_quad_(char32_t ui_char) const {
+    return create_letter_quad_(*p_outline_font_, ui_char);
 }
 
-quad text::create_letter_quad(char32_t uiChar) const {
-    quad mOutput;
-    mOutput.mat = pFont_->get_texture().lock();
-    mOutput.v   = create_letter_quad_(uiChar);
+quad text::create_letter_quad(char32_t ui_char) const {
+    quad m_output;
+    m_output.mat = p_font_->get_texture().lock();
+    m_output.v   = create_letter_quad_(ui_char);
 
-    return mOutput;
+    return m_output;
 }
 
 std::size_t text::get_num_letters() const {
     update_();
-    return lQuadList_.size();
+    return l_quad_list_.size();
 }
 
-const std::array<vertex, 4>& text::get_letter_quad(std::size_t uiIndex) const {
+const std::array<vertex, 4>& text::get_letter_quad(std::size_t ui_index) const {
     update_();
 
-    if (uiIndex >= lQuadList_.size())
+    if (ui_index >= l_quad_list_.size())
         throw gui::exception("text", "Trying to access letter at invalid index.");
 
-    return lQuadList_[uiIndex];
+    return l_quad_list_[ui_index];
 }
 
 } // namespace lxgui::gui

@@ -8,157 +8,157 @@
 
 namespace lxgui::input {
 
-enum class mouse_state { UP = 0, DRAGGED, CLICKED, RELEASED, DOUBLE, LONG };
+enum class mouse_state { up = 0, dragged, clicked, released, DOUBLE, LONG };
 
-enum class mouse_button : std::uint8_t { LEFT = 0, RIGHT, MIDDLE };
+enum class mouse_button : std::uint8_t { left = 0, right, middle };
 
 enum class key : std::uint8_t {
-    K_UNASSIGNED   = 0x00,
-    K_ESCAPE       = 0x01,
-    K_1            = 0x02,
-    K_2            = 0x03,
-    K_3            = 0x04,
-    K_4            = 0x05,
-    K_5            = 0x06,
-    K_6            = 0x07,
-    K_7            = 0x08,
-    K_8            = 0x09,
-    K_9            = 0x0A,
-    K_0            = 0x0B,
-    K_MINUS        = 0x0C, /// - on main keyboard
-    K_EQUALS       = 0x0D,
-    K_BACK         = 0x0E, /// Backspace
-    K_TAB          = 0x0F,
-    K_Q            = 0x10,
-    K_W            = 0x11,
-    K_E            = 0x12,
-    K_R            = 0x13,
-    K_T            = 0x14,
-    K_Y            = 0x15,
-    K_U            = 0x16,
-    K_I            = 0x17,
-    K_O            = 0x18,
-    K_P            = 0x19,
-    K_LBRACKET     = 0x1A,
-    K_RBRACKET     = 0x1B,
-    K_RETURN       = 0x1C, /// Enter on main keyboard
-    K_LCONTROL     = 0x1D,
-    K_A            = 0x1E,
-    K_S            = 0x1F,
-    K_D            = 0x20,
-    K_F            = 0x21,
-    K_G            = 0x22,
-    K_H            = 0x23,
-    K_J            = 0x24,
-    K_K            = 0x25,
-    K_L            = 0x26,
-    K_SEMICOLON    = 0x27,
-    K_APOSTROPHE   = 0x28,
-    K_GRAVE        = 0x29, /// Accent
-    K_LSHIFT       = 0x2A,
-    K_BACKSLASH    = 0x2B,
-    K_Z            = 0x2C,
-    K_X            = 0x2D,
-    K_C            = 0x2E,
-    K_V            = 0x2F,
-    K_B            = 0x30,
-    K_N            = 0x31,
-    K_M            = 0x32,
-    K_COMMA        = 0x33,
-    K_PERIOD       = 0x34, /// . on main keyboard
-    K_SLASH        = 0x35, /// / on main keyboard
-    K_RSHIFT       = 0x36,
-    K_MULTIPLY     = 0x37, /// * on numeric keypad
-    K_LMENU        = 0x38, /// Left Alt
-    K_SPACE        = 0x39,
-    K_CAPITAL      = 0x3A,
-    K_F1           = 0x3B,
-    K_F2           = 0x3C,
-    K_F3           = 0x3D,
-    K_F4           = 0x3E,
-    K_F5           = 0x3F,
-    K_F6           = 0x40,
-    K_F7           = 0x41,
-    K_F8           = 0x42,
-    K_F9           = 0x43,
-    K_F10          = 0x44,
-    K_NUMLOCK      = 0x45,
-    K_SCROLL       = 0x46, /// Scroll Lock
-    K_NUMPAD7      = 0x47,
-    K_NUMPAD8      = 0x48,
-    K_NUMPAD9      = 0x49,
-    K_SUBTRACT     = 0x4A, /// - on numeric keypad
-    K_NUMPAD4      = 0x4B,
-    K_NUMPAD5      = 0x4C,
-    K_NUMPAD6      = 0x4D,
-    K_ADD          = 0x4E, /// + on numeric keypad
-    K_NUMPAD1      = 0x4F,
-    K_NUMPAD2      = 0x50,
-    K_NUMPAD3      = 0x51,
-    K_NUMPAD0      = 0x52,
-    K_DECIMAL      = 0x53, /// . on numeric keypad
-    K_OEM_102      = 0x56, /// < > | on UK/Germany keyboards
-    K_F11          = 0x57,
-    K_F12          = 0x58,
-    K_F13          = 0x64, ///                     (NEC PC98)
-    K_F14          = 0x65, ///                     (NEC PC98)
-    K_F15          = 0x66, ///                     (NEC PC98)
-    K_KANA         = 0x70, /// (Japanese keyboard)
-    K_ABNT_C1      = 0x73, /// / ? on Portugese (Brazilian) keyboards
-    K_CONVERT      = 0x79, /// (Japanese keyboard)
-    K_NOCONVERT    = 0x7B, /// (Japanese keyboard)
-    K_YEN          = 0x7D, /// (Japanese keyboard)
-    K_ABNT_C2      = 0x7E, /// Numpad . on Portugese (Brazilian) keyboards
-    K_NUMPADEQUALS = 0x8D, /// = on numeric keypad (NEC PC98)
-    K_PREVTRACK    = 0x90, /// Previous Track (K_CIRCUMFLEX on Japanese keyboard)
-    K_AT           = 0x91, ///                     (NEC PC98)
-    K_COLON        = 0x92, ///                     (NEC PC98)
-    K_UNDERLINE    = 0x93, ///                     (NEC PC98)
-    K_KANJI        = 0x94, /// (Japanese keyboard)
-    K_STOP         = 0x95, ///                     (NEC PC98)
-    K_AX           = 0x96, ///                     (Japan AX)
-    K_UNLABELED    = 0x97, ///                        (J3100)
-    K_NEXTTRACK    = 0x99, /// Next Track
-    K_NUMPADENTER  = 0x9C, /// Enter on numeric keypad
-    K_RCONTROL     = 0x9D,
-    K_MUTE         = 0xA0, /// Mute
-    K_CALCULATOR   = 0xA1, /// Calculator
-    K_PLAYPAUSE    = 0xA2, /// Play / Pause
-    K_MEDIASTOP    = 0xA4, /// Media Stop
-    K_VOLUMEDOWN   = 0xAE, /// Volume -
-    K_VOLUMEUP     = 0xB0, /// Volume +
-    K_WEBHOME      = 0xB2, /// Web home
-    K_NUMPADCOMMA  = 0xB3, /// , on numeric keypad (NEC PC98)
-    K_DIVIDE       = 0xB5, /// / on numeric keypad
-    K_SYSRQ        = 0xB7,
-    K_RMENU        = 0xB8, /// Right Alt
-    K_PAUSE        = 0xC5, /// Pause
-    K_HOME         = 0xC7, /// Home on arrow keypad
-    K_UP           = 0xC8, /// UpArrow on arrow keypad
-    K_PGUP         = 0xC9, /// PgUp on arrow keypad
-    K_LEFT         = 0xCB, /// LeftArrow on arrow keypad
-    K_RIGHT        = 0xCD, /// RightArrow on arrow keypad
-    K_END          = 0xCF, /// End on arrow keypad
-    K_DOWN         = 0xD0, /// DownArrow on arrow keypad
-    K_PGDOWN       = 0xD1, /// PgDn on arrow keypad
-    K_INSERT       = 0xD2, /// Insert on arrow keypad
-    K_DELETE       = 0xD3, /// Delete on arrow keypad
-    K_LWIN         = 0xDB, /// Left Windows key
-    K_RWIN         = 0xDC, /// Right Windows key
-    K_APPS         = 0xDD, /// AppMenu key
-    K_POWER        = 0xDE, /// System Power
-    K_SLEEP        = 0xDF, /// System Sleep
-    K_WAKE         = 0xE3, /// System Wake
-    K_WEBSEARCH    = 0xE5, /// Web Search
-    K_WEBFAVORITES = 0xE6, /// Web Favorites
-    K_WEBREFRESH   = 0xE7, /// Web Refresh
-    K_WEBSTOP      = 0xE8, /// Web Stop
-    K_WEBFORWARD   = 0xE9, /// Web Forward
-    K_WEBBACK      = 0xEA, /// Web Back
-    K_MYCOMPUTER   = 0xEB, /// My Computer
-    K_MAIL         = 0xEC, /// Mail
-    K_MEDIASELECT  = 0xED, /// Media Select
-    K_MAXKEY       = 0xFF
+    k_unassigned   = 0x00,
+    k_escape       = 0x01,
+    k_1            = 0x02,
+    k_2            = 0x03,
+    k_3            = 0x04,
+    k_4            = 0x05,
+    k_5            = 0x06,
+    k_6            = 0x07,
+    k_7            = 0x08,
+    k_8            = 0x09,
+    k_9            = 0x0A,
+    k_0            = 0x0B,
+    k_minus        = 0x0C, /// - on main keyboard
+    k_equals       = 0x0D,
+    k_back         = 0x0E, /// Backspace
+    k_tab          = 0x0F,
+    k_q            = 0x10,
+    k_w            = 0x11,
+    k_e            = 0x12,
+    k_r            = 0x13,
+    k_t            = 0x14,
+    k_y            = 0x15,
+    k_u            = 0x16,
+    k_i            = 0x17,
+    k_o            = 0x18,
+    k_p            = 0x19,
+    k_lbracket     = 0x1A,
+    k_rbracket     = 0x1B,
+    k_return       = 0x1C, /// Enter on main keyboard
+    k_lcontrol     = 0x1D,
+    k_a            = 0x1E,
+    k_s            = 0x1F,
+    k_d            = 0x20,
+    k_f            = 0x21,
+    k_g            = 0x22,
+    k_h            = 0x23,
+    k_j            = 0x24,
+    k_k            = 0x25,
+    k_l            = 0x26,
+    k_semicolon    = 0x27,
+    k_apostrophe   = 0x28,
+    k_grave        = 0x29, /// Accent
+    k_lshift       = 0x2A,
+    k_backslash    = 0x2B,
+    k_z            = 0x2C,
+    k_x            = 0x2D,
+    k_c            = 0x2E,
+    k_v            = 0x2F,
+    k_b            = 0x30,
+    k_n            = 0x31,
+    k_m            = 0x32,
+    k_comma        = 0x33,
+    k_period       = 0x34, /// . on main keyboard
+    k_slash        = 0x35, /// / on main keyboard
+    k_rshift       = 0x36,
+    k_multiply     = 0x37, /// * on numeric keypad
+    k_lmenu        = 0x38, /// Left Alt
+    k_space        = 0x39,
+    k_capital      = 0x3A,
+    k_f1           = 0x3B,
+    k_f2           = 0x3C,
+    k_f3           = 0x3D,
+    k_f4           = 0x3E,
+    k_f5           = 0x3F,
+    k_f6           = 0x40,
+    k_f7           = 0x41,
+    k_f8           = 0x42,
+    k_f9           = 0x43,
+    k_f10          = 0x44,
+    k_numlock      = 0x45,
+    k_scroll       = 0x46, /// Scroll Lock
+    k_numpa_d7      = 0x47,
+    k_numpa_d8      = 0x48,
+    k_numpa_d9      = 0x49,
+    k_subtract     = 0x4A, /// - on numeric keypad
+    k_numpa_d4      = 0x4B,
+    k_numpa_d5      = 0x4C,
+    k_numpa_d6      = 0x4D,
+    k_add          = 0x4E, /// + on numeric keypad
+    k_numpa_d1      = 0x4F,
+    k_numpa_d2      = 0x50,
+    k_numpa_d3      = 0x51,
+    k_numpa_d0      = 0x52,
+    k_decimal      = 0x53, /// . on numeric keypad
+    k_oem_102      = 0x56, /// < > | on UK/Germany keyboards
+    k_f11          = 0x57,
+    k_f12          = 0x58,
+    k_f13          = 0x64, ///                     (NEC PC98)
+    k_f14          = 0x65, ///                     (NEC PC98)
+    k_f15          = 0x66, ///                     (NEC PC98)
+    k_kana         = 0x70, /// (Japanese keyboard)
+    k_abnt_c1      = 0x73, /// / ? on Portugese (Brazilian) keyboards
+    k_convert      = 0x79, /// (Japanese keyboard)
+    k_noconvert    = 0x7B, /// (Japanese keyboard)
+    k_yen          = 0x7D, /// (Japanese keyboard)
+    k_abnt_c2      = 0x7E, /// Numpad . on Portugese (Brazilian) keyboards
+    k_numpadequals = 0x8D, /// = on numeric keypad (NEC PC98)
+    k_prevtrack    = 0x90, /// Previous Track (K_CIRCUMFLEX on Japanese keyboard)
+    k_at           = 0x91, ///                     (NEC PC98)
+    k_colon        = 0x92, ///                     (NEC PC98)
+    k_underline    = 0x93, ///                     (NEC PC98)
+    k_kanji        = 0x94, /// (Japanese keyboard)
+    k_stop         = 0x95, ///                     (NEC PC98)
+    k_ax           = 0x96, ///                     (Japan AX)
+    k_unlabeled    = 0x97, ///                        (J3100)
+    k_nexttrack    = 0x99, /// Next Track
+    k_numpadenter  = 0x9C, /// Enter on numeric keypad
+    k_rcontrol     = 0x9D,
+    k_mute         = 0xA0, /// Mute
+    k_calculator   = 0xA1, /// Calculator
+    k_playpause    = 0xA2, /// Play / Pause
+    k_mediastop    = 0xA4, /// Media Stop
+    k_volumedown   = 0xAE, /// Volume -
+    k_volumeup     = 0xB0, /// Volume +
+    k_webhome      = 0xB2, /// Web home
+    k_numpadcomma  = 0xB3, /// , on numeric keypad (NEC PC98)
+    k_divide       = 0xB5, /// / on numeric keypad
+    k_sysrq        = 0xB7,
+    k_rmenu        = 0xB8, /// Right Alt
+    k_pause        = 0xC5, /// Pause
+    k_home         = 0xC7, /// Home on arrow keypad
+    k_up           = 0xC8, /// UpArrow on arrow keypad
+    k_pgup         = 0xC9, /// PgUp on arrow keypad
+    k_left         = 0xCB, /// LeftArrow on arrow keypad
+    k_right        = 0xCD, /// RightArrow on arrow keypad
+    k_end          = 0xCF, /// End on arrow keypad
+    k_down         = 0xD0, /// DownArrow on arrow keypad
+    k_pgdown       = 0xD1, /// PgDn on arrow keypad
+    k_insert       = 0xD2, /// Insert on arrow keypad
+    k_delete       = 0xD3, /// Delete on arrow keypad
+    k_lwin         = 0xDB, /// Left Windows key
+    k_rwin         = 0xDC, /// Right Windows key
+    k_apps         = 0xDD, /// AppMenu key
+    k_power        = 0xDE, /// System Power
+    k_sleep        = 0xDF, /// System Sleep
+    k_wake         = 0xE3, /// System Wake
+    k_websearch    = 0xE5, /// Web Search
+    k_webfavorites = 0xE6, /// Web Favorites
+    k_webrefresh   = 0xE7, /// Web Refresh
+    k_webstop      = 0xE8, /// Web Stop
+    k_webforward   = 0xE9, /// Web Forward
+    k_webback      = 0xEA, /// Web Back
+    k_mycomputer   = 0xEB, /// My Computer
+    k_mail         = 0xEC, /// Mail
+    k_mediaselect  = 0xED, /// Media Select
+    k_maxkey       = 0xFF
 };
 
 /// Returns a standard English name for the provided mouse button.
@@ -167,7 +167,7 @@ enum class key : std::uint8_t {
  *         button. This can be used for string-based key identification in scripts, where key
  *         integer codes would be less usable, or for displaying debug or error messages.
  */
-std::string_view get_mouse_button_codename(mouse_button mID);
+std::string_view get_mouse_button_codename(mouse_button m_id);
 
 /// Returns the localizable name of the provided mouse button.
 /** \param mID The ID code of the mouse button
@@ -175,7 +175,7 @@ std::string_view get_mouse_button_codename(mouse_button mID);
  *   \note This will return localizable button names, e.g., "{mouse_left}" for the left mouse
  *         button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
-std::string_view get_localizable_mouse_button_name(mouse_button mID);
+std::string_view get_localizable_mouse_button_name(mouse_button m_id);
 
 /// Returns a standard English name for the provided key.
 /** \param mKey The key
@@ -184,14 +184,14 @@ std::string_view get_localizable_mouse_button_name(mouse_button mID);
  *         This can be used for string-based key identification in scripts, where key integer
  *         codes would be less usable, or for displaying debug or error messages.
  */
-std::string_view get_key_codename(key mKey);
+std::string_view get_key_codename(key m_key);
 
 /// Returns the key code from the standard English name of a key.
 /** \param sKey The name of the key
  *   \return The key code
  *   \note The name of the key must be from get_key_codename().
  */
-key get_key_from_codename(std::string_view sKey);
+key get_key_from_codename(std::string_view s_key);
 
 /// Returns the localizable name of the provided key.
 /** \param mKey The key
@@ -199,10 +199,10 @@ key get_key_from_codename(std::string_view sKey);
  *   \note This will return localizable key names, e.g., "{key_enter}" for the Enter key.
  *         Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
-std::string_view get_localizable_key_name(key mKey);
+std::string_view get_localizable_key_name(key m_key);
 
-constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
-constexpr std::size_t KEY_NUMBER          = static_cast<std::size_t>(key::K_MAXKEY);
+constexpr std::size_t mouse_button_number = 3u;
+constexpr std::size_t key_number          = static_cast<std::size_t>(key::k_maxkey);
 
 } // namespace lxgui::input
 

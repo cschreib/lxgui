@@ -8,127 +8,127 @@
  */
 namespace lxgui::utils {
 
-string_view trim(string_view s, char cPattern) {
-    std::size_t uiStart = s.find_first_not_of(cPattern);
-    if (uiStart == s.npos)
+string_view trim(string_view s, char c_pattern) {
+    std::size_t ui_start = s.find_first_not_of(c_pattern);
+    if (ui_start == s.npos)
         return {};
 
-    s = s.substr(uiStart);
+    s = s.substr(ui_start);
 
-    std::size_t uiEnd = s.find_last_not_of(cPattern);
-    if (uiEnd != s.npos)
-        s = s.substr(0, uiEnd + 1);
+    std::size_t ui_end = s.find_last_not_of(c_pattern);
+    if (ui_end != s.npos)
+        s = s.substr(0, ui_end + 1);
 
     return s;
 }
 
-string_view trim(string_view s, string_view sPatterns) {
-    std::size_t uiStart = s.find_first_not_of(sPatterns);
-    if (uiStart == s.npos)
+string_view trim(string_view s, string_view s_patterns) {
+    std::size_t ui_start = s.find_first_not_of(s_patterns);
+    if (ui_start == s.npos)
         return {};
 
-    s = s.substr(uiStart);
+    s = s.substr(ui_start);
 
-    std::size_t uiEnd = s.find_last_not_of(sPatterns);
-    if (uiEnd != s.npos)
-        s = s.substr(0, uiEnd + 1);
+    std::size_t ui_end = s.find_last_not_of(s_patterns);
+    if (ui_end != s.npos)
+        s = s.substr(0, ui_end + 1);
 
     return s;
 }
 
-void replace(string& s, string_view sPattern, string_view sReplacement) {
-    std::size_t uiPos = s.find(sPattern);
+void replace(string& s, string_view s_pattern, string_view s_replacement) {
+    std::size_t ui_pos = s.find(s_pattern);
 
-    while (uiPos != s.npos) {
-        s.replace(uiPos, sPattern.length(), sReplacement);
-        uiPos = s.find(sPattern, uiPos + sReplacement.length());
+    while (ui_pos != s.npos) {
+        s.replace(ui_pos, s_pattern.length(), s_replacement);
+        ui_pos = s.find(s_pattern, ui_pos + s_replacement.length());
     }
 }
 
-std::size_t count_occurrences(string_view s, string_view sPattern) {
-    std::size_t uiCount = 0;
-    std::size_t uiPos   = s.find(sPattern);
-    while (uiPos != s.npos) {
-        ++uiCount;
-        uiPos = s.find(sPattern, uiPos + 1);
+std::size_t count_occurrences(string_view s, string_view s_pattern) {
+    std::size_t ui_count = 0;
+    std::size_t ui_pos   = s.find(s_pattern);
+    while (ui_pos != s.npos) {
+        ++ui_count;
+        ui_pos = s.find(s_pattern, ui_pos + 1);
     }
 
-    return uiCount;
+    return ui_count;
 }
 
 template<typename T>
 std::vector<std::basic_string_view<T>>
-cut_template(std::basic_string_view<T> s, std::basic_string_view<T> sDelim) {
-    std::vector<std::basic_string_view<T>> lPieces;
-    std::size_t                            uiPos     = s.find(sDelim);
-    std::size_t                            uiLastPos = 0u;
-    std::size_t                            uiCurSize = 0u;
+cut_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
+    std::vector<std::basic_string_view<T>> l_pieces;
+    std::size_t                            ui_pos     = s.find(s_delim);
+    std::size_t                            ui_last_pos = 0u;
+    std::size_t                            ui_cur_size = 0u;
 
-    while (uiPos != std::basic_string_view<T>::npos) {
-        uiCurSize = uiPos - uiLastPos;
-        if (uiCurSize != 0)
-            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-        uiLastPos = uiPos + sDelim.size();
-        uiPos     = s.find(sDelim, uiLastPos);
+    while (ui_pos != std::basic_string_view<T>::npos) {
+        ui_cur_size = ui_pos - ui_last_pos;
+        if (ui_cur_size != 0)
+            l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
+        ui_last_pos = ui_pos + s_delim.size();
+        ui_pos     = s.find(s_delim, ui_last_pos);
     }
 
-    lPieces.push_back(s.substr(uiLastPos));
+    l_pieces.push_back(s.substr(ui_last_pos));
 
-    return lPieces;
+    return l_pieces;
 }
 
-std::vector<string_view> cut(string_view s, string_view sDelim) {
-    return cut_template(s, sDelim);
+std::vector<string_view> cut(string_view s, string_view s_delim) {
+    return cut_template(s, s_delim);
 }
 
-std::vector<ustring_view> cut(ustring_view s, ustring_view sDelim) {
-    return cut_template(s, sDelim);
+std::vector<ustring_view> cut(ustring_view s, ustring_view s_delim) {
+    return cut_template(s, s_delim);
 }
 
 template<typename T>
 std::vector<std::basic_string_view<T>>
-cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> sDelim) {
-    std::vector<std::basic_string_view<T>> lPieces;
-    std::size_t                            uiPos     = s.find(sDelim);
-    std::size_t                            uiLastPos = 0u;
-    std::size_t                            uiCurSize = 0u;
+cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
+    std::vector<std::basic_string_view<T>> l_pieces;
+    std::size_t                            ui_pos     = s.find(s_delim);
+    std::size_t                            ui_last_pos = 0u;
+    std::size_t                            ui_cur_size = 0u;
 
-    while (uiPos != std::basic_string_view<T>::npos) {
-        uiCurSize = uiPos - uiLastPos;
-        lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-        uiLastPos = uiPos + sDelim.size();
-        uiPos     = s.find(sDelim, uiLastPos);
+    while (ui_pos != std::basic_string_view<T>::npos) {
+        ui_cur_size = ui_pos - ui_last_pos;
+        l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
+        ui_last_pos = ui_pos + s_delim.size();
+        ui_pos     = s.find(s_delim, ui_last_pos);
     }
 
-    lPieces.push_back(s.substr(uiLastPos));
+    l_pieces.push_back(s.substr(ui_last_pos));
 
-    return lPieces;
+    return l_pieces;
 }
 
-std::vector<string_view> cut_each(string_view s, string_view sDelim) {
-    return cut_each_template(s, sDelim);
+std::vector<string_view> cut_each(string_view s, string_view s_delim) {
+    return cut_each_template(s, s_delim);
 }
 
-std::vector<ustring_view> cut_each(ustring_view s, ustring_view sDelim) {
-    return cut_each_template(s, sDelim);
+std::vector<ustring_view> cut_each(ustring_view s, ustring_view s_delim) {
+    return cut_each_template(s, s_delim);
 }
 
 template<typename T>
 std::pair<std::basic_string_view<T>, std::basic_string_view<T>>
-cut_first_template(std::basic_string_view<T> s, std::basic_string_view<T> sDelim) {
-    std::size_t uiPos = s.find(sDelim);
-    if (uiPos == std::basic_string_view<T>::npos)
+cut_first_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
+    std::size_t ui_pos = s.find(s_delim);
+    if (ui_pos == std::basic_string_view<T>::npos)
         return {};
 
-    return {s.substr(0, uiPos), s.substr(uiPos + 1u)};
+    return {s.substr(0, ui_pos), s.substr(ui_pos + 1u)};
 }
 
-std::pair<string_view, string_view> cut_first(string_view s, string_view sDelim) {
-    return cut_first_template(s, sDelim);
+std::pair<string_view, string_view> cut_first(string_view s, string_view s_delim) {
+    return cut_first_template(s, s_delim);
 }
 
-std::pair<ustring_view, ustring_view> cut_first(ustring_view s, ustring_view sDelim) {
-    return cut_first_template(s, sDelim);
+std::pair<ustring_view, ustring_view> cut_first(ustring_view s, ustring_view s_delim) {
+    return cut_first_template(s, s_delim);
 }
 
 bool has_no_content(string_view s) {
@@ -143,22 +143,22 @@ bool has_no_content(string_view s) {
     return true;
 }
 
-bool starts_with(string_view s, string_view sPattern) {
-    std::size_t n = std::min(s.size(), sPattern.size());
+bool starts_with(string_view s, string_view s_pattern) {
+    std::size_t n = std::min(s.size(), s_pattern.size());
     for (std::size_t i = 0; i < n; ++i) {
-        if (s[i] != sPattern[i])
+        if (s[i] != s_pattern[i])
             return false;
     }
 
     return true;
 }
 
-bool ends_with(string_view s, string_view sPattern) {
+bool ends_with(string_view s, string_view s_pattern) {
     std::size_t ss = s.size();
-    std::size_t ps = sPattern.size();
+    std::size_t ps = s_pattern.size();
     std::size_t n  = std::min(ss, ps);
     for (std::size_t i = 1; i <= n; ++i) {
-        if (s[ss - i] != sPattern[ps - i])
+        if (s[ss - i] != s_pattern[ps - i])
             return false;
     }
 
@@ -290,13 +290,13 @@ bool from_string(ustring_view s, ustring& v) {
 }
 
 bool is_number(string_view s) {
-    std::istringstream mTemp{std::string(s)};
-    mTemp.imbue(std::locale::classic());
+    std::istringstream m_temp{std::string(s)};
+    m_temp.imbue(std::locale::classic());
 
-    double dValue = 0;
-    mTemp >> dValue;
+    double d_value = 0;
+    m_temp >> d_value;
 
-    return !mTemp.fail();
+    return !m_temp.fail();
 }
 
 bool is_number(ustring_view s) {
@@ -312,13 +312,13 @@ bool is_number(char32_t s) {
 }
 
 bool is_integer(string_view s) {
-    std::istringstream mTemp{std::string(s)};
-    mTemp.imbue(std::locale::classic());
+    std::istringstream m_temp{std::string(s)};
+    m_temp.imbue(std::locale::classic());
 
-    std::int64_t iValue = 0;
-    mTemp >> iValue;
+    std::int64_t i_value = 0;
+    m_temp >> i_value;
 
-    return !mTemp.fail();
+    return !m_temp.fail();
 }
 
 bool is_integer(ustring_view s) {
@@ -350,10 +350,10 @@ bool is_whitespace(char32_t c) {
 }
 
 template<typename T>
-string to_string_template(T mValue) {
+string to_string_template(T m_value) {
     std::ostringstream ss;
     ss.imbue(std::locale::classic());
-    ss << mValue;
+    ss << m_value;
     return ss.str();
 }
 
@@ -394,22 +394,22 @@ string to_string(bool b) {
 }
 
 string to_string(void* p) {
-    std::ostringstream sStream;
-    sStream.imbue(std::locale::classic());
-    sStream << p;
-    return sStream.str();
+    std::ostringstream s_stream;
+    s_stream.imbue(std::locale::classic());
+    s_stream << p;
+    return s_stream.str();
 }
 
-std::string to_string(const utils::variant& mValue) {
+std::string to_string(const utils::variant& m_value) {
     return std::visit(
-        [&](const auto& mInnerValue) -> std::string {
-            using inner_type = std::decay_t<decltype(mInnerValue)>;
+        [&](const auto& m_inner_value) -> std::string {
+            using inner_type = std::decay_t<decltype(m_inner_value)>;
             if constexpr (std::is_same_v<inner_type, utils::empty>)
                 return "<none>";
             else
-                return to_string(mInnerValue);
+                return to_string(m_inner_value);
         },
-        mValue);
+        m_value);
 }
 
 } // namespace lxgui::utils

@@ -22,16 +22,16 @@ class texture : public layered_region {
     using base = layered_region;
 
 public:
-    enum class blend_mode { NONE, BLEND, KEY, ADD, MOD };
+    enum class blend_mode { none, blend, key, add, mod };
 
     /// Constructor.
-    explicit texture(utils::control_block& mBlock, manager& mManager);
+    explicit texture(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& sTab) const override;
+    std::string serialize(const std::string& s_tab) const override;
 
     /// Renders this region on the current render target.
     void render() const override;
@@ -39,7 +39,7 @@ public:
     /// Copies a region's parameters into this texture (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Returns this texture's blending mode.
     /** \return This texture's blending mode
@@ -104,7 +104,7 @@ public:
      *         for each pixel, the original color is multiplied
      *         by this vertex color.
      */
-    color get_vertex_color(std::size_t uiIndex) const;
+    color get_vertex_color(std::size_t ui_index) const;
 
     /// Checks if this texture is desaturated.
     /** \return 'true' if the texture is desaturated
@@ -116,33 +116,33 @@ public:
     /// Sets this texture's blending mode.
     /** \param mBlendMode The new blending mode
      */
-    void set_blend_mode(blend_mode mBlendMode);
+    void set_blend_mode(blend_mode m_blend_mode);
 
     /// Sets this texture's blending mode.
     /** \param sBlendMode The new blending mode
      */
-    void set_blend_mode(const std::string& sBlendMode);
+    void set_blend_mode(const std::string& s_blend_mode);
 
     /// Sets this texture's filtering mode.
     /** \param mFilter The new filtering mode
      */
-    void set_filter_mode(material::filter mFilter);
+    void set_filter_mode(material::filter m_filter);
 
     /// Sets this texture's blending mode.
     /** \param sFilter The new filtering mode
      */
-    void set_filter_mode(const std::string& sFilter);
+    void set_filter_mode(const std::string& s_filter);
 
     /// Makes this texture appear without any color.
     /** \param bIsDesaturated 'true' if you want to remove colors
      */
-    void set_desaturated(bool bIsDesaturated);
+    void set_desaturated(bool b_is_desaturated);
 
     /// Adds a gradient effect to this texture.
     /** \param mGradient The gradient to add
      *   \note To remove a gradient, call set_gradient(Gradient::NONE).
      */
-    void set_gradient(const gradient& mGradient);
+    void set_gradient(const gradient& m_gradient);
 
     /// Sets this texture's texture coordinates.
     /** \param lTextureRect This texture's texture coordinates
@@ -153,7 +153,7 @@ public:
      *         top, right, bottom). Other corners are calculated using these coordinates.
      *   \note This function only allows horizontal/rectangle texture coordinates.
      */
-    void set_tex_rect(const std::array<float, 4>& lTextureRect);
+    void set_tex_rect(const std::array<float, 4>& l_texture_rect);
 
     /// Sets this texture's texture coordinates.
     /** \param lTextureCoords This texture's texture coordinates
@@ -164,12 +164,12 @@ public:
      *         (x1, y1, x2, y2, x3, y3, x4, y4).
      *   \note This function allows rotated/deformed texture coordinates.
      */
-    void set_tex_coord(const std::array<float, 8>& lTextureCoords);
+    void set_tex_coord(const std::array<float, 8>& l_texture_coords);
 
     /// Sets whether this texture's dimensions are affected by texture coordinates.
     /** \param bTexCoordModifiesRect 'true' to make dimensions change with tex coords
      */
-    void set_tex_coord_modifies_rect(bool bTexCoordModifiesRect);
+    void set_tex_coord_modifies_rect(bool b_tex_coord_modifies_rect);
 
     /// Sets this texture's texture file.
     /** \param sFile The file from which to read data
@@ -177,7 +177,7 @@ public:
      *   \note This function is not compatible with set_color() : only the latest
      *         you have called will apply.
      */
-    void set_texture(const std::string& sFile);
+    void set_texture(const std::string& s_file);
 
     /// Reads texture data from a render_target.
     /** \param pRenderTarget The render_target from which to read the data
@@ -186,21 +186,21 @@ public:
      *   \note This function is not compatible with set_color() : only the latest
      *         you have called will apply.
      */
-    void set_texture(std::shared_ptr<render_target> pRenderTarget);
+    void set_texture(std::shared_ptr<render_target> p_render_target);
 
     /// Sets this texture's color.
     /** \param mColor The color to use
      *   \note This function is not compatible with set_texture() : only the latest
      *         you have called will apply.
      */
-    void set_solid_color(const color& mColor);
+    void set_solid_color(const color& m_color);
 
     /// Directly sets this texture's underlying quad (vertices and material).
     /** \param mQuad The new quad to use
      *   \note The texture's dimensions will be adjusted to fit those
      *         of the provided quad, and same goes for texture coordinates.
      */
-    void set_quad(const quad& mQuad);
+    void set_quad(const quad& m_quad);
 
     /// Sets this texture's vertex color.
     /** \param mColor This textures's new vertex color
@@ -210,7 +210,7 @@ public:
      *         by this vertex color.
      */
     void set_vertex_color(
-        const color& mColor, std::size_t uiIndex = std::numeric_limits<std::size_t>::max());
+        const color& m_color, std::size_t ui_index = std::numeric_limits<std::size_t>::max());
 
     /// Creates the associated Lua glue.
     void create_glue() override;
@@ -218,31 +218,31 @@ public:
     /// Parses data from a layout_node.
     /** \param mNode The layout node
      */
-    void parse_layout(const layout_node& mNode) override;
+    void parse_layout(const layout_node& m_node) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "Texture";
+    static constexpr const char* class_name = "Texture";
 
 private:
-    void parse_attributes_(const layout_node& mNode) override;
-    void parse_tex_coords_node_(const layout_node& mNode);
-    void parse_gradient_node_(const layout_node& mNode);
+    void parse_attributes_(const layout_node& m_node) override;
+    void parse_tex_coords_node_(const layout_node& m_node);
+    void parse_gradient_node_(const layout_node& m_node);
 
     void update_dimensions_from_tex_coord_();
     void update_borders_() override;
 
     using content     = std::variant<color, std::string, gradient>;
-    content mContent_ = color::WHITE;
+    content m_content_ = color::white;
 
-    blend_mode       mBlendMode_            = blend_mode::BLEND;
-    material::filter mFilter_               = material::filter::NONE;
-    bool             bIsDesaturated_        = false;
-    bool             bTexCoordModifiesRect_ = false;
+    blend_mode       m_blend_mode_            = blend_mode::blend;
+    material::filter m_filter_               = material::filter::none;
+    bool             b_is_desaturated_        = false;
+    bool             b_tex_coord_modifies_rect_ = false;
 
-    renderer& mRenderer_;
-    quad      mQuad_;
+    renderer& m_renderer_;
+    quad      m_quad_;
 };
 
 } // namespace lxgui::gui

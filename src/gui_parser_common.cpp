@@ -11,49 +11,49 @@
 namespace lxgui::gui {
 
 region_core_attributes parse_core_attributes(
-    registry&                  mRegistry,
-    virtual_registry&          mVirtualRegistry,
-    const layout_node&         mNode,
-    utils::observer_ptr<frame> pParent) {
-    region_core_attributes mAttr;
-    mAttr.sObjectType = mNode.get_name();
-    mAttr.sName       = mNode.get_attribute_value<std::string>("name");
+    registry&                  m_registry,
+    virtual_registry&          m_virtual_registry,
+    const layout_node&         m_node,
+    utils::observer_ptr<frame> p_parent) {
+    region_core_attributes m_attr;
+    m_attr.s_object_type = m_node.get_name();
+    m_attr.s_name       = m_node.get_attribute_value<std::string>("name");
 
-    if (pParent) {
-        mAttr.pParent = std::move(pParent);
+    if (p_parent) {
+        m_attr.p_parent = std::move(p_parent);
 
-        if (mNode.has_attribute("virtual")) {
-            gui::out << gui::warning << mNode.get_location() << " : "
-                     << "Cannot use the \"virtual\" attribute on \"" << mAttr.sName
+        if (m_node.has_attribute("virtual")) {
+            gui::out << gui::warning << m_node.get_location() << " : "
+                     << "Cannot use the \"virtual\" attribute on \"" << m_attr.s_name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
         }
-        if (mNode.has_attribute("parent")) {
-            gui::out << gui::warning << mNode.get_location() << " : "
-                     << "Cannot use the \"parent\" attribute on \"" << mAttr.sName
+        if (m_node.has_attribute("parent")) {
+            gui::out << gui::warning << m_node.get_location() << " : "
+                     << "Cannot use the \"parent\" attribute on \"" << m_attr.s_name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
         }
     } else {
-        mAttr.bVirtual = mNode.get_attribute_value_or<bool>("virtual", false);
+        m_attr.b_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
 
-        if (const layout_attribute* pAttr = mNode.try_get_attribute("parent")) {
-            std::string sParent    = pAttr->get_value<std::string>();
-            auto        pParentObj = mRegistry.get_region_by_name(sParent);
-            if (!sParent.empty() && !pParentObj) {
-                gui::out << gui::warning << mNode.get_location() << " : "
-                         << "Cannot find \"" << mAttr.sName << "\"'s parent : \"" << sParent
+        if (const layout_attribute* p_attr = m_node.try_get_attribute("parent")) {
+            std::string s_parent    = p_attr->get_value<std::string>();
+            auto        p_parent_obj = m_registry.get_region_by_name(s_parent);
+            if (!s_parent.empty() && !p_parent_obj) {
+                gui::out << gui::warning << m_node.get_location() << " : "
+                         << "Cannot find \"" << m_attr.s_name << "\"'s parent : \"" << s_parent
                          << "\". "
                             "No parent given to this region."
                          << std::endl;
             }
 
-            mAttr.pParent = down_cast<frame>(pParentObj);
-            if (pParentObj != nullptr && mAttr.pParent == nullptr) {
-                gui::out << gui::warning << mNode.get_location() << " : "
-                         << "Cannot set  \"" << mAttr.sName << "\"'s parent : \"" << sParent
+            m_attr.p_parent = down_cast<frame>(p_parent_obj);
+            if (p_parent_obj != nullptr && m_attr.p_parent == nullptr) {
+                gui::out << gui::warning << m_node.get_location() << " : "
+                         << "Cannot set  \"" << m_attr.s_name << "\"'s parent : \"" << s_parent
                          << "\". "
                             "This is not a frame."
                          << std::endl;
@@ -61,42 +61,42 @@ region_core_attributes parse_core_attributes(
         }
     }
 
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits")) {
-        mAttr.lInheritance =
-            mVirtualRegistry.get_virtual_region_list(pAttr->get_value<std::string>());
+    if (const layout_attribute* p_attr = m_node.try_get_attribute("inherits")) {
+        m_attr.l_inheritance =
+            m_virtual_registry.get_virtual_region_list(p_attr->get_value<std::string>());
     }
 
-    return mAttr;
+    return m_attr;
 }
 
-void warn_for_not_accessed_node(const layout_node& mNode) {
-    if (mNode.is_access_check_bypassed())
+void warn_for_not_accessed_node(const layout_node& m_node) {
+    if (m_node.is_access_check_bypassed())
         return;
 
-    if (!mNode.was_accessed()) {
-        gui::out << gui::warning << mNode.get_location() << " : "
-                 << "node '" << mNode.get_name()
+    if (!m_node.was_accessed()) {
+        gui::out << gui::warning << m_node.get_location() << " : "
+                 << "node '" << m_node.get_name()
                  << "' was not read by parser; "
                     "check its name is spelled correctly and that it is at the right location."
                  << std::endl;
         return;
     }
 
-    for (const auto& mAttr : mNode.get_attributes()) {
-        if (mAttr.is_access_check_bypassed())
+    for (const auto& m_attr : m_node.get_attributes()) {
+        if (m_attr.is_access_check_bypassed())
             continue;
 
-        if (!mAttr.was_accessed()) {
-            gui::out << gui::warning << mNode.get_location() << " : "
-                     << "attribute '" << mNode.get_name()
+        if (!m_attr.was_accessed()) {
+            gui::out << gui::warning << m_node.get_location() << " : "
+                     << "attribute '" << m_node.get_name()
                      << "' was not read by parser; "
                         "check its name is spelled correctly and that it is at the right location."
                      << std::endl;
         }
     }
 
-    for (const auto& mChild : mNode.get_children())
-        warn_for_not_accessed_node(mChild);
+    for (const auto& m_child : m_node.get_children())
+        warn_for_not_accessed_node(m_child);
 }
 
 } // namespace lxgui::gui

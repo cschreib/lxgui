@@ -31,78 +31,78 @@ class status_bar : public frame {
     using base = frame;
 
 public:
-    enum class orientation { HORIZONTAL, VERTICAL };
+    enum class orientation { horizontal, vertical };
 
     /// Constructor.
-    explicit status_bar(utils::control_block& mBlock, manager& mManager);
+    explicit status_bar(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& sTab) const override;
+    std::string serialize(const std::string& s_tab) const override;
 
     /// Returns 'true' if this status_bar can use a script.
     /** \param sScriptName The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& sScriptName) const override;
+    bool can_use_script(const std::string& s_script_name) const override;
 
     /// Copies a region's parameters into this status_bar (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Sets this status_bar's minimum value.
     /** \param fMin The minimum value
      */
-    void set_min_value(float fMin);
+    void set_min_value(float f_min);
 
     /// Sets this status_bar's maximum value.
     /** \param fMax The maximum value
      */
-    void set_max_value(float fMax);
+    void set_max_value(float f_max);
 
     /// Sets this status_bar's value range.
     /** \param fMin The minimum value
      *   \param fMax The maximum value
      */
-    void set_min_max_values(float fMin, float fMax);
+    void set_min_max_values(float f_min, float f_max);
 
     /// Sets this status_bar's value.
     /** \param fValue The value
      */
-    void set_value(float fValue);
+    void set_value(float f_value);
 
     /// Sets the draw layer of this status_bar's bar texture.
     /** \param mBarLayer The layer
      */
-    void set_bar_draw_layer(layer mBarLayer);
+    void set_bar_draw_layer(layer m_bar_layer);
 
     /// Sets the draw layer of this status_bar's bar texture.
     /** \param sBarLayer The layer
      */
-    void set_bar_draw_layer(const std::string& sBarLayer);
+    void set_bar_draw_layer(const std::string& s_bar_layer);
 
     /// Sets this status_bar's bar texture.
     /** \param pBarTexture The bar texture
      */
-    void set_bar_texture(utils::observer_ptr<texture> pBarTexture);
+    void set_bar_texture(utils::observer_ptr<texture> p_bar_texture);
 
     /// Sets this status_bar's bar color.
     /** \param mBarColor The bar color
      */
-    void set_bar_color(const color& mBarColor);
+    void set_bar_color(const color& m_bar_color);
 
     /// Sets this status_bar's orientation.
     /** \param mOrientation The orientation
      */
-    void set_orientation(orientation mOrientation);
+    void set_orientation(orientation m_orientation);
 
     /// Sets this status_bar's orientation.
     /** \param sOrientation The orientation ("VERTICAL" or "HORIZONTAL")
      */
-    void set_orientation(const std::string& sOrientation);
+    void set_orientation(const std::string& s_orientation);
 
     /// Reverses this status_bar.
     /** \param bReversed 'true' to reverse it
@@ -111,7 +111,7 @@ public:
      *         You can use this function to reverse the growth, that is
      *         make it grow from right to left.
      */
-    void set_reversed(bool bReversed);
+    void set_reversed(bool b_reversed);
 
     /// Returns this status_bar's minimum value.
     /** \return This status_bar's minimum value
@@ -137,14 +137,14 @@ public:
     /** \return This status_bar's bar texture
      */
     const utils::observer_ptr<texture>& get_bar_texture() {
-        return pBarTexture_;
+        return p_bar_texture_;
     }
 
     /// Returns this status_bar's bar texture.
     /** \return This status_bar's bar texture
      */
     utils::observer_ptr<const texture> get_bar_texture() const {
-        return pBarTexture_;
+        return p_bar_texture_;
     }
 
     /// Returns this status_bar's bar color.
@@ -171,33 +171,33 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float fDelta) override;
+    void update(float f_delta) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "StatusBar";
+    static constexpr const char* class_name = "StatusBar";
 
 protected:
     void create_bar_texture_();
     void notify_bar_texture_needs_update_();
 
-    void parse_attributes_(const layout_node& mNode) override;
-    void parse_all_nodes_before_children_(const layout_node& mNode) override;
+    void parse_attributes_(const layout_node& m_node) override;
+    void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    bool bUpdateBarTexture_ = false;
+    bool b_update_bar_texture_ = false;
 
-    orientation mOrientation_ = orientation::HORIZONTAL;
-    bool        bReversed_    = false;
+    orientation m_orientation_ = orientation::horizontal;
+    bool        b_reversed_    = false;
 
-    float fValue_    = 0.0f;
-    float fMinValue_ = 0.0f;
-    float fMaxValue_ = 1.0f;
+    float f_value_    = 0.0f;
+    float f_min_value_ = 0.0f;
+    float f_max_value_ = 1.0f;
 
-    color                        mBarColor_          = color::WHITE;
-    layer                        mBarLayer_          = layer::ARTWORK;
-    utils::observer_ptr<texture> pBarTexture_        = nullptr;
-    std::array<float, 4>         lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
+    color                        m_bar_color_          = color::white;
+    layer                        m_bar_layer_          = layer::artwork;
+    utils::observer_ptr<texture> p_bar_texture_        = nullptr;
+    std::array<float, 4>         l_initial_text_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 };
 
 } // namespace lxgui::gui

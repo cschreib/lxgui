@@ -40,7 +40,7 @@ public:
      *           to gracefully disconnect the callback.
      */
     utils::connection
-    register_key_binding(std::string_view sName, sol::protected_function mLuaFunction);
+    register_key_binding(std::string_view s_name, sol::protected_function m_lua_function);
 
     /// Registers an action as a possible key binding.
     /** \param sName     The name of the key binding (e.g., "JUMP")
@@ -51,7 +51,7 @@ public:
      *   \return A connection object representing the registered callback function, can be used
      *           to gracefully disconnect the callback.
      */
-    utils::connection register_key_binding(std::string_view sName, function_type mFunction);
+    utils::connection register_key_binding(std::string_view s_name, function_type m_function);
 
     /// Binds an action to a key.
     /** \param sName The action to bind
@@ -61,7 +61,7 @@ public:
      *         combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
      *         to frames in the "OnKeyDown" and "OnKeyUp" scripts.
      */
-    void set_key_binding(std::string_view sName, std::string_view sKey);
+    void set_key_binding(std::string_view s_name, std::string_view s_key);
 
     /// Binds an action to a key.
     /** \param sName           The action to bind
@@ -71,16 +71,16 @@ public:
      *   \param bAltIsPressed   'true' if the Alt key must be pressed
      */
     void set_key_binding(
-        std::string_view sName,
-        input::key       mKey,
-        bool             bShiftIsPressed,
-        bool             bCtrlIsPressed,
-        bool             bAltIsPressed);
+        std::string_view s_name,
+        input::key       m_key,
+        bool             b_shift_is_pressed,
+        bool             b_ctrl_is_pressed,
+        bool             b_alt_is_pressed);
 
     /// Unbinds an action.
     /** \param sName The action to unbind
      */
-    void remove_key_binding(std::string_view sName);
+    void remove_key_binding(std::string_view s_name);
 
     /// Called when a key is pressed.
     /** \param mKey            The key that is pressed
@@ -91,24 +91,24 @@ public:
      *           'false' otherwise.
      */
     bool
-    on_key_down(input::key mKey, bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed);
+    on_key_down(input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
 
 private:
     struct key_binding {
-        std::string sName;
+        std::string s_name;
 
-        input::key mKey            = input::key::K_UNASSIGNED;
-        bool       bShiftIsPressed = false;
-        bool       bCtrlIsPressed  = false;
-        bool       bAltIsPressed   = false;
+        input::key m_key            = input::key::k_unassigned;
+        bool       b_shift_is_pressed = false;
+        bool       b_ctrl_is_pressed  = false;
+        bool       b_alt_is_pressed   = false;
 
-        signal_type mSignal;
+        signal_type m_signal;
     };
 
     key_binding*
-    find_binding_(input::key mKey, bool bShiftIsPressed, bool bCtrlIsPressed, bool bAltIsPressed);
+    find_binding_(input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
 
-    std::vector<key_binding> lKeyBindings_;
+    std::vector<key_binding> l_key_bindings_;
 };
 
 } // namespace lxgui::gui

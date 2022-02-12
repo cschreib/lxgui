@@ -21,29 +21,29 @@
 
 namespace lxgui::gui {
 
-void layered_region::register_on_lua(sol::state& mLua) {
-    auto mClass = mLua.new_usertype<layered_region>(
+void layered_region::register_on_lua(sol::state& m_lua) {
+    auto m_class = m_lua.new_usertype<layered_region>(
         "LayeredRegion", sol::base_classes, sol::bases<region>(), sol::meta_function::index,
         member_function<&layered_region::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&layered_region::set_lua_member_>());
 
     /** @function set_draw_layer
      */
-    mClass.set_function(
+    m_class.set_function(
         "set_draw_layer", member_function< // select the right overload for Lua
                               static_cast<void (layered_region::*)(const std::string&)>(
                                   &layered_region::set_draw_layer)>());
 
     /** @function get_draw_layer
      */
-    mClass.set_function("get_draw_layer", [](const layered_region& mSelf) {
-        switch (mSelf.get_draw_layer()) {
-        case layer::BACKGROUND: return std::string("BACKGROUND");
-        case layer::BORDER: return std::string("BORDER");
-        case layer::ARTWORK: return std::string("ARTWORK");
-        case layer::OVERLAY: return std::string("OVERLAY");
-        case layer::HIGHLIGHT: return std::string("HIGHLIGHT");
-        case layer::SPECIALHIGH: return std::string("SPECIALHIGH");
+    m_class.set_function("get_draw_layer", [](const layered_region& m_self) {
+        switch (m_self.get_draw_layer()) {
+        case layer::background: return std::string("BACKGROUND");
+        case layer::border: return std::string("BORDER");
+        case layer::artwork: return std::string("ARTWORK");
+        case layer::overlay: return std::string("OVERLAY");
+        case layer::highlight: return std::string("HIGHLIGHT");
+        case layer::specialhigh: return std::string("SPECIALHIGH");
         default: throw sol::error("unreachable");
         }
     });

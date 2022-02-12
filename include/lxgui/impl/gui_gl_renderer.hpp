@@ -24,7 +24,7 @@ public:
      *   \param bInitGLEW         Set to 'true' to initialise GLEW
      *   \note Use notify_window_resized() if the size of the window changes later.
      */
-    explicit renderer(const vector2ui& mWindowDimensions, bool bInitGLEW = true);
+    explicit renderer(const vector2ui& m_window_dimensions, bool b_init_glew = true);
 
     /// Returns a human-readable name for this renderer.
     /** \return A human-readable name for this renderer
@@ -63,9 +63,9 @@ public:
      *   \return The new material
      */
     std::shared_ptr<gui::material> create_material(
-        const vector2ui& mDimensions,
-        const ub32color* pPixelData,
-        material::filter mFilter = material::filter::NONE) override;
+        const vector2ui& m_dimensions,
+        const ub32color* p_pixel_data,
+        material::filter m_filter = material::filter::none) override;
 
     /// Creates a new material from a portion of a render target.
     /** \param pRenderTarget The render target from which to read the pixels
@@ -73,14 +73,14 @@ public:
      *   \return The new material
      */
     std::shared_ptr<gui::material> create_material(
-        std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) override;
+        std::shared_ptr<gui::render_target> p_render_target, const bounds2f& m_location) override;
 
     /// Creates a new render target.
     /** \param mDimensions The dimensions of the render target
      *   \param mFilter     The filtering to apply to the target texture when displayed
      */
     std::shared_ptr<gui::render_target> create_render_target(
-        const vector2ui& mDimensions, material::filter mFilter = material::filter::NONE) override;
+        const vector2ui& m_dimensions, material::filter m_filter = material::filter::none) override;
 
     /// Checks if the renderer supports vertex caches.
     /** \return 'true' if supported, 'false' otherwise
@@ -91,12 +91,12 @@ public:
     /** \param mType The type of data this cache will hold
      *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
      */
-    std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) override;
+    std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type m_type) override;
 
     /// Notifies the renderer that the render window has been resized.
     /** \param mNewDimensions The new window dimensions
      */
-    void notify_window_resized(const vector2ui& mNewDimensions) override;
+    void notify_window_resized(const vector2ui& m_new_dimensions) override;
 
 #if !defined(LXGUI_OPENGL3)
     /// Checks if a given OpenGL extension is supported by the machine.
@@ -113,13 +113,13 @@ protected:
      *   \note Only PNG textures are supported by this implementation (parsed by libpng).
      */
     std::shared_ptr<gui::material>
-    create_material_(const std::string& sFileName, material::filter mFilter) override;
+    create_material_(const std::string& s_file_name, material::filter m_filter) override;
 
     /// Creates a new atlas with a given texture filter mode.
     /** \param mFilter The filtering to apply to the texture
      *   \return The new atlas
      */
-    std::shared_ptr<gui::atlas> create_atlas_(material::filter mFilter) override;
+    std::shared_ptr<gui::atlas> create_atlas_(material::filter m_filter) override;
 
     /// Creates a new font.
     /** \param sFontFile   The file from which to read the font
@@ -131,16 +131,16 @@ protected:
      *         Bitmap fonts are not yet supported.
      */
     std::shared_ptr<gui::font> create_font_(
-        const std::string&                   sFontFile,
-        std::size_t                          uiSize,
-        std::size_t                          uiOutline,
-        const std::vector<code_point_range>& lCodePoints,
-        char32_t                             uiDefaultCodePoint) override;
+        const std::string&                   s_font_file,
+        std::size_t                          ui_size,
+        std::size_t                          ui_outline,
+        const std::vector<code_point_range>& l_code_points,
+        char32_t                             ui_default_code_point) override;
 
     /// Begins rendering on a particular render target.
     /** \param pTarget The render target (main screen if nullptr)
      */
-    void begin_(std::shared_ptr<gui::render_target> pTarget) override;
+    void begin_(std::shared_ptr<gui::render_target> p_target) override;
 
     /// Ends rendering.
     void end_() override;
@@ -160,7 +160,7 @@ protected:
      *            backends, the view matrix will be simplified to a simpler 2D translate +
      *            rotate + scale transform, or even just translate + scale.
      */
-    void set_view_(const matrix4f& mViewMatrix) override;
+    void set_view_(const matrix4f& m_view_matrix) override;
 
     /// Renders a set of quads.
     /** \param pMaterial The material to use for rendering, or null if none
@@ -171,8 +171,8 @@ protected:
      *         repeatedly, as it allows to reduce the number of draw calls.
      */
     void render_quads_(
-        const gui::material*                      pMaterial,
-        const std::vector<std::array<vertex, 4>>& lQuadList) override;
+        const gui::material*                      p_material,
+        const std::vector<std::array<vertex, 4>>& l_quad_list) override;
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
@@ -191,9 +191,9 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     void render_cache_(
-        const gui::material*     pMaterial,
-        const gui::vertex_cache& mCache,
-        const matrix4f&          mModelTransform) override;
+        const gui::material*     p_material,
+        const gui::vertex_cache& m_cache,
+        const matrix4f&          m_model_transform) override;
 
 private:
     void update_view_matrix_() const;
@@ -203,12 +203,12 @@ private:
 #endif
 
     std::shared_ptr<gui::material>
-    create_material_png_(const std::string& sFileName, material::filter mFilter) const;
+    create_material_png_(const std::string& s_file_name, material::filter m_filter) const;
 
-    vector2ui mWindowDimensions_;
+    vector2ui m_window_dimensions_;
 
-    std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
-    matrix4f                                mCurrentViewMatrix_ = matrix4f::IDENTITY;
+    std::shared_ptr<gui::gl::render_target> p_current_target_;
+    matrix4f                                m_current_view_matrix_ = matrix4f::identity;
 
 #if defined(LXGUI_OPENGL3)
     struct shader_cache {
@@ -217,23 +217,23 @@ private:
         shader_cache(shader_cache&&)      = delete;
         ~shader_cache();
 
-        std::uint32_t uiProgram_        = 0;
-        int           iSamplerLocation_ = 0;
-        int           iProjLocation_    = 0;
-        int           iModelLocation_   = 0;
-        int           iTypeLocation_    = 0;
+        std::uint32_t ui_program        = 0;
+        int           i_sampler_location = 0;
+        int           i_proj_location    = 0;
+        int           i_model_location   = 0;
+        int           i_type_location    = 0;
     };
 
-    static thread_local std::weak_ptr<shader_cache> pStaticShaderCache_;
-    std::shared_ptr<shader_cache>                   pShaderCache_;
+    static thread_local std::weak_ptr<shader_cache> p_static_shader_cache;
+    std::shared_ptr<shader_cache>                   p_shader_cache_;
 
-    static constexpr std::size_t                                    CACHE_CYCLE_SIZE = 1024u;
-    std::array<std::shared_ptr<gl::vertex_cache>, CACHE_CYCLE_SIZE> pQuadCache_;
-    std::array<std::shared_ptr<gl::vertex_cache>, CACHE_CYCLE_SIZE> pArrayCache_;
-    std::uint32_t                                                   uiQuadCycleCache_  = 0u;
-    std::uint32_t                                                   uiArrayCycleCache_ = 0u;
+    static constexpr std::size_t                                    cache_cycle_size = 1024u;
+    std::array<std::shared_ptr<gl::vertex_cache>, cache_cycle_size> p_quad_cache_;
+    std::array<std::shared_ptr<gl::vertex_cache>, cache_cycle_size> p_array_cache_;
+    std::uint32_t                                                   ui_quad_cycle_cache_  = 0u;
+    std::uint32_t                                                   ui_array_cycle_cache_ = 0u;
 
-    std::uint32_t uiPreviousTexture_ = std::numeric_limits<std::uint32_t>::max();
+    std::uint32_t ui_previous_texture_ = std::numeric_limits<std::uint32_t>::max();
 #endif
 };
 

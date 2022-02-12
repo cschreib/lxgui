@@ -28,10 +28,10 @@ public:
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     material(
-        const vector2ui& mDimensions,
-        bool             bRenderTarget,
-        wrap             mWrap   = wrap::REPEAT,
-        filter           mFilter = filter::NONE);
+        const vector2ui& m_dimensions,
+        bool             b_render_target,
+        wrap             m_wrap   = wrap::repeat,
+        filter           m_filter = filter::none);
 
     /// Constructor for textures.
     /** \param mData         The image data to use as texture
@@ -39,7 +39,7 @@ public:
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const sf::Image& mData, wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
+        const sf::Image& m_data, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
 
     /// Constructor for textures.
     /** \param sFileName     The file from which the texture data is loaded
@@ -47,7 +47,7 @@ public:
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const std::string& sFileName, wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
+        const std::string& s_file_name, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
 
     /// Constructor for atlas textures.
     /** \param mTexture  The atlas texture holding this material's texture
@@ -55,7 +55,7 @@ public:
      *   \param mFilter   Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const sf::Texture& mTexture, const bounds2f& mLocation, filter mFilter = filter::NONE);
+        const sf::Texture& m_texture, const bounds2f& m_location, filter m_filter = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -82,32 +82,32 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    bool uses_same_texture(const gui::material& mOther) const override;
+    bool uses_same_texture(const gui::material& m_other) const override;
 
     /// Resizes this texture.
     /** \param mDimensions The new texture dimensions
      *   \return 'true' if the function had to re-create a new texture object
      *   \note All the previous data that was stored in this texture will be lost.
      */
-    bool set_dimensions(const vector2ui& mDimensions);
+    bool set_dimensions(const vector2ui& m_dimensions);
 
     /// Premultiplies an image by its alpha component.
     /** \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(sf::Image& mData);
+    static void premultiply_alpha(sf::Image& m_data);
 
     /// Sets the wrap mode of this texture.
     /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
      */
-    void set_wrap(wrap mWrap);
+    void set_wrap(wrap m_wrap);
 
     /// Sets the filter mode of this texture.
     /** \param mFilter Use texture filtering or not
      *   \note When texture filtering is disabled, enlarged textures get pixelated.
      *         Else, the GPU uses an averaging algorithm to blur the pixels.
      */
-    void set_filter(filter mFilter);
+    void set_filter(filter m_filter);
 
     /// Returns the filter mode of this texture.
     /** \return The filter mode of this texture
@@ -117,7 +117,7 @@ public:
     /// Updates the texture that is in GPU memory.
     /** \param pData The new pixel data
      */
-    void update_texture(const ub32color* pData);
+    void update_texture(const ub32color* p_data);
 
     /// Returns the underlying SFML render texture object.
     /** return The underlying SFML render texture object
@@ -130,18 +130,18 @@ public:
     const sf::Texture* get_texture() const;
 
 private:
-    vector2ui mDimensions_;
-    vector2ui mCanvasDimensions_;
-    bounds2f  mRect_;
-    wrap      mWrap_   = wrap::REPEAT;
-    filter    mFilter_ = filter::NONE;
+    vector2ui m_dimensions_;
+    vector2ui m_canvas_dimensions_;
+    bounds2f  m_rect_;
+    wrap      m_wrap_   = wrap::repeat;
+    filter    m_filter_ = filter::none;
 
-    bool               bRenderTarget_ = false;
-    sf::RenderTexture  mRenderTexture_;
-    sf::Texture        mTexture_;
-    const sf::Texture* pAtlasTexture_ = nullptr;
+    bool               b_render_target_ = false;
+    sf::RenderTexture  m_render_texture_;
+    sf::Texture        m_texture_;
+    const sf::Texture* p_atlas_texture_ = nullptr;
 
-    static const std::size_t MAXIMUM_SIZE;
+    static const std::size_t maximum_size;
 };
 
 } // namespace lxgui::gui::sfml

@@ -21,9 +21,9 @@ class renderer;
 class vertex_cache;
 struct vertex;
 
-enum class alignment_x { LEFT, CENTER, RIGHT };
+enum class alignment_x { left, center, right };
 
-enum class alignment_y { TOP, MIDDLE, BOTTOM };
+enum class alignment_y { top, middle, bottom };
 
 /// Used to draw some text on the screen
 /**
@@ -36,9 +36,9 @@ public:
      *   \param pOutlineFont The font to use for outlines
      */
     explicit text(
-        renderer&                  mRenderer,
-        std::shared_ptr<gui::font> pFont,
-        std::shared_ptr<gui::font> pOutlineFont);
+        renderer&                  m_renderer,
+        std::shared_ptr<gui::font> p_font,
+        std::shared_ptr<gui::font> p_outline_font);
 
     /// Non-copiable
     text(const text&) = delete;
@@ -63,7 +63,7 @@ public:
      *         font object) and interface units. By default this is set to 1, but needs to
      *         be changed on high DPI systems.
      */
-    void set_scaling_factor(float fScalingFactor);
+    void set_scaling_factor(float f_scaling_factor);
 
     /// Returns the scaling factor used when rendering glyphs.
     /** \return The scaling factor used when rendering glyphs
@@ -77,7 +77,7 @@ public:
      *         - "|r" : sets text color to default.<br>
      *         - "||" : writes "|".
      */
-    void set_text(const utils::ustring& sText);
+    void set_text(const utils::ustring& s_text);
 
     /// Returns the text that will be rendered (unicode character set).
     /** \return The text that will be rendered (unicode character set)
@@ -89,7 +89,7 @@ public:
     /** \param mColor      The default color
      *   \param bForceColor 'true' to ignore color tags
      */
-    void set_color(const color& mColor, bool bForceColor = false);
+    void set_color(const color& m_color, bool b_force_color = false);
 
     /// Returns this text's default color.
     /** \return This text's default color
@@ -99,7 +99,7 @@ public:
     /// Sets this text's transparency (alpha).
     /** \param fAlpha The new alpha value
      */
-    void set_alpha(float fAlpha);
+    void set_alpha(float f_alpha);
 
     /// Returns this text's transparency (alpha).
     /** \return This text's transparency (alpha)
@@ -111,19 +111,19 @@ public:
      *   \param fH The new height
      *   \note To remove the text box, use 0.0f.
      */
-    void set_dimensions(float fW, float fH);
+    void set_dimensions(float f_w, float f_h);
 
     /// Sets the width of the text box.
     /** \param fBoxW The new witdh
      *   \note To remove it, use 0.0f.
      */
-    void set_box_width(float fBoxW);
+    void set_box_width(float f_box_w);
 
     /// Sets the height of the text box.
     /** \param fBoxH The new height
      *   \note To remove it, use 0.0f.
      */
-    void set_box_height(float fBoxH);
+    void set_box_height(float f_box_h);
 
     /// Returns the width of the rendered text.
     /** \return The width of the rendered text
@@ -162,19 +162,19 @@ public:
     /** \param sString The string to measure
      *   \return The lenght of the provided string
      */
-    float get_string_width(const std::string& sString) const;
+    float get_string_width(const std::string& s_string) const;
 
     /// Returns the lenght of a provided string.
     /** \param sString The string to measure
      *   \return The lenght of the provided string
      */
-    float get_string_width(const utils::ustring& sString) const;
+    float get_string_width(const utils::ustring& s_string) const;
 
     /// Returns the length of a single character.
     /** \param uiChar The character to measure
      *   \return The lenght of this character
      */
-    float get_character_width(char32_t uiChar) const;
+    float get_character_width(char32_t ui_char) const;
 
     /// Returns the kerning between two characters.
     /** \param uiChar1 The first character
@@ -185,7 +185,7 @@ public:
      *         you can reduce the space between the two letters, but not
      *         if you put two Vs side to side.
      */
-    float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const;
+    float get_character_kerning(char32_t ui_char1, char32_t ui_char2) const;
 
     /// Returns the height of the text.
     /** \return The height of one text
@@ -196,12 +196,12 @@ public:
     /// Sets text horizontal alignment.
     /** \param mAlignX The new horizontal alignment
      */
-    void set_alignment_x(const alignment_x& mAlignX);
+    void set_alignment_x(const alignment_x& m_align_x);
 
     /// Sets text vertical alignment.
     /** \param mAlignY The new vertical alignment
      */
-    void set_alignment_y(const alignment_y& mAlignY);
+    void set_alignment_y(const alignment_y& m_align_y);
 
     /// Returns the text horizontal alignment.
     /** \return The text horizontal alignment
@@ -218,7 +218,7 @@ public:
      *   \note Tracking is the space between each character. Default
      *         is 0.
      */
-    void set_tracking(float fTracking);
+    void set_tracking(float f_tracking);
 
     /// Returns this text's tracking.
     /** \return This text's tracking
@@ -231,7 +231,7 @@ public:
      *         height of a line, gives the space between two lines.
      *         Default is 1.5f.
      */
-    void set_line_spacing(float fLineSpacing);
+    void set_line_spacing(float f_line_spacing);
 
     /// Returns this text's line spacing.
     /** \return This text's line spacing
@@ -247,7 +247,7 @@ public:
      *         the next line. You can change this behavior by setting
      *         this function to 'true'.
      */
-    void set_remove_starting_spaces(bool bRemoveStartingSpaces);
+    void set_remove_starting_spaces(bool b_remove_starting_spaces);
 
     /// Checks if starting spaces removing is active.
     /** \return 'true' if starting spaces removing is active
@@ -260,7 +260,7 @@ public:
      *   \note Enabled by default.
      */
 
-    void enable_word_wrap(bool bWrap, bool bAddEllipsis);
+    void enable_word_wrap(bool b_wrap, bool b_add_ellipsis);
 
     /// Checks if word wrap is enabled.
     /** \return 'true' if word wrap is enabled
@@ -274,7 +274,7 @@ public:
      *         - "|r" : sets text color to default.<br>
      *         - "||" : writes "|".
      */
-    void enable_formatting(bool bFormatting);
+    void enable_formatting(bool b_formatting);
 
     /// Renders this text at the given position.
     /** \param mTransform The transform to apply to the text
@@ -284,7 +284,7 @@ public:
      *         anchor position (coordinate [0,0]) set by the vertical and horizontal
      *         alignment (see get_alignment() and get_vertical_alignment()).
      */
-    void render(const matrix4f& mTransform = matrix4f::IDENTITY) const;
+    void render(const matrix4f& m_transform = matrix4f::identity) const;
 
     /// Returns the number of letters currently displayed.
     /** \return The number of letters currently displayed
@@ -301,69 +301,69 @@ public:
      *         the position (0,0) (if left-aligned). This function may update the quad cache as
      *         needed.
      */
-    const std::array<vertex, 4>& get_letter_quad(std::size_t uiIndex) const;
+    const std::array<vertex, 4>& get_letter_quad(std::size_t ui_index) const;
 
     /// Creates a quad that contains the provided character.
     /** \param uiChar The character to draw
      *   \note Uses this text's font texture.
      */
-    quad create_letter_quad(char32_t uiChar) const;
+    quad create_letter_quad(char32_t ui_char) const;
 
     /// Returns the renderer used to render this text.
     /** \return The renderer used to render this text
      */
     const renderer& get_renderer() const {
-        return mRenderer_;
+        return m_renderer_;
     }
 
     /// Returns the renderer used to render this text.
     /** \return The renderer used to render this text
      */
     renderer& get_renderer() {
-        return mRenderer_;
+        return m_renderer_;
     }
 
 private:
     void  update_() const;
     void  notify_cache_dirty_() const;
     float round_to_pixel_(
-        float fValue, utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
-    std::array<vertex, 4> create_letter_quad_(gui::font& mFont, char32_t uiChar) const;
-    std::array<vertex, 4> create_letter_quad_(char32_t uiChar) const;
-    std::array<vertex, 4> create_outline_letter_quad_(char32_t uiChar) const;
+        float f_value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
+    std::array<vertex, 4> create_letter_quad_(gui::font& m_font, char32_t ui_char) const;
+    std::array<vertex, 4> create_letter_quad_(char32_t ui_char) const;
+    std::array<vertex, 4> create_outline_letter_quad_(char32_t ui_char) const;
 
-    renderer& mRenderer_;
+    renderer& m_renderer_;
 
-    bool        bReady_                = false;
-    float       fScalingFactor_        = 1.0f;
-    float       fTracking_             = 0.0f;
-    float       fLineSpacing_          = 1.0f;
-    bool        bRemoveStartingSpaces_ = false;
-    bool        bWordWrap_             = true;
-    bool        bAddEllipsis_          = false;
-    color       mColor_                = color::WHITE;
-    bool        bForceColor_           = false;
-    float       fAlpha_                = 1.0f;
-    bool        bFormattingEnabled_    = false;
-    float       fBoxW_                 = std::numeric_limits<float>::infinity();
-    float       fBoxH_                 = std::numeric_limits<float>::infinity();
-    alignment_x mAlignX_               = alignment_x::LEFT;
-    alignment_y mAlignY_               = alignment_y::MIDDLE;
+    bool        b_ready_                = false;
+    float       f_scaling_factor_        = 1.0f;
+    float       f_tracking_             = 0.0f;
+    float       f_line_spacing_          = 1.0f;
+    bool        b_remove_starting_spaces_ = false;
+    bool        b_word_wrap_             = true;
+    bool        b_add_ellipsis_          = false;
+    color       m_color_                = color::white;
+    bool        b_force_color_           = false;
+    float       f_alpha_                = 1.0f;
+    bool        b_formatting_enabled_    = false;
+    float       f_box_w_                 = std::numeric_limits<float>::infinity();
+    float       f_box_h_                 = std::numeric_limits<float>::infinity();
+    alignment_x m_align_x_               = alignment_x::left;
+    alignment_y m_align_y_               = alignment_y::middle;
 
-    std::shared_ptr<font> pFont_;
-    std::shared_ptr<font> pOutlineFont_;
-    utils::ustring        sUnicodeText_;
+    std::shared_ptr<font> p_font_;
+    std::shared_ptr<font> p_outline_font_;
+    utils::ustring        s_unicode_text_;
 
-    mutable bool        bUpdateCache_ = false;
-    mutable float       fW_           = 0.0f;
-    mutable float       fH_           = 0.0f;
-    mutable std::size_t uiNumLines_   = 0u;
+    mutable bool        b_update_cache_ = false;
+    mutable float       f_w_           = 0.0f;
+    mutable float       f_h_           = 0.0f;
+    mutable std::size_t ui_num_lines_   = 0u;
 
-    mutable std::vector<std::array<vertex, 4>> lQuadList_;
-    mutable std::shared_ptr<vertex_cache>      pVertexCache_;
-    mutable std::vector<std::array<vertex, 4>> lOutlineQuadList_;
-    mutable std::shared_ptr<vertex_cache>      pOutlineVertexCache_;
-    mutable std::vector<quad>                  lIconsList_;
+    mutable std::vector<std::array<vertex, 4>> l_quad_list_;
+    mutable std::shared_ptr<vertex_cache>      p_vertex_cache_;
+    mutable std::vector<std::array<vertex, 4>> l_outline_quad_list_;
+    mutable std::shared_ptr<vertex_cache>      p_outline_vertex_cache_;
+    mutable std::vector<quad>                  l_icons_list_;
 };
 
 } // namespace lxgui::gui

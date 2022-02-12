@@ -12,13 +12,13 @@
 namespace lxgui::gui {
 
 /// Specifies the rendering mode of a quad
-enum class blend_mode { NORMAL, ADD, MUL };
+enum class blend_mode { normal, add, mul };
 
 /// Simple structure holding four vertices and a material
 struct quad {
     std::array<vertex, 4>     v;
     std::shared_ptr<material> mat;
-    blend_mode                blend = blend_mode::NORMAL;
+    blend_mode                blend = blend_mode::normal;
 };
 
 } // namespace lxgui::gui

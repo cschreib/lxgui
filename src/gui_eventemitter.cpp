@@ -5,12 +5,12 @@
 namespace lxgui::gui {
 
 utils::connection
-event_emitter::register_event(const std::string& sEventName, event_handler_function mCallback) {
-    return lRegisteredEventList_[sEventName].connect(std::move(mCallback));
+event_emitter::register_event(const std::string& s_event_name, event_handler_function m_callback) {
+    return l_registered_event_list_[s_event_name].connect(std::move(m_callback));
 }
 
-void event_emitter::fire_event(const std::string& sEventName, event_data mData) {
-    lRegisteredEventList_[sEventName](std::move(mData));
+void event_emitter::fire_event(const std::string& s_event_name, event_data m_data) {
+    l_registered_event_list_[s_event_name](std::move(m_data));
 }
 
 } // namespace lxgui::gui

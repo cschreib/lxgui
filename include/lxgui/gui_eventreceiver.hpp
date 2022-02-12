@@ -21,7 +21,7 @@ public:
     /// Constructor.
     /** \param mEmitter The event emitter to listen to
      */
-    explicit event_receiver(event_emitter& mEmitter);
+    explicit event_receiver(event_emitter& m_emitter);
 
     // Non-copiable, non-movable
     event_receiver(const event_receiver&) = delete;
@@ -33,21 +33,21 @@ public:
     /** \param sEventName The name of the event this class should react to
      *   \param mCallback  The callback function to register to this event
      */
-    void register_event(const std::string& sEventName, event_handler_function mCallback);
+    void register_event(const std::string& s_event_name, event_handler_function m_callback);
 
     /// Disables reaction to an event.
     /** \param sEventName The name of the event this class shouldn't react to anymore
      */
-    void unregister_event(const std::string& sEventName);
+    void unregister_event(const std::string& s_event_name);
 
 private:
     struct event_connection {
-        std::string              sName;
-        utils::scoped_connection mConnection;
+        std::string              s_name;
+        utils::scoped_connection m_connection;
     };
 
-    event_emitter&                mEventEmitter_;
-    std::vector<event_connection> lRegisteredEvents_;
+    event_emitter&                m_event_emitter_;
+    std::vector<event_connection> l_registered_events_;
 };
 
 } // namespace lxgui::gui

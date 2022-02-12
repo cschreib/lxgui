@@ -40,9 +40,9 @@ ostream& operator<<(ostream& o, const array<T, N>& a) {
 template<class T>
 ostream& operator<<(ostream& o, const vector<T>& a) {
     o << "(";
-    const std::size_t N = a.size();
-    for (std::size_t i = 0; i < N; ++i) {
-        if (i != N - 1)
+    const std::size_t n = a.size();
+    for (std::size_t i = 0; i < n; ++i) {
+        if (i != n - 1)
             o << a[i] << ", ";
         else
             o << a[i];

@@ -16,18 +16,18 @@ class check_button : public button {
 
 public:
     /// Constructor.
-    explicit check_button(utils::control_block& mBlock, manager& mManager);
+    explicit check_button(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
     /** \param sTab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& sTab) const override;
+    std::string serialize(const std::string& s_tab) const override;
 
     /// Copies a region's parameters into this check button (inheritance).
     /** \param mObj The region to copy
      */
-    void copy_from(const region& mObj) override;
+    void copy_from(const region& m_obj) override;
 
     /// Checks this button.
     virtual void check();
@@ -58,55 +58,55 @@ public:
     /** \return This button's checked texture
      */
     const utils::observer_ptr<texture>& get_checked_texture() {
-        return pCheckedTexture_;
+        return p_checked_texture_;
     }
 
     /// Returns this button's checked texture.
     /** \return This button's checked texture
      */
     utils::observer_ptr<const texture> get_checked_texture() const {
-        return pCheckedTexture_;
+        return p_checked_texture_;
     }
 
     /// Returns this button's disabled checked texture.
     /** \return This button's disabled checked texture
      */
     const utils::observer_ptr<texture>& get_disabled_checked_texture() {
-        return pDisabledCheckedTexture_;
+        return p_disabled_checked_texture_;
     }
 
     /// Returns this button's disabled checked texture.
     /** \return This button's disabled checked texture
      */
     utils::observer_ptr<const texture> get_disabled_checked_texture() const {
-        return pDisabledCheckedTexture_;
+        return p_disabled_checked_texture_;
     }
 
     /// Sets this button's checked texture.
     /** \param pTexture The new texture
      */
-    void set_checked_texture(utils::observer_ptr<texture> pTexture);
+    void set_checked_texture(utils::observer_ptr<texture> p_texture);
 
     /// Sets this button's disabled checked texture.
     /** \param pTexture The new texture
      */
-    void set_disabled_checked_texture(utils::observer_ptr<texture> pTexture);
+    void set_disabled_checked_texture(utils::observer_ptr<texture> p_texture);
 
     /// Returns this region's Lua glue.
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& mLua);
+    static void register_on_lua(sol::state& m_lua);
 
-    static constexpr const char* CLASS_NAME = "CheckButton";
+    static constexpr const char* class_name = "CheckButton";
 
 protected:
-    void parse_all_nodes_before_children_(const layout_node& mNode) override;
+    void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    bool bChecked_ = false;
+    bool b_checked_ = false;
 
-    utils::observer_ptr<texture> pCheckedTexture_         = nullptr;
-    utils::observer_ptr<texture> pDisabledCheckedTexture_ = nullptr;
+    utils::observer_ptr<texture> p_checked_texture_         = nullptr;
+    utils::observer_ptr<texture> p_disabled_checked_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui

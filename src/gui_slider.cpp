@@ -13,173 +13,173 @@
 
 namespace lxgui::gui {
 
-void step_value(float& fValue, float fStep) {
+void step_value(float& f_value, float f_step) {
     // Makes the value a multiple of the step :
     // fValue = N*fStep, where N is an integer.
-    if (fStep != 0.0f)
-        fValue = std::round(fValue / fStep) * fStep;
+    if (f_step != 0.0f)
+        f_value = std::round(f_value / f_step) * f_step;
 }
 
-slider::slider(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager) {
-    lType_.push_back(CLASS_NAME);
+slider::slider(utils::control_block& m_block, manager& m_manager) : frame(m_block, m_manager) {
+    l_type_.push_back(class_name);
     enable_mouse(true);
     register_for_drag({"LeftButton"});
 }
 
-std::string slider::serialize(const std::string& sTab) const {
-    std::ostringstream sStr;
+std::string slider::serialize(const std::string& s_tab) const {
+    std::ostringstream s_str;
 
-    sStr << base::serialize(sTab);
-    sStr << sTab << "  # Orientation: ";
-    switch (mOrientation_) {
-    case orientation::HORIZONTAL: sStr << "HORIZONTAL"; break;
-    case orientation::VERTICAL: sStr << "VERTICAL"; break;
+    s_str << base::serialize(s_tab);
+    s_str << s_tab << "  # Orientation: ";
+    switch (m_orientation_) {
+    case orientation::horizontal: s_str << "HORIZONTAL"; break;
+    case orientation::vertical: s_str << "VERTICAL"; break;
     }
-    sStr << "\n";
-    sStr << sTab << "  # Value      : " << fValue_ << "\n";
-    sStr << sTab << "  # Min value  : " << fMinValue_ << "\n";
-    sStr << sTab << "  # Max value  : " << fMaxValue_ << "\n";
-    sStr << sTab << "  # Step       : " << fValueStep_ << "\n";
-    sStr << sTab << "  # Click out  : " << bAllowClicksOutsideThumb_ << "\n";
+    s_str << "\n";
+    s_str << s_tab << "  # Value      : " << f_value_ << "\n";
+    s_str << s_tab << "  # Min value  : " << f_min_value_ << "\n";
+    s_str << s_tab << "  # Max value  : " << f_max_value_ << "\n";
+    s_str << s_tab << "  # Step       : " << f_value_step_ << "\n";
+    s_str << s_tab << "  # Click out  : " << b_allow_clicks_outside_thumb_ << "\n";
 
-    return sStr.str();
+    return s_str.str();
 }
 
-bool slider::can_use_script(const std::string& sScriptName) const {
-    if (base::can_use_script(sScriptName))
+bool slider::can_use_script(const std::string& s_script_name) const {
+    if (base::can_use_script(s_script_name))
         return true;
-    else if (sScriptName == "OnValueChanged")
+    else if (s_script_name == "OnValueChanged")
         return true;
     else
         return false;
 }
 
-void slider::fire_script(const std::string& sScriptName, const event_data& mData) {
-    alive_checker mChecker(*this);
-    base::fire_script(sScriptName, mData);
-    if (!mChecker.is_alive())
+void slider::fire_script(const std::string& s_script_name, const event_data& m_data) {
+    alive_checker m_checker(*this);
+    base::fire_script(s_script_name, m_data);
+    if (!m_checker.is_alive())
         return;
 
-    if (sScriptName == "OnDragStart") {
-        if (pThumbTexture_ &&
-            pThumbTexture_->is_in_region({mData.get<float>(1), mData.get<float>(2)})) {
-            anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
+    if (s_script_name == "OnDragStart") {
+        if (p_thumb_texture_ &&
+            p_thumb_texture_->is_in_region({m_data.get<float>(1), m_data.get<float>(2)})) {
+            anchor& m_anchor = p_thumb_texture_->modify_point(anchor_point::center);
 
             get_manager().get_root().start_moving(
-                pThumbTexture_, &mAnchor,
-                mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
+                p_thumb_texture_, &m_anchor,
+                m_orientation_ == orientation::horizontal ? constraint::x : constraint::y,
                 [&]() { constrain_thumb_(); });
 
-            bThumbMoved_ = true;
+            b_thumb_moved_ = true;
         }
-    } else if (sScriptName == "OnDragStop") {
-        if (pThumbTexture_) {
-            if (get_manager().get_root().is_moving(*pThumbTexture_))
+    } else if (s_script_name == "OnDragStop") {
+        if (p_thumb_texture_) {
+            if (get_manager().get_root().is_moving(*p_thumb_texture_))
                 get_manager().get_root().stop_moving();
 
-            bThumbMoved_ = false;
+            b_thumb_moved_ = false;
         }
-    } else if (sScriptName == "OnMouseDown") {
-        if (bAllowClicksOutsideThumb_) {
-            const vector2f mApparentSize = get_apparent_dimensions();
+    } else if (s_script_name == "OnMouseDown") {
+        if (b_allow_clicks_outside_thumb_) {
+            const vector2f m_apparent_size = get_apparent_dimensions();
 
-            float fValue;
-            if (mOrientation_ == orientation::HORIZONTAL) {
-                float fOffset = mData.get<float>(1) - lBorderList_.left;
-                fValue        = fOffset / mApparentSize.x;
-                set_value(fValue * (fMaxValue_ - fMinValue_) + fMinValue_);
+            float f_value;
+            if (m_orientation_ == orientation::horizontal) {
+                float f_offset = m_data.get<float>(1) - l_border_list_.left;
+                f_value        = f_offset / m_apparent_size.x;
+                set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
             } else {
-                float fOffset = mData.get<float>(2) - lBorderList_.top;
-                fValue        = fOffset / mApparentSize.y;
-                set_value(fValue * (fMaxValue_ - fMinValue_) + fMinValue_);
+                float f_offset = m_data.get<float>(2) - l_border_list_.top;
+                f_value        = f_offset / m_apparent_size.y;
+                set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
             }
         }
     }
 }
 
-void slider::copy_from(const region& mObj) {
-    base::copy_from(mObj);
+void slider::copy_from(const region& m_obj) {
+    base::copy_from(m_obj);
 
-    const slider* pSlider = down_cast<slider>(&mObj);
-    if (!pSlider)
+    const slider* p_slider = down_cast<slider>(&m_obj);
+    if (!p_slider)
         return;
 
-    this->set_value_step(pSlider->get_value_step());
-    this->set_min_value(pSlider->get_min_value());
-    this->set_max_value(pSlider->get_max_value());
-    this->set_value(pSlider->get_value());
-    this->set_thumb_draw_layer(pSlider->get_thumb_draw_layer());
-    this->set_orientation(pSlider->get_orientation());
-    this->set_allow_clicks_outside_thumb(pSlider->are_clicks_outside_thumb_allowed());
+    this->set_value_step(p_slider->get_value_step());
+    this->set_min_value(p_slider->get_min_value());
+    this->set_max_value(p_slider->get_max_value());
+    this->set_value(p_slider->get_value());
+    this->set_thumb_draw_layer(p_slider->get_thumb_draw_layer());
+    this->set_orientation(p_slider->get_orientation());
+    this->set_allow_clicks_outside_thumb(p_slider->are_clicks_outside_thumb_allowed());
 
-    if (const texture* pThumb = pSlider->get_thumb_texture().get()) {
-        region_core_attributes mAttr;
-        mAttr.sName        = pThumb->get_name();
-        mAttr.lInheritance = {pSlider->get_thumb_texture()};
+    if (const texture* p_thumb = p_slider->get_thumb_texture().get()) {
+        region_core_attributes m_attr;
+        m_attr.s_name        = p_thumb->get_name();
+        m_attr.l_inheritance = {p_slider->get_thumb_texture()};
 
-        auto pTexture =
-            this->create_layered_region<texture>(pThumb->get_draw_layer(), std::move(mAttr));
+        auto p_texture =
+            this->create_layered_region<texture>(p_thumb->get_draw_layer(), std::move(m_attr));
 
-        if (pTexture) {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_thumb_texture(pTexture);
+        if (p_texture) {
+            p_texture->set_special();
+            p_texture->notify_loaded();
+            this->set_thumb_texture(p_texture);
         }
     }
 }
 
 void slider::constrain_thumb_() {
-    if (fMaxValue_ == fMinValue_)
+    if (f_max_value_ == f_min_value_)
         return;
 
-    const vector2f mApparentSize = get_apparent_dimensions();
+    const vector2f m_apparent_size = get_apparent_dimensions();
 
-    if ((mOrientation_ == orientation::HORIZONTAL && mApparentSize.x <= 0) ||
-        (mOrientation_ == orientation::VERTICAL && mApparentSize.y <= 0))
+    if ((m_orientation_ == orientation::horizontal && m_apparent_size.x <= 0) ||
+        (m_orientation_ == orientation::vertical && m_apparent_size.y <= 0))
         return;
 
-    float fOldValue = fValue_;
+    float f_old_value = f_value_;
 
-    if (bThumbMoved_) {
-        if (mOrientation_ == orientation::HORIZONTAL)
-            fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x / mApparentSize.x;
+    if (b_thumb_moved_) {
+        if (m_orientation_ == orientation::horizontal)
+            f_value_ = p_thumb_texture_->get_point(anchor_point::center).m_offset.x / m_apparent_size.x;
         else
-            fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y / mApparentSize.y;
+            f_value_ = p_thumb_texture_->get_point(anchor_point::center).m_offset.y / m_apparent_size.y;
 
-        fValue_ = fValue_ * (fMaxValue_ - fMinValue_) + fMinValue_;
-        fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
-        step_value(fValue_, fValueStep_);
+        f_value_ = f_value_ * (f_max_value_ - f_min_value_) + f_min_value_;
+        f_value_ = std::clamp(f_value_, f_min_value_, f_max_value_);
+        step_value(f_value_, f_value_step_);
     }
 
-    float fCoef = (fValue_ - fMinValue_) / (fMaxValue_ - fMinValue_);
+    float f_coef = (f_value_ - f_min_value_) / (f_max_value_ - f_min_value_);
 
-    anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
+    anchor& m_anchor = p_thumb_texture_->modify_point(anchor_point::center);
 
-    vector2f mNewOffset;
-    if (mOrientation_ == orientation::HORIZONTAL)
-        mNewOffset = vector2f(mApparentSize.x * fCoef, 0);
+    vector2f m_new_offset;
+    if (m_orientation_ == orientation::horizontal)
+        m_new_offset = vector2f(m_apparent_size.x * f_coef, 0);
     else
-        mNewOffset = vector2f(0, mApparentSize.y * fCoef);
+        m_new_offset = vector2f(0, m_apparent_size.y * f_coef);
 
-    if (mNewOffset != mAnchor.mOffset) {
-        mAnchor.mOffset = mNewOffset;
-        pThumbTexture_->notify_borders_need_update();
+    if (m_new_offset != m_anchor.m_offset) {
+        m_anchor.m_offset = m_new_offset;
+        p_thumb_texture_->notify_borders_need_update();
     }
 
-    if (fValue_ != fOldValue)
+    if (f_value_ != f_old_value)
         fire_script("OnValueChanged");
 }
 
-void slider::set_min_value(float fMin) {
-    if (fMin != fMinValue_) {
-        fMinValue_ = fMin;
-        if (fMinValue_ > fMaxValue_)
-            fMinValue_ = fMaxValue_;
+void slider::set_min_value(float f_min) {
+    if (f_min != f_min_value_) {
+        f_min_value_ = f_min;
+        if (f_min_value_ > f_max_value_)
+            f_min_value_ = f_max_value_;
         else
-            step_value(fMinValue_, fValueStep_);
+            step_value(f_min_value_, f_value_step_);
 
-        if (fValue_ < fMinValue_) {
-            fValue_ = fMinValue_;
+        if (f_value_ < f_min_value_) {
+            f_value_ = f_min_value_;
             fire_script("OnValueChanged");
         }
 
@@ -187,16 +187,16 @@ void slider::set_min_value(float fMin) {
     }
 }
 
-void slider::set_max_value(float fMax) {
-    if (fMax != fMaxValue_) {
-        fMaxValue_ = fMax;
-        if (fMaxValue_ < fMinValue_)
-            fMaxValue_ = fMinValue_;
+void slider::set_max_value(float f_max) {
+    if (f_max != f_max_value_) {
+        f_max_value_ = f_max;
+        if (f_max_value_ < f_min_value_)
+            f_max_value_ = f_min_value_;
         else
-            step_value(fMaxValue_, fValueStep_);
+            step_value(f_max_value_, f_value_step_);
 
-        if (fValue_ > fMaxValue_) {
-            fValue_ = fMaxValue_;
+        if (f_value_ > f_max_value_) {
+            f_value_ = f_max_value_;
             fire_script("OnValueChanged");
         }
 
@@ -204,15 +204,15 @@ void slider::set_max_value(float fMax) {
     }
 }
 
-void slider::set_min_max_values(float fMin, float fMax) {
-    if (fMin != fMinValue_ || fMax != fMaxValue_) {
-        fMinValue_ = std::min(fMin, fMax);
-        fMaxValue_ = std::max(fMin, fMax);
-        step_value(fMinValue_, fValueStep_);
-        step_value(fMaxValue_, fValueStep_);
+void slider::set_min_max_values(float f_min, float f_max) {
+    if (f_min != f_min_value_ || f_max != f_max_value_) {
+        f_min_value_ = std::min(f_min, f_max);
+        f_max_value_ = std::max(f_min, f_max);
+        step_value(f_min_value_, f_value_step_);
+        step_value(f_max_value_, f_value_step_);
 
-        if (fValue_ > fMaxValue_ || fValue_ < fMinValue_) {
-            fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
+        if (f_value_ > f_max_value_ || f_value_ < f_min_value_) {
+            f_value_ = std::clamp(f_value_, f_min_value_, f_max_value_);
             fire_script("OnValueChanged");
         }
 
@@ -220,162 +220,162 @@ void slider::set_min_max_values(float fMin, float fMax) {
     }
 }
 
-void slider::set_value(float fValue, bool bSilent) {
-    fValue = std::clamp(fValue, fMinValue_, fMaxValue_);
-    step_value(fValue, fValueStep_);
+void slider::set_value(float f_value, bool b_silent) {
+    f_value = std::clamp(f_value, f_min_value_, f_max_value_);
+    step_value(f_value, f_value_step_);
 
-    if (fValue != fValue_) {
-        fValue_ = fValue;
+    if (f_value != f_value_) {
+        f_value_ = f_value;
 
-        if (!bSilent)
+        if (!b_silent)
             fire_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }
 }
 
-void slider::set_value_step(float fValueStep) {
-    if (fValueStep_ != fValueStep) {
-        fValueStep_ = fValueStep;
+void slider::set_value_step(float f_value_step) {
+    if (f_value_step_ != f_value_step) {
+        f_value_step_ = f_value_step;
 
-        step_value(fMinValue_, fValueStep_);
-        step_value(fMaxValue_, fValueStep_);
+        step_value(f_min_value_, f_value_step_);
+        step_value(f_max_value_, f_value_step_);
 
-        float fOldValue = fValue_;
-        fValue_         = std::clamp(fValue_, fMinValue_, fMaxValue_);
-        step_value(fValue_, fValueStep_);
+        float f_old_value = f_value_;
+        f_value_         = std::clamp(f_value_, f_min_value_, f_max_value_);
+        step_value(f_value_, f_value_step_);
 
-        if (fValue_ != fOldValue)
+        if (f_value_ != f_old_value)
             fire_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }
 }
 
-void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture) {
-    pThumbTexture_ = std::move(pTexture);
-    if (!pThumbTexture_)
+void slider::set_thumb_texture(utils::observer_ptr<texture> p_texture) {
+    p_thumb_texture_ = std::move(p_texture);
+    if (!p_thumb_texture_)
         return;
 
-    pThumbTexture_->set_draw_layer(mThumbLayer_);
-    pThumbTexture_->clear_all_points();
-    pThumbTexture_->set_point(
-        anchor_point::CENTER, pThumbTexture_->get_parent().get() == this ? "$parent" : sName_,
-        mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP);
+    p_thumb_texture_->set_draw_layer(m_thumb_layer_);
+    p_thumb_texture_->clear_all_points();
+    p_thumb_texture_->set_point(
+        anchor_point::center, p_thumb_texture_->get_parent().get() == this ? "$parent" : s_name_,
+        m_orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
 
     notify_thumb_texture_needs_update_();
 }
 
-void slider::set_orientation(orientation mOrientation) {
-    if (mOrientation != mOrientation_) {
-        mOrientation_ = mOrientation;
-        if (pThumbTexture_) {
-            pThumbTexture_->set_point(
-                anchor_point::CENTER, sName_,
-                mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP);
+void slider::set_orientation(orientation m_orientation) {
+    if (m_orientation != m_orientation_) {
+        m_orientation_ = m_orientation;
+        if (p_thumb_texture_) {
+            p_thumb_texture_->set_point(
+                anchor_point::center, s_name_,
+                m_orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
         }
 
         notify_thumb_texture_needs_update_();
     }
 }
 
-void slider::set_orientation(const std::string& sOrientation) {
-    orientation mOrientation = orientation::HORIZONTAL;
-    if (sOrientation == "VERTICAL")
-        mOrientation = orientation::VERTICAL;
-    else if (sOrientation == "HORIZONTAL")
-        mOrientation = orientation::HORIZONTAL;
+void slider::set_orientation(const std::string& s_orientation) {
+    orientation m_orientation = orientation::horizontal;
+    if (s_orientation == "VERTICAL")
+        m_orientation = orientation::vertical;
+    else if (s_orientation == "HORIZONTAL")
+        m_orientation = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << lType_.back()
+        gui::out << gui::warning << "gui::" << l_type_.back()
                  << " : "
                     "Unknown orientation : \"" +
-                        sOrientation + "\". Using \"HORIZONTAL\"."
+                        s_orientation + "\". Using \"HORIZONTAL\"."
                  << std::endl;
     }
 
-    set_orientation(mOrientation);
+    set_orientation(m_orientation);
 }
 
-void slider::set_thumb_draw_layer(layer mThumbLayer) {
-    mThumbLayer_ = mThumbLayer;
-    if (pThumbTexture_)
-        pThumbTexture_->set_draw_layer(mThumbLayer_);
+void slider::set_thumb_draw_layer(layer m_thumb_layer) {
+    m_thumb_layer_ = m_thumb_layer;
+    if (p_thumb_texture_)
+        p_thumb_texture_->set_draw_layer(m_thumb_layer_);
 }
 
-void slider::set_thumb_draw_layer(const std::string& sThumbLayer) {
-    if (sThumbLayer == "ARTWORK")
-        mThumbLayer_ = layer::ARTWORK;
-    else if (sThumbLayer == "BACKGROUND")
-        mThumbLayer_ = layer::BACKGROUND;
-    else if (sThumbLayer == "BORDER")
-        mThumbLayer_ = layer::BORDER;
-    else if (sThumbLayer == "HIGHLIGHT")
-        mThumbLayer_ = layer::HIGHLIGHT;
-    else if (sThumbLayer == "OVERLAY")
-        mThumbLayer_ = layer::OVERLAY;
+void slider::set_thumb_draw_layer(const std::string& s_thumb_layer) {
+    if (s_thumb_layer == "ARTWORK")
+        m_thumb_layer_ = layer::artwork;
+    else if (s_thumb_layer == "BACKGROUND")
+        m_thumb_layer_ = layer::background;
+    else if (s_thumb_layer == "BORDER")
+        m_thumb_layer_ = layer::border;
+    else if (s_thumb_layer == "HIGHLIGHT")
+        m_thumb_layer_ = layer::highlight;
+    else if (s_thumb_layer == "OVERLAY")
+        m_thumb_layer_ = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << lType_.back()
+        gui::out << gui::warning << "gui::" << l_type_.back()
                  << " : "
                     "Unknown layer type : \"" +
-                        sThumbLayer + "\". Using \"OVERLAY\"."
+                        s_thumb_layer + "\". Using \"OVERLAY\"."
                  << std::endl;
-        mThumbLayer_ = layer::OVERLAY;
+        m_thumb_layer_ = layer::overlay;
     }
 
-    if (pThumbTexture_)
-        pThumbTexture_->set_draw_layer(mThumbLayer_);
+    if (p_thumb_texture_)
+        p_thumb_texture_->set_draw_layer(m_thumb_layer_);
 }
 
 float slider::get_min_value() const {
-    return fMinValue_;
+    return f_min_value_;
 }
 
 float slider::get_max_value() const {
-    return fMaxValue_;
+    return f_max_value_;
 }
 
 float slider::get_value() const {
-    return fValue_;
+    return f_value_;
 }
 
 float slider::get_value_step() const {
-    return fValueStep_;
+    return f_value_step_;
 }
 
 slider::orientation slider::get_orientation() const {
-    return mOrientation_;
+    return m_orientation_;
 }
 
 layer slider::get_thumb_draw_layer() const {
-    return mThumbLayer_;
+    return m_thumb_layer_;
 }
 
-void slider::set_allow_clicks_outside_thumb(bool bAllow) {
-    bAllowClicksOutsideThumb_ = bAllow;
+void slider::set_allow_clicks_outside_thumb(bool b_allow) {
+    b_allow_clicks_outside_thumb_ = b_allow;
 }
 
 bool slider::are_clicks_outside_thumb_allowed() const {
-    return bAllowClicksOutsideThumb_;
+    return b_allow_clicks_outside_thumb_;
 }
 
-bool slider::is_in_region(const vector2f& mPosition) const {
-    if (bAllowClicksOutsideThumb_) {
-        if (base::is_in_region(mPosition))
+bool slider::is_in_region(const vector2f& m_position) const {
+    if (b_allow_clicks_outside_thumb_) {
+        if (base::is_in_region(m_position))
             return true;
     }
 
-    return pThumbTexture_ && pThumbTexture_->is_in_region(mPosition);
+    return p_thumb_texture_ && p_thumb_texture_->is_in_region(m_position);
 }
 
 void slider::update_thumb_texture_() {
-    if (!pThumbTexture_)
+    if (!p_thumb_texture_)
         return;
 
-    if (fMaxValue_ == fMinValue_) {
-        pThumbTexture_->hide();
+    if (f_max_value_ == f_min_value_) {
+        p_thumb_texture_->hide();
         return;
     } else
-        pThumbTexture_->show();
+        p_thumb_texture_->show();
 
     constrain_thumb_();
 }

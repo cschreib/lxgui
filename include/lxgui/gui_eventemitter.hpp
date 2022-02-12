@@ -44,16 +44,16 @@ public:
      *   \see fire_event
      */
     utils::connection
-    register_event(const std::string& sEventName, event_handler_function mCallback);
+    register_event(const std::string& s_event_name, event_handler_function m_callback);
 
     /// Emmit a new event.
     /** \param sEventName The ID of the event which has occurred
      *   \param mData      The payload of the event
      */
-    void fire_event(const std::string& sEventName, event_data mData = event_data{});
+    void fire_event(const std::string& s_event_name, event_data m_data = event_data{});
 
 private:
-    std::unordered_map<std::string, event_signal> lRegisteredEventList_;
+    std::unordered_map<std::string, event_signal> l_registered_event_list_;
 };
 
 } // namespace lxgui::gui

@@ -20,7 +20,7 @@ public:
     /// Constructor.
     /** \param pParent The frame it is linked to
      */
-    explicit backdrop(frame& pParent);
+    explicit backdrop(frame& p_parent);
 
     /// Non-copiable
     backdrop(const backdrop&) = delete;
@@ -42,7 +42,7 @@ public:
     /// Sets the background texture.
     /** \param sBackgroundFile The background texture
      */
-    void set_background(const std::string& sBackgroundFile);
+    void set_background(const std::string& s_background_file);
 
     /// Returns this backdrop's background file.
     /** \return This backdrop's background file
@@ -54,7 +54,7 @@ public:
      *   \note This color can be used to tint the background texture if any
      *         or simply render a plain color background.
      */
-    void set_background_color(const color& mColor);
+    void set_background_color(const color& m_color);
 
     /// Returns the background color.
     /** \return The background color
@@ -64,7 +64,7 @@ public:
     /// Enables tilling for the background texture.
     /** \param bBackgroundTilling 'true' to enable tilling
      */
-    void set_background_tilling(bool bBackgroundTilling);
+    void set_background_tilling(bool b_background_tilling);
 
     /// Checks if tilling is enabled for the background texture.
     /** \return 'true' if tilling is enabled for the background texture
@@ -75,7 +75,7 @@ public:
     /** \param fTileSize The new tile size
      *   \note Tile will be scaled by fTileSize/backgroundTextureSize.
      */
-    void set_tile_size(float fTileSize);
+    void set_tile_size(float f_tile_size);
 
     /// Returns this backdrop's tile size.
     /** \return This backdrop's tile size
@@ -85,7 +85,7 @@ public:
     /// Sets insets for the background texture.
     /** \param lInsets The insets array
      */
-    void set_background_insets(const bounds2f& lInsets);
+    void set_background_insets(const bounds2f& l_insets);
 
     /// Returns this backdrop's background insets.
     /** \return This backdrop's background insets
@@ -95,7 +95,7 @@ public:
     /// Sets insets for the edge texture.
     /** \param lInsets The insets array
      */
-    void set_edge_insets(const bounds2f& lInsets);
+    void set_edge_insets(const bounds2f& l_insets);
 
     /// Returns this backdrop's edge insets.
     /** \return This backdrop's edge insets
@@ -116,7 +116,7 @@ public:
      *         - [3/4, 7/8] : bottom-left corner
      *         - [7/8,   1] : bottom-right corner
      */
-    void set_edge(const std::string& sEdgeFile);
+    void set_edge(const std::string& s_edge_file);
 
     /// Returns this backdrop's edge file.
     /** \return This backdrop's edge file
@@ -128,7 +128,7 @@ public:
      *   \note This color can be used to tint the edge texture if any
      *         or simply render a plain color edge.
      */
-    void set_edge_color(const color& mColor);
+    void set_edge_color(const color& m_color);
 
     /// Returns the edge color.
     /** \return The edge color
@@ -139,7 +139,7 @@ public:
     /** \param fEdgeSize The new edge size
      *   \note Edges will be scaled by fEdgeSize/edgeTextureHeight.
      */
-    void set_edge_size(float fEdgeSize);
+    void set_edge_size(float f_edge_size);
 
     /// Returns this backdrop's edge size.
     /** \return This backdrop's edge size
@@ -149,7 +149,7 @@ public:
     /// Sets the color to be multiplied to all drawn vertices.
     /** \param mColor The new vertex color
      */
-    void set_vertex_color(const color& mColor);
+    void set_vertex_color(const color& m_color);
 
     /// Renders this backdrop on the current render target.
     void render() const;
@@ -159,34 +159,34 @@ public:
 
 private:
     void update_cache_() const;
-    void update_background_(color mColor) const;
-    void update_edge_(color mColor) const;
+    void update_background_(color m_color) const;
+    void update_edge_(color m_color) const;
 
-    frame& mParent_;
+    frame& m_parent_;
 
-    std::string               sBackgroundFile_;
-    color                     mBackgroundColor_ = color::EMPTY;
-    std::shared_ptr<material> pBackgroundTexture_;
-    bool                      bBackgroundTilling_ = false;
-    float                     fTileSize_          = 0.0f;
-    float                     fOriginalTileSize_  = 0.0f;
-    bounds2f                  lBackgroundInsets_;
+    std::string               s_background_file_;
+    color                     m_background_color_ = color::empty;
+    std::shared_ptr<material> p_background_texture_;
+    bool                      b_background_tilling_ = false;
+    float                     f_tile_size_          = 0.0f;
+    float                     f_original_tile_size_  = 0.0f;
+    bounds2f                  l_background_insets_;
 
-    std::string               sEdgeFile_;
-    color                     mEdgeColor_ = color::EMPTY;
-    std::shared_ptr<material> pEdgeTexture_;
-    bounds2f                  lEdgeInsets_;
-    float                     fEdgeSize_         = 0.0f;
-    float                     fOriginalEdgeSize_ = 0.0f;
+    std::string               s_edge_file_;
+    color                     m_edge_color_ = color::empty;
+    std::shared_ptr<material> p_edge_texture_;
+    bounds2f                  l_edge_insets_;
+    float                     f_edge_size_         = 0.0f;
+    float                     f_original_edge_size_ = 0.0f;
 
-    color mVertexColor_ = color::WHITE;
+    color m_vertex_color_ = color::white;
 
-    mutable bool  bCacheDirty_ = true;
-    mutable float fCacheAlpha_ = std::numeric_limits<float>::quiet_NaN();
-    mutable std::vector<std::array<vertex, 4>> lBackgroundQuads_;
-    mutable std::shared_ptr<vertex_cache>      pBackgroundCache_;
-    mutable std::vector<std::array<vertex, 4>> lEdgeQuads_;
-    mutable std::shared_ptr<vertex_cache>      pEdgeCache_;
+    mutable bool  b_cache_dirty_ = true;
+    mutable float f_cache_alpha_ = std::numeric_limits<float>::quiet_NaN();
+    mutable std::vector<std::array<vertex, 4>> l_background_quads_;
+    mutable std::shared_ptr<vertex_cache>      p_background_cache_;
+    mutable std::vector<std::array<vertex, 4>> l_edge_quads_;
+    mutable std::shared_ptr<vertex_cache>      p_edge_cache_;
 };
 
 } // namespace lxgui::gui

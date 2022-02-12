@@ -6,11 +6,11 @@
 namespace lxgui::gui::sdl {
 
 utils::owner_ptr<gui::manager>
-create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage) {
+create_manager(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise_sdl_image) {
     return utils::make_owned<gui::manager>(
         std::unique_ptr<input::source>(
-            new input::sdl::source(pWindow, pRenderer, bInitialiseSDLImage)),
-        std::unique_ptr<gui::renderer>(new gui::sdl::renderer(pRenderer, false)));
+            new input::sdl::source(p_window, p_renderer, b_initialise_sdl_image)),
+        std::unique_ptr<gui::renderer>(new gui::sdl::renderer(p_renderer, false)));
 }
 
 } // namespace lxgui::gui::sdl

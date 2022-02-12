@@ -6,27 +6,28 @@
 
 namespace lxgui::gui {
 
-event_receiver::event_receiver(event_emitter& mEmitter) : mEventEmitter_(mEmitter) {}
+event_receiver::event_receiver(event_emitter& m_emitter) : m_event_emitter_(m_emitter) {}
 
 void event_receiver::register_event(
-    const std::string& sEventName, event_handler_function mCallback) {
-    utils::connection mConnection = mEventEmitter_.register_event(sEventName, std::move(mCallback));
-    lRegisteredEvents_.push_back({sEventName, std::move(mConnection)});
+    const std::string& s_event_name, event_handler_function m_callback) {
+    utils::connection m_connection =
+        m_event_emitter_.register_event(s_event_name, std::move(m_callback));
+    l_registered_events_.push_back({s_event_name, std::move(m_connection)});
 }
 
-void event_receiver::unregister_event(const std::string& sEventName) {
-    auto mIter = utils::find_if(
-        lRegisteredEvents_, [&](const auto& mEvent) { return mEvent.sName == sEventName; });
+void event_receiver::unregister_event(const std::string& s_event_name) {
+    auto m_iter = utils::find_if(
+        l_registered_events_, [&](const auto& m_event) { return m_event.s_name == s_event_name; });
 
-    if (mIter == lRegisteredEvents_.end()) {
+    if (m_iter == l_registered_events_.end()) {
         gui::out << gui::warning << "event_emitter : "
-                 << "Event \"" << sEventName << "\" is not registered to this event_receiver."
+                 << "Event \"" << s_event_name << "\" is not registered to this event_receiver."
                  << std::endl;
 
         return;
     }
 
-    lRegisteredEvents_.erase(mIter);
+    l_registered_events_.erase(m_iter);
 }
 
 } // namespace lxgui::gui

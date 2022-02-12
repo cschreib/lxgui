@@ -10,13 +10,13 @@
 
 namespace lxgui::gui {
 
-const color color::EMPTY(0.0f, 0.0f, 0.0f, 0.0f);
-const color color::WHITE(1.0f, 1.0f, 1.0f);
-const color color::BLACK(0.0f, 0.0f, 0.0f);
-const color color::RED(1.0f, 0.0f, 0.0f);
-const color color::GREEN(0.0f, 1.0f, 0.0f);
-const color color::BLUE(0.0f, 0.0f, 1.0f);
-const color color::GREY(0.5f, 0.5f, 0.5f);
+const color color::empty(0.0f, 0.0f, 0.0f, 0.0f);
+const color color::white(1.0f, 1.0f, 1.0f);
+const color color::black(0.0f, 0.0f, 0.0f);
+const color color::red(1.0f, 0.0f, 0.0f);
+const color color::green(0.0f, 1.0f, 0.0f);
+const color color::blue(0.0f, 0.0f, 1.0f);
+const color color::grey(0.5f, 0.5f, 0.5f);
 
 color::color(const std::string& s) {
     std::istringstream ss(s);
@@ -209,49 +209,49 @@ color operator*(float f, const color& c2) noexcept {
     return color(f * c2.r, f * c2.g, f * c2.b, c2.a);
 }
 
-std::ostream& operator<<(std::ostream& mStream, const color& mColor) {
-    return mStream << static_cast<std::size_t>(std::round(255.0f * mColor.r)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * mColor.g)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * mColor.b)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * mColor.a));
+std::ostream& operator<<(std::ostream& m_stream, const color& m_color) {
+    return m_stream << static_cast<std::size_t>(std::round(255.0f * m_color.r)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f * m_color.g)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f * m_color.b)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f * m_color.a));
 }
 
-std::istream& operator>>(std::istream& mStream, color& mColor) {
-    auto pos = mStream.tellg();
+std::istream& operator>>(std::istream& m_stream, color& m_color) {
+    auto pos = m_stream.tellg();
     char c;
-    mStream >> c;
+    m_stream >> c;
     if (c == '#') {
         char h[3];
         h[2] = '\0';
-        mStream >> h[0] >> h[1];
-        mColor.r = utils::hex_to_uint(h) / 255.0f;
-        mStream >> h[0] >> h[1];
-        mColor.g = utils::hex_to_uint(h) / 255.0f;
-        mStream >> h[0] >> h[1];
-        mColor.b = utils::hex_to_uint(h) / 255.0f;
+        m_stream >> h[0] >> h[1];
+        m_color.r = utils::hex_to_uint(h) / 255.0f;
+        m_stream >> h[0] >> h[1];
+        m_color.g = utils::hex_to_uint(h) / 255.0f;
+        m_stream >> h[0] >> h[1];
+        m_color.b = utils::hex_to_uint(h) / 255.0f;
 
-        pos = mStream.tellg();
-        if (!mStream.eof()) {
-            mStream >> h[0];
-            if (std::isalnum(h[0]) != 0 && !mStream.eof()) {
-                mStream >> h[1];
+        pos = m_stream.tellg();
+        if (!m_stream.eof()) {
+            m_stream >> h[0];
+            if (std::isalnum(h[0]) != 0 && !m_stream.eof()) {
+                m_stream >> h[1];
                 if (std::isalnum(h[1]) != 0) {
-                    mColor.a = utils::hex_to_uint(h) / 255.0f;
-                    return mStream;
+                    m_color.a = utils::hex_to_uint(h) / 255.0f;
+                    return m_stream;
                 }
             }
         }
 
-        mStream.seekg(pos);
-        mColor.a = 1.0f;
+        m_stream.seekg(pos);
+        m_color.a = 1.0f;
     } else {
-        mStream.seekg(pos);
+        m_stream.seekg(pos);
         char delim;
-        mStream >> mColor.r >> delim >> mColor.g >> delim >> mColor.b >> delim >> mColor.a;
-        mColor *= 1.0f / 255.0f;
+        m_stream >> m_color.r >> delim >> m_color.g >> delim >> m_color.b >> delim >> m_color.a;
+        m_color *= 1.0f / 255.0f;
     }
 
-    return mStream;
+    return m_stream;
 }
 
 } // namespace lxgui::gui

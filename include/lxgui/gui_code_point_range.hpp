@@ -7,8 +7,8 @@ namespace lxgui::gui {
 
 /// Represents a contiguous range of unicode code points
 struct code_point_range {
-    char32_t uiFirst = 0u;
-    char32_t uiLast  = 0u;
+    char32_t ui_first = 0u;
+    char32_t ui_last  = 0u;
 };
 
 } // namespace lxgui::gui

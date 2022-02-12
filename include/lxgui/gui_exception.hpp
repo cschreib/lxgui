@@ -14,10 +14,10 @@ namespace lxgui::gui {
  */
 class exception : public utils::exception {
 public:
-    explicit exception(const std::string& sMessage) : utils::exception(sMessage) {}
+    explicit exception(const std::string& s_message) : utils::exception(s_message) {}
 
-    exception(const std::string& sClassName, const std::string& sMessage) :
-        utils::exception(sClassName, sMessage) {}
+    exception(const std::string& s_class_name, const std::string& s_message) :
+        utils::exception(s_class_name, s_message) {}
 };
 
 } // namespace lxgui::gui

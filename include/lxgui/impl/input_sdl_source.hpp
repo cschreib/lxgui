@@ -23,17 +23,17 @@ public:
      *   \param pRenderer The SDL renderer, or null if using raw OpenGL
      *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
      */
-    explicit source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage);
+    explicit source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise_sdl_image);
 
     source(const source&) = delete;
     source& operator=(const source&) = delete;
 
     utils::ustring get_clipboard_content() override;
-    void           set_clipboard_content(const utils::ustring& sContent) override;
+    void           set_clipboard_content(const utils::ustring& s_content) override;
 
-    void on_sdl_event(const SDL_Event& mEvent);
+    void on_sdl_event(const SDL_Event& m_event);
 
-    void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
+    void set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) override;
     void reset_mouse_cursor() override;
 
     float get_interface_scaling_factor_hint() const override;
@@ -41,15 +41,15 @@ public:
 private:
     gui::vector2ui get_window_pixel_size_() const;
     void           update_pixel_per_unit_();
-    input::key     from_sdl_(int iSDLKey) const;
+    input::key     from_sdl_(int i_sdl_key) const;
 
-    SDL_Window*   pWindow_   = nullptr;
-    SDL_Renderer* pRenderer_ = nullptr;
+    SDL_Window*   p_window_   = nullptr;
+    SDL_Renderer* p_renderer_ = nullptr;
 
-    float fPixelsPerUnit_ = 1.0f;
+    float f_pixels_per_unit_ = 1.0f;
 
     using wrapped_cursor = std::unique_ptr<SDL_Cursor, void (*)(SDL_Cursor*)>;
-    std::unordered_map<std::string, wrapped_cursor> lCursorMap_;
+    std::unordered_map<std::string, wrapped_cursor> l_cursor_map_;
 };
 
 }} // namespace lxgui::input::sdl

@@ -27,17 +27,17 @@
 
 namespace lxgui::gui::gl {
 
-vertex_cache::vertex_cache(type mType) : gui::vertex_cache(mType) {
-    glGenVertexArrays(1, &uiVertexArray_);
+vertex_cache::vertex_cache(type m_type) : gui::vertex_cache(m_type) {
+    glGenVertexArrays(1, &ui_vertex_array_);
 
-    std::array<std::uint32_t, 2> lBuffers;
-    glGenBuffers(lBuffers.size(), lBuffers.data());
-    uiVertexBuffer_ = lBuffers[0];
-    uiIndexBuffer_  = lBuffers[1];
+    std::array<std::uint32_t, 2> l_buffers;
+    glGenBuffers(l_buffers.size(), l_buffers.data());
+    ui_vertex_buffer_ = l_buffers[0];
+    ui_index_buffer_  = l_buffers[1];
 
-    glBindVertexArray(uiVertexArray_);
+    glBindVertexArray(ui_vertex_array_);
 
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
+    glBindBuffer(GL_ARRAY_BUFFER, ui_vertex_buffer_);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
     glEnableVertexAttribArray(1);
@@ -48,116 +48,116 @@ vertex_cache::vertex_cache(type mType) : gui::vertex_cache(mType) {
     glVertexAttribPointer(
         2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ui_index_buffer_);
 
     glBindVertexArray(0);
 }
 
 vertex_cache::~vertex_cache() {
-    glDeleteVertexArrays(1, &uiVertexArray_);
+    glDeleteVertexArrays(1, &ui_vertex_array_);
 
-    std::array<std::uint32_t, 2> lBuffers = {uiVertexBuffer_, uiIndexBuffer_};
-    glDeleteBuffers(lBuffers.size(), lBuffers.data());
+    std::array<std::uint32_t, 2> l_buffers = {ui_vertex_buffer_, ui_index_buffer_};
+    glDeleteBuffers(l_buffers.size(), l_buffers.data());
 }
 
-void vertex_cache::update_data(const vertex* lVertexData, std::size_t uiNumVertex) {
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
+void vertex_cache::update_data(const vertex* l_vertex_data, std::size_t ui_num_vertex) {
+    glBindBuffer(GL_ARRAY_BUFFER, ui_vertex_buffer_);
 
-    if (uiNumVertex > uiCurrentCapacityVertex_) {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * uiNumVertex, lVertexData, GL_DYNAMIC_DRAW);
-        uiCurrentCapacityVertex_ = uiNumVertex;
+    if (ui_num_vertex > ui_current_capacity_vertex_) {
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * ui_num_vertex, l_vertex_data, GL_DYNAMIC_DRAW);
+        ui_current_capacity_vertex_ = ui_num_vertex;
     } else {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * uiNumVertex, lVertexData);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * ui_num_vertex, l_vertex_data);
     }
 
-    uiCurrentSizeVertex_ = uiNumVertex;
+    ui_current_size_vertex_ = ui_num_vertex;
 }
 
-void vertex_cache::update_indices(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
+void vertex_cache::update_indices(const std::uint32_t* l_vertex_indices, std::size_t ui_num_indices) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ui_index_buffer_);
 
-    if (uiNumIndices > uiCurrentCapacityIndex_) {
+    if (ui_num_indices > ui_current_capacity_index_) {
         glBufferData(
-            GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * uiNumIndices, lVertexIndices,
+            GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * ui_num_indices, l_vertex_indices,
             GL_DYNAMIC_DRAW);
-        uiCurrentCapacityIndex_ = uiNumIndices;
+        ui_current_capacity_index_ = ui_num_indices;
     } else {
         glBufferSubData(
-            GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(std::uint32_t) * uiNumIndices, lVertexIndices);
+            GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(std::uint32_t) * ui_num_indices, l_vertex_indices);
     }
 
-    uiCurrentSizeIndex_ = uiNumIndices;
+    ui_current_size_index_ = ui_num_indices;
 }
 
 void vertex_cache::update_indices_if_grow(
-    const std::uint32_t* lVertexIndices, std::size_t uiNumIndices) {
-    if (uiNumIndices > uiCurrentCapacityIndex_) {
-        update_indices(lVertexIndices, uiNumIndices);
+    const std::uint32_t* l_vertex_indices, std::size_t ui_num_indices) {
+    if (ui_num_indices > ui_current_capacity_index_) {
+        update_indices(l_vertex_indices, ui_num_indices);
     } else {
         // Cheap resize, do not update indices
-        uiCurrentSizeIndex_ = uiNumIndices;
+        ui_current_size_index_ = ui_num_indices;
     }
 }
 
-void vertex_cache::update(const vertex* lVertexData, std::size_t uiNumVertex) {
-    if (mType_ == type::QUADS) {
-        static constexpr std::array<std::uint32_t, 6>  lQuadIDs = {{0, 1, 2, 2, 3, 0}};
-        static thread_local std::vector<std::uint32_t> lRepeatedIds;
+void vertex_cache::update(const vertex* l_vertex_data, std::size_t ui_num_vertex) {
+    if (m_type_ == type::quads) {
+        static constexpr std::array<std::uint32_t, 6>  l_quad_i_ds = {{0, 1, 2, 2, 3, 0}};
+        static thread_local std::vector<std::uint32_t> l_repeated_ids;
 
-        if (uiNumVertex % 4 != 0) {
+        if (ui_num_vertex % 4 != 0) {
             throw gui::exception(
                 "gui::gl::vertex_cache", "Number of vertices in quad array must be a multiple of 4 "
                                          "(got " +
-                                             utils::to_string(uiNumVertex) + ").");
+                                             utils::to_string(ui_num_vertex) + ").");
         }
 
         // Update the vertex data
-        update_data(lVertexData, uiNumVertex);
+        update_data(l_vertex_data, ui_num_vertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        std::size_t uiNumIndices = (uiNumVertex / 4u) * 6u;
-        if (uiNumIndices > lRepeatedIds.size()) {
-            std::size_t uiOldSize = lRepeatedIds.size();
-            lRepeatedIds.resize(uiNumIndices);
-            for (std::size_t i = uiOldSize; i < uiNumIndices; ++i) {
-                lRepeatedIds[i] = (i / 6) * 4 + lQuadIDs[i % 6];
+        std::size_t ui_num_indices = (ui_num_vertex / 4u) * 6u;
+        if (ui_num_indices > l_repeated_ids.size()) {
+            std::size_t ui_old_size = l_repeated_ids.size();
+            l_repeated_ids.resize(ui_num_indices);
+            for (std::size_t i = ui_old_size; i < ui_num_indices; ++i) {
+                l_repeated_ids[i] = (i / 6) * 4 + l_quad_i_ds[i % 6];
             }
         }
 
         // Update the index cache
-        update_indices_if_grow(lRepeatedIds.data(), uiNumIndices);
+        update_indices_if_grow(l_repeated_ids.data(), ui_num_indices);
     } else {
-        static thread_local std::vector<std::uint32_t> lRepeatedIds;
+        static thread_local std::vector<std::uint32_t> l_repeated_ids;
 
-        if (uiNumVertex % 3 != 0) {
+        if (ui_num_vertex % 3 != 0) {
             throw gui::exception(
                 "gui::gl::vertex_cache",
                 "Number of vertices in triangle array must be a multiple of 3 "
                 "(got " +
-                    utils::to_string(uiNumVertex) + ").");
+                    utils::to_string(ui_num_vertex) + ").");
         }
 
         // Update the vertex data
-        update_data(lVertexData, uiNumVertex);
+        update_data(l_vertex_data, ui_num_vertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        std::size_t uiNumIndices = uiNumVertex;
-        if (uiNumIndices > lRepeatedIds.size()) {
-            std::size_t uiOldSize = lRepeatedIds.size();
-            lRepeatedIds.resize(uiNumIndices);
-            for (std::size_t i = uiOldSize; i < uiNumIndices; ++i) {
-                lRepeatedIds[i] = i;
+        std::size_t ui_num_indices = ui_num_vertex;
+        if (ui_num_indices > l_repeated_ids.size()) {
+            std::size_t ui_old_size = l_repeated_ids.size();
+            l_repeated_ids.resize(ui_num_indices);
+            for (std::size_t i = ui_old_size; i < ui_num_indices; ++i) {
+                l_repeated_ids[i] = i;
             }
         }
 
         // Update the index cache
-        update_indices_if_grow(lRepeatedIds.data(), uiNumIndices);
+        update_indices_if_grow(l_repeated_ids.data(), ui_num_indices);
     }
 }
 
 void vertex_cache::render() const {
-    glBindVertexArray(uiVertexArray_);
-    glDrawElements(GL_TRIANGLES, uiCurrentSizeIndex_, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(ui_vertex_array_);
+    glDrawElements(GL_TRIANGLES, ui_current_size_index_, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
