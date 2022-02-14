@@ -107,8 +107,9 @@ void edit_box::register_on_lua(sol::state& m_lua) {
 
     /** @function get_text
      */
-    m_class.set_function(
-        "get_text", [](const edit_box& m_self) { return utils::unicode_to_utf8(m_self.get_text()); });
+    m_class.set_function("get_text", [](const edit_box& m_self) {
+        return utils::unicode_to_utf8(m_self.get_text());
+    });
 
     /** @function get_text_insets
      */
@@ -120,8 +121,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     /** @function highlight_text
      */
     m_class.set_function(
-        "highlight_text",
-        [](edit_box& m_self, sol::optional<std::size_t> ui_start, sol::optional<std::size_t> ui_end) {
+        "highlight_text", [](edit_box& m_self, sol::optional<std::size_t> ui_start,
+                             sol::optional<std::size_t> ui_end) {
             m_self.highlight_text(
                 ui_start.value_or(0u), ui_end.value_or(std::numeric_limits<std::size_t>::max()));
         });
@@ -195,9 +196,9 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_number",
         sol::overload(
-            [](edit_box& m_self, int i_value) {
+            [](edit_box& m_self, int value) {
                 m_self.set_text(utils::utf8_to_unicode(
-                    m_self.get_manager().get_localizer().format_string("{:L}", i_value)));
+                    m_self.get_manager().get_localizer().format_string("{:L}", value)));
             },
             [](edit_box& m_self, double d_value) {
                 m_self.set_text(utils::utf8_to_unicode(

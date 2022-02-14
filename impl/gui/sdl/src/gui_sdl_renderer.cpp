@@ -15,16 +15,17 @@
 
 namespace lxgui::gui::sdl {
 
-renderer::renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image) : p_renderer_(p_renderer) {
-    int i_window_width, i_window_height;
-    SDL_GetRendererOutputSize(p_renderer_, &i_window_width, &i_window_height);
-    m_window_dimensions_ = vector2ui(i_window_width, i_window_height);
+renderer::renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image) :
+    p_renderer_(p_renderer) {
+    int window_width, window_height;
+    SDL_GetRendererOutputSize(p_renderer_, &window_width, &window_height);
+    m_window_dimensions_ = vector2ui(window_width, window_height);
 
     render_target::check_availability(p_renderer);
 
     if (b_initialise_sdl_image) {
-        int i_img_flags = IMG_INIT_PNG;
-        if ((IMG_Init(i_img_flags) & i_img_flags) == 0) {
+        int img_flags = IMG_INIT_PNG;
+        if ((IMG_Init(img_flags) & img_flags) == 0) {
             throw gui::exception(
                 "gui::sdl::renderer",
                 "Could not initialise SDL_image: " + std::string(IMG_GetError()) + ".");
@@ -83,7 +84,7 @@ void renderer::end_() {
 
 void renderer::set_view_(const matrix4f& m_view_matrix) {
     m_raw_view_matrix_ = m_view_matrix;
-    m_view_matrix_    = m_view_matrix * matrix4f::invert(m_target_view_matrix_);
+    m_view_matrix_     = m_view_matrix * matrix4f::invert(m_target_view_matrix_);
 }
 
 matrix4f renderer::get_view() const {
@@ -92,7 +93,8 @@ matrix4f renderer::get_view() const {
 
 color premultiply_alpha(const color& m_color, bool b_pre_multiplied_alpha_supported) {
     if (b_pre_multiplied_alpha_supported)
-        return color(m_color.r * m_color.a, m_color.g * m_color.a, m_color.b * m_color.a, m_color.a);
+        return color(
+            m_color.r * m_color.a, m_color.g * m_color.a, m_color.b * m_color.a, m_color.a);
     else
         return m_color;
 }
@@ -112,12 +114,12 @@ ub32color to_ub32color(const color& m_color) {
 }
 
 struct sdl_render_data {
-    SDL_Rect         m_dest_quad        = {};
+    SDL_Rect         m_dest_quad         = {};
     SDL_Rect         m_dest_display_quad = {};
-    SDL_Rect         m_src_quad         = {};
-    SDL_Point        m_center          = {};
-    int              i_angle           = 0;
-    SDL_RendererFlip m_flip            = SDL_FLIP_NONE;
+    SDL_Rect         m_src_quad          = {};
+    SDL_Point        m_center            = {};
+    int              angle               = 0;
+    SDL_RendererFlip m_flip              = SDL_FLIP_NONE;
 };
 
 sdl_render_data
@@ -161,17 +163,17 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
 
     // Now, re-order UV coordinates as top-left, top-right, bottom-right, bottom-left
     // and figure out the required rotation and flipping to render as requested.
-    int i_width =
-        static_cast<int>(std::round(l_vertex_list[l_i_ds[2]].pos.x - l_vertex_list[l_i_ds[0]].pos.x));
-    int i_height =
-        static_cast<int>(std::round(l_vertex_list[l_i_ds[2]].pos.y - l_vertex_list[l_i_ds[0]].pos.y));
-    int i_uv_index1 = 0;
-    int i_uv_index2 = 2;
+    int width = static_cast<int>(
+        std::round(l_vertex_list[l_i_ds[2]].pos.x - l_vertex_list[l_i_ds[0]].pos.x));
+    int height = static_cast<int>(
+        std::round(l_vertex_list[l_i_ds[2]].pos.y - l_vertex_list[l_i_ds[0]].pos.y));
+    int uv_index1 = 0;
+    int uv_index2 = 2;
 
     m_data.m_dest_display_quad.x = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.x));
     m_data.m_dest_display_quad.y = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.y));
-    m_data.m_dest_display_quad.w = i_width;
-    m_data.m_dest_display_quad.h = i_height;
+    m_data.m_dest_display_quad.w = width;
+    m_data.m_dest_display_quad.h = height;
 
     m_data.m_dest_quad.x = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.x));
     m_data.m_dest_quad.y = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.y));
@@ -183,100 +185,103 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
         } else {
             // No rotation and flip Y
             m_data.m_flip = SDL_FLIP_VERTICAL;
-            i_uv_index1   = 3;
-            i_uv_index2   = 1;
+            uv_index1     = 3;
+            uv_index2     = 1;
         }
     } else if (l_vertex_list[l_i_ds[0]].uvs.y < l_vertex_list[l_i_ds[1]].uvs.y) {
         b_axis_swapped = true;
 
         if (l_vertex_list[l_i_ds[1]].uvs.x > l_vertex_list[l_i_ds[2]].uvs.x) {
             // Rotated 90 degrees clockwise
-            m_data.i_angle = -90;
-            i_uv_index1    = 3;
-            i_uv_index2    = 1;
-            m_data.m_dest_quad.y += i_height;
+            m_data.angle = -90;
+            uv_index1    = 3;
+            uv_index2    = 1;
+            m_data.m_dest_quad.y += height;
         } else {
             // Rotated 90 degrees clockwise and flip X
-            m_data.m_flip  = SDL_FLIP_HORIZONTAL;
-            m_data.i_angle = -90;
-            i_uv_index1    = 0;
-            i_uv_index2    = 2;
-            m_data.m_dest_quad.y += i_height;
+            m_data.m_flip = SDL_FLIP_HORIZONTAL;
+            m_data.angle  = -90;
+            uv_index1     = 0;
+            uv_index2     = 2;
+            m_data.m_dest_quad.y += height;
         }
     } else if (l_vertex_list[l_i_ds[0]].uvs.x > l_vertex_list[l_i_ds[1]].uvs.x) {
         if (l_vertex_list[l_i_ds[1]].uvs.y > l_vertex_list[l_i_ds[2]].uvs.y) {
             // Rotated 180 degrees
-            m_data.i_angle = 180;
-            i_uv_index1    = 2;
-            i_uv_index2    = 0;
-            m_data.m_dest_quad.x += i_width;
-            m_data.m_dest_quad.y += i_height;
+            m_data.angle = 180;
+            uv_index1    = 2;
+            uv_index2    = 0;
+            m_data.m_dest_quad.x += width;
+            m_data.m_dest_quad.y += height;
         } else {
             // No rotation and flip X
             m_data.m_flip = SDL_FLIP_HORIZONTAL;
-            i_uv_index1   = 1;
-            i_uv_index2   = 3;
+            uv_index1     = 1;
+            uv_index2     = 3;
         }
     } else if (l_vertex_list[l_i_ds[0]].uvs.y > l_vertex_list[l_i_ds[1]].uvs.y) {
         b_axis_swapped = true;
 
         if (l_vertex_list[l_i_ds[1]].uvs.x < l_vertex_list[l_i_ds[2]].uvs.x) {
             // Rotated 90 degrees counter-clockwise
-            m_data.i_angle = 90;
-            i_uv_index1    = 1;
-            i_uv_index2    = 3;
-            m_data.m_dest_quad.x += i_width;
+            m_data.angle = 90;
+            uv_index1    = 1;
+            uv_index2    = 3;
+            m_data.m_dest_quad.x += width;
         } else {
             // Rotated 90 degrees counter-clockwise and flip X
-            m_data.m_flip  = SDL_FLIP_HORIZONTAL;
-            m_data.i_angle = 90;
-            i_uv_index1    = 2;
-            i_uv_index2    = 0;
-            m_data.m_dest_quad.x += i_width;
+            m_data.m_flip = SDL_FLIP_HORIZONTAL;
+            m_data.angle  = 90;
+            uv_index1     = 2;
+            uv_index2     = 0;
+            m_data.m_dest_quad.x += width;
         }
     }
 
     if (b_axis_swapped)
-        std::swap(i_width, i_height);
+        std::swap(width, height);
 
     m_data.m_src_quad = SDL_Rect{
-        (int)std::round(l_vertex_list[l_i_ds[i_uv_index1]].uvs.x * f_tex_width),
-        (int)std::round(l_vertex_list[l_i_ds[i_uv_index1]].uvs.y * f_tex_height),
+        (int)std::round(l_vertex_list[l_i_ds[uv_index1]].uvs.x * f_tex_width),
+        (int)std::round(l_vertex_list[l_i_ds[uv_index1]].uvs.y * f_tex_height),
         (int)std::round(
-            (l_vertex_list[l_i_ds[i_uv_index2]].uvs.x - l_vertex_list[l_i_ds[i_uv_index1]].uvs.x) * f_tex_width),
+            (l_vertex_list[l_i_ds[uv_index2]].uvs.x - l_vertex_list[l_i_ds[uv_index1]].uvs.x) *
+            f_tex_width),
         (int)std::round(
-            (l_vertex_list[l_i_ds[i_uv_index2]].uvs.y - l_vertex_list[l_i_ds[i_uv_index1]].uvs.y) *
+            (l_vertex_list[l_i_ds[uv_index2]].uvs.y - l_vertex_list[l_i_ds[uv_index1]].uvs.y) *
             f_tex_height)};
 
-    m_data.m_dest_quad.w = i_width;
-    m_data.m_dest_quad.h = i_height;
+    m_data.m_dest_quad.w = width;
+    m_data.m_dest_quad.h = height;
 
     m_data.m_center = {0, 0};
 
     return m_data;
 }
 
-void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& l_vertex_list) {
+void renderer::render_quad_(
+    const sdl::material* p_mat, const std::array<vertex, 4>& l_vertex_list) {
     auto l_view_list = l_vertex_list;
     for (auto& v : l_view_list) {
         v.pos = v.pos * m_view_matrix_;
     }
 
     if (p_mat) {
-        SDL_Texture*    p_texture   = p_mat->get_texture();
-        const vector2ui m_tex_dims   = p_mat->get_canvas_dimensions();
-        const int       i_tex_width  = static_cast<int>(m_tex_dims.x);
-        const int       i_tex_height = static_cast<int>(m_tex_dims.y);
+        SDL_Texture*    p_texture  = p_mat->get_texture();
+        const vector2ui m_tex_dims = p_mat->get_canvas_dimensions();
+        const int       tex_width  = static_cast<int>(m_tex_dims.x);
+        const int       tex_height = static_cast<int>(m_tex_dims.y);
 
         // Build the source and destination rect, figuring out rotation and flipping
-        const sdl_render_data m_data = make_rects(l_view_list, i_tex_width, i_tex_height);
+        const sdl_render_data m_data = make_rects(l_view_list, tex_width, tex_height);
 
         if (m_data.m_dest_quad.w == 0 || m_data.m_dest_quad.h == 0)
             return;
 
         if (b_pre_multiplied_alpha_supported_) {
             if (SDL_SetTextureBlendMode(
-                    p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) != 0) {
+                    p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) !=
+                0) {
                 throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
             }
         } else {
@@ -294,85 +299,90 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                     p_texture, m_color.r * m_color.a * 255, m_color.g * m_color.a * 255,
                     m_color.b * m_color.a * 255);
             } else {
-                SDL_SetTextureColorMod(p_texture, m_color.r * 255, m_color.g * 255, m_color.b * 255);
+                SDL_SetTextureColorMod(
+                    p_texture, m_color.r * 255, m_color.g * 255, m_color.b * 255);
             }
 
             SDL_SetTextureAlphaMod(p_texture, m_color.a * 255);
 
             bool b_coords_all_in_texture = m_data.m_src_quad.x >= 0 && m_data.m_src_quad.y >= 0 &&
-                                       m_data.m_src_quad.x + m_data.m_src_quad.w <= i_tex_width &&
-                                       m_data.m_src_quad.y + m_data.m_src_quad.h <= i_tex_height;
+                                           m_data.m_src_quad.x + m_data.m_src_quad.w <= tex_width &&
+                                           m_data.m_src_quad.y + m_data.m_src_quad.h <= tex_height;
 
-            bool b_one_pixel = (i_tex_height == 1 || m_data.m_dest_quad.h == 1) &&
-                             (i_tex_width == 1 || m_data.m_dest_quad.w == 1);
+            bool b_one_pixel = (tex_height == 1 || m_data.m_dest_quad.h == 1) &&
+                               (tex_width == 1 || m_data.m_dest_quad.w == 1);
 
-            if (p_mat->get_wrap() == material::wrap::clamp || b_coords_all_in_texture || b_one_pixel) {
+            if (p_mat->get_wrap() == material::wrap::clamp || b_coords_all_in_texture ||
+                b_one_pixel) {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(
-                    p_renderer_, p_texture, &m_data.m_src_quad, &m_data.m_dest_quad, m_data.i_angle,
+                    p_renderer_, p_texture, &m_data.m_src_quad, &m_data.m_dest_quad, m_data.angle,
                     &m_data.m_center, m_data.m_flip);
             } else {
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
-                const bool  b_axis_swapped = std::abs(m_data.i_angle) == 90;
-                const float f_x_factor     = float(m_data.m_dest_display_quad.w) /
-                                       float(b_axis_swapped ? m_data.m_src_quad.h : m_data.m_src_quad.w);
-                const float f_y_factor = float(m_data.m_dest_display_quad.h) /
-                                       float(b_axis_swapped ? m_data.m_src_quad.w : m_data.m_src_quad.h);
+                const bool  b_axis_swapped = std::abs(m_data.angle) == 90;
+                const float f_x_factor =
+                    float(m_data.m_dest_display_quad.w) /
+                    float(b_axis_swapped ? m_data.m_src_quad.h : m_data.m_src_quad.w);
+                const float f_y_factor =
+                    float(m_data.m_dest_display_quad.h) /
+                    float(b_axis_swapped ? m_data.m_src_quad.w : m_data.m_src_quad.h);
 
-                int i_sy = m_data.m_src_quad.y;
-                while (i_sy < m_data.m_src_quad.y + m_data.m_src_quad.h) {
-                    const int i_sy_clamped   = i_sy % i_tex_height + (i_sy < 0 ? i_tex_height : 0);
-                    int       i_temp_s_height = i_tex_height - i_sy_clamped;
-                    const int i_s_y1         = i_sy - m_data.m_src_quad.y;
-                    if (i_s_y1 + i_temp_s_height > m_data.m_src_quad.h)
-                        i_temp_s_height = m_data.m_src_quad.h - i_s_y1;
-                    const int i_s_y2 = i_s_y1 + i_temp_s_height;
+                int sy = m_data.m_src_quad.y;
+                while (sy < m_data.m_src_quad.y + m_data.m_src_quad.h) {
+                    const int sy_clamped    = sy % tex_height + (sy < 0 ? tex_height : 0);
+                    int       temp_s_height = tex_height - sy_clamped;
+                    const int s_y1          = sy - m_data.m_src_quad.y;
+                    if (s_y1 + temp_s_height > m_data.m_src_quad.h)
+                        temp_s_height = m_data.m_src_quad.h - s_y1;
+                    const int s_y2 = s_y1 + temp_s_height;
 
-                    int i_sx = m_data.m_src_quad.x;
-                    while (i_sx < m_data.m_src_quad.x + m_data.m_src_quad.w) {
-                        const int i_sx_clamped  = i_sx % i_tex_width + (i_sx < 0 ? i_tex_width : 0);
-                        int       i_temp_s_width = i_tex_width - i_sx_clamped;
-                        const int i_s_x1        = i_sx - m_data.m_src_quad.x;
-                        if (i_s_x1 + i_temp_s_width > m_data.m_src_quad.w)
-                            i_temp_s_width = m_data.m_src_quad.w - i_s_x1;
-                        const int i_s_x2 = i_s_x1 + i_temp_s_width;
+                    int sx = m_data.m_src_quad.x;
+                    while (sx < m_data.m_src_quad.x + m_data.m_src_quad.w) {
+                        const int sx_clamped   = sx % tex_width + (sx < 0 ? tex_width : 0);
+                        int       temp_s_width = tex_width - sx_clamped;
+                        const int s_x1         = sx - m_data.m_src_quad.x;
+                        if (s_x1 + temp_s_width > m_data.m_src_quad.w)
+                            temp_s_width = m_data.m_src_quad.w - s_x1;
+                        const int s_x2 = s_x1 + temp_s_width;
 
-                        int i_dx = m_data.m_dest_display_quad.x +
-                                  static_cast<int>((b_axis_swapped ? i_s_y1 : i_s_x1) * f_x_factor);
-                        int i_dy = m_data.m_dest_display_quad.y +
-                                  static_cast<int>((b_axis_swapped ? i_s_x1 : i_s_y1) * f_y_factor);
+                        int dx = m_data.m_dest_display_quad.x +
+                                 static_cast<int>((b_axis_swapped ? s_y1 : s_x1) * f_x_factor);
+                        int dy = m_data.m_dest_display_quad.y +
+                                 static_cast<int>((b_axis_swapped ? s_x1 : s_y1) * f_y_factor);
 
-                        int i_temp_d_width =
+                        int temp_d_width =
                             m_data.m_dest_display_quad.x +
-                            static_cast<int>((b_axis_swapped ? i_s_y2 : i_s_x2) * f_x_factor) - i_dx;
-                        int i_temp_d_height =
+                            static_cast<int>((b_axis_swapped ? s_y2 : s_x2) * f_x_factor) - dx;
+                        int temp_d_height =
                             m_data.m_dest_display_quad.y +
-                            static_cast<int>((b_axis_swapped ? i_s_x2 : i_s_y2) * f_y_factor) - i_dy;
+                            static_cast<int>((b_axis_swapped ? s_x2 : s_y2) * f_y_factor) - dy;
 
-                        if (m_data.i_angle == 90)
-                            i_dx += i_temp_d_width;
-                        else if (m_data.i_angle == -90)
-                            i_dy += i_temp_d_height;
-                        else if (m_data.i_angle == 180) {
-                            i_dx += i_temp_d_width;
-                            i_dy += i_temp_d_height;
+                        if (m_data.angle == 90)
+                            dx += temp_d_width;
+                        else if (m_data.angle == -90)
+                            dy += temp_d_height;
+                        else if (m_data.angle == 180) {
+                            dx += temp_d_width;
+                            dy += temp_d_height;
                         }
 
                         if (b_axis_swapped)
-                            std::swap(i_temp_d_width, i_temp_d_height);
+                            std::swap(temp_d_width, temp_d_height);
 
-                        const SDL_Rect m_src_quad{i_sx_clamped, i_sy_clamped, i_temp_s_width, i_temp_s_height};
-                        const SDL_Rect m_dest_quad{i_dx, i_dy, i_temp_d_width, i_temp_d_height};
+                        const SDL_Rect m_src_quad{
+                            sx_clamped, sy_clamped, temp_s_width, temp_s_height};
+                        const SDL_Rect m_dest_quad{dx, dy, temp_d_width, temp_d_height};
 
                         SDL_RenderCopyEx(
-                            p_renderer_, p_texture, &m_src_quad, &m_dest_quad, m_data.i_angle,
+                            p_renderer_, p_texture, &m_src_quad, &m_dest_quad, m_data.angle,
                             &m_data.m_center, m_data.m_flip);
 
-                        i_sx += i_temp_s_width;
+                        sx += temp_s_width;
                     }
 
-                    i_sy += i_temp_s_height;
+                    sy += temp_s_height;
                 }
             }
         } else {
@@ -402,7 +412,8 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             } else {
                 SDL_SetRenderDrawBlendMode(p_renderer_, SDL_BLENDMODE_BLEND);
                 SDL_SetRenderDrawColor(
-                    p_renderer_, m_color.r * 255, m_color.g * 255, m_color.b * 255, m_color.a * 255);
+                    p_renderer_, m_color.r * 255, m_color.g * 255, m_color.b * 255,
+                    m_color.a * 255);
             }
 
             SDL_RenderFillRect(p_renderer_, &m_dest_quad);
@@ -420,12 +431,12 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             ub32color*    p_pixel_data = m_temp_mat.lock_pointer();
             for (int y = 0; y < m_dest_quad.h; ++y)
                 for (int x = 0; x < m_dest_quad.w; ++x) {
-                    const color l_col_y1 =
-                        interpolate_color(l_color_quad[0], l_color_quad[3], y / float(m_dest_quad.h - 1));
-                    const color l_col_y2 =
-                        interpolate_color(l_color_quad[1], l_color_quad[2], y / float(m_dest_quad.h - 1));
-                    p_pixel_data[y * m_dest_quad.w + x] =
-                        to_ub32color(interpolate_color(l_col_y1, l_col_y2, x / float(m_dest_quad.w - 1)));
+                    const color l_col_y1 = interpolate_color(
+                        l_color_quad[0], l_color_quad[3], y / float(m_dest_quad.h - 1));
+                    const color l_col_y2 = interpolate_color(
+                        l_color_quad[1], l_color_quad[2], y / float(m_dest_quad.h - 1));
+                    p_pixel_data[y * m_dest_quad.w + x] = to_ub32color(
+                        interpolate_color(l_col_y1, l_col_y2, x / float(m_dest_quad.w - 1)));
                 }
             m_temp_mat.unlock_pointer();
 
@@ -456,7 +467,8 @@ SDL_Renderer* renderer::get_sdl_renderer() const {
 std::shared_ptr<gui::material>
 renderer::create_material_(const std::string& s_file_name, material::filter m_filter) {
     return std::make_shared<sdl::material>(
-        p_renderer_, s_file_name, b_pre_multiplied_alpha_supported_, material::wrap::repeat, m_filter);
+        p_renderer_, s_file_name, b_pre_multiplied_alpha_supported_, material::wrap::repeat,
+        m_filter);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter m_filter) {
@@ -484,7 +496,7 @@ std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<sdl::material> p_tex = std::make_shared<sdl::material>(
         p_renderer_, m_dimensions, false, material::wrap::repeat, m_filter);
 
-    std::size_t ui_pitch  = 0u;
+    std::size_t ui_pitch   = 0u;
     ub32color*  p_tex_data = p_tex->lock_pointer(&ui_pitch);
 
     for (std::size_t ui_y = 0u; ui_y < m_dimensions.y; ++ui_y) {
@@ -500,7 +512,8 @@ std::shared_ptr<gui::material> renderer::create_material(
 
 std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<gui::render_target> p_render_target, const bounds2f& m_location) {
-    auto p_tex = std::static_pointer_cast<sdl::render_target>(p_render_target)->get_material().lock();
+    auto p_tex =
+        std::static_pointer_cast<sdl::render_target>(p_render_target)->get_material().lock();
     if (m_location == p_render_target->get_rect()) {
         return std::move(p_tex);
     } else {

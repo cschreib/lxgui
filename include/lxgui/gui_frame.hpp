@@ -431,9 +431,10 @@ public:
         typename RegionType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
-    utils::observer_ptr<RegionType> create_layered_region(layer m_layer, const std::string& s_name) {
+    utils::observer_ptr<RegionType>
+    create_layered_region(layer m_layer, const std::string& s_name) {
         region_core_attributes m_attr;
-        m_attr.s_name       = s_name;
+        m_attr.s_name        = s_name;
         m_attr.s_object_type = RegionType::class_name;
 
         return utils::static_pointer_cast<RegionType>(
@@ -491,7 +492,7 @@ public:
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<FrameType> create_child(const std::string& s_name) {
         region_core_attributes m_attr;
-        m_attr.s_name       = s_name;
+        m_attr.s_name        = s_name;
         m_attr.s_object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_child(std::move(m_attr)));
@@ -850,7 +851,9 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection add_script(
-        const std::string& s_script_name, std::string s_content, script_info m_info = script_info{}) {
+        const std::string& s_script_name,
+        std::string        s_content,
+        script_info        m_info = script_info{}) {
         return define_script_(s_script_name, s_content, true, m_info);
     }
 
@@ -898,7 +901,9 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection set_script(
-        const std::string& s_script_name, std::string s_content, script_info m_info = script_info{}) {
+        const std::string& s_script_name,
+        std::string        s_content,
+        script_info        m_info = script_info{}) {
         return define_script_(s_script_name, s_content, false, m_info);
     }
 
@@ -1008,9 +1013,9 @@ public:
     void set_rel_hit_rect_insets(const bounds2f& l_insets);
 
     /// Sets this frame's level.
-    /** \param iLevel The new level
+    /** \param level_id The new level
      */
-    void set_level(int i_level);
+    void set_level(int level_id);
 
     /// Sets this frame's maximum size.
     /** \param mMax The maximum dimensions of this frame
@@ -1264,7 +1269,7 @@ protected:
 
     void check_position_();
 
-    void add_level_(int i_amount);
+    void add_level_(int amount);
 
     void propagate_renderer_(bool b_rendered);
 
@@ -1303,8 +1308,8 @@ protected:
     std::set<std::string> l_reg_drag_list_;
     std::set<std::string> l_reg_key_list_;
 
-    int          i_level_      = 0;
-    frame_strata m_strata_     = frame_strata::medium;
+    int          level_          = 0;
+    frame_strata m_strata_       = frame_strata::medium;
     bool         b_is_top_level_ = false;
 
     utils::observer_ptr<frame_renderer> p_renderer_ = nullptr;
@@ -1314,10 +1319,10 @@ protected:
     bool b_is_mouse_click_enabled_ = false;
     bool b_is_mouse_move_enabled_  = false;
     bool b_is_mouse_wheel_enabled_ = false;
-    bool b_is_movable_           = false;
+    bool b_is_movable_             = false;
     bool b_is_clamped_to_screen_   = false;
-    bool b_is_resizable_         = false;
-    bool b_is_user_placed_        = false;
+    bool b_is_resizable_           = false;
+    bool b_is_user_placed_         = false;
 
     bool b_build_layer_list_ = false;
 
@@ -1339,7 +1344,7 @@ protected:
 
     bool b_mouse_dragged_in_frame_ = false;
 
-    bool b_focus_     = false;
+    bool b_focus_      = false;
     bool b_auto_focus_ = false;
 };
 

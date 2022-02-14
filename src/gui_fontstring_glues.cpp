@@ -107,7 +107,8 @@ void font_string::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function("get_shadow_color", [](const font_string& m_self) {
         const color& m_shadow_color = m_self.get_shadow_color();
-        return std::make_tuple(m_shadow_color.r, m_shadow_color.g, m_shadow_color.b, m_shadow_color.a);
+        return std::make_tuple(
+            m_shadow_color.r, m_shadow_color.g, m_shadow_color.b, m_shadow_color.a);
     });
 
     /** @function get_shadow_offset
@@ -156,33 +157,35 @@ void font_string::register_on_lua(sol::state& m_lua) {
 
     /** @function set_alignment_x
      */
-    m_class.set_function("set_alignment_x", [](font_string& m_self, const std::string& s_justify_h) {
-        if (s_justify_h == "LEFT")
-            m_self.set_alignment_x(alignment_x::left);
-        else if (s_justify_h == "CENTER")
-            m_self.set_alignment_x(alignment_x::center);
-        else if (s_justify_h == "RIGHT")
-            m_self.set_alignment_x(alignment_x::right);
-        else {
-            gui::out << gui::warning << "font_string:set_alignment_x : "
-                     << "Unknown justify behavior : \"" << s_justify_h << "\"." << std::endl;
-        }
-    });
+    m_class.set_function(
+        "set_alignment_x", [](font_string& m_self, const std::string& s_justify_h) {
+            if (s_justify_h == "LEFT")
+                m_self.set_alignment_x(alignment_x::left);
+            else if (s_justify_h == "CENTER")
+                m_self.set_alignment_x(alignment_x::center);
+            else if (s_justify_h == "RIGHT")
+                m_self.set_alignment_x(alignment_x::right);
+            else {
+                gui::out << gui::warning << "font_string:set_alignment_x : "
+                         << "Unknown justify behavior : \"" << s_justify_h << "\"." << std::endl;
+            }
+        });
 
     /** @function set_alignment_y
      */
-    m_class.set_function("set_alignment_y", [](font_string& m_self, const std::string& s_justify_v) {
-        if (s_justify_v == "TOP")
-            m_self.set_alignment_y(alignment_y::top);
-        else if (s_justify_v == "MIDDLE")
-            m_self.set_alignment_y(alignment_y::middle);
-        else if (s_justify_v == "BOTTOM")
-            m_self.set_alignment_y(alignment_y::bottom);
-        else {
-            gui::out << gui::warning << "font_string:set_alignment_y : "
-                     << "Unknown justify behavior : \"" << s_justify_v << "\"." << std::endl;
-        }
-    });
+    m_class.set_function(
+        "set_alignment_y", [](font_string& m_self, const std::string& s_justify_v) {
+            if (s_justify_v == "TOP")
+                m_self.set_alignment_y(alignment_y::top);
+            else if (s_justify_v == "MIDDLE")
+                m_self.set_alignment_y(alignment_y::middle);
+            else if (s_justify_v == "BOTTOM")
+                m_self.set_alignment_y(alignment_y::bottom);
+            else {
+                gui::out << gui::warning << "font_string:set_alignment_y : "
+                         << "Unknown justify behavior : \"" << s_justify_v << "\"." << std::endl;
+            }
+        });
 
     /** @function set_shadow_color
      */
@@ -280,9 +283,9 @@ void font_string::register_on_lua(sol::state& m_lua) {
                 m_self.set_text(utils::utf8_to_unicode(
                     m_self.get_manager().get_localizer().localize(b_value ? "{true}" : "{false}")));
             },
-            [](font_string& m_self, int i_value) {
+            [](font_string& m_self, int value) {
                 m_self.set_text(utils::utf8_to_unicode(
-                    m_self.get_manager().get_localizer().format_string("{:L}", i_value)));
+                    m_self.get_manager().get_localizer().format_string("{:L}", value)));
             },
             [](font_string& m_self, double d_value) {
                 m_self.set_text(utils::utf8_to_unicode(

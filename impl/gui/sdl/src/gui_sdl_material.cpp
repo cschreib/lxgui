@@ -59,14 +59,14 @@ material::material(
                                       " x " + utils::to_string(m_dimensions.y) + ".");
     }
 
-    int    i_canvas_width = 0, i_canvas_height = 0, i_access = 0;
+    int    canvas_width = 0, canvas_height = 0, access = 0;
     Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &i_access, &i_canvas_width, &i_canvas_height);
+    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
 
-    m_dimensions_       = m_dimensions;
-    m_canvas_dimensions_ = vector2ui(i_canvas_width, i_canvas_height);
-    m_wrap_             = m_wrap;
-    m_filter_           = m_filter;
+    m_dimensions_        = m_dimensions;
+    m_canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
+    m_wrap_              = m_wrap;
+    m_filter_            = m_filter;
     b_render_target_     = b_render_target;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
@@ -82,7 +82,8 @@ material::material(
     // Load file
     SDL_Surface* p_surface = IMG_Load(s_file_name.c_str());
     if (p_surface == nullptr) {
-        throw gui::exception("gui::sdl::material", "Could not load image file " + s_file_name + ".");
+        throw gui::exception(
+            "gui::sdl::material", "Could not load image file " + s_file_name + ".");
     }
 
     // Convert to RGBA 32bit
@@ -109,8 +110,8 @@ material::material(
 
     // Create streamable texture
     p_texture_ = SDL_CreateTexture(
-        p_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, static_cast<int>(ui_width),
-        static_cast<int>(ui_height));
+        p_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
+        static_cast<int>(ui_width), static_cast<int>(ui_height));
     if (p_texture_ == nullptr) {
         SDL_FreeSurface(p_converted_surface);
         throw gui::exception(
@@ -120,7 +121,7 @@ material::material(
     }
 
     // Copy data into the texture
-    std::size_t      ui_pitch        = 0;
+    std::size_t      ui_pitch         = 0;
     ub32color*       p_texture_pixels = lock_pointer(&ui_pitch);
     const ub32color* p_surface_pixels_start =
         reinterpret_cast<const ub32color*>(p_converted_surface->pixels);
@@ -128,14 +129,14 @@ material::material(
     std::copy(p_surface_pixels_start, p_surface_pixels_end, p_texture_pixels);
     unlock_pointer();
 
-    int    i_canvas_width = 0, i_canvas_height = 0, i_access = 0;
+    int    canvas_width = 0, canvas_height = 0, access = 0;
     Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &i_access, &i_canvas_width, &i_canvas_height);
+    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
 
-    m_dimensions_       = vector2ui(ui_width, ui_height);
-    m_canvas_dimensions_ = vector2ui(i_canvas_width, i_canvas_height);
-    m_wrap_             = m_wrap;
-    m_filter_           = m_filter;
+    m_dimensions_        = vector2ui(ui_width, ui_height);
+    m_canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
+    m_wrap_              = m_wrap;
+    m_filter_            = m_filter;
     b_render_target_     = false;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
@@ -149,12 +150,12 @@ material::material(
     m_filter_(m_filter),
     p_texture_(p_texture),
     b_is_owner_(false) {
-    int    i_canvas_width = 0, i_canvas_height = 0, i_access = 0;
+    int    canvas_width = 0, canvas_height = 0, access = 0;
     Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &i_access, &i_canvas_width, &i_canvas_height);
+    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
 
-    m_dimensions_       = vector2ui(m_rect_.dimensions());
-    m_canvas_dimensions_ = vector2ui(i_canvas_width, i_canvas_height);
+    m_dimensions_        = vector2ui(m_rect_.dimensions());
+    m_canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
 }
 
 material::~material() noexcept {
@@ -256,7 +257,7 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
         }
 
         SDL_DestroyTexture(p_texture_);
-        p_texture_          = p_texture;
+        p_texture_           = p_texture;
         m_canvas_dimensions_ = m_canvas_dimensions;
         b_canvas_updated     = true;
     }
@@ -269,13 +270,13 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
 
 const ub32color* material::lock_pointer(std::size_t* p_pitch) const {
     void* p_pixel_data = nullptr;
-    int   i_pitch     = 0;
-    if (SDL_LockTexture(p_texture_, nullptr, &p_pixel_data, &i_pitch) != 0) {
+    int   pitch        = 0;
+    if (SDL_LockTexture(p_texture_, nullptr, &p_pixel_data, &pitch) != 0) {
         throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
     }
 
     if (p_pitch)
-        *p_pitch = static_cast<std::size_t>(i_pitch) / sizeof(ub32color);
+        *p_pitch = static_cast<std::size_t>(pitch) / sizeof(ub32color);
 
     return reinterpret_cast<ub32color*>(p_pixel_data);
 }

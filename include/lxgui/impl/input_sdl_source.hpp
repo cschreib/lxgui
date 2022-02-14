@@ -41,7 +41,7 @@ public:
 private:
     gui::vector2ui get_window_pixel_size_() const;
     void           update_pixel_per_unit_();
-    input::key     from_sdl_(int i_sdl_key) const;
+    input::key     from_sdl_(int sdl_key) const;
 
     SDL_Window*   p_window_   = nullptr;
     SDL_Renderer* p_renderer_ = nullptr;

@@ -50,9 +50,9 @@ void frame::parse_attributes_(const layout_node& m_node) {
     if (const layout_attribute* p_attr = m_node.try_get_attribute("frameLevel")) {
         if (!b_virtual_) {
             std::string s_frame_level = p_attr->get_value<std::string>();
-            int         i_level      = 0;
-            if (s_frame_level != "PARENT" && utils::from_string(s_frame_level, i_level))
-                set_level(i_level);
+            int         level         = 0;
+            if (s_frame_level != "PARENT" && utils::from_string(s_frame_level, level))
+                set_level(level);
         } else {
             gui::out << gui::warning << m_node.get_location() << " : "
                      << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
@@ -72,8 +72,8 @@ void frame::parse_resize_bounds_node_(const layout_node& m_node) {
     if (const layout_node* p_resize_bounds_node = m_node.try_get_child("ResizeBounds")) {
         if (const layout_node* p_min_node = p_resize_bounds_node->try_get_child("Min")) {
             auto m_dimensions = parse_dimension_(*p_min_node);
-            bool b_has_x       = m_dimensions.second.x.has_value();
-            bool b_has_y       = m_dimensions.second.y.has_value();
+            bool b_has_x      = m_dimensions.second.x.has_value();
+            bool b_has_y      = m_dimensions.second.y.has_value();
             if (m_dimensions.first == anchor_type::abs) {
                 if (b_has_x && b_has_y) {
                     set_min_dimensions(
@@ -91,8 +91,8 @@ void frame::parse_resize_bounds_node_(const layout_node& m_node) {
 
         if (const layout_node* p_max_node = p_resize_bounds_node->try_get_child("Max")) {
             auto m_dimensions = parse_dimension_(*p_max_node);
-            bool b_has_x       = m_dimensions.second.x.has_value();
-            bool b_has_y       = m_dimensions.second.y.has_value();
+            bool b_has_x      = m_dimensions.second.x.has_value();
+            bool b_has_y      = m_dimensions.second.y.has_value();
             if (m_dimensions.first == anchor_type::abs) {
                 if (b_has_x && b_has_y) {
                     set_max_dimensions(
@@ -132,7 +132,8 @@ void frame::parse_backdrop_node_(const layout_node& m_node) {
         p_backdrop->set_background_tilling(
             p_backdrop_node->get_attribute_value_or<bool>("tile", false));
 
-        if (const layout_node* p_bg_insets_node = p_backdrop_node->try_get_child("BackgroundInsets")) {
+        if (const layout_node* p_bg_insets_node =
+                p_backdrop_node->try_get_child("BackgroundInsets")) {
             const layout_node* p_abs_inset_node = p_bg_insets_node->try_get_child("AbsInset");
             const layout_node* p_rel_inset_node = p_bg_insets_node->try_get_child("RelInset");
 
@@ -347,7 +348,8 @@ void frame::parse_layers_node_(const layout_node& m_node) {
                 continue;
             }
 
-            std::string s_level = m_layer_node.get_attribute_value_or<std::string>("level", "ARTWORK");
+            std::string s_level =
+                m_layer_node.get_attribute_value_or<std::string>("level", "ARTWORK");
             for (const layout_node& m_region_node : m_layer_node.get_children()) {
                 parse_region_(m_region_node, s_level, "");
             }
@@ -355,7 +357,8 @@ void frame::parse_layers_node_(const layout_node& m_node) {
     }
 }
 
-utils::observer_ptr<frame> frame::parse_child_(const layout_node& m_node, const std::string& s_type) {
+utils::observer_ptr<frame>
+frame::parse_child_(const layout_node& m_node, const std::string& s_type) {
     try {
         auto m_attr = parse_core_attributes(
             get_manager().get_root().get_registry(),

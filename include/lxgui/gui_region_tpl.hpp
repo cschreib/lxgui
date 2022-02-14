@@ -33,13 +33,13 @@ struct unique_usertype_traits<lxgui::utils::observer_ptr<T>> {
 
 template<typename T>
 void sol_lua_check_access(
-    sol::types<T>, lua_State* p_lua, int i_index, sol::stack::record& /*mTracking*/) {
+    sol::types<T>, lua_State* p_lua, int index, sol::stack::record& /*mTracking*/) {
     // NB: not sure why, but using mTracking here leads to issues later on, so
     // ignore it for now.
 
     sol::optional<lxgui::utils::observer_ptr<T>&> m_optional =
         sol::stack::check_get<lxgui::utils::observer_ptr<T>&>(
-            p_lua, i_index, sol::no_panic /*, mTracking*/);
+            p_lua, index, sol::no_panic /*, mTracking*/);
 
     if (!m_optional.has_value())
         return;

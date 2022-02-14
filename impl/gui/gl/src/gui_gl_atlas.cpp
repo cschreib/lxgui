@@ -38,14 +38,15 @@ atlas_page::atlas_page(gui::renderer& m_renderer, material::filter m_filter) :
     gui::atlas_page(m_filter) {
     ui_size_ = m_renderer.get_texture_atlas_page_size();
 
-    GLint i_previous_id;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &i_previous_id);
+    GLint previous_id;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
     glGenTextures(1, &ui_texture_handle_);
 
-    GLsizei i_size = static_cast<GLsizei>(ui_size_);
+    GLsizei size_int = static_cast<GLsizei>(ui_size_);
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, i_size, i_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(
+        GL_TEXTURE_2D, 0, GL_RGBA8, size_int, size_int, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -62,7 +63,7 @@ atlas_page::atlas_page(gui::renderer& m_renderer, material::filter m_filter) :
         break;
     }
 
-    glBindTexture(GL_TEXTURE_2D, i_previous_id);
+    glBindTexture(GL_TEXTURE_2D, previous_id);
 
     // Clear texture data (makes WebGL happy)
     GLuint ui_fbo = 0;
@@ -86,8 +87,8 @@ std::shared_ptr<gui::material>
 atlas_page::add_material_(const gui::material& m_mat, const bounds2f& m_location) {
     const gl::material& m_gl_mat = static_cast<const gl::material&>(m_mat);
 
-    GLint i_previous_id;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, &i_previous_id);
+    GLint previous_id;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
     GLuint ui_fbo = 0;
     glGenFramebuffers(1, &ui_fbo);
@@ -107,7 +108,7 @@ atlas_page::add_material_(const gui::material& m_mat, const bounds2f& m_location
         GL_TEXTURE_2D, 0, m_location.left, m_location.top, m_location.width(), m_location.height(),
         GL_RGBA, GL_UNSIGNED_BYTE, l_data.data());
 
-    glBindTexture(GL_TEXTURE_2D, i_previous_id);
+    glBindTexture(GL_TEXTURE_2D, previous_id);
 
     return std::make_shared<gl::material>(
         ui_texture_handle_, vector2ui(ui_size_, ui_size_), m_location, m_filter_);

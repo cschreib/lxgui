@@ -15,31 +15,31 @@
 
 // Convert fixed point to floating point
 template<std::size_t Point, typename T>
-float ft_float(T i_value) {
-    return static_cast<float>(i_value) / static_cast<float>(1 << Point);
+float ft_float(T value) {
+    return static_cast<float>(value) / static_cast<float>(1 << Point);
 }
 
 // Convert integer or floating point to fixed point
 template<std::size_t Point, typename T>
-FT_Fixed ft_fixed(T i_value) {
+FT_Fixed ft_fixed(T value) {
     return static_cast<FT_Fixed>(
-        std::round(static_cast<float>(i_value) * static_cast<float>(1 << Point)));
+        std::round(static_cast<float>(value) * static_cast<float>(1 << Point)));
 }
 
 // Convert fixed point to integer pixels
 template<std::size_t Point, typename T>
-T ft_floor(T i_value) {
-    return (i_value & -(1 << Point)) / (1 << Point);
+T ft_floor(T value) {
+    return (value & -(1 << Point)) / (1 << Point);
 }
 
 template<std::size_t Point, typename T>
-T ft_ceil(T i_value) {
-    return ft_floor<Point>(i_value + (1 << Point) - 1);
+T ft_ceil(T value) {
+    return ft_floor<Point>(value + (1 << Point) - 1);
 }
 
 template<std::size_t Point, typename T>
-T ft_round(T i_value) {
-    return std::round(ft_float<Point>(i_value));
+T ft_round(T value) {
+    return std::round(ft_float<Point>(value));
 }
 
 namespace lxgui::gui::gl {
@@ -101,7 +101,8 @@ font::font(
 
         if (FT_New_Face(m_ft, s_font_file.c_str(), 0, &m_face_) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + s_font_file + "\" : cannot load face.");
+                "gui::gl::font",
+                "Error loading font : \"" + s_font_file + "\" : cannot load face.");
         }
 
         if (ui_outline > 0) {
@@ -124,9 +125,9 @@ font::font(
                 "Error loading font : \"" + s_font_file + "\" : cannot set font size.");
         }
 
-        FT_Int32 i_load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
+        FT_Int32 load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
         if (ui_outline != 0)
-            i_load_flags |= FT_LOAD_NO_BITMAP;
+            load_flags |= FT_LOAD_NO_BITMAP;
 
         // Calculate maximum width, height and bearing
         std::size_t ui_max_height = 0, ui_max_width = 0;
@@ -134,7 +135,7 @@ font::font(
         for (const code_point_range& m_range : l_code_points) {
             for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
                  ++ui_code_point) {
-                if (FT_Load_Char(m_face_, ui_code_point, i_load_flags) != 0)
+                if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0)
                     continue;
 
                 if (FT_Get_Glyph(m_face_->glyph, &m_glyph) != 0)
@@ -167,8 +168,10 @@ font::font(
         ui_max_width  = ui_max_width + 2 * ui_outline;
 
         // Calculate the size of the texture
-        std::size_t ui_tex_size = (ui_max_width + ui_spacing) * (ui_max_height + ui_spacing) * ui_num_char;
-        std::size_t ui_tex_side = static_cast<std::size_t>(std::sqrt(static_cast<float>(ui_tex_size)));
+        std::size_t ui_tex_size =
+            (ui_max_width + ui_spacing) * (ui_max_height + ui_spacing) * ui_num_char;
+        std::size_t ui_tex_side =
+            static_cast<std::size_t>(std::sqrt(static_cast<float>(ui_tex_size)));
 
         // Add a bit of overhead since we won't be able to tile this area perfectly
         ui_tex_side += std::max(ui_max_width, ui_max_height);
@@ -201,11 +204,11 @@ font::font(
         float f_y_offset = 0.0f;
         if (FT_IS_SCALABLE(m_face_)) {
             FT_Fixed m_scale = m_face_->size->metrics.y_scale;
-            f_y_offset        = ft_ceil<6>(FT_MulFix(m_face_->ascender, m_scale)) +
-                       ft_ceil<6>(FT_MulFix(m_face_->descender, m_scale));
+            f_y_offset       = ft_ceil<6>(FT_MulFix(m_face_->ascender, m_scale)) +
+                         ft_ceil<6>(FT_MulFix(m_face_->descender, m_scale));
         } else {
             f_y_offset = ft_ceil<6>(m_face_->size->metrics.ascender) +
-                       ft_ceil<6>(m_face_->size->metrics.descender);
+                         ft_ceil<6>(m_face_->size->metrics.descender);
         }
 
         for (const code_point_range& m_range : l_code_points) {
@@ -216,9 +219,9 @@ font::font(
             for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
                  ++ui_code_point) {
                 character_info& m_ci = m_info.l_data[ui_code_point - m_range.ui_first];
-                m_ci.ui_code_point     = ui_code_point;
+                m_ci.ui_code_point   = ui_code_point;
 
-                if (FT_Load_Char(m_face_, ui_code_point, i_load_flags) != 0) {
+                if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot load character "
                              << ui_code_point << " in font \"" << s_font_file << "\"." << std::endl;
                     continue;

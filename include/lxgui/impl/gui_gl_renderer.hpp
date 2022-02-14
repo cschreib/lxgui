@@ -217,11 +217,11 @@ private:
         shader_cache(shader_cache&&)      = delete;
         ~shader_cache();
 
-        std::uint32_t ui_program        = 0;
-        int           i_sampler_location = 0;
-        int           i_proj_location    = 0;
-        int           i_model_location   = 0;
-        int           i_type_location    = 0;
+        std::uint32_t ui_program       = 0;
+        int           sampler_location = 0;
+        int           proj_location    = 0;
+        int           model_location   = 0;
+        int           type_location    = 0;
     };
 
     static thread_local std::weak_ptr<shader_cache> p_static_shader_cache;

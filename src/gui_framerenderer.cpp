@@ -52,7 +52,7 @@ void frame_renderer::notify_rendered_frame(
     }
 
     const auto m_frame_strata = p_frame->get_frame_strata();
-    auto&      m_strata      = l_strata_list_[static_cast<std::size_t>(m_frame_strata)];
+    auto&      m_strata       = l_strata_list_[static_cast<std::size_t>(m_frame_strata)];
 
     if (b_rendered)
         add_to_strata_list_(m_strata, p_frame);
@@ -63,7 +63,9 @@ void frame_renderer::notify_rendered_frame(
 }
 
 void frame_renderer::notify_frame_strata_changed(
-    const utils::observer_ptr<frame>& p_frame, frame_strata m_old_strata, frame_strata m_new_strata) {
+    const utils::observer_ptr<frame>& p_frame,
+    frame_strata                      m_old_strata,
+    frame_strata                      m_new_strata) {
     if (m_old_strata == frame_strata::parent || m_new_strata == frame_strata::parent) {
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
@@ -78,25 +80,25 @@ void frame_renderer::notify_frame_strata_changed(
 }
 
 void frame_renderer::notify_frame_level_changed(
-    const utils::observer_ptr<frame>& p_frame, int i_old_level, int i_new_level) {
+    const utils::observer_ptr<frame>& p_frame, int old_level, int new_level) {
     if (p_frame->get_frame_strata() == frame_strata::parent) {
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
     const auto m_frame_strata = p_frame->get_frame_strata();
-    auto&      m_strata      = l_strata_list_[static_cast<std::size_t>(m_frame_strata)];
+    auto&      m_strata       = l_strata_list_[static_cast<std::size_t>(m_frame_strata)];
     auto&      l_level_list   = m_strata.l_level_list;
 
-    auto m_iter_old = l_level_list.find(i_old_level);
+    auto m_iter_old = l_level_list.find(old_level);
     if (m_iter_old != l_level_list.end()) {
         remove_from_level_list_(m_iter_old->second, p_frame);
         if (m_iter_old->second.l_frame_list.empty())
             m_strata.l_level_list.erase(m_iter_old);
     }
 
-    auto m_iter_new = l_level_list.find(i_new_level);
+    auto m_iter_new = l_level_list.find(new_level);
     if (m_iter_new == l_level_list.end()) {
-        m_iter_new                 = l_level_list.insert(std::make_pair(i_new_level, level{})).first;
+        m_iter_new                  = l_level_list.insert(std::make_pair(new_level, level{})).first;
         m_iter_new->second.p_strata = &m_strata;
     }
 
@@ -134,10 +136,10 @@ int frame_renderer::get_highest_level(frame_strata m_frame_strata) const {
 
 void frame_renderer::add_to_strata_list_(
     strata& m_strata, const utils::observer_ptr<frame>& p_frame) {
-    int  i_new_level = p_frame->get_level();
-    auto m_iter_new  = m_strata.l_level_list.find(i_new_level);
+    int  new_level  = p_frame->get_level();
+    auto m_iter_new = m_strata.l_level_list.find(new_level);
     if (m_iter_new == m_strata.l_level_list.end()) {
-        m_iter_new = m_strata.l_level_list.insert(std::make_pair(i_new_level, level{})).first;
+        m_iter_new = m_strata.l_level_list.insert(std::make_pair(new_level, level{})).first;
         m_iter_new->second.p_strata = &m_strata;
     }
 
@@ -187,7 +189,7 @@ void frame_renderer::clear_strata_list_() {
     for (auto& m_strata : l_strata_list_) {
         m_strata.l_level_list.clear();
         m_strata.p_render_target = nullptr;
-        m_strata.b_redraw       = true;
+        m_strata.b_redraw        = true;
     }
 
     b_strata_list_updated_ = true;

@@ -88,7 +88,7 @@ std::string frame::serialize(const std::string& s_tab) const {
     case frame_strata::fullscreen_dialog: s_str << "FULLSCREEN_DIALOG\n"; break;
     case frame_strata::tooltip: s_str << "TOOLTIP\n"; break;
     }
-    s_str << s_tab << "  # Level       : " << i_level_ << "\n";
+    s_str << s_tab << "  # Level       : " << level_ << "\n";
     s_str << s_tab << "  # TopLevel    : " << b_is_top_level_;
     if (!b_is_top_level_ && get_top_level_parent())
         s_str << " (" << get_top_level_parent()->get_name() << ")\n";
@@ -692,7 +692,7 @@ float frame::get_effective_scale() const {
 }
 
 int frame::get_level() const {
-    return i_level_;
+    return level_;
 }
 
 frame_strata frame::get_frame_strata() const {
@@ -1167,15 +1167,14 @@ void frame::set_rel_hit_rect_insets(const bounds2f& l_insets) {
     l_rel_hit_rect_inset_list_ = l_insets;
 }
 
-void frame::set_level(int i_level) {
-    if (i_level == i_level_)
+void frame::set_level(int level_id) {
+    if (level_id == level_)
         return;
 
-    std::swap(i_level, i_level_);
+    std::swap(level_id, level_);
 
     if (!b_virtual_) {
-        get_top_level_renderer()->notify_frame_level_changed(
-            observer_from(this), i_level, i_level_);
+        get_top_level_renderer()->notify_frame_level_changed(observer_from(this), level_id, level_);
     }
 }
 
@@ -1257,22 +1256,22 @@ void frame::raise() {
     if (!b_is_top_level_)
         return;
 
-    int  i_old_level          = i_level_;
+    int  old_level            = level_;
     auto p_top_level_renderer = get_top_level_renderer();
-    i_level_                  = p_top_level_renderer->get_highest_level(m_strata_) + 1;
+    level_                    = p_top_level_renderer->get_highest_level(m_strata_) + 1;
 
-    if (i_level_ > i_old_level) {
+    if (level_ > old_level) {
         if (!is_virtual()) {
             p_top_level_renderer->notify_frame_level_changed(
-                observer_from(this), i_old_level, i_level_);
+                observer_from(this), old_level, level_);
         }
 
-        int i_amount = i_level_ - i_old_level;
+        int amount = level_ - old_level;
 
         for (auto& m_child : get_children())
-            m_child.add_level_(i_amount);
+            m_child.add_level_(amount);
     } else
-        i_level_ = i_old_level;
+        level_ = old_level;
 }
 
 void frame::enable_auto_focus(bool b_enable) {
@@ -1307,17 +1306,17 @@ void frame::notify_focus(bool b_focus) {
         fire_script("OnFocusLost");
 }
 
-void frame::add_level_(int i_amount) {
-    int i_old_level = i_level_;
-    i_level_ += i_amount;
+void frame::add_level_(int amount) {
+    int old_level = level_;
+    level_ += amount;
 
     if (!is_virtual()) {
         get_top_level_renderer()->notify_frame_level_changed(
-            observer_from(this), i_old_level, i_level_);
+            observer_from(this), old_level, level_);
     }
 
     for (auto& m_child : get_children())
-        m_child.add_level_(i_amount);
+        m_child.add_level_(amount);
 }
 
 void frame::set_user_placed(bool b_is_user_placed) {

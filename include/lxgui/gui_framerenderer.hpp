@@ -50,15 +50,17 @@ public:
      *   \param mNewStrata The new frame strata
      */
     virtual void notify_frame_strata_changed(
-        const utils::observer_ptr<frame>& p_frame, frame_strata m_old_strata, frame_strata m_new_strata);
+        const utils::observer_ptr<frame>& p_frame,
+        frame_strata                      m_old_strata,
+        frame_strata                      m_new_strata);
 
     /// Tells this renderer that a frame has changed level.
     /** \param pFrame The frame which has changed
-     *   \param iOldLevel The old frame level
-     *   \param iNewLevel The new frame level
+     *   \param old_level The old frame level
+     *   \param new_level The new frame level
      */
     virtual void notify_frame_level_changed(
-        const utils::observer_ptr<frame>& p_frame, int i_old_level, int i_new_level);
+        const utils::observer_ptr<frame>& p_frame, int old_level, int new_level);
 
     /// Returns the width and height of of this renderer's main render target (e.g., screen).
     /** \return The render target dimensions

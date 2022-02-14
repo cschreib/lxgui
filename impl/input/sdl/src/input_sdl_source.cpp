@@ -19,8 +19,8 @@ source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise
     update_pixel_per_unit_();
 
     if (b_initialise_sdl_image) {
-        int i_img_flags = IMG_INIT_PNG;
-        if ((IMG_Init(i_img_flags) & i_img_flags) == 0) {
+        int img_flags = IMG_INIT_PNG;
+        if ((IMG_Init(img_flags) & img_flags) == 0) {
             throw gui::exception(
                 "input::sdl::source",
                 "Could not initialise SDL_image: " + std::string(IMG_GetError()) + ".");
@@ -30,7 +30,7 @@ source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise
 
 utils::ustring source::get_clipboard_content() {
     if (SDL_HasClipboardText()) {
-        char*          s_text        = SDL_GetClipboardText();
+        char*          s_text         = SDL_GetClipboardText();
         utils::ustring s_unicode_text = utils::utf8_to_unicode(s_text);
         SDL_free(s_text);
         return s_unicode_text;
@@ -78,8 +78,8 @@ float source::get_interface_scaling_factor_hint() const {
     return f_pixels_per_unit_;
 }
 
-key source::from_sdl_(int i_sdl_key) const {
-    switch (static_cast<SDL_Keycode>(i_sdl_key)) {
+key source::from_sdl_(int sdl_key) const {
+    switch (static_cast<SDL_Keycode>(sdl_key)) {
     case SDLK_ESCAPE: return key::k_escape;
     case SDLK_0: return key::k_0;
     case SDLK_1: return key::k_1;
@@ -185,22 +185,23 @@ key source::from_sdl_(int i_sdl_key) const {
 }
 
 gui::vector2ui source::get_window_pixel_size_() const {
-    int i_pixel_width, i_pixel_height;
+    int pixel_width, pixel_height;
     if (p_renderer_)
-        SDL_GetRendererOutputSize(p_renderer_, &i_pixel_width, &i_pixel_height);
+        SDL_GetRendererOutputSize(p_renderer_, &pixel_width, &pixel_height);
     else
-        SDL_GL_GetDrawableSize(p_window_, &i_pixel_width, &i_pixel_height);
+        SDL_GL_GetDrawableSize(p_window_, &pixel_width, &pixel_height);
 
-    return gui::vector2ui(i_pixel_width, i_pixel_height);
+    return gui::vector2ui(pixel_width, pixel_height);
 }
 
 void source::update_pixel_per_unit_() {
     gui::vector2ui m_pixel_size = get_window_pixel_size_();
 
-    int i_unit_width, i_unit_height;
-    SDL_GetWindowSize(p_window_, &i_unit_width, &i_unit_height);
+    int unit_width, unit_height;
+    SDL_GetWindowSize(p_window_, &unit_width, &unit_height);
 
-    f_pixels_per_unit_ = std::min(m_pixel_size.x / float(i_unit_width), m_pixel_size.y / float(i_unit_height));
+    f_pixels_per_unit_ =
+        std::min(m_pixel_size.x / float(unit_width), m_pixel_size.y / float(unit_height));
 }
 
 void source::on_sdl_event(const SDL_Event& m_event) {
@@ -209,14 +210,14 @@ void source::on_sdl_event(const SDL_Event& m_event) {
 
     switch (m_event.type) {
     case SDL_KEYDOWN: {
-        key m_key                                             = from_sdl_(m_event.key.keysym.sym);
+        key m_key = from_sdl_(m_event.key.keysym.sym);
         m_keyboard_.l_key_state[static_cast<std::size_t>(m_key)] = true;
 
         on_key_pressed(m_key);
         break;
     }
     case SDL_KEYUP: {
-        key m_key                                             = from_sdl_(m_event.key.keysym.sym);
+        key m_key = from_sdl_(m_event.key.keysym.sym);
         m_keyboard_.l_key_state[static_cast<std::size_t>(m_key)] = false;
 
         on_key_released(m_key);
@@ -234,20 +235,21 @@ void source::on_sdl_event(const SDL_Event& m_event) {
         SDL_CaptureMouse(SDL_TRUE);
 
         mouse_button m_button = m_event.type == SDL_MOUSEBUTTONDOWN
-                                   ? l_mouse_from_sdl[m_event.button.button - 1]
-                                   : mouse_button::left;
+                                    ? l_mouse_from_sdl[m_event.button.button - 1]
+                                    : mouse_button::left;
         m_mouse_.l_button_state[static_cast<std::size_t>(m_button)] = true;
 
         gui::vector2f m_mouse_pos;
         if (m_event.type == SDL_MOUSEBUTTONDOWN) {
-            m_mouse_pos =
-                gui::vector2f(m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
+            m_mouse_pos = gui::vector2f(
+                m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
         } else {
             // Reset "previous" mouse position to avoid triggering incorrect
             // drag events. With touch devices, the mouse position does not change
             // until the finger is down on the screen.
             m_mouse_pos = gui::vector2f(
-                m_event.tfinger.x * m_window_dimensions_.x, m_event.tfinger.y * m_window_dimensions_.y);
+                m_event.tfinger.x * m_window_dimensions_.x,
+                m_event.tfinger.y * m_window_dimensions_.y);
         }
 
         on_mouse_pressed(m_button, m_mouse_pos);
@@ -265,15 +267,15 @@ void source::on_sdl_event(const SDL_Event& m_event) {
         SDL_CaptureMouse(SDL_FALSE);
 
         mouse_button m_button = m_event.type == SDL_MOUSEBUTTONUP
-                                   ? l_mouse_from_sdl[m_event.button.button - 1]
-                                   : mouse_button::left;
+                                    ? l_mouse_from_sdl[m_event.button.button - 1]
+                                    : mouse_button::left;
 
         m_mouse_.l_button_state[static_cast<std::size_t>(m_button)] = false;
 
         gui::vector2f m_mouse_pos;
         if (m_event.type == SDL_MOUSEBUTTONUP) {
-            m_mouse_pos =
-                gui::vector2f(m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
+            m_mouse_pos = gui::vector2f(
+                m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
         } else {
             m_mouse_pos = gui::vector2f(
                 m_event.tfinger.x * f_pixels_per_unit_, m_event.tfinger.y * f_pixels_per_unit_);
@@ -284,7 +286,8 @@ void source::on_sdl_event(const SDL_Event& m_event) {
     }
     case SDL_MOUSEMOTION: {
         m_mouse_.m_position = gui::vector2f(m_event.motion.x, m_event.motion.y);
-        on_mouse_moved(gui::vector2f(m_event.motion.xrel, m_event.motion.yrel), m_mouse_.m_position);
+        on_mouse_moved(
+            gui::vector2f(m_event.motion.xrel, m_event.motion.yrel), m_mouse_.m_position);
         break;
     }
     case SDL_MOUSEWHEEL: {

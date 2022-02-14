@@ -60,7 +60,7 @@ template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
     std::vector<std::basic_string_view<T>> l_pieces;
-    std::size_t                            ui_pos     = s.find(s_delim);
+    std::size_t                            ui_pos      = s.find(s_delim);
     std::size_t                            ui_last_pos = 0u;
     std::size_t                            ui_cur_size = 0u;
 
@@ -69,7 +69,7 @@ cut_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
         if (ui_cur_size != 0)
             l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
         ui_last_pos = ui_pos + s_delim.size();
-        ui_pos     = s.find(s_delim, ui_last_pos);
+        ui_pos      = s.find(s_delim, ui_last_pos);
     }
 
     l_pieces.push_back(s.substr(ui_last_pos));
@@ -89,7 +89,7 @@ template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
     std::vector<std::basic_string_view<T>> l_pieces;
-    std::size_t                            ui_pos     = s.find(s_delim);
+    std::size_t                            ui_pos      = s.find(s_delim);
     std::size_t                            ui_last_pos = 0u;
     std::size_t                            ui_cur_size = 0u;
 
@@ -97,7 +97,7 @@ cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim
         ui_cur_size = ui_pos - ui_last_pos;
         l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
         ui_last_pos = ui_pos + s_delim.size();
-        ui_pos     = s.find(s_delim, ui_last_pos);
+        ui_pos      = s.find(s_delim, ui_last_pos);
     }
 
     l_pieces.push_back(s.substr(ui_last_pos));
@@ -315,8 +315,8 @@ bool is_integer(string_view s) {
     std::istringstream m_temp{std::string(s)};
     m_temp.imbue(std::locale::classic());
 
-    std::int64_t i_value = 0;
-    m_temp >> i_value;
+    std::int64_t value = 0;
+    m_temp >> value;
 
     return !m_temp.fail();
 }
