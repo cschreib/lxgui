@@ -23,11 +23,11 @@ class localizer {
     using map_type    = std::unordered_map<hash_type, mapped_item>;
 
     std::locale                   m_locale_;
-    std::vector<std::string>      l_languages_;
-    std::vector<code_point_range> l_code_points_;
+    std::vector<std::string>      languages_;
+    std::vector<code_point_range> code_points_;
     char32_t                      ui_default_code_point_ = U'\u25a1'; // '□'
     sol::state                    m_lua_;
-    map_type                      l_map_;
+    map_type                      map_;
 
     bool                     is_key_valid_(std::string_view s_key) const;
     map_type::const_iterator find_key_(std::string_view s_key) const;
@@ -58,7 +58,7 @@ public:
     void set_locale(const std::locale& m_locale);
 
     /// Changes the current language (used to translate messages and strings).
-    /** \param lLanguages A list of languages
+    /** \param languages A list of languages
      *   \details This function specifies which languages to use for translating messages. The
      *            languages listed in the supplied array will be tried one after the other, until a
      *            translation is found. Each language in the list must be formatted as
@@ -70,7 +70,7 @@ public:
      *         the language after the UI has been loaded: close the UI, set the language, and load
      *         the UI again.
      */
-    void set_preferred_languages(const std::vector<std::string>& l_languages);
+    void set_preferred_languages(const std::vector<std::string>& languages);
 
     /// Attempts to automatically detect the current language (used to translate messages and
     /// strings).
@@ -228,7 +228,7 @@ public:
             return std::string{s_key};
 
         auto m_iter = find_key_(s_key);
-        if (m_iter == l_map_.end())
+        if (m_iter == map_.end())
             return std::string{s_key};
 
         return std::visit(

@@ -66,8 +66,8 @@ region::parse_dimension_(const layout_node& m_node) {
 void region::parse_size_node_(const layout_node& m_node) {
     if (const layout_node* p_size_block = m_node.try_get_child("Size")) {
         auto m_dimensions = parse_dimension_(*p_size_block);
-        bool b_has_x       = m_dimensions.second.x.has_value();
-        bool b_has_y       = m_dimensions.second.y.has_value();
+        bool b_has_x      = m_dimensions.second.x.has_value();
+        bool b_has_y      = m_dimensions.second.y.has_value();
         if (m_dimensions.first == anchor_type::abs) {
             if (b_has_x && b_has_y) {
                 set_dimensions(
@@ -90,7 +90,7 @@ void region::parse_size_node_(const layout_node& m_node) {
 
 void region::parse_anchor_node_(const layout_node& m_node) {
     if (const layout_node* p_anchors_node = m_node.try_get_child("Anchors")) {
-        std::vector<std::string> l_found_points;
+        std::vector<std::string> found_points;
         for (const auto& m_anchor_node : p_anchors_node->get_children()) {
             if (m_anchor_node.get_name() != "Anchor" && m_anchor_node.get_name() != "") {
                 gui::out << gui::warning << m_anchor_node.get_location() << " : "
@@ -106,7 +106,7 @@ void region::parse_anchor_node_(const layout_node& m_node) {
             std::string s_relative_point =
                 m_anchor_node.get_attribute_value_or<std::string>("relativePoint", s_point);
 
-            if (utils::find(l_found_points, s_point) != l_found_points.end()) {
+            if (utils::find(found_points, s_point) != found_points.end()) {
                 gui::out << gui::warning << m_anchor_node.get_location() << " : "
                          << "anchor point \"" << s_point
                          << "\" has already been defined "
@@ -121,8 +121,8 @@ void region::parse_anchor_node_(const layout_node& m_node) {
 
             if (const layout_node* p_offset_node = m_anchor_node.try_get_child("Offset")) {
                 auto m_dimensions = parse_dimension_(*p_offset_node);
-                m_anchor.m_type    = m_dimensions.first;
-                m_anchor.m_offset  = vector2f(
+                m_anchor.m_type   = m_dimensions.first;
+                m_anchor.m_offset = vector2f(
                     m_dimensions.second.x.value_or(0.0f), m_dimensions.second.y.value_or(0.0f));
             }
 

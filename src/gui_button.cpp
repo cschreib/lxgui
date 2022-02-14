@@ -12,7 +12,7 @@
 namespace lxgui::gui {
 
 button::button(utils::control_block& m_block, manager& m_manager) : frame(m_block, m_manager) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
     enable_mouse(true);
 }
 
@@ -28,7 +28,8 @@ bool button::can_use_script(const std::string& s_script_name) const {
     if (base::can_use_script(s_script_name))
         return true;
     else if (
-        (s_script_name == "OnClick") || (s_script_name == "OnEnable") || (s_script_name == "OnDisable"))
+        (s_script_name == "OnClick") || (s_script_name == "OnEnable") ||
+        (s_script_name == "OnDisable"))
         return true;
     else
         return false;
@@ -74,11 +75,11 @@ void button::copy_from(const region& m_obj) {
 
     if (const texture* p_other_texture = p_button->get_normal_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_texture->get_name();
-        m_attr.l_inheritance = {p_button->get_normal_texture()};
+        m_attr.s_name      = p_other_texture->get_name();
+        m_attr.inheritance = {p_button->get_normal_texture()};
 
-        auto p_texture =
-            this->create_layered_region<texture>(p_other_texture->get_draw_layer(), std::move(m_attr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_other_texture->get_draw_layer(), std::move(m_attr));
 
         if (p_texture) {
             p_texture->set_special();
@@ -89,11 +90,11 @@ void button::copy_from(const region& m_obj) {
 
     if (const texture* p_other_texture = p_button->get_pushed_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_texture->get_name();
-        m_attr.l_inheritance = {p_button->get_pushed_texture()};
+        m_attr.s_name      = p_other_texture->get_name();
+        m_attr.inheritance = {p_button->get_pushed_texture()};
 
-        auto p_texture =
-            this->create_layered_region<texture>(p_other_texture->get_draw_layer(), std::move(m_attr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_other_texture->get_draw_layer(), std::move(m_attr));
 
         if (p_texture) {
             p_texture->set_special();
@@ -104,11 +105,11 @@ void button::copy_from(const region& m_obj) {
 
     if (const texture* p_other_texture = p_button->get_highlight_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_texture->get_name();
-        m_attr.l_inheritance = {p_button->get_highlight_texture()};
+        m_attr.s_name      = p_other_texture->get_name();
+        m_attr.inheritance = {p_button->get_highlight_texture()};
 
-        auto p_texture =
-            this->create_layered_region<texture>(p_other_texture->get_draw_layer(), std::move(m_attr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_other_texture->get_draw_layer(), std::move(m_attr));
 
         if (p_texture) {
             p_texture->set_special();
@@ -119,11 +120,11 @@ void button::copy_from(const region& m_obj) {
 
     if (const texture* p_other_texture = p_button->get_disabled_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_texture->get_name();
-        m_attr.l_inheritance = {p_button->get_disabled_texture()};
+        m_attr.s_name      = p_other_texture->get_name();
+        m_attr.inheritance = {p_button->get_disabled_texture()};
 
-        auto p_texture =
-            this->create_layered_region<texture>(p_other_texture->get_draw_layer(), std::move(m_attr));
+        auto p_texture = this->create_layered_region<texture>(
+            p_other_texture->get_draw_layer(), std::move(m_attr));
 
         if (p_texture) {
             p_texture->set_special();
@@ -134,8 +135,8 @@ void button::copy_from(const region& m_obj) {
 
     if (const font_string* p_other_text = p_button->get_normal_text().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_text->get_name();
-        m_attr.l_inheritance = {p_button->get_normal_text()};
+        m_attr.s_name      = p_other_text->get_name();
+        m_attr.inheritance = {p_button->get_normal_text()};
 
         auto p_font = this->create_layered_region<font_string>(
             p_other_text->get_draw_layer(), std::move(m_attr));
@@ -149,8 +150,8 @@ void button::copy_from(const region& m_obj) {
 
     if (const font_string* p_other_text = p_button->get_highlight_text().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_text->get_name();
-        m_attr.l_inheritance = {p_button->get_highlight_text()};
+        m_attr.s_name      = p_other_text->get_name();
+        m_attr.inheritance = {p_button->get_highlight_text()};
 
         auto p_font = this->create_layered_region<font_string>(
             p_other_text->get_draw_layer(), std::move(m_attr));
@@ -164,8 +165,8 @@ void button::copy_from(const region& m_obj) {
 
     if (const font_string* p_other_text = p_button->get_disabled_text().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_other_text->get_name();
-        m_attr.l_inheritance = {p_button->get_disabled_text()};
+        m_attr.s_name      = p_other_text->get_name();
+        m_attr.inheritance = {p_button->get_disabled_text()};
 
         auto p_font = this->create_layered_region<font_string>(
             p_other_text->get_draw_layer(), std::move(m_attr));

@@ -13,7 +13,7 @@ namespace lxgui::gui {
 
 scroll_frame::scroll_frame(utils::control_block& m_block, manager& m_manager) :
     frame(m_block, m_manager) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
 }
 
 scroll_frame::~scroll_frame() {
@@ -62,9 +62,9 @@ void scroll_frame::copy_from(const region& m_obj) {
 
     if (const frame* p_other_child = p_scroll_frame->get_scroll_child().get()) {
         region_core_attributes m_attr;
-        m_attr.s_object_type  = p_other_child->get_object_type();
+        m_attr.s_object_type = p_other_child->get_object_type();
         m_attr.s_name        = p_other_child->get_raw_name();
-        m_attr.l_inheritance = {p_scroll_frame->get_scroll_child()};
+        m_attr.inheritance   = {p_scroll_frame->get_scroll_child()};
 
         utils::observer_ptr<frame> p_scroll_child = create_child(std::move(m_attr));
 
@@ -178,7 +178,7 @@ void scroll_frame::update(float f_delta) {
         return;
 
     if (p_scroll_child_ && m_old_child_size != p_scroll_child_->get_apparent_dimensions()) {
-        b_update_scroll_range_        = true;
+        b_update_scroll_range_         = true;
         b_redraw_scroll_render_target_ = true;
     }
 
@@ -202,7 +202,7 @@ void scroll_frame::update(float f_delta) {
 }
 
 void scroll_frame::update_scroll_range_() {
-    const vector2f m_apparent_size      = get_apparent_dimensions();
+    const vector2f m_apparent_size       = get_apparent_dimensions();
     const vector2f m_child_apparent_size = p_scroll_child_->get_apparent_dimensions();
 
     m_scroll_range_ = m_child_apparent_size - m_apparent_size;
@@ -232,16 +232,16 @@ void scroll_frame::rebuild_scroll_render_target_() {
     if (m_apparent_size.x <= 0 || m_apparent_size.y <= 0)
         return;
 
-    float     f_factor = get_manager().get_interface_scaling_factor();
-    vector2ui m_scaled_size =
-        vector2ui(std::round(m_apparent_size.x * f_factor), std::round(m_apparent_size.y * f_factor));
+    float     f_factor      = get_manager().get_interface_scaling_factor();
+    vector2ui m_scaled_size = vector2ui(
+        std::round(m_apparent_size.x * f_factor), std::round(m_apparent_size.y * f_factor));
 
     if (p_scroll_render_target_) {
         p_scroll_render_target_->set_dimensions(m_scaled_size);
         p_scroll_texture_->set_tex_rect(std::array<float, 4>{0.0f, 0.0f, 1.0f, 1.0f});
         b_update_scroll_range_ = true;
     } else {
-        auto& m_renderer      = get_manager().get_renderer();
+        auto& m_renderer        = get_manager().get_renderer();
         p_scroll_render_target_ = m_renderer.create_render_target(m_scaled_size);
 
         if (p_scroll_render_target_)
@@ -255,13 +255,13 @@ void scroll_frame::render_scroll_strata_list_() {
     m_renderer.begin(p_scroll_render_target_);
 
     vector2f m_view = vector2f(p_scroll_render_target_->get_canvas_dimensions()) /
-                     get_manager().get_interface_scaling_factor();
+                      get_manager().get_interface_scaling_factor();
 
     m_renderer.set_view(matrix4f::translation(-get_borders().top_left()) * matrix4f::view(m_view));
 
     p_scroll_render_target_->clear(color::empty);
 
-    for (const auto& m_strata : l_strata_list_) {
+    for (const auto& m_strata : strata_list_) {
         render_strata_(m_strata);
     }
 
@@ -291,7 +291,8 @@ void scroll_frame::create_glue() {
     create_glue_(this);
 }
 
-void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool b_rendered) {
+void scroll_frame::notify_rendered_frame(
+    const utils::observer_ptr<frame>& p_frame, bool b_rendered) {
     if (!p_frame)
         return;
 

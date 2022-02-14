@@ -144,8 +144,8 @@ void button::register_on_lua(sol::state& m_lua) {
     /** @function get_pushed_text_offset
      */
     m_class.set_function("get_pushed_text_offset", [](const button& m_self) {
-        vector2f l_offset = m_self.get_pushed_text_offset();
-        return std::make_pair(l_offset.x, l_offset.y);
+        vector2f offset = m_self.get_pushed_text_offset();
+        return std::make_pair(offset.x, offset.y);
     });
 
     /** @function get_pushed_texture
@@ -247,7 +247,8 @@ void button::register_on_lua(sol::state& m_lua) {
 
     /** @function set_highlight_texture
      */
-    m_class.set_function("set_highlight_texture", member_function<&button::set_highlight_texture>());
+    m_class.set_function(
+        "set_highlight_texture", member_function<&button::set_highlight_texture>());
 
     /** @function set_normal_font_object
      */

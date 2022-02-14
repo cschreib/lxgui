@@ -12,7 +12,7 @@ namespace lxgui::gui {
 
 layered_region::layered_region(utils::control_block& m_block, manager& m_manager) :
     base(m_block, m_manager) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
 }
 
 std::string layered_region::serialize(const std::string& s_tab) const {

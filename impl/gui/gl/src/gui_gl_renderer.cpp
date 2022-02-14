@@ -135,7 +135,7 @@ matrix4f renderer::get_view() const {
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list) {
+    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
 
 #if !defined(LXGUI_OPENGL3)
     static constexpr std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
@@ -181,7 +181,7 @@ void renderer::render_quads_(
     ui_array_cycle_cache_ = (ui_array_cycle_cache_ + 1) % cache_cycle_size;
 
     // Update vertex data
-    p_cache->update(l_quad_list[0].data(), l_quad_list.size() * 4);
+    p_cache->update(quad_list[0].data(), quad_list.size() * 4);
 
     // Render
     render_cache_(p_material, *p_cache, matrix4f::identity);
@@ -266,10 +266,10 @@ std::shared_ptr<gui::font> renderer::create_font_(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     return std::make_shared<gl::font>(
-        s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
+        s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 }
 
 bool renderer::is_texture_atlas_supported() const {
@@ -466,22 +466,22 @@ void renderer::compile_programs_() {
 }
 
 void renderer::setup_buffers_() {
-    static constexpr std::array<std::uint32_t, 6> l_quad_i_ds = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<std::uint32_t, 6> quad_i_ds = {{0, 1, 2, 2, 3, 0}};
 
     constexpr std::uint32_t    ui_num_array_indices = 768u;
-    std::vector<std::uint32_t> l_repeated_ids(ui_num_array_indices);
+    std::vector<std::uint32_t> repeated_ids(ui_num_array_indices);
     for (std::uint32_t i = 0; i < ui_num_array_indices; ++i) {
-        l_repeated_ids[i] = (i / 6) * 4 + l_quad_i_ds[i % 6];
+        repeated_ids[i] = (i / 6) * 4 + quad_i_ds[i % 6];
     }
 
     for (std::size_t i = 0; i < cache_cycle_size; ++i) {
         p_quad_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
             create_vertex_cache(vertex_cache::type::quads));
-        p_quad_cache_[i]->update_indices(l_quad_i_ds.data(), l_quad_i_ds.size());
+        p_quad_cache_[i]->update_indices(quad_i_ds.data(), quad_i_ds.size());
 
         p_array_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
             create_vertex_cache(vertex_cache::type::quads));
-        p_array_cache_[i]->update_indices(l_repeated_ids.data(), l_repeated_ids.size());
+        p_array_cache_[i]->update_indices(repeated_ids.data(), repeated_ids.size());
     }
 }
 #endif

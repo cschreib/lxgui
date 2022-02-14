@@ -25,45 +25,45 @@ root::root(utils::control_block& m_block, manager& m_manager) :
     auto& m_window       = get_manager().get_window();
     m_screen_dimensions_ = m_window.get_dimensions();
 
-    l_connections_.push_back(
+    connections_.push_back(
         m_window.on_window_resized.connect([&](auto... m_args) { on_window_resized_(m_args...); }));
 
     auto& m_input_dispatcher = get_manager().get_input_dispatcher();
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_moved.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_moved.connect(
         [&](auto... m_args) { on_mouse_moved_(m_args...); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_wheel.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_wheel.connect(
         [&](auto... m_args) { on_mouse_wheel_(m_args...); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_drag_start.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_drag_start.connect(
         [&](auto... m_args) { on_drag_start_(m_args...); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_drag_stop.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_drag_stop.connect(
         [&](auto... m_args) { on_drag_stop_(m_args...); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_text_entered.connect(
+    connections_.push_back(m_input_dispatcher.on_text_entered.connect(
         [&](auto... m_args) { on_text_entered_(m_args...); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_pressed.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_pressed.connect(
         [&](input::mouse_button m_button, const vector2f& m_mouse_pos) {
             on_mouse_button_state_changed_(m_button, true, false, m_mouse_pos);
         }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_released.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_released.connect(
         [&](input::mouse_button m_button, const vector2f& m_mouse_pos) {
             on_mouse_button_state_changed_(m_button, false, false, m_mouse_pos);
         }));
 
-    l_connections_.push_back(m_input_dispatcher.on_mouse_double_clicked.connect(
+    connections_.push_back(m_input_dispatcher.on_mouse_double_clicked.connect(
         [&](input::mouse_button m_button, const vector2f& m_mouse_pos) {
             on_mouse_button_state_changed_(m_button, true, true, m_mouse_pos);
         }));
 
-    l_connections_.push_back(m_input_dispatcher.on_key_pressed.connect(
+    connections_.push_back(m_input_dispatcher.on_key_pressed.connect(
         [&](input::key m_key) { on_key_state_changed_(m_key, true); }));
 
-    l_connections_.push_back(m_input_dispatcher.on_key_released.connect(
+    connections_.push_back(m_input_dispatcher.on_key_released.connect(
         [&](input::key m_key) { on_key_state_changed_(m_key, false); }));
 }
 
@@ -82,7 +82,7 @@ void root::render() const {
     if (b_enable_caching_) {
         m_renderer_.render_quad(m_screen_quad_);
     } else {
-        for (const auto& m_strata : l_strata_list_) {
+        for (const auto& m_strata : strata_list_) {
             render_strata_(m_strata);
         }
     }
@@ -156,7 +156,7 @@ void root::update(float f_delta) {
         DEBUG_LOG(" Redraw strata...");
 
         try {
-            for (auto& m_strata : l_strata_list_) {
+            for (auto& m_strata : strata_list_) {
                 if (m_strata.b_redraw) {
                     if (!m_strata.p_render_target)
                         create_strata_cache_render_target_(m_strata);
@@ -195,7 +195,7 @@ void root::update(float f_delta) {
 
                 p_render_target_->clear(color::empty);
 
-                for (auto& m_strata : l_strata_list_) {
+                for (auto& m_strata : strata_list_) {
                     m_renderer_.render_quad(m_strata.m_quad);
                 }
 
@@ -215,7 +215,7 @@ void root::toggle_caching() {
     b_enable_caching_ = !b_enable_caching_;
 
     if (b_enable_caching_) {
-        for (auto& m_strata : l_strata_list_)
+        for (auto& m_strata : strata_list_)
             m_strata.b_redraw = true;
     }
 }
@@ -237,7 +237,7 @@ void root::notify_scaling_factor_updated() {
     if (p_render_target_)
         create_caching_render_target_();
 
-    for (auto& m_strata : l_strata_list_) {
+    for (auto& m_strata : strata_list_) {
         if (m_strata.p_render_target)
             create_strata_cache_render_target_(m_strata);
     }
@@ -273,14 +273,14 @@ void root::start_moving(
             p_moved_anchor_            = p_anchor;
             m_movement_start_position_ = p_moved_anchor_->m_offset;
         } else {
-            const bounds2f l_borders = p_moved_object_->get_borders();
+            const bounds2f borders = p_moved_object_->get_borders();
 
             p_moved_object_->clear_all_points();
-            p_moved_object_->set_point(anchor_point::top_left, "", l_borders.top_left());
+            p_moved_object_->set_point(anchor_point::top_left, "", borders.top_left());
 
             p_moved_anchor_ = &p_moved_object_->modify_point(anchor_point::top_left);
 
-            m_movement_start_position_ = l_borders.top_left();
+            m_movement_start_position_ = borders.top_left();
         }
     }
 }
@@ -300,7 +300,7 @@ void root::start_sizing(utils::observer_ptr<region> p_obj, anchor_point m_point)
     m_mouse_movement_ = vector2f::zero;
 
     if (p_sized_object_) {
-        const bounds2f l_borders = p_sized_object_->get_borders();
+        const bounds2f borders = p_sized_object_->get_borders();
 
         anchor_point m_opposite_point = anchor_point::center;
         vector2f     m_offset;
@@ -309,28 +309,28 @@ void root::start_sizing(utils::observer_ptr<region> p_obj, anchor_point m_point)
         case anchor_point::top_left:
         case anchor_point::top:
             m_opposite_point      = anchor_point::bottom_right;
-            m_offset              = l_borders.bottom_right();
+            m_offset              = borders.bottom_right();
             b_resize_from_right_  = false;
             b_resize_from_bottom_ = false;
             break;
         case anchor_point::top_right:
         case anchor_point::right:
             m_opposite_point      = anchor_point::bottom_left;
-            m_offset              = l_borders.bottom_left();
+            m_offset              = borders.bottom_left();
             b_resize_from_right_  = true;
             b_resize_from_bottom_ = false;
             break;
         case anchor_point::bottom_right:
         case anchor_point::bottom:
             m_opposite_point      = anchor_point::top_left;
-            m_offset              = l_borders.top_left();
+            m_offset              = borders.top_left();
             b_resize_from_right_  = true;
             b_resize_from_bottom_ = true;
             break;
         case anchor_point::bottom_left:
         case anchor_point::left:
             m_opposite_point      = anchor_point::top_right;
-            m_offset              = l_borders.top_right();
+            m_offset              = borders.top_right();
             b_resize_from_right_  = false;
             b_resize_from_bottom_ = true;
             break;
@@ -368,16 +368,15 @@ bool root::is_sizing(const region& m_obj) const {
     return p_sized_object_.get() == &m_obj;
 }
 
-void release_focus_to_list(
-    const frame& m_receiver, std::vector<utils::observer_ptr<frame>>& l_list) {
-    if (l_list.empty())
+void release_focus_to_list(const frame& m_receiver, std::vector<utils::observer_ptr<frame>>& list) {
+    if (list.empty())
         return;
 
     // Find receiver in the list
     auto m_iter =
-        utils::find_if(l_list, [&](const auto& p_ptr) { return p_ptr.get() == &m_receiver; });
+        utils::find_if(list, [&](const auto& p_ptr) { return p_ptr.get() == &m_receiver; });
 
-    if (m_iter == l_list.end())
+    if (m_iter == list.end())
         return;
 
     // Set it to null
@@ -385,27 +384,27 @@ void release_focus_to_list(
 
     // Clean up null entries
     auto m_end_iter = std::remove_if(
-        l_list.begin(), l_list.end(), [](const auto& p_ptr) { return p_ptr == nullptr; });
+        list.begin(), list.end(), [](const auto& p_ptr) { return p_ptr == nullptr; });
 
-    l_list.erase(m_end_iter, l_list.end());
+    list.erase(m_end_iter, list.end());
 }
 
 void request_focus_to_list(
-    utils::observer_ptr<frame> p_receiver, std::vector<utils::observer_ptr<frame>>& l_list) {
+    utils::observer_ptr<frame> p_receiver, std::vector<utils::observer_ptr<frame>>& list) {
     auto* p_raw_pointer = p_receiver.get();
     if (!p_raw_pointer)
         return;
 
     // Check if this receiver was already in the focus stack and remove it
-    release_focus_to_list(*p_raw_pointer, l_list);
+    release_focus_to_list(*p_raw_pointer, list);
 
     // Add receiver at the top of the stack
-    l_list.push_back(std::move(p_receiver));
+    list.push_back(std::move(p_receiver));
 }
 
 void root::request_focus(utils::observer_ptr<frame> p_receiver) {
     auto p_old_focus = get_focussed_frame();
-    request_focus_to_list(std::move(p_receiver), l_focus_stack_);
+    request_focus_to_list(std::move(p_receiver), focus_stack_);
     auto p_new_focus = get_focussed_frame();
 
     if (p_old_focus != p_new_focus) {
@@ -419,7 +418,7 @@ void root::request_focus(utils::observer_ptr<frame> p_receiver) {
 
 void root::release_focus(const frame& m_receiver) {
     auto p_old_focus = get_focussed_frame();
-    release_focus_to_list(m_receiver, l_focus_stack_);
+    release_focus_to_list(m_receiver, focus_stack_);
     auto p_new_focus = get_focussed_frame();
 
     if (p_old_focus != p_new_focus) {
@@ -433,7 +432,7 @@ void root::release_focus(const frame& m_receiver) {
 
 void root::clear_focus() {
     auto p_old_focus = get_focussed_frame();
-    l_focus_stack_.clear();
+    focus_stack_.clear();
 
     if (p_old_focus)
         p_old_focus->notify_focus(false);
@@ -444,7 +443,7 @@ bool root::is_focused() const {
 }
 
 utils::observer_ptr<const frame> root::get_focussed_frame() const {
-    for (const auto& p_ptr : utils::range::reverse(l_focus_stack_)) {
+    for (const auto& p_ptr : utils::range::reverse(focus_stack_)) {
         if (p_ptr)
             return p_ptr;
     }
@@ -481,7 +480,7 @@ void root::on_window_resized_(const vector2ui& m_dimensions) {
     if (p_render_target_)
         create_caching_render_target_();
 
-    for (auto& m_strata : l_strata_list_) {
+    for (auto& m_strata : strata_list_) {
         if (m_strata.p_render_target)
             create_strata_cache_render_target_(m_strata);
     }

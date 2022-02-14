@@ -30,9 +30,9 @@ keybinder::register_key_binding(std::string_view s_name, sol::protected_function
 utils::connection
 keybinder::register_key_binding(std::string_view s_name, function_type m_function) {
     auto m_iter = utils::find_if(
-        l_key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
 
-    if (m_iter == l_key_bindings_.end()) {
+    if (m_iter == key_bindings_.end()) {
         gui::out << gui::error << "keybinder: a binding already exists with name '" << s_name
                  << "'." << std::endl;
         return {};
@@ -41,7 +41,7 @@ keybinder::register_key_binding(std::string_view s_name, function_type m_functio
     key_binding m_binding;
     m_binding.s_name  = std::string(s_name);
     auto m_connection = m_binding.m_signal.connect(std::move(m_function));
-    l_key_bindings_.push_back(std::move(m_binding));
+    key_bindings_.push_back(std::move(m_binding));
 
     return m_connection;
 }
@@ -53,9 +53,9 @@ void keybinder::set_key_binding(
     bool             b_ctrl_is_pressed,
     bool             b_alt_is_pressed) {
     auto m_iter = utils::find_if(
-        l_key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
 
-    if (m_iter == l_key_bindings_.end()) {
+    if (m_iter == key_bindings_.end()) {
         gui::out << gui::error << "keybinder: no binding with name '" << s_name << "'."
                  << std::endl;
         return;
@@ -75,8 +75,8 @@ void keybinder::set_key_binding(std::string_view s_name, std::string_view s_key)
     bool b_ctrl_is_pressed  = false;
     bool b_alt_is_pressed   = false;
 
-    const auto l_tokens = utils::cut(s_key, "-");
-    for (auto s_token : l_tokens) {
+    const auto tokens = utils::cut(s_key, "-");
+    for (auto s_token : tokens) {
         if (s_token == "Shift")
             b_shift_is_pressed = true;
         else if (s_token == "Ctrl")
@@ -86,32 +86,32 @@ void keybinder::set_key_binding(std::string_view s_name, std::string_view s_key)
     }
 
     set_key_binding(
-        s_name, input::get_key_from_codename(l_tokens.back()), b_shift_is_pressed,
-        b_ctrl_is_pressed, b_alt_is_pressed);
+        s_name, input::get_key_from_codename(tokens.back()), b_shift_is_pressed, b_ctrl_is_pressed,
+        b_alt_is_pressed);
 }
 
 void keybinder::remove_key_binding(std::string_view s_name) {
     auto m_iter = utils::find_if(
-        l_key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
 
-    if (m_iter == l_key_bindings_.end()) {
+    if (m_iter == key_bindings_.end()) {
         gui::out << gui::error << "keybinder: no binding with name '" << s_name << "'."
                  << std::endl;
         return;
     }
 
-    l_key_bindings_.erase(m_iter);
+    key_bindings_.erase(m_iter);
 }
 
 keybinder::key_binding* keybinder::find_binding_(
     input::key mKey, bool b_shift_is_pressed, bool bCtrlIsPressed, bool bAltIsPressed) {
-    auto m_iter = utils::find_if(l_key_bindings_, [&](const auto& m_binding) {
+    auto m_iter = utils::find_if(key_bindings_, [&](const auto& m_binding) {
         return m_binding.m_key == mKey && m_binding.b_shift_is_pressed == b_shift_is_pressed &&
                m_binding.b_ctrl_is_pressed == bCtrlIsPressed &&
                m_binding.b_alt_is_pressed == bAltIsPressed;
     });
 
-    if (m_iter == l_key_bindings_.end())
+    if (m_iter == key_bindings_.end())
         return nullptr;
 
     return &*m_iter;

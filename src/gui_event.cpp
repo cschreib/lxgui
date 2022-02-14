@@ -2,6 +2,6 @@
 
 namespace lxgui::gui {
 
-event_data::event_data(std::initializer_list<utils::variant> l_data) : l_arg_list_(l_data) {}
+event_data::event_data(std::initializer_list<utils::variant> data) : arg_list_(data) {}
 
 } // namespace lxgui::gui

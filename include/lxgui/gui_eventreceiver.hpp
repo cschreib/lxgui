@@ -47,7 +47,7 @@ private:
     };
 
     event_emitter&                m_event_emitter_;
-    std::vector<event_connection> l_registered_events_;
+    std::vector<event_connection> registered_events_;
 };
 
 } // namespace lxgui::gui

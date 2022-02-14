@@ -351,11 +351,11 @@ private:
     void read_files_();
 
     // Persistent state
-    float                              f_scaling_factor_     = 1.0f;
+    float                              f_scaling_factor_      = 1.0f;
     float                              f_base_scaling_factor_ = 1.0f;
-    bool                               b_enable_caching_     = false;
+    bool                               b_enable_caching_      = false;
     std::function<void(gui::manager&)> p_lua_regs_;
-    std::vector<std::string>           l_gui_directory_list_;
+    std::vector<std::string>           gui_directory_list_;
 
     // Implementations
     std::unique_ptr<input::source> p_input_source_;
@@ -375,11 +375,11 @@ private:
     utils::owner_ptr<virtual_root>  p_virtual_root_;
     std::unique_ptr<addon_registry> p_add_on_registry_;
 
-    bool b_loaded_         = false;
+    bool b_loaded_          = false;
     bool b_reload_ui_       = false;
     bool b_close_ui_        = false;
     bool b_first_iteration_ = true;
-    bool b_updating_       = false;
+    bool b_updating_        = false;
 };
 
 } // namespace lxgui::gui

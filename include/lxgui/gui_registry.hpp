@@ -15,8 +15,8 @@ class region;
 /// Keeps track of created UI objects and records their names for lookup.
 class registry {
 public:
-    registry()                     = default;
-    virtual ~registry()            = default;
+    registry()                      = default;
+    virtual ~registry()             = default;
     registry(const registry& m_mgr) = default;
     registry(registry&& m_mgr)      = default;
     registry& operator=(const registry& m_mgr) = default;
@@ -58,7 +58,7 @@ private:
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    string_map<utils::observer_ptr<region>> l_named_object_list_;
+    string_map<utils::observer_ptr<region>> named_object_list_;
 };
 
 } // namespace lxgui::gui

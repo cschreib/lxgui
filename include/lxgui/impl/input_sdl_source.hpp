@@ -49,7 +49,7 @@ private:
     float f_pixels_per_unit_ = 1.0f;
 
     using wrapped_cursor = std::unique_ptr<SDL_Cursor, void (*)(SDL_Cursor*)>;
-    std::unordered_map<std::string, wrapped_cursor> l_cursor_map_;
+    std::unordered_map<std::string, wrapped_cursor> cursor_map_;
 };
 
 }} // namespace lxgui::input::sdl

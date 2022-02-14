@@ -48,7 +48,7 @@ private:
     gui::vector2i m_old_mouse_pos_;
     bool          b_first_mouse_move_ = true;
 
-    std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> l_cursor_map_;
+    std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> cursor_map_;
 };
 
 }} // namespace lxgui::input::sfml

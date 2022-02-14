@@ -37,11 +37,11 @@ namespace lxgui::input {
 class source {
 public:
     struct key_state {
-        std::array<bool, key_number> l_key_state = {};
+        std::array<bool, key_number> key_state = {};
     };
 
     struct mouse_state {
-        std::array<bool, mouse_button_number> l_button_state = {};
+        std::array<bool, mouse_button_number> button_state = {};
         gui::vector2f                         m_position;
         float                                 f_wheel = 0.0f;
     };
@@ -84,7 +84,8 @@ public:
      *   \param mHotSpot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
-    virtual void set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) = 0;
+    virtual void
+    set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) = 0;
 
     /// Sets the mouse cursor back to the default (arrow).
     virtual void reset_mouse_cursor() = 0;

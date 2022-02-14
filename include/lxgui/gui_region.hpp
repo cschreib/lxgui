@@ -667,8 +667,12 @@ protected:
     parse_dimension_(const layout_node& m_node);
 
     void read_anchors_(
-        float& f_left, float& f_right, float& f_top, float& f_bottom, float& f_x_center, float& f_y_center)
-        const;
+        float& f_left,
+        float& f_right,
+        float& f_top,
+        float& f_bottom,
+        float& f_x_center,
+        float& f_y_center) const;
 
     bool make_borders_(float& f_min, float& f_max, float f_center, float f_size) const;
 
@@ -721,22 +725,22 @@ protected:
     bool b_loaded_   = false;
     bool b_ready_    = true;
 
-    std::vector<std::string> l_type_;
+    std::vector<std::string> type_;
 
-    std::array<std::optional<anchor>, 9>     l_anchor_list_;
-    std::vector<utils::observer_ptr<region>> l_previous_anchor_parent_list_;
-    bounds2<bool>                            l_defined_border_list_;
-    bounds2f                                 l_border_list_;
+    std::array<std::optional<anchor>, 9>     anchor_list_;
+    std::vector<utils::observer_ptr<region>> previous_anchor_parent_list_;
+    bounds2<bool>                            defined_border_list_;
+    bounds2f                                 border_list_;
 
-    float f_alpha_     = 1.0f;
+    float f_alpha_      = 1.0f;
     bool  b_is_shown_   = true;
     bool  b_is_visible_ = true;
 
     vector2f m_dimensions_;
 
-    std::vector<utils::observer_ptr<region>> l_anchored_object_list_;
+    std::vector<utils::observer_ptr<region>> anchored_object_list_;
 
-    std::unordered_map<std::string, sol::object> l_lua_members_;
+    std::unordered_map<std::string, sol::object> lua_members_;
 };
 
 /// Obtain a pointer to a derived class.
@@ -752,7 +756,7 @@ const ObjectType* down_cast(const region* p_self) {
     const ObjectType* p_object = dynamic_cast<const ObjectType*>(p_self);
     if (p_self && !p_object && p_self->is_object_type(ObjectType::class_name)) {
         throw gui::exception(
-            p_self->l_type_.back(), "cannot use down_cast() to " +
+            p_self->type_.back(), "cannot use down_cast() to " +
                                       std::string(ObjectType::class_name) +
                                       " as object is being destroyed");
     }

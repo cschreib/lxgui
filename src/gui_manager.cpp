@@ -69,7 +69,7 @@ void manager::set_interface_scaling_factor(float f_scaling_factor) {
         return;
 
     f_base_scaling_factor_ = f_scaling_factor;
-    f_scaling_factor_     = f_full_scaling_factor;
+    f_scaling_factor_      = f_full_scaling_factor;
 
     p_input_dispatcher_->set_interface_scaling_factor(f_scaling_factor_);
 
@@ -101,12 +101,12 @@ bool manager::is_caching_enabled() const {
 }
 
 void manager::add_addon_directory(const std::string& s_directory) {
-    if (utils::find(l_gui_directory_list_, s_directory) == l_gui_directory_list_.end())
-        l_gui_directory_list_.push_back(s_directory);
+    if (utils::find(gui_directory_list_, s_directory) == gui_directory_list_.end())
+        gui_directory_list_.push_back(s_directory);
 }
 
 void manager::clear_addon_directory_list() {
-    l_gui_directory_list_.clear();
+    gui_directory_list_.clear();
 }
 
 sol::state& manager::get_lua() {
@@ -124,7 +124,7 @@ void manager::read_files_() {
     p_add_on_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
 
-    for (const auto& s_directory : l_gui_directory_list_)
+    for (const auto& s_directory : gui_directory_list_)
         p_add_on_registry_->load_addon_directory(s_directory);
 }
 
@@ -132,14 +132,14 @@ void manager::load_ui() {
     if (b_loaded_)
         return;
 
-    p_factory_     = std::make_unique<factory>(*this);
-    p_root_        = utils::make_owned<root>(*this);
+    p_factory_      = std::make_unique<factory>(*this);
+    p_root_         = utils::make_owned<root>(*this);
     p_virtual_root_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
 
     create_lua_();
     read_files_();
 
-    b_loaded_  = true;
+    b_loaded_   = true;
     b_close_ui_ = false;
 }
 
@@ -157,15 +157,15 @@ void manager::close_ui_now() {
     if (p_add_on_registry_)
         p_add_on_registry_->save_variables();
 
-    p_virtual_root_   = nullptr;
-    p_root_          = nullptr;
-    p_factory_       = nullptr;
+    p_virtual_root_    = nullptr;
+    p_root_            = nullptr;
+    p_factory_         = nullptr;
     p_add_on_registry_ = nullptr;
-    p_lua_           = nullptr;
+    p_lua_             = nullptr;
 
     p_localizer_->clear_translations();
 
-    b_loaded_         = false;
+    b_loaded_          = false;
     b_first_iteration_ = true;
 }
 

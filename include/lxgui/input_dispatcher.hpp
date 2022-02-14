@@ -141,19 +141,19 @@ public:
     source& get_source();
 
 private:
-    std::vector<utils::scoped_connection> l_connections_;
+    std::vector<utils::scoped_connection> connections_;
 
     using timer      = std::chrono::high_resolution_clock;
     using time_point = timer::time_point;
 
-    std::array<time_point, key_number>          l_key_pressed_time_   = {};
-    std::array<time_point, mouse_button_number> l_mouse_pressed_time_ = {};
+    std::array<time_point, key_number>          key_pressed_time_   = {};
+    std::array<time_point, mouse_button_number> mouse_pressed_time_ = {};
 
     float f_scaling_factor_ = 1.0f;
 
     double d_double_click_time_ = 0.25;
 
-    bool         b_mouse_dragged_    = false;
+    bool         b_mouse_dragged_     = false;
     mouse_button m_mouse_drag_button_ = mouse_button::left;
 
     source& m_source_;

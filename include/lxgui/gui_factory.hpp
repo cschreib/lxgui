@@ -105,11 +105,11 @@ public:
             typename std::enable_if<std::is_base_of<gui::region, ObjectType>::value>::type>
     void register_region_type() {
         if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>)
-            l_custom_region_list_[ObjectType::class_name] = &create_new_layered_region<ObjectType>;
+            custom_region_list_[ObjectType::class_name] = &create_new_layered_region<ObjectType>;
         else if constexpr (std::is_base_of_v<gui::frame, ObjectType>)
-            l_custom_frame_list_[ObjectType::class_name] = &create_new_frame<ObjectType>;
+            custom_frame_list_[ObjectType::class_name] = &create_new_frame<ObjectType>;
         else
-            l_custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
+            custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
 
         ObjectType::register_on_lua(get_lua());
     }
@@ -135,9 +135,9 @@ private:
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    string_map<std::function<utils::owner_ptr<region>(manager&)>>         l_custom_object_list_;
-    string_map<std::function<utils::owner_ptr<frame>(manager&)>>          l_custom_frame_list_;
-    string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> l_custom_region_list_;
+    string_map<std::function<utils::owner_ptr<region>(manager&)>>         custom_object_list_;
+    string_map<std::function<utils::owner_ptr<frame>(manager&)>>          custom_frame_list_;
+    string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> custom_region_list_;
 };
 
 } // namespace lxgui::gui

@@ -15,7 +15,7 @@ namespace lxgui::gui {
 
 texture::texture(utils::control_block& m_block, manager& m_manager) :
     layered_region(m_block, m_manager), m_renderer_(m_manager.get_renderer()) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
 }
 
 std::string texture::serialize(const std::string& sTab) const {
@@ -147,9 +147,9 @@ std::array<float, 8> texture::get_tex_coord() const {
 
     if (m_quad_.mat) {
         for (std::size_t i = 0; i < 4; ++i) {
-            const vector2f l_uv = m_quad_.mat->get_local_uv(m_quad_.v[i].uvs, true);
-            m_coords[2 * i + 0] = l_uv.x;
-            m_coords[2 * i + 1] = l_uv.y;
+            const vector2f uv   = m_quad_.mat->get_local_uv(m_quad_.v[i].uvs, true);
+            m_coords[2 * i + 0] = uv.x;
+            m_coords[2 * i + 1] = uv.y;
         }
     } else {
         for (std::size_t i = 0; i < 4; ++i) {
@@ -175,7 +175,7 @@ const std::string& texture::get_texture_file() const {
 
 color texture::get_vertex_color(std::size_t ui_index) const {
     if (ui_index >= 4) {
-        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << " : "
                  << "Vertex index out of bound (" << ui_index << ")." << std::endl;
         return color::white;
     }
@@ -189,7 +189,7 @@ bool texture::is_desaturated() const {
 
 void texture::set_blend_mode(blend_mode m_blend_mode) {
     if (m_blend_mode != blend_mode::blend) {
-        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "texture::set_blend_mode other than \"BLEND\" is not yet implemented."
                  << std::endl;
         return;
@@ -217,7 +217,7 @@ void texture::set_blend_mode(const std::string& s_blend_mode) {
     else if (s_blend_mode == "NONE")
         m_blend_mode_ = blend_mode::none;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "Unknown blending : \"" << s_blend_mode << "\". Using \"BLEND\"." << std::endl;
     }
 
@@ -246,7 +246,7 @@ void texture::set_filter_mode(const std::string& s_filter) {
     else if (s_filter == "LINEAR")
         m_new_filter = material::filter::linear;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "Unknown filtering : \"" << s_filter << "\". Using \"NONE\"." << std::endl;
     }
 
@@ -259,7 +259,7 @@ void texture::set_desaturated(bool b_is_desaturated) {
 
     b_is_desaturated_ = b_is_desaturated;
     if (b_is_desaturated) {
-        gui::out << gui::warning << "gui::" << l_type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "Texture de-saturation is not yet implemented." << std::endl;
     }
 
@@ -286,47 +286,47 @@ void texture::set_gradient(const gradient& m_gradient) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_rect(const std::array<float, 4>& l_texture_rect) {
+void texture::set_tex_rect(const std::array<float, 4>& texture_rect) {
     if (m_quad_.mat) {
         m_quad_.v[0].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[0], l_texture_rect[1]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_rect[0], texture_rect[1]), true);
         m_quad_.v[1].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[2], l_texture_rect[1]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_rect[2], texture_rect[1]), true);
         m_quad_.v[2].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[2], l_texture_rect[3]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_rect[2], texture_rect[3]), true);
         m_quad_.v[3].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_rect[0], l_texture_rect[3]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_rect[0], texture_rect[3]), true);
 
         if (b_tex_coord_modifies_rect_)
             update_dimensions_from_tex_coord_();
     } else {
-        m_quad_.v[0].uvs = vector2f(l_texture_rect[0], l_texture_rect[1]);
-        m_quad_.v[1].uvs = vector2f(l_texture_rect[2], l_texture_rect[1]);
-        m_quad_.v[2].uvs = vector2f(l_texture_rect[2], l_texture_rect[3]);
-        m_quad_.v[3].uvs = vector2f(l_texture_rect[0], l_texture_rect[3]);
+        m_quad_.v[0].uvs = vector2f(texture_rect[0], texture_rect[1]);
+        m_quad_.v[1].uvs = vector2f(texture_rect[2], texture_rect[1]);
+        m_quad_.v[2].uvs = vector2f(texture_rect[2], texture_rect[3]);
+        m_quad_.v[3].uvs = vector2f(texture_rect[0], texture_rect[3]);
     }
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord(const std::array<float, 8>& l_texture_coords) {
+void texture::set_tex_coord(const std::array<float, 8>& texture_coords) {
     if (m_quad_.mat) {
         m_quad_.v[0].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[0], l_texture_coords[1]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_coords[0], texture_coords[1]), true);
         m_quad_.v[1].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[2], l_texture_coords[3]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_coords[2], texture_coords[3]), true);
         m_quad_.v[2].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[4], l_texture_coords[5]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_coords[4], texture_coords[5]), true);
         m_quad_.v[3].uvs =
-            m_quad_.mat->get_canvas_uv(vector2f(l_texture_coords[6], l_texture_coords[7]), true);
+            m_quad_.mat->get_canvas_uv(vector2f(texture_coords[6], texture_coords[7]), true);
 
         if (b_tex_coord_modifies_rect_)
             update_dimensions_from_tex_coord_();
     } else {
-        m_quad_.v[0].uvs = vector2f(l_texture_coords[0], l_texture_coords[1]);
-        m_quad_.v[1].uvs = vector2f(l_texture_coords[2], l_texture_coords[3]);
-        m_quad_.v[2].uvs = vector2f(l_texture_coords[4], l_texture_coords[5]);
-        m_quad_.v[3].uvs = vector2f(l_texture_coords[6], l_texture_coords[7]);
+        m_quad_.v[0].uvs = vector2f(texture_coords[0], texture_coords[1]);
+        m_quad_.v[1].uvs = vector2f(texture_coords[2], texture_coords[3]);
+        m_quad_.v[2].uvs = vector2f(texture_coords[4], texture_coords[5]);
+        m_quad_.v[3].uvs = vector2f(texture_coords[6], texture_coords[7]);
     }
 
     notify_renderer_need_redraw();
@@ -373,7 +373,7 @@ void texture::set_texture(const std::string& s_file) {
         if (!is_apparent_height_defined())
             set_height(m_quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << " : "
                  << "Cannot load file \"" << s_parsed_file << "\" for \"" << s_name_
                  << "\".\nUsing white texture instead." << std::endl;
     }
@@ -404,7 +404,7 @@ void texture::set_texture(std::shared_ptr<render_target> p_render_target) {
         if (!is_apparent_height_defined())
             set_height(m_quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << " : "
                  << "Cannot create a texture from render target.\n"
                     "Using white texture instead."
                  << std::endl;
@@ -445,7 +445,7 @@ void texture::set_vertex_color(const color& m_color, std::size_t ui_index) {
     }
 
     if (ui_index >= 4) {
-        gui::out << gui::error << "gui::" << l_type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << " : "
                  << "Vertex index out of bound (" << ui_index << ")." << std::endl;
         return;
     }
@@ -458,10 +458,10 @@ void texture::set_vertex_color(const color& m_color, std::size_t ui_index) {
 void texture::update_borders_() {
     base::update_borders_();
 
-    m_quad_.v[0].pos = l_border_list_.top_left();
-    m_quad_.v[1].pos = l_border_list_.top_right();
-    m_quad_.v[2].pos = l_border_list_.bottom_right();
-    m_quad_.v[3].pos = l_border_list_.bottom_left();
+    m_quad_.v[0].pos = border_list_.top_left();
+    m_quad_.v[1].pos = border_list_.top_right();
+    m_quad_.v[2].pos = border_list_.bottom_right();
+    m_quad_.v[3].pos = border_list_.bottom_left();
 }
 
 } // namespace lxgui::gui

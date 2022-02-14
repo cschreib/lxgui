@@ -129,7 +129,7 @@ protected:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) override;
 
     /// Begins rendering on a particular render target.
@@ -158,16 +158,16 @@ protected:
     void set_view_(const matrix4f& m_view_matrix) override;
 
     /// Renders a quad from a material and array of vertices.
-    /** \param pMat        The material to use to to render the quad, or null if none
-     *   \param lVertexList The lsit of 4 vertices making up the quad
+    /** \param pMat         The material to use to to render the quad, or null if none
+     *   \param vertex_list The list of 4 vertices making up the quad
      *   \note This function is meant to be called between begin() and
      *         end() only.
      */
-    void render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& l_vertex_list);
+    void render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& vertex_list);
 
     /// Renders a set of quads.
     /** \param pMaterial The material to use for rendering, or null if none
-     *   \param lQuadList The list of the quads you want to render
+     *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -182,7 +182,7 @@ protected:
      */
     void render_quads_(
         const gui::material*                      p_material,
-        const std::vector<std::array<vertex, 4>>& l_quad_list) override;
+        const std::vector<std::array<vertex, 4>>& quad_list) override;
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
@@ -206,9 +206,9 @@ protected:
         const matrix4f&          m_model_transform) override;
 
 private:
-    SDL_Renderer* p_renderer_                    = nullptr;
+    SDL_Renderer* p_renderer_                       = nullptr;
     bool          b_pre_multiplied_alpha_supported_ = false;
-    std::size_t   ui_texture_max_size_             = 0u;
+    std::size_t   ui_texture_max_size_              = 0u;
 
     vector2ui m_window_dimensions_;
     matrix4f  m_view_matrix_;

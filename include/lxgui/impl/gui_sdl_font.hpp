@@ -22,7 +22,7 @@ public:
      *   \param sFontFile   The name of the font file to read
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled
      * alpha
@@ -32,7 +32,7 @@ public:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point,
         bool                                 b_pre_multiplied_alpha_supported);
 
@@ -98,16 +98,16 @@ private:
 
     struct range_info {
         code_point_range            m_range;
-        std::vector<character_info> l_data;
+        std::vector<character_info> data;
     };
 
     const character_info* get_character_(char32_t ui_char) const;
 
-    std::size_t ui_size_             = 0u;
+    std::size_t ui_size_               = 0u;
     char32_t    ui_default_code_point_ = 0u;
 
     std::shared_ptr<sdl::material> p_texture_;
-    std::vector<range_info>        l_range_list_;
+    std::vector<range_info>        range_list_;
 };
 
 } // namespace lxgui::gui::sdl

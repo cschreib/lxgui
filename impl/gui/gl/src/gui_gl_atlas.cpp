@@ -72,8 +72,8 @@ atlas_page::atlas_page(gui::renderer& m_renderer, material::filter m_filter) :
     glFramebufferTexture2D(
         GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ui_texture_handle_, 0);
 
-    float l_clear_color[4] = {0, 0, 0, 0};
-    glClearBufferfv(GL_COLOR, 0, l_clear_color);
+    float clear_color[4] = {0, 0, 0, 0};
+    glClearBufferfv(GL_COLOR, 0, clear_color);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDeleteFramebuffers(1, &ui_fbo);
@@ -96,9 +96,9 @@ atlas_page::add_material_(const gui::material& m_mat, const bounds2f& m_location
     glFramebufferTexture2D(
         GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_gl_mat.get_handle(), 0);
 
-    std::vector<ub32color> l_data(m_location.width() * m_location.height());
+    std::vector<ub32color> data(m_location.width() * m_location.height());
     glReadPixels(
-        0, 0, m_location.width(), m_location.height(), GL_RGBA, GL_UNSIGNED_BYTE, l_data.data());
+        0, 0, m_location.width(), m_location.height(), GL_RGBA, GL_UNSIGNED_BYTE, data.data());
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDeleteFramebuffers(1, &ui_fbo);
@@ -106,7 +106,7 @@ atlas_page::add_material_(const gui::material& m_mat, const bounds2f& m_location
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
     glTexSubImage2D(
         GL_TEXTURE_2D, 0, m_location.left, m_location.top, m_location.width(), m_location.height(),
-        GL_RGBA, GL_UNSIGNED_BYTE, l_data.data());
+        GL_RGBA, GL_UNSIGNED_BYTE, data.data());
 
     glBindTexture(GL_TEXTURE_2D, previous_id);
 

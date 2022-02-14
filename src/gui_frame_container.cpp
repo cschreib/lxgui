@@ -24,7 +24,7 @@ frame_container::create_root_frame_(const region_core_attributes& m_attr) {
 
 utils::observer_ptr<frame> frame_container::add_root_frame(utils::owner_ptr<frame> p_frame) {
     utils::observer_ptr<frame> p_added_frame = p_frame;
-    l_root_frame_list_.push_back(std::move(p_frame));
+    root_frame_list_.push_back(std::move(p_frame));
     return p_added_frame;
 }
 
@@ -35,9 +35,9 @@ frame_container::remove_root_frame(const utils::observer_ptr<frame>& p_frame) {
         return nullptr;
 
     auto m_iter = utils::find_if(
-        l_root_frame_list_, [&](const auto& p_obj) { return p_obj.get() == p_frame_raw; });
+        root_frame_list_, [&](const auto& p_obj) { return p_obj.get() == p_frame_raw; });
 
-    if (m_iter == l_root_frame_list_.end())
+    if (m_iter == root_frame_list_.end())
         return nullptr;
 
     // NB: the iterator is not removed yet; it will be removed later in garbage_collect().
@@ -45,24 +45,24 @@ frame_container::remove_root_frame(const utils::observer_ptr<frame>& p_frame) {
 }
 
 frame_container::root_frame_list_view frame_container::get_root_frames() {
-    return root_frame_list_view(l_root_frame_list_);
+    return root_frame_list_view(root_frame_list_);
 }
 
 frame_container::const_root_frame_list_view frame_container::get_root_frames() const {
-    return const_root_frame_list_view(l_root_frame_list_);
+    return const_root_frame_list_view(root_frame_list_);
 }
 
 void frame_container::garbage_collect() {
     auto m_iter_remove =
-        std::remove_if(l_root_frame_list_.begin(), l_root_frame_list_.end(), [](auto& p_obj) {
+        std::remove_if(root_frame_list_.begin(), root_frame_list_.end(), [](auto& p_obj) {
             return p_obj == nullptr;
         });
 
-    l_root_frame_list_.erase(m_iter_remove, l_root_frame_list_.end());
+    root_frame_list_.erase(m_iter_remove, root_frame_list_.end());
 }
 
 void frame_container::clear_frames_() {
-    l_root_frame_list_.clear();
+    root_frame_list_.clear();
 }
 
 } // namespace lxgui::gui

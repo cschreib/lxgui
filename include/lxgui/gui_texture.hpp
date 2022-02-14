@@ -145,7 +145,7 @@ public:
     void set_gradient(const gradient& m_gradient);
 
     /// Sets this texture's texture coordinates.
-    /** \param lTextureRect This texture's texture coordinates
+    /** \param texture_rect This texture's texture coordinates
      *   \note The texture coordinates are arranged as a rectangle, which is made
      *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
      *         4 (bottom left).<br>
@@ -153,10 +153,10 @@ public:
      *         top, right, bottom). Other corners are calculated using these coordinates.
      *   \note This function only allows horizontal/rectangle texture coordinates.
      */
-    void set_tex_rect(const std::array<float, 4>& l_texture_rect);
+    void set_tex_rect(const std::array<float, 4>& texture_rect);
 
     /// Sets this texture's texture coordinates.
-    /** \param lTextureCoords This texture's texture coordinates
+    /** \param texture_coords This texture's texture coordinates
      *   \note The texture coordinates are arranged as a rectangle, which is made
      *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
      *         4 (bottom left).<br>
@@ -164,7 +164,7 @@ public:
      *         (x1, y1, x2, y2, x3, y3, x4, y4).
      *   \note This function allows rotated/deformed texture coordinates.
      */
-    void set_tex_coord(const std::array<float, 8>& l_texture_coords);
+    void set_tex_coord(const std::array<float, 8>& texture_coords);
 
     /// Sets whether this texture's dimensions are affected by texture coordinates.
     /** \param bTexCoordModifiesRect 'true' to make dimensions change with tex coords
@@ -233,12 +233,12 @@ private:
     void update_dimensions_from_tex_coord_();
     void update_borders_() override;
 
-    using content     = std::variant<color, std::string, gradient>;
+    using content      = std::variant<color, std::string, gradient>;
     content m_content_ = color::white;
 
-    blend_mode       m_blend_mode_            = blend_mode::blend;
-    material::filter m_filter_               = material::filter::none;
-    bool             b_is_desaturated_        = false;
+    blend_mode       m_blend_mode_              = blend_mode::blend;
+    material::filter m_filter_                  = material::filter::none;
+    bool             b_is_desaturated_          = false;
     bool             b_tex_coord_modifies_rect_ = false;
 
     renderer& m_renderer_;

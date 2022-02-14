@@ -59,7 +59,7 @@ std::size_t count_occurrences(string_view s, string_view s_pattern) {
 template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
-    std::vector<std::basic_string_view<T>> l_pieces;
+    std::vector<std::basic_string_view<T>> pieces;
     std::size_t                            ui_pos      = s.find(s_delim);
     std::size_t                            ui_last_pos = 0u;
     std::size_t                            ui_cur_size = 0u;
@@ -67,14 +67,14 @@ cut_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
     while (ui_pos != std::basic_string_view<T>::npos) {
         ui_cur_size = ui_pos - ui_last_pos;
         if (ui_cur_size != 0)
-            l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
+            pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
         ui_last_pos = ui_pos + s_delim.size();
         ui_pos      = s.find(s_delim, ui_last_pos);
     }
 
-    l_pieces.push_back(s.substr(ui_last_pos));
+    pieces.push_back(s.substr(ui_last_pos));
 
-    return l_pieces;
+    return pieces;
 }
 
 std::vector<string_view> cut(string_view s, string_view s_delim) {
@@ -88,21 +88,21 @@ std::vector<ustring_view> cut(ustring_view s, ustring_view s_delim) {
 template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> s_delim) {
-    std::vector<std::basic_string_view<T>> l_pieces;
+    std::vector<std::basic_string_view<T>> pieces;
     std::size_t                            ui_pos      = s.find(s_delim);
     std::size_t                            ui_last_pos = 0u;
     std::size_t                            ui_cur_size = 0u;
 
     while (ui_pos != std::basic_string_view<T>::npos) {
         ui_cur_size = ui_pos - ui_last_pos;
-        l_pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
+        pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
         ui_last_pos = ui_pos + s_delim.size();
         ui_pos      = s.find(s_delim, ui_last_pos);
     }
 
-    l_pieces.push_back(s.substr(ui_last_pos));
+    pieces.push_back(s.substr(ui_last_pos));
 
-    return l_pieces;
+    return pieces;
 }
 
 std::vector<string_view> cut_each(string_view s, string_view s_delim) {

@@ -210,7 +210,7 @@ public:
      *         repeatedly, as it allows to reduce the number of draw calls.
      */
     void
-    render_quads(const material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list);
+    render_quads(const material* p_material, const std::vector<std::array<vertex, 4>>& quad_list);
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
@@ -318,7 +318,7 @@ public:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point);
 
     /// Creates a new font.
@@ -338,7 +338,7 @@ public:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point);
 
     /// Creates a new empty vertex cache.
@@ -387,7 +387,7 @@ protected:
      *         repeatedly, as it allows to reduce the number of draw calls.
      */
     virtual void render_quads_(
-        const material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list) = 0;
+        const material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) = 0;
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
@@ -406,7 +406,9 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     virtual void render_cache_(
-        const material* p_material, const vertex_cache& m_cache, const matrix4f& m_model_transform) = 0;
+        const material*     p_material,
+        const vertex_cache& m_cache,
+        const matrix4f&     m_model_transform) = 0;
 
     /// Creates a new material from a texture file.
     /** \param sFileName The name of the file
@@ -438,34 +440,34 @@ protected:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) = 0;
 
     atlas& get_atlas_(const std::string& s_atlas_category, material::filter m_filter);
 
-    std::unordered_map<std::string, std::weak_ptr<gui::material>> l_texture_list_;
-    std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  l_atlas_list_;
-    std::unordered_map<std::string, std::weak_ptr<gui::font>>     l_font_list_;
+    std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
+    std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  atlas_list_;
+    std::unordered_map<std::string, std::weak_ptr<gui::font>>     font_list_;
 
 private:
     bool uses_same_texture_(const material* p_mat1, const material* p_mat2) const;
 
-    bool        b_texture_atlas_enabled_   = true;
-    bool        b_vertex_cache_enabled_    = true;
-    bool        b_quad_batching_enabled_   = true;
+    bool        b_texture_atlas_enabled_    = true;
+    bool        b_vertex_cache_enabled_     = true;
+    bool        b_quad_batching_enabled_    = true;
     std::size_t ui_texture_atlas_page_size_ = 0u;
 
     struct quad_batcher {
-        std::vector<std::array<vertex, 4>> l_data;
+        std::vector<std::array<vertex, 4>> data;
         std::shared_ptr<vertex_cache>      p_cache;
     };
 
     static constexpr std::size_t                        batching_cache_cycle_size = 16u;
-    std::array<quad_batcher, batching_cache_cycle_size> l_quad_cache_;
+    std::array<quad_batcher, batching_cache_cycle_size> quad_cache_;
 
-    const gui::material* p_current_material_      = nullptr;
-    std::size_t          ui_current_quad_cache_    = 0u;
-    std::size_t          ui_batch_count_          = 0u;
+    const gui::material* p_current_material_        = nullptr;
+    std::size_t          ui_current_quad_cache_     = 0u;
+    std::size_t          ui_batch_count_            = 0u;
     std::size_t          ui_last_frame_batch_count_ = 0u;
 };
 

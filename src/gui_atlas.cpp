@@ -12,8 +12,8 @@ namespace lxgui::gui {
 atlas_page::atlas_page(material::filter m_filter) : m_filter_(m_filter) {}
 
 std::shared_ptr<material> atlas_page::fetch_material(const std::string& s_file_name) const {
-    auto m_iter = l_texture_list_.find(s_file_name);
-    if (m_iter != l_texture_list_.end()) {
+    auto m_iter = texture_list_.find(s_file_name);
+    if (m_iter != texture_list_.end()) {
         if (std::shared_ptr<gui::material> p_lock = m_iter->second.lock())
             return p_lock;
     }
@@ -30,7 +30,7 @@ atlas_page::add_material(const std::string& s_file_name, const material& m_mat) 
             return nullptr;
 
         std::shared_ptr<gui::material> p_tex = add_material_(m_mat, m_location.value());
-        l_texture_list_[s_file_name]         = p_tex;
+        texture_list_[s_file_name]           = p_tex;
         return p_tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
@@ -39,8 +39,8 @@ atlas_page::add_material(const std::string& s_file_name, const material& m_mat) 
 }
 
 std::shared_ptr<font> atlas_page::fetch_font(const std::string& s_font_name) const {
-    auto m_iter = l_font_list_.find(s_font_name);
-    if (m_iter != l_font_list_.end()) {
+    auto m_iter = font_list_.find(s_font_name);
+    if (m_iter != font_list_.end()) {
         if (std::shared_ptr<gui::font> p_lock = m_iter->second.lock())
             return p_lock;
     }
@@ -59,7 +59,7 @@ bool atlas_page::add_font(const std::string& s_font_name, std::shared_ptr<gui::f
             std::shared_ptr<gui::material> p_tex = add_material_(*p_mat, m_location.value());
             p_font->update_texture(p_tex);
 
-            l_font_list_[s_font_name] = std::move(p_font);
+            font_list_[s_font_name] = std::move(p_font);
             return true;
         } else
             return false;
@@ -70,12 +70,12 @@ bool atlas_page::add_font(const std::string& s_font_name, std::shared_ptr<gui::f
 }
 
 bool atlas_page::empty() const {
-    for (const auto& p_mat : l_texture_list_) {
+    for (const auto& p_mat : texture_list_) {
         if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock())
             return false;
     }
 
-    for (const auto& p_font : l_font_list_) {
+    for (const auto& p_font : font_list_) {
         if (std::shared_ptr<gui::font> p_lock = p_font.second.lock())
             return false;
     }
@@ -93,8 +93,8 @@ std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height
     const float fAtlasWidth  = get_width_();
     const float fAtlasHeight = get_height_();
 
-    std::vector<bounds2f> l_occupied_space;
-    l_occupied_space.reserve(l_texture_list_.size());
+    std::vector<bounds2f> occupied_space;
+    occupied_space.reserve(texture_list_.size());
 
     float fMaxWidth  = 0.0f;
     float fMaxHeight = 0.0f;
@@ -105,26 +105,26 @@ std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height
         return m_rect;
     };
 
-    for (const auto& p_mat : l_texture_list_) {
+    for (const auto& p_mat : texture_list_) {
         if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock()) {
-            l_occupied_space.push_back(apply_padding(p_lock->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, l_occupied_space.back().right);
-            fMaxHeight = std::max(fMaxHeight, l_occupied_space.back().bottom);
+            occupied_space.push_back(apply_padding(p_lock->get_rect()));
+            fMaxWidth  = std::max(fMaxWidth, occupied_space.back().right);
+            fMaxHeight = std::max(fMaxHeight, occupied_space.back().bottom);
         }
     }
 
-    for (const auto& p_font : l_font_list_) {
+    for (const auto& p_font : font_list_) {
         if (std::shared_ptr<gui::font> p_lock = p_font.second.lock()) {
-            l_occupied_space.push_back(apply_padding(p_lock->get_texture().lock()->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, l_occupied_space.back().right);
-            fMaxHeight = std::max(fMaxHeight, l_occupied_space.back().bottom);
+            occupied_space.push_back(apply_padding(p_lock->get_texture().lock()->get_rect()));
+            fMaxWidth  = std::max(fMaxWidth, occupied_space.back().right);
+            fMaxHeight = std::max(fMaxHeight, occupied_space.back().bottom);
         }
     }
 
     float    fBestArea = std::numeric_limits<float>::infinity();
     bounds2f mBestQuad;
 
-    for (const auto& m_rect_source : l_occupied_space) {
+    for (const auto& m_rect_source : occupied_space) {
         auto m_test_position = [&](const vector2f& m_pos) {
             const bounds2f m_test_quad = mStartQuad + m_pos;
             if (m_test_quad.right > fAtlasWidth || m_test_quad.bottom > fAtlasHeight)
@@ -137,7 +137,7 @@ std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height
             if (f_new_area >= fBestArea)
                 return;
 
-            for (const auto& m_rect_other : l_occupied_space) {
+            for (const auto& m_rect_other : occupied_space) {
                 if (m_test_quad.overlaps(m_rect_other))
                     return;
             }
@@ -160,7 +160,7 @@ atlas::atlas(renderer& m_renderer, material::filter m_filter) :
     m_renderer_(m_renderer), m_filter_(m_filter) {}
 
 std::shared_ptr<gui::material> atlas::fetch_material(const std::string& s_file_name) const {
-    for (const auto& m_page_item : l_page_list_) {
+    for (const auto& m_page_item : page_list_) {
         auto p_tex = m_page_item.p_page->fetch_material(s_file_name);
         if (p_tex)
             return p_tex;
@@ -172,7 +172,7 @@ std::shared_ptr<gui::material> atlas::fetch_material(const std::string& s_file_n
 std::shared_ptr<gui::material>
 atlas::add_material(const std::string& s_file_name, const material& m_mat) {
     try {
-        for (const auto& m_page_item : l_page_list_) {
+        for (const auto& m_page_item : page_list_) {
             auto p_tex = m_page_item.p_page->add_material(s_file_name, m_mat);
             if (p_tex)
                 return p_tex;
@@ -185,7 +185,7 @@ atlas::add_material(const std::string& s_file_name, const material& m_mat) {
         }
 
         add_page_();
-        auto p_tex = l_page_list_.back().p_page->add_material(s_file_name, m_mat);
+        auto p_tex = page_list_.back().p_page->add_material(s_file_name, m_mat);
         if (p_tex)
             return p_tex;
 
@@ -197,7 +197,7 @@ atlas::add_material(const std::string& s_file_name, const material& m_mat) {
 }
 
 std::shared_ptr<gui::font> atlas::fetch_font(const std::string& s_font_name) const {
-    for (const auto& m_page_item : l_page_list_) {
+    for (const auto& m_page_item : page_list_) {
         auto p_font = m_page_item.p_page->fetch_font(s_font_name);
         if (p_font)
             return p_font;
@@ -208,7 +208,7 @@ std::shared_ptr<gui::font> atlas::fetch_font(const std::string& s_font_name) con
 
 bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> p_font) {
     try {
-        for (const auto& m_page_item : l_page_list_) {
+        for (const auto& m_page_item : page_list_) {
             if (m_page_item.p_page->add_font(s_font_name, p_font))
                 return true;
 
@@ -221,7 +221,7 @@ bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> 
 
         add_page_();
 
-        return l_page_list_.back().p_page->add_font(s_font_name, std::move(p_font));
+        return page_list_.back().p_page->add_font(s_font_name, std::move(p_font));
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return false;
@@ -229,7 +229,7 @@ bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> 
 }
 
 std::size_t atlas::get_num_pages() const {
-    return l_page_list_.size();
+    return page_list_.size();
 }
 
 void atlas::add_page_() {
@@ -243,7 +243,7 @@ void atlas::add_page_() {
     auto      p_tex         = m_renderer_.create_material(vector2ui(1u, 1u), &m_pixel);
     m_page.p_no_texture_mat = m_page.p_page->add_material("", *p_tex);
 
-    l_page_list_.push_back(std::move(m_page));
+    page_list_.push_back(std::move(m_page));
 }
 
 } // namespace lxgui::gui

@@ -28,7 +28,7 @@ class frame;
 /// Contains gui::layered_region
 struct layer_container {
     bool                                             b_disabled = false;
-    std::vector<utils::observer_ptr<layered_region>> l_region_list;
+    std::vector<utils::observer_ptr<layered_region>> region_list;
 };
 
 /// Holds file/line information for a script.
@@ -975,9 +975,9 @@ public:
     void unregister_event(const std::string& s_event_name);
 
     /// Tells this frame to react to mouse drag.
-    /** \param lButtonList The list of mouse button allowed
+    /** \param button_list The list of mouse button allowed
      */
-    void register_for_drag(const std::vector<std::string>& l_button_list);
+    void register_for_drag(const std::vector<std::string>& button_list);
 
     /// Sets if this frame is clamped to screen.
     /** \param bIsClampedToScreen 'true' if this frame is clamped to screen
@@ -1001,16 +1001,16 @@ public:
     void set_backdrop(std::unique_ptr<backdrop> p_backdrop);
 
     /// Sets this frame's absolute hit rect insets.
-    /** \param lInsets Offsets
+    /** \param insets Offsets
      *   \note This is the zone on which you can click.
      */
-    void set_abs_hit_rect_insets(const bounds2f& l_insets);
+    void set_abs_hit_rect_insets(const bounds2f& insets);
 
     /// Sets this frame's relative hit rect insets.
-    /** \param lInsets Offsets
+    /** \param insets Offsets
      *   \note This is the zone on which you can click.
      */
-    void set_rel_hit_rect_insets(const bounds2f& l_insets);
+    void set_rel_hit_rect_insets(const bounds2f& insets);
 
     /// Sets this frame's level.
     /** \param level_id The new level
@@ -1295,18 +1295,18 @@ protected:
 
     void on_event_(std::string_view s_event_name, const event_data& m_event);
 
-    child_list  l_child_list_;
-    region_list l_region_list_;
+    child_list  child_list_;
+    region_list region_list_;
 
     static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::enum_size);
 
-    std::array<layer_container, num_layers> l_layer_list_;
+    std::array<layer_container, num_layers> layer_list_;
 
-    std::unordered_map<std::string, script_signal> l_signal_list_;
+    std::unordered_map<std::string, script_signal> signal_list_;
     event_receiver                                 m_event_receiver_;
 
-    std::set<std::string> l_reg_drag_list_;
-    std::set<std::string> l_reg_key_list_;
+    std::set<std::string> reg_drag_list_;
+    std::set<std::string> reg_key_list_;
 
     int          level_          = 0;
     frame_strata m_strata_       = frame_strata::medium;
@@ -1326,8 +1326,8 @@ protected:
 
     bool b_build_layer_list_ = false;
 
-    bounds2f l_abs_hit_rect_inset_list_ = bounds2f::zero;
-    bounds2f l_rel_hit_rect_inset_list_ = bounds2f::zero;
+    bounds2f abs_hit_rect_inset_list_ = bounds2f::zero;
+    bounds2f rel_hit_rect_inset_list_ = bounds2f::zero;
 
     float f_min_width_  = 0.0f;
     float f_max_width_  = std::numeric_limits<float>::infinity();

@@ -134,7 +134,7 @@ protected:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) override;
 
     /// Begins rendering on a particular render target.
@@ -172,7 +172,7 @@ protected:
      */
     void render_quads_(
         const gui::material*                      p_material,
-        const std::vector<std::array<vertex, 4>>& l_quad_list) override;
+        const std::vector<std::array<vertex, 4>>& quad_list) override;
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none

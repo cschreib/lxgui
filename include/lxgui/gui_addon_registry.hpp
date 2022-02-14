@@ -89,7 +89,7 @@ private:
     virtual_root&  m_virtual_root_;
 
     const addon*                  p_current_add_on_ = nullptr;
-    string_map<string_map<addon>> l_add_on_list_;
+    string_map<string_map<addon>> add_on_list_;
 };
 
 } // namespace lxgui::gui

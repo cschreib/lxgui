@@ -83,9 +83,9 @@ public:
     float get_tile_size() const;
 
     /// Sets insets for the background texture.
-    /** \param lInsets The insets array
+    /** \param insets The insets array
      */
-    void set_background_insets(const bounds2f& l_insets);
+    void set_background_insets(const bounds2f& insets);
 
     /// Returns this backdrop's background insets.
     /** \return This backdrop's background insets
@@ -93,9 +93,9 @@ public:
     const bounds2f& get_background_insets() const;
 
     /// Sets insets for the edge texture.
-    /** \param lInsets The insets array
+    /** \param insets The insets array
      */
-    void set_edge_insets(const bounds2f& l_insets);
+    void set_edge_insets(const bounds2f& insets);
 
     /// Returns this backdrop's edge insets.
     /** \return This backdrop's edge insets
@@ -169,23 +169,23 @@ private:
     std::shared_ptr<material> p_background_texture_;
     bool                      b_background_tilling_ = false;
     float                     f_tile_size_          = 0.0f;
-    float                     f_original_tile_size_  = 0.0f;
-    bounds2f                  l_background_insets_;
+    float                     f_original_tile_size_ = 0.0f;
+    bounds2f                  background_insets_;
 
     std::string               s_edge_file_;
     color                     m_edge_color_ = color::empty;
     std::shared_ptr<material> p_edge_texture_;
-    bounds2f                  l_edge_insets_;
-    float                     f_edge_size_         = 0.0f;
+    bounds2f                  edge_insets_;
+    float                     f_edge_size_          = 0.0f;
     float                     f_original_edge_size_ = 0.0f;
 
     color m_vertex_color_ = color::white;
 
     mutable bool  b_cache_dirty_ = true;
     mutable float f_cache_alpha_ = std::numeric_limits<float>::quiet_NaN();
-    mutable std::vector<std::array<vertex, 4>> l_background_quads_;
+    mutable std::vector<std::array<vertex, 4>> background_quads_;
     mutable std::shared_ptr<vertex_cache>      p_background_cache_;
-    mutable std::vector<std::array<vertex, 4>> l_edge_quads_;
+    mutable std::vector<std::array<vertex, 4>> edge_quads_;
     mutable std::shared_ptr<vertex_cache>      p_edge_cache_;
 };
 

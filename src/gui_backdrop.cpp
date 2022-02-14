@@ -109,28 +109,28 @@ float backdrop::get_tile_size() const {
     return f_tile_size_;
 }
 
-void backdrop::set_background_insets(const bounds2f& l_insets) {
-    if (l_background_insets_ == l_insets)
+void backdrop::set_background_insets(const bounds2f& insets) {
+    if (background_insets_ == insets)
         return;
 
-    l_background_insets_ = l_insets;
-    b_cache_dirty_       = true;
+    background_insets_ = insets;
+    b_cache_dirty_     = true;
 }
 
 const bounds2f& backdrop::get_background_insets() const {
-    return l_background_insets_;
+    return background_insets_;
 }
 
-void backdrop::set_edge_insets(const bounds2f& l_insets) {
-    if (l_edge_insets_ == l_insets)
+void backdrop::set_edge_insets(const bounds2f& insets) {
+    if (edge_insets_ == insets)
         return;
 
-    l_edge_insets_ = l_insets;
+    edge_insets_   = insets;
     b_cache_dirty_ = true;
 }
 
 const bounds2f& backdrop::get_edge_insets() const {
-    return l_edge_insets_;
+    return edge_insets_;
 }
 
 void backdrop::set_edge(const std::string& s_edge_file) {
@@ -233,13 +233,12 @@ void backdrop::render() const {
 
     if (b_has_background) {
         if ((b_use_vertex_cache && !p_background_cache_) ||
-            (!b_use_vertex_cache && l_background_quads_.empty()))
+            (!b_use_vertex_cache && background_quads_.empty()))
             b_cache_dirty_ = true;
     }
 
     if (b_has_edge) {
-        if ((b_use_vertex_cache && !p_edge_cache_) ||
-            (!b_use_vertex_cache && l_edge_quads_.empty()))
+        if ((b_use_vertex_cache && !p_edge_cache_) || (!b_use_vertex_cache && edge_quads_.empty()))
             b_cache_dirty_ = true;
     }
 
@@ -249,14 +248,14 @@ void backdrop::render() const {
         if (b_use_vertex_cache && p_background_cache_)
             m_renderer.render_cache(p_background_texture_.get(), *p_background_cache_);
         else
-            m_renderer.render_quads(p_background_texture_.get(), l_background_quads_);
+            m_renderer.render_quads(p_background_texture_.get(), background_quads_);
     }
 
     if (b_has_edge) {
         if (b_use_vertex_cache && p_edge_cache_)
             m_renderer.render_cache(p_edge_texture_.get(), *p_edge_cache_);
         else
-            m_renderer.render_quads(p_edge_texture_.get(), l_edge_quads_);
+            m_renderer.render_quads(p_edge_texture_.get(), edge_quads_);
     }
 }
 
@@ -268,8 +267,8 @@ void backdrop::update_cache_() const {
     if (!b_cache_dirty_)
         return;
 
-    l_background_quads_.clear();
-    l_edge_quads_.clear();
+    background_quads_.clear();
+    edge_quads_.clear();
 
     color m_color = m_vertex_color_;
 
@@ -285,7 +284,7 @@ void backdrop::update_cache_() const {
 
 void repeat_wrap(
     const frame&                        m_parent,
-    std::vector<std::array<vertex, 4>>& l_output,
+    std::vector<std::array<vertex, 4>>& output,
     const bounds2f&                     m_source_u_vs,
     float                               f_tile_size,
     bool                                b_rotated,
@@ -310,8 +309,8 @@ void repeat_wrap(
             if (f_sx + f_tile_size > f_dest_width)
                 f_d_width = f_dest_width - f_sx;
 
-            l_output.emplace_back();
-            auto& m_quad = l_output.back();
+            output.emplace_back();
+            auto& m_quad = output.back();
 
             m_quad[0].pos = m_parent.round_to_pixel(m_d_top_left + vector2f(f_sx, f_sy));
             m_quad[1].pos =
@@ -354,10 +353,10 @@ void backdrop::update_background_(color m_color) const {
         m_color *= m_background_color_;
 
     auto m_borders = m_parent_.get_borders();
-    m_borders.left += l_background_insets_.left;
-    m_borders.right -= l_background_insets_.right;
-    m_borders.top += l_background_insets_.top;
-    m_borders.bottom -= l_background_insets_.bottom;
+    m_borders.left += background_insets_.left;
+    m_borders.right -= background_insets_.right;
+    m_borders.top += background_insets_.top;
+    m_borders.bottom -= background_insets_.bottom;
 
     auto& m_renderer = m_parent_.get_manager().get_renderer();
 
@@ -375,11 +374,11 @@ void backdrop::update_background_(color m_color) const {
         if (p_background_texture_->is_in_atlas() && b_background_tilling_ &&
             f_rounded_tile_size > 1.0f) {
             repeat_wrap(
-                m_parent_, l_background_quads_, m_canvas_u_vs, f_rounded_tile_size, false, m_color,
+                m_parent_, background_quads_, m_canvas_u_vs, f_rounded_tile_size, false, m_color,
                 m_borders);
         } else {
-            l_background_quads_.emplace_back();
-            auto& m_quad = l_background_quads_.back();
+            background_quads_.emplace_back();
+            auto& m_quad = background_quads_.back();
 
             m_quad[0].pos = m_parent_.round_to_pixel(m_borders.top_left());
             m_quad[1].pos = m_parent_.round_to_pixel(m_borders.top_right());
@@ -392,8 +391,8 @@ void backdrop::update_background_(color m_color) const {
             m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = m_color;
         }
     } else {
-        l_background_quads_.emplace_back();
-        auto& m_quad = l_background_quads_.back();
+        background_quads_.emplace_back();
+        auto& m_quad = background_quads_.back();
 
         m_quad[0].pos = m_parent_.round_to_pixel(m_borders.top_left());
         m_quad[1].pos = m_parent_.round_to_pixel(m_borders.top_right());
@@ -411,8 +410,8 @@ void backdrop::update_background_(color m_color) const {
         if (!p_background_cache_)
             p_background_cache_ = m_renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        p_background_cache_->update(l_background_quads_[0].data(), l_background_quads_.size() * 4);
-        l_background_quads_.clear();
+        p_background_cache_->update(background_quads_[0].data(), background_quads_.size() * 4);
+        background_quads_.clear();
     }
 }
 
@@ -425,10 +424,10 @@ void backdrop::update_edge_(color mColor) const {
 
     constexpr float f_uv_step = 1.0f / 8.0f;
     auto            m_borders = m_parent_.get_borders();
-    m_borders.left += l_edge_insets_.left;
-    m_borders.right -= l_edge_insets_.right;
-    m_borders.top += l_edge_insets_.top;
-    m_borders.bottom -= l_edge_insets_.bottom;
+    m_borders.left += edge_insets_.left;
+    m_borders.right -= edge_insets_.right;
+    m_borders.top += edge_insets_.top;
+    m_borders.bottom -= edge_insets_.bottom;
 
     auto&       m_renderer = m_parent_.get_manager().get_renderer();
     const float f_rounded_edge_size =
@@ -446,11 +445,11 @@ void backdrop::update_edge_(color mColor) const {
 
             if (p_edge_texture_->is_in_atlas() && f_rounded_edge_size > 1.0f) {
                 repeat_wrap(
-                    m_parent_, l_edge_quads_, m_canvas_u_vs, f_rounded_edge_size, b_rotated, mColor,
+                    m_parent_, edge_quads_, m_canvas_u_vs, f_rounded_edge_size, b_rotated, mColor,
                     m_destination);
             } else {
-                l_edge_quads_.emplace_back();
-                auto& m_quad = l_edge_quads_.back();
+                edge_quads_.emplace_back();
+                auto& m_quad = edge_quads_.back();
 
                 m_quad[0].pos = m_parent_.round_to_pixel(m_destination.top_left());
                 m_quad[1].pos = m_parent_.round_to_pixel(m_destination.top_right());
@@ -485,8 +484,8 @@ void backdrop::update_edge_(color mColor) const {
                 m_quad[0].col = m_quad[1].col = m_quad[2].col = m_quad[3].col = mColor;
             }
         } else {
-            l_edge_quads_.emplace_back();
-            auto& m_quad = l_edge_quads_.back();
+            edge_quads_.emplace_back();
+            auto& m_quad = edge_quads_.back();
 
             m_quad[0].pos = m_parent_.round_to_pixel(m_destination.top_left());
             m_quad[1].pos = m_parent_.round_to_pixel(m_destination.top_right());
@@ -560,8 +559,8 @@ void backdrop::update_edge_(color mColor) const {
         if (!p_edge_cache_)
             p_edge_cache_ = m_renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        p_edge_cache_->update(l_edge_quads_[0].data(), l_edge_quads_.size() * 4);
-        l_edge_quads_.clear();
+        p_edge_cache_->update(edge_quads_[0].data(), edge_quads_.size() * 4);
+        edge_quads_.clear();
     }
 }
 

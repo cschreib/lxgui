@@ -20,7 +20,7 @@ struct region_core_attributes {
 
     utils::observer_ptr<frame> p_parent = nullptr;
 
-    std::vector<utils::observer_ptr<const region>> l_inheritance;
+    std::vector<utils::observer_ptr<const region>> inheritance;
 };
 
 } // namespace lxgui::gui

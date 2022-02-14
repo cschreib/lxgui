@@ -123,64 +123,64 @@ struct sdl_render_data {
 };
 
 sdl_render_data
-make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float f_tex_height) {
+make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_tex_height) {
     sdl_render_data m_data;
 
     // First, re-order vertices as top-left, top-right, bottom-right, bottom-left
-    std::array<std::size_t, 4> l_i_ds = {0u, 1u, 2u, 3u};
-    if (l_vertex_list[0].pos.x < l_vertex_list[1].pos.x) {
-        if (l_vertex_list[1].pos.y < l_vertex_list[2].pos.y) {
+    std::array<std::size_t, 4> i_ds = {0u, 1u, 2u, 3u};
+    if (vertex_list[0].pos.x < vertex_list[1].pos.x) {
+        if (vertex_list[1].pos.y < vertex_list[2].pos.y) {
             // No rotation and no flip
         } else {
             // No rotation and flip Y
-            l_i_ds = {3u, 2u, 1u, 0u};
+            i_ds = {3u, 2u, 1u, 0u};
         }
-    } else if (l_vertex_list[0].pos.y < l_vertex_list[1].pos.y) {
-        if (l_vertex_list[1].pos.x > l_vertex_list[2].pos.x) {
+    } else if (vertex_list[0].pos.y < vertex_list[1].pos.y) {
+        if (vertex_list[1].pos.x > vertex_list[2].pos.x) {
             // Rotated 90 degrees clockwise
-            l_i_ds = {3u, 0u, 1u, 2u};
+            i_ds = {3u, 0u, 1u, 2u};
         } else {
             // Rotated 90 degrees clockwise and flip X
-            l_i_ds = {0u, 3u, 2u, 1u};
+            i_ds = {0u, 3u, 2u, 1u};
         }
-    } else if (l_vertex_list[0].pos.x > l_vertex_list[1].pos.x) {
-        if (l_vertex_list[1].pos.y > l_vertex_list[2].pos.y) {
+    } else if (vertex_list[0].pos.x > vertex_list[1].pos.x) {
+        if (vertex_list[1].pos.y > vertex_list[2].pos.y) {
             // Rotated 180 degrees
-            l_i_ds = {2u, 3u, 0u, 1u};
+            i_ds = {2u, 3u, 0u, 1u};
         } else {
             // No rotation and flip X
-            l_i_ds = {1u, 0u, 3u, 2u};
+            i_ds = {1u, 0u, 3u, 2u};
         }
-    } else if (l_vertex_list[0].pos.y > l_vertex_list[1].pos.y) {
-        if (l_vertex_list[1].pos.x < l_vertex_list[2].pos.x) {
+    } else if (vertex_list[0].pos.y > vertex_list[1].pos.y) {
+        if (vertex_list[1].pos.x < vertex_list[2].pos.x) {
             // Rotated 90 degrees counter-clockwise
-            l_i_ds = {1u, 2u, 3u, 0u};
+            i_ds = {1u, 2u, 3u, 0u};
         } else {
             // Rotated 90 degrees counter-clockwise and flip X
-            l_i_ds = {2u, 1u, 0u, 3u};
+            i_ds = {2u, 1u, 0u, 3u};
         }
     }
 
     // Now, re-order UV coordinates as top-left, top-right, bottom-right, bottom-left
     // and figure out the required rotation and flipping to render as requested.
-    int width = static_cast<int>(
-        std::round(l_vertex_list[l_i_ds[2]].pos.x - l_vertex_list[l_i_ds[0]].pos.x));
-    int height = static_cast<int>(
-        std::round(l_vertex_list[l_i_ds[2]].pos.y - l_vertex_list[l_i_ds[0]].pos.y));
+    int width =
+        static_cast<int>(std::round(vertex_list[i_ds[2]].pos.x - vertex_list[i_ds[0]].pos.x));
+    int height =
+        static_cast<int>(std::round(vertex_list[i_ds[2]].pos.y - vertex_list[i_ds[0]].pos.y));
     int uv_index1 = 0;
     int uv_index2 = 2;
 
-    m_data.m_dest_display_quad.x = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.x));
-    m_data.m_dest_display_quad.y = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.y));
+    m_data.m_dest_display_quad.x = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.x));
+    m_data.m_dest_display_quad.y = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.y));
     m_data.m_dest_display_quad.w = width;
     m_data.m_dest_display_quad.h = height;
 
-    m_data.m_dest_quad.x = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.x));
-    m_data.m_dest_quad.y = static_cast<int>(std::round(l_vertex_list[l_i_ds[0]].pos.y));
+    m_data.m_dest_quad.x = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.x));
+    m_data.m_dest_quad.y = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.y));
 
     bool b_axis_swapped = false;
-    if (l_vertex_list[l_i_ds[0]].uvs.x < l_vertex_list[l_i_ds[1]].uvs.x) {
-        if (l_vertex_list[l_i_ds[1]].uvs.y < l_vertex_list[l_i_ds[2]].uvs.y) {
+    if (vertex_list[i_ds[0]].uvs.x < vertex_list[i_ds[1]].uvs.x) {
+        if (vertex_list[i_ds[1]].uvs.y < vertex_list[i_ds[2]].uvs.y) {
             // No rotation and no flip
         } else {
             // No rotation and flip Y
@@ -188,10 +188,10 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
             uv_index1     = 3;
             uv_index2     = 1;
         }
-    } else if (l_vertex_list[l_i_ds[0]].uvs.y < l_vertex_list[l_i_ds[1]].uvs.y) {
+    } else if (vertex_list[i_ds[0]].uvs.y < vertex_list[i_ds[1]].uvs.y) {
         b_axis_swapped = true;
 
-        if (l_vertex_list[l_i_ds[1]].uvs.x > l_vertex_list[l_i_ds[2]].uvs.x) {
+        if (vertex_list[i_ds[1]].uvs.x > vertex_list[i_ds[2]].uvs.x) {
             // Rotated 90 degrees clockwise
             m_data.angle = -90;
             uv_index1    = 3;
@@ -205,8 +205,8 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
             uv_index2     = 2;
             m_data.m_dest_quad.y += height;
         }
-    } else if (l_vertex_list[l_i_ds[0]].uvs.x > l_vertex_list[l_i_ds[1]].uvs.x) {
-        if (l_vertex_list[l_i_ds[1]].uvs.y > l_vertex_list[l_i_ds[2]].uvs.y) {
+    } else if (vertex_list[i_ds[0]].uvs.x > vertex_list[i_ds[1]].uvs.x) {
+        if (vertex_list[i_ds[1]].uvs.y > vertex_list[i_ds[2]].uvs.y) {
             // Rotated 180 degrees
             m_data.angle = 180;
             uv_index1    = 2;
@@ -219,10 +219,10 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
             uv_index1     = 1;
             uv_index2     = 3;
         }
-    } else if (l_vertex_list[l_i_ds[0]].uvs.y > l_vertex_list[l_i_ds[1]].uvs.y) {
+    } else if (vertex_list[i_ds[0]].uvs.y > vertex_list[i_ds[1]].uvs.y) {
         b_axis_swapped = true;
 
-        if (l_vertex_list[l_i_ds[1]].uvs.x < l_vertex_list[l_i_ds[2]].uvs.x) {
+        if (vertex_list[i_ds[1]].uvs.x < vertex_list[i_ds[2]].uvs.x) {
             // Rotated 90 degrees counter-clockwise
             m_data.angle = 90;
             uv_index1    = 1;
@@ -242,13 +242,13 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
         std::swap(width, height);
 
     m_data.m_src_quad = SDL_Rect{
-        (int)std::round(l_vertex_list[l_i_ds[uv_index1]].uvs.x * f_tex_width),
-        (int)std::round(l_vertex_list[l_i_ds[uv_index1]].uvs.y * f_tex_height),
+        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.x * f_tex_width),
+        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.y * f_tex_height),
         (int)std::round(
-            (l_vertex_list[l_i_ds[uv_index2]].uvs.x - l_vertex_list[l_i_ds[uv_index1]].uvs.x) *
+            (vertex_list[i_ds[uv_index2]].uvs.x - vertex_list[i_ds[uv_index1]].uvs.x) *
             f_tex_width),
         (int)std::round(
-            (l_vertex_list[l_i_ds[uv_index2]].uvs.y - l_vertex_list[l_i_ds[uv_index1]].uvs.y) *
+            (vertex_list[i_ds[uv_index2]].uvs.y - vertex_list[i_ds[uv_index1]].uvs.y) *
             f_tex_height)};
 
     m_data.m_dest_quad.w = width;
@@ -259,10 +259,9 @@ make_rects(const std::array<vertex, 4>& l_vertex_list, float f_tex_width, float 
     return m_data;
 }
 
-void renderer::render_quad_(
-    const sdl::material* p_mat, const std::array<vertex, 4>& l_vertex_list) {
-    auto l_view_list = l_vertex_list;
-    for (auto& v : l_view_list) {
+void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& vertex_list) {
+    auto view_list = vertex_list;
+    for (auto& v : view_list) {
         v.pos = v.pos * m_view_matrix_;
     }
 
@@ -273,7 +272,7 @@ void renderer::render_quad_(
         const int       tex_height = static_cast<int>(m_tex_dims.y);
 
         // Build the source and destination rect, figuring out rotation and flipping
-        const sdl_render_data m_data = make_rects(l_view_list, tex_width, tex_height);
+        const sdl_render_data m_data = make_rects(view_list, tex_width, tex_height);
 
         if (m_data.m_dest_quad.w == 0 || m_data.m_dest_quad.h == 0)
             return;
@@ -290,9 +289,9 @@ void renderer::render_quad_(
             }
         }
 
-        if (l_view_list[0].col == l_view_list[1].col && l_view_list[0].col == l_view_list[2].col &&
-            l_view_list[0].col == l_view_list[3].col) {
-            const auto m_color = l_view_list[0].col;
+        if (view_list[0].col == view_list[1].col && view_list[0].col == view_list[2].col &&
+            view_list[0].col == view_list[3].col) {
+            const auto m_color = view_list[0].col;
 
             if (b_pre_multiplied_alpha_supported_) {
                 SDL_SetTextureColorMod(
@@ -392,17 +391,17 @@ void renderer::render_quad_(
     } else {
         // Note: SDL only supports axis-aligned rects for quad shapes
         const SDL_Rect m_dest_quad = {
-            static_cast<int>(l_view_list[0].pos.x), static_cast<int>(l_view_list[0].pos.y),
-            static_cast<int>(l_view_list[2].pos.x - l_view_list[0].pos.x),
-            static_cast<int>(l_view_list[2].pos.y - l_view_list[0].pos.y)};
+            static_cast<int>(view_list[0].pos.x), static_cast<int>(view_list[0].pos.y),
+            static_cast<int>(view_list[2].pos.x - view_list[0].pos.x),
+            static_cast<int>(view_list[2].pos.y - view_list[0].pos.y)};
 
         if (m_dest_quad.w == 0 || m_dest_quad.h == 0)
             return;
 
-        if (l_view_list[0].col == l_view_list[1].col && l_view_list[0].col == l_view_list[2].col &&
-            l_view_list[0].col == l_view_list[3].col) {
+        if (view_list[0].col == view_list[1].col && view_list[0].col == view_list[2].col &&
+            view_list[0].col == view_list[3].col) {
             // Same color for all vertices
-            const auto& m_color = l_view_list[0].col;
+            const auto& m_color = view_list[0].col;
             if (b_pre_multiplied_alpha_supported_) {
                 SDL_SetRenderDrawBlendMode(
                     p_renderer_, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
@@ -421,22 +420,22 @@ void renderer::render_quad_(
             // Different colors for each vertex; SDL does not support this natively.
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
-            const color l_color_quad[4] = {
-                premultiply_alpha(l_view_list[0].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(l_view_list[1].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(l_view_list[2].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(l_view_list[3].col, b_pre_multiplied_alpha_supported_)};
+            const color color_quad[4] = {
+                premultiply_alpha(view_list[0].col, b_pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[1].col, b_pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[2].col, b_pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[3].col, b_pre_multiplied_alpha_supported_)};
 
             sdl::material m_temp_mat(p_renderer_, vector2ui(m_dest_quad.w, m_dest_quad.h), false);
             ub32color*    p_pixel_data = m_temp_mat.lock_pointer();
             for (int y = 0; y < m_dest_quad.h; ++y)
                 for (int x = 0; x < m_dest_quad.w; ++x) {
-                    const color l_col_y1 = interpolate_color(
-                        l_color_quad[0], l_color_quad[3], y / float(m_dest_quad.h - 1));
-                    const color l_col_y2 = interpolate_color(
-                        l_color_quad[1], l_color_quad[2], y / float(m_dest_quad.h - 1));
+                    const color col_y1 = interpolate_color(
+                        color_quad[0], color_quad[3], y / float(m_dest_quad.h - 1));
+                    const color col_y2 = interpolate_color(
+                        color_quad[1], color_quad[2], y / float(m_dest_quad.h - 1));
                     p_pixel_data[y * m_dest_quad.w + x] = to_ub32color(
-                        interpolate_color(l_col_y1, l_col_y2, x / float(m_dest_quad.w - 1)));
+                        interpolate_color(col_y1, col_y2, x / float(m_dest_quad.w - 1)));
                 }
             m_temp_mat.unlock_pointer();
 
@@ -448,11 +447,11 @@ void renderer::render_quad_(
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list) {
+    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
     const sdl::material* p_mat = static_cast<const sdl::material*>(p_material);
 
-    for (std::size_t k = 0; k < l_quad_list.size(); ++k) {
-        render_quad_(p_mat, l_quad_list[k]);
+    for (std::size_t k = 0; k < quad_list.size(); ++k) {
+        render_quad_(p_mat, quad_list[k]);
     }
 }
 
@@ -531,10 +530,10 @@ std::shared_ptr<gui::font> renderer::create_font_(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     return std::make_shared<sdl::font>(
-        p_renderer_, s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point,
+        p_renderer_, s_font_file, ui_size, ui_outline, code_points, ui_default_code_point,
         b_pre_multiplied_alpha_supported_);
 }
 

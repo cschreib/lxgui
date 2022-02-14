@@ -190,14 +190,14 @@ protected:
     orientation m_orientation_ = orientation::horizontal;
     bool        b_reversed_    = false;
 
-    float f_value_    = 0.0f;
+    float f_value_     = 0.0f;
     float f_min_value_ = 0.0f;
     float f_max_value_ = 1.0f;
 
-    color                        m_bar_color_          = color::white;
-    layer                        m_bar_layer_          = layer::artwork;
-    utils::observer_ptr<texture> p_bar_texture_        = nullptr;
-    std::array<float, 4>         l_initial_text_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
+    color                        m_bar_color_         = color::white;
+    layer                        m_bar_layer_         = layer::artwork;
+    utils::observer_ptr<texture> p_bar_texture_       = nullptr;
+    std::array<float, 4>         initial_text_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 };
 
 } // namespace lxgui::gui

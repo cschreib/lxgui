@@ -252,7 +252,7 @@ void frame::register_on_lua(sol::state& m_lua) {
 
             region_core_attributes m_attr;
             m_attr.s_name = s_name;
-            m_attr.l_inheritance =
+            m_attr.inheritance =
                 m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     s_inheritance.value_or(""));
 
@@ -271,7 +271,7 @@ void frame::register_on_lua(sol::state& m_lua) {
 
             region_core_attributes m_attr;
             m_attr.s_name = s_name;
-            m_attr.l_inheritance =
+            m_attr.inheritance =
                 m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     s_inheritance.value_or(""));
 
@@ -317,7 +317,8 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function get_backdrop
      */
     m_class.set_function(
-        "get_backdrop", [](sol::this_state m_lua, const frame& m_self) -> sol::optional<sol::table> {
+        "get_backdrop",
+        [](sol::this_state m_lua, const frame& m_self) -> sol::optional<sol::table> {
             const backdrop* p_backdrop = m_self.get_backdrop();
             if (!p_backdrop)
                 return sol::nullopt;
@@ -331,11 +332,11 @@ void frame::register_on_lua(sol::state& m_lua) {
             m_return["tileSize"] = p_backdrop->get_tile_size();
             m_return["edgeSize"] = p_backdrop->get_edge_size();
 
-            const auto& l_insets         = p_backdrop->get_background_insets();
-            m_return["insets"]["left"]   = l_insets.left;
-            m_return["insets"]["right"]  = l_insets.right;
-            m_return["insets"]["top"]    = l_insets.top;
-            m_return["insets"]["bottom"] = l_insets.bottom;
+            const auto& insets           = p_backdrop->get_background_insets();
+            m_return["insets"]["left"]   = insets.left;
+            m_return["insets"]["right"]  = insets.right;
+            m_return["insets"]["top"]    = insets.top;
+            m_return["insets"]["bottom"] = insets.bottom;
 
             return std::move(m_return);
         });
@@ -367,15 +368,15 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function get_children
      */
     m_class.set_function("get_children", [](const frame& m_self) {
-        std::vector<sol::object> l_children;
-        l_children.reserve(m_self.get_rough_num_children());
+        std::vector<sol::object> children;
+        children.reserve(m_self.get_rough_num_children());
 
         const auto& m_lua = m_self.get_manager().get_lua();
         for (const auto& m_child : m_self.get_children()) {
-            l_children.push_back(m_lua[m_child.get_lua_name()]);
+            children.push_back(m_lua[m_child.get_lua_name()]);
         }
 
-        return sol::as_table(std::move(l_children));
+        return sol::as_table(std::move(children));
     });
 
     /** @function get_effective_alpha
@@ -423,22 +424,22 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function get_hit_rect_insets
      */
     m_class.set_function("get_hit_rect_insets", [](const frame& m_self) {
-        const bounds2f& l_insets = m_self.get_abs_hit_rect_insets();
-        return std::make_tuple(l_insets.left, l_insets.right, l_insets.top, l_insets.bottom);
+        const bounds2f& insets = m_self.get_abs_hit_rect_insets();
+        return std::make_tuple(insets.left, insets.right, insets.top, insets.bottom);
     });
 
     /** @function get_max_dimensions
      */
     m_class.set_function("get_max_dimensions", [](const frame& m_self) {
-        const vector2f& l_max = m_self.get_max_dimensions();
-        return std::make_tuple(l_max.x, l_max.y);
+        const vector2f& max = m_self.get_max_dimensions();
+        return std::make_tuple(max.x, max.y);
     });
 
     /** @function get_min_dimensions
      */
     m_class.set_function("get_min_dimensions", [](const frame& m_self) {
-        const vector2f& l_min = m_self.get_min_dimensions();
-        return std::make_tuple(l_min.x, l_min.y);
+        const vector2f& min = m_self.get_min_dimensions();
+        return std::make_tuple(min.x, min.y);
     });
 
     /** @function get_num_children
@@ -536,17 +537,17 @@ void frame::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function(
         "register_for_drag",
-        [](frame& m_self, sol::optional<std::string> s_button1, sol::optional<std::string> s_button2,
-           sol::optional<std::string> s_button3) {
-            std::vector<std::string> l_button_list;
+        [](frame& m_self, sol::optional<std::string> s_button1,
+           sol::optional<std::string> s_button2, sol::optional<std::string> s_button3) {
+            std::vector<std::string> button_list;
             if (s_button1.has_value())
-                l_button_list.push_back(s_button1.value());
+                button_list.push_back(s_button1.value());
             if (s_button2.has_value())
-                l_button_list.push_back(s_button2.value());
+                button_list.push_back(s_button2.value());
             if (s_button3.has_value())
-                l_button_list.push_back(s_button3.value());
+                button_list.push_back(s_button3.value());
 
-            m_self.register_for_drag(l_button_list);
+            m_self.register_for_drag(button_list);
         });
 
     /** @function set_auto_focus
@@ -565,7 +566,8 @@ void frame::register_on_lua(sol::state& m_lua) {
 
         sol::table& m_table = m_table_opt.value();
 
-        p_backdrop->set_background(m_self.parse_file_name(m_table["bgFile"].get_or<std::string>("")));
+        p_backdrop->set_background(
+            m_self.parse_file_name(m_table["bgFile"].get_or<std::string>("")));
         p_backdrop->set_edge(m_self.parse_file_name(m_table["edgeFile"].get_or<std::string>("")));
         p_backdrop->set_background_tilling(m_table["tile"].get_or(false));
 
@@ -594,7 +596,8 @@ void frame::register_on_lua(sol::state& m_lua) {
         "set_backdrop_border_color",
         sol::overload(
             [](frame& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
-                m_self.get_or_create_backdrop().set_edge_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+                m_self.get_or_create_backdrop().set_edge_color(
+                    color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
             [](frame& m_self, const std::string& s_color) {
                 m_self.get_or_create_backdrop().set_edge_color(color(s_color));

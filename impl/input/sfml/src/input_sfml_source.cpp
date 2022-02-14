@@ -28,8 +28,8 @@ void source::set_clipboard_content(const utils::ustring& s_content) {
 }
 
 void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) {
-    auto m_iter = l_cursor_map_.find(s_file_name);
-    if (m_iter == l_cursor_map_.end()) {
+    auto m_iter = cursor_map_.find(s_file_name);
+    if (m_iter == cursor_map_.end()) {
         sf::Image m_image;
         if (!m_image.loadFromFile(s_file_name)) {
             throw gui::exception(
@@ -39,7 +39,7 @@ void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromPixels(
             m_image.getPixelsPtr(), m_image.getSize(), sf::Vector2u(m_hot_spot.x, m_hot_spot.y));
-        m_iter = l_cursor_map_.insert(std::make_pair(s_file_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(s_file_name, std::move(p_cursor))).first;
     }
 
     m_window_.setMouseCursor(*m_iter->second);
@@ -47,11 +47,11 @@ void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2
 
 void source::reset_mouse_cursor() {
     const std::string s_name = "system_arrow";
-    auto              m_iter = l_cursor_map_.find(s_name);
-    if (m_iter == l_cursor_map_.end()) {
+    auto              m_iter = cursor_map_.find(s_name);
+    if (m_iter == cursor_map_.end()) {
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromSystem(sf::Cursor::Arrow);
-        m_iter = l_cursor_map_.insert(std::make_pair(s_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(s_name, std::move(p_cursor))).first;
     }
 
     m_window_.setMouseCursor(*m_iter->second);
@@ -164,7 +164,7 @@ key source::from_sfml_(int ui_sf_key) const {
 }
 
 void source::on_sfml_event(const sf::Event& m_event) {
-    static const mouse_button l_mouse_from_sfml[3] = {
+    static const mouse_button mouse_from_sfml[3] = {
         mouse_button::left, mouse_button::right, mouse_button::middle};
 
     if (m_event.type == sf::Event::TextEntered) {
@@ -180,22 +180,22 @@ void source::on_sfml_event(const sf::Event& m_event) {
         m_window_dimensions_ = gui::vector2ui(m_event.size.width, m_event.size.height);
         on_window_resized(m_window_dimensions_);
     } else if (m_event.type == sf::Event::KeyPressed) {
-        key m_key                                             = from_sfml_(m_event.key.code);
-        m_keyboard_.l_key_state[static_cast<std::size_t>(m_key)] = true;
+        key m_key                                              = from_sfml_(m_event.key.code);
+        m_keyboard_.key_state[static_cast<std::size_t>(m_key)] = true;
         on_key_pressed(m_key);
     } else if (m_event.type == sf::Event::KeyReleased) {
-        key m_key                                             = from_sfml_(m_event.key.code);
-        m_keyboard_.l_key_state[static_cast<std::size_t>(m_key)] = false;
+        key m_key                                              = from_sfml_(m_event.key.code);
+        m_keyboard_.key_state[static_cast<std::size_t>(m_key)] = false;
         on_key_released(m_key);
     } else if (m_event.type == sf::Event::MouseButtonPressed) {
-        mouse_button m_button = l_mouse_from_sfml[m_event.mouseButton.button];
-        m_mouse_.l_button_state[static_cast<std::size_t>(m_button)] = true;
+        mouse_button m_button = mouse_from_sfml[m_event.mouseButton.button];
+        m_mouse_.button_state[static_cast<std::size_t>(m_button)] = true;
 
         const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
         on_mouse_pressed(m_button, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
     } else if (m_event.type == sf::Event::MouseButtonReleased) {
-        mouse_button m_button = l_mouse_from_sfml[m_event.mouseButton.button];
-        m_mouse_.l_button_state[static_cast<std::size_t>(m_button)] = false;
+        mouse_button m_button = mouse_from_sfml[m_event.mouseButton.button];
+        m_mouse_.button_state[static_cast<std::size_t>(m_button)] = false;
 
         const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
         on_mouse_released(m_button, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
@@ -203,7 +203,7 @@ void source::on_sfml_event(const sf::Event& m_event) {
         gui::vector2i m_mouse_pos(m_event.mouseMove.x, m_event.mouseMove.y);
         gui::vector2i m_mouse_delta;
         if (!b_first_mouse_move_) {
-            m_mouse_delta   = m_mouse_pos - m_old_mouse_pos_;
+            m_mouse_delta    = m_mouse_pos - m_old_mouse_pos_;
             m_old_mouse_pos_ = m_mouse_pos;
         }
 

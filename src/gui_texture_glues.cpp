@@ -69,10 +69,9 @@ void texture::register_on_lua(sol::state& m_lua) {
     /** @function get_tex_coord
      */
     m_class.set_function("get_tex_coord", [](const texture& m_self) {
-        const auto& l_coords = m_self.get_tex_coord();
+        const auto& coords = m_self.get_tex_coord();
         return std::make_tuple(
-            l_coords[0], l_coords[1], l_coords[2], l_coords[3], l_coords[4], l_coords[5], l_coords[6],
-            l_coords[7]);
+            coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], coords[6], coords[7]);
     });
 
     /** @function get_tex_coord_modifies_rect
@@ -156,7 +155,8 @@ void texture::register_on_lua(sol::state& m_lua) {
                     return;
 
                 m_self.set_gradient(gradient(
-                    m_orientation.value(), color(f_min_r, f_min_g, f_min_b), color(f_max_r, f_max_g, f_max_b)));
+                    m_orientation.value(), color(f_min_r, f_min_g, f_min_b),
+                    color(f_max_r, f_max_g, f_max_b)));
             },
             [](texture& m_self, const std::string& s_orientation, const std::string& s_min_color,
                const std::string& s_max_color) {
@@ -175,7 +175,8 @@ void texture::register_on_lua(sol::state& m_lua) {
         "set_gradient_alpha",
         sol::overload(
             [](texture& m_self, const std::string& s_orientation, float f_min_r, float f_min_g,
-               float f_min_b, float f_min_a, float f_max_r, float f_max_g, float f_max_b, float f_max_a) {
+               float f_min_b, float f_min_a, float f_max_r, float f_max_g, float f_max_b,
+               float f_max_a) {
                 sol::optional<gradient::orientation> m_orientation =
                     get_gradient_orientation(s_orientation);
                 if (!m_orientation.has_value())
@@ -204,11 +205,12 @@ void texture::register_on_lua(sol::state& m_lua) {
             [](texture& m_self, float f_left, float f_top, float f_right, float f_bottom) {
                 m_self.set_tex_rect({f_left, f_top, f_right, f_bottom});
             },
-            [](texture& m_self, float f_top_left_x, float f_top_left_y, float f_top_right_x, float f_top_right_y,
-               float f_bottom_right_x, float f_bottom_right_y, float f_bottom_left_x, float f_bottom_left_y) {
+            [](texture& m_self, float f_top_left_x, float f_top_left_y, float f_top_right_x,
+               float f_top_right_y, float f_bottom_right_x, float f_bottom_right_y,
+               float f_bottom_left_x, float f_bottom_left_y) {
                 m_self.set_tex_coord(
-                    {f_top_left_x, f_top_left_y, f_top_right_x, f_top_right_y, f_bottom_right_x, f_bottom_right_y,
-                     f_bottom_left_x, f_bottom_left_y});
+                    {f_top_left_x, f_top_left_y, f_top_right_x, f_top_right_y, f_bottom_right_x,
+                     f_bottom_right_y, f_bottom_left_x, f_bottom_left_y});
             }));
 
     /** @function set_tex_coord_modifies_rect
@@ -244,7 +246,8 @@ void texture::register_on_lua(sol::state& m_lua) {
             },
             [](texture& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
                 m_self.set_vertex_color(
-                    color(f_r, f_g, f_b, f_a.value_or(1.0f)), std::numeric_limits<std::size_t>::max());
+                    color(f_r, f_g, f_b, f_a.value_or(1.0f)),
+                    std::numeric_limits<std::size_t>::max());
             },
             [](texture& m_self, std::size_t ui_index, const std::string& s_color) {
                 m_self.set_vertex_color(color(s_color), ui_index);

@@ -118,7 +118,7 @@ protected:
     /** \param sFontFile   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \note This implementation uses FreeType to load vector fonts and rasterize them.
      *         Bitmap fonts are not yet supported.
@@ -127,7 +127,7 @@ protected:
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) override;
 
     /// Begins rendering on a particular render target.
@@ -157,7 +157,7 @@ protected:
 
     /// Renders a set of quads.
     /** \param pMaterial The material to use for rendering, or null if none
-     *   \param lQuadList The list of the quads you want to render
+     *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -172,7 +172,7 @@ protected:
      */
     void render_quads_(
         const gui::material*                      p_material,
-        const std::vector<std::array<vertex, 4>>& l_quad_list) override;
+        const std::vector<std::array<vertex, 4>>& quad_list) override;
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none

@@ -334,36 +334,36 @@ private:
 
     renderer& m_renderer_;
 
-    bool        b_ready_                = false;
-    float       f_scaling_factor_        = 1.0f;
-    float       f_tracking_             = 0.0f;
-    float       f_line_spacing_          = 1.0f;
+    bool        b_ready_                  = false;
+    float       f_scaling_factor_         = 1.0f;
+    float       f_tracking_               = 0.0f;
+    float       f_line_spacing_           = 1.0f;
     bool        b_remove_starting_spaces_ = false;
-    bool        b_word_wrap_             = true;
-    bool        b_add_ellipsis_          = false;
-    color       m_color_                = color::white;
-    bool        b_force_color_           = false;
-    float       f_alpha_                = 1.0f;
-    bool        b_formatting_enabled_    = false;
-    float       f_box_w_                 = std::numeric_limits<float>::infinity();
-    float       f_box_h_                 = std::numeric_limits<float>::infinity();
-    alignment_x m_align_x_               = alignment_x::left;
-    alignment_y m_align_y_               = alignment_y::middle;
+    bool        b_word_wrap_              = true;
+    bool        b_add_ellipsis_           = false;
+    color       m_color_                  = color::white;
+    bool        b_force_color_            = false;
+    float       f_alpha_                  = 1.0f;
+    bool        b_formatting_enabled_     = false;
+    float       f_box_w_                  = std::numeric_limits<float>::infinity();
+    float       f_box_h_                  = std::numeric_limits<float>::infinity();
+    alignment_x m_align_x_                = alignment_x::left;
+    alignment_y m_align_y_                = alignment_y::middle;
 
     std::shared_ptr<font> p_font_;
     std::shared_ptr<font> p_outline_font_;
     utils::ustring        s_unicode_text_;
 
     mutable bool        b_update_cache_ = false;
-    mutable float       f_w_           = 0.0f;
-    mutable float       f_h_           = 0.0f;
+    mutable float       f_w_            = 0.0f;
+    mutable float       f_h_            = 0.0f;
     mutable std::size_t ui_num_lines_   = 0u;
 
-    mutable std::vector<std::array<vertex, 4>> l_quad_list_;
+    mutable std::vector<std::array<vertex, 4>> quad_list_;
     mutable std::shared_ptr<vertex_cache>      p_vertex_cache_;
-    mutable std::vector<std::array<vertex, 4>> l_outline_quad_list_;
+    mutable std::vector<std::array<vertex, 4>> outline_quad_list_;
     mutable std::shared_ptr<vertex_cache>      p_outline_vertex_cache_;
-    mutable std::vector<quad>                  l_icons_list_;
+    mutable std::vector<quad>                  icons_list_;
 };
 
 } // namespace lxgui::gui

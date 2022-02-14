@@ -49,16 +49,16 @@ std::vector<std::string> get_default_languages() {
     // prefer to fall back on a Spanish translation rather than English).
     const std::string s_language_var = get_environment_variable("LANGUAGE");
     if (!s_language_var.empty()) {
-        std::vector<std::string> l_output;
+        std::vector<std::string> output;
         for (auto s_language : utils::cut(s_language_var, ":")) {
             std::string s_language_normalized{s_language};
             utils::replace(s_language_normalized, "_", "");
             if (s_language_normalized.size() == 4)
-                l_output.push_back(s_language_normalized);
+                output.push_back(s_language_normalized);
         }
 
-        if (!l_output.empty())
-            return l_output;
+        if (!output.empty())
+            return output;
     }
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
@@ -123,7 +123,7 @@ void localizer::set_locale(const std::locale& m_locale) {
     clear_translations();
 }
 
-void localizer::set_preferred_languages(const std::vector<std::string>& l_languages) {
+void localizer::set_preferred_languages(const std::vector<std::string>& languages) {
     // TODO implement more generic input checks
     // https://github.com/cschreib/lxgui/issues/98
     // for (const auto& sLanguage : lLanguages)
@@ -133,7 +133,7 @@ void localizer::set_preferred_languages(const std::vector<std::string>& l_langua
     //         characters");
     // }
 
-    l_languages_ = l_languages;
+    languages_ = languages;
     clear_translations();
 }
 
@@ -146,11 +146,11 @@ const std::locale& localizer::get_locale() const {
 }
 
 const std::vector<std::string>& localizer::get_preferred_languages() const {
-    return l_languages_;
+    return languages_;
 }
 
 void localizer::clear_allowed_code_points() {
-    l_code_points_.clear();
+    code_points_.clear();
 }
 
 void localizer::add_allowed_code_points(const code_point_range& m_range) {
@@ -158,45 +158,44 @@ void localizer::add_allowed_code_points(const code_point_range& m_range) {
         throw gui::exception("gui::localizer", "code point range must have last >= first");
 
     code_point_range m_test_range = m_range;
-    auto             m_iter       = l_code_points_.begin();
+    auto             m_iter       = code_points_.begin();
 
     do {
         // Find next overlapping range
-        m_iter =
-            std::find_if(l_code_points_.begin(), l_code_points_.end(), [&](const auto& m_other) {
-                return (m_test_range.ui_first >= m_other.ui_first &&
-                        m_test_range.ui_first <= m_other.ui_last) ||
-                       (m_test_range.ui_last >= m_other.ui_first &&
-                        m_test_range.ui_last <= m_other.ui_last) ||
-                       (m_other.ui_first >= m_test_range.ui_first &&
-                        m_other.ui_first <= m_test_range.ui_last) ||
-                       (m_other.ui_last >= m_test_range.ui_first &&
-                        m_other.ui_last <= m_test_range.ui_last);
-            });
+        m_iter = std::find_if(code_points_.begin(), code_points_.end(), [&](const auto& m_other) {
+            return (m_test_range.ui_first >= m_other.ui_first &&
+                    m_test_range.ui_first <= m_other.ui_last) ||
+                   (m_test_range.ui_last >= m_other.ui_first &&
+                    m_test_range.ui_last <= m_other.ui_last) ||
+                   (m_other.ui_first >= m_test_range.ui_first &&
+                    m_other.ui_first <= m_test_range.ui_last) ||
+                   (m_other.ui_last >= m_test_range.ui_first &&
+                    m_other.ui_last <= m_test_range.ui_last);
+        });
 
-        if (m_iter != l_code_points_.end()) {
+        if (m_iter != code_points_.end()) {
             // Combine the ranges
             m_test_range.ui_first = std::min(m_test_range.ui_first, m_iter->ui_first);
             m_test_range.ui_last  = std::max(m_test_range.ui_last, m_iter->ui_last);
 
             // Erase the overlap
-            l_code_points_.erase(m_iter);
+            code_points_.erase(m_iter);
         }
-    } while (m_iter != l_code_points_.end());
+    } while (m_iter != code_points_.end());
 
     // Add the new range
-    l_code_points_.push_back(m_test_range);
+    code_points_.push_back(m_test_range);
 
     // Sort by ascending code point
     std::sort(
-        l_code_points_.begin(), l_code_points_.end(),
+        code_points_.begin(), code_points_.end(),
         [](const auto& m_left, const auto& m_right) { return m_left.ui_first < m_right.ui_first; });
 }
 
 void localizer::add_allowed_code_points_for_group(const std::string& s_unicode_group) {
     // List from http://www.unicode.org/Public/5.2.0/ucdxml/ucd.all.flat.zip
     // Adjusted "basic latin" and "latin-1 supplement" to remove non-printable chars.
-    static std::unordered_map<std::string, code_point_range> l_unicode_groups = {
+    static std::unordered_map<std::string, code_point_range> unicode_groups = {
         {"basic latin", {0x0020, 0x007e}},
         {"latin-1 supplement", {0x00a0, 0x00ff}},
         {"latin extended-a", {0x0100, 0x017f}},
@@ -466,8 +465,8 @@ void localizer::add_allowed_code_points_for_group(const std::string& s_unicode_g
         {"supplementary private use area-a", {0xf0000, 0xfffff}},
         {"supplementary private use area-b", {0x100000, 0x10ffff}}};
 
-    auto m_iter = l_unicode_groups.find(to_lower(s_unicode_group));
-    if (m_iter == l_unicode_groups.end())
+    auto m_iter = unicode_groups.find(to_lower(s_unicode_group));
+    if (m_iter == unicode_groups.end())
         throw gui::exception("gui::localizer", "unknown Unicode group '" + s_unicode_group + "'");
 
     add_allowed_code_points(m_iter->second);
@@ -478,7 +477,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& s_langua
     // Mapped manually to Unicode groups above with the help of
     // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/scripts_and_languages.html
     static const std::vector<std::pair<std::vector<std::string>, std::vector<std::string>>>
-        l_scripts = {
+        scripts = {
             {{"basic latin", "latin-1 supplement", "latin extended-a", "latin extended-b",
               "latin extended-c", "latin extended-d", "latin extended-e", "latin extended-f",
               "latin extended-g", "latin extended additional"},
@@ -669,7 +668,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& s_langua
     // Add "geometric shapes" to allow rendering the "missing character" glyph
     add_allowed_code_points_for_group("geometric shapes");
 
-    for (const auto& m_script : l_scripts) {
+    for (const auto& m_script : scripts) {
         if (std::find(m_script.second.begin(), m_script.second.end(), s_language_code) ==
             m_script.second.end())
             continue;
@@ -682,7 +681,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& s_langua
 void localizer::auto_detect_allowed_code_points() {
     clear_allowed_code_points();
 
-    if (l_languages_.empty()) {
+    if (languages_.empty()) {
         // If no language specified, fall back to basic latin (=ASCII)
         add_allowed_code_points_for_group("basic latin");
         // Add "geometric shapes" to allow rendering the "missing character" glyph
@@ -691,7 +690,7 @@ void localizer::auto_detect_allowed_code_points() {
     }
 
     // Add language-specific groups
-    for (const auto& s_language : l_languages_) {
+    for (const auto& s_language : languages_) {
         // Extract the language code from the language string (first set of lower case letters)
         auto m_pos = std::find_if(
             s_language.begin(), s_language.end(), [](char c_char) { return std::isupper(c_char); });
@@ -701,7 +700,7 @@ void localizer::auto_detect_allowed_code_points() {
 }
 
 const std::vector<code_point_range>& localizer::get_allowed_code_points() const {
-    return l_code_points_;
+    return code_points_;
 }
 
 void localizer::set_fallback_code_point(char32_t ui_code_point) {
@@ -714,7 +713,7 @@ char32_t localizer::get_fallback_code_point() const {
 
 void localizer::load_translations(const std::string& s_folder_path) {
     // First, look for an exact match
-    for (const std::string& s_language : l_languages_) {
+    for (const std::string& s_language : languages_) {
         std::string s_language_file = s_folder_path + "/" + s_language + ".lua";
         if (utils::file_exists(s_language_file)) {
             load_translation_file(s_language_file);
@@ -723,13 +722,13 @@ void localizer::load_translations(const std::string& s_folder_path) {
     }
 
     // If no exact match found, look for an approximate match (ignore region)
-    const auto l_files = utils::get_file_list(s_folder_path, false, "lua");
-    for (const std::string& s_language : l_languages_) {
-        auto m_iter = std::find_if(l_files.begin(), l_files.end(), [&](const std::string& s_file) {
+    const auto files = utils::get_file_list(s_folder_path, false, "lua");
+    for (const std::string& s_language : languages_) {
+        auto m_iter = std::find_if(files.begin(), files.end(), [&](const std::string& s_file) {
             return s_file.size() == 8u && s_file.substr(0, 2) == s_language.substr(0, 2);
         });
 
-        if (m_iter == l_files.end())
+        if (m_iter == files.end())
             continue;
 
         std::string s_language_file = s_folder_path + "/" + *m_iter;
@@ -766,9 +765,9 @@ void localizer::load_translation_file(const std::string& s_filename) try {
         std::string ks = m_key.as<std::string>();
 
         if (m_value.is<std::string>())
-            l_map_.insert(std::make_pair(std::hash<std::string>{}(ks), m_value.as<std::string>()));
+            map_.insert(std::make_pair(std::hash<std::string>{}(ks), m_value.as<std::string>()));
         else if (m_value.is<sol::protected_function>())
-            l_map_.insert(std::make_pair(
+            map_.insert(std::make_pair(
                 std::hash<std::string>{}(ks), m_value.as<sol::protected_function>()));
     });
 
@@ -780,7 +779,7 @@ void localizer::load_translation_file(const std::string& s_filename) try {
 }
 
 void localizer::clear_translations() {
-    l_map_.clear();
+    map_.clear();
 }
 
 bool localizer::is_key_valid_(std::string_view s_key) const {
@@ -789,7 +788,7 @@ bool localizer::is_key_valid_(std::string_view s_key) const {
 
 localizer::map_type::const_iterator localizer::find_key_(std::string_view s_key) const {
     auto s_substring = s_key.substr(1, s_key.size() - 2);
-    return l_map_.find(std::hash<std::string_view>{}(s_substring));
+    return map_.find(std::hash<std::string_view>{}(s_substring));
 }
 
 std::string
@@ -819,7 +818,7 @@ std::string localizer::localize(std::string_view s_key, sol::variadic_args mVArg
         return std::string{s_key};
 
     auto m_iter = find_key_(s_key);
-    if (m_iter == l_map_.end())
+    if (m_iter == map_.end())
         return std::string{s_key};
 
     return std::visit(

@@ -289,9 +289,9 @@ public:
     void unlock_highlight();
 
     /// Sets this button's pushed text offset.
-    /** \param lOffset The pushed text offset
+    /** \param offset The pushed text offset
      */
-    void set_pushed_text_offset(const vector2f& l_offset);
+    void set_pushed_text_offset(const vector2f& offset);
 
     /// Returns this button's pushed text offset.
     /** \return This button's pushed text offset
@@ -307,8 +307,8 @@ protected:
     void parse_attributes_(const layout_node& m_node) override;
     void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    state m_state_         = state::up;
-    bool  b_highlighted_   = false;
+    state m_state_          = state::up;
+    bool  b_highlighted_    = false;
     bool  b_lock_highlight_ = false;
 
     utils::ustring s_text_;
@@ -318,9 +318,9 @@ protected:
     utils::observer_ptr<texture> p_disabled_texture_  = nullptr;
     utils::observer_ptr<texture> p_highlight_texture_ = nullptr;
 
-    utils::observer_ptr<font_string> p_normal_text_        = nullptr;
-    utils::observer_ptr<font_string> p_highlight_text_     = nullptr;
-    utils::observer_ptr<font_string> p_disabled_text_      = nullptr;
+    utils::observer_ptr<font_string> p_normal_text_         = nullptr;
+    utils::observer_ptr<font_string> p_highlight_text_      = nullptr;
+    utils::observer_ptr<font_string> p_disabled_text_       = nullptr;
     utils::observer_ptr<font_string> p_current_font_string_ = nullptr;
 
     vector2f m_pushed_text_offset_ = vector2f::zero;

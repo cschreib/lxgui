@@ -11,20 +11,21 @@ font::font(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) :
     ui_size_(ui_size),
     ui_outline_(ui_outline),
     ui_default_code_point_(ui_default_code_point),
-    l_code_points_(l_code_points) {
+    code_points_(code_points) {
     if (!m_font_.loadFromFile(s_font_file)) {
         throw gui::exception("gui::sfml::font", "Could not load font file '" + s_font_file + "'.");
     }
 
     // Need to request in advance the glyphs that we will use
     // in order for SFLM to draw them on its internal texture
-    for (const code_point_range& m_range : l_code_points_) {
-        for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last; ++ui_code_point) {
+    for (const code_point_range& m_range : code_points_) {
+        for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
+             ++ui_code_point) {
             m_font_.getGlyph(ui_code_point, ui_size_, false, ui_outline);
         }
     }
@@ -39,7 +40,7 @@ std::size_t font::get_size() const {
 }
 
 char32_t font::get_character_(char32_t ui_char) const {
-    for (const auto& m_range : l_code_points_) {
+    for (const auto& m_range : code_points_) {
         if (ui_char < m_range.ui_first || ui_char > m_range.ui_last)
             continue;
 
@@ -57,8 +58,9 @@ bounds2f font::get_character_uvs(char32_t ui_char) const {
     if (ui_char == 0)
         return bounds2f{};
 
-    const sf::IntRect& m_sf_rect  = m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).textureRect;
-    const bounds2f&    m_tex_rect = p_texture_->get_rect();
+    const sf::IntRect& m_sf_rect =
+        m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).textureRect;
+    const bounds2f& m_tex_rect = p_texture_->get_rect();
 
     bounds2f m_rect;
     m_rect.left   = m_sf_rect.left / m_tex_rect.width();
@@ -93,8 +95,8 @@ bounds2f font::get_character_bounds(char32_t ui_char) const {
     // TODO: this should use the font ascender + descender for fYOffset
     // https://github.com/cschreib/lxgui/issues/97
     const float          f_y_offset = ui_size_;
-    const float          f_offset  = static_cast<float>(ui_outline_);
-    const sf::FloatRect& m_sf_rect  = m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).bounds;
+    const float          f_offset   = static_cast<float>(ui_outline_);
+    const sf::FloatRect& m_sf_rect = m_font_.getGlyph(ui_char, ui_size_, false, ui_outline_).bounds;
 
     bounds2f m_rect;
     m_rect.left   = m_sf_rect.left - f_offset;

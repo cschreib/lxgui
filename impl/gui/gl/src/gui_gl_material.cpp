@@ -167,8 +167,8 @@ void material::bind() const {
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
 }
 
-void material::premultiply_alpha(std::vector<ub32color>& l_data) {
-    for (auto& c : l_data) {
+void material::premultiply_alpha(std::vector<ub32color>& data) {
+    for (auto& c : data) {
         float a = c.a / 255.0f;
         c.r *= a;
         c.g *= a;

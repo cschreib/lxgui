@@ -74,7 +74,7 @@ font::font(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) :
     ui_size_(ui_size), ui_default_code_point_(ui_default_code_point) {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
@@ -132,7 +132,7 @@ font::font(
         // Calculate maximum width, height and bearing
         std::size_t ui_max_height = 0, ui_max_width = 0;
         std::size_t ui_num_char = 0;
-        for (const code_point_range& m_range : l_code_points) {
+        for (const code_point_range& m_range : code_points) {
             for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
                  ++ui_code_point) {
                 if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0)
@@ -193,8 +193,8 @@ font::font(
         if (ui_final_width * ui_final_height / 2 >= ui_tex_size)
             ui_final_height = ui_final_height / 2;
 
-        std::vector<ub32color> l_data(ui_final_width * ui_final_height);
-        std::fill(l_data.begin(), l_data.end(), ub32color(0, 0, 0, 0));
+        std::vector<ub32color> data(ui_final_width * ui_final_height);
+        std::fill(data.begin(), data.end(), ub32color(0, 0, 0, 0));
 
         std::size_t x = 0, y = 0;
 
@@ -211,14 +211,14 @@ font::font(
                          ft_ceil<6>(m_face_->size->metrics.descender);
         }
 
-        for (const code_point_range& m_range : l_code_points) {
+        for (const code_point_range& m_range : code_points) {
             range_info m_info;
             m_info.m_range = m_range;
-            m_info.l_data.resize(m_range.ui_last - m_range.ui_first + 1);
+            m_info.data.resize(m_range.ui_last - m_range.ui_first + 1);
 
             for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
                  ++ui_code_point) {
-                character_info& m_ci = m_info.l_data[ui_code_point - m_range.ui_first];
+                character_info& m_ci = m_info.data[ui_code_point - m_range.ui_first];
                 m_ci.ui_code_point   = ui_code_point;
 
                 if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0) {
@@ -259,7 +259,7 @@ font::font(
                     for (std::size_t j = 0; j < m_bitmap.rows; ++j) {
                         std::size_t ui_row_offset = (y + j) * ui_final_width + x;
                         for (std::size_t i = 0; i < m_bitmap.width; ++i, ++s_buffer)
-                            l_data[i + ui_row_offset] = ub32color(255, 255, 255, *s_buffer);
+                            data[i + ui_row_offset] = ub32color(255, 255, 255, *s_buffer);
                     }
                 }
 
@@ -282,15 +282,15 @@ font::font(
                 m_glyph = nullptr;
             }
 
-            l_range_list_.push_back(std::move(m_info));
+            range_list_.push_back(std::move(m_info));
         }
 
         FT_Stroker_Done(m_stroker);
 
-        gl::material::premultiply_alpha(l_data);
+        gl::material::premultiply_alpha(data);
 
         p_texture_ = std::make_shared<gl::material>(vector2ui(ui_final_width, ui_final_height));
-        p_texture_->update_texture(l_data.data());
+        p_texture_->update_texture(data.data());
     } catch (...) {
         if (m_glyph)
             FT_Done_Glyph(m_glyph);
@@ -314,11 +314,11 @@ std::size_t font::get_size() const {
 }
 
 const font::character_info* font::get_character_(char32_t ui_char) const {
-    for (const auto& m_info : l_range_list_) {
+    for (const auto& m_info : range_list_) {
         if (ui_char < m_info.m_range.ui_first || ui_char > m_info.m_range.ui_last)
             continue;
 
-        return &m_info.l_data[ui_char - m_info.m_range.ui_first];
+        return &m_info.data[ui_char - m_info.m_range.ui_first];
     }
 
     if (ui_char != ui_default_code_point_)

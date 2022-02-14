@@ -53,7 +53,7 @@ public:
     void fire_event(const std::string& s_event_name, event_data m_data = event_data{});
 
 private:
-    std::unordered_map<std::string, event_signal> l_registered_event_list_;
+    std::unordered_map<std::string, event_signal> registered_event_list_;
 };
 
 } // namespace lxgui::gui

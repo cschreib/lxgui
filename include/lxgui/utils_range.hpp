@@ -19,15 +19,15 @@ struct reverse_range {
         typename base::const_reverse_iterator,
         typename base::reverse_iterator>::type;
 
-    T& l_container;
+    T& container;
 
-    explicit reverse_range(T& c) : l_container(c) {}
+    explicit reverse_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.rbegin());
+        return iterator(container.rbegin());
     }
     iterator end() {
-        return iterator(l_container.rend());
+        return iterator(container.rend());
     }
 };
 
@@ -46,8 +46,8 @@ struct reverse_range {
  *         \endcode
  */
 template<typename T>
-range_impl::reverse_range<T> reverse(T& l_container) {
-    return range_impl::reverse_range<T>(l_container);
+range_impl::reverse_range<T> reverse(T& container) {
+    return range_impl::reverse_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -82,15 +82,15 @@ struct iterator_range {
         typename base::iterator>::type;
     using iterator = iterator_adapter<base_iterator>;
 
-    T& l_container;
+    T& container;
 
-    explicit iterator_range(T& c) : l_container(c) {}
+    explicit iterator_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.begin());
+        return iterator(container.begin());
     }
     iterator end() {
-        return iterator(l_container.end());
+        return iterator(container.end());
     }
 };
 
@@ -109,8 +109,8 @@ struct iterator_range {
  *         \endcode
  */
 template<typename T>
-range_impl::iterator_range<T> iterator(T& l_container) {
-    return range_impl::iterator_range<T>(l_container);
+range_impl::iterator_range<T> iterator(T& container) {
+    return range_impl::iterator_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -126,15 +126,15 @@ struct reverse_iterator_range {
         typename base::reverse_iterator>::type;
     using iterator = iterator_adapter<base_iterator>;
 
-    T& l_container;
+    T& container;
 
-    explicit reverse_iterator_range(T& c) : l_container(c) {}
+    explicit reverse_iterator_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.rbegin());
+        return iterator(container.rbegin());
     }
     iterator end() {
-        return iterator(l_container.rend());
+        return iterator(container.rend());
     }
 };
 
@@ -153,8 +153,8 @@ struct reverse_iterator_range {
  *         \endcode
  */
 template<typename T>
-range_impl::reverse_iterator_range<T> reverse_iterator(T& l_container) {
-    return range_impl::reverse_iterator_range<T>(l_container);
+range_impl::reverse_iterator_range<T> reverse_iterator(T& container) {
+    return range_impl::reverse_iterator_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -193,15 +193,15 @@ struct value_range {
         typename base::mapped_type>::type;
     using iterator = value_iterator_adapter<base_iterator, value_type>;
 
-    T& l_container;
+    T& container;
 
-    explicit value_range(T& c) : l_container(c) {}
+    explicit value_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.begin());
+        return iterator(container.begin());
     }
     iterator end() {
-        return iterator(l_container.end());
+        return iterator(container.end());
     }
 };
 
@@ -220,8 +220,8 @@ struct value_range {
  * } \endcode
  */
 template<typename T>
-range_impl::value_range<T> value(T& l_container) {
-    return range_impl::value_range<T>(l_container);
+range_impl::value_range<T> value(T& container) {
+    return range_impl::value_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -241,15 +241,15 @@ struct reverse_value_range {
         typename base::mapped_type>::type;
     using iterator = value_iterator_adapter<base_iterator, value_type>;
 
-    T& l_container;
+    T& container;
 
-    explicit reverse_value_range(T& c) : l_container(c) {}
+    explicit reverse_value_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.rbegin());
+        return iterator(container.rbegin());
     }
     iterator end() {
-        return iterator(l_container.rend());
+        return iterator(container.rend());
     }
 };
 
@@ -268,8 +268,8 @@ struct reverse_value_range {
  * ... } \endcode
  */
 template<typename T>
-range_impl::reverse_value_range<T> reverse_value(T& l_container) {
-    return range_impl::reverse_value_range<T>(l_container);
+range_impl::reverse_value_range<T> reverse_value(T& container) {
+    return range_impl::reverse_value_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -305,15 +305,15 @@ struct key_range {
     using key_type = typename base::key_type;
     using iterator = key_iterator_adapter<base_iterator, key_type>;
 
-    T& l_container;
+    T& container;
 
-    explicit key_range(T& c) : l_container(c) {}
+    explicit key_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.begin());
+        return iterator(container.begin());
     }
     iterator end() {
-        return iterator(l_container.end());
+        return iterator(container.end());
     }
 };
 
@@ -332,8 +332,8 @@ struct key_range {
  *         \endcode
  */
 template<typename T>
-range_impl::key_range<T> key(T& l_container) {
-    return range_impl::key_range<T>(l_container);
+range_impl::key_range<T> key(T& container) {
+    return range_impl::key_range<T>(container);
 }
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
@@ -350,15 +350,15 @@ struct reverse_key_range {
     using key_type = typename base::key_type;
     using iterator = key_iterator_adapter<base_iterator, key_type>;
 
-    T& l_container;
+    T& container;
 
-    explicit reverse_key_range(T& c) : l_container(c) {}
+    explicit reverse_key_range(T& c) : container(c) {}
 
     iterator begin() {
-        return iterator(l_container.rbegin());
+        return iterator(container.rbegin());
     }
     iterator end() {
-        return iterator(l_container.rend());
+        return iterator(container.rend());
     }
 };
 
@@ -377,8 +377,8 @@ struct reverse_key_range {
  *         \endcode
  */
 template<typename T>
-range_impl::reverse_key_range<T> reverse_key(T& l_container) {
-    return range_impl::reverse_key_range<T>(l_container);
+range_impl::reverse_key_range<T> reverse_key(T& container) {
+    return range_impl::reverse_key_range<T>(container);
 }
 
 } // namespace lxgui::utils::range

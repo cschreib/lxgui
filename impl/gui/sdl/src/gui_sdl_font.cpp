@@ -15,7 +15,7 @@ font::font(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point,
     bool                                 b_pre_multiplied_alpha_supported) :
     ui_size_(ui_size), ui_default_code_point_(ui_default_code_point) {
@@ -42,7 +42,7 @@ font::font(
 
     // Calculate maximum width and height
     std::size_t ui_num_char = 0;
-    for (const code_point_range& m_range : l_code_points) {
+    for (const code_point_range& m_range : code_points) {
         for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
              ++ui_code_point) {
             if (ui_code_point > std::numeric_limits<Uint16>::max())
@@ -110,14 +110,14 @@ font::font(
 
     const float f_y_offset = TTF_FontDescent(p_font);
 
-    for (const code_point_range& m_range : l_code_points) {
+    for (const code_point_range& m_range : code_points) {
         range_info m_info;
         m_info.m_range = m_range;
-        m_info.l_data.resize(m_range.ui_last - m_range.ui_first + 1);
+        m_info.data.resize(m_range.ui_last - m_range.ui_first + 1);
 
         for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
              ++ui_code_point) {
-            character_info& m_ci = m_info.l_data[ui_code_point - m_range.ui_first];
+            character_info& m_ci = m_info.data[ui_code_point - m_range.ui_first];
             m_ci.ui_code_point   = ui_code_point;
 
             if (ui_code_point > std::numeric_limits<Uint16>::max()) {
@@ -190,7 +190,7 @@ font::font(
             x += ui_glyph_width + ui_spacing;
         }
 
-        l_range_list_.push_back(std::move(m_info));
+        range_list_.push_back(std::move(m_info));
     }
 
     TTF_CloseFont(p_font);
@@ -214,11 +214,11 @@ std::size_t font::get_size() const {
 }
 
 const font::character_info* font::get_character_(char32_t ui_char) const {
-    for (const auto& m_info : l_range_list_) {
+    for (const auto& m_info : range_list_) {
         if (ui_char < m_info.m_range.ui_first || ui_char > m_info.m_range.ui_last)
             continue;
 
-        return &m_info.l_data[ui_char - m_info.m_range.ui_first];
+        return &m_info.data[ui_char - m_info.m_range.ui_first];
     }
 
     if (ui_char != ui_default_code_point_)

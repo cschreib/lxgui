@@ -46,26 +46,26 @@ bool registry::add_region(utils::observer_ptr<region> p_obj) {
         return false;
     }
 
-    auto iter_named_obj = l_named_object_list_.find(p_obj->get_name());
-    if (iter_named_obj != l_named_object_list_.end()) {
+    auto iter_named_obj = named_object_list_.find(p_obj->get_name());
+    if (iter_named_obj != named_object_list_.end()) {
         gui::out << gui::warning << "gui::registry : "
                  << "A region with the name \"" << p_obj->get_name() << "\" already exists."
                  << std::endl;
         return false;
     }
 
-    l_named_object_list_[p_obj->get_name()] = std::move(p_obj);
+    named_object_list_[p_obj->get_name()] = std::move(p_obj);
 
     return true;
 }
 
 void registry::remove_region(const region& p_obj) {
-    l_named_object_list_.erase(p_obj.get_name());
+    named_object_list_.erase(p_obj.get_name());
 }
 
 utils::observer_ptr<const region> registry::get_region_by_name(std::string_view s_name) const {
-    auto iter = l_named_object_list_.find(std::string{s_name});
-    if (iter != l_named_object_list_.end())
+    auto iter = named_object_list_.find(std::string{s_name});
+    if (iter != named_object_list_.end())
         return iter->second;
     else
         return nullptr;

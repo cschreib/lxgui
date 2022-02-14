@@ -101,8 +101,8 @@ private:
      */
     std::optional<bounds2f> find_location_(float f_width, float f_height) const;
 
-    std::unordered_map<std::string, std::weak_ptr<gui::material>> l_texture_list_;
-    std::unordered_map<std::string, std::weak_ptr<gui::font>>     l_font_list_;
+    std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
+    std::unordered_map<std::string, std::weak_ptr<gui::font>>     font_list_;
 };
 
 /// A class that holds multiple materials for efficient rendering
@@ -180,7 +180,7 @@ private:
         std::shared_ptr<material>   p_no_texture_mat;
     };
 
-    std::vector<page_item> l_page_list_;
+    std::vector<page_item> page_list_;
 };
 
 } // namespace lxgui::gui

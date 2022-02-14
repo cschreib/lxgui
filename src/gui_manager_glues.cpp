@@ -53,11 +53,11 @@ void manager::create_lua_() {
         [&](const std::string& s_type, const std::string& s_name, sol::optional<frame&> p_parent,
             sol::optional<std::string> s_inheritance) -> sol::object {
             region_core_attributes m_attr;
-            m_attr.s_name       = s_name;
+            m_attr.s_name        = s_name;
             m_attr.s_object_type = s_type;
             if (s_inheritance.has_value()) {
-                m_attr.l_inheritance =
-                    get_virtual_root().get_registry().get_virtual_region_list(s_inheritance.value());
+                m_attr.inheritance = get_virtual_root().get_registry().get_virtual_region_list(
+                    s_inheritance.value());
             }
 
             utils::observer_ptr<frame> p_new_frame;

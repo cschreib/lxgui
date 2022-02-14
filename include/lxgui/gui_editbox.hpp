@@ -75,9 +75,9 @@ public:
     void update(double d_delta);
 
 private:
-    double d_elapsed_   = 0.0;
-    double d_duration_  = 0.0;
-    bool   b_paused_    = true;
+    double d_elapsed_    = 0.0;
+    double d_duration_   = 0.0;
+    bool   b_paused_     = true;
     bool   b_first_tick_ = true;
 
     start_type m_type_ = start_type::paused;
@@ -179,8 +179,8 @@ public:
      *   \note Will select (uiEnd - uiStart) characters
      */
     void highlight_text(
-        std::size_t ui_start      = 0u,
-        std::size_t ui_end        = std::numeric_limits<std::size_t>::max(),
+        std::size_t ui_start       = 0u,
+        std::size_t ui_end         = std::numeric_limits<std::size_t>::max(),
         bool        b_force_update = false);
 
     /// Deselects the selected text, if any.
@@ -323,11 +323,11 @@ public:
     void set_arrows_ignored(bool b_arrows_ignored);
 
     /// Sets the insets used to render the content text.
-    /** \param lInsets (left, right, top, bottom)
+    /** \param insets (left, right, top, bottom)
      *   \note Positive insets will reduce the text area, while
      *         negative ones will enlarge it
      */
-    void set_text_insets(const bounds2f& l_insets);
+    void set_text_insets(const bounds2f& insets);
 
     /// Returns the text insets.
     /** \return The text insets
@@ -416,23 +416,23 @@ protected:
 
     std::string s_combo_key_;
 
-    utils::observer_ptr<texture> p_highlight_          = nullptr;
-    color                        m_highlight_color_     = color(1.0f, 1.0f, 1.0f, 0.5f);
+    utils::observer_ptr<texture> p_highlight_            = nullptr;
+    color                        m_highlight_color_      = color(1.0f, 1.0f, 1.0f, 0.5f);
     std::size_t                  ui_selection_start_pos_ = 0u;
     std::size_t                  ui_selection_end_pos_   = 0u;
-    bool                         b_selected_text_       = false;
+    bool                         b_selected_text_        = false;
 
-    utils::observer_ptr<texture> p_carret_     = nullptr;
+    utils::observer_ptr<texture> p_carret_      = nullptr;
     double                       d_blink_speed_ = 0.5;
     periodic_timer               m_carret_timer_;
 
-    std::vector<utils::ustring> l_history_line_list_;
+    std::vector<utils::ustring> history_line_list_;
     std::size_t                 ui_max_history_lines_    = std::numeric_limits<std::size_t>::max();
     std::size_t                 ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
 
     utils::observer_ptr<font_string> p_font_string_ = nullptr;
 
-    bounds2f l_text_insets_ = bounds2f::zero;
+    bounds2f text_insets_ = bounds2f::zero;
 };
 
 } // namespace lxgui::gui

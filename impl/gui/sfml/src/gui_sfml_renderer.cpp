@@ -44,22 +44,23 @@ void renderer::end_() {
     if (p_current_target_)
         p_current_target_->end();
 
-    p_current_target_     = nullptr;
+    p_current_target_      = nullptr;
     p_current_sfml_target_ = nullptr;
 }
 
 void renderer::set_view_(const matrix4f& m_view_matrix) {
     static const float rad_to_deg = 180.0f / std::acos(-1.0f);
 
-    float f_scale_x =
-        std::sqrt(m_view_matrix(0, 0) * m_view_matrix(0, 0) + m_view_matrix(1, 0) * m_view_matrix(1, 0));
-    float f_scale_y =
-        std::sqrt(m_view_matrix(0, 1) * m_view_matrix(0, 1) + m_view_matrix(1, 1) * m_view_matrix(1, 1));
+    float f_scale_x = std::sqrt(
+        m_view_matrix(0, 0) * m_view_matrix(0, 0) + m_view_matrix(1, 0) * m_view_matrix(1, 0));
+    float f_scale_y = std::sqrt(
+        m_view_matrix(0, 1) * m_view_matrix(0, 1) + m_view_matrix(1, 1) * m_view_matrix(1, 1));
     float f_angle =
         std::atan2(m_view_matrix(0, 1) / f_scale_y, m_view_matrix(0, 0) / f_scale_x) * rad_to_deg;
 
     sf::View m_view;
-    m_view.setCenter(sf::Vector2f(-m_view_matrix(3, 0) / f_scale_x, -m_view_matrix(3, 1) / f_scale_y));
+    m_view.setCenter(
+        sf::Vector2f(-m_view_matrix(3, 0) / f_scale_x, -m_view_matrix(3, 1) / f_scale_y));
     m_view.rotate(f_angle);
     m_view.setSize(sf::Vector2f(2.0f / f_scale_x, 2.0 / f_scale_y));
 
@@ -79,9 +80,9 @@ matrix4f renderer::get_view() const {
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& l_quad_list) {
-    static const std::array<std::size_t, 6> l_i_ds          = {{0, 1, 2, 2, 3, 0}};
-    static const std::size_t                ui_num_vertices = l_i_ds.size();
+    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
+    static const std::array<std::size_t, 6> i_ds            = {{0, 1, 2, 2, 3, 0}};
+    static const std::size_t                ui_num_vertices = i_ds.size();
 
     const sfml::material* p_mat = static_cast<const sfml::material*>(p_material);
 
@@ -89,14 +90,14 @@ void renderer::render_quads_(
     if (p_mat)
         m_tex_dims = vector2f(p_mat->get_canvas_dimensions());
 
-    sf::VertexArray m_array(sf::PrimitiveType::Triangles, l_i_ds.size() * l_quad_list.size());
-    for (std::size_t k = 0; k < l_quad_list.size(); ++k) {
-        const std::array<vertex, 4>& m_vertices = l_quad_list[k];
+    sf::VertexArray m_array(sf::PrimitiveType::Triangles, i_ds.size() * quad_list.size());
+    for (std::size_t k = 0; k < quad_list.size(); ++k) {
+        const std::array<vertex, 4>& m_vertices = quad_list[k];
         for (std::size_t i = 0; i < ui_num_vertices; ++i) {
-            const std::size_t j         = l_i_ds[i];
+            const std::size_t j           = i_ds[i];
             sf::Vertex&       m_sf_vertex = m_array[k * ui_num_vertices + i];
-            const vertex&     m_vertex   = m_vertices[j];
-            const float       a         = m_vertex.col.a;
+            const vertex&     m_vertex    = m_vertices[j];
+            const float       a           = m_vertex.col.a;
 
             m_sf_vertex.position.x  = m_vertex.pos.x;
             m_sf_vertex.position.y  = m_vertex.pos.y;
@@ -119,8 +120,8 @@ void renderer::render_quads_(
 
 sf::Transform to_sfml(const matrix4f& m_matrix) {
     return sf::Transform(
-        m_matrix(0, 0), m_matrix(1, 0), m_matrix(3, 0), m_matrix(0, 1), m_matrix(1, 1), m_matrix(3, 1),
-        0.0, 0.0, 1.0);
+        m_matrix(0, 0), m_matrix(1, 0), m_matrix(3, 0), m_matrix(0, 1), m_matrix(1, 1),
+        m_matrix(3, 1), 0.0, 0.0, 1.0);
 }
 
 void renderer::render_cache_(
@@ -178,7 +179,8 @@ std::shared_ptr<gui::material> renderer::create_material(
 
 std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<gui::render_target> p_render_target, const bounds2f& m_location) {
-    auto p_tex = std::static_pointer_cast<sfml::render_target>(p_render_target)->get_material().lock();
+    auto p_tex =
+        std::static_pointer_cast<sfml::render_target>(p_render_target)->get_material().lock();
     if (m_location == p_render_target->get_rect()) {
         return std::move(p_tex);
     } else {
@@ -196,10 +198,10 @@ std::shared_ptr<gui::font> renderer::create_font_(
     const std::string&                   s_font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
-    const std::vector<code_point_range>& l_code_points,
+    const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     return std::make_shared<sfml::font>(
-        s_font_file, ui_size, ui_outline, l_code_points, ui_default_code_point);
+        s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 }
 
 bool renderer::is_vertex_cache_supported() const {

@@ -16,10 +16,10 @@ factory::create_region(registry& m_registry, const region_core_attributes& m_att
     if (!m_registry.check_region_name(m_attr.s_name))
         return nullptr;
 
-    auto m_iter = l_custom_object_list_.find(m_attr.s_object_type);
-    if (m_iter == l_custom_object_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << m_attr.s_object_type
-                 << "\"." << std::endl;
+    auto m_iter = custom_object_list_.find(m_attr.s_object_type);
+    if (m_iter == custom_object_list_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown object class : \""
+                 << m_attr.s_object_type << "\"." << std::endl;
         return nullptr;
     }
 
@@ -40,10 +40,10 @@ utils::owner_ptr<frame> factory::create_frame(
     if (!m_registry.check_region_name(m_attr.s_name))
         return nullptr;
 
-    auto m_iter = l_custom_frame_list_.find(m_attr.s_object_type);
-    if (m_iter == l_custom_frame_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << m_attr.s_object_type
-                 << "\"." << std::endl;
+    auto m_iter = custom_frame_list_.find(m_attr.s_object_type);
+    if (m_iter == custom_frame_list_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown frame class : \""
+                 << m_attr.s_object_type << "\"." << std::endl;
         return nullptr;
     }
 
@@ -67,8 +67,8 @@ factory::create_layered_region(registry& m_registry, const region_core_attribute
     if (!m_registry.check_region_name(m_attr.s_name))
         return nullptr;
 
-    auto m_iter = l_custom_region_list_.find(m_attr.s_object_type);
-    if (m_iter == l_custom_region_list_.end()) {
+    auto m_iter = custom_region_list_.find(m_attr.s_object_type);
+    if (m_iter == custom_region_list_.end()) {
         gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
                  << m_attr.s_object_type << "\"." << std::endl;
         return nullptr;
@@ -116,7 +116,7 @@ bool factory::finalize_object_(
 }
 
 void factory::apply_inheritance_(region& m_object, const region_core_attributes& m_attr) {
-    for (const auto& p_base : m_attr.l_inheritance) {
+    for (const auto& p_base : m_attr.inheritance) {
         if (!m_object.is_object_type(p_base->get_object_type())) {
             gui::out << gui::warning << "gui::factory : "
                      << "\"" << m_object.get_name() << "\" (" << m_object.get_object_type()

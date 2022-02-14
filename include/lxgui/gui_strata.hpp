@@ -31,13 +31,13 @@ struct strata;
 
 /// Contains gui::frame
 struct level {
-    std::vector<utils::observer_ptr<frame>> l_frame_list;
+    std::vector<utils::observer_ptr<frame>> frame_list;
     strata*                                 p_strata = nullptr;
 };
 
 /// Contains gui::level
 struct strata {
-    std::map<int, level>           l_level_list;
+    std::map<int, level>           level_list;
     bool                           b_redraw = true;
     std::shared_ptr<render_target> p_render_target;
     quad                           m_quad;

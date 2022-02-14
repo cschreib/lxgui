@@ -11,7 +11,7 @@ virtual_registry::virtual_registry(const registry& m_object_registry) :
 
 std::vector<utils::observer_ptr<const region>>
 virtual_registry::get_virtual_region_list(std::string_view s_names) const {
-    std::vector<utils::observer_ptr<const region>> l_inheritance;
+    std::vector<utils::observer_ptr<const region>> inheritance;
     for (auto s_parent : utils::cut(s_names, ",")) {
         s_parent = utils::trim(s_parent, ' ');
 
@@ -28,10 +28,10 @@ virtual_registry::get_virtual_region_list(std::string_view s_names) const {
             continue;
         }
 
-        l_inheritance.push_back(std::move(p_obj));
+        inheritance.push_back(std::move(p_obj));
     }
 
-    return l_inheritance;
+    return inheritance;
 }
 
 } // namespace lxgui::gui

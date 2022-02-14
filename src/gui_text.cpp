@@ -38,13 +38,13 @@ struct texture {
 using item = std::variant<char32_t, format, texture>;
 
 struct line {
-    std::vector<item> l_content;
+    std::vector<item> content;
     float             f_width = 0.0f;
 };
 
 std::vector<item>
 parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_formatting_enabled) {
-    std::vector<item> l_content;
+    std::vector<item> content;
     for (auto iter_char = sCaption.begin(); iter_char != sCaption.end(); ++iter_char) {
         // Read format tags
         if (*iter_char == U'|' && b_formatting_enabled) {
@@ -56,7 +56,7 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                 if (*iter_char == U'r') {
                     format m_format;
                     m_format.m_color_action = color_action::reset;
-                    l_content.push_back(m_format);
+                    content.push_back(m_format);
                 } else if (*iter_char == U'c') {
                     format m_format;
                     m_format.m_color_action = color_action::set;
@@ -84,7 +84,7 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                     if (!m_read_two(m_format.m_color.b))
                         break;
 
-                    l_content.push_back(m_format);
+                    content.push_back(m_format);
                 } else if (*iter_char == U'T') {
                     ++iter_char;
 
@@ -96,22 +96,22 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                     const std::string s_extracted =
                         utils::unicode_to_utf8(sCaption.substr(ui_begin, ui_pos - ui_begin));
 
-                    const auto l_words = utils::cut(s_extracted, ":");
-                    if (!l_words.empty()) {
+                    const auto words = utils::cut(s_extracted, ":");
+                    if (!words.empty()) {
                         texture m_texture;
-                        m_texture.p_material = m_renderer.create_material(std::string{l_words[0]});
+                        m_texture.p_material = m_renderer.create_material(std::string{words[0]});
                         m_texture.f_width    = m_texture.f_height =
                             std::numeric_limits<float>::quiet_NaN();
 
-                        if (l_words.size() == 2) {
-                            utils::from_string(l_words[1], m_texture.f_width);
+                        if (words.size() == 2) {
+                            utils::from_string(words[1], m_texture.f_width);
                             m_texture.f_height = m_texture.f_width;
-                        } else if (l_words.size() > 2) {
-                            utils::from_string(l_words[1], m_texture.f_width);
-                            utils::from_string(l_words[2], m_texture.f_height);
+                        } else if (words.size() > 2) {
+                            utils::from_string(words[1], m_texture.f_width);
+                            utils::from_string(words[2], m_texture.f_height);
                         }
 
-                        l_content.push_back(m_texture);
+                        content.push_back(m_texture);
                     }
 
                     iter_char += s_extracted.size() + 1;
@@ -122,10 +122,10 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
         }
 
         // Add characters
-        l_content.push_back(*iter_char);
+        content.push_back(*iter_char);
     }
 
-    return l_content;
+    return content;
 }
 
 bool is_whitespace(const item& m_item) {
@@ -254,18 +254,18 @@ float get_full_advance(
     return m_advance.first + m_advance.second;
 }
 
-float get_string_width(const text& m_text, const std::vector<item>& l_content) {
+float get_string_width(const text& m_text, const std::vector<item>& content) {
     float f_width     = 0.0f;
     float f_max_width = 0.0f;
 
-    for (auto iter_char : utils::range::iterator(l_content)) {
+    for (auto iter_char : utils::range::iterator(content)) {
         if (parser::is_character(*iter_char, U'\n')) {
             if (f_width > f_max_width)
                 f_max_width = f_width;
 
             f_width = 0.0f;
         } else {
-            f_width += parser::get_full_advance(m_text, iter_char, l_content.begin());
+            f_width += parser::get_full_advance(m_text, iter_char, content.begin());
         }
     }
 
@@ -516,7 +516,7 @@ void text::render(const matrix4f& m_transform) const {
     bool b_use_vertex_cache =
         m_renderer_.is_vertex_cache_enabled() && !m_renderer_.is_quad_batching_enabled();
 
-    if ((b_use_vertex_cache && !p_vertex_cache_) || (b_use_vertex_cache && l_quad_list_.empty()))
+    if ((b_use_vertex_cache && !p_vertex_cache_) || (b_use_vertex_cache && quad_list_.empty()))
         b_update_cache_ = true;
 
     update_();
@@ -526,14 +526,14 @@ void text::render(const matrix4f& m_transform) const {
             if (b_use_vertex_cache && p_outline_vertex_cache_) {
                 m_renderer_.render_cache(p_mat.get(), *p_outline_vertex_cache_, m_transform);
             } else {
-                std::vector<std::array<vertex, 4>> l_quads_copy = l_outline_quad_list_;
-                for (auto& m_quad : l_quads_copy)
+                std::vector<std::array<vertex, 4>> quads_copy = outline_quad_list_;
+                for (auto& m_quad : quads_copy)
                     for (std::size_t i = 0; i < 4; ++i) {
                         m_quad[i].pos = m_quad[i].pos * m_transform;
                         m_quad[i].col.a *= f_alpha_;
                     }
 
-                m_renderer_.render_quads(p_mat.get(), l_quads_copy);
+                m_renderer_.render_quads(p_mat.get(), quads_copy);
             }
         }
     }
@@ -542,8 +542,8 @@ void text::render(const matrix4f& m_transform) const {
         if (b_use_vertex_cache && p_vertex_cache_) {
             m_renderer_.render_cache(p_mat.get(), *p_vertex_cache_, m_transform);
         } else {
-            std::vector<std::array<vertex, 4>> l_quads_copy = l_quad_list_;
-            for (auto& m_quad : l_quads_copy)
+            std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
+            for (auto& m_quad : quads_copy)
                 for (std::size_t i = 0; i < 4; ++i) {
                     m_quad[i].pos = m_quad[i].pos * m_transform;
 
@@ -554,10 +554,10 @@ void text::render(const matrix4f& m_transform) const {
                     m_quad[i].col.a *= f_alpha_;
                 }
 
-            m_renderer_.render_quads(p_mat.get(), l_quads_copy);
+            m_renderer_.render_quads(p_mat.get(), quads_copy);
         }
 
-        for (auto m_quad : l_icons_list_) {
+        for (auto m_quad : icons_list_) {
             for (std::size_t i = 0; i < 4; ++i) {
                 m_quad.v[i].pos = m_quad.v[i].pos * m_transform;
                 m_quad.v[i].col.a *= f_alpha_;
@@ -581,7 +581,7 @@ void text::update_() const {
         return;
 
     // Update the line list, read format tags, do word wrapping, ...
-    std::vector<parser::line> l_line_list;
+    std::vector<parser::line> line_list;
 
     DEBUG_LOG("     Get max line nbr");
     std::size_t ui_max_line_nbr = 0;
@@ -597,27 +597,27 @@ void text::update_() const {
         ui_max_line_nbr = std::numeric_limits<std::size_t>::max();
 
     if (ui_max_line_nbr != 0) {
-        auto l_manual_line_list = utils::cut_each(s_unicode_text_, U"\n");
-        for (auto iter_manual : utils::range::iterator(l_manual_line_list)) {
+        auto manual_line_list = utils::cut_each(s_unicode_text_, U"\n");
+        for (auto iter_manual : utils::range::iterator(manual_line_list)) {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
-            std::vector<parser::item> l_parsed_content =
+            std::vector<parser::item> parsed_content =
                 parser::parse_string(m_renderer_, *iter_manual, b_formatting_enabled_);
 
             // Make a temporary line array
-            std::vector<parser::line> l_lines;
+            std::vector<parser::line> lines;
 
-            auto         iter_line_begin = l_parsed_content.begin();
+            auto         iter_line_begin = parsed_content.begin();
             parser::line m_line;
             m_line.f_width = 0.0f;
 
             bool b_done = false;
-            for (auto iter_char1 = l_parsed_content.begin(); iter_char1 != l_parsed_content.end();
+            for (auto iter_char1 = parsed_content.begin(); iter_char1 != parsed_content.end();
                  ++iter_char1) {
                 DEBUG_LOG("      Get width");
                 m_line.f_width += parser::get_full_advance(*this, iter_char1, iter_line_begin);
-                m_line.l_content.push_back(*iter_char1);
+                m_line.content.push_back(*iter_char1);
 
                 if (round_to_pixel_(m_line.f_width - f_box_w_) > 0) {
                     DEBUG_LOG(
@@ -626,14 +626,14 @@ void text::update_() const {
 
                     // Whoops, the line is too long...
                     auto m_iter_space = std::find_if(
-                        m_line.l_content.begin(), m_line.l_content.end(), &parser::is_whitespace);
+                        m_line.content.begin(), m_line.content.end(), &parser::is_whitespace);
 
-                    if (m_iter_space != m_line.l_content.end() && b_word_wrap_) {
+                    if (m_iter_space != m_line.content.end() && b_word_wrap_) {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
                         auto                      iter_char2 = iter_char1 + 1;
-                        std::vector<parser::item> l_erased_content;
+                        std::vector<parser::item> erased_content;
                         std::size_t               ui_char_to_erase  = 0;
                         float                     f_last_word_width = 0.0f;
                         bool                      b_last_was_word   = false;
@@ -645,7 +645,7 @@ void text::update_() const {
                                     m_line.f_width - f_last_word_width > f_box_w_) {
                                     f_last_word_width += parser::get_full_advance(
                                         *this, iter_char2, iter_line_begin);
-                                    l_erased_content.insert(l_erased_content.begin(), *iter_char2);
+                                    erased_content.insert(erased_content.begin(), *iter_char2);
                                     ++ui_char_to_erase;
 
                                     m_line.f_width -= f_last_word_width;
@@ -655,7 +655,7 @@ void text::update_() const {
                             } else {
                                 f_last_word_width +=
                                     parser::get_full_advance(*this, iter_char2, iter_line_begin);
-                                l_erased_content.insert(l_erased_content.begin(), *iter_char2);
+                                erased_content.insert(erased_content.begin(), *iter_char2);
                                 ++ui_char_to_erase;
 
                                 b_last_was_word = true;
@@ -666,19 +666,19 @@ void text::update_() const {
                             while (iter_char2 != iter_char1 + 1 &&
                                    parser::is_whitespace(*iter_char2)) {
                                 --ui_char_to_erase;
-                                l_erased_content.erase(l_erased_content.begin());
+                                erased_content.erase(erased_content.begin());
                                 ++iter_char2;
                             }
                         }
 
                         m_line.f_width -= f_last_word_width;
-                        m_line.l_content.erase(
-                            m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
-                        l_lines.push_back(m_line);
+                        m_line.content.erase(
+                            m_line.content.end() - ui_char_to_erase, m_line.content.end());
+                        lines.push_back(m_line);
 
-                        m_line.f_width   = parser::get_string_width(*this, l_erased_content);
-                        m_line.l_content = l_erased_content;
-                        iter_line_begin  = iter_char1 - (m_line.l_content.size() - 1u);
+                        m_line.f_width  = parser::get_string_width(*this, erased_content);
+                        m_line.content  = erased_content;
+                        iter_line_begin = iter_char1 - (m_line.content.size() - 1u);
                     } else {
                         DEBUG_LOG("       Single word");
                         // There is only one word on this line, or word
@@ -704,11 +704,11 @@ void text::update_() const {
                                 "       Char to erase : " + utils::to_string(uiCharToErase) +
                                 " / " + utils::to_string(mLine.lContent.size()));
 
-                            m_line.l_content.erase(
-                                m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
-                            m_line.l_content.push_back(U'.');
-                            m_line.l_content.push_back(U'.');
-                            m_line.l_content.push_back(U'.');
+                            m_line.content.erase(
+                                m_line.content.end() - ui_char_to_erase, m_line.content.end());
+                            m_line.content.push_back(U'.');
+                            m_line.content.push_back(U'.');
+                            m_line.content.push_back(U'.');
                             m_line.f_width += f_word_width;
                         } else {
                             DEBUG_LOG("       Truncate");
@@ -721,32 +721,32 @@ void text::update_() const {
                                 ++ui_char_to_erase;
                             }
 
-                            m_line.l_content.erase(
-                                m_line.l_content.end() - ui_char_to_erase, m_line.l_content.end());
+                            m_line.content.erase(
+                                m_line.content.end() - ui_char_to_erase, m_line.content.end());
                         }
 
                         if (!b_word_wrap_) {
                             DEBUG_LOG("       Display single line");
                             // Word wrap is disabled, so we can only display one line anyway.
-                            l_line_list.push_back(m_line);
+                            line_list.push_back(m_line);
                             b_done = true;
                             break;
                         }
 
                         // Add the line
-                        l_lines.push_back(m_line);
+                        lines.push_back(m_line);
                         m_line.f_width = 0.0f;
-                        m_line.l_content.clear();
+                        m_line.content.clear();
 
                         DEBUG_LOG("       Continue");
 
                         // Skip all following content (which we cannot display) until next
                         // whitespace
                         auto iter_temp = iter_char1;
-                        iter_char1     = std::find_if(
-                            iter_char1, l_parsed_content.end(), &parser::is_whitespace);
+                        iter_char1 =
+                            std::find_if(iter_char1, parsed_content.end(), &parser::is_whitespace);
 
-                        if (iter_char1 == l_parsed_content.end())
+                        if (iter_char1 == parsed_content.end())
                             break;
 
                         // Apply the format tags that were cut
@@ -755,7 +755,7 @@ void text::update_() const {
                                 [&](const auto& m_value) {
                                     using type = std::decay_t<decltype(m_value)>;
                                     if constexpr (std::is_same_v<type, parser::format>) {
-                                        m_line.l_content.push_back(m_value);
+                                        m_line.content.push_back(m_value);
                                     }
                                 },
                                 *iter_temp);
@@ -763,8 +763,8 @@ void text::update_() const {
 
                         // Look for the next word
                         iter_char1 =
-                            std::find_if(iter_char1, l_parsed_content.end(), &parser::is_word);
-                        if (iter_char1 != l_parsed_content.end())
+                            std::find_if(iter_char1, parsed_content.end(), &parser::is_word);
+                        if (iter_char1 != parsed_content.end())
                             break;
 
                         --iter_char1;
@@ -778,12 +778,12 @@ void text::update_() const {
 
             DEBUG_LOG("     End");
 
-            l_lines.push_back(m_line);
+            lines.push_back(m_line);
 
             // Add the maximum number of line to this text
-            for (auto& s_line : l_lines) {
-                l_line_list.push_back(std::move(s_line));
-                if (l_line_list.size() == ui_max_line_nbr) {
+            for (auto& s_line : lines) {
+                line_list.push_back(std::move(s_line));
+                if (line_list.size() == ui_max_line_nbr) {
                     b_done = true;
                     break;
                 }
@@ -795,22 +795,22 @@ void text::update_() const {
         }
     }
 
-    ui_num_lines_ = l_line_list.size();
+    ui_num_lines_ = line_list.size();
 
-    l_quad_list_.clear();
-    l_outline_quad_list_.clear();
-    l_icons_list_.clear();
+    quad_list_.clear();
+    outline_quad_list_.clear();
+    icons_list_.clear();
 
-    if (!l_line_list.empty()) {
+    if (!line_list.empty()) {
         if (f_box_w_ == 0.0f || std::isinf(f_box_w_)) {
             f_w_ = 0.0f;
-            for (const auto& m_line : l_line_list)
+            for (const auto& m_line : line_list)
                 f_w_ = std::max(f_w_, m_line.f_width);
         } else
             f_w_ = f_box_w_;
 
-        f_h_ = (1.0f + static_cast<float>(l_line_list.size() - 1) * f_line_spacing_) *
-               get_line_height();
+        f_h_ =
+            (1.0f + static_cast<float>(line_list.size() - 1) * f_line_spacing_) * get_line_height();
 
         float fY   = 0.0f;
         float f_x0 = 0.0f;
@@ -841,9 +841,9 @@ void text::update_() const {
         f_x0 = round_to_pixel_(f_x0);
         fY   = round_to_pixel_(fY);
 
-        std::vector<color> l_color_stack;
+        std::vector<color> color_stack;
 
-        for (const auto& m_line : l_line_list) {
+        for (const auto& m_line : line_list) {
             float fX = 0.0f;
             switch (m_align_x_) {
             case alignment_x::left: fX = 0.0f; break;
@@ -853,9 +853,9 @@ void text::update_() const {
 
             fX = round_to_pixel_(fX) + f_x0;
 
-            for (auto iter_char : utils::range::iterator(m_line.l_content)) {
+            for (auto iter_char : utils::range::iterator(m_line.content)) {
                 const auto m_advance =
-                    parser::get_advance(*this, iter_char, m_line.l_content.begin());
+                    parser::get_advance(*this, iter_char, m_line.content.begin());
 
                 fX += m_advance.first;
 
@@ -865,9 +865,9 @@ void text::update_() const {
                         if constexpr (std::is_same_v<type, parser::format>) {
                             switch (m_value.m_color_action) {
                             case parser::color_action::set:
-                                l_color_stack.push_back(m_value.m_color);
+                                color_stack.push_back(m_value.m_color);
                                 break;
-                            case parser::color_action::reset: l_color_stack.pop_back(); break;
+                            case parser::color_action::reset: color_stack.pop_back(); break;
                             default: break;
                             }
                         } else if constexpr (std::is_same_v<type, parser::texture>) {
@@ -905,29 +905,29 @@ void text::update_() const {
                                     vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                             }
 
-                            l_icons_list_.push_back(m_icon);
+                            icons_list_.push_back(m_icon);
                         } else if constexpr (std::is_same_v<type, char32_t>) {
                             if (p_outline_font_) {
-                                std::array<vertex, 4> l_vertex_list =
+                                std::array<vertex, 4> vertex_list =
                                     create_outline_letter_quad_(m_value);
                                 for (std::size_t i = 0; i < 4; ++i) {
-                                    l_vertex_list[i].pos +=
+                                    vertex_list[i].pos +=
                                         vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                                    l_vertex_list[i].col = color::black;
+                                    vertex_list[i].col = color::black;
                                 }
 
-                                l_outline_quad_list_.push_back(l_vertex_list);
+                                outline_quad_list_.push_back(vertex_list);
                             }
 
-                            std::array<vertex, 4> l_vertex_list = create_letter_quad_(m_value);
+                            std::array<vertex, 4> vertex_list = create_letter_quad_(m_value);
                             for (std::size_t i = 0; i < 4; ++i) {
-                                l_vertex_list[i].pos +=
+                                vertex_list[i].pos +=
                                     vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                                l_vertex_list[i].col =
-                                    l_color_stack.empty() ? color::empty : l_color_stack.back();
+                                vertex_list[i].col =
+                                    color_stack.empty() ? color::empty : color_stack.back();
                             }
 
-                            l_quad_list_.push_back(l_vertex_list);
+                            quad_list_.push_back(vertex_list);
                         }
                     },
                     *iter_char);
@@ -947,13 +947,13 @@ void text::update_() const {
             p_outline_vertex_cache_ = m_renderer_.create_vertex_cache(vertex_cache::type::quads);
 
         p_outline_vertex_cache_->update(
-            l_outline_quad_list_[0].data(), l_outline_quad_list_.size() * 4);
+            outline_quad_list_[0].data(), outline_quad_list_.size() * 4);
 
         if (!p_vertex_cache_)
             p_vertex_cache_ = m_renderer_.create_vertex_cache(vertex_cache::type::quads);
 
-        std::vector<std::array<vertex, 4>> l_quads_copy = l_quad_list_;
-        for (auto& m_quad : l_quads_copy)
+        std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
+        for (auto& m_quad : quads_copy)
             for (std::size_t i = 0; i < 4; ++i) {
                 if (!b_formatting_enabled_ || b_force_color_ || m_quad[i].col == color::empty) {
                     m_quad[i].col = m_color_;
@@ -962,7 +962,7 @@ void text::update_() const {
                 m_quad[i].col.a *= f_alpha_;
             }
 
-        p_vertex_cache_->update(l_quads_copy[0].data(), l_quads_copy.size() * 4);
+        p_vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
     }
 
     b_update_cache_ = false;
@@ -971,19 +971,19 @@ void text::update_() const {
 std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t ui_char) const {
     bounds2f m_quad = m_font.get_character_bounds(ui_char) * f_scaling_factor_;
 
-    std::array<vertex, 4> l_vertex_list;
-    l_vertex_list[0].pos = m_quad.top_left();
-    l_vertex_list[1].pos = m_quad.top_right();
-    l_vertex_list[2].pos = m_quad.bottom_right();
-    l_vertex_list[3].pos = m_quad.bottom_left();
+    std::array<vertex, 4> vertex_list;
+    vertex_list[0].pos = m_quad.top_left();
+    vertex_list[1].pos = m_quad.top_right();
+    vertex_list[2].pos = m_quad.bottom_right();
+    vertex_list[3].pos = m_quad.bottom_left();
 
-    bounds2f m_u_vs      = m_font.get_character_uvs(ui_char);
-    l_vertex_list[0].uvs = m_u_vs.top_left();
-    l_vertex_list[1].uvs = m_u_vs.top_right();
-    l_vertex_list[2].uvs = m_u_vs.bottom_right();
-    l_vertex_list[3].uvs = m_u_vs.bottom_left();
+    bounds2f m_u_vs    = m_font.get_character_uvs(ui_char);
+    vertex_list[0].uvs = m_u_vs.top_left();
+    vertex_list[1].uvs = m_u_vs.top_right();
+    vertex_list[2].uvs = m_u_vs.bottom_right();
+    vertex_list[3].uvs = m_u_vs.bottom_left();
 
-    return l_vertex_list;
+    return vertex_list;
 }
 
 std::array<vertex, 4> text::create_letter_quad_(char32_t ui_char) const {
@@ -1004,16 +1004,16 @@ quad text::create_letter_quad(char32_t ui_char) const {
 
 std::size_t text::get_num_letters() const {
     update_();
-    return l_quad_list_.size();
+    return quad_list_.size();
 }
 
 const std::array<vertex, 4>& text::get_letter_quad(std::size_t ui_index) const {
     update_();
 
-    if (ui_index >= l_quad_list_.size())
+    if (ui_index >= quad_list_.size())
         throw gui::exception("text", "Trying to access letter at invalid index.");
 
-    return l_quad_list_[ui_index];
+    return quad_list_[ui_index];
 }
 
 } // namespace lxgui::gui

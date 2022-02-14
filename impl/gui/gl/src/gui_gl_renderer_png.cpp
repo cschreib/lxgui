@@ -27,19 +27,20 @@ renderer::create_material_png_(const std::string& s_file_name, material::filter 
     }
 
     const std::size_t pngsigsize = 8;
-    png_byte          l_signature[pngsigsize];
-    m_file.read(reinterpret_cast<char*>(l_signature), pngsigsize);
-    if (!m_file.good() || png_sig_cmp(l_signature, 0, pngsigsize) != 0) {
+    png_byte          signature[pngsigsize];
+    m_file.read(reinterpret_cast<char*>(signature), pngsigsize);
+    if (!m_file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
         throw gui::exception(
             "gui::gl::manager", s_file_name + "' is not a valid PNG image : '" +
-                                    std::string(l_signature, l_signature + pngsigsize) + "'.");
+                                    std::string(signature, signature + pngsigsize) + "'.");
     }
 
     png_structp p_read_struct = nullptr;
     png_infop   p_info_struct = nullptr;
 
     try {
-        p_read_struct = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, raise_error, nullptr);
+        p_read_struct =
+            png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, raise_error, nullptr);
         if (!p_read_struct)
             throw gui::exception("gui::gl::manager", "'png_create_read_struct' failed.");
 
@@ -75,22 +76,22 @@ renderer::create_material_png_(const std::string& s_file_name, material::filter 
         std::size_t ui_width  = png_get_image_width(p_read_struct, p_info_struct);
         std::size_t ui_height = png_get_image_height(p_read_struct, p_info_struct);
 
-        std::vector<ub32color> l_data(ui_width * ui_height);
-        std::vector<png_bytep> l_rows(ui_height);
+        std::vector<ub32color> data(ui_width * ui_height);
+        std::vector<png_bytep> rows(ui_height);
 
         for (std::size_t i = 0; i < ui_height; ++i)
-            l_rows[i] = reinterpret_cast<png_bytep>(l_data.data() + i * ui_width);
+            rows[i] = reinterpret_cast<png_bytep>(data.data() + i * ui_width);
 
-        png_read_image(p_read_struct, l_rows.data());
+        png_read_image(p_read_struct, rows.data());
 
         png_destroy_read_struct(&p_read_struct, &p_info_struct, nullptr);
 
-        material::premultiply_alpha(l_data);
+        material::premultiply_alpha(data);
 
         std::shared_ptr<material> p_tex = std::make_shared<gui::gl::material>(
             vector2ui(ui_width, ui_height), material::wrap::repeat, m_filter);
 
-        p_tex->update_texture(l_data.data());
+        p_tex->update_texture(data.data());
 
         return std::move(p_tex);
     } catch (const gui::exception& e) {

@@ -20,14 +20,14 @@ public:
     /** \param sFontFile   The name of the font file to read
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      */
     font(
         const std::string&                   s_font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
-        const std::vector<code_point_range>& l_code_points,
+        const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point);
 
     /// Get the size of the font in pixels.
@@ -86,12 +86,12 @@ private:
     char32_t get_character_(char32_t ui_char) const;
 
     sf::Font    m_font_;
-    std::size_t ui_size_             = 0u;
-    std::size_t ui_outline_          = 0u;
+    std::size_t ui_size_               = 0u;
+    std::size_t ui_outline_            = 0u;
     char32_t    ui_default_code_point_ = 0u;
 
     std::shared_ptr<sfml::material> p_texture_;
-    std::vector<code_point_range>   l_code_points_;
+    std::vector<code_point_range>   code_points_;
 };
 
 } // namespace lxgui::gui::sfml

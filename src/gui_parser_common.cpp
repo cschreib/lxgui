@@ -17,7 +17,7 @@ region_core_attributes parse_core_attributes(
     utils::observer_ptr<frame> p_parent) {
     region_core_attributes m_attr;
     m_attr.s_object_type = m_node.get_name();
-    m_attr.s_name       = m_node.get_attribute_value<std::string>("name");
+    m_attr.s_name        = m_node.get_attribute_value<std::string>("name");
 
     if (p_parent) {
         m_attr.p_parent = std::move(p_parent);
@@ -40,7 +40,7 @@ region_core_attributes parse_core_attributes(
         m_attr.b_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
 
         if (const layout_attribute* p_attr = m_node.try_get_attribute("parent")) {
-            std::string s_parent    = p_attr->get_value<std::string>();
+            std::string s_parent     = p_attr->get_value<std::string>();
             auto        p_parent_obj = m_registry.get_region_by_name(s_parent);
             if (!s_parent.empty() && !p_parent_obj) {
                 gui::out << gui::warning << m_node.get_location() << " : "
@@ -62,7 +62,7 @@ region_core_attributes parse_core_attributes(
     }
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("inherits")) {
-        m_attr.l_inheritance =
+        m_attr.inheritance =
             m_virtual_registry.get_virtual_region_list(p_attr->get_value<std::string>());
     }
 

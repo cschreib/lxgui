@@ -90,14 +90,14 @@ public:
      *   \return 'true' if a key binding was found matching this key combination,
      *           'false' otherwise.
      */
-    bool
-    on_key_down(input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
+    bool on_key_down(
+        input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
 
 private:
     struct key_binding {
         std::string s_name;
 
-        input::key m_key            = input::key::k_unassigned;
+        input::key m_key              = input::key::k_unassigned;
         bool       b_shift_is_pressed = false;
         bool       b_ctrl_is_pressed  = false;
         bool       b_alt_is_pressed   = false;
@@ -105,10 +105,10 @@ private:
         signal_type m_signal;
     };
 
-    key_binding*
-    find_binding_(input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
+    key_binding* find_binding_(
+        input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
 
-    std::vector<key_binding> l_key_bindings_;
+    std::vector<key_binding> key_bindings_;
 };
 
 } // namespace lxgui::gui

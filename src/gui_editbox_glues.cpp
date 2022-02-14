@@ -114,8 +114,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     /** @function get_text_insets
      */
     m_class.set_function("get_text_insets", [](const edit_box& m_self) {
-        const bounds2f& l_insets = m_self.get_text_insets();
-        return std::make_tuple(l_insets.left, l_insets.right, l_insets.top, l_insets.bottom);
+        const bounds2f& insets = m_self.get_text_insets();
+        return std::make_tuple(insets.left, insets.right, insets.top, insets.bottom);
     });
 
     /** @function highlight_text

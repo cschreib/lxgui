@@ -125,17 +125,17 @@
 namespace lxgui::gui {
 
 void region::set_lua_member_(std::string s_key, sol::stack_object m_value) {
-    auto m_iter = l_lua_members_.find(s_key);
-    if (m_iter == l_lua_members_.cend()) {
-        l_lua_members_.insert(m_iter, {std::move(s_key), m_value});
+    auto m_iter = lua_members_.find(s_key);
+    if (m_iter == lua_members_.cend()) {
+        lua_members_.insert(m_iter, {std::move(s_key), m_value});
     } else {
         m_iter->second = sol::object(m_value);
     }
 }
 
 sol::object region::get_lua_member_(const std::string& s_key) const {
-    auto m_iter = l_lua_members_.find(s_key);
-    if (m_iter == l_lua_members_.cend())
+    auto m_iter = lua_members_.find(s_key);
+    if (m_iter == lua_members_.cend())
         return sol::lua_nil;
 
     return m_iter->second;
@@ -221,7 +221,8 @@ void region::register_on_lua(sol::state& m_lua) {
 
         return std::make_tuple(
             anchor::get_string_point(m_anchor.m_point), m_anchor.get_parent(),
-            anchor::get_string_point(m_anchor.m_parent_point), m_anchor.m_offset.x, m_anchor.m_offset.y);
+            anchor::get_string_point(m_anchor.m_parent_point), m_anchor.m_offset.x,
+            m_anchor.m_offset.y);
     });
 
     /** @function get_right
@@ -256,7 +257,7 @@ void region::register_on_lua(sol::state& m_lua) {
         [](region& m_self, sol::optional<std::variant<std::string, region*>> m_target) {
             m_self.set_all_points(
                 m_target.has_value() ? get_object<region>(m_self.get_manager(), m_target.value())
-                                    : nullptr);
+                                     : nullptr);
         });
 
     /** @function set_height
@@ -265,31 +266,33 @@ void region::register_on_lua(sol::state& m_lua) {
 
     /** @function set_parent
      */
-    m_class.set_function("set_parent", [](region& m_self, std::variant<std::string, frame*> m_parent) {
-        utils::observer_ptr<frame> p_parent = get_object<frame>(m_self.get_manager(), m_parent);
+    m_class.set_function(
+        "set_parent", [](region& m_self, std::variant<std::string, frame*> m_parent) {
+            utils::observer_ptr<frame> p_parent = get_object<frame>(m_self.get_manager(), m_parent);
 
-        if (p_parent) {
-            if (m_self.is_object_type<frame>())
-                p_parent->add_child(utils::static_pointer_cast<frame>(m_self.release_from_parent()));
-            else
-                p_parent->add_region(
-                    utils::static_pointer_cast<layered_region>(m_self.release_from_parent()));
-        } else {
-            if (m_self.is_object_type<frame>()) {
-                m_self.get_manager().get_root().add_root_frame(
-                    utils::static_pointer_cast<frame>(m_self.release_from_parent()));
-            } else
-                throw sol::error("set_parent(nil) can only be called on frames");
-        }
-    });
+            if (p_parent) {
+                if (m_self.is_object_type<frame>())
+                    p_parent->add_child(
+                        utils::static_pointer_cast<frame>(m_self.release_from_parent()));
+                else
+                    p_parent->add_region(
+                        utils::static_pointer_cast<layered_region>(m_self.release_from_parent()));
+            } else {
+                if (m_self.is_object_type<frame>()) {
+                    m_self.get_manager().get_root().add_root_frame(
+                        utils::static_pointer_cast<frame>(m_self.release_from_parent()));
+                } else
+                    throw sol::error("set_parent(nil) can only be called on frames");
+            }
+        });
 
     /** @function set_point
      */
     m_class.set_function(
         "set_point", [](region& m_self, const std::string& s_point,
                         sol::optional<std::variant<std::string, region*>> m_parent,
-                        sol::optional<std::string> s_relative_point, sol::optional<float> f_x_offset,
-                        sol::optional<float> f_y_offset) {
+                        sol::optional<std::string>                        s_relative_point,
+                        sol::optional<float> f_x_offset, sol::optional<float> f_y_offset) {
             // point
             anchor_point m_point = anchor::get_anchor_point(s_point);
 
@@ -316,7 +319,8 @@ void region::register_on_lua(sol::state& m_lua) {
             float f_abs_y = f_y_offset.value_or(0.0f);
 
             m_self.set_point(
-                m_point, p_parent ? p_parent->get_name() : "", m_parent_point, vector2f(f_abs_x, f_abs_y));
+                m_point, p_parent ? p_parent->get_name() : "", m_parent_point,
+                vector2f(f_abs_x, f_abs_y));
         });
 
     /** @function set_rel_point
@@ -352,8 +356,8 @@ void region::register_on_lua(sol::state& m_lua) {
             float f_rel_y = f_y_offset.value_or(0.0f);
 
             m_self.set_point(
-                m_point, p_parent ? p_parent->get_name() : "", m_parent_point, vector2f(f_rel_x, f_rel_y),
-                anchor_type::rel);
+                m_point, p_parent ? p_parent->get_name() : "", m_parent_point,
+                vector2f(f_rel_x, f_rel_y), anchor_type::rel);
         });
 
     /** @function set_width

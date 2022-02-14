@@ -34,12 +34,12 @@ public:
     explicit vertex_cache(type m_type);
 
     /// Update the data stored in the cache to form new triangles.
-    /** \param lVertexData The vertices to cache
+    /** \param vertex_data The vertices to cache
      *   \param uiNumVertex The number of vertices to cache
      *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
      *         If the type if QUADS, uiNumVertex must be a multiple of 4.
      */
-    void update(const vertex* l_vertex_data, std::size_t ui_num_vertex) override;
+    void update(const vertex* vertex_data, std::size_t ui_num_vertex) override;
 
     /// Returns the number of vertices currently stored in the cache.
     /** \return The number of vertices currently stored in the cache

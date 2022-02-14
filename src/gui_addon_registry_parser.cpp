@@ -34,11 +34,11 @@ public:
         std::size_t ui_prev_pos = 0u;
         while (std::getline(m_stream, s_line)) {
             s_file_content_ += '\n' + s_line;
-            l_line_offsets_.push_back(ui_prev_pos);
+            line_offsets_.push_back(ui_prev_pos);
             ui_prev_pos += s_line.size() + 1u;
         }
 
-        l_line_offsets_.push_back(ui_prev_pos);
+        line_offsets_.push_back(ui_prev_pos);
 
         b_is_open_ = true;
     }
@@ -52,11 +52,11 @@ public:
     }
 
     std::pair<std::size_t, std::size_t> get_line_info(std::size_t ui_offset) const {
-        auto m_iter = std::lower_bound(l_line_offsets_.begin(), l_line_offsets_.end(), ui_offset);
-        if (m_iter == l_line_offsets_.end())
+        auto m_iter = std::lower_bound(line_offsets_.begin(), line_offsets_.end(), ui_offset);
+        if (m_iter == line_offsets_.end())
             return std::make_pair(0, 0);
 
-        std::size_t ui_line_nbr    = m_iter - l_line_offsets_.begin();
+        std::size_t ui_line_nbr    = m_iter - line_offsets_.begin();
         std::size_t ui_char_offset = ui_offset - *m_iter + 1u;
 
         return std::make_pair(ui_line_nbr, ui_char_offset);
@@ -74,7 +74,7 @@ private:
     bool                     b_is_open_ = false;
     std::string              s_file_name_;
     std::string              s_file_content_;
-    std::vector<std::size_t> l_line_offsets_;
+    std::vector<std::size_t> line_offsets_;
 };
 
 std::string normalize_node_name(const std::string& s_name, bool b_capital_first) {
@@ -95,7 +95,8 @@ std::string normalize_node_name(const std::string& s_name, bool b_capital_first)
 }
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
-void set_node(const file_line_mappings& m_file, layout_node& m_node, const pugi::xml_node& m_xml_node) {
+void set_node(
+    const file_line_mappings& m_file, layout_node& m_node, const pugi::xml_node& m_xml_node) {
     auto s_location = m_file.get_location(m_xml_node.offset_debug());
     m_node.set_location(s_location);
     m_node.set_value_location(s_location);
@@ -211,8 +212,8 @@ void addon_registry::parse_layout_file_(const std::string& s_file, const addon& 
         const unsigned int ui_options = pugi::parse_ws_pcdata_single;
 
         pugi::xml_document     m_doc;
-        pugi::xml_parse_result m_result =
-            m_doc.load_buffer(m_file.get_content().c_str(), m_file.get_content().size(), ui_options);
+        pugi::xml_parse_result m_result = m_doc.load_buffer(
+            m_file.get_content().c_str(), m_file.get_content().size(), ui_options);
 
         if (!m_result) {
             gui::out << gui::error << m_file.get_location(m_result.offset) << ": "
@@ -255,7 +256,8 @@ void addon_registry::parse_layout_file_(const std::string& s_file, const addon& 
             }
         } else if (m_node.get_name() == "Include") {
             parse_layout_file_(
-                m_add_on.s_directory + "/" + m_node.get_attribute_value<std::string>("file"), m_add_on);
+                m_add_on.s_directory + "/" + m_node.get_attribute_value<std::string>("file"),
+                m_add_on);
         } else {
             try {
                 auto m_attr = parse_core_attributes(

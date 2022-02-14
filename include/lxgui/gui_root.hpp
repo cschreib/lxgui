@@ -141,8 +141,8 @@ public:
      */
     void start_moving(
         utils::observer_ptr<region> p_obj,
-        anchor*                     p_anchor              = nullptr,
-        constraint                  m_constraint          = constraint::none,
+        anchor*                     p_anchor                = nullptr,
+        constraint                  m_constraint            = constraint::none,
         std::function<void()>       m_apply_constraint_func = nullptr);
 
     /// Stops movement for the current object.
@@ -272,7 +272,10 @@ private:
     void on_text_entered_(std::uint32_t ui_char);
     void on_key_state_changed_(input::key m_key, bool b_is_down);
     void on_mouse_button_state_changed_(
-        input::mouse_button m_button, bool b_is_down, bool b_is_double_click, const vector2f& m_mouse_pos);
+        input::mouse_button m_button,
+        bool                b_is_down,
+        bool                b_is_double_click,
+        const vector2f&     m_mouse_pos);
 
     manager&                 m_manager_;
     renderer&                m_renderer_;
@@ -289,7 +292,7 @@ private:
     quad                           m_screen_quad_;
 
     // IO
-    std::vector<utils::scoped_connection> l_connections_;
+    std::vector<utils::scoped_connection> connections_;
 
     // Mouse IO
     utils::observer_ptr<frame> p_hovered_frame_ = nullptr;
@@ -305,13 +308,13 @@ private:
     std::function<void()> m_apply_constraint_func_;
 
     vector2f m_resize_start_;
-    bool     b_resize_width_      = false;
-    bool     b_resize_height_     = false;
+    bool     b_resize_width_       = false;
+    bool     b_resize_height_      = false;
     bool     b_resize_from_right_  = false;
     bool     b_resize_from_bottom_ = false;
 
     // Keyboard IO
-    std::vector<utils::observer_ptr<frame>> l_focus_stack_;
+    std::vector<utils::observer_ptr<frame>> focus_stack_;
 };
 
 } // namespace lxgui::gui

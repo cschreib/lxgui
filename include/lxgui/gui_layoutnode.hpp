@@ -189,7 +189,7 @@ protected:
     std::string s_location_;
     std::string s_value_location_;
 
-    mutable bool b_accessed_     = false;
+    mutable bool b_accessed_      = false;
     mutable bool b_access_bypass_ = false;
 };
 
@@ -214,7 +214,7 @@ public:
     /** \return The number of children of this node
      */
     std::size_t get_children_count() const noexcept {
-        return l_child_list_.size();
+        return child_list_.size();
     }
 
     /// Returns a specific child of this node, by index
@@ -223,7 +223,7 @@ public:
      */
     const layout_node& get_child(std::size_t ui_index) const noexcept {
         b_accessed_ = true;
-        return l_child_list_[ui_index];
+        return child_list_[ui_index];
     }
 
     /// Returns a view to the list of children.
@@ -231,7 +231,7 @@ public:
      */
     children_view get_children() const noexcept {
         b_accessed_ = true;
-        return children_view(l_child_list_);
+        return children_view(child_list_);
     }
 
     template<typename BaseIterator>
@@ -252,7 +252,7 @@ public:
      */
     filtered_children_view get_children(std::string_view s_name) const noexcept {
         b_accessed_ = true;
-        return filtered_children_view(l_child_list_, {}, {s_name});
+        return filtered_children_view(child_list_, {}, {s_name});
     }
 
     /// Returns the first child with a given name, or null if none.
@@ -301,7 +301,7 @@ public:
      */
     const layout_attribute* try_get_attribute(std::string_view s_name) const noexcept {
         b_accessed_ = true;
-        for (const layout_attribute& m_node : l_attr_list_) {
+        for (const layout_attribute& m_node : attr_list_) {
             if (m_node.get_name() == s_name)
                 return &m_node;
         }
@@ -394,21 +394,21 @@ public:
      */
     attribute_view get_attributes() const noexcept {
         b_accessed_ = true;
-        return attribute_view(l_attr_list_);
+        return attribute_view(attr_list_);
     }
 
     /// Add a new child to this node
     /** \return A reference to the added child
      */
     layout_node& add_child() {
-        return l_child_list_.emplace_back();
+        return child_list_.emplace_back();
     }
 
     /// Add a new attribute to this node
     /** \return A reference to the added attribute
      */
     layout_attribute& add_attribute() {
-        return l_attr_list_.emplace_back();
+        return attr_list_.emplace_back();
     }
 
     /// Returns the value of the attribute with the provided name, or set it if none.
@@ -431,8 +431,8 @@ public:
     }
 
 private:
-    child_list     l_child_list_;
-    attribute_list l_attr_list_;
+    child_list     child_list_;
+    attribute_list attr_list_;
 };
 
 template<>

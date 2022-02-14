@@ -20,8 +20,8 @@ struct addon {
     std::string s_main_directory;
     std::string s_directory;
 
-    std::vector<std::string> l_file_list;
-    std::vector<std::string> l_saved_variable_list;
+    std::vector<std::string> file_list;
+    std::vector<std::string> saved_variable_list;
 };
 
 } // namespace lxgui::gui

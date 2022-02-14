@@ -76,11 +76,11 @@ public:
     bool set_dimensions(const vector2ui& m_dimensions);
 
     /// Premultiplies the texture by alpha component.
-    /** \param lData The pixel data to pre-multiply
+    /** \param data The pixel data to pre-multiply
      *   \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(std::vector<ub32color>& l_data);
+    static void premultiply_alpha(std::vector<ub32color>& data);
 
     /// Sets the wrap mode of this texture.
     /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
@@ -126,8 +126,8 @@ public:
 
 private:
     vector2ui     m_canvas_dimensions_;
-    wrap          m_wrap_           = wrap::repeat;
-    filter        m_filter_         = filter::none;
+    wrap          m_wrap_            = wrap::repeat;
+    filter        m_filter_          = filter::none;
     std::uint32_t ui_texture_handle_ = 0u;
     bounds2f      m_rect_;
     bool          b_is_owner_ = false;

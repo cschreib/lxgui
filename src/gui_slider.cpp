@@ -21,7 +21,7 @@ void step_value(float& f_value, float f_step) {
 }
 
 slider::slider(utils::control_block& m_block, manager& m_manager) : frame(m_block, m_manager) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
     enable_mouse(true);
     register_for_drag({"LeftButton"});
 }
@@ -85,11 +85,11 @@ void slider::fire_script(const std::string& s_script_name, const event_data& m_d
 
             float f_value;
             if (m_orientation_ == orientation::horizontal) {
-                float f_offset = m_data.get<float>(1) - l_border_list_.left;
+                float f_offset = m_data.get<float>(1) - border_list_.left;
                 f_value        = f_offset / m_apparent_size.x;
                 set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
             } else {
-                float f_offset = m_data.get<float>(2) - l_border_list_.top;
+                float f_offset = m_data.get<float>(2) - border_list_.top;
                 f_value        = f_offset / m_apparent_size.y;
                 set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
             }
@@ -114,8 +114,8 @@ void slider::copy_from(const region& m_obj) {
 
     if (const texture* p_thumb = p_slider->get_thumb_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_thumb->get_name();
-        m_attr.l_inheritance = {p_slider->get_thumb_texture()};
+        m_attr.s_name      = p_thumb->get_name();
+        m_attr.inheritance = {p_slider->get_thumb_texture()};
 
         auto p_texture =
             this->create_layered_region<texture>(p_thumb->get_draw_layer(), std::move(m_attr));
@@ -142,9 +142,11 @@ void slider::constrain_thumb_() {
 
     if (b_thumb_moved_) {
         if (m_orientation_ == orientation::horizontal)
-            f_value_ = p_thumb_texture_->get_point(anchor_point::center).m_offset.x / m_apparent_size.x;
+            f_value_ =
+                p_thumb_texture_->get_point(anchor_point::center).m_offset.x / m_apparent_size.x;
         else
-            f_value_ = p_thumb_texture_->get_point(anchor_point::center).m_offset.y / m_apparent_size.y;
+            f_value_ =
+                p_thumb_texture_->get_point(anchor_point::center).m_offset.y / m_apparent_size.y;
 
         f_value_ = f_value_ * (f_max_value_ - f_min_value_) + f_min_value_;
         f_value_ = std::clamp(f_value_, f_min_value_, f_max_value_);
@@ -242,7 +244,7 @@ void slider::set_value_step(float f_value_step) {
         step_value(f_max_value_, f_value_step_);
 
         float f_old_value = f_value_;
-        f_value_         = std::clamp(f_value_, f_min_value_, f_max_value_);
+        f_value_          = std::clamp(f_value_, f_min_value_, f_max_value_);
         step_value(f_value_, f_value_step_);
 
         if (f_value_ != f_old_value)
@@ -286,7 +288,7 @@ void slider::set_orientation(const std::string& s_orientation) {
     else if (s_orientation == "HORIZONTAL")
         m_orientation = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back()
+        gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown orientation : \"" +
                         s_orientation + "\". Using \"HORIZONTAL\"."
@@ -314,7 +316,7 @@ void slider::set_thumb_draw_layer(const std::string& s_thumb_layer) {
     else if (s_thumb_layer == "OVERLAY")
         m_thumb_layer_ = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back()
+        gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown layer type : \"" +
                         s_thumb_layer + "\". Using \"OVERLAY\"."

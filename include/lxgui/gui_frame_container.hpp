@@ -85,7 +85,7 @@ public:
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<frame> create_root_frame(region_core_attributes m_attr) {
         m_attr.s_object_type = FrameType::CLASS_NAME;
-        m_attr.p_parent     = nullptr;
+        m_attr.p_parent      = nullptr;
 
         return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
     }
@@ -105,7 +105,7 @@ public:
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<frame> create_root_frame(const std::string& s_name) {
         region_core_attributes m_attr;
-        m_attr.s_name       = s_name;
+        m_attr.s_name        = s_name;
         m_attr.s_object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
@@ -178,7 +178,7 @@ private:
     registry&       m_registry_;
     frame_renderer* p_renderer_;
 
-    root_frame_list l_root_frame_list_;
+    root_frame_list root_frame_list_;
 };
 
 } // namespace lxgui::gui

@@ -13,7 +13,7 @@ namespace lxgui::gui {
 
 font_string::font_string(utils::control_block& m_block, manager& m_manager) :
     layered_region(m_block, m_manager) {
-    l_type_.push_back(class_name);
+    type_.push_back(class_name);
 }
 
 void font_string::render() const {
@@ -24,22 +24,22 @@ void font_string::render() const {
 
     if (std::isinf(p_text_->get_box_width())) {
         switch (m_align_x_) {
-        case alignment_x::left: f_x = l_border_list_.left; break;
-        case alignment_x::center: f_x = (l_border_list_.left + l_border_list_.right) / 2; break;
-        case alignment_x::right: f_x = l_border_list_.right; break;
+        case alignment_x::left: f_x = border_list_.left; break;
+        case alignment_x::center: f_x = (border_list_.left + border_list_.right) / 2; break;
+        case alignment_x::right: f_x = border_list_.right; break;
         }
     } else {
-        f_x = l_border_list_.left;
+        f_x = border_list_.left;
     }
 
     if (std::isinf(p_text_->get_box_height())) {
         switch (m_align_y_) {
-        case alignment_y::top: f_y = l_border_list_.top; break;
-        case alignment_y::middle: f_y = (l_border_list_.top + l_border_list_.bottom) / 2; break;
-        case alignment_y::bottom: f_y = l_border_list_.bottom; break;
+        case alignment_y::top: f_y = border_list_.top; break;
+        case alignment_y::middle: f_y = (border_list_.top + border_list_.bottom) / 2; break;
+        case alignment_y::bottom: f_y = border_list_.bottom; break;
         }
     } else {
-        f_y = l_border_list_.top;
+        f_y = border_list_.top;
     }
 
     f_x += m_offset_.x;
@@ -49,7 +49,8 @@ void font_string::render() const {
 
     if (b_has_shadow_) {
         p_text_->set_color(m_shadow_color_, true);
-        p_text_->render(matrix4f::translation(round_to_pixel(vector2f(f_x, f_y) + m_shadow_offset_)));
+        p_text_->render(
+            matrix4f::translation(round_to_pixel(vector2f(f_x, f_y) + m_shadow_offset_)));
     }
 
     p_text_->set_color(m_text_color_);
@@ -88,7 +89,7 @@ std::string font_string::serialize(const std::string& s_tab) const {
     s_str << s_tab << "  # NonSpaceW.  : " << b_can_non_space_wrap_ << "\n";
     if (b_has_shadow_) {
         s_str << s_tab << "  # Shadow off. : (" << m_shadow_offset_.x << ", " << m_shadow_offset_.y
-             << ")\n";
+              << ")\n";
         s_str << s_tab << "  # Shadow col. : " << m_shadow_color_ << "\n";
     }
 
@@ -107,7 +108,7 @@ void font_string::copy_from(const region& m_obj) {
         return;
 
     std::string s_font_name = p_font_string->get_font_name();
-    float       f_height   = p_font_string->get_font_height();
+    float       f_height    = p_font_string->get_font_height();
     if (!s_font_name.empty() && f_height != 0)
         this->set_font(s_font_name, f_height);
 
@@ -198,7 +199,7 @@ void font_string::create_text_object_() {
     auto&       m_renderer  = get_manager().get_renderer();
     const auto& m_localizer = get_manager().get_localizer();
 
-    const auto&    l_code_points        = m_localizer.get_allowed_code_points();
+    const auto&    code_points           = m_localizer.get_allowed_code_points();
     const char32_t ui_default_code_point = m_localizer.get_fallback_code_point();
 
     std::shared_ptr<gui::font> p_outline_font;
@@ -206,11 +207,11 @@ void font_string::create_text_object_() {
         p_outline_font = m_renderer.create_atlas_font(
             "GUI", s_font_name_, ui_pixel_height,
             std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * ui_pixel_height))),
-            l_code_points, ui_default_code_point);
+            code_points, ui_default_code_point);
     }
 
     auto p_font = m_renderer.create_atlas_font(
-        "GUI", s_font_name_, ui_pixel_height, 0u, l_code_points, ui_default_code_point);
+        "GUI", s_font_name_, ui_pixel_height, 0u, code_points, ui_default_code_point);
 
     p_text_ = std::unique_ptr<text>(new text(m_renderer, p_font, p_outline_font));
 
@@ -226,7 +227,7 @@ void font_string::create_text_object_() {
 
 void font_string::set_font(const std::string& s_font_name, float f_height) {
     s_font_name_ = parse_file_name(s_font_name);
-    f_height_   = f_height;
+    f_height_    = f_height;
 
     create_text_object_();
 
@@ -375,7 +376,7 @@ void font_string::set_shadow(bool b_has_shadow) {
 
 void font_string::set_word_wrap(bool b_can_word_wrap, bool b_add_ellipsis) {
     b_can_word_wrap_ = b_can_word_wrap;
-    b_add_ellipsis_ = b_add_ellipsis;
+    b_add_ellipsis_  = b_add_ellipsis;
     if (p_text_)
         p_text_->enable_word_wrap(b_can_word_wrap_, b_add_ellipsis_);
 }
@@ -421,11 +422,11 @@ void font_string::update_borders_() {
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-    const bool b_old_ready      = b_ready_;
-    const auto l_old_border_list = l_border_list_;
+    const bool b_old_ready     = b_ready_;
+    const auto old_border_list = border_list_;
     b_ready_                   = true;
 
-    if (!l_anchor_list_.empty()) {
+    if (!anchor_list_.empty()) {
         float f_left = 0.0f, f_right = 0.0f, f_top = 0.0f, f_bottom = 0.0f;
         float f_x_center = 0.0f, f_y_center = 0.0f;
 
@@ -435,13 +436,13 @@ void font_string::update_borders_() {
         float f_box_width = std::numeric_limits<float>::infinity();
         if (get_dimensions().x != 0.0f)
             f_box_width = get_dimensions().x;
-        else if (l_defined_border_list_.left && l_defined_border_list_.right)
+        else if (defined_border_list_.left && defined_border_list_.right)
             f_box_width = f_right - f_left;
 
         float f_box_height = std::numeric_limits<float>::infinity();
         if (get_dimensions().y != 0.0f)
             f_box_height = get_dimensions().y;
-        else if (l_defined_border_list_.top && l_defined_border_list_.bottom)
+        else if (defined_border_list_.top && defined_border_list_.bottom)
             f_box_height = f_bottom - f_top;
 
         f_box_width  = round_to_pixel(f_box_width, utils::rounding_method::nearest_not_zero);
@@ -466,12 +467,12 @@ void font_string::update_borders_() {
             if (f_bottom < f_top)
                 f_bottom = f_top + 1.0f;
 
-            l_border_list_.left   = f_left;
-            l_border_list_.right  = f_right;
-            l_border_list_.top    = f_top;
-            l_border_list_.bottom = f_bottom;
+            border_list_.left   = f_left;
+            border_list_.right  = f_right;
+            border_list_.top    = f_top;
+            border_list_.bottom = f_bottom;
         } else
-            l_border_list_ = bounds2f::zero;
+            border_list_ = bounds2f::zero;
     } else {
         float f_box_width = get_dimensions().x;
         if (f_box_width == 0.0)
@@ -481,16 +482,16 @@ void font_string::update_borders_() {
         if (f_box_height == 0.0)
             f_box_height = p_text_->get_height();
 
-        l_border_list_ = bounds2f(0.0, 0.0, f_box_width, f_box_height);
-        b_ready_      = false;
+        border_list_ = bounds2f(0.0, 0.0, f_box_width, f_box_height);
+        b_ready_     = false;
     }
 
-    l_border_list_.left   = round_to_pixel(l_border_list_.left);
-    l_border_list_.right  = round_to_pixel(l_border_list_.right);
-    l_border_list_.top    = round_to_pixel(l_border_list_.top);
-    l_border_list_.bottom = round_to_pixel(l_border_list_.bottom);
+    border_list_.left   = round_to_pixel(border_list_.left);
+    border_list_.right  = round_to_pixel(border_list_.right);
+    border_list_.top    = round_to_pixel(border_list_.top);
+    border_list_.bottom = round_to_pixel(border_list_.bottom);
 
-    if (l_border_list_ != l_old_border_list || b_ready_ != b_old_ready) {
+    if (border_list_ != old_border_list || b_ready_ != b_old_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }

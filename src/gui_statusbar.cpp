@@ -15,8 +15,9 @@ std::array<float, 4> select_uvs(const std::array<float, 8>& uvs) {
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
-status_bar::status_bar(utils::control_block& m_block, manager& m_manager) : frame(m_block, m_manager) {
-    l_type_.push_back(class_name);
+status_bar::status_bar(utils::control_block& m_block, manager& m_manager) :
+    frame(m_block, m_manager) {
+    type_.push_back(class_name);
 }
 
 std::string status_bar::serialize(const std::string& s_tab) const {
@@ -62,8 +63,8 @@ void status_bar::copy_from(const region& m_obj) {
 
     if (const texture* p_bar = p_status_bar->get_bar_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name        = p_bar->get_name();
-        m_attr.l_inheritance = {p_status_bar->get_bar_texture()};
+        m_attr.s_name      = p_bar->get_name();
+        m_attr.inheritance = {p_status_bar->get_bar_texture()};
 
         auto p_bar_texture =
             this->create_layered_region<texture>(p_bar->get_draw_layer(), std::move(m_attr));
@@ -81,7 +82,8 @@ void status_bar::set_min_value(float f_min) {
         f_min_value_ = f_min;
         if (f_min_value_ > f_max_value_)
             f_min_value_ = f_max_value_;
-        f_value_ = f_value_ > f_max_value_ ? f_max_value_ : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+        f_value_ = f_value_ > f_max_value_ ? f_max_value_
+                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
         notify_bar_texture_needs_update_();
     }
 }
@@ -91,7 +93,8 @@ void status_bar::set_max_value(float f_max) {
         f_max_value_ = f_max;
         if (f_max_value_ < f_min_value_)
             f_max_value_ = f_min_value_;
-        f_value_ = f_value_ > f_max_value_ ? f_max_value_ : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+        f_value_ = f_value_ > f_max_value_ ? f_max_value_
+                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
         notify_bar_texture_needs_update_();
     }
 }
@@ -100,13 +103,15 @@ void status_bar::set_min_max_values(float f_min, float f_max) {
     if (f_min != f_min_value_ || f_max != f_max_value_) {
         f_min_value_ = std::min(f_min, f_max);
         f_max_value_ = std::max(f_min, f_max);
-        f_value_ = f_value_ > f_max_value_ ? f_max_value_ : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+        f_value_     = f_value_ > f_max_value_ ? f_max_value_
+                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
         notify_bar_texture_needs_update_();
     }
 }
 
 void status_bar::set_value(float f_value) {
-    f_value = f_value > f_max_value_ ? f_max_value_ : (f_value < f_min_value_ ? f_min_value_ : f_value);
+    f_value =
+        f_value > f_max_value_ ? f_max_value_ : (f_value < f_min_value_ ? f_min_value_ : f_value);
     if (f_value != f_value_) {
         f_value_ = f_value;
         notify_bar_texture_needs_update_();
@@ -131,7 +136,7 @@ void status_bar::set_bar_draw_layer(const std::string& s_bar_layer) {
     else if (s_bar_layer == "OVERLAY")
         m_bar_layer_ = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back()
+        gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown layer type : \"" +
                         s_bar_layer + "\". Using \"ARTWORK\"."
@@ -159,7 +164,7 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
     else
         p_bar_texture_->set_point(anchor_point::bottom_left, s_parent);
 
-    l_initial_text_coords_ = select_uvs(p_bar_texture_->get_tex_coord());
+    initial_text_coords_ = select_uvs(p_bar_texture_->get_tex_coord());
     notify_bar_texture_needs_update_();
 }
 
@@ -184,7 +189,7 @@ void status_bar::set_orientation(const std::string& s_orientation) {
     else if (s_orientation == "HORIZONTAL")
         m_orientation = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << l_type_.back()
+        gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown orientation : \"" +
                         s_orientation + "\". Using \"HORIZONTAL\"."
@@ -265,7 +270,7 @@ void status_bar::update(float f_delta) {
         else
             p_bar_texture_->set_relative_dimensions(vector2f(1.0f, f_coef));
 
-        std::array<float, 4> uvs = l_initial_text_coords_;
+        std::array<float, 4> uvs = initial_text_coords_;
         if (m_orientation_ == orientation::horizontal) {
             if (b_reversed_)
                 uvs[0] = (uvs[0] - uvs[2]) * f_coef + uvs[2];
