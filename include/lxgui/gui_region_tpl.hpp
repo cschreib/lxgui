@@ -134,7 +134,7 @@ constexpr auto member_function() {
 
 template<typename T>
 void region::create_glue_(T* p_self) {
-    get_lua_().globals()[s_lua_name_] = observer_from(p_self);
+    get_lua_().globals()[lua_name_] = observer_from(p_self);
 }
 
 } // namespace lxgui::gui

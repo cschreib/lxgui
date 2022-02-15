@@ -30,32 +30,32 @@ source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise
 
 utils::ustring source::get_clipboard_content() {
     if (SDL_HasClipboardText()) {
-        char*          s_text         = SDL_GetClipboardText();
-        utils::ustring s_unicode_text = utils::utf8_to_unicode(s_text);
-        SDL_free(s_text);
-        return s_unicode_text;
+        char*          text         = SDL_GetClipboardText();
+        utils::ustring unicode_text = utils::utf8_to_unicode(text);
+        SDL_free(text);
+        return unicode_text;
     } else {
         return {};
     }
 }
 
-void source::set_clipboard_content(const utils::ustring& s_content) {
-    SDL_SetClipboardText(utils::unicode_to_utf8(s_content).c_str());
+void source::set_clipboard_content(const utils::ustring& content) {
+    SDL_SetClipboardText(utils::unicode_to_utf8(content).c_str());
 }
 
-void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) {
-    auto m_iter = cursor_map_.find(s_file_name);
+void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) {
+    auto m_iter = cursor_map_.find(file_name);
     if (m_iter == cursor_map_.end()) {
         // Load file
-        SDL_Surface* p_surface = IMG_Load(s_file_name.c_str());
+        SDL_Surface* p_surface = IMG_Load(file_name.c_str());
         if (p_surface == nullptr) {
             throw gui::exception(
-                "input::sdl::source", "Could not load image file " + s_file_name + ".");
+                "input::sdl::source", "Could not load image file " + file_name + ".");
         }
 
         auto p_cursor = wrapped_cursor(
             SDL_CreateColorCursor(p_surface, m_hot_spot.x, m_hot_spot.y), &SDL_FreeCursor);
-        m_iter = cursor_map_.insert(std::make_pair(s_file_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
         SDL_FreeSurface(p_surface);
     }
 
@@ -63,12 +63,12 @@ void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2
 }
 
 void source::reset_mouse_cursor() {
-    const std::string s_name = "system_arrow";
-    auto              m_iter = cursor_map_.find(s_name);
+    const std::string name   = "system_arrow";
+    auto              m_iter = cursor_map_.find(name);
     if (m_iter == cursor_map_.end()) {
         auto p_cursor =
             wrapped_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW), &SDL_FreeCursor);
-        m_iter = cursor_map_.insert(std::make_pair(s_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
     }
 
     SDL_SetCursor(m_iter->second.get());
@@ -147,18 +147,18 @@ key source::from_sdl_(int sdl_key) const {
     case SDLK_F8: return key::k_f8;
     case SDLK_F9: return key::k_f9;
     case SDLK_F10: return key::k_f10;
-    case SDLK_KP_7: return key::k_numpa_d7;
-    case SDLK_KP_8: return key::k_numpa_d8;
-    case SDLK_KP_9: return key::k_numpa_d9;
+    case SDLK_KP_7: return key::k_numpad_7;
+    case SDLK_KP_8: return key::k_numpad_8;
+    case SDLK_KP_9: return key::k_numpad_9;
     case SDLK_KP_MINUS: return key::k_subtract;
-    case SDLK_KP_4: return key::k_numpa_d4;
-    case SDLK_KP_5: return key::k_numpa_d5;
-    case SDLK_KP_6: return key::k_numpa_d6;
+    case SDLK_KP_4: return key::k_numpad_4;
+    case SDLK_KP_5: return key::k_numpad_5;
+    case SDLK_KP_6: return key::k_numpad_6;
     case SDLK_KP_PLUS: return key::k_add;
-    case SDLK_KP_1: return key::k_numpa_d1;
-    case SDLK_KP_2: return key::k_numpa_d2;
-    case SDLK_KP_3: return key::k_numpa_d3;
-    case SDLK_KP_0: return key::k_numpa_d0;
+    case SDLK_KP_1: return key::k_numpad_1;
+    case SDLK_KP_2: return key::k_numpad_2;
+    case SDLK_KP_3: return key::k_numpad_3;
+    case SDLK_KP_0: return key::k_numpad_0;
     case SDLK_F11: return key::k_f11;
     case SDLK_F12: return key::k_f12;
     case SDLK_F13: return key::k_f13;

@@ -14,8 +14,8 @@ namespace lxgui::gui {
 
 anchor::anchor(region& m_object, const anchor_data& m_anchor) : anchor_data(m_anchor) {
     if (!m_object.is_virtual()) {
-        if (s_parent == "$default")
-            s_parent = m_object.get_parent() ? "$parent" : "";
+        if (parent_name == "$default")
+            parent_name = m_object.get_parent() ? "$parent" : "";
 
         update_parent_(m_object);
     }
@@ -24,28 +24,28 @@ anchor::anchor(region& m_object, const anchor_data& m_anchor) : anchor_data(m_an
 void anchor::update_parent_(region& m_object) {
     p_parent_ = nullptr;
 
-    if (s_parent.empty())
+    if (parent_name.empty())
         return;
 
     utils::observer_ptr<frame> p_obj_parent = m_object.get_parent();
 
-    std::string s_parent_full_name = s_parent;
+    std::string parent_full_name = parent_name;
     if (p_obj_parent) {
-        utils::replace(s_parent_full_name, "$parent", p_obj_parent->get_lua_name());
-    } else if (s_parent_full_name.find("$parent") != s_parent_full_name.npos) {
+        utils::replace(parent_full_name, "$parent", p_obj_parent->get_lua_name());
+    } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
         gui::out << gui::error << "gui::" << m_object.get_object_type() << " : "
                  << "region \"" << m_object.get_name() << "\" tries to anchor to \""
-                 << s_parent_full_name << "\", but '$parent' does not exist." << std::endl;
+                 << parent_full_name << "\", but '$parent' does not exist." << std::endl;
         return;
     }
 
     utils::observer_ptr<region> p_new_parent =
-        m_object.get_registry().get_region_by_name(s_parent_full_name);
+        m_object.get_registry().get_region_by_name(parent_full_name);
 
     if (!p_new_parent) {
         gui::out << gui::error << "gui::" << m_object.get_object_type() << " : "
                  << "region \"" << m_object.get_name() << "\" tries to anchor to \""
-                 << s_parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
+                 << parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
         return;
     }
 
@@ -110,31 +110,31 @@ vector2f anchor::get_point(const region& m_object) const {
     return m_offset_abs + m_parent_offset + m_parent_pos;
 }
 
-std::string anchor::serialize(const std::string& s_tab) const {
-    std::stringstream s_str;
+std::string anchor::serialize(const std::string& tab) const {
+    std::stringstream str;
 
-    s_str << s_tab << "  |   # Point      : " << get_string_point(m_point) << "\n";
+    str << tab << "  |   # Point      : " << get_anchor_point_name(m_point) << "\n";
     if (p_parent_)
-        s_str << s_tab << "  |   # Parent     : " << p_parent_->get_name();
+        str << tab << "  |   # Parent     : " << p_parent_->get_name();
     else
-        s_str << s_tab << "  |   # Parent     : none";
-    if (!s_parent.empty())
-        s_str << " (raw name : " << s_parent << ")\n";
+        str << tab << "  |   # Parent     : none";
+    if (!parent_name.empty())
+        str << " (raw name : " << parent_name << ")\n";
     else
-        s_str << "\n";
-    s_str << s_tab << "  |   # Rel. point : " << get_string_point(m_parent_point) << "\n";
+        str << "\n";
+    str << tab << "  |   # Rel. point : " << get_anchor_point_name(m_parent_point) << "\n";
     if (m_type == anchor_type::abs) {
-        s_str << s_tab << "  |   # Offset X   : " << m_offset.x << "\n";
-        s_str << s_tab << "  |   # Offset Y   : " << m_offset.y << "\n";
+        str << tab << "  |   # Offset X   : " << m_offset.x << "\n";
+        str << tab << "  |   # Offset Y   : " << m_offset.y << "\n";
     } else {
-        s_str << s_tab << "  |   # Offset X   : " << m_offset.x << " (rel)\n";
-        s_str << s_tab << "  |   # Offset Y   : " << m_offset.y << " (rel)\n";
+        str << tab << "  |   # Offset X   : " << m_offset.x << " (rel)\n";
+        str << tab << "  |   # Offset Y   : " << m_offset.y << " (rel)\n";
     }
 
-    return s_str.str();
+    return str.str();
 }
 
-std::string anchor::get_string_point(anchor_point m_p) {
+std::string anchor::get_anchor_point_name(anchor_point m_p) {
     switch (m_p) {
     case anchor_point::top_left: return "TOP_LEFT";
     case anchor_point::top: return "TOP";
@@ -149,24 +149,24 @@ std::string anchor::get_string_point(anchor_point m_p) {
     return "";
 }
 
-anchor_point anchor::get_anchor_point(const std::string& s_point) {
-    if (s_point == "TOP_LEFT")
+anchor_point anchor::get_anchor_point(const std::string& point_name) {
+    if (point_name == "TOP_LEFT")
         return anchor_point::top_left;
-    else if (s_point == "TOP")
+    else if (point_name == "TOP")
         return anchor_point::top;
-    else if (s_point == "TOP_RIGHT")
+    else if (point_name == "TOP_RIGHT")
         return anchor_point::top_right;
-    else if (s_point == "RIGHT")
+    else if (point_name == "RIGHT")
         return anchor_point::right;
-    else if (s_point == "BOTTOM_RIGHT")
+    else if (point_name == "BOTTOM_RIGHT")
         return anchor_point::bottom_right;
-    else if (s_point == "BOTTOM")
+    else if (point_name == "BOTTOM")
         return anchor_point::bottom;
-    else if (s_point == "BOTTOM_LEFT")
+    else if (point_name == "BOTTOM_LEFT")
         return anchor_point::bottom_left;
-    else if (s_point == "LEFT")
+    else if (point_name == "LEFT")
         return anchor_point::left;
-    else if (s_point == "CENTER")
+    else if (point_name == "CENTER")
         return anchor_point::center;
     return anchor_point::top_left;
 }

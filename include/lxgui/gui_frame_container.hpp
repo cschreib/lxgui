@@ -84,14 +84,14 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<frame> create_root_frame(region_core_attributes m_attr) {
-        m_attr.s_object_type = FrameType::CLASS_NAME;
-        m_attr.p_parent      = nullptr;
+        m_attr.object_type = FrameType::CLASS_NAME;
+        m_attr.p_parent    = nullptr;
 
         return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
     }
 
     /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param sName The name of this frame
+    /** \param name The name of this frame
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the
      *         frame is directly usable. However, you still need to call
@@ -103,10 +103,10 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<frame> create_root_frame(const std::string& s_name) {
+    utils::observer_ptr<frame> create_root_frame(const std::string& name) {
         region_core_attributes m_attr;
-        m_attr.s_name        = s_name;
-        m_attr.s_object_type = FrameType::class_name;
+        m_attr.name        = name;
+        m_attr.object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_root_frame_(m_attr));
     }

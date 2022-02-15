@@ -19,16 +19,16 @@ void status_bar::parse_attributes_(const layout_node& m_node) {
         set_bar_draw_layer(p_attr->get_value<std::string>());
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("orientation")) {
-        std::string s_orientation = p_attr->get_value<std::string>();
-        if (s_orientation == "HORIZONTAL")
+        std::string orientation = p_attr->get_value<std::string>();
+        if (orientation == "HORIZONTAL")
             set_orientation(orientation::horizontal);
-        else if (s_orientation == "VERTICAL")
+        else if (orientation == "VERTICAL")
             set_orientation(orientation::vertical);
         else {
             gui::out << gui::warning << m_node.get_location()
                      << " : "
                         "Unknown StatusBar orientation : \"" +
-                            s_orientation +
+                            orientation +
                             "\". Expecting either :\n"
                             "\"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
                      << std::endl;

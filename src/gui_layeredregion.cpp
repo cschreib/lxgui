@@ -15,22 +15,22 @@ layered_region::layered_region(utils::control_block& m_block, manager& m_manager
     type_.push_back(class_name);
 }
 
-std::string layered_region::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
-    s_str << base::serialize(s_tab);
+std::string layered_region::serialize(const std::string& tab) const {
+    std::ostringstream str;
+    str << base::serialize(tab);
 
-    s_str << s_tab << "  # Layer       : ";
+    str << tab << "  # Layer       : ";
     switch (m_layer_) {
-    case layer::background: s_str << "BACKGROUND\n"; break;
-    case layer::border: s_str << "BORDER\n"; break;
-    case layer::artwork: s_str << "ARTWORK\n"; break;
-    case layer::overlay: s_str << "OVERLAY\n"; break;
-    case layer::highlight: s_str << "HIGHLIGHT\n"; break;
-    case layer::specialhigh: s_str << "SPECIALHIGH\n"; break;
-    default: s_str << "<error>\n"; break;
+    case layer::background: str << "BACKGROUND\n"; break;
+    case layer::border: str << "BORDER\n"; break;
+    case layer::artwork: str << "ARTWORK\n"; break;
+    case layer::overlay: str << "OVERLAY\n"; break;
+    case layer::highlight: str << "HIGHLIGHT\n"; break;
+    case layer::specialhigh: str << "SPECIALHIGH\n"; break;
+    default: str << "<error>\n"; break;
     }
 
-    return s_str.str();
+    return str.str();
 }
 
 void layered_region::create_glue() {
@@ -75,8 +75,8 @@ void layered_region::set_draw_layer(layer m_layer) {
     }
 }
 
-void layered_region::set_draw_layer(const std::string& s_layer) {
-    set_draw_layer(parse_layer_type(s_layer));
+void layered_region::set_draw_layer(const std::string& layer_name) {
+    set_draw_layer(parse_layer_type(layer_name));
 }
 
 void layered_region::notify_renderer_need_redraw() {
@@ -87,21 +87,22 @@ void layered_region::notify_renderer_need_redraw() {
         p_parent_->notify_renderer_need_redraw();
 }
 
-layer parse_layer_type(const std::string& s_layer) {
+layer parse_layer_type(const std::string& layer_name) {
     layer m_layer;
-    if (s_layer == "ARTWORK")
+    if (layer_name == "ARTWORK")
         m_layer = layer::artwork;
-    else if (s_layer == "BACKGROUND")
+    else if (layer_name == "BACKGROUND")
         m_layer = layer::background;
-    else if (s_layer == "BORDER")
+    else if (layer_name == "BORDER")
         m_layer = layer::border;
-    else if (s_layer == "HIGHLIGHT")
+    else if (layer_name == "HIGHLIGHT")
         m_layer = layer::highlight;
-    else if (s_layer == "OVERLAY")
+    else if (layer_name == "OVERLAY")
         m_layer = layer::overlay;
     else {
         gui::out << gui::warning << "gui::parse_layer_type : "
-                 << "Unknown layer type : \"" << s_layer << "\". Using \"ARTWORK\"." << std::endl;
+                 << "Unknown layer type : \"" << layer_name << "\". Using \"ARTWORK\"."
+                 << std::endl;
 
         m_layer = layer::artwork;
     }

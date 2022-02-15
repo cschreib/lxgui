@@ -19,10 +19,10 @@ enum class layer {
 };
 
 /// Converts a string representation of a layer into the corresponding enumerator
-/** \param sLayer The layer string (e.g., "ARTWORK")
+/** \param layer_name The layer string (e.g., "ARTWORK")
  *   \return The corresponding enumerator, or "ARTWORK" if parsing failed
  */
-layer parse_layer_type(const std::string& s_layer);
+layer parse_layer_type(const std::string& layer_name);
 
 /// A #region that can be rendered in a layer.
 /** Layered regions can display content on the screen (texture,
@@ -41,10 +41,10 @@ public:
     explicit layered_region(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Creates the associated Lua glue.
     void create_glue() override;
@@ -82,9 +82,9 @@ public:
     virtual void set_draw_layer(layer m_layer);
 
     /// Sets this layered_region's draw layer.
-    /** \param sLayer The new layer
+    /** \param layer_name The new layer
      */
-    virtual void set_draw_layer(const std::string& s_layer);
+    void set_draw_layer(const std::string& layer_name);
 
     /// Notifies the renderer of this region that it needs to be redrawn.
     /** \note Automatically called by any shape changing function.

@@ -55,20 +55,20 @@ public:
     void copy_from(const region& m_obj) override;
 
     /// Returns 'true' if this scroll_frame can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& s_script_name) const override;
+    bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \param mData       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
 
     /// Sets this scroll_frame's scroll child.
     /** \param pFrame The scroll child
@@ -172,7 +172,7 @@ protected:
 
     bool                           b_rebuild_scroll_render_target_ = false;
     bool                           b_redraw_scroll_render_target_  = false;
-    bool                           b_update_scroll_range_         = false;
+    bool                           b_update_scroll_range_          = false;
     std::shared_ptr<render_target> p_scroll_render_target_;
 
     utils::observer_ptr<texture> p_scroll_texture_ = nullptr;

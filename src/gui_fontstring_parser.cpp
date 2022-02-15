@@ -37,44 +37,44 @@ void font_string::parse_attributes_(const layout_node& m_node) {
         set_line_spacing(p_attr->get_value<float>());
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("outline")) {
-        const std::string& s_outline = p_attr->get_value<std::string>();
-        if (s_outline == "NORMAL" || s_outline == "THICK")
+        const std::string& outline = p_attr->get_value<std::string>();
+        if (outline == "NORMAL" || outline == "THICK")
             set_outlined(true);
-        else if (s_outline == "NONE")
+        else if (outline == "NONE")
             set_outlined(false);
         else {
             gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Unknown outline type for " << s_name_ << " : \"" << s_outline << "\"."
+                     << "Unknown outline type for " << name_ << " : \"" << outline << "\"."
                      << std::endl;
         }
     }
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("alignX")) {
-        const std::string& s_align_x = p_attr->get_value<std::string>();
-        if (s_align_x == "LEFT")
+        const std::string& align_x = p_attr->get_value<std::string>();
+        if (align_x == "LEFT")
             set_alignment_x(alignment_x::left);
-        else if (s_align_x == "CENTER")
+        else if (align_x == "CENTER")
             set_alignment_x(alignment_x::center);
-        else if (s_align_x == "RIGHT")
+        else if (align_x == "RIGHT")
             set_alignment_x(alignment_x::right);
         else {
             gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Unknown horizontal alignment behavior for " << s_name_ << " : \"" << s_align_x
+                     << "Unknown horizontal alignment behavior for " << name_ << " : \"" << align_x
                      << "\"." << std::endl;
         }
     }
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("alignY")) {
-        const std::string& s_align_y = p_attr->get_value<std::string>();
-        if (s_align_y == "TOP")
+        const std::string& align_y = p_attr->get_value<std::string>();
+        if (align_y == "TOP")
             set_alignment_y(alignment_y::top);
-        else if (s_align_y == "MIDDLE")
+        else if (align_y == "MIDDLE")
             set_alignment_y(alignment_y::middle);
-        else if (s_align_y == "BOTTOM")
+        else if (align_y == "BOTTOM")
             set_alignment_y(alignment_y::bottom);
         else {
             gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Unknown vertical alignment behavior for " << s_name_ << " : \"" << s_align_y
+                     << "Unknown vertical alignment behavior for " << name_ << " : \"" << align_y
                      << "\"." << std::endl;
         }
     }

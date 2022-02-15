@@ -103,11 +103,11 @@ public:
     bool is_caching_enabled() const;
 
     /// Adds a new directory to be parsed for UI addons.
-    /** \param sDirectory The new directory
+    /** \param directory The new directory
      *   \note If the UI is already loaded, this change will only take effect after
      *         the UI is reloaded, see reload_ui().
      */
-    void add_addon_directory(const std::string& s_directory);
+    void add_addon_directory(const std::string& directory);
 
     /// Clears the addon directory list.
     /** \note This is usefull whenever you need to reload a

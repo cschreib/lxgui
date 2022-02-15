@@ -10,15 +10,15 @@ namespace lxgui::gui {
 
 /// A piece of the user interface
 struct addon {
-    std::string s_name;
-    std::string s_version;
-    std::string s_ui_version;
-    std::string s_author;
+    std::string name;
+    std::string version;
+    std::string ui_version;
+    std::string author;
 
     bool b_enabled = true;
 
-    std::string s_main_directory;
-    std::string s_directory;
+    std::string main_directory;
+    std::string directory;
 
     std::vector<std::string> file_list;
     std::vector<std::string> saved_variable_list;

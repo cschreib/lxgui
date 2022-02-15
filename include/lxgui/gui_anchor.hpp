@@ -31,34 +31,36 @@ enum class constraint { none, x, y };
 /// Stores a position for a UI region
 struct anchor_data {
     anchor_data(anchor_point m_input_point) :
-        m_point(m_input_point), s_parent("$default"), m_parent_point(m_input_point) {}
+        m_point(m_input_point), parent_name("$default"), m_parent_point(m_input_point) {}
 
-    anchor_data(anchor_point m_input_point, const std::string& s_input_parent) :
-        m_point(m_input_point), s_parent(s_input_parent), m_parent_point(m_input_point) {}
-
-    anchor_data(
-        anchor_point m_input_point, const std::string& s_input_parent, anchor_point m_input_parent_point) :
-        m_point(m_input_point), s_parent(s_input_parent), m_parent_point(m_input_parent_point) {}
+    anchor_data(anchor_point m_input_point, const std::string& input_parent) :
+        m_point(m_input_point), parent_name(input_parent), m_parent_point(m_input_point) {}
 
     anchor_data(
         anchor_point       m_input_point,
-        const std::string& s_input_parent,
+        const std::string& input_parent,
+        anchor_point       m_input_parent_point) :
+        m_point(m_input_point), parent_name(input_parent), m_parent_point(m_input_parent_point) {}
+
+    anchor_data(
+        anchor_point       m_input_point,
+        const std::string& input_parent,
         anchor_point       m_input_parent_point,
         const vector2f&    m_input_offset,
         anchor_type        m_input_type = anchor_type::abs) :
         m_point(m_input_point),
-        s_parent(s_input_parent),
+        parent_name(input_parent),
         m_parent_point(m_input_parent_point),
         m_offset(m_input_offset),
         m_type(m_input_type) {}
 
     anchor_data(
         anchor_point       m_input_point,
-        const std::string& s_input_parent,
+        const std::string& input_parent,
         const vector2f&    m_input_offset,
         anchor_type        m_input_type = anchor_type::abs) :
         m_point(m_input_point),
-        s_parent(s_input_parent),
+        parent_name(input_parent),
         m_parent_point(m_input_point),
         m_offset(m_input_offset),
         m_type(m_input_type) {}
@@ -68,7 +70,7 @@ struct anchor_data {
         const vector2f& m_input_offset,
         anchor_type     m_input_type = anchor_type::abs) :
         m_point(m_input_point),
-        s_parent("$default"),
+        parent_name("$default"),
         m_parent_point(m_input_point),
         m_offset(m_input_offset),
         m_type(m_input_type) {}
@@ -79,16 +81,16 @@ struct anchor_data {
         const vector2f& m_input_offset,
         anchor_type     m_input_type = anchor_type::abs) :
         m_point(m_input_point),
-        s_parent("$default"),
+        parent_name("$default"),
         m_parent_point(m_input_parent_point),
         m_offset(m_input_offset),
         m_type(m_input_type) {}
 
     anchor_data(anchor_point m_input_point, anchor_point m_input_parent_point) :
-        m_point(m_input_point), s_parent("$default"), m_parent_point(m_input_parent_point) {}
+        m_point(m_input_point), parent_name("$default"), m_parent_point(m_input_parent_point) {}
 
     anchor_point m_point = anchor_point::top_left;
-    std::string  s_parent;
+    std::string  parent_name;
     anchor_point m_parent_point = anchor_point::top_left;
     vector2f     m_offset;
     anchor_type  m_type = anchor_type::abs;
@@ -138,10 +140,10 @@ public:
     }
 
     /// Prints all relevant information about this anchor in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this anchor
      */
-    std::string serialize(const std::string& s_tab) const;
+    std::string serialize(const std::string& tab) const;
 
     /// Returns the raw data used for this anchor.
     /** \return The raw data used for this anchor
@@ -153,12 +155,12 @@ public:
     /// Returns the name of an anchor point.
     /** \param mPoint The anchor point
      */
-    static std::string get_string_point(anchor_point m_point);
+    static std::string get_anchor_point_name(anchor_point m_point);
 
     /// Returns the anchor point from its name.
-    /** \param sPoint The name of the anchor point
+    /** \param point_name The name of the anchor point
      */
-    static anchor_point get_anchor_point(const std::string& s_point);
+    static anchor_point get_anchor_point(const std::string& point_name);
 
 private:
     /// Update the anchor parent object from the parent string.

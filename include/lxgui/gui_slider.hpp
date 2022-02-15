@@ -35,26 +35,26 @@ public:
     explicit slider(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Returns 'true' if this slider can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& s_script_name) const override;
+    bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \param mData       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
 
     /// Copies a region's parameters into this slider (inheritance).
     /** \param mObj The region to copy
@@ -86,9 +86,9 @@ public:
     void set_orientation(orientation m_orientation);
 
     /// Sets the orientation of this slider.
-    /** \param sOrientation The orientation of this slider ("VERTICAL" or "HORIZONTAL")
+    /** \param orientation_name The orientation of this slider ("VERTICAL" or "HORIZONTAL")
      */
-    void set_orientation(const std::string& s_orientation);
+    void set_orientation(const std::string& orientation_name);
 
     /// Returns the orientation of this slider.
     /** \return The orientation of this slider
@@ -148,9 +148,9 @@ public:
     void set_thumb_draw_layer(layer m_thumb_layer);
 
     /// Sets the draw layer of this slider's thumb texture.
-    /** \param sBarLayer The layer
+    /** \param thumb_layer_name The layer
      */
-    void set_thumb_draw_layer(const std::string& s_bar_layer);
+    void set_thumb_draw_layer(const std::string& thumb_layer_name);
 
     /// Returns the draw layer of this slider's thumb texture.
     /** \return The draw layer of this slider's thumb texture
@@ -197,7 +197,7 @@ protected:
 
     orientation m_orientation_ = orientation::vertical;
 
-    float f_value_     = 0.0f;
+    float f_value_      = 0.0f;
     float f_min_value_  = 0.0f;
     float f_max_value_  = 1.0f;
     float f_value_step_ = 0.1f;

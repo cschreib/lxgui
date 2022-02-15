@@ -21,13 +21,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     frame::parse_all_nodes_before_children_(m_node);
 
     if (const layout_node* p_special_node = m_node.try_get_child("NormalTexture")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "ARTWORK");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentNormalTexture");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_texture = parse_region_(m_defaulted, s_layer, "Texture");
+        auto p_texture = parse_region_(m_defaulted, layer, "Texture");
         if (p_texture) {
             p_texture->set_special();
             set_normal_texture(utils::static_pointer_cast<texture>(p_texture));
@@ -38,13 +38,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("PushedTexture")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentPushedTexture");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_texture = parse_region_(m_defaulted, s_layer, "Texture");
+        auto p_texture = parse_region_(m_defaulted, layer, "Texture");
         if (p_texture) {
             p_texture->set_special();
             set_pushed_texture(utils::static_pointer_cast<texture>(p_texture));
@@ -55,13 +55,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("DisabledTexture")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentDisabledTexture");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_texture = parse_region_(m_defaulted, s_layer, "Texture");
+        auto p_texture = parse_region_(m_defaulted, layer, "Texture");
         if (p_texture) {
             p_texture->set_special();
             set_disabled_texture(utils::static_pointer_cast<texture>(p_texture));
@@ -72,13 +72,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("HighlightTexture")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentHighlightTexture");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_texture = parse_region_(m_defaulted, s_layer, "Texture");
+        auto p_texture = parse_region_(m_defaulted, layer, "Texture");
         if (p_texture) {
             p_texture->set_special();
             set_highlight_texture(utils::static_pointer_cast<texture>(p_texture));
@@ -89,13 +89,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("NormalText")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "ARTWORK");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentNormalText");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_font_string = parse_region_(m_defaulted, s_layer, "FontString");
+        auto p_font_string = parse_region_(m_defaulted, layer, "FontString");
         if (p_font_string) {
             p_font_string->set_special();
             set_normal_text(utils::static_pointer_cast<font_string>(p_font_string));
@@ -106,13 +106,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("HighlightText")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentHighlightText");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_font_string = parse_region_(m_defaulted, s_layer, "FontString");
+        auto p_font_string = parse_region_(m_defaulted, layer, "FontString");
         if (p_font_string) {
             p_font_string->set_special();
             set_highlight_text(utils::static_pointer_cast<font_string>(p_font_string));
@@ -123,13 +123,13 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     }
 
     if (const layout_node* p_special_node = m_node.try_get_child("DisabledText")) {
-        auto s_layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
+        auto layer = p_special_node->get_attribute_value_or<std::string>("layer", "BORDER");
 
         layout_node m_defaulted = *p_special_node;
         m_defaulted.get_or_set_attribute_value("name", "$parentDisabledText");
         m_defaulted.get_or_set_attribute_value("setAllPoints", "true");
 
-        auto p_font_string = parse_region_(m_defaulted, s_layer, "FontString");
+        auto p_font_string = parse_region_(m_defaulted, layer, "FontString");
         if (p_font_string) {
             p_font_string->set_special();
             set_disabled_text(utils::static_pointer_cast<font_string>(p_font_string));
@@ -142,8 +142,8 @@ void button::parse_all_nodes_before_children_(const layout_node& m_node) {
     if (const layout_node* p_offset_block = m_node.try_get_child("PushedTextOffset")) {
         auto m_dimensions = parse_dimension_(*p_offset_block);
         if (m_dimensions.first == anchor_type::abs) {
-            set_pushed_text_offset(
-                vector2f(m_dimensions.second.x.value_or(0.0f), m_dimensions.second.y.value_or(0.0f)));
+            set_pushed_text_offset(vector2f(
+                m_dimensions.second.x.value_or(0.0f), m_dimensions.second.y.value_or(0.0f)));
         } else {
             gui::out << gui::warning << p_offset_block->get_location() << " : "
                      << "RelDimension for Button:PushedTextOffset is not yet supported. Skipped."

@@ -26,27 +26,27 @@ scroll_frame::~scroll_frame() {
         remove_child(p_scroll_child_);
 }
 
-bool scroll_frame::can_use_script(const std::string& s_script_name) const {
-    if (frame::can_use_script(s_script_name))
+bool scroll_frame::can_use_script(const std::string& script_name) const {
+    if (frame::can_use_script(script_name))
         return true;
     else if (
-        (s_script_name == "OnHorizontalScroll") || (s_script_name == "OnScrollRangeChanged") ||
-        (s_script_name == "OnVerticalScroll"))
+        (script_name == "OnHorizontalScroll") || (script_name == "OnScrollRangeChanged") ||
+        (script_name == "OnVerticalScroll"))
         return true;
     else
         return false;
 }
 
-void scroll_frame::fire_script(const std::string& s_script_name, const event_data& m_data) {
+void scroll_frame::fire_script(const std::string& script_name, const event_data& m_data) {
     if (!is_loaded())
         return;
 
     alive_checker m_checker(*this);
-    base::fire_script(s_script_name, m_data);
+    base::fire_script(script_name, m_data);
     if (!m_checker.is_alive())
         return;
 
-    if (s_script_name == "OnSizeChanged")
+    if (script_name == "OnSizeChanged")
         b_rebuild_scroll_render_target_ = true;
 }
 
@@ -62,9 +62,9 @@ void scroll_frame::copy_from(const region& m_obj) {
 
     if (const frame* p_other_child = p_scroll_frame->get_scroll_child().get()) {
         region_core_attributes m_attr;
-        m_attr.s_object_type = p_other_child->get_object_type();
-        m_attr.s_name        = p_other_child->get_raw_name();
-        m_attr.inheritance   = {p_scroll_frame->get_scroll_child()};
+        m_attr.object_type = p_other_child->get_object_type();
+        m_attr.name        = p_other_child->get_raw_name();
+        m_attr.inheritance = {p_scroll_frame->get_scroll_child()};
 
         utils::observer_ptr<frame> p_scroll_child = create_child(std::move(m_attr));
 

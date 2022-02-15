@@ -74,16 +74,15 @@ material::material(
 
 material::material(
     SDL_Renderer*      p_renderer,
-    const std::string& s_file_name,
+    const std::string& file_name,
     bool               b_pre_multiplied_alpha_supported,
     wrap               m_wrap,
     filter             m_filter) :
     gui::material(false), p_renderer_(p_renderer), b_is_owner_(true) {
     // Load file
-    SDL_Surface* p_surface = IMG_Load(s_file_name.c_str());
+    SDL_Surface* p_surface = IMG_Load(file_name.c_str());
     if (p_surface == nullptr) {
-        throw gui::exception(
-            "gui::sdl::material", "Could not load image file " + s_file_name + ".");
+        throw gui::exception("gui::sdl::material", "Could not load image file " + file_name + ".");
     }
 
     // Convert to RGBA 32bit
@@ -92,7 +91,7 @@ material::material(
     SDL_FreeSurface(p_surface);
     if (p_converted_surface == NULL) {
         throw gui::exception(
-            "gui::sdl::material", "Could convert image file " + s_file_name + " to RGBA format.");
+            "gui::sdl::material", "Could convert image file " + file_name + " to RGBA format.");
     }
 
     // Pre-multiply alpha

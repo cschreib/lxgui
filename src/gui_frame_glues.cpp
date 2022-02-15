@@ -232,8 +232,8 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function add_script
      */
     m_class.set_function(
-        "add_script", [](frame& m_self, const std::string& s_name, sol::protected_function m_func) {
-            m_self.add_script(s_name, std::move(m_func));
+        "add_script", [](frame& m_self, const std::string& name, sol::protected_function m_func) {
+            m_self.add_script(name, std::move(m_func));
         });
 
     /** @function clear_focus
@@ -244,17 +244,17 @@ void frame::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function(
         "create_font_string",
-        [](frame& m_self, const std::string& s_name, sol::optional<std::string> s_layer,
-           sol::optional<std::string> s_inheritance) {
+        [](frame& m_self, const std::string& name, sol::optional<std::string> layer_name,
+           sol::optional<std::string> inheritance) {
             layer m_layer = layer::artwork;
-            if (s_layer.has_value())
-                m_layer = parse_layer_type(s_layer.value());
+            if (layer_name.has_value())
+                m_layer = parse_layer_type(layer_name.value());
 
             region_core_attributes m_attr;
-            m_attr.s_name = s_name;
+            m_attr.name = name;
             m_attr.inheritance =
                 m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
-                    s_inheritance.value_or(""));
+                    inheritance.value_or(""));
 
             return m_self.create_layered_region<font_string>(m_layer, std::move(m_attr));
         });
@@ -263,17 +263,17 @@ void frame::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function(
         "create_texture",
-        [](frame& m_self, const std::string& s_name, sol::optional<std::string> s_layer,
-           sol::optional<std::string> s_inheritance) {
+        [](frame& m_self, const std::string& name, sol::optional<std::string> layer_name,
+           sol::optional<std::string> inheritance) {
             layer m_layer = layer::artwork;
-            if (s_layer.has_value())
-                m_layer = parse_layer_type(s_layer.value());
+            if (layer_name.has_value())
+                m_layer = parse_layer_type(layer_name.value());
 
             region_core_attributes m_attr;
-            m_attr.s_name = s_name;
+            m_attr.name = name;
             m_attr.inheritance =
                 m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
-                    s_inheritance.value_or(""));
+                    inheritance.value_or(""));
 
             return m_self.create_layered_region<texture>(m_layer, std::move(m_attr));
         });
@@ -284,14 +284,14 @@ void frame::register_on_lua(sol::state& m_lua) {
 
     /** @function disable_draw_layer
      */
-    m_class.set_function("disable_draw_layer", [](frame& m_self, const std::string& s_layer) {
-        m_self.disable_draw_layer(parse_layer_type(s_layer));
+    m_class.set_function("disable_draw_layer", [](frame& m_self, const std::string& layer_name) {
+        m_self.disable_draw_layer(parse_layer_type(layer_name));
     });
 
     /** @function enable_draw_layer
      */
-    m_class.set_function("enable_draw_layer", [](frame& m_self, const std::string& s_layer) {
-        m_self.enable_draw_layer(parse_layer_type(s_layer));
+    m_class.set_function("enable_draw_layer", [](frame& m_self, const std::string& layer_name) {
+        m_self.enable_draw_layer(parse_layer_type(layer_name));
     });
 
     /** @function enable_mouse
@@ -395,26 +395,26 @@ void frame::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function("get_frame_strata", [](const frame& m_self) {
         frame_strata m_strata = m_self.get_frame_strata();
-        std::string  s_strata;
+        std::string  strata;
 
         if (m_strata == frame_strata::background)
-            s_strata = "BACKGROUND";
+            strata = "BACKGROUND";
         else if (m_strata == frame_strata::low)
-            s_strata = "LOW";
+            strata = "LOW";
         else if (m_strata == frame_strata::medium)
-            s_strata = "MEDIUM";
+            strata = "MEDIUM";
         else if (m_strata == frame_strata::high)
-            s_strata = "HIGH";
+            strata = "HIGH";
         else if (m_strata == frame_strata::dialog)
-            s_strata = "DIALOG";
+            strata = "DIALOG";
         else if (m_strata == frame_strata::fullscreen)
-            s_strata = "FULLSCREEN";
+            strata = "FULLSCREEN";
         else if (m_strata == frame_strata::fullscreen_dialog)
-            s_strata = "FULLSCREEN_DIALOG";
+            strata = "FULLSCREEN_DIALOG";
         else if (m_strata == frame_strata::tooltip)
-            s_strata = "TOOLTIP";
+            strata = "TOOLTIP";
 
-        return s_strata;
+        return strata;
     });
 
     /** @function get_frame_type
@@ -457,12 +457,12 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function get_script
      */
     m_class.set_function(
-        "get_script", [](const frame& m_self, const std::string& s_script_name) -> sol::object {
-            if (!m_self.has_script(s_script_name))
+        "get_script", [](const frame& m_self, const std::string& script_name) -> sol::object {
+            if (!m_self.has_script(script_name))
                 return sol::lua_nil;
 
-            std::string s_adjusted_name = get_adjusted_script_name(s_script_name);
-            return m_self.get_manager().get_lua()[m_self.get_lua_name()][s_adjusted_name];
+            std::string adjusted_name = get_adjusted_script_name(script_name);
+            return m_self.get_manager().get_lua()[m_self.get_lua_name()][adjusted_name];
         });
 
     /** @function get_title_region
@@ -486,8 +486,8 @@ void frame::register_on_lua(sol::state& m_lua) {
 
     /** @function is_frame_type
      */
-    m_class.set_function("is_frame_type", [](const frame& m_self, const std::string& s_type) {
-        return m_self.get_frame_type() == s_type;
+    m_class.set_function("is_frame_type", [](const frame& m_self, const std::string& type) {
+        return m_self.get_frame_type() == type;
     });
 
     /** @function is_mouse_click_enabled
@@ -537,15 +537,15 @@ void frame::register_on_lua(sol::state& m_lua) {
      */
     m_class.set_function(
         "register_for_drag",
-        [](frame& m_self, sol::optional<std::string> s_button1,
-           sol::optional<std::string> s_button2, sol::optional<std::string> s_button3) {
+        [](frame& m_self, sol::optional<std::string> button1, sol::optional<std::string> button2,
+           sol::optional<std::string> button3) {
             std::vector<std::string> button_list;
-            if (s_button1.has_value())
-                button_list.push_back(s_button1.value());
-            if (s_button2.has_value())
-                button_list.push_back(s_button2.value());
-            if (s_button3.has_value())
-                button_list.push_back(s_button3.value());
+            if (button1.has_value())
+                button_list.push_back(button1.value());
+            if (button2.has_value())
+                button_list.push_back(button2.value());
+            if (button3.has_value())
+                button_list.push_back(button3.value());
 
             m_self.register_for_drag(button_list);
         });
@@ -599,8 +599,8 @@ void frame::register_on_lua(sol::state& m_lua) {
                 m_self.get_or_create_backdrop().set_edge_color(
                     color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](frame& m_self, const std::string& s_color) {
-                m_self.get_or_create_backdrop().set_edge_color(color(s_color));
+            [](frame& m_self, const std::string& s) {
+                m_self.get_or_create_backdrop().set_edge_color(color(s));
             }));
 
     /** @function set_backdrop_color
@@ -612,8 +612,8 @@ void frame::register_on_lua(sol::state& m_lua) {
                 m_self.get_or_create_backdrop().set_background_color(
                     color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](frame& m_self, const std::string& s_color) {
-                m_self.get_or_create_backdrop().set_background_color(color(s_color));
+            [](frame& m_self, const std::string& s) {
+                m_self.get_or_create_backdrop().set_background_color(color(s));
             }));
 
     /** @function set_clamped_to_screen
@@ -686,19 +686,19 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function set_script
      */
     m_class.set_function(
-        "set_script", [](frame& m_self, const std::string& s_script_name,
+        "set_script", [](frame& m_self, const std::string& script_name,
                          sol::optional<sol::protected_function> m_script) {
-            if (!m_self.can_use_script(s_script_name)) {
+            if (!m_self.can_use_script(script_name)) {
                 gui::out << gui::error << m_self.get_frame_type() << " : "
-                         << "\"" << m_self.get_name() << "\" cannot use script \"" << s_script_name
+                         << "\"" << m_self.get_name() << "\" cannot use script \"" << script_name
                          << "\"." << std::endl;
                 return;
             }
 
             if (m_script.has_value())
-                m_self.set_script(s_script_name, m_script.value());
+                m_self.set_script(script_name, m_script.value());
             else
-                m_self.remove_script(s_script_name);
+                m_self.remove_script(script_name);
         });
 
     /** @function set_top_level
@@ -715,8 +715,8 @@ void frame::register_on_lua(sol::state& m_lua) {
 
     /** @function start_sizing
      */
-    m_class.set_function("start_sizing", [](frame& m_self, const std::string& s_point) {
-        m_self.start_sizing(anchor::get_anchor_point(s_point));
+    m_class.set_function("start_sizing", [](frame& m_self, const std::string& point) {
+        m_self.start_sizing(anchor::get_anchor_point(point));
     });
 
     /** @function stop_moving_or_sizing

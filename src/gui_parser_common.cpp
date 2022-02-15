@@ -16,22 +16,22 @@ region_core_attributes parse_core_attributes(
     const layout_node&         m_node,
     utils::observer_ptr<frame> p_parent) {
     region_core_attributes m_attr;
-    m_attr.s_object_type = m_node.get_name();
-    m_attr.s_name        = m_node.get_attribute_value<std::string>("name");
+    m_attr.object_type = m_node.get_name();
+    m_attr.name        = m_node.get_attribute_value<std::string>("name");
 
     if (p_parent) {
         m_attr.p_parent = std::move(p_parent);
 
         if (m_node.has_attribute("virtual")) {
             gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Cannot use the \"virtual\" attribute on \"" << m_attr.s_name
+                     << "Cannot use the \"virtual\" attribute on \"" << m_attr.name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
         }
         if (m_node.has_attribute("parent")) {
             gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Cannot use the \"parent\" attribute on \"" << m_attr.s_name
+                     << "Cannot use the \"parent\" attribute on \"" << m_attr.name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
@@ -40,11 +40,11 @@ region_core_attributes parse_core_attributes(
         m_attr.b_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
 
         if (const layout_attribute* p_attr = m_node.try_get_attribute("parent")) {
-            std::string s_parent     = p_attr->get_value<std::string>();
-            auto        p_parent_obj = m_registry.get_region_by_name(s_parent);
-            if (!s_parent.empty() && !p_parent_obj) {
+            std::string parent       = p_attr->get_value<std::string>();
+            auto        p_parent_obj = m_registry.get_region_by_name(parent);
+            if (!parent.empty() && !p_parent_obj) {
                 gui::out << gui::warning << m_node.get_location() << " : "
-                         << "Cannot find \"" << m_attr.s_name << "\"'s parent : \"" << s_parent
+                         << "Cannot find \"" << m_attr.name << "\"'s parent : \"" << parent
                          << "\". "
                             "No parent given to this region."
                          << std::endl;
@@ -53,7 +53,7 @@ region_core_attributes parse_core_attributes(
             m_attr.p_parent = down_cast<frame>(p_parent_obj);
             if (p_parent_obj != nullptr && m_attr.p_parent == nullptr) {
                 gui::out << gui::warning << m_node.get_location() << " : "
-                         << "Cannot set  \"" << m_attr.s_name << "\"'s parent : \"" << s_parent
+                         << "Cannot set  \"" << m_attr.name << "\"'s parent : \"" << parent
                          << "\". "
                             "This is not a frame."
                          << std::endl;

@@ -19,53 +19,53 @@ void backdrop::copy_from(const backdrop& m_backdrop) {
     this->set_background_tilling(m_backdrop.is_background_tilling());
     this->set_tile_size(m_backdrop.get_tile_size());
 
-    if (m_backdrop.s_background_file_.empty())
+    if (m_backdrop.background_file_.empty())
         this->set_background_color(m_backdrop.get_background_color());
 
     this->set_background_insets(m_backdrop.get_background_insets());
 
-    if (m_backdrop.s_edge_file_.empty())
+    if (m_backdrop.edge_file_.empty())
         this->set_edge_color(m_backdrop.get_edge_color());
 
     this->set_edge_size(m_backdrop.get_edge_size());
     this->set_edge_insets(m_backdrop.get_edge_insets());
 }
 
-void backdrop::set_background(const std::string& s_background_file) {
-    if (s_background_file_ == s_background_file)
+void backdrop::set_background(const std::string& background_file) {
+    if (background_file_ == background_file)
         return;
 
     b_cache_dirty_      = true;
     m_background_color_ = color::empty;
 
-    if (s_background_file.empty()) {
+    if (background_file.empty()) {
         p_background_texture_ = nullptr;
-        s_background_file_    = "";
+        background_file_      = "";
         return;
     }
 
-    if (!utils::file_exists(s_background_file)) {
+    if (!utils::file_exists(background_file)) {
         p_background_texture_ = nullptr;
-        s_background_file_    = "";
+        background_file_      = "";
 
         gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << s_background_file << "\" for "
-                 << m_parent_.get_name() << "'s backdrop background file.\n"
+                 << "Cannot find file : \"" << background_file << "\" for " << m_parent_.get_name()
+                 << "'s backdrop background file.\n"
                  << "No background will be drawn." << std::endl;
 
         return;
     }
 
     auto& m_renderer      = m_parent_.get_manager().get_renderer();
-    p_background_texture_ = m_renderer.create_atlas_material("GUI", s_background_file);
+    p_background_texture_ = m_renderer.create_atlas_material("GUI", background_file);
 
     f_tile_size_ = f_original_tile_size_ =
         static_cast<float>(p_background_texture_->get_rect().width());
-    s_background_file_ = s_background_file;
+    background_file_ = background_file;
 }
 
 const std::string& backdrop::get_background_file() const {
-    return s_background_file_;
+    return background_file_;
 }
 
 void backdrop::set_background_color(const color& m_color) {
@@ -76,7 +76,7 @@ void backdrop::set_background_color(const color& m_color) {
 
     p_background_texture_ = nullptr;
     m_background_color_   = m_color;
-    s_background_file_    = "";
+    background_file_      = "";
 
     f_tile_size_ = f_original_tile_size_ = 256.0f;
 }
@@ -133,51 +133,51 @@ const bounds2f& backdrop::get_edge_insets() const {
     return edge_insets_;
 }
 
-void backdrop::set_edge(const std::string& s_edge_file) {
-    if (s_edge_file == s_edge_file_)
+void backdrop::set_edge(const std::string& edge_file) {
+    if (edge_file == edge_file_)
         return;
 
     b_cache_dirty_ = true;
     m_edge_color_  = color::empty;
 
-    if (s_edge_file.empty()) {
+    if (edge_file.empty()) {
         p_edge_texture_ = nullptr;
-        s_edge_file_    = "";
+        edge_file_      = "";
         return;
     }
 
-    if (!utils::file_exists(s_edge_file)) {
+    if (!utils::file_exists(edge_file)) {
         p_edge_texture_ = nullptr;
-        s_edge_file_    = "";
+        edge_file_      = "";
 
         gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << s_edge_file << "\" for " << m_parent_.get_name()
+                 << "Cannot find file : \"" << edge_file << "\" for " << m_parent_.get_name()
                  << "'s backdrop edge.\nNo edge will be drawn." << std::endl;
 
         return;
     }
 
     auto& m_renderer = m_parent_.get_manager().get_renderer();
-    p_edge_texture_  = m_renderer.create_atlas_material("GUI", s_edge_file);
+    p_edge_texture_  = m_renderer.create_atlas_material("GUI", edge_file);
 
     if (p_edge_texture_->get_rect().width() / p_edge_texture_->get_rect().height() != 8.0f) {
         p_edge_texture_ = nullptr;
-        s_edge_file_    = "";
+        edge_file_      = "";
 
         gui::out << gui::error << "backdrop : "
                  << "An edge texture width must be exactly 8 times greater than its height "
-                 << "(in " << s_edge_file << ").\nNo edge will be drawn for "
-                 << m_parent_.get_name() << "'s backdrop." << std::endl;
+                 << "(in " << edge_file << ").\nNo edge will be drawn for " << m_parent_.get_name()
+                 << "'s backdrop." << std::endl;
 
         return;
     }
 
     f_edge_size_ = f_original_edge_size_ = p_edge_texture_->get_rect().height();
-    s_edge_file_                         = s_edge_file;
+    edge_file_                           = edge_file;
 }
 
 const std::string& backdrop::get_edge_file() const {
-    return s_edge_file_;
+    return edge_file_;
 }
 
 void backdrop::set_edge_color(const color& m_color) {
@@ -187,7 +187,7 @@ void backdrop::set_edge_color(const color& m_color) {
     b_cache_dirty_  = true;
     p_edge_texture_ = nullptr;
     m_edge_color_   = m_color;
-    s_edge_file_    = "";
+    edge_file_      = "";
 
     if (f_edge_size_ == 0.0f)
         f_edge_size_ = 1.0f;

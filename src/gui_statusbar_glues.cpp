@@ -94,9 +94,7 @@ void status_bar::register_on_lua(sol::state& m_lua) {
             [](status_bar& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
                 m_self.set_bar_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](status_bar& m_self, const std::string& s_color) {
-                m_self.set_bar_color(color(s_color));
-            }));
+            [](status_bar& m_self, const std::string& s) { m_self.set_bar_color(color(s)); }));
 
     /** @function set_status_bar_texture
      */

@@ -13,8 +13,8 @@ check_button::check_button(utils::control_block& m_block, manager& m_manager) :
     type_.push_back(class_name);
 }
 
-std::string check_button::serialize(const std::string& s_tab) const {
-    return base::serialize(s_tab);
+std::string check_button::serialize(const std::string& tab) const {
+    return base::serialize(tab);
 }
 
 void check_button::copy_from(const region& m_obj) {
@@ -26,7 +26,7 @@ void check_button::copy_from(const region& m_obj) {
 
     if (const texture* p_checked_texture = p_button->get_checked_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name      = p_checked_texture->get_name();
+        m_attr.name        = p_checked_texture->get_name();
         m_attr.inheritance = {p_button->get_checked_texture()};
 
         auto p_texture = this->create_layered_region<texture>(
@@ -41,7 +41,7 @@ void check_button::copy_from(const region& m_obj) {
 
     if (const texture* p_disabled_texture = p_button->get_disabled_checked_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name      = p_disabled_texture->get_name();
+        m_attr.name        = p_disabled_texture->get_name();
         m_attr.inheritance = {p_button->get_disabled_checked_texture()};
 
         auto p_texture = this->create_layered_region<texture>(

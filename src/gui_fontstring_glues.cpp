@@ -136,19 +136,19 @@ void font_string::register_on_lua(sol::state& m_lua) {
     /** @function set_font
      */
     m_class.set_function(
-        "set_font", [](font_string& m_self, const std::string& s_file, float f_height,
-                       sol::optional<std::string> s_flags) {
-            m_self.set_font(s_file, f_height);
+        "set_font", [](font_string& m_self, const std::string& file, float f_height,
+                       sol::optional<std::string> flags) {
+            m_self.set_font(file, f_height);
 
-            if (s_flags.has_value()) {
-                if (s_flags.value().find("OUTLINE") != std::string::npos ||
-                    s_flags.value().find("THICKOUTLINE") != std::string::npos) {
+            if (flags.has_value()) {
+                if (flags.value().find("OUTLINE") != std::string::npos ||
+                    flags.value().find("THICKOUTLINE") != std::string::npos) {
                     m_self.set_outlined(true);
-                } else if (s_flags.value().empty()) {
+                } else if (flags.value().empty()) {
                     m_self.set_outlined(false);
                 } else {
                     gui::out << gui::warning << "EditBox:set_font : "
-                             << "Unknown flags : \"" << s_flags.value() << "\"." << std::endl;
+                             << "Unknown flags : \"" << flags.value() << "\"." << std::endl;
                 }
             } else {
                 m_self.set_outlined(false);
@@ -157,35 +157,33 @@ void font_string::register_on_lua(sol::state& m_lua) {
 
     /** @function set_alignment_x
      */
-    m_class.set_function(
-        "set_alignment_x", [](font_string& m_self, const std::string& s_justify_h) {
-            if (s_justify_h == "LEFT")
-                m_self.set_alignment_x(alignment_x::left);
-            else if (s_justify_h == "CENTER")
-                m_self.set_alignment_x(alignment_x::center);
-            else if (s_justify_h == "RIGHT")
-                m_self.set_alignment_x(alignment_x::right);
-            else {
-                gui::out << gui::warning << "font_string:set_alignment_x : "
-                         << "Unknown justify behavior : \"" << s_justify_h << "\"." << std::endl;
-            }
-        });
+    m_class.set_function("set_alignment_x", [](font_string& m_self, const std::string& justify_h) {
+        if (justify_h == "LEFT")
+            m_self.set_alignment_x(alignment_x::left);
+        else if (justify_h == "CENTER")
+            m_self.set_alignment_x(alignment_x::center);
+        else if (justify_h == "RIGHT")
+            m_self.set_alignment_x(alignment_x::right);
+        else {
+            gui::out << gui::warning << "font_string:set_alignment_x : "
+                     << "Unknown justify behavior : \"" << justify_h << "\"." << std::endl;
+        }
+    });
 
     /** @function set_alignment_y
      */
-    m_class.set_function(
-        "set_alignment_y", [](font_string& m_self, const std::string& s_justify_v) {
-            if (s_justify_v == "TOP")
-                m_self.set_alignment_y(alignment_y::top);
-            else if (s_justify_v == "MIDDLE")
-                m_self.set_alignment_y(alignment_y::middle);
-            else if (s_justify_v == "BOTTOM")
-                m_self.set_alignment_y(alignment_y::bottom);
-            else {
-                gui::out << gui::warning << "font_string:set_alignment_y : "
-                         << "Unknown justify behavior : \"" << s_justify_v << "\"." << std::endl;
-            }
-        });
+    m_class.set_function("set_alignment_y", [](font_string& m_self, const std::string& justify_v) {
+        if (justify_v == "TOP")
+            m_self.set_alignment_y(alignment_y::top);
+        else if (justify_v == "MIDDLE")
+            m_self.set_alignment_y(alignment_y::middle);
+        else if (justify_v == "BOTTOM")
+            m_self.set_alignment_y(alignment_y::bottom);
+        else {
+            gui::out << gui::warning << "font_string:set_alignment_y : "
+                     << "Unknown justify behavior : \"" << justify_v << "\"." << std::endl;
+        }
+    });
 
     /** @function set_shadow_color
      */
@@ -195,9 +193,7 @@ void font_string::register_on_lua(sol::state& m_lua) {
             [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
                 m_self.set_shadow_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](font_string& m_self, const std::string& s_color) {
-                m_self.set_shadow_color(color(s_color));
-            }));
+            [](font_string& m_self, const std::string& s) { m_self.set_shadow_color(color(s)); }));
 
     /** @function set_shadow_offset
      */
@@ -222,9 +218,7 @@ void font_string::register_on_lua(sol::state& m_lua) {
             [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
                 m_self.set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](font_string& m_self, const std::string& s_color) {
-                m_self.set_text_color(color(s_color));
-            }));
+            [](font_string& m_self, const std::string& s) { m_self.set_text_color(color(s)); }));
 
     /** @function can_non_space_wrap
      */
@@ -245,9 +239,9 @@ void font_string::register_on_lua(sol::state& m_lua) {
     /** @function get_string_width
      */
     m_class.set_function(
-        "get_string_width", [](const font_string& m_self, sol::optional<std::string> s_text) {
-            if (s_text.has_value())
-                return m_self.get_string_width(utils::utf8_to_unicode(s_text.value()));
+        "get_string_width", [](const font_string& m_self, sol::optional<std::string> text) {
+            if (text.has_value())
+                return m_self.get_string_width(utils::utf8_to_unicode(text.value()));
             else
                 return m_self.get_string_width();
         });
@@ -291,8 +285,8 @@ void font_string::register_on_lua(sol::state& m_lua) {
                 m_self.set_text(utils::utf8_to_unicode(
                     m_self.get_manager().get_localizer().format_string("{:L}", d_value)));
             },
-            [](font_string& m_self, const std::string& s_text) {
-                m_self.set_text(utils::utf8_to_unicode(s_text));
+            [](font_string& m_self, const std::string& text) {
+                m_self.set_text(utils::utf8_to_unicode(text));
             }));
 }
 

@@ -7,7 +7,8 @@
 
 namespace lxgui::gui::sfml {
 
-material::material(const vector2ui& m_dimensions, bool b_render_target, wrap m_wrap, filter m_filter) :
+material::material(
+    const vector2ui& m_dimensions, bool b_render_target, wrap m_wrap, filter m_filter) :
     gui::material(false),
     m_dimensions_(m_dimensions),
     m_canvas_dimensions_(m_dimensions),
@@ -52,38 +53,38 @@ material::material(const sf::Image& m_data, wrap m_wrap, filter m_filter) : gui:
     m_texture_.setSmooth(m_filter == filter::linear);
     m_texture_.setRepeated(m_wrap == wrap::repeat);
 
-    m_dimensions_       = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
+    m_dimensions_        = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
     m_canvas_dimensions_ = m_dimensions_;
-    m_wrap_             = m_wrap;
-    m_filter_           = m_filter;
+    m_wrap_              = m_wrap;
+    m_filter_            = m_filter;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
 
-material::material(const std::string& s_file_name, wrap m_wrap, filter m_filter) :
+material::material(const std::string& file_name, wrap m_wrap, filter m_filter) :
     gui::material(false) {
     b_render_target_ = false;
     sf::Image m_data;
-    if (!m_data.loadFromFile(s_file_name))
-        throw utils::exception("gui::sfml::material", "loading failed: '" + s_file_name + "'.");
+    if (!m_data.loadFromFile(file_name))
+        throw utils::exception("gui::sfml::material", "loading failed: '" + file_name + "'.");
 
     premultiply_alpha(m_data);
     m_texture_.loadFromImage(m_data);
     m_texture_.setSmooth(m_filter == filter::linear);
     m_texture_.setRepeated(m_wrap == wrap::repeat);
 
-    m_dimensions_       = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
+    m_dimensions_        = vector2ui(m_texture_.getSize().x, m_texture_.getSize().y);
     m_canvas_dimensions_ = m_dimensions_;
-    m_wrap_             = m_wrap;
-    m_filter_           = m_filter;
+    m_wrap_              = m_wrap;
+    m_filter_            = m_filter;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
 
 material::material(const sf::Texture& m_texture, const bounds2f& m_location, filter m_filter) :
     gui::material(true) {
-    m_rect_         = m_location;
-    m_filter_       = m_filter;
+    m_rect_          = m_location;
+    m_filter_        = m_filter;
     p_atlas_texture_ = &m_texture;
 }
 

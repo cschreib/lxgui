@@ -53,12 +53,12 @@ renderer::renderer(const vector2ui& m_window_dimensions, bool b_init_glew [[mayb
 }
 
 std::string renderer::get_name() const {
-    std::string s_full_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    std::string full_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
 #    if defined(LXGUI_COMPILER_EMSCRIPTEN)
     return "WebGL (" + sFullVersion + ")";
 #    else
-    return "OpenGL (" + s_full_version + ")";
+    return "OpenGL (" + full_version + ")";
 #    endif
 #else
     return "OpenGL fixed pipeline (" + sFullVersion + ")";
@@ -219,12 +219,12 @@ void renderer::render_cache_(
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material_(const std::string& s_file_name, material::filter m_filter) {
-    if (!utils::ends_with(s_file_name, ".png"))
+renderer::create_material_(const std::string& file_name, material::filter m_filter) {
+    if (!utils::ends_with(file_name, ".png"))
         throw gui::exception(
-            "gui::gl::renderer", "Unsupported texture format '" + s_file_name + "'.");
+            "gui::gl::renderer", "Unsupported texture format '" + file_name + "'.");
 
-    return create_material_png_(s_file_name, m_filter);
+    return create_material_png_(file_name, m_filter);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter m_filter) {
@@ -263,13 +263,13 @@ renderer::create_render_target(const vector2ui& m_dimensions, material::filter m
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     return std::make_shared<gl::font>(
-        s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 }
 
 bool renderer::is_texture_atlas_supported() const {
@@ -319,7 +319,7 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension) {
 #endif
 
 #if defined(LXGUI_OPENGL3)
-GLuint create_shader(GLenum m_type, const char* s_shader_source) {
+GLuint create_shader(GLenum m_type, const char* shader_source) {
     // Create the shader
     GLuint ui_shader = glCreateShader(m_type);
     if (ui_shader == 0) {
@@ -329,7 +329,7 @@ GLuint create_shader(GLenum m_type, const char* s_shader_source) {
                                 " shader.");
     }
 
-    glShaderSource(ui_shader, 1, &s_shader_source, nullptr);
+    glShaderSource(ui_shader, 1, &shader_source, nullptr);
     glCompileShader(ui_shader);
 
     // Check sucess
@@ -339,28 +339,28 @@ GLuint create_shader(GLenum m_type, const char* s_shader_source) {
         GLint info_length = 0;
         glGetProgramiv(ui_shader, GL_INFO_LOG_LENGTH, &info_length);
 
-        std::vector<char> s_error_message(std::max(1, info_length), '\0');
+        std::vector<char> error_message(std::max(1, info_length), '\0');
         if (info_length > 1) {
-            glGetProgramInfoLog(ui_shader, info_length, NULL, s_error_message.data());
+            glGetProgramInfoLog(ui_shader, info_length, NULL, error_message.data());
         }
 
         glDeleteShader(ui_shader);
         throw gui::exception(
-            "gl::renderer", "Could not compile shader: " + std::string(s_error_message.data()));
+            "gl::renderer", "Could not compile shader: " + std::string(error_message.data()));
     }
 
     return ui_shader;
 }
 
-GLuint create_program(const char* s_vertex_shader_source, const char* s_fragment_shader_source) {
+GLuint create_program(const char* vertex_shader_source, const char* fragment_shader_source) {
     GLuint ui_vertex_shader   = 0;
     GLuint ui_fragment_shader = 0;
     GLuint ui_program_object  = 0;
 
     try {
         // Create shaders
-        ui_vertex_shader   = create_shader(GL_VERTEX_SHADER, s_vertex_shader_source);
-        ui_fragment_shader = create_shader(GL_FRAGMENT_SHADER, s_fragment_shader_source);
+        ui_vertex_shader   = create_shader(GL_VERTEX_SHADER, vertex_shader_source);
+        ui_fragment_shader = create_shader(GL_FRAGMENT_SHADER, fragment_shader_source);
 
         // Create program
         ui_program_object = glCreateProgram();
@@ -379,14 +379,14 @@ GLuint create_program(const char* s_vertex_shader_source, const char* s_fragment
             GLint info_length = 0;
             glGetProgramiv(ui_program_object, GL_INFO_LOG_LENGTH, &info_length);
 
-            std::vector<char> s_error_message(std::max(1, info_length), '\0');
+            std::vector<char> error_message(std::max(1, info_length), '\0');
             if (info_length > 1) {
-                glGetProgramInfoLog(ui_program_object, info_length, NULL, s_error_message.data());
+                glGetProgramInfoLog(ui_program_object, info_length, NULL, error_message.data());
             }
 
             throw gui::exception(
                 "gl::renderer",
-                "Could not link shader program: " + std::string(s_error_message.data()));
+                "Could not link shader program: " + std::string(error_message.data()));
         }
     } catch (...) {
         if (ui_vertex_shader != 0)
@@ -409,41 +409,41 @@ void renderer::compile_programs_() {
     thread_local bool b_shader_cached = false;
 
     if (!b_shader_cached) {
-        char s_vertex_shader[] = "#version 300 es                                           \n"
-                                 "layout(location = 0) in vec2 a_position;                  \n"
-                                 "layout(location = 1) in vec4 a_color;                     \n"
-                                 "layout(location = 2) in vec2 a_texCoord;                  \n"
-                                 "uniform mat4 m_proj;                                      \n"
-                                 "uniform mat4 m_model;                                     \n"
-                                 "out vec4 v_color;                                         \n"
-                                 "out vec2 v_texCoord;                                      \n"
+        char vertex_shader[] = "#version 300 es                                           \n"
+                               "layout(location = 0) in vec2 a_position;                  \n"
+                               "layout(location = 1) in vec4 a_color;                     \n"
+                               "layout(location = 2) in vec2 a_texCoord;                  \n"
+                               "uniform mat4 m_proj;                                      \n"
+                               "uniform mat4 m_model;                                     \n"
+                               "out vec4 v_color;                                         \n"
+                               "out vec2 v_texCoord;                                      \n"
+                               "void main()                                               \n"
+                               "{                                                         \n"
+                               "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
+                               "    v_color = a_color;                                    \n"
+                               "    v_color.rgb *= v_color.a;                             \n"
+                               "    v_texCoord = a_texCoord;                              \n"
+                               "}                                                         \n";
+
+        char fragment_shader[] = "#version 300 es                                           \n"
+                                 "precision mediump float;                                  \n"
+                                 "in vec4 v_color;                                          \n"
+                                 "in vec2 v_texCoord;                                       \n"
+                                 "layout(location = 0) out vec4 o_color;                    \n"
+                                 "uniform mediump int i_type;                               \n"
+                                 "uniform sampler2D s_texture;                              \n"
                                  "void main()                                               \n"
                                  "{                                                         \n"
-                                 "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
-                                 "    v_color = a_color;                                    \n"
-                                 "    v_color.rgb *= v_color.a;                             \n"
-                                 "    v_texCoord = a_texCoord;                              \n"
+                                 "    if (i_type == 0)                                      \n"
+                                 "        o_color = texture(s_texture, v_texCoord)*v_color; \n"
+                                 "    else                                                  \n"
+                                 "        o_color = v_color;                                \n"
                                  "}                                                         \n";
-
-        char s_fragment_shader[] = "#version 300 es                                           \n"
-                                   "precision mediump float;                                  \n"
-                                   "in vec4 v_color;                                          \n"
-                                   "in vec2 v_texCoord;                                       \n"
-                                   "layout(location = 0) out vec4 o_color;                    \n"
-                                   "uniform mediump int i_type;                               \n"
-                                   "uniform sampler2D s_texture;                              \n"
-                                   "void main()                                               \n"
-                                   "{                                                         \n"
-                                   "    if (i_type == 0)                                      \n"
-                                   "        o_color = texture(s_texture, v_texCoord)*v_color; \n"
-                                   "    else                                                  \n"
-                                   "        o_color = v_color;                                \n"
-                                   "}                                                         \n";
 
         p_shader_cache_ = std::make_shared<shader_cache>();
 
         try {
-            p_shader_cache_->ui_program = create_program(s_vertex_shader, s_fragment_shader);
+            p_shader_cache_->ui_program = create_program(vertex_shader, fragment_shader);
         } catch (...) {
             p_shader_cache_ = nullptr;
             throw;

@@ -15,12 +15,12 @@ utils::ustring window::get_clipboard_content() {
     return m_source_.get_clipboard_content();
 }
 
-void window::set_clipboard_content(const utils::ustring& s_content) {
-    return m_source_.set_clipboard_content(s_content);
+void window::set_clipboard_content(const utils::ustring& content) {
+    return m_source_.set_clipboard_content(content);
 }
 
-void window::set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) {
-    return m_source_.set_mouse_cursor(s_file_name, m_hot_spot);
+void window::set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) {
+    return m_source_.set_mouse_cursor(file_name, m_hot_spot);
 }
 
 void window::reset_mouse_cursor() {

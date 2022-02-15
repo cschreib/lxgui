@@ -20,10 +20,10 @@ void read_data(png_structp p_read_struct, png_bytep p_data, png_size_t ui_length
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material_png_(const std::string& s_file_name, material::filter m_filter) const {
-    std::ifstream m_file(s_file_name, std::ios::binary);
+renderer::create_material_png_(const std::string& file_name, material::filter m_filter) const {
+    std::ifstream m_file(file_name, std::ios::binary);
     if (!m_file.is_open()) {
-        throw gui::exception("gui::gl::manager", "Cannot find file '" + s_file_name + "'.");
+        throw gui::exception("gui::gl::manager", "Cannot find file '" + file_name + "'.");
     }
 
     const std::size_t pngsigsize = 8;
@@ -31,7 +31,7 @@ renderer::create_material_png_(const std::string& s_file_name, material::filter 
     m_file.read(reinterpret_cast<char*>(signature), pngsigsize);
     if (!m_file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
         throw gui::exception(
-            "gui::gl::manager", s_file_name + "' is not a valid PNG image : '" +
+            "gui::gl::manager", file_name + "' is not a valid PNG image : '" +
                                     std::string(signature, signature + pngsigsize) + "'.");
     }
 
@@ -95,7 +95,7 @@ renderer::create_material_png_(const std::string& s_file_name, material::filter 
 
         return std::move(p_tex);
     } catch (const gui::exception& e) {
-        gui::out << gui::error << "gui::gl::manager : Error parsing " << s_file_name << "."
+        gui::out << gui::error << "gui::gl::manager : Error parsing " << file_name << "."
                  << std::endl;
         gui::out << gui::error << e.what() << "" << std::endl;
 

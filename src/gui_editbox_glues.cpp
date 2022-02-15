@@ -65,8 +65,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
 
     /** @function add_history_line
      */
-    m_class.set_function("add_history_line", [](edit_box& m_self, const std::string& s_line) {
-        m_self.add_history_line(utils::utf8_to_unicode(s_line));
+    m_class.set_function("add_history_line", [](edit_box& m_self, const std::string& line) {
+        m_self.add_history_line(utils::utf8_to_unicode(line));
     });
 
     /** @function clear_history
@@ -129,8 +129,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
 
     /** @function insert
      */
-    m_class.set_function("insert", [](edit_box& m_self, const std::string& s_text) {
-        m_self.insert_after_cursor(utils::utf8_to_unicode(s_text));
+    m_class.set_function("insert", [](edit_box& m_self, const std::string& text) {
+        m_self.insert_after_cursor(utils::utf8_to_unicode(text));
     });
 
     /** @function is_multi_line
@@ -156,23 +156,23 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     /** @function set_font
      */
     m_class.set_function(
-        "set_font", [](edit_box& m_self, const std::string& s_file, float f_height,
-                       sol::optional<std::string> s_flags) {
-            m_self.set_font(s_file, f_height);
+        "set_font", [](edit_box& m_self, const std::string& file, float f_height,
+                       sol::optional<std::string> flags) {
+            m_self.set_font(file, f_height);
 
             auto* p_font_string = m_self.get_font_string().get();
             if (!p_font_string)
                 return;
 
-            if (s_flags.has_value()) {
-                if (s_flags.value().find("OUTLINE") != std::string::npos ||
-                    s_flags.value().find("THICKOUTLINE") != std::string::npos)
+            if (flags.has_value()) {
+                if (flags.value().find("OUTLINE") != std::string::npos ||
+                    flags.value().find("THICKOUTLINE") != std::string::npos)
                     p_font_string->set_outlined(true);
-                else if (s_flags.value().empty())
+                else if (flags.value().empty())
                     p_font_string->set_outlined(false);
                 else {
                     gui::out << gui::warning << "EditBox:set_font : "
-                             << "Unknown flags : \"" << s_flags.value() << "\"." << std::endl;
+                             << "Unknown flags : \"" << flags.value() << "\"." << std::endl;
                 }
             } else
                 p_font_string->set_outlined(false);
@@ -215,8 +215,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
 
     /** @function set_text
      */
-    m_class.set_function("set_text", [](edit_box& m_self, const std::string& s_text) {
-        m_self.set_text(utils::utf8_to_unicode(s_text));
+    m_class.set_function("set_text", [](edit_box& m_self, const std::string& text) {
+        m_self.set_text(utils::utf8_to_unicode(text));
     });
 
     /** @function set_text_insets

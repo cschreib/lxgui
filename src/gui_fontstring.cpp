@@ -57,43 +57,43 @@ void font_string::render() const {
     p_text_->render(matrix4f::translation(round_to_pixel(vector2f(f_x, f_y))));
 }
 
-std::string font_string::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
+std::string font_string::serialize(const std::string& tab) const {
+    std::ostringstream str;
 
-    s_str << base::serialize(s_tab);
+    str << base::serialize(tab);
 
-    s_str << s_tab << "  # Font name   : " << s_font_name_ << "\n";
-    s_str << s_tab << "  # Font height : " << f_height_ << "\n";
-    s_str << s_tab << "  # Text ready  : " << (p_text_ != nullptr) << "\n";
-    s_str << s_tab << "  # Text        : \"" << utils::unicode_to_utf8(s_text_) << "\"\n";
-    s_str << s_tab << "  # Outlined    : " << b_is_outlined_ << "\n";
-    s_str << s_tab << "  # Text color  : " << m_text_color_ << "\n";
-    s_str << s_tab << "  # Spacing     : " << f_spacing_ << "\n";
-    s_str << s_tab << "  # Justify     :\n";
-    s_str << s_tab << "  #-###\n";
-    s_str << s_tab << "  |   # horizontal : ";
+    str << tab << "  # Font name   : " << font_name_ << "\n";
+    str << tab << "  # Font height : " << f_height_ << "\n";
+    str << tab << "  # Text ready  : " << (p_text_ != nullptr) << "\n";
+    str << tab << "  # Text        : \"" << utils::unicode_to_utf8(content_) << "\"\n";
+    str << tab << "  # Outlined    : " << b_is_outlined_ << "\n";
+    str << tab << "  # Text color  : " << m_text_color_ << "\n";
+    str << tab << "  # Spacing     : " << f_spacing_ << "\n";
+    str << tab << "  # Justify     :\n";
+    str << tab << "  #-###\n";
+    str << tab << "  |   # horizontal : ";
     switch (m_align_x_) {
-    case alignment_x::left: s_str << "LEFT\n"; break;
-    case alignment_x::center: s_str << "CENTER\n"; break;
-    case alignment_x::right: s_str << "RIGHT\n"; break;
-    default: s_str << "<error>\n"; break;
+    case alignment_x::left: str << "LEFT\n"; break;
+    case alignment_x::center: str << "CENTER\n"; break;
+    case alignment_x::right: str << "RIGHT\n"; break;
+    default: str << "<error>\n"; break;
     }
-    s_str << s_tab << "  |   # vertical   : ";
+    str << tab << "  |   # vertical   : ";
     switch (m_align_y_) {
-    case alignment_y::top: s_str << "TOP\n"; break;
-    case alignment_y::middle: s_str << "MIDDLE\n"; break;
-    case alignment_y::bottom: s_str << "BOTTOM\n"; break;
-    default: s_str << "<error>\n"; break;
+    case alignment_y::top: str << "TOP\n"; break;
+    case alignment_y::middle: str << "MIDDLE\n"; break;
+    case alignment_y::bottom: str << "BOTTOM\n"; break;
+    default: str << "<error>\n"; break;
     }
-    s_str << s_tab << "  #-###\n";
-    s_str << s_tab << "  # NonSpaceW.  : " << b_can_non_space_wrap_ << "\n";
+    str << tab << "  #-###\n";
+    str << tab << "  # NonSpaceW.  : " << b_can_non_space_wrap_ << "\n";
     if (b_has_shadow_) {
-        s_str << s_tab << "  # Shadow off. : (" << m_shadow_offset_.x << ", " << m_shadow_offset_.y
-              << ")\n";
-        s_str << s_tab << "  # Shadow col. : " << m_shadow_color_ << "\n";
+        str << tab << "  # Shadow off. : (" << m_shadow_offset_.x << ", " << m_shadow_offset_.y
+            << ")\n";
+        str << tab << "  # Shadow col. : " << m_shadow_color_ << "\n";
     }
 
-    return s_str.str();
+    return str.str();
 }
 
 void font_string::create_glue() {
@@ -107,10 +107,10 @@ void font_string::copy_from(const region& m_obj) {
     if (!p_font_string)
         return;
 
-    std::string s_font_name = p_font_string->get_font_name();
-    float       f_height    = p_font_string->get_font_height();
-    if (!s_font_name.empty() && f_height != 0)
-        this->set_font(s_font_name, f_height);
+    std::string font_name = p_font_string->get_font_name();
+    float       f_height  = p_font_string->get_font_height();
+    if (!font_name.empty() && f_height != 0)
+        this->set_font(font_name, f_height);
 
     this->set_alignment_x(p_font_string->get_alignment_x());
     this->set_alignment_y(p_font_string->get_alignment_y());
@@ -128,7 +128,7 @@ void font_string::copy_from(const region& m_obj) {
 }
 
 const std::string& font_string::get_font_name() const {
-    return s_font_name_;
+    return font_name_;
 }
 
 float font_string::get_font_height() const {
@@ -186,11 +186,11 @@ void font_string::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
     if (p_text_)
-        set_font(s_font_name_, f_height_);
+        set_font(font_name_, f_height_);
 }
 
 void font_string::create_text_object_() {
-    if (s_font_name_.empty())
+    if (font_name_.empty())
         return;
 
     std::size_t ui_pixel_height = static_cast<std::size_t>(
@@ -205,19 +205,19 @@ void font_string::create_text_object_() {
     std::shared_ptr<gui::font> p_outline_font;
     if (b_is_outlined_) {
         p_outline_font = m_renderer.create_atlas_font(
-            "GUI", s_font_name_, ui_pixel_height,
+            "GUI", font_name_, ui_pixel_height,
             std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * ui_pixel_height))),
             code_points, ui_default_code_point);
     }
 
     auto p_font = m_renderer.create_atlas_font(
-        "GUI", s_font_name_, ui_pixel_height, 0u, code_points, ui_default_code_point);
+        "GUI", font_name_, ui_pixel_height, 0u, code_points, ui_default_code_point);
 
     p_text_ = std::unique_ptr<text>(new text(m_renderer, p_font, p_outline_font));
 
     p_text_->set_scaling_factor(1.0f / get_manager().get_interface_scaling_factor());
     p_text_->set_remove_starting_spaces(true);
-    p_text_->set_text(s_text_);
+    p_text_->set_text(content_);
     p_text_->set_alignment_x(m_align_x_);
     p_text_->set_alignment_y(m_align_y_);
     p_text_->set_tracking(f_spacing_);
@@ -225,9 +225,9 @@ void font_string::create_text_object_() {
     p_text_->enable_formatting(b_formatting_enabled_);
 }
 
-void font_string::set_font(const std::string& s_font_name, float f_height) {
-    s_font_name_ = parse_file_name(s_font_name);
-    f_height_    = f_height;
+void font_string::set_font(const std::string& font_name, float f_height) {
+    font_name_ = parse_file_name(font_name);
+    f_height_  = f_height;
 
     create_text_object_();
 
@@ -341,15 +341,15 @@ float font_string::get_string_width() const {
         return 0.0f;
 }
 
-float font_string::get_string_width(const utils::ustring& s_string) const {
+float font_string::get_string_width(const utils::ustring& content) const {
     if (p_text_)
-        return p_text_->get_string_width(s_string);
+        return p_text_->get_string_width(content);
     else
         return 0.0f;
 }
 
 const utils::ustring& font_string::get_text() const {
-    return s_text_;
+    return content_;
 }
 
 void font_string::set_non_space_wrap(bool b_can_non_space_wrap) {
@@ -395,13 +395,13 @@ bool font_string::is_formatting_enabled() const {
     return b_formatting_enabled_;
 }
 
-void font_string::set_text(const utils::ustring& s_text) {
-    if (s_text_ == s_text)
+void font_string::set_text(const utils::ustring& content) {
+    if (content_ == content)
         return;
 
-    s_text_ = s_text;
+    content_ = content;
     if (p_text_) {
-        p_text_->set_text(s_text_);
+        p_text_->set_text(content_);
         if (!b_virtual_)
             notify_borders_need_update();
     }

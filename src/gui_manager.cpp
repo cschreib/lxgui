@@ -100,9 +100,9 @@ bool manager::is_caching_enabled() const {
         return b_enable_caching_;
 }
 
-void manager::add_addon_directory(const std::string& s_directory) {
-    if (utils::find(gui_directory_list_, s_directory) == gui_directory_list_.end())
-        gui_directory_list_.push_back(s_directory);
+void manager::add_addon_directory(const std::string& directory) {
+    if (utils::find(gui_directory_list_, directory) == gui_directory_list_.end())
+        gui_directory_list_.push_back(directory);
 }
 
 void manager::clear_addon_directory_list() {
@@ -124,8 +124,8 @@ void manager::read_files_() {
     p_add_on_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
 
-    for (const auto& s_directory : gui_directory_list_)
-        p_add_on_registry_->load_addon_directory(s_directory);
+    for (const auto& directory : gui_directory_list_)
+        p_add_on_registry_->load_addon_directory(directory);
 }
 
 void manager::load_ui() {

@@ -33,7 +33,7 @@ struct layer_container {
 
 /// Holds file/line information for a script.
 struct script_info {
-    std::string s_file_name;
+    std::string file_name;
     std::size_t ui_line_nbr = 0;
 };
 
@@ -292,16 +292,16 @@ public:
     void update(float f_delta) override;
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Returns 'true' if this frame can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    virtual bool can_use_script(const std::string& s_script_name) const;
+    virtual bool can_use_script(const std::string& script_name) const;
 
     /// Copies a region's parameters into this frame (inheritance).
     /** \param mObj The region to copy
@@ -344,7 +344,7 @@ public:
     void enable_mouse_wheel(bool b_is_mouse_wheel_enabled);
 
     /// Sets if this frame can receive keyboard input from a specific key.
-    /** \param sKey              The key to capture
+    /** \param key_name              The key to capture
      *   \param bIsCaptureEnabled 'true' to enable
      *   \note If the frame captures the key, other frames below it will not be able to receive
      *         the input from this key. The format of the input key name is standard English,
@@ -353,13 +353,13 @@ public:
      *         simultaneously.
      *   \see is_key_capture_enabled()
      */
-    void enable_key_capture(const std::string& s_key, bool b_is_capture_enabled);
+    void enable_key_capture(const std::string& key_name, bool b_is_capture_enabled);
 
     /// Checks if this frame has a script defined.
-    /** \param sScriptName The name of the script to check
+    /** \param script_name The name of the script to check
      *   \return 'true' if this script is defined
      */
-    bool has_script(const std::string& s_script_name) const;
+    bool has_script(const std::string& script_name) const;
 
     /// Adds a layered_region to this frame's children.
     /** \param pRegion The layered_region to add
@@ -412,7 +412,7 @@ public:
             typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
     utils::observer_ptr<RegionType>
     create_layered_region(layer m_layer, region_core_attributes m_attr) {
-        m_attr.s_object_type = RegionType::class_name;
+        m_attr.object_type = RegionType::class_name;
 
         return utils::static_pointer_cast<RegionType>(
             create_layered_region(m_layer, std::move(m_attr)));
@@ -420,7 +420,7 @@ public:
 
     /// Creates a new region as child of this frame.
     /** \param mLayer       The layer on which to create the region
-     *   \param sName        The name of the region
+     *   \param name        The name of the region
      *   \return The created region.
      *   \note You don't have the reponsibility to delete this region.
      *         It will be done automatically when its parent is deleted.
@@ -431,11 +431,10 @@ public:
         typename RegionType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
-    utils::observer_ptr<RegionType>
-    create_layered_region(layer m_layer, const std::string& s_name) {
+    utils::observer_ptr<RegionType> create_layered_region(layer m_layer, const std::string& name) {
         region_core_attributes m_attr;
-        m_attr.s_name        = s_name;
-        m_attr.s_object_type = RegionType::class_name;
+        m_attr.name        = name;
+        m_attr.object_type = RegionType::class_name;
 
         return utils::static_pointer_cast<RegionType>(
             create_layered_region(m_layer, std::move(m_attr)));
@@ -470,13 +469,13 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<FrameType> create_child(region_core_attributes m_attr) {
-        m_attr.s_object_type = FrameType::class_name;
+        m_attr.object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_child(std::move(m_attr)));
     }
 
     /// Creates a new frame as child of this frame.
-    /** \param sName The name of the frame
+    /** \param name The name of the frame
      *   \return The created frame.
      *   \note You don't have the reponsibility to delete this frame.
      *         It will be done automatically when its parent is deleted.
@@ -490,10 +489,10 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<FrameType> create_child(const std::string& s_name) {
+    utils::observer_ptr<FrameType> create_child(const std::string& name) {
         region_core_attributes m_attr;
-        m_attr.s_name        = s_name;
-        m_attr.s_object_type = FrameType::class_name;
+        m_attr.name        = name;
+        m_attr.object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_child(std::move(m_attr)));
     }
@@ -532,29 +531,29 @@ public:
     const_child_list_view get_children() const;
 
     /// Returns one of this frame's children.
-    /** \param sName The name of the child
+    /** \param name The name of the child
      *   \return One of this frame's children
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
      *         for matches on the full name, then if no child is found, on the
      *         relative name.
      */
-    utils::observer_ptr<const frame> get_child(const std::string& s_name) const;
+    utils::observer_ptr<const frame> get_child(const std::string& name) const;
 
     /// Returns one of this frame's children.
-    /** \param sName The name of the child
+    /** \param name The name of the child
      *   \return One of this frame's children
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
      *         for matches on the full name, then if no child is found, on the
      *         relative name.
      */
-    utils::observer_ptr<frame> get_child(const std::string& s_name) {
-        return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(s_name));
+    utils::observer_ptr<frame> get_child(const std::string& name) {
+        return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(name));
     }
 
     /// Returns one of this frame's children.
-    /** \param sName The name of the child
+    /** \param name The name of the child
      *   \return One of this frame's children
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
@@ -565,12 +564,12 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<const FrameType> get_child(const std::string& s_name) const {
-        return down_cast<FrameType>(get_child(s_name));
+    utils::observer_ptr<const FrameType> get_child(const std::string& name) const {
+        return down_cast<FrameType>(get_child(name));
     }
 
     /// Returns one of this frame's children.
-    /** \param sName The name of the child
+    /** \param name The name of the child
      *   \return One of this frame's children
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
@@ -581,8 +580,8 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<FrameType> get_child(const std::string& s_name) {
-        return down_cast<FrameType>(get_child(s_name));
+    utils::observer_ptr<FrameType> get_child(const std::string& name) {
+        return down_cast<FrameType>(get_child(name));
     }
 
     /// Returns the region list.
@@ -596,30 +595,30 @@ public:
     const_region_list_view get_regions() const;
 
     /// Returns one of this frame's region.
-    /** \param sName The name of the region
+    /** \param name The name of the region
      *   \return One of this frame's region
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
      *         for matches on the full name, then if no region is found, on the
      *         relative name.
      */
-    utils::observer_ptr<const layered_region> get_region(const std::string& s_name) const;
+    utils::observer_ptr<const layered_region> get_region(const std::string& name) const;
 
     /// Returns one of this frame's region.
-    /** \param sName The name of the region
+    /** \param name The name of the region
      *   \return One of this frame's region
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
      *         for matches on the full name, then if no region is found, on the
      *         relative name.
      */
-    utils::observer_ptr<layered_region> get_region(const std::string& s_name) {
+    utils::observer_ptr<layered_region> get_region(const std::string& name) {
         return utils::const_pointer_cast<layered_region>(
-            const_cast<const frame*>(this)->get_region(s_name));
+            const_cast<const frame*>(this)->get_region(name));
     }
 
     /// Returns one of this frame's region.
-    /** \param sName The name of the region
+    /** \param name The name of the region
      *   \return One of this frame's region
      *   \note The provided name can either be the full name or the relative name
      *         (i.e. without the "$parent" in front). This function first looks
@@ -630,8 +629,8 @@ public:
         typename RegionType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
-    utils::observer_ptr<RegionType> get_region(const std::string& s_name) {
-        return down_cast<RegionType>(get_region(s_name));
+    utils::observer_ptr<RegionType> get_region(const std::string& name) {
+        return down_cast<RegionType>(get_region(name));
     }
 
     /// Calculates effective alpha.
@@ -804,16 +803,17 @@ public:
     bool is_mouse_wheel_enabled() const;
 
     /// Checks if this frame is registered for drag events with the provided mouse button.
-    /** \return 'true' if this frame is registered for drag events
+    /** \param button_name The name of the mouse button to check
+     *  \return 'true' if this frame is registered for drag events with the provided mouse button
      */
-    bool is_registered_for_drag(const std::string& s_button) const;
+    bool is_registered_for_drag(const std::string& button_name) const;
 
     /// Checks if this frame can receive keyboard input from a specific key.
-    /** \param sKey The key to check
+    /** \param key_name The key to check
      *   \return 'true' if this frame can receive keyboard input from this key
      *   \see enable_key_capture()
      */
-    bool is_key_capture_enabled(const std::string& s_key) const;
+    bool is_key_capture_enabled(const std::string& key_name) const;
 
     /// Checks if this frame can be moved.
     /** \return 'true' if this frame can be moved
@@ -836,13 +836,13 @@ public:
     bool is_user_placed() const;
 
     /// Returns the "adjusted" script name: "OnEvent" becomes "on_event"
-    /** \param sScriptName The CamelCase name of the script
+    /** \param script_name The CamelCase name of the script
      *   \return the snake_case name of the script
      */
-    static std::string get_adjusted_script_name(const std::string& s_script_name);
+    static std::string get_adjusted_script_name(const std::string& script_name);
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param sContent    The content ot the script, as Lua code
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -851,14 +851,12 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection add_script(
-        const std::string& s_script_name,
-        std::string        s_content,
-        script_info        m_info = script_info{}) {
-        return define_script_(s_script_name, s_content, true, m_info);
+        const std::string& script_name, std::string content, script_info m_info = script_info{}) {
+        return define_script_(script_name, content, true, m_info);
     }
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param mHandler    The handler of the script, as a Lua function
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -868,14 +866,14 @@ public:
      *         C++ function instead.
      */
     utils::connection add_script(
-        const std::string&      s_script_name,
+        const std::string&      script_name,
         sol::protected_function m_handler,
         script_info             m_info = script_info{}) {
-        return define_script_(s_script_name, std::move(m_handler), true, m_info);
+        return define_script_(script_name, std::move(m_handler), true, m_info);
     }
 
     /// Adds an additional handler script to this frame (executed after existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param mHandler    The handler of the script, as a C++ function
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -885,14 +883,14 @@ public:
      *         instead.
      */
     utils::connection add_script(
-        const std::string& s_script_name,
+        const std::string& script_name,
         script_function    m_handler,
         script_info        m_info = script_info{}) {
-        return define_script_(s_script_name, std::move(m_handler), true, m_info);
+        return define_script_(script_name, std::move(m_handler), true, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param sContent    The content ot the script, as Lua code
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -901,14 +899,12 @@ public:
      *         manually define your own script handlers, prefer the other overloads.
      */
     utils::connection set_script(
-        const std::string& s_script_name,
-        std::string        s_content,
-        script_info        m_info = script_info{}) {
-        return define_script_(s_script_name, s_content, false, m_info);
+        const std::string& script_name, std::string content, script_info m_info = script_info{}) {
+        return define_script_(script_name, content, false, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param mHandler    The handler of the script, as a Lua function
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -918,14 +914,14 @@ public:
      *         C++ function instead.
      */
     utils::connection set_script(
-        const std::string&      s_script_name,
+        const std::string&      script_name,
         sol::protected_function m_handler,
         script_info             m_info = script_info{}) {
-        return define_script_(s_script_name, std::move(m_handler), false, m_info);
+        return define_script_(script_name, std::move(m_handler), false, m_info);
     }
 
     /// Sets a new handler script for this frame (replacing existing scripts).
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param mHandler    The handler of the script, as a C++ function
      *   \param mInfo       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
@@ -935,44 +931,44 @@ public:
      *         instead.
      */
     utils::connection set_script(
-        const std::string& s_script_name,
+        const std::string& script_name,
         script_function    m_handler,
         script_info        m_info = script_info{}) {
-        return define_script_(s_script_name, std::move(m_handler), false, m_info);
+        return define_script_(script_name, std::move(m_handler), false, m_info);
     }
 
     /// Return a view into this frame's handler scripts, registered for the given event.
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \return An iterable view into the frame's handlers.
      */
-    script_list_view get_script(const std::string& s_script_name) const;
+    script_list_view get_script(const std::string& script_name) const;
 
     /// Removes a script from this frame.
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \note This removes all handler scripts registered to this event, including the ones
      * inherited from templates.
      */
-    void remove_script(const std::string& s_script_name);
+    void remove_script(const std::string& script_name);
 
     /// Calls a script.
-    /** \param sScriptName The name of the script (e.g., "OnEvent")
+    /** \param script_name The name of the script (e.g., "OnEvent")
      *   \param mData       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     virtual void
-    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{});
+    fire_script(const std::string& script_name, const event_data& m_data = event_data{});
 
     /// Tells this frame to react to a certain event.
-    /** \param sEventName The name of the event
+    /** \param event_name The name of the event
      */
-    void register_event(const std::string& s_event_name);
+    void register_event(const std::string& event_name);
 
     /// Tells the frame not to react to a certain event.
-    /** \param sEventName The name of the event
+    /** \param event_name The name of the event
      */
-    void unregister_event(const std::string& s_event_name);
+    void unregister_event(const std::string& event_name);
 
     /// Tells this frame to react to mouse drag.
     /** \param button_list The list of mouse button allowed
@@ -991,9 +987,9 @@ public:
     void set_frame_strata(frame_strata m_strata);
 
     /// Sets this frame's strata.
-    /** \param sStrata The new strata
+    /** \param strata_name The new strata
      */
-    void set_frame_strata(const std::string& s_strata);
+    void set_frame_strata(const std::string& strata_name);
 
     /// Sets this frames' backdrop.
     /** \param pBackdrop The new backdrop
@@ -1262,10 +1258,10 @@ protected:
     virtual void parse_frames_node_(const layout_node& m_node);
     virtual void parse_scripts_node_(const layout_node& m_node);
 
-    utils::observer_ptr<layered_region>
-    parse_region_(const layout_node& m_node, const std::string& s_layer, const std::string& s_type);
+    utils::observer_ptr<layered_region> parse_region_(
+        const layout_node& m_node, const std::string& layer_name, const std::string& type);
 
-    utils::observer_ptr<frame> parse_child_(const layout_node& m_node, const std::string& s_type);
+    utils::observer_ptr<frame> parse_child_(const layout_node& m_node, const std::string& type);
 
     void check_position_();
 
@@ -1276,24 +1272,24 @@ protected:
     void update_borders_() override;
 
     utils::connection define_script_(
-        const std::string& s_script_name,
-        const std::string& s_content,
+        const std::string& script_name,
+        const std::string& content,
         bool               b_append,
         const script_info& m_info);
 
     utils::connection define_script_(
-        const std::string&      s_script_name,
+        const std::string&      script_name,
         sol::protected_function m_handler,
         bool                    b_append,
         const script_info&      m_info);
 
     utils::connection define_script_(
-        const std::string& s_script_name,
+        const std::string& script_name,
         script_function    m_handler,
         bool               b_append,
         const script_info& m_info);
 
-    void on_event_(std::string_view s_event_name, const event_data& m_event);
+    void on_event_(std::string_view event_name, const event_data& m_event);
 
     child_list  child_list_;
     region_list region_list_;

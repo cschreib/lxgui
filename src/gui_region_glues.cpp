@@ -124,17 +124,17 @@
 
 namespace lxgui::gui {
 
-void region::set_lua_member_(std::string s_key, sol::stack_object m_value) {
-    auto m_iter = lua_members_.find(s_key);
+void region::set_lua_member_(std::string key, sol::stack_object m_value) {
+    auto m_iter = lua_members_.find(key);
     if (m_iter == lua_members_.cend()) {
-        lua_members_.insert(m_iter, {std::move(s_key), m_value});
+        lua_members_.insert(m_iter, {std::move(key), m_value});
     } else {
         m_iter->second = sol::object(m_value);
     }
 }
 
-sol::object region::get_lua_member_(const std::string& s_key) const {
-    auto m_iter = lua_members_.find(s_key);
+sol::object region::get_lua_member_(const std::string& key) const {
+    auto m_iter = lua_members_.find(key);
     if (m_iter == lua_members_.cend())
         return sol::lua_nil;
 
@@ -220,8 +220,8 @@ void region::register_on_lua(sol::state& m_lua) {
         const anchor& m_anchor = m_self.get_point(m_point_value);
 
         return std::make_tuple(
-            anchor::get_string_point(m_anchor.m_point), m_anchor.get_parent(),
-            anchor::get_string_point(m_anchor.m_parent_point), m_anchor.m_offset.x,
+            anchor::get_anchor_point_name(m_anchor.m_point), m_anchor.get_parent(),
+            anchor::get_anchor_point_name(m_anchor.m_parent_point), m_anchor.m_offset.x,
             m_anchor.m_offset.y);
     });
 
@@ -289,12 +289,12 @@ void region::register_on_lua(sol::state& m_lua) {
     /** @function set_point
      */
     m_class.set_function(
-        "set_point", [](region& m_self, const std::string& s_point,
+        "set_point", [](region& m_self, const std::string& point,
                         sol::optional<std::variant<std::string, region*>> m_parent,
-                        sol::optional<std::string>                        s_relative_point,
-                        sol::optional<float> f_x_offset, sol::optional<float> f_y_offset) {
+                        sol::optional<std::string> relative_point, sol::optional<float> f_x_offset,
+                        sol::optional<float> f_y_offset) {
             // point
-            anchor_point m_point = anchor::get_anchor_point(s_point);
+            anchor_point m_point = anchor::get_anchor_point(point);
 
             // parent
             utils::observer_ptr<region> p_parent;
@@ -311,8 +311,8 @@ void region::register_on_lua(sol::state& m_lua) {
 
             // relativePoint
             anchor_point m_parent_point = m_point;
-            if (s_relative_point.has_value())
-                m_parent_point = anchor::get_anchor_point(s_relative_point.value());
+            if (relative_point.has_value())
+                m_parent_point = anchor::get_anchor_point(relative_point.value());
 
             // x, y
             float f_abs_x = f_x_offset.value_or(0.0f);
@@ -326,12 +326,12 @@ void region::register_on_lua(sol::state& m_lua) {
     /** @function set_rel_point
      */
     m_class.set_function(
-        "set_rel_point", [](region& m_self, const std::string& s_point,
+        "set_rel_point", [](region& m_self, const std::string& point,
                             sol::optional<std::variant<std::string, region*>> m_parent,
-                            sol::optional<std::string>                        s_relative_point,
+                            sol::optional<std::string>                        relative_point,
                             sol::optional<float> f_x_offset, sol::optional<float> f_y_offset) {
             // point
-            anchor_point m_point = anchor::get_anchor_point(s_point);
+            anchor_point m_point = anchor::get_anchor_point(point);
 
             // parent
             utils::observer_ptr<region> p_parent;
@@ -348,8 +348,8 @@ void region::register_on_lua(sol::state& m_lua) {
 
             // relativePoint
             anchor_point m_parent_point = m_point;
-            if (s_relative_point.has_value())
-                m_parent_point = anchor::get_anchor_point(s_relative_point.value());
+            if (relative_point.has_value())
+                m_parent_point = anchor::get_anchor_point(relative_point.value());
 
             // x, y
             float f_rel_x = f_x_offset.value_or(0.0f);

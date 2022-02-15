@@ -29,8 +29,8 @@ class localizer {
     sol::state                    m_lua_;
     map_type                      map_;
 
-    bool                     is_key_valid_(std::string_view s_key) const;
-    map_type::const_iterator find_key_(std::string_view s_key) const;
+    bool                     is_key_valid_(std::string_view key) const;
+    map_type::const_iterator find_key_(std::string_view key) const;
     void                     reset_language_fallback_();
 
 public:
@@ -102,23 +102,23 @@ public:
     void add_allowed_code_points(const code_point_range& m_range);
 
     /// Adds a new range to the set of allowed code points from a Unicode group.
-    /** \param sUnicodeGroup The name of the Unicode code group to allow
+    /** \param unicode_group The name of the Unicode code group to allow
      *   \note The Unicode standard defines a set of code groups, which are contiguous
      *         ranges of Unicode code points that are typically associated to a language
      *         or a group of languages. This function knows about such groups and the
      *         ranges of code point they correspond to, and is therefore more user-friendly.
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points_for_group(const std::string& s_unicode_group);
+    void add_allowed_code_points_for_group(const std::string& unicode_group);
 
     /// Adds a new range to the set of allowed code points for a given language.
-    /** \param sLanguageCode The language code (e.g., "en", "ru", etc.)
+    /** \param language_code The language code (e.g., "en", "ru", etc.)
      *   \note Language codes are based on the ISO-639-1 standard, or later standards for those
      *         languages which were not listed in ISO-639-1. They are always in lower case, and
      *         typically composed of just two letters, but sometimes more.
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points_for_language(const std::string& s_language_code);
+    void add_allowed_code_points_for_language(const std::string& language_code);
 
     /// Attempts to automatically detect the set of allowed code points based on preferred
     /// languages.
@@ -148,17 +148,17 @@ public:
     char32_t get_fallback_code_point() const;
 
     /// Loads new translations from a folder, selecting the language automatically.
-    /** \param sFolderPath The path to the folder to load translations from
+    /** \param folder_path The path to the folder to load translations from
      *   \note Based on the current language (see get_language()), this function will scan files in
      *         the supplied folder with name "{language}{REGION}.lua", and pick the combination of
      *         "language" and "REGION" closest to the currently configured language.
      *         It then loads translations from this file using load_translation_file() (see the
      *         documentation of this function for more information).
      */
-    void load_translations(const std::string& s_folder_path);
+    void load_translations(const std::string& folder_path);
 
     /// Loads new translations from a file.
-    /** \param sFilename The path to the file to load translations from
+    /** \param file_name The path to the file to load translations from
      *   \note The file must be a Lua script. It will be loaded in a sandboxed Lua state
      * (independent of the Lua state of the GUI). The script must define a table called "localize",
      * which will be scanned to add new translations for the current locale (each file must only
@@ -175,7 +175,7 @@ public:
      *         must return a translated string. See localize() for more information on
      *         translation arguments.
      */
-    void load_translation_file(const std::string& s_filename);
+    void load_translation_file(const std::string& file_name);
 
     /// Removes all previously loaded translations.
     /** \note After calling this function, it is highly recommended to always include at least
@@ -185,12 +185,12 @@ public:
     void clear_translations();
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
-    /** \param sMessage The string to format (e.g., "Player {0} has {1} HP.").
+    /** \param message The string to format (e.g., "Player {0} has {1} HP.").
      *   \param mVArgs A variadic list of formatting input arguments from a Sol Lua state.
      *   \return The formatted string.
      *   \details The string to format must follow the rules of libfmt format strings.
      */
-    std::string format_string(std::string_view s_message, sol::variadic_args m_v_args) const;
+    std::string format_string(std::string_view message, sol::variadic_args m_v_args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param sMessage The string to format (e.g., "Player {0} has {1} HP.").
@@ -199,20 +199,20 @@ public:
      *   \details The string to format must follow the rules of libfmt format strings.
      */
     template<typename... Args>
-    std::string format_string(std::string_view s_message, Args&&... m_args) const {
-        return fmt::format(m_locale_, s_message, std::forward<Args>(m_args)...);
+    std::string format_string(std::string_view message, Args&&... m_args) const {
+        return fmt::format(m_locale_, message, std::forward<Args>(m_args)...);
     }
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
-    /** \param sKey   The key identifying the sentence / text to translate (e.g.,
+    /** \param key   The key identifying the sentence / text to translate (e.g.,
      * "{player_health}"). Must start with '{' and end with '}'. \param mVArgs A variadic list of
      * translation input arguments from a Sol Lua state. \return The translated string, or sKey if
      * not found or an error occurred. \note See the other overload for more information.
      */
-    std::string localize(std::string_view s_key, sol::variadic_args m_v_args) const;
+    std::string localize(std::string_view key, sol::variadic_args m_v_args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
-    /** \param sKey  The key identifying the sentence / text to translate (e.g., "{player_health}").
+    /** \param key  The key identifying the sentence / text to translate (e.g., "{player_health}").
      *                Must start with '{' and end with '}'.
      *   \param mArgs A variadic list of translation input arguments.
      *   \return The translated string, or sKey if not found or an error occurred.
@@ -223,13 +223,13 @@ public:
      *            the proper place for the selected language.
      */
     template<typename... Args>
-    std::string localize(std::string_view s_key, Args&&... m_args) const {
-        if (!is_key_valid_(s_key))
-            return std::string{s_key};
+    std::string localize(std::string_view key, Args&&... m_args) const {
+        if (!is_key_valid_(key))
+            return std::string{key};
 
-        auto m_iter = find_key_(s_key);
+        auto m_iter = find_key_(key);
         if (m_iter == map_.end())
-            return std::string{s_key};
+            return std::string{key};
 
         return std::visit(
             [&](const auto& m_item) {
@@ -247,9 +247,9 @@ public:
                         if (m_first.template is<std::string>())
                             return m_first.template as<std::string>();
                         else
-                            return std::string{s_key};
+                            return std::string{key};
                     } else
-                        return std::string{s_key};
+                        return std::string{key};
                 }
             },
             m_iter->second);

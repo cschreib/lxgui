@@ -100,13 +100,13 @@ public:
 
 protected:
     /// Creates a new material from a texture file.
-    /** \param sFileName The name of the file
+    /** \param file_name The name of the file
      *   \param mFilter   The filtering to apply to the texture
      *   \return The new material
      *   \note Only PNG textures are supported by this implementation (parsed by libpng).
      */
     std::shared_ptr<gui::material>
-    create_material_(const std::string& s_file_name, material::filter m_filter) override;
+    create_material_(const std::string& file_name, material::filter m_filter) override;
 
     /// Creates a new atlas with a given texture filter mode.
     /** \param mFilter The filtering to apply to the texture
@@ -115,7 +115,7 @@ protected:
     std::shared_ptr<gui::atlas> create_atlas_(material::filter m_filter) override;
 
     /// Creates a new font.
-    /** \param sFontFile   The file from which to read the font
+    /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
@@ -124,7 +124,7 @@ protected:
      *         Bitmap fonts are not yet supported.
      */
     std::shared_ptr<gui::font> create_font_(
-        const std::string&                   s_font_file,
+        const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,

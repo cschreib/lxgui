@@ -147,8 +147,8 @@ void renderer::render_cache_(
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material_(const std::string& s_file_name, material::filter m_filter) {
-    return std::make_shared<sfml::material>(s_file_name, material::wrap::repeat, m_filter);
+renderer::create_material_(const std::string& file_name, material::filter m_filter) {
+    return std::make_shared<sfml::material>(file_name, material::wrap::repeat, m_filter);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter m_filter) {
@@ -195,13 +195,13 @@ renderer::create_render_target(const vector2ui& m_dimensions, material::filter m
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     return std::make_shared<sfml::font>(
-        s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 }
 
 bool renderer::is_vertex_cache_supported() const {

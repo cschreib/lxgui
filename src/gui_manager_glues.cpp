@@ -43,21 +43,20 @@ void manager::create_lua_() {
 
     /** @function log
      */
-    m_lua.set_function(
-        "log", [](const std::string& s_message) { gui::out << s_message << std::endl; });
+    m_lua.set_function("log", [](const std::string& message) { gui::out << message << std::endl; });
 
     /** @function create_frame
      */
     m_lua.set_function(
         "create_frame",
-        [&](const std::string& s_type, const std::string& s_name, sol::optional<frame&> p_parent,
-            sol::optional<std::string> s_inheritance) -> sol::object {
+        [&](const std::string& type, const std::string& name, sol::optional<frame&> p_parent,
+            sol::optional<std::string> inheritance) -> sol::object {
             region_core_attributes m_attr;
-            m_attr.s_name        = s_name;
-            m_attr.s_object_type = s_type;
-            if (s_inheritance.has_value()) {
-                m_attr.inheritance = get_virtual_root().get_registry().get_virtual_region_list(
-                    s_inheritance.value());
+            m_attr.name        = name;
+            m_attr.object_type = type;
+            if (inheritance.has_value()) {
+                m_attr.inheritance =
+                    get_virtual_root().get_registry().get_virtual_region_list(inheritance.value());
             }
 
             utils::observer_ptr<frame> p_new_frame;
@@ -81,17 +80,17 @@ void manager::create_lua_() {
     /** @function register_key_binding
      */
     m_lua.set_function(
-        "register_key_binding", [&](std::string s_id, sol::protected_function m_function) {
-            get_root().get_keybinder().register_key_binding(s_id, m_function);
+        "register_key_binding", [&](std::string id, sol::protected_function m_function) {
+            get_root().get_keybinder().register_key_binding(id, m_function);
         });
 
     /** @function set_key_binding
      */
-    m_lua.set_function("set_key_binding", [&](std::string s_id, sol::optional<std::string> s_key) {
-        if (s_key.has_value())
-            get_root().get_keybinder().set_key_binding(s_id, s_key.value());
+    m_lua.set_function("set_key_binding", [&](std::string id, sol::optional<std::string> key) {
+        if (key.has_value())
+            get_root().get_keybinder().set_key_binding(id, key.value());
         else
-            get_root().get_keybinder().remove_key_binding(s_id);
+            get_root().get_keybinder().remove_key_binding(id);
     });
 
     /** Closes the whole GUI and re-loads addons from files.

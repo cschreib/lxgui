@@ -12,7 +12,7 @@
 namespace lxgui::gui {
 
 utils::connection
-keybinder::register_key_binding(std::string_view s_name, sol::protected_function m_lua_function) {
+keybinder::register_key_binding(std::string_view name, sol::protected_function m_lua_function) {
     auto m_function = [m_lua_function = std::move(m_lua_function)]() {
         // Call function
         auto m_result = m_lua_function();
@@ -24,22 +24,21 @@ keybinder::register_key_binding(std::string_view s_name, sol::protected_function
         }
     };
 
-    return register_key_binding(s_name, std::move(m_function));
+    return register_key_binding(name, std::move(m_function));
 }
 
-utils::connection
-keybinder::register_key_binding(std::string_view s_name, function_type m_function) {
+utils::connection keybinder::register_key_binding(std::string_view name, function_type m_function) {
     auto m_iter = utils::find_if(
-        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.name == name; });
 
     if (m_iter == key_bindings_.end()) {
-        gui::out << gui::error << "keybinder: a binding already exists with name '" << s_name
-                 << "'." << std::endl;
+        gui::out << gui::error << "keybinder: a binding already exists with name '" << name << "'."
+                 << std::endl;
         return {};
     }
 
     key_binding m_binding;
-    m_binding.s_name  = std::string(s_name);
+    m_binding.name    = std::string(name);
     auto m_connection = m_binding.m_signal.connect(std::move(m_function));
     key_bindings_.push_back(std::move(m_binding));
 
@@ -47,17 +46,16 @@ keybinder::register_key_binding(std::string_view s_name, function_type m_functio
 }
 
 void keybinder::set_key_binding(
-    std::string_view s_name,
+    std::string_view name,
     input::key       m_key,
     bool             b_shift_is_pressed,
     bool             b_ctrl_is_pressed,
     bool             b_alt_is_pressed) {
     auto m_iter = utils::find_if(
-        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.name == name; });
 
     if (m_iter == key_bindings_.end()) {
-        gui::out << gui::error << "keybinder: no binding with name '" << s_name << "'."
-                 << std::endl;
+        gui::out << gui::error << "keybinder: no binding with name '" << name << "'." << std::endl;
         return;
     }
 
@@ -70,33 +68,32 @@ void keybinder::set_key_binding(
         b_alt_is_pressed || m_key == input::key::k_lmenu || m_key == input::key::k_rmenu;
 }
 
-void keybinder::set_key_binding(std::string_view s_name, std::string_view s_key) {
+void keybinder::set_key_binding(std::string_view name, std::string_view key) {
     bool b_shift_is_pressed = false;
     bool b_ctrl_is_pressed  = false;
     bool b_alt_is_pressed   = false;
 
-    const auto tokens = utils::cut(s_key, "-");
-    for (auto s_token : tokens) {
-        if (s_token == "Shift")
+    const auto tokens = utils::cut(key, "-");
+    for (auto token : tokens) {
+        if (token == "Shift")
             b_shift_is_pressed = true;
-        else if (s_token == "Ctrl")
+        else if (token == "Ctrl")
             b_ctrl_is_pressed = true;
-        else if (s_token == "Alt")
+        else if (token == "Alt")
             b_alt_is_pressed = true;
     }
 
     set_key_binding(
-        s_name, input::get_key_from_codename(tokens.back()), b_shift_is_pressed, b_ctrl_is_pressed,
+        name, input::get_key_from_codename(tokens.back()), b_shift_is_pressed, b_ctrl_is_pressed,
         b_alt_is_pressed);
 }
 
-void keybinder::remove_key_binding(std::string_view s_name) {
+void keybinder::remove_key_binding(std::string_view name) {
     auto m_iter = utils::find_if(
-        key_bindings_, [&](const auto& m_binding) { return m_binding.s_name == s_name; });
+        key_bindings_, [&](const auto& m_binding) { return m_binding.name == name; });
 
     if (m_iter == key_bindings_.end()) {
-        gui::out << gui::error << "keybinder: no binding with name '" << s_name << "'."
-                 << std::endl;
+        gui::out << gui::error << "keybinder: no binding with name '" << name << "'." << std::endl;
         return;
     }
 
@@ -128,7 +125,7 @@ bool keybinder::on_key_down(
         p_key_binding->m_signal();
     } catch (const std::exception& e) {
         throw std::runtime_error(
-            "Bound action: " + p_key_binding->s_name + ": " + std::string(e.what()));
+            "Bound action: " + p_key_binding->name + ": " + std::string(e.what()));
     }
 
     return true;

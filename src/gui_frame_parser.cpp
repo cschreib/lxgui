@@ -49,9 +49,9 @@ void frame::parse_attributes_(const layout_node& m_node) {
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("frameLevel")) {
         if (!b_virtual_) {
-            std::string s_frame_level = p_attr->get_value<std::string>();
-            int         level         = 0;
-            if (s_frame_level != "PARENT" && utils::from_string(s_frame_level, level))
+            std::string frame_level = p_attr->get_value<std::string>();
+            int         level       = 0;
+            if (frame_level != "PARENT" && utils::from_string(frame_level, level))
                 set_level(level);
         } else {
             gui::out << gui::warning << m_node.get_location() << " : "
@@ -162,8 +162,8 @@ void frame::parse_backdrop_node_(const layout_node& m_node) {
                     p_abs_inset_node->get_attribute_value_or<float>("bottom", 0.0f)));
             } else {
                 gui::out << gui::warning << p_rel_inset_node->get_location() << " : "
-                         << "RelInset for Backdrop:BackgroundInsets is not yet supported ("
-                         << s_name_ << ")." << std::endl;
+                         << "RelInset for Backdrop:BackgroundInsets is not yet supported (" << name_
+                         << ")." << std::endl;
             }
         }
 
@@ -196,7 +196,7 @@ void frame::parse_backdrop_node_(const layout_node& m_node) {
                     p_abs_inset_node->get_attribute_value_or<float>("bottom", 0.0f)));
             } else {
                 gui::out << gui::warning << p_rel_inset_node->get_location() << " : "
-                         << "RelInset for Backdrop:EdgeInsets is not yet supported (" << s_name_
+                         << "RelInset for Backdrop:EdgeInsets is not yet supported (" << name_
                          << ")." << std::endl;
             }
         }
@@ -232,8 +232,8 @@ void frame::parse_backdrop_node_(const layout_node& m_node) {
                 p_backdrop->set_edge_size(p_abs_value_node->get_attribute_value_or("x", 0.0f));
             } else {
                 gui::out << gui::warning << p_rel_value_node->get_location() << " : "
-                         << "RelValue for Backdrop:EdgeSize is not yet supported (" << s_name_
-                         << ")." << std::endl;
+                         << "RelValue for Backdrop:EdgeSize is not yet supported (" << name_ << ")."
+                         << std::endl;
             }
         }
 
@@ -262,8 +262,8 @@ void frame::parse_backdrop_node_(const layout_node& m_node) {
                 p_backdrop->set_tile_size(p_abs_value_node->get_attribute_value_or("x", 0.0f));
             } else {
                 gui::out << gui::warning << p_rel_value_node->get_location() << " : "
-                         << "RelValue for Backdrop:TileSize is not yet supported (" << s_name_
-                         << ")." << std::endl;
+                         << "RelValue for Backdrop:TileSize is not yet supported (" << name_ << ")."
+                         << std::endl;
             }
         }
 
@@ -310,16 +310,16 @@ void frame::parse_hit_rect_insets_node_(const layout_node& m_node) {
 }
 
 utils::observer_ptr<layered_region> frame::parse_region_(
-    const layout_node& m_node, const std::string& s_layer, const std::string& s_type) {
+    const layout_node& m_node, const std::string& layer_name, const std::string& type) {
     try {
         auto m_attr = parse_core_attributes(
             get_manager().get_root().get_registry(),
             get_manager().get_virtual_root().get_registry(), m_node, observer_from(this));
 
-        if (!s_type.empty())
-            m_attr.s_object_type = s_type;
+        if (!type.empty())
+            m_attr.object_type = type;
 
-        auto p_region = create_layered_region(parse_layer_type(s_layer), m_attr);
+        auto p_region = create_layered_region(parse_layer_type(layer_name), m_attr);
         if (!p_region)
             return nullptr;
 
@@ -348,24 +348,23 @@ void frame::parse_layers_node_(const layout_node& m_node) {
                 continue;
             }
 
-            std::string s_level =
+            std::string level =
                 m_layer_node.get_attribute_value_or<std::string>("level", "ARTWORK");
             for (const layout_node& m_region_node : m_layer_node.get_children()) {
-                parse_region_(m_region_node, s_level, "");
+                parse_region_(m_region_node, level, "");
             }
         }
     }
 }
 
-utils::observer_ptr<frame>
-frame::parse_child_(const layout_node& m_node, const std::string& s_type) {
+utils::observer_ptr<frame> frame::parse_child_(const layout_node& m_node, const std::string& type) {
     try {
         auto m_attr = parse_core_attributes(
             get_manager().get_root().get_registry(),
             get_manager().get_virtual_root().get_registry(), m_node, observer_from(this));
 
-        if (!s_type.empty())
-            m_attr.s_object_type = s_type;
+        if (!type.empty())
+            m_attr.object_type = type;
 
         auto p_frame = create_child(m_attr);
         if (!p_frame)
@@ -398,21 +397,21 @@ void frame::parse_frames_node_(const layout_node& m_node) {
 void frame::parse_scripts_node_(const layout_node& m_node) {
     if (const layout_node* p_scripts_node = m_node.try_get_child("Scripts")) {
         for (const layout_node& m_script_node : p_scripts_node->get_children()) {
-            std::string s_name = std::string(m_script_node.get_name());
+            std::string name = std::string(m_script_node.get_name());
 
             const layout_attribute* p_node = &m_script_node;
             if (const layout_attribute* p_run = m_script_node.try_get_attribute("run"))
                 p_node = p_run;
 
-            std::string s_script = std::string(p_node->get_value());
+            std::string script = std::string(p_node->get_value());
             script_info m_info{
                 std::string(p_node->get_filename()),
                 static_cast<std::size_t>(p_node->get_value_line_number())};
 
             if (m_script_node.get_attribute_value_or<bool>("override", false))
-                set_script(s_name, std::move(s_script), std::move(m_info));
+                set_script(name, std::move(script), std::move(m_info));
             else
-                add_script(s_name, std::move(s_script), std::move(m_info));
+                add_script(name, std::move(script), std::move(m_info));
         }
     }
 }

@@ -188,19 +188,19 @@ void button::register_on_lua(sol::state& m_lua) {
 
     /** @function set_button_state
      */
-    m_class.set_function("set_button_state", [](button& m_self, const std::string& s_state) {
-        if (s_state == "NORMAL") {
+    m_class.set_function("set_button_state", [](button& m_self, const std::string& state) {
+        if (state == "NORMAL") {
             m_self.enable();
             m_self.release();
-        } else if (s_state == "PUSHED") {
+        } else if (state == "PUSHED") {
             m_self.enable();
             m_self.push();
-        } else if (s_state == "DISABLED") {
+        } else if (state == "DISABLED") {
             m_self.disable();
             m_self.release();
         } else {
             gui::out << gui::warning << "Button:set_button_state"
-                     << " : Unknown button state : \"" + s_state + "\"." << std::endl;
+                     << " : Unknown button state : \"" + state + "\"." << std::endl;
         }
     });
 
@@ -217,9 +217,9 @@ void button::register_on_lua(sol::state& m_lua) {
                 if (auto p_font_string = m_self.get_disabled_text())
                     p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& m_self, const std::string& s_color) {
+            [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_disabled_text())
-                    p_font_string->set_text_color(color(s_color));
+                    p_font_string->set_text_color(color(s));
             }));
 
     /** @function set_disabled_texture
@@ -240,9 +240,9 @@ void button::register_on_lua(sol::state& m_lua) {
                 if (auto p_font_string = m_self.get_highlight_text())
                     p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& m_self, const std::string& s_color) {
+            [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_highlight_text())
-                    p_font_string->set_text_color(color(s_color));
+                    p_font_string->set_text_color(color(s));
             }));
 
     /** @function set_highlight_texture
@@ -263,9 +263,9 @@ void button::register_on_lua(sol::state& m_lua) {
                 if (auto p_font_string = m_self.get_normal_text())
                     p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
             },
-            [](button& m_self, const std::string& s_color) {
+            [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_normal_text())
-                    p_font_string->set_text_color(color(s_color));
+                    p_font_string->set_text_color(color(s));
             }));
 
     /** @function set_normal_texture
@@ -285,8 +285,8 @@ void button::register_on_lua(sol::state& m_lua) {
 
     /** @function set_text
      */
-    m_class.set_function("set_text", [](button& m_self, const std::string& s_text) {
-        m_self.set_text(utils::utf8_to_unicode(s_text));
+    m_class.set_function("set_text", [](button& m_self, const std::string& text) {
+        m_self.set_text(utils::utf8_to_unicode(text));
     });
 
     /** @function unlock_highlight

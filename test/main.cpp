@@ -267,7 +267,7 @@ int main(int argc, char* argv[]) {
         // -------------------------------------------------
 
         std::cout << "Creating window..." << std::endl;
-        const std::string s_window_title = "test";
+        const std::string window_title = "test";
 
 #if defined(GLSFML_GUI)
         sf::Window m_window;
@@ -326,10 +326,10 @@ int main(int argc, char* argv[]) {
 #if defined(GLSFML_GUI) || defined(SFML_GUI)
         if (b_full_screen)
             m_window.create(
-                sf::VideoMode(ui_window_width, ui_window_height, 32), s_window_title,
+                sf::VideoMode(ui_window_width, ui_window_height, 32), window_title,
                 sf::Style::Fullscreen);
         else
-            m_window.create(sf::VideoMode(ui_window_width, ui_window_height, 32), s_window_title);
+            m_window.create(sf::VideoMode(ui_window_width, ui_window_height, 32), window_title);
 #endif
 
         // -------------------------------------------------
@@ -378,8 +378,8 @@ int main(int argc, char* argv[]) {
         m_gui_renderer.auto_detect_settings();
 
         std::cout << " Preferred languages: ";
-        for (const auto& s_language : p_manager->get_localizer().get_preferred_languages())
-            std::cout << s_language << ", ";
+        for (const auto& language : p_manager->get_localizer().get_preferred_languages())
+            std::cout << language << ", ";
         std::cout << std::endl;
         std::size_t ui_code_points = 0u;
         for (const auto& m_range : p_manager->get_localizer().get_allowed_code_points())
@@ -424,11 +424,11 @@ int main(int argc, char* argv[]) {
             m_factory.register_region_type<gui::status_bar>();
             //  - register additional lua functions
             sol::state& m_lua = m_manager.get_lua();
-            m_lua.set_function("get_folder_list", [](const std::string& s_dir) {
-                return sol::as_table(utils::get_directory_list(s_dir));
+            m_lua.set_function("get_folder_list", [](const std::string& dir) {
+                return sol::as_table(utils::get_directory_list(dir));
             });
-            m_lua.set_function("get_file_list", [](const std::string& s_dir) {
-                return sol::as_table(utils::get_file_list(s_dir));
+            m_lua.set_function("get_file_list", [](const std::string& dir) {
+                return sol::as_table(utils::get_file_list(dir));
             });
         });
 

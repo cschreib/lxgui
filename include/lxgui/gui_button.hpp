@@ -49,29 +49,29 @@ public:
     explicit button(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Creates the associated Lua glue.
     void create_glue() override;
 
     /// Returns 'true' if this button can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& s_script_name) const override;
+    bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \param mData       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
 
     /// Copies a region's parameters into this button (inheritance).
     /** \param mObj The region to copy
@@ -79,9 +79,9 @@ public:
     void copy_from(const region& m_obj) override;
 
     /// Sets this button's text.
-    /** \param sText The new text
+    /** \param content The new text
      */
-    virtual void set_text(const utils::ustring& s_text);
+    void set_text(const utils::ustring& content);
 
     /// Returns this button's text.
     /** \return This button's text
@@ -311,7 +311,7 @@ protected:
     bool  b_highlighted_    = false;
     bool  b_lock_highlight_ = false;
 
-    utils::ustring s_text_;
+    utils::ustring content_;
 
     utils::observer_ptr<texture> p_normal_texture_    = nullptr;
     utils::observer_ptr<texture> p_pushed_texture_    = nullptr;

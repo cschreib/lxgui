@@ -33,19 +33,19 @@ public:
         SDL_Renderer*    p_renderer,
         const vector2ui& m_dimensions,
         bool             b_render_target = false,
-        wrap             m_wrap         = wrap::repeat,
-        filter           m_filter       = filter::none);
+        wrap             m_wrap          = wrap::repeat,
+        filter           m_filter        = filter::none);
 
     /// Constructor for textures.
     /** \param pRenderer     The SDL render to create the material for
-     *   \param sFileName     The file from which the texture data is loaded
+     *   \param file_name     The file from which the texture data is loaded
      *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled
      * alpha \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     material(
         SDL_Renderer*      p_renderer,
-        const std::string& s_file_name,
+        const std::string& file_name,
         bool               b_pre_multiplied_alpha_supported,
         wrap               m_wrap   = wrap::repeat,
         filter             m_filter = filter::none);
@@ -167,11 +167,11 @@ private:
     vector2ui m_dimensions_;
     vector2ui m_canvas_dimensions_;
     bounds2f  m_rect_;
-    wrap      m_wrap_         = wrap::repeat;
-    filter    m_filter_       = filter::none;
+    wrap      m_wrap_          = wrap::repeat;
+    filter    m_filter_        = filter::none;
     bool      b_render_target_ = false;
 
-    SDL_Texture* p_texture_ = nullptr;
+    SDL_Texture* p_texture_  = nullptr;
     bool         b_is_owner_ = false;
 };
 

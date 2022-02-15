@@ -29,11 +29,11 @@ public:
     source& operator=(const source&) = delete;
 
     utils::ustring get_clipboard_content() override;
-    void           set_clipboard_content(const utils::ustring& s_content) override;
+    void           set_clipboard_content(const utils::ustring& content) override;
 
     void on_sdl_event(const SDL_Event& m_event);
 
-    void set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) override;
+    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) override;
     void reset_mouse_cursor() override;
 
     float get_interface_scaling_factor_hint() const override;

@@ -587,11 +587,11 @@ void root::on_drag_start_(input::mouse_button m_button, const vector2f& m_mouse_
         p_hovered_frame->start_moving();
     }
 
-    std::string s_mouse_button = std::string(input::get_mouse_button_codename(m_button));
+    std::string mouse_button = std::string(input::get_mouse_button_codename(m_button));
 
-    if (p_hovered_frame->is_registered_for_drag(s_mouse_button)) {
+    if (p_hovered_frame->is_registered_for_drag(mouse_button)) {
         event_data m_data;
-        m_data.add(s_mouse_button);
+        m_data.add(mouse_button);
         m_data.add(m_mouse_pos.x);
         m_data.add(m_mouse_pos.y);
 
@@ -619,11 +619,11 @@ void root::on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_p
         return;
     }
 
-    std::string s_mouse_button = std::string(input::get_mouse_button_codename(m_button));
+    std::string mouse_button = std::string(input::get_mouse_button_codename(m_button));
 
-    if (p_hovered_frame->is_registered_for_drag(s_mouse_button)) {
+    if (p_hovered_frame->is_registered_for_drag(mouse_button)) {
         event_data m_data;
-        m_data.add(s_mouse_button);
+        m_data.add(mouse_button);
         m_data.add(m_mouse_pos.x);
         m_data.add(m_mouse_pos.y);
 
@@ -646,22 +646,22 @@ void root::on_text_entered_(std::uint32_t ui_char) {
 
 std::string get_key_name(
     input::key m_key, bool b_is_shift_pressed, bool b_is_ctrl_pressed, bool b_is_alt_pressed) {
-    std::string s_name;
+    std::string name;
 
     if (m_key != input::key::k_lcontrol && m_key != input::key::k_rcontrol &&
         m_key != input::key::k_lshift && m_key != input::key::k_rshift &&
         m_key != input::key::k_lmenu && m_key != input::key::k_rmenu) {
         if (b_is_ctrl_pressed)
-            s_name = "Ctrl-";
+            name = "Ctrl-";
         if (b_is_alt_pressed)
-            s_name.append("Alt-");
+            name.append("Alt-");
         if (b_is_shift_pressed)
-            s_name.append("Shift-");
+            name.append("Shift-");
     }
 
-    s_name.append(input::get_key_codename(m_key));
+    name.append(input::get_key_codename(m_key));
 
-    return s_name;
+    return name;
 }
 
 void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
@@ -670,7 +670,7 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
     bool        b_is_ctrl_pressed  = m_input_dispatcher.ctrl_is_pressed();
     bool        b_is_alt_pressed   = m_input_dispatcher.alt_is_pressed();
 
-    std::string s_key_name =
+    std::string key_name =
         get_key_name(m_key, b_is_shift_pressed, b_is_ctrl_pressed, b_is_alt_pressed);
 
     // First, give priority to the focussed frame
@@ -679,14 +679,14 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
     // If no focussed frame, look top-down for a frame that captures this key
     if (!p_topmost_frame) {
         p_topmost_frame = find_topmost_frame(
-            [&](const frame& m_frame) { return m_frame.is_key_capture_enabled(s_key_name); });
+            [&](const frame& m_frame) { return m_frame.is_key_capture_enabled(key_name); });
     }
 
     // If a frame is found, capture input and return
     if (p_topmost_frame) {
         event_data m_data;
         m_data.add(static_cast<std::underlying_type_t<input::key>>(m_key));
-        m_data.add(s_key_name);
+        m_data.add(key_name);
         m_data.add(b_is_shift_pressed);
         m_data.add(b_is_ctrl_pressed);
         m_data.add(b_is_alt_pressed);
@@ -706,9 +706,9 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
                     m_key, b_is_shift_pressed, b_is_ctrl_pressed, b_is_alt_pressed))
                 return;
         } catch (const std::exception& m_exception) {
-            std::string s_error = m_exception.what();
-            gui::out << gui::error << s_error << std::endl;
-            get_manager().get_event_emitter().fire_event("LUA_ERROR", {s_error});
+            std::string error = m_exception.what();
+            gui::out << gui::error << error << std::endl;
+            get_manager().get_event_emitter().fire_event("LUA_ERROR", {error});
             return;
         }
     }

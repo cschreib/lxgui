@@ -20,17 +20,17 @@ public:
     exception(const exception& m_other) = default;
 
     /// Simple message exception.
-    /** \param sMessage The message to throw
+    /** \param message The message to throw
      *   \note Reports : "<sMessage>"
      */
-    explicit exception(const std::string& s_message);
+    explicit exception(const std::string& message);
 
     /// Class name + message exception.
-    /** \param sClassName The name of the class which throws the exception
-     *   \param sMessage   The message to throw
+    /** \param class_name The name of the class which throws the exception
+     *   \param message   The message to throw
      *   \note Reports : "<sClassName> : <sMessage>"
      */
-    exception(const std::string& s_class_name, const std::string& s_message);
+    exception(const std::string& class_name, const std::string& message);
 
     /// Returns the message of the exception.
     /** \return The message of the exception
@@ -43,7 +43,7 @@ public:
     const char* what() const noexcept override;
 
 protected:
-    std::string s_message_ = "Undefined exception.";
+    std::string message_ = "Undefined exception.";
 };
 
 } // namespace lxgui::utils

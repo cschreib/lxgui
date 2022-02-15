@@ -89,42 +89,42 @@ region::~region() {
         get_registry().remove_region(*this);
 }
 
-std::string region::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
+std::string region::serialize(const std::string& tab) const {
+    std::ostringstream str;
 
-    s_str << s_tab << "  # Name        : " << s_name_
-          << " (" + std::string(b_ready_ ? "ready" : "not ready") +
-                 std::string(b_special_ ? ", special)\n" : ")\n");
-    s_str << s_tab << "  # Raw name    : " << s_raw_name_ << "\n";
-    s_str << s_tab << "  # Lua name    : " << s_lua_name_ << "\n";
-    s_str << s_tab << "  # Type        : " << type_.back() << "\n";
+    str << tab << "  # Name        : " << name_
+        << " (" + std::string(b_ready_ ? "ready" : "not ready") +
+               std::string(b_special_ ? ", special)\n" : ")\n");
+    str << tab << "  # Raw name    : " << raw_name_ << "\n";
+    str << tab << "  # Lua name    : " << lua_name_ << "\n";
+    str << tab << "  # Type        : " << type_.back() << "\n";
     if (p_parent_)
-        s_str << s_tab << "  # Parent      : " << p_parent_->get_name() << "\n";
+        str << tab << "  # Parent      : " << p_parent_->get_name() << "\n";
     else
-        s_str << s_tab << "  # Parent      : none\n";
-    s_str << s_tab << "  # Num anchors : " << get_num_point() << "\n";
+        str << tab << "  # Parent      : none\n";
+    str << tab << "  # Num anchors : " << get_num_point() << "\n";
     if (!anchor_list_.empty()) {
-        s_str << s_tab << "  |-###\n";
+        str << tab << "  |-###\n";
         for (const auto& m_anchor : anchor_list_) {
             if (m_anchor) {
-                s_str << m_anchor->serialize(s_tab);
-                s_str << s_tab << "  |-###\n";
+                str << m_anchor->serialize(tab);
+                str << tab << "  |-###\n";
             }
         }
     }
-    s_str << s_tab << "  # Borders :\n";
-    s_str << s_tab << "  |-###\n";
-    s_str << s_tab << "  |   # left   : " << border_list_.left << "\n";
-    s_str << s_tab << "  |   # top    : " << border_list_.top << "\n";
-    s_str << s_tab << "  |   # right  : " << border_list_.right << "\n";
-    s_str << s_tab << "  |   # bottom : " << border_list_.bottom << "\n";
-    s_str << s_tab << "  |-###\n";
-    s_str << s_tab << "  # Alpha       : " << f_alpha_ << "\n";
-    s_str << s_tab << "  # Shown       : " << b_is_shown_ << "\n";
-    s_str << s_tab << "  # Abs width   : " << m_dimensions_.x << "\n";
-    s_str << s_tab << "  # Abs height  : " << m_dimensions_.y << "\n";
+    str << tab << "  # Borders :\n";
+    str << tab << "  |-###\n";
+    str << tab << "  |   # left   : " << border_list_.left << "\n";
+    str << tab << "  |   # top    : " << border_list_.top << "\n";
+    str << tab << "  |   # right  : " << border_list_.right << "\n";
+    str << tab << "  |   # bottom : " << border_list_.bottom << "\n";
+    str << tab << "  |-###\n";
+    str << tab << "  # Alpha       : " << f_alpha_ << "\n";
+    str << tab << "  # Shown       : " << b_is_shown_ << "\n";
+    str << tab << "  # Abs width   : " << m_dimensions_.x << "\n";
+    str << tab << "  # Abs height  : " << m_dimensions_.y << "\n";
 
-    return s_str.str();
+    return str.str();
 }
 
 void region::copy_from(const region& m_obj) {
@@ -144,15 +144,15 @@ void region::copy_from(const region& m_obj) {
 }
 
 const std::string& region::get_name() const {
-    return s_name_;
+    return name_;
 }
 
 const std::string& region::get_lua_name() const {
-    return s_lua_name_;
+    return lua_name_;
 }
 
 const std::string& region::get_raw_name() const {
-    return s_raw_name_;
+    return raw_name_;
 }
 
 const std::string& region::get_object_type() const {
@@ -163,8 +163,8 @@ const std::vector<std::string>& region::get_object_type_list() const {
     return type_;
 }
 
-bool region::is_object_type(const std::string& s_type) const {
-    return utils::find(type_, s_type) != type_.end();
+bool region::is_object_type(const std::string& type_name) const {
+    return utils::find(type_, type_name) != type_.end();
 }
 
 float region::get_alpha() const {
@@ -300,21 +300,21 @@ bool region::is_in_region(const vector2f& m_position) const {
         (border_list_.top <= m_position.y && m_position.y <= border_list_.bottom - 1));
 }
 
-void region::set_name_(const std::string& s_name) {
-    if (s_name_.empty()) {
-        s_name_ = s_lua_name_ = s_raw_name_ = s_name;
-        if (utils::starts_with(s_name_, "$parent")) {
+void region::set_name_(const std::string& name) {
+    if (name_.empty()) {
+        name_ = lua_name_ = raw_name_ = name;
+        if (utils::starts_with(name_, "$parent")) {
             if (p_parent_)
-                utils::replace(s_lua_name_, "$parent", p_parent_->get_lua_name());
+                utils::replace(lua_name_, "$parent", p_parent_->get_lua_name());
             else {
-                gui::out << gui::warning << "gui::" << type_.back() << " : \"" << s_name_
+                gui::out << gui::warning << "gui::" << type_.back() << " : \"" << name_
                          << "\" has no parent" << std::endl;
-                utils::replace(s_lua_name_, "$parent", "");
+                utils::replace(lua_name_, "$parent", "");
             }
         }
 
         if (!b_virtual_)
-            s_name_ = s_lua_name_;
+            name_ = lua_name_;
     } else {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "set_name() can only be called once." << std::endl;
@@ -336,18 +336,18 @@ void region::set_parent_(utils::observer_ptr<frame> p_parent) {
     }
 }
 
-void region::set_name_and_parent_(const std::string& s_name, utils::observer_ptr<frame> p_parent) {
+void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> p_parent) {
     if (p_parent == observer_from_this()) {
         gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
 
-    if (p_parent_ == p_parent && s_name == s_name_)
+    if (p_parent_ == p_parent && name == name_)
         return;
 
     p_parent_ = std::move(p_parent);
-    set_name_(s_name);
+    set_name_(name);
 
     if (!b_virtual_)
         notify_borders_need_update();
@@ -409,8 +409,8 @@ void region::clear_all_points() {
     }
 }
 
-void region::set_all_points(const std::string& s_obj_name) {
-    if (s_obj_name == s_name_) {
+void region::set_all_points(const std::string& obj_name) {
+    if (obj_name == name_) {
         gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_all_points(this)."
                  << std::endl;
         return;
@@ -419,10 +419,10 @@ void region::set_all_points(const std::string& s_obj_name) {
     clear_all_points();
 
     anchor_list_[static_cast<int>(anchor_point::top_left)].emplace(
-        *this, anchor_data(anchor_point::top_left, s_obj_name));
+        *this, anchor_data(anchor_point::top_left, obj_name));
 
     anchor_list_[static_cast<int>(anchor_point::bottom_right)].emplace(
-        *this, anchor_data(anchor_point::bottom_right, s_obj_name));
+        *this, anchor_data(anchor_point::bottom_right, obj_name));
 
     defined_border_list_ = bounds2<bool>(true, true, true, true);
 
@@ -725,10 +725,10 @@ void region::update_anchors_() {
             if (p_obj->depends_on(*this)) {
                 gui::out << gui::error << "gui::" << type_.back()
                          << " : Cyclic anchor dependency ! "
-                         << "\"" << s_name_ << "\" and \"" << p_obj->get_name()
+                         << "\"" << name_ << "\" and \"" << p_obj->get_name()
                          << "\" depend on "
                             "eachothers (directly or indirectly).\n\""
-                         << anchor::get_string_point(m_anchor->m_point) << "\" anchor removed."
+                         << anchor::get_anchor_point_name(m_anchor->m_point) << "\" anchor removed."
                          << std::endl;
 
                 m_anchor.reset();
@@ -781,7 +781,7 @@ void region::create_glue() {
 }
 
 void region::remove_glue() {
-    get_lua_().globals()[s_lua_name_] = sol::lua_nil;
+    get_lua_().globals()[lua_name_] = sol::lua_nil;
 }
 
 void region::set_special() {
@@ -820,19 +820,19 @@ void region::notify_invisible() {
     b_is_visible_ = false;
 }
 
-std::string region::parse_file_name(const std::string& s_file_name) const {
-    if (s_file_name.empty())
-        return s_file_name;
+std::string region::parse_file_name(const std::string& file_name) const {
+    if (file_name.empty())
+        return file_name;
 
-    std::string s_new_file = s_file_name;
+    std::string new_file = file_name;
 
     const addon* p_add_on = get_addon();
-    if (s_new_file[0] == '|' && p_add_on) {
-        s_new_file[0] = '/';
-        s_new_file    = p_add_on->s_directory + s_new_file;
+    if (new_file[0] == '|' && p_add_on) {
+        new_file[0] = '/';
+        new_file    = p_add_on->directory + new_file;
     }
 
-    return s_new_file;
+    return new_file;
 }
 
 void region::set_addon(const addon* p_add_on) {

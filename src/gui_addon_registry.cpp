@@ -33,153 +33,153 @@ addon_registry::addon_registry(
     m_virtual_root_(m_virtual_root) {}
 
 void addon_registry::load_addon_toc_(
-    const std::string& s_add_on_name, const std::string& s_add_on_directory) {
-    auto& add_ons = add_on_list_[s_add_on_directory];
-    if (add_ons.find(s_add_on_name) != add_ons.end())
+    const std::string& add_on_name, const std::string& add_on_directory) {
+    auto& add_ons = add_on_list_[add_on_directory];
+    if (add_ons.find(add_on_name) != add_ons.end())
         return;
 
     addon m_add_on;
-    m_add_on.b_enabled        = true;
-    m_add_on.s_main_directory = utils::cut(s_add_on_directory, "/").back();
-    m_add_on.s_directory      = s_add_on_directory + "/" + s_add_on_name;
+    m_add_on.b_enabled      = true;
+    m_add_on.main_directory = utils::cut(add_on_directory, "/").back();
+    m_add_on.directory      = add_on_directory + "/" + add_on_name;
 
-    std::string   s_toc_file = m_add_on.s_directory + "/" + s_add_on_name + ".toc";
-    std::ifstream m_file(s_toc_file);
+    std::string   toc_file = m_add_on.directory + "/" + add_on_name + ".toc";
+    std::ifstream m_file(toc_file);
     if (!m_file.is_open())
         return;
 
-    std::string s_line;
-    while (std::getline(m_file, s_line)) {
-        utils::replace(s_line, "\r", "");
-        if (s_line.empty())
+    std::string line;
+    while (std::getline(m_file, line)) {
+        utils::replace(line, "\r", "");
+        if (line.empty())
             continue;
 
-        std::string_view s_line_view = s_line;
+        std::string_view line_view = line;
 
-        if (s_line_view.size() >= 2 && s_line_view[0] == '#' && s_line_view[1] == '#') {
-            s_line_view = s_line_view.substr(2);
-            s_line_view = utils::trim(s_line_view, ' ');
-            auto args   = utils::cut_first(s_line_view, ":");
+        if (line_view.size() >= 2 && line_view[0] == '#' && line_view[1] == '#') {
+            line_view = line_view.substr(2);
+            line_view = utils::trim(line_view, ' ');
+            auto args = utils::cut_first(line_view, ":");
             if (!args.first.empty() && !args.second.empty()) {
-                std::string_view s_key   = utils::trim(args.first, ' ');
-                std::string_view s_value = utils::trim(args.second, ' ');
+                std::string_view key   = utils::trim(args.first, ' ');
+                std::string_view value = utils::trim(args.second, ' ');
 
-                if (s_key == "Interface") {
-                    m_add_on.s_ui_version = s_value;
+                if (key == "Interface") {
+                    m_add_on.ui_version = value;
 
-                    if (m_add_on.s_ui_version == lxgui_ui_version)
+                    if (m_add_on.ui_version == lxgui_ui_version)
                         m_add_on.b_enabled = true;
                     else {
                         gui::out << gui::warning << "gui::manager : "
-                                 << "Wrong UI version for \"" << s_add_on_name
-                                 << "\" (got : " << m_add_on.s_ui_version
+                                 << "Wrong UI version for \"" << add_on_name
+                                 << "\" (got : " << m_add_on.ui_version
                                  << ", expected : " << lxgui_ui_version << "). AddOn disabled."
                                  << std::endl;
                         m_add_on.b_enabled = false;
                     }
-                } else if (s_key == "Title")
-                    m_add_on.s_name = s_value;
-                else if (s_key == "Version")
-                    m_add_on.s_version = s_value;
-                else if (s_key == "Author")
-                    m_add_on.s_author = s_value;
-                else if (s_key == "SavedVariables") {
-                    for (auto s_var : utils::cut(s_value, ",")) {
-                        s_var = utils::trim(s_var, ' ');
-                        if (!utils::has_no_content(s_var))
-                            m_add_on.saved_variable_list.push_back(std::string{s_var});
+                } else if (key == "Title")
+                    m_add_on.name = value;
+                else if (key == "Version")
+                    m_add_on.version = value;
+                else if (key == "Author")
+                    m_add_on.author = value;
+                else if (key == "SavedVariables") {
+                    for (auto var : utils::cut(value, ",")) {
+                        var = utils::trim(var, ' ');
+                        if (!utils::has_no_content(var))
+                            m_add_on.saved_variable_list.push_back(std::string{var});
                     }
                 }
             }
         } else {
-            s_line_view = utils::trim(s_line_view, ' ');
-            if (!utils::has_no_content(s_line_view))
-                m_add_on.file_list.push_back(m_add_on.s_directory + "/" + std::string{s_line_view});
+            line_view = utils::trim(line_view, ' ');
+            if (!utils::has_no_content(line_view))
+                m_add_on.file_list.push_back(m_add_on.directory + "/" + std::string{line_view});
         }
     }
 
-    if (m_add_on.s_name.empty())
-        gui::out << gui::error << "gui::manager : Missing addon name in " << s_toc_file << "."
+    if (m_add_on.name.empty())
+        gui::out << gui::error << "gui::manager : Missing addon name in " << toc_file << "."
                  << std::endl;
     else
-        add_ons[s_add_on_name] = m_add_on;
+        add_ons[add_on_name] = m_add_on;
 }
 
 void addon_registry::load_addon_files_(const addon& m_add_on) {
-    m_localizer_.load_translations(m_add_on.s_directory);
+    m_localizer_.load_translations(m_add_on.directory);
 
     p_current_add_on_ = &m_add_on;
-    for (const auto& s_file : m_add_on.file_list) {
-        const std::string s_extension = utils::get_file_extension(s_file);
-        if (s_extension == ".lua") {
+    for (const auto& file : m_add_on.file_list) {
+        const std::string extension = utils::get_file_extension(file);
+        if (extension == ".lua") {
             try {
-                m_lua_.do_file(s_file);
+                m_lua_.do_file(file);
             } catch (const sol::error& e) {
-                std::string s_error = e.what();
+                std::string error = e.what();
 
-                gui::out << gui::error << s_error << std::endl;
+                gui::out << gui::error << error << std::endl;
 
-                m_event_emitter_.fire_event("LUA_ERROR", {s_error});
+                m_event_emitter_.fire_event("LUA_ERROR", {error});
             }
         } else {
-            this->parse_layout_file_(s_file, m_add_on);
+            this->parse_layout_file_(file, m_add_on);
         }
     }
 
-    std::string s_saved_variables_file =
-        "saves/interface/" + m_add_on.s_main_directory + "/" + m_add_on.s_name + ".lua";
-    if (utils::file_exists(s_saved_variables_file)) {
+    std::string saved_variables_file =
+        "saves/interface/" + m_add_on.main_directory + "/" + m_add_on.name + ".lua";
+    if (utils::file_exists(saved_variables_file)) {
         try {
-            m_lua_.do_file(s_saved_variables_file);
+            m_lua_.do_file(saved_variables_file);
         } catch (const sol::error& e) {
-            std::string s_error = e.what();
+            std::string error = e.what();
 
-            gui::out << gui::error << s_error << std::endl;
+            gui::out << gui::error << error << std::endl;
 
-            m_event_emitter_.fire_event("LUA_ERROR", {s_error});
+            m_event_emitter_.fire_event("LUA_ERROR", {error});
         }
     }
 
-    m_event_emitter_.fire_event("ADDON_LOADED", {m_add_on.s_name});
+    m_event_emitter_.fire_event("ADDON_LOADED", {m_add_on.name});
 }
 
-void addon_registry::load_addon_directory(const std::string& s_directory) {
-    for (const auto& s_sub_dir : utils::get_directory_list(s_directory))
-        this->load_addon_toc_(s_sub_dir, s_directory);
+void addon_registry::load_addon_directory(const std::string& directory) {
+    for (const auto& sub_dir : utils::get_directory_list(directory))
+        this->load_addon_toc_(sub_dir, directory);
 
     std::vector<addon*> core_add_on_stack;
     std::vector<addon*> add_on_stack;
     bool                b_core = false;
 
-    auto& add_ons = add_on_list_[s_directory];
+    auto& add_ons = add_on_list_[directory];
 
-    std::ifstream m_file(s_directory + "/addons.txt");
+    std::ifstream m_file(directory + "/addons.txt");
     if (m_file.is_open()) {
-        std::string s_line;
-        while (std::getline(m_file, s_line)) {
-            utils::replace(s_line, "\r", "");
-            if (s_line.empty())
+        std::string line;
+        while (std::getline(m_file, line)) {
+            utils::replace(line, "\r", "");
+            if (line.empty())
                 continue;
 
-            std::string_view s_line_view = s_line;
+            std::string_view line_view = line;
 
-            if (s_line_view[0] == '#') {
-                s_line_view = s_line_view.substr(1);
-                s_line_view = utils::trim(s_line_view, ' ');
-                b_core      = s_line_view == "Core";
+            if (line_view[0] == '#') {
+                line_view = line_view.substr(1);
+                line_view = utils::trim(line_view, ' ');
+                b_core    = line_view == "Core";
             } else {
-                auto args = utils::cut_first(s_line_view, ":");
+                auto args = utils::cut_first(line_view, ":");
                 if (!args.first.empty() && !args.second.empty()) {
-                    std::string_view s_key   = utils::trim(args.first, ' ');
-                    std::string_view s_value = utils::trim(args.second, ' ');
-                    auto             iter    = add_ons.find(std::string{s_key});
+                    std::string_view key   = utils::trim(args.first, ' ');
+                    std::string_view value = utils::trim(args.second, ' ');
+                    auto             iter  = add_ons.find(std::string{key});
                     if (iter != add_ons.end()) {
                         if (b_core)
                             core_add_on_stack.push_back(&iter->second);
                         else
                             add_on_stack.push_back(&iter->second);
 
-                        iter->second.b_enabled = s_value == "1";
+                        iter->second.b_enabled = value == "1";
                     }
                 }
             }
@@ -200,7 +200,7 @@ void addon_registry::load_addon_directory(const std::string& s_directory) {
     p_current_add_on_ = nullptr;
 }
 
-std::string serialize(const std::string& s_tab, const sol::object& m_value) noexcept {
+std::string serialize(const std::string& tab, const sol::object& m_value) noexcept {
     if (m_value.is<double>()) {
         return utils::to_string(m_value.as<double>());
     } else if (m_value.is<int>()) {
@@ -208,28 +208,28 @@ std::string serialize(const std::string& s_tab, const sol::object& m_value) noex
     } else if (m_value.is<std::string>()) {
         return "\"" + utils::to_string(m_value.as<std::string>()) + "\"";
     } else if (m_value.is<sol::table>()) {
-        std::string s_result;
-        s_result += "{";
+        std::string result;
+        result += "{";
 
-        std::string s_content;
+        std::string content;
         sol::table  m_table = m_value.as<sol::table>();
         for (const auto& m_key_value : m_table) {
-            s_content += s_tab + "    [" + serialize("", m_key_value.first) +
-                         "] = " + serialize(s_tab + "    ", m_key_value.second) + ",\n";
+            content += tab + "    [" + serialize("", m_key_value.first) +
+                       "] = " + serialize(tab + "    ", m_key_value.second) + ",\n";
         }
 
-        if (!s_content.empty())
-            s_result += "\n" + s_content + s_tab;
+        if (!content.empty())
+            result += "\n" + content + tab;
 
-        s_result += "}";
-        return s_result;
+        result += "}";
+        return result;
     }
 
     return "nil";
 }
 
-std::string serialize_global(sol::state& m_lua, const std::string& s_variable) noexcept {
-    sol::object m_value = m_lua.globals()[s_variable];
+std::string serialize_global(sol::state& m_lua, const std::string& variable) noexcept {
+    sol::object m_value = m_lua.globals()[variable];
     return serialize("", m_value);
 }
 
@@ -242,20 +242,20 @@ void addon_registry::save_variables() const {
 
 void addon_registry::save_variables_(const addon& m_add_on) const noexcept {
     if (!m_add_on.saved_variable_list.empty()) {
-        if (!utils::make_directory("saves/interface/" + m_add_on.s_main_directory)) {
+        if (!utils::make_directory("saves/interface/" + m_add_on.main_directory)) {
             gui::out << gui::error
                      << "gui::addon_registry : "
                         "unable to create directory 'saves/interface/"
-                     << m_add_on.s_main_directory << "'" << std::endl;
+                     << m_add_on.main_directory << "'" << std::endl;
             return;
         }
 
         std::ofstream m_file(
-            "saves/interface/" + m_add_on.s_main_directory + "/" + m_add_on.s_name + ".lua");
-        for (const auto& s_variable : m_add_on.saved_variable_list) {
-            std::string s_serialized = serialize_global(m_lua_, s_variable);
-            if (!s_serialized.empty())
-                m_file << s_serialized << "\n";
+            "saves/interface/" + m_add_on.main_directory + "/" + m_add_on.name + ".lua");
+        for (const auto& variable : m_add_on.saved_variable_list) {
+            std::string serialized = serialize_global(m_lua_, variable);
+            if (!serialized.empty())
+                m_file << serialized << "\n";
         }
     }
 }

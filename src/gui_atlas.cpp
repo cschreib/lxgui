@@ -11,8 +11,8 @@ namespace lxgui::gui {
 
 atlas_page::atlas_page(material::filter m_filter) : m_filter_(m_filter) {}
 
-std::shared_ptr<material> atlas_page::fetch_material(const std::string& s_file_name) const {
-    auto m_iter = texture_list_.find(s_file_name);
+std::shared_ptr<material> atlas_page::fetch_material(const std::string& file_name) const {
+    auto m_iter = texture_list_.find(file_name);
     if (m_iter != texture_list_.end()) {
         if (std::shared_ptr<gui::material> p_lock = m_iter->second.lock())
             return p_lock;
@@ -22,7 +22,7 @@ std::shared_ptr<material> atlas_page::fetch_material(const std::string& s_file_n
 }
 
 std::shared_ptr<gui::material>
-atlas_page::add_material(const std::string& s_file_name, const material& m_mat) {
+atlas_page::add_material(const std::string& file_name, const material& m_mat) {
     try {
         const auto m_rect     = m_mat.get_rect();
         const auto m_location = find_location_(m_rect.width(), m_rect.height());
@@ -30,7 +30,7 @@ atlas_page::add_material(const std::string& s_file_name, const material& m_mat) 
             return nullptr;
 
         std::shared_ptr<gui::material> p_tex = add_material_(m_mat, m_location.value());
-        texture_list_[s_file_name]           = p_tex;
+        texture_list_[file_name]             = p_tex;
         return p_tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
@@ -38,8 +38,8 @@ atlas_page::add_material(const std::string& s_file_name, const material& m_mat) 
     }
 }
 
-std::shared_ptr<font> atlas_page::fetch_font(const std::string& s_font_name) const {
-    auto m_iter = font_list_.find(s_font_name);
+std::shared_ptr<font> atlas_page::fetch_font(const std::string& font_name) const {
+    auto m_iter = font_list_.find(font_name);
     if (m_iter != font_list_.end()) {
         if (std::shared_ptr<gui::font> p_lock = m_iter->second.lock())
             return p_lock;
@@ -48,7 +48,7 @@ std::shared_ptr<font> atlas_page::fetch_font(const std::string& s_font_name) con
     return nullptr;
 }
 
-bool atlas_page::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> p_font) {
+bool atlas_page::add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font) {
     try {
         if (const auto p_mat = p_font->get_texture().lock()) {
             const auto m_rect     = p_mat->get_rect();
@@ -59,7 +59,7 @@ bool atlas_page::add_font(const std::string& s_font_name, std::shared_ptr<gui::f
             std::shared_ptr<gui::material> p_tex = add_material_(*p_mat, m_location.value());
             p_font->update_texture(p_tex);
 
-            font_list_[s_font_name] = std::move(p_font);
+            font_list_[font_name] = std::move(p_font);
             return true;
         } else
             return false;
@@ -159,9 +159,9 @@ std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height
 atlas::atlas(renderer& m_renderer, material::filter m_filter) :
     m_renderer_(m_renderer), m_filter_(m_filter) {}
 
-std::shared_ptr<gui::material> atlas::fetch_material(const std::string& s_file_name) const {
+std::shared_ptr<gui::material> atlas::fetch_material(const std::string& file_name) const {
     for (const auto& m_page_item : page_list_) {
-        auto p_tex = m_page_item.p_page->fetch_material(s_file_name);
+        auto p_tex = m_page_item.p_page->fetch_material(file_name);
         if (p_tex)
             return p_tex;
     }
@@ -170,22 +170,22 @@ std::shared_ptr<gui::material> atlas::fetch_material(const std::string& s_file_n
 }
 
 std::shared_ptr<gui::material>
-atlas::add_material(const std::string& s_file_name, const material& m_mat) {
+atlas::add_material(const std::string& file_name, const material& m_mat) {
     try {
         for (const auto& m_page_item : page_list_) {
-            auto p_tex = m_page_item.p_page->add_material(s_file_name, m_mat);
+            auto p_tex = m_page_item.p_page->add_material(file_name, m_mat);
             if (p_tex)
                 return p_tex;
 
             if (m_page_item.p_page->empty()) {
-                gui::out << gui::warning << "Could not fit texture '" << s_file_name
+                gui::out << gui::warning << "Could not fit texture '" << file_name
                          << "' on any atlas page." << std::endl;
                 return nullptr;
             }
         }
 
         add_page_();
-        auto p_tex = page_list_.back().p_page->add_material(s_file_name, m_mat);
+        auto p_tex = page_list_.back().p_page->add_material(file_name, m_mat);
         if (p_tex)
             return p_tex;
 
@@ -196,9 +196,9 @@ atlas::add_material(const std::string& s_file_name, const material& m_mat) {
     }
 }
 
-std::shared_ptr<gui::font> atlas::fetch_font(const std::string& s_font_name) const {
+std::shared_ptr<gui::font> atlas::fetch_font(const std::string& font_name) const {
     for (const auto& m_page_item : page_list_) {
-        auto p_font = m_page_item.p_page->fetch_font(s_font_name);
+        auto p_font = m_page_item.p_page->fetch_font(font_name);
         if (p_font)
             return p_font;
     }
@@ -206,14 +206,14 @@ std::shared_ptr<gui::font> atlas::fetch_font(const std::string& s_font_name) con
     return nullptr;
 }
 
-bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> p_font) {
+bool atlas::add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font) {
     try {
         for (const auto& m_page_item : page_list_) {
-            if (m_page_item.p_page->add_font(s_font_name, p_font))
+            if (m_page_item.p_page->add_font(font_name, p_font))
                 return true;
 
             if (m_page_item.p_page->empty()) {
-                gui::out << gui::warning << "Could not fit font '" << s_font_name
+                gui::out << gui::warning << "Could not fit font '" << font_name
                          << "' on any atlas page." << std::endl;
                 return false;
             }
@@ -221,7 +221,7 @@ bool atlas::add_font(const std::string& s_font_name, std::shared_ptr<gui::font> 
 
         add_page_();
 
-        return page_list_.back().p_page->add_font(s_font_name, std::move(p_font));
+        return page_list_.back().p_page->add_font(font_name, std::move(p_font));
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return false;

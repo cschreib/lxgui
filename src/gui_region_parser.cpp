@@ -9,9 +9,9 @@ namespace lxgui::gui {
 
 color region::parse_color_node_(const layout_node& m_node) {
     if (const layout_attribute* p_attr = m_node.try_get_attribute("c")) {
-        std::string s_color = p_attr->get_value<std::string>();
-        if (!s_color.empty() && s_color[0] == '#')
-            return color(s_color);
+        std::string s = p_attr->get_value<std::string>();
+        if (!s.empty() && s[0] == '#')
+            return color(s);
     }
 
     return color(
@@ -99,25 +99,24 @@ void region::parse_anchor_node_(const layout_node& m_node) {
                 continue;
             }
 
-            std::string s_point =
+            std::string point =
                 m_anchor_node.get_attribute_value_or<std::string>("point", "TOP_LEFT");
-            std::string s_parent = m_anchor_node.get_attribute_value_or<std::string>(
+            std::string parent = m_anchor_node.get_attribute_value_or<std::string>(
                 "relativeTo", p_parent_ || is_virtual() ? "$parent" : "");
-            std::string s_relative_point =
-                m_anchor_node.get_attribute_value_or<std::string>("relativePoint", s_point);
+            std::string relative_point =
+                m_anchor_node.get_attribute_value_or<std::string>("relativePoint", point);
 
-            if (utils::find(found_points, s_point) != found_points.end()) {
+            if (utils::find(found_points, point) != found_points.end()) {
                 gui::out << gui::warning << m_anchor_node.get_location() << " : "
-                         << "anchor point \"" << s_point
+                         << "anchor point \"" << point
                          << "\" has already been defined "
                             "for \""
-                         << s_name_ << "\". anchor skipped." << std::endl;
+                         << name_ << "\". anchor skipped." << std::endl;
                 continue;
             }
 
             anchor_data m_anchor(
-                anchor::get_anchor_point(s_point), s_parent,
-                anchor::get_anchor_point(s_relative_point));
+                anchor::get_anchor_point(point), parent, anchor::get_anchor_point(relative_point));
 
             if (const layout_node* p_offset_node = m_anchor_node.try_get_child("Offset")) {
                 auto m_dimensions = parse_dimension_(*p_offset_node);

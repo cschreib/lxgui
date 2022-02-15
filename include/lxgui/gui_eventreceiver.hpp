@@ -30,19 +30,19 @@ public:
     event_receiver& operator=(event_receiver&&) = delete;
 
     /// Enables reaction to an event.
-    /** \param sEventName The name of the event this class should react to
+    /** \param event_name The name of the event this class should react to
      *   \param mCallback  The callback function to register to this event
      */
-    void register_event(const std::string& s_event_name, event_handler_function m_callback);
+    void register_event(const std::string& event_name, event_handler_function m_callback);
 
     /// Disables reaction to an event.
-    /** \param sEventName The name of the event this class shouldn't react to anymore
+    /** \param event_name The name of the event this class shouldn't react to anymore
      */
-    void unregister_event(const std::string& s_event_name);
+    void unregister_event(const std::string& event_name);
 
 private:
     struct event_connection {
-        std::string              s_name;
+        std::string              name;
         utils::scoped_connection m_connection;
     };
 

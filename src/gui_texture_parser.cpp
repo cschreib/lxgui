@@ -38,19 +38,19 @@ void texture::parse_tex_coords_node_(const layout_node& m_node) {
 
 void texture::parse_gradient_node_(const layout_node& m_node) {
     if (const layout_node* p_gradient_node = m_node.try_get_child("Gradient")) {
-        std::string s_orientation =
+        std::string orientation =
             p_gradient_node->get_attribute_value_or<std::string>("orientation", "HORIZONTAL");
 
         gradient::orientation m_orient;
-        if (s_orientation == "HORIZONTAL")
+        if (orientation == "HORIZONTAL")
             m_orient = gradient::orientation::horizontal;
-        else if (s_orientation == "VERTICAL")
+        else if (orientation == "VERTICAL")
             m_orient = gradient::orientation::vertical;
         else {
             gui::out << gui::warning << p_gradient_node->get_location()
                      << " : "
                         "Unknown gradient orientation for " +
-                            s_name_ + " : \"" + s_orientation +
+                            name_ + " : \"" + orientation +
                             "\". "
                             "No gradient will be shown for this texture."
                      << std::endl;

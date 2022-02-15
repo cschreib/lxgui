@@ -31,7 +31,7 @@ public:
     keybinder& operator=(keybinder&&) = delete;
 
     /// Registers an action as a possible key binding.
-    /** \param sName        The name of the key binding (e.g., "JUMP")
+    /** \param name        The name of the key binding (e.g., "JUMP")
      *   \param mLuaFunction The Lua function that will be executed
      *   \note The name of the key binding can be anything, but it must be unique.
      *         This only registers the action as "available" for a key binding.
@@ -40,10 +40,10 @@ public:
      *           to gracefully disconnect the callback.
      */
     utils::connection
-    register_key_binding(std::string_view s_name, sol::protected_function m_lua_function);
+    register_key_binding(std::string_view name, sol::protected_function m_lua_function);
 
     /// Registers an action as a possible key binding.
-    /** \param sName     The name of the key binding (e.g., "JUMP")
+    /** \param name     The name of the key binding (e.g., "JUMP")
      *   \param mFunction The C++ function that will be executed
      *   \note The name of the key binding can be anything, but it must be unique.
      *         This only registers the action as "available" for a key binding.
@@ -51,36 +51,36 @@ public:
      *   \return A connection object representing the registered callback function, can be used
      *           to gracefully disconnect the callback.
      */
-    utils::connection register_key_binding(std::string_view s_name, function_type m_function);
+    utils::connection register_key_binding(std::string_view name, function_type m_function);
 
     /// Binds an action to a key.
-    /** \param sName The action to bind
+    /** \param name The action to bind
      *   \param sKey  The key to bind it to (e.g., "Shift-T")
      *   \note The format of the `sKey` parameter is any key name as returned from @ref
      *         input::get_key_codename(), preceded by optional modifiers (any
      *         combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
      *         to frames in the "OnKeyDown" and "OnKeyUp" scripts.
      */
-    void set_key_binding(std::string_view s_name, std::string_view s_key);
+    void set_key_binding(std::string_view name, std::string_view key);
 
     /// Binds an action to a key.
-    /** \param sName           The action to bind
+    /** \param name           The action to bind
      *   \param mKey            The key to bind
      *   \param bShiftIsPressed 'true' if the Shift key must be pressed
      *   \param bCtrlIsPressed  'true' if the Ctrl key must be pressed
      *   \param bAltIsPressed   'true' if the Alt key must be pressed
      */
     void set_key_binding(
-        std::string_view s_name,
+        std::string_view name,
         input::key       m_key,
         bool             b_shift_is_pressed,
         bool             b_ctrl_is_pressed,
         bool             b_alt_is_pressed);
 
     /// Unbinds an action.
-    /** \param sName The action to unbind
+    /** \param name The action to unbind
      */
-    void remove_key_binding(std::string_view s_name);
+    void remove_key_binding(std::string_view name);
 
     /// Called when a key is pressed.
     /** \param mKey            The key that is pressed
@@ -95,7 +95,7 @@ public:
 
 private:
     struct key_binding {
-        std::string s_name;
+        std::string name;
 
         input::key m_key              = input::key::k_unassigned;
         bool       b_shift_is_pressed = false;

@@ -18,17 +18,17 @@
 
 namespace lxgui::gui {
 
-sol::optional<gradient::orientation> get_gradient_orientation(const std::string& s_orientation) {
+sol::optional<gradient::orientation> get_gradient_orientation(const std::string& orientation) {
     sol::optional<gradient::orientation> m_orientation;
-    if (s_orientation == "HORIZONTAL")
+    if (orientation == "HORIZONTAL")
         m_orientation = gradient::orientation::horizontal;
-    else if (s_orientation == "VERTICAL")
+    else if (orientation == "VERTICAL")
         m_orientation = gradient::orientation::vertical;
     else {
         gui::out << gui::warning
                  << "Texture:set_gradient : "
                     "Unknown gradient orientation : \"" +
-                        s_orientation + "\"."
+                        orientation + "\"."
                  << std::endl;
     }
 
@@ -100,21 +100,21 @@ void texture::register_on_lua(sol::state& m_lua) {
 
     /** @function set_blend_mode
      */
-    m_class.set_function("set_blend_mode", [](texture& m_self, const std::string& s_blend) {
+    m_class.set_function("set_blend_mode", [](texture& m_self, const std::string& blend) {
         texture::blend_mode m_blend;
-        if (s_blend == "NONE")
+        if (blend == "NONE")
             m_blend = texture::blend_mode::none;
-        else if (s_blend == "BLEND")
+        else if (blend == "BLEND")
             m_blend = texture::blend_mode::blend;
-        else if (s_blend == "KEY")
+        else if (blend == "KEY")
             m_blend = texture::blend_mode::key;
-        else if (s_blend == "ADD")
+        else if (blend == "ADD")
             m_blend = texture::blend_mode::add;
-        else if (s_blend == "MOD")
+        else if (blend == "MOD")
             m_blend = texture::blend_mode::mod;
         else {
             gui::out << gui::warning << "Texture:set_blend_mode : "
-                     << "Unknown blending mode : \"" + s_blend + "\"." << std::endl;
+                     << "Unknown blending mode : \"" + blend + "\"." << std::endl;
             return;
         }
 
@@ -123,15 +123,15 @@ void texture::register_on_lua(sol::state& m_lua) {
 
     /** @function set_filter_mode
      */
-    m_class.set_function("set_filter_mode", [](texture& m_self, const std::string& s_filter) {
+    m_class.set_function("set_filter_mode", [](texture& m_self, const std::string& filter) {
         material::filter m_filter;
-        if (s_filter == "NONE")
+        if (filter == "NONE")
             m_filter = material::filter::none;
-        else if (s_filter == "LINEAR")
+        else if (filter == "LINEAR")
             m_filter = material::filter::linear;
         else {
             gui::out << gui::warning << "Texture:set_filter_mode : "
-                     << "Unknown filtering mode : \"" + s_filter + "\"." << std::endl;
+                     << "Unknown filtering mode : \"" + filter + "\"." << std::endl;
             return;
         }
 
@@ -147,10 +147,10 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_gradient",
         sol::overload(
-            [](texture& m_self, const std::string& s_orientation, float f_min_r, float f_min_g,
+            [](texture& m_self, const std::string& orientation, float f_min_r, float f_min_g,
                float f_min_b, float f_max_r, float f_max_g, float f_max_b) {
                 sol::optional<gradient::orientation> m_orientation =
-                    get_gradient_orientation(s_orientation);
+                    get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
@@ -158,15 +158,15 @@ void texture::register_on_lua(sol::state& m_lua) {
                     m_orientation.value(), color(f_min_r, f_min_g, f_min_b),
                     color(f_max_r, f_max_g, f_max_b)));
             },
-            [](texture& m_self, const std::string& s_orientation, const std::string& s_min_color,
-               const std::string& s_max_color) {
+            [](texture& m_self, const std::string& orientation, const std::string& min_color,
+               const std::string& max_color) {
                 sol::optional<gradient::orientation> m_orientation =
-                    get_gradient_orientation(s_orientation);
+                    get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
                 m_self.set_gradient(
-                    gradient(m_orientation.value(), color(s_min_color), color(s_max_color)));
+                    gradient(m_orientation.value(), color(min_color), color(max_color)));
             }));
 
     /** @function set_gradient_alpha
@@ -174,11 +174,11 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_gradient_alpha",
         sol::overload(
-            [](texture& m_self, const std::string& s_orientation, float f_min_r, float f_min_g,
+            [](texture& m_self, const std::string& orientation, float f_min_r, float f_min_g,
                float f_min_b, float f_min_a, float f_max_r, float f_max_g, float f_max_b,
                float f_max_a) {
                 sol::optional<gradient::orientation> m_orientation =
-                    get_gradient_orientation(s_orientation);
+                    get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
@@ -186,15 +186,15 @@ void texture::register_on_lua(sol::state& m_lua) {
                     m_orientation.value(), color(f_min_r, f_min_g, f_min_b, f_min_a),
                     color(f_max_r, f_max_g, f_max_b, f_max_a)));
             },
-            [](texture& m_self, const std::string& s_orientation, const std::string& s_min_color,
-               const std::string& s_max_color) {
+            [](texture& m_self, const std::string& orientation, const std::string& min_color,
+               const std::string& max_color) {
                 sol::optional<gradient::orientation> m_orientation =
-                    get_gradient_orientation(s_orientation);
+                    get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
                 m_self.set_gradient(
-                    gradient(m_orientation.value(), color(s_min_color), color(s_max_color)));
+                    gradient(m_orientation.value(), color(min_color), color(max_color)));
             }));
 
     /** @function set_tex_coord
@@ -223,13 +223,13 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_texture",
         sol::overload(
-            [](texture& m_self, const std::string& s_texture) {
-                if (!s_texture.empty() && s_texture[0] == '#') {
+            [](texture& m_self, const std::string& texture) {
+                if (!texture.empty() && texture[0] == '#') {
                     // This is actually a color hash
-                    m_self.set_solid_color(color(s_texture));
+                    m_self.set_solid_color(color(texture));
                 } else {
                     // Normal texture file
-                    m_self.set_texture(s_texture);
+                    m_self.set_texture(texture);
                 }
             },
             [](texture& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
@@ -241,16 +241,16 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_vertex_color",
         sol::overload(
-            [](texture& m_self, const std::string& s_color) {
-                m_self.set_vertex_color(color(s_color), std::numeric_limits<std::size_t>::max());
+            [](texture& m_self, const std::string& s) {
+                m_self.set_vertex_color(color(s), std::numeric_limits<std::size_t>::max());
             },
             [](texture& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
                 m_self.set_vertex_color(
                     color(f_r, f_g, f_b, f_a.value_or(1.0f)),
                     std::numeric_limits<std::size_t>::max());
             },
-            [](texture& m_self, std::size_t ui_index, const std::string& s_color) {
-                m_self.set_vertex_color(color(s_color), ui_index);
+            [](texture& m_self, std::size_t ui_index, const std::string& s) {
+                m_self.set_vertex_color(color(s), ui_index);
             },
             [](texture& m_self, std::size_t ui_index, float f_r, float f_g, float f_b,
                sol::optional<float> f_a) {

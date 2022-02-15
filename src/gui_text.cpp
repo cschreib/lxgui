@@ -29,7 +29,7 @@ struct format {
 };
 
 struct texture {
-    std::string               s_file_name;
+    std::string               file_name;
     float                     f_width  = 0.0f;
     float                     f_height = 0.0f;
     std::shared_ptr<material> p_material;
@@ -65,13 +65,13 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                         ++iter_char;
                         if (iter_char == sCaption.end())
                             return false;
-                        utils::ustring s_color_part(2, U'0');
-                        s_color_part[0] = *iter_char;
+                        utils::ustring color_part(2, U'0');
+                        color_part[0] = *iter_char;
                         ++iter_char;
                         if (iter_char == sCaption.end())
                             return false;
-                        s_color_part[1] = *iter_char;
-                        f_out = utils::hex_to_uint(utils::unicode_to_utf8(s_color_part)) / 255.0f;
+                        color_part[1] = *iter_char;
+                        f_out = utils::hex_to_uint(utils::unicode_to_utf8(color_part)) / 255.0f;
                         return true;
                     };
 
@@ -93,10 +93,10 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                     if (ui_pos == sCaption.npos)
                         break;
 
-                    const std::string s_extracted =
+                    const std::string extracted =
                         utils::unicode_to_utf8(sCaption.substr(ui_begin, ui_pos - ui_begin));
 
-                    const auto words = utils::cut(s_extracted, ":");
+                    const auto words = utils::cut(extracted, ":");
                     if (!words.empty()) {
                         texture m_texture;
                         m_texture.p_material = m_renderer.create_material(std::string{words[0]});
@@ -114,7 +114,7 @@ parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_f
                         content.push_back(m_texture);
                     }
 
-                    iter_char += s_extracted.size() + 1;
+                    iter_char += extracted.size() + 1;
                 }
 
                 continue;
@@ -310,15 +310,15 @@ float text::get_scaling_factor() const {
     return f_scaling_factor_;
 }
 
-void text::set_text(const utils::ustring& s_text) {
-    if (s_unicode_text_ != s_text) {
-        s_unicode_text_ = s_text;
+void text::set_text(const utils::ustring& content) {
+    if (unicode_text_ != content) {
+        unicode_text_ = content;
         notify_cache_dirty_();
     }
 }
 
 const utils::ustring& text::get_text() const {
-    return s_unicode_text_;
+    return unicode_text_;
 }
 
 void text::set_color(const color& m_color, bool b_force_color) {
@@ -390,14 +390,14 @@ float text::get_box_height() const {
 }
 
 float text::get_text_width() const {
-    return get_string_width(s_unicode_text_);
+    return get_string_width(unicode_text_);
 }
 
 float text::get_text_height() const {
     if (!b_ready_)
         return 0.0f;
 
-    std::size_t count    = std::count(s_unicode_text_.begin(), s_unicode_text_.end(), U'\n');
+    std::size_t count    = std::count(unicode_text_.begin(), unicode_text_.end(), U'\n');
     float       f_height = (1.0f + count * f_line_spacing_) * get_line_height();
 
     return f_height;
@@ -408,16 +408,16 @@ std::size_t text::get_num_lines() const {
     return ui_num_lines_;
 }
 
-float text::get_string_width(const std::string& s_string) const {
-    return get_string_width(utils::utf8_to_unicode(s_string));
+float text::get_string_width(const std::string& content) const {
+    return get_string_width(utils::utf8_to_unicode(content));
 }
 
-float text::get_string_width(const utils::ustring& s_string) const {
+float text::get_string_width(const utils::ustring& content) const {
     if (!b_ready_)
         return 0.0f;
 
     return parser::get_string_width(
-        *this, parser::parse_string(m_renderer_, s_string, b_formatting_enabled_));
+        *this, parser::parse_string(m_renderer_, content, b_formatting_enabled_));
 }
 
 float text::get_character_width(char32_t ui_char) const {
@@ -510,7 +510,7 @@ void text::enable_formatting(bool b_formatting) {
 }
 
 void text::render(const matrix4f& m_transform) const {
-    if (!b_ready_ || s_unicode_text_.empty())
+    if (!b_ready_ || unicode_text_.empty())
         return;
 
     bool b_use_vertex_cache =
@@ -597,7 +597,7 @@ void text::update_() const {
         ui_max_line_nbr = std::numeric_limits<std::size_t>::max();
 
     if (ui_max_line_nbr != 0) {
-        auto manual_line_list = utils::cut_each(s_unicode_text_, U"\n");
+        auto manual_line_list = utils::cut_each(unicode_text_, U"\n");
         for (auto iter_manual : utils::range::iterator(manual_line_list)) {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
@@ -781,8 +781,8 @@ void text::update_() const {
             lines.push_back(m_line);
 
             // Add the maximum number of line to this text
-            for (auto& s_line : lines) {
-                line_list.push_back(std::move(s_line));
+            for (auto& line : lines) {
+                line_list.push_back(std::move(line));
                 if (line_list.size() == ui_max_line_nbr) {
                     b_done = true;
                     break;

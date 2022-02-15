@@ -20,28 +20,28 @@ status_bar::status_bar(utils::control_block& m_block, manager& m_manager) :
     type_.push_back(class_name);
 }
 
-std::string status_bar::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
+std::string status_bar::serialize(const std::string& tab) const {
+    std::ostringstream str;
 
-    s_str << base::serialize(s_tab);
-    s_str << s_tab << "  # Orientation: ";
+    str << base::serialize(tab);
+    str << tab << "  # Orientation: ";
     switch (m_orientation_) {
-    case orientation::horizontal: s_str << "HORIZONTAL"; break;
-    case orientation::vertical: s_str << "VERTICAL"; break;
+    case orientation::horizontal: str << "HORIZONTAL"; break;
+    case orientation::vertical: str << "VERTICAL"; break;
     }
-    s_str << "\n";
-    s_str << s_tab << "  # Reversed   : " << b_reversed_ << "\n";
-    s_str << s_tab << "  # Value      : " << f_value_ << "\n";
-    s_str << s_tab << "  # Min value  : " << f_min_value_ << "\n";
-    s_str << s_tab << "  # Max value  : " << f_max_value_ << "\n";
+    str << "\n";
+    str << tab << "  # Reversed   : " << b_reversed_ << "\n";
+    str << tab << "  # Value      : " << f_value_ << "\n";
+    str << tab << "  # Min value  : " << f_min_value_ << "\n";
+    str << tab << "  # Max value  : " << f_max_value_ << "\n";
 
-    return s_str.str();
+    return str.str();
 }
 
-bool status_bar::can_use_script(const std::string& s_script_name) const {
-    if (base::can_use_script(s_script_name))
+bool status_bar::can_use_script(const std::string& script_name) const {
+    if (base::can_use_script(script_name))
         return true;
-    else if (s_script_name == "OnValueChanged")
+    else if (script_name == "OnValueChanged")
         return true;
     else
         return false;
@@ -63,7 +63,7 @@ void status_bar::copy_from(const region& m_obj) {
 
     if (const texture* p_bar = p_status_bar->get_bar_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name      = p_bar->get_name();
+        m_attr.name        = p_bar->get_name();
         m_attr.inheritance = {p_status_bar->get_bar_texture()};
 
         auto p_bar_texture =
@@ -124,22 +124,22 @@ void status_bar::set_bar_draw_layer(layer m_bar_layer) {
         p_bar_texture_->set_draw_layer(m_bar_layer_);
 }
 
-void status_bar::set_bar_draw_layer(const std::string& s_bar_layer) {
-    if (s_bar_layer == "ARTWORK")
+void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
+    if (bar_layer_name == "ARTWORK")
         m_bar_layer_ = layer::artwork;
-    else if (s_bar_layer == "BACKGROUND")
+    else if (bar_layer_name == "BACKGROUND")
         m_bar_layer_ = layer::background;
-    else if (s_bar_layer == "BORDER")
+    else if (bar_layer_name == "BORDER")
         m_bar_layer_ = layer::border;
-    else if (s_bar_layer == "HIGHLIGHT")
+    else if (bar_layer_name == "HIGHLIGHT")
         m_bar_layer_ = layer::highlight;
-    else if (s_bar_layer == "OVERLAY")
+    else if (bar_layer_name == "OVERLAY")
         m_bar_layer_ = layer::overlay;
     else {
         gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown layer type : \"" +
-                        s_bar_layer + "\". Using \"ARTWORK\"."
+                        bar_layer_name + "\". Using \"ARTWORK\"."
                  << std::endl;
 
         m_bar_layer_ = layer::artwork;
@@ -157,12 +157,12 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
     p_bar_texture_->set_draw_layer(m_bar_layer_);
     p_bar_texture_->clear_all_points();
 
-    std::string s_parent = p_bar_texture_->get_parent().get() == this ? "$parent" : s_name_;
+    std::string parent = p_bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
     if (b_reversed_)
-        p_bar_texture_->set_point(anchor_point::top_right, s_parent);
+        p_bar_texture_->set_point(anchor_point::top_right, parent);
     else
-        p_bar_texture_->set_point(anchor_point::bottom_left, s_parent);
+        p_bar_texture_->set_point(anchor_point::bottom_left, parent);
 
     initial_text_coords_ = select_uvs(p_bar_texture_->get_tex_coord());
     notify_bar_texture_needs_update_();
@@ -182,18 +182,15 @@ void status_bar::set_orientation(orientation m_orientation) {
     }
 }
 
-void status_bar::set_orientation(const std::string& s_orientation) {
+void status_bar::set_orientation(const std::string& orientation_name) {
     orientation m_orientation = orientation::horizontal;
-    if (s_orientation == "VERTICAL")
+    if (orientation_name == "VERTICAL")
         m_orientation = orientation::vertical;
-    else if (s_orientation == "HORIZONTAL")
+    else if (orientation_name == "HORIZONTAL")
         m_orientation = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << " : "
-                    "Unknown orientation : \"" +
-                        s_orientation + "\". Using \"HORIZONTAL\"."
-                 << std::endl;
+        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown orientation : \""
+                 << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
     }
 
     set_orientation(m_orientation);

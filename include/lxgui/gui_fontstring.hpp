@@ -38,10 +38,10 @@ public:
     explicit font_string(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Renders this region on the current render target.
     void render() const override;
@@ -116,10 +116,10 @@ public:
     const color& get_text_color() const;
 
     /// Sets this font_string's font (file and size).
-    /** \param sFontName The file path to the .ttf file
+    /** \param font_name The file path to the .ttf file
      *   \param fHeight   The font height
      */
-    void set_font(const std::string& s_font_name, float f_height);
+    void set_font(const std::string& font_name, float f_height);
 
     /// Sets this font_string's horizontal aligment behavior.
     /** \param mAlignX The horizontal alignment behavior
@@ -183,10 +183,10 @@ public:
     float get_string_width() const;
 
     /// Returns the width of a string if no format or wrapping is applied.
-    /** \param sString The string for which to calculate the width
+    /** \param content The string for which to calculate the width
      *   \return The width of a string if no format or wrapping is applied
      */
-    float get_string_width(const utils::ustring& s_string) const;
+    float get_string_width(const utils::ustring& content) const;
 
     /// Returns the rendered text (with format tags).
     /** \return The rendered text (with format tags)
@@ -236,10 +236,10 @@ public:
     bool is_formatting_enabled() const;
 
     /// Sets the rendered text.
-    /** \param sText The rendered text
+    /** \param content The rendered text
      *   \note See text::set_text for more infos about formatting.
      */
-    void set_text(const utils::ustring& s_text);
+    void set_text(const utils::ustring& content);
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
@@ -277,19 +277,19 @@ private:
 
     std::unique_ptr<text> p_text_;
 
-    utils::ustring s_text_;
-    std::string    s_font_name_;
+    utils::ustring content_;
+    std::string    font_name_;
     float          f_height_ = 0.0f;
 
-    float       f_spacing_     = 0.0f;
+    float       f_spacing_      = 0.0f;
     float       f_line_spacing_ = 1.0f;
     alignment_x m_align_x_      = alignment_x::center;
     alignment_y m_align_y_      = alignment_y::middle;
-    vector2f    m_offset_      = vector2f::zero;
+    vector2f    m_offset_       = vector2f::zero;
 
     bool  b_is_outlined_        = false;
-    bool  b_can_non_space_wrap_   = false;
-    bool  b_can_word_wrap_       = true;
+    bool  b_can_non_space_wrap_ = false;
+    bool  b_can_word_wrap_      = true;
     bool  b_add_ellipsis_       = true;
     bool  b_formatting_enabled_ = true;
     color m_text_color_         = color::white;

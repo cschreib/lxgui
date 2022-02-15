@@ -13,13 +13,13 @@ factory::factory(manager& m_manager) : m_manager_(m_manager) {}
 
 utils::owner_ptr<region>
 factory::create_region(registry& m_registry, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.s_name))
+    if (!m_registry.check_region_name(m_attr.name))
         return nullptr;
 
-    auto m_iter = custom_object_list_.find(m_attr.s_object_type);
+    auto m_iter = custom_object_list_.find(m_attr.object_type);
     if (m_iter == custom_object_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown object class : \""
-                 << m_attr.s_object_type << "\"." << std::endl;
+        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << m_attr.object_type
+                 << "\"." << std::endl;
         return nullptr;
     }
 
@@ -37,13 +37,13 @@ factory::create_region(registry& m_registry, const region_core_attributes& m_att
 
 utils::owner_ptr<frame> factory::create_frame(
     registry& m_registry, frame_renderer* p_renderer, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.s_name))
+    if (!m_registry.check_region_name(m_attr.name))
         return nullptr;
 
-    auto m_iter = custom_frame_list_.find(m_attr.s_object_type);
+    auto m_iter = custom_frame_list_.find(m_attr.object_type);
     if (m_iter == custom_frame_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown frame class : \""
-                 << m_attr.s_object_type << "\"." << std::endl;
+        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << m_attr.object_type
+                 << "\"." << std::endl;
         return nullptr;
     }
 
@@ -64,13 +64,13 @@ utils::owner_ptr<frame> factory::create_frame(
 
 utils::owner_ptr<layered_region>
 factory::create_layered_region(registry& m_registry, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.s_name))
+    if (!m_registry.check_region_name(m_attr.name))
         return nullptr;
 
-    auto m_iter = custom_region_list_.find(m_attr.s_object_type);
+    auto m_iter = custom_region_list_.find(m_attr.object_type);
     if (m_iter == custom_region_list_.end()) {
         gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
-                 << m_attr.s_object_type << "\"." << std::endl;
+                 << m_attr.object_type << "\"." << std::endl;
         return nullptr;
     }
 
@@ -100,9 +100,9 @@ bool factory::finalize_object_(
         m_object.set_virtual();
 
     if (m_attr.p_parent)
-        m_object.set_name_and_parent_(m_attr.s_name, m_attr.p_parent);
+        m_object.set_name_and_parent_(m_attr.name, m_attr.p_parent);
     else
-        m_object.set_name_(m_attr.s_name);
+        m_object.set_name_(m_attr.name);
 
     if (!m_object.is_virtual() || m_attr.p_parent == nullptr) {
         if (!m_registry.add_region(observer_from(&m_object)))

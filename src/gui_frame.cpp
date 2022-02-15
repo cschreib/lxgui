@@ -70,126 +70,125 @@ void frame::create_glue() {
     create_glue_(this);
 }
 
-std::string frame::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
+std::string frame::serialize(const std::string& tab) const {
+    std::ostringstream str;
 
-    s_str << base::serialize(s_tab);
+    str << base::serialize(tab);
     if (auto p_frame_renderer = utils::dynamic_pointer_cast<frame>(p_renderer_))
-        s_str << s_tab << "  # Man. render : " << p_frame_renderer->get_name() << "\n";
-    s_str << s_tab << "  # Strata      : ";
+        str << tab << "  # Man. render : " << p_frame_renderer->get_name() << "\n";
+    str << tab << "  # Strata      : ";
     switch (m_strata_) {
-    case frame_strata::parent: s_str << "PARENT\n"; break;
-    case frame_strata::background: s_str << "BACKGROUND\n"; break;
-    case frame_strata::low: s_str << "LOW\n"; break;
-    case frame_strata::medium: s_str << "MEDIUM\n"; break;
-    case frame_strata::high: s_str << "HIGH\n"; break;
-    case frame_strata::dialog: s_str << "DIALOG\n"; break;
-    case frame_strata::fullscreen: s_str << "FULLSCREEN\n"; break;
-    case frame_strata::fullscreen_dialog: s_str << "FULLSCREEN_DIALOG\n"; break;
-    case frame_strata::tooltip: s_str << "TOOLTIP\n"; break;
+    case frame_strata::parent: str << "PARENT\n"; break;
+    case frame_strata::background: str << "BACKGROUND\n"; break;
+    case frame_strata::low: str << "LOW\n"; break;
+    case frame_strata::medium: str << "MEDIUM\n"; break;
+    case frame_strata::high: str << "HIGH\n"; break;
+    case frame_strata::dialog: str << "DIALOG\n"; break;
+    case frame_strata::fullscreen: str << "FULLSCREEN\n"; break;
+    case frame_strata::fullscreen_dialog: str << "FULLSCREEN_DIALOG\n"; break;
+    case frame_strata::tooltip: str << "TOOLTIP\n"; break;
     }
-    s_str << s_tab << "  # Level       : " << level_ << "\n";
-    s_str << s_tab << "  # TopLevel    : " << b_is_top_level_;
+    str << tab << "  # Level       : " << level_ << "\n";
+    str << tab << "  # TopLevel    : " << b_is_top_level_;
     if (!b_is_top_level_ && get_top_level_parent())
-        s_str << " (" << get_top_level_parent()->get_name() << ")\n";
+        str << " (" << get_top_level_parent()->get_name() << ")\n";
     else
-        s_str << "\n";
+        str << "\n";
     if (!b_is_mouse_click_enabled_ && !b_is_mouse_move_enabled_ && !!b_is_mouse_wheel_enabled_)
-        s_str << s_tab << "  # Inputs      : none\n";
+        str << tab << "  # Inputs      : none\n";
     else {
-        s_str << s_tab << "  # Inputs      :\n";
-        s_str << s_tab << "  |-###\n";
+        str << tab << "  # Inputs      :\n";
+        str << tab << "  |-###\n";
         if (b_is_mouse_click_enabled_)
-            s_str << s_tab << "  |   # mouse click\n";
+            str << tab << "  |   # mouse click\n";
         if (b_is_mouse_move_enabled_)
-            s_str << s_tab << "  |   # mouse move\n";
+            str << tab << "  |   # mouse move\n";
         if (b_is_mouse_wheel_enabled_)
-            s_str << s_tab << "  |   # mouse wheel\n";
-        s_str << s_tab << "  |-###\n";
+            str << tab << "  |   # mouse wheel\n";
+        str << tab << "  |-###\n";
     }
-    s_str << s_tab << "  # Movable     : " << b_is_movable_ << "\n";
-    s_str << s_tab << "  # Resizable   : " << b_is_resizable_ << "\n";
-    s_str << s_tab << "  # Clamped     : " << b_is_clamped_to_screen_ << "\n";
-    s_str << s_tab << "  # HRect inset :\n";
-    s_str << s_tab << "  |-###\n";
-    s_str << s_tab << "  |   # left   : " << abs_hit_rect_inset_list_.left << "\n";
-    s_str << s_tab << "  |   # right  : " << abs_hit_rect_inset_list_.right << "\n";
-    s_str << s_tab << "  |   # top    : " << abs_hit_rect_inset_list_.top << "\n";
-    s_str << s_tab << "  |   # bottom : " << abs_hit_rect_inset_list_.bottom << "\n";
-    s_str << s_tab << "  |-###\n";
-    s_str << s_tab << "  # Min width   : " << f_min_width_ << "\n";
-    s_str << s_tab << "  # Max width   : " << f_max_width_ << "\n";
-    s_str << s_tab << "  # Min height  : " << f_min_height_ << "\n";
-    s_str << s_tab << "  # Max height  : " << f_max_height_ << "\n";
-    s_str << s_tab << "  # Scale       : " << f_scale_ << "\n";
+    str << tab << "  # Movable     : " << b_is_movable_ << "\n";
+    str << tab << "  # Resizable   : " << b_is_resizable_ << "\n";
+    str << tab << "  # Clamped     : " << b_is_clamped_to_screen_ << "\n";
+    str << tab << "  # HRect inset :\n";
+    str << tab << "  |-###\n";
+    str << tab << "  |   # left   : " << abs_hit_rect_inset_list_.left << "\n";
+    str << tab << "  |   # right  : " << abs_hit_rect_inset_list_.right << "\n";
+    str << tab << "  |   # top    : " << abs_hit_rect_inset_list_.top << "\n";
+    str << tab << "  |   # bottom : " << abs_hit_rect_inset_list_.bottom << "\n";
+    str << tab << "  |-###\n";
+    str << tab << "  # Min width   : " << f_min_width_ << "\n";
+    str << tab << "  # Max width   : " << f_max_width_ << "\n";
+    str << tab << "  # Min height  : " << f_min_height_ << "\n";
+    str << tab << "  # Max height  : " << f_max_height_ << "\n";
+    str << tab << "  # Scale       : " << f_scale_ << "\n";
     if (p_title_region_) {
-        s_str << s_tab << "  # Title reg.  :\n";
-        s_str << s_tab << "  |-###\n";
-        s_str << p_title_region_->serialize(s_tab + "  | ");
-        s_str << s_tab << "  |-###\n";
+        str << tab << "  # Title reg.  :\n";
+        str << tab << "  |-###\n";
+        str << p_title_region_->serialize(tab + "  | ");
+        str << tab << "  |-###\n";
     }
     if (p_backdrop_) {
         const bounds2f& insets = p_backdrop_->get_background_insets();
 
-        s_str << s_tab << "  # Backdrop    :\n";
-        s_str << s_tab << "  |-###\n";
-        s_str << s_tab << "  |   # Background : " << p_backdrop_->get_background_file() << "\n";
-        s_str << s_tab << "  |   # Tilling    : " << p_backdrop_->is_background_tilling() << "\n";
+        str << tab << "  # Backdrop    :\n";
+        str << tab << "  |-###\n";
+        str << tab << "  |   # Background : " << p_backdrop_->get_background_file() << "\n";
+        str << tab << "  |   # Tilling    : " << p_backdrop_->is_background_tilling() << "\n";
         if (p_backdrop_->is_background_tilling())
-            s_str << s_tab << "  |   # Tile size  : " << p_backdrop_->get_tile_size() << "\n";
-        s_str << s_tab << "  |   # BG Insets  :\n";
-        s_str << s_tab << "  |   |-###\n";
-        s_str << s_tab << "  |   |   # left   : " << insets.left << "\n";
-        s_str << s_tab << "  |   |   # right  : " << insets.right << "\n";
-        s_str << s_tab << "  |   |   # top    : " << insets.top << "\n";
-        s_str << s_tab << "  |   |   # bottom : " << insets.bottom << "\n";
-        s_str << s_tab << "  |   |-###\n";
-        s_str << s_tab << "  |   # Edge       : " << p_backdrop_->get_edge_file() << "\n";
-        s_str << s_tab << "  |   # Edge size  : " << p_backdrop_->get_edge_size() << "\n";
-        s_str << s_tab << "  |-###\n";
+            str << tab << "  |   # Tile size  : " << p_backdrop_->get_tile_size() << "\n";
+        str << tab << "  |   # BG Insets  :\n";
+        str << tab << "  |   |-###\n";
+        str << tab << "  |   |   # left   : " << insets.left << "\n";
+        str << tab << "  |   |   # right  : " << insets.right << "\n";
+        str << tab << "  |   |   # top    : " << insets.top << "\n";
+        str << tab << "  |   |   # bottom : " << insets.bottom << "\n";
+        str << tab << "  |   |-###\n";
+        str << tab << "  |   # Edge       : " << p_backdrop_->get_edge_file() << "\n";
+        str << tab << "  |   # Edge size  : " << p_backdrop_->get_edge_size() << "\n";
+        str << tab << "  |-###\n";
     }
 
     if (!region_list_.empty()) {
         if (child_list_.size() == 1)
-            s_str << s_tab << "  # Region : \n";
+            str << tab << "  # Region : \n";
         else
-            s_str << s_tab << "  # Regions     : " << region_list_.size() << "\n";
-        s_str << s_tab << "  |-###\n";
+            str << tab << "  # Regions     : " << region_list_.size() << "\n";
+        str << tab << "  |-###\n";
 
         for (auto& m_region : get_regions()) {
-            s_str << m_region.serialize(s_tab + "  | ");
-            s_str << s_tab << "  |-###\n";
+            str << m_region.serialize(tab + "  | ");
+            str << tab << "  |-###\n";
         }
     }
 
     if (!child_list_.empty()) {
         if (child_list_.size() == 1)
-            s_str << s_tab << "  # Child : \n";
+            str << tab << "  # Child : \n";
         else
-            s_str << s_tab << "  # Children    : " << child_list_.size() << "\n";
-        s_str << s_tab << "  |-###\n";
+            str << tab << "  # Children    : " << child_list_.size() << "\n";
+        str << tab << "  |-###\n";
 
         for (const auto& m_child : get_children()) {
-            s_str << m_child.serialize(s_tab + "  | ");
-            s_str << s_tab << "  |-###\n";
+            str << m_child.serialize(tab + "  | ");
+            str << tab << "  |-###\n";
         }
     }
 
-    return s_str.str();
+    return str.str();
 }
 
-bool frame::can_use_script(const std::string& s_script_name) const {
-    return (s_script_name == "OnChar") || (s_script_name == "OnDragStart") ||
-           (s_script_name == "OnDragStop") || (s_script_name == "OnDragMove") ||
-           (s_script_name == "OnEnter") || (s_script_name == "OnEvent") ||
-           (s_script_name == "OnFocusGained") || (s_script_name == "OnFocusLost") ||
-           (s_script_name == "OnHide") || (s_script_name == "OnKeyDown") ||
-           (s_script_name == "OnKeyUp") || (s_script_name == "OnLeave") ||
-           (s_script_name == "OnLoad") || (s_script_name == "OnMouseDown") ||
-           (s_script_name == "OnMouseUp") || (s_script_name == "OnDoubleClick") ||
-           (s_script_name == "OnMouseWheel") || (s_script_name == "OnReceiveDrag") ||
-           (s_script_name == "OnShow") || (s_script_name == "OnSizeChanged") ||
-           (s_script_name == "OnUpdate");
+bool frame::can_use_script(const std::string& script_name) const {
+    return (script_name == "OnChar") || (script_name == "OnDragStart") ||
+           (script_name == "OnDragStop") || (script_name == "OnDragMove") ||
+           (script_name == "OnEnter") || (script_name == "OnEvent") ||
+           (script_name == "OnFocusGained") || (script_name == "OnFocusLost") ||
+           (script_name == "OnHide") || (script_name == "OnKeyDown") ||
+           (script_name == "OnKeyUp") || (script_name == "OnLeave") || (script_name == "OnLoad") ||
+           (script_name == "OnMouseDown") || (script_name == "OnMouseUp") ||
+           (script_name == "OnDoubleClick") || (script_name == "OnMouseWheel") ||
+           (script_name == "OnReceiveDrag") || (script_name == "OnShow") ||
+           (script_name == "OnSizeChanged") || (script_name == "OnUpdate");
 }
 
 void frame::copy_from(const region& m_obj) {
@@ -241,9 +240,9 @@ void frame::copy_from(const region& m_obj) {
             continue;
 
         region_core_attributes m_attr;
-        m_attr.s_object_type = p_art->get_object_type();
-        m_attr.s_name        = p_art->get_raw_name();
-        m_attr.inheritance   = {p_art};
+        m_attr.object_type = p_art->get_object_type();
+        m_attr.name        = p_art->get_raw_name();
+        m_attr.inheritance = {p_art};
 
         auto p_new_art = create_layered_region(p_art->get_draw_layer(), std::move(m_attr));
         if (!p_new_art)
@@ -270,9 +269,9 @@ void frame::copy_from(const region& m_obj) {
             continue;
 
         region_core_attributes m_attr;
-        m_attr.s_object_type = p_child->get_object_type();
-        m_attr.s_name        = p_child->get_raw_name();
-        m_attr.inheritance   = {p_child};
+        m_attr.object_type = p_child->get_object_type();
+        m_attr.name        = p_child->get_raw_name();
+        m_attr.inheritance = {p_child};
 
         auto p_new_child = create_child(std::move(m_attr));
         if (!p_new_child)
@@ -285,15 +284,15 @@ void frame::copy_from(const region& m_obj) {
 void frame::create_title_region() {
     if (p_title_region_) {
         gui::out << gui::warning << "gui::" << type_.back()
-                 << " : \"" + s_name_ + "\" already has a title region." << std::endl;
+                 << " : \"" + name_ + "\" already has a title region." << std::endl;
         return;
     }
 
     region_core_attributes m_attr;
-    m_attr.s_object_type = "Region";
-    m_attr.b_virtual     = is_virtual();
-    m_attr.s_name        = "$parentTitleRegion";
-    m_attr.p_parent      = observer_from(this);
+    m_attr.object_type = "Region";
+    m_attr.b_virtual   = is_virtual();
+    m_attr.name        = "$parentTitleRegion";
+    m_attr.p_parent    = observer_from(this);
 
     auto p_title_region = get_manager().get_factory().create_region(get_registry(), m_attr);
 
@@ -312,16 +311,16 @@ void frame::create_title_region() {
     p_title_region_->notify_loaded();
 }
 
-utils::observer_ptr<const frame> frame::get_child(const std::string& s_name) const {
+utils::observer_ptr<const frame> frame::get_child(const std::string& name) const {
     for (const auto& p_child : child_list_) {
         if (!p_child)
             continue;
 
-        if (p_child->get_name() == s_name)
+        if (p_child->get_name() == name)
             return p_child;
 
-        const std::string& s_raw_name = p_child->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent") && s_raw_name.substr(7) == s_name)
+        const std::string& raw_name = p_child->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent") && raw_name.substr(7) == name)
             return p_child;
     }
 
@@ -336,16 +335,16 @@ frame::const_region_list_view frame::get_regions() const {
     return const_region_list_view(region_list_);
 }
 
-utils::observer_ptr<const layered_region> frame::get_region(const std::string& s_name) const {
+utils::observer_ptr<const layered_region> frame::get_region(const std::string& name) const {
     for (const auto& p_region : region_list_) {
         if (!p_region)
             continue;
 
-        if (p_region->get_name() == s_name)
+        if (p_region->get_name() == name)
             return p_region;
 
-        const std::string& s_raw_name = p_region->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent") && s_raw_name.substr(7) == s_name)
+        const std::string& raw_name = p_region->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent") && raw_name.substr(7) == name)
             return p_region;
     }
 
@@ -461,11 +460,11 @@ void frame::enable_mouse_wheel(bool b_is_mouse_wheel_enabled) {
     b_is_mouse_wheel_enabled_ = b_is_mouse_wheel_enabled;
 }
 
-void frame::enable_key_capture(const std::string& s_key, bool b_is_capture_enabled) {
+void frame::enable_key_capture(const std::string& key_name, bool b_is_capture_enabled) {
     if (b_is_capture_enabled)
-        reg_key_list_.erase(s_key);
+        reg_key_list_.erase(key_name);
     else
-        reg_key_list_.insert(s_key);
+        reg_key_list_.insert(key_name);
 }
 
 void frame::notify_loaded() {
@@ -483,8 +482,8 @@ void frame::notify_layers_need_update() {
     b_build_layer_list_ = true;
 }
 
-bool frame::has_script(const std::string& s_script_name) const {
-    const auto m_iter = signal_list_.find(s_script_name);
+bool frame::has_script(const std::string& script_name) const {
+    const auto m_iter = signal_list_.find(script_name);
     if (m_iter == signal_list_.end())
         return false;
 
@@ -505,11 +504,11 @@ utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_r
 
     if (!b_virtual_) {
         // Add shortcut to region as entry in Lua table
-        std::string s_raw_name = p_added_region->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent")) {
-            s_raw_name.erase(0, std::string("$parent").size());
-            auto& m_lua                       = get_lua_();
-            m_lua[get_lua_name()][s_raw_name] = m_lua[p_added_region->get_lua_name()];
+        std::string raw_name = p_added_region->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent")) {
+            raw_name.erase(0, std::string("$parent").size());
+            auto& m_lua                     = get_lua_();
+            m_lua[get_lua_name()][raw_name] = m_lua[p_added_region->get_lua_name()];
         }
     }
 
@@ -528,7 +527,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
 
     if (m_iter == region_list_.end()) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Trying to remove \"" << p_region->get_name() << "\" from \"" << s_name_
+                 << "Trying to remove \"" << p_region->get_name() << "\" from \"" << name_
                  << "\"'s children, "
                     "but it was not one of this frame's children."
                  << std::endl;
@@ -544,11 +543,11 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
 
     if (!b_virtual_) {
         // Remove shortcut to region
-        std::string s_raw_name = p_removed_region->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent")) {
-            s_raw_name.erase(0, std::string("$parent").size());
-            sol::state& m_lua                 = get_lua_();
-            m_lua[get_lua_name()][s_raw_name] = sol::lua_nil;
+        std::string raw_name = p_removed_region->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent")) {
+            raw_name.erase(0, std::string("$parent").size());
+            sol::state& m_lua               = get_lua_();
+            m_lua[get_lua_name()][raw_name] = sol::lua_nil;
         }
     }
 
@@ -609,11 +608,11 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> p_child) {
         }
 
         // Add shortcut to child as entry in Lua table
-        std::string s_raw_name = p_added_child->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent")) {
-            s_raw_name.erase(0, std::string("$parent").size());
-            auto& m_lua                       = get_lua_();
-            m_lua[get_lua_name()][s_raw_name] = m_lua[p_added_child->get_lua_name()];
+        std::string raw_name = p_added_child->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent")) {
+            raw_name.erase(0, std::string("$parent").size());
+            auto& m_lua                     = get_lua_();
+            m_lua[get_lua_name()][raw_name] = m_lua[p_added_child->get_lua_name()];
         }
     }
 
@@ -630,7 +629,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_
 
     if (m_iter == child_list_.end()) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Trying to remove \"" << p_child->get_name() << "\" from \"" << s_name_
+                 << "Trying to remove \"" << p_child->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
     }
@@ -658,11 +657,11 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_
         }
 
         // Remove shortcut to child
-        std::string s_raw_name = p_removed_child->get_raw_name();
-        if (utils::starts_with(s_raw_name, "$parent")) {
-            s_raw_name.erase(0, std::string("$parent").size());
-            sol::state& m_lua                 = get_lua_();
-            m_lua[get_lua_name()][s_raw_name] = sol::lua_nil;
+        std::string raw_name = p_removed_child->get_raw_name();
+        if (utils::starts_with(raw_name, "$parent")) {
+            raw_name.erase(0, std::string("$parent").size());
+            sol::state& m_lua               = get_lua_();
+            m_lua[get_lua_name()][raw_name] = sol::lua_nil;
         }
     }
 
@@ -808,12 +807,12 @@ bool frame::is_mouse_wheel_enabled() const {
     return b_is_mouse_wheel_enabled_;
 }
 
-bool frame::is_registered_for_drag(const std::string& s_button) const {
-    return reg_drag_list_.find(s_button) != reg_drag_list_.end();
+bool frame::is_registered_for_drag(const std::string& button_name) const {
+    return reg_drag_list_.find(button_name) != reg_drag_list_.end();
 }
 
-bool frame::is_key_capture_enabled(const std::string& s_key) const {
-    return reg_key_list_.find(s_key) != reg_key_list_.end();
+bool frame::is_key_capture_enabled(const std::string& key_name) const {
+    return reg_key_list_.find(key_name) != reg_key_list_.end();
 }
 
 bool frame::is_movable() const {
@@ -832,110 +831,109 @@ bool frame::is_user_placed() const {
     return b_is_user_placed_;
 }
 
-std::string frame::get_adjusted_script_name(const std::string& s_script_name) {
-    std::string s_adjusted_name = s_script_name;
-    for (auto iter = s_adjusted_name.begin(); iter != s_adjusted_name.end(); ++iter) {
+std::string frame::get_adjusted_script_name(const std::string& script_name) {
+    std::string adjusted_name = script_name;
+    for (auto iter = adjusted_name.begin(); iter != adjusted_name.end(); ++iter) {
         if ('A' <= *iter && *iter <= 'Z') {
             *iter = std::tolower(*iter);
-            if (iter != s_adjusted_name.begin())
-                iter = s_adjusted_name.insert(iter, '_');
+            if (iter != adjusted_name.begin())
+                iter = adjusted_name.insert(iter, '_');
         }
     }
 
-    return s_adjusted_name;
+    return adjusted_name;
 }
 
 std::string hijack_sol_error_line(
-    std::string s_original_message, const std::string& s_file, std::size_t ui_line_nbr) {
-    auto ui_pos1 = s_original_message.find("[string \"" + s_file);
+    std::string original_message, const std::string& file, std::size_t ui_line_nbr) {
+    auto ui_pos1 = original_message.find("[string \"" + file);
     if (ui_pos1 == std::string::npos)
-        return s_original_message;
+        return original_message;
 
-    auto ui_pos2 = s_original_message.find_first_of('"', ui_pos1 + 9);
+    auto ui_pos2 = original_message.find_first_of('"', ui_pos1 + 9);
     if (ui_pos2 == std::string::npos)
-        return s_original_message;
+        return original_message;
 
-    s_original_message.erase(ui_pos1, ui_pos2 - ui_pos1 + 2);
-    s_original_message.insert(ui_pos1, s_file);
+    original_message.erase(ui_pos1, ui_pos2 - ui_pos1 + 2);
+    original_message.insert(ui_pos1, file);
 
-    auto ui_pos3 = s_original_message.find_first_of(':', ui_pos1 + s_file.size());
+    auto ui_pos3 = original_message.find_first_of(':', ui_pos1 + file.size());
     if (ui_pos3 == std::string::npos)
-        return s_original_message;
+        return original_message;
 
-    auto ui_pos4 = s_original_message.find_first_of(":>", ui_pos3 + 1);
+    auto ui_pos4 = original_message.find_first_of(":>", ui_pos3 + 1);
     if (ui_pos4 == std::string::npos)
-        return s_original_message;
+        return original_message;
 
     std::size_t ui_offset = 0;
-    if (!utils::from_string(
-            s_original_message.substr(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1), ui_offset))
-        return s_original_message;
+    if (!utils::from_string(original_message.substr(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1), ui_offset))
+        return original_message;
 
-    s_original_message.erase(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1);
-    s_original_message.insert(ui_pos3 + 1, utils::to_string(ui_line_nbr + ui_offset - 1));
-    ui_pos4 = s_original_message.find_first_of(':', ui_pos3 + 1);
+    original_message.erase(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1);
+    original_message.insert(ui_pos3 + 1, utils::to_string(ui_line_nbr + ui_offset - 1));
+    ui_pos4 = original_message.find_first_of(':', ui_pos3 + 1);
 
-    auto ui_pos5 = s_original_message.find("[string \"" + s_file, ui_pos4);
+    auto ui_pos5 = original_message.find("[string \"" + file, ui_pos4);
     if (ui_pos5 == std::string::npos)
-        return s_original_message;
+        return original_message;
 
-    std::string s_message = s_original_message.substr(ui_pos4 + 1);
-    s_original_message.erase(ui_pos4 + 1);
-    s_original_message += hijack_sol_error_line(s_message, s_file, ui_line_nbr);
+    std::string message = original_message.substr(ui_pos4 + 1);
+    original_message.erase(ui_pos4 + 1);
+    original_message += hijack_sol_error_line(message, file, ui_line_nbr);
 
-    return s_original_message;
+    return original_message;
 }
 
 std::string hijack_sol_error_message(
-    std::string_view s_original_message, const std::string& s_file, std::size_t ui_line_nbr) {
-    std::string s_new_error;
-    for (auto s_line : utils::cut(s_original_message, "\n")) {
-        if (!s_new_error.empty())
-            s_new_error += '\n';
+    std::string_view original_message, const std::string& file, std::size_t ui_line_nbr) {
+    std::string new_error;
+    for (auto line : utils::cut(original_message, "\n")) {
+        if (!new_error.empty())
+            new_error += '\n';
 
-        s_new_error += hijack_sol_error_line(std::string{s_line}, s_file, ui_line_nbr);
+        new_error += hijack_sol_error_line(std::string{line}, file, ui_line_nbr);
     }
 
-    return s_new_error;
+    return new_error;
 }
 
 utils::connection frame::define_script_(
-    const std::string& s_script_name,
-    const std::string& s_content,
+    const std::string& script_name,
+    const std::string& content,
     bool               b_append,
     const script_info& m_info) {
     // Create the Lua function from the provided string
     sol::state& m_lua = get_lua_();
 
-    std::string s_str = "return function(self";
+    std::string str = "return function(self";
 
     constexpr std::size_t ui_max_args = 9;
     for (std::size_t i = 0; i < ui_max_args; ++i)
-        s_str += ", arg" + utils::to_string(i + 1);
+        str += ", arg" + utils::to_string(i + 1);
 
-    s_str += ") " + s_content + " end";
+    str += ") " + content + " end";
 
-    auto m_result = m_lua.do_string(s_str, m_info.s_file_name);
+    auto m_result = m_lua.do_string(str, m_info.file_name);
 
     if (!m_result.valid()) {
         sol::error  m_error = m_result;
-        std::string s_error =
-            hijack_sol_error_message(m_error.what(), m_info.s_file_name, m_info.ui_line_nbr);
+        std::string error =
+            hijack_sol_error_message(m_error.what(), m_info.file_name, m_info.ui_line_nbr);
 
-        gui::out << gui::error << s_error << std::endl;
+        gui::out << gui::error << error << std::endl;
 
-        get_manager().get_event_emitter().fire_event("LUA_ERROR", {s_error});
+        get_manager().get_event_emitter().fire_event("LUA_ERROR", {error});
         return {};
     }
 
     sol::protected_function m_handler = m_result;
 
     // Forward it as any other Lua function
-    return define_script_(s_script_name, std::move(m_handler), b_append, m_info);
+    return define_script_(script_name, std::move(m_handler), b_append, m_info);
 }
 
 utils::connection frame::define_script_(
-    const std::string&      s_script_name,
+    const std::string&      script_name,
     sol::protected_function m_handler,
     bool                    b_append,
     const script_info&      m_info) {
@@ -968,26 +966,26 @@ utils::connection frame::define_script_(
         // Handle errors
         if (!m_result.valid()) {
             sol::error  m_error = m_result;
-            std::string s_error =
-                hijack_sol_error_message(m_error.what(), m_info.s_file_name, m_info.ui_line_nbr);
+            std::string error =
+                hijack_sol_error_message(m_error.what(), m_info.file_name, m_info.ui_line_nbr);
 
-            throw gui::exception(s_error);
+            throw gui::exception(error);
         }
     };
 
-    return define_script_(s_script_name, std::move(m_wrapped_handler), b_append, m_info);
+    return define_script_(script_name, std::move(m_wrapped_handler), b_append, m_info);
 }
 
 utils::connection frame::define_script_(
-    const std::string& s_script_name,
+    const std::string& script_name,
     script_function    m_handler,
     bool               b_append,
     const script_info& /*mInfo*/) {
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
-        std::string s_adjusted_name = get_adjusted_script_name(s_script_name);
+        std::string adjusted_name = get_adjusted_script_name(script_name);
 
-        get_lua_()[get_lua_name()][s_adjusted_name].set_function(
+        get_lua_()[get_lua_name()][adjusted_name].set_function(
             [=](frame& m_self, sol::variadic_args m_v_args) {
                 event_data m_data;
                 for (auto&& m_arg : m_v_args) {
@@ -998,11 +996,11 @@ utils::connection frame::define_script_(
                     m_data.add(std::move(m_variant));
                 }
 
-                m_self.fire_script(s_script_name, m_data);
+                m_self.fire_script(script_name, m_data);
             });
     }
 
-    auto& handler_list = signal_list_[s_script_name];
+    auto& handler_list = signal_list_[script_name];
     if (!b_append) {
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
@@ -1015,16 +1013,16 @@ utils::connection frame::define_script_(
     return handler_list.connect(std::move(m_handler));
 }
 
-script_list_view frame::get_script(const std::string& s_script_name) const {
-    auto iter_h = signal_list_.find(s_script_name);
+script_list_view frame::get_script(const std::string& script_name) const {
+    auto iter_h = signal_list_.find(script_name);
     if (iter_h == signal_list_.end())
-        throw gui::exception(type_.back(), "no script registered for " + s_script_name);
+        throw gui::exception(type_.back(), "no script registered for " + script_name);
 
     return iter_h->second.slots();
 }
 
-void frame::remove_script(const std::string& s_script_name) {
-    auto iter_h = signal_list_.find(s_script_name);
+void frame::remove_script(const std::string& script_name) {
+    auto iter_h = signal_list_.find(script_name);
     if (iter_h == signal_list_.end())
         return;
 
@@ -1034,25 +1032,25 @@ void frame::remove_script(const std::string& s_script_name) {
     iter_h->second.disconnect_all();
 
     if (!is_virtual()) {
-        std::string s_adjusted_name                 = get_adjusted_script_name(s_script_name);
-        get_lua_()[get_lua_name()][s_adjusted_name] = sol::lua_nil;
+        std::string adjusted_name                 = get_adjusted_script_name(script_name);
+        get_lua_()[get_lua_name()][adjusted_name] = sol::lua_nil;
     }
 }
 
-void frame::on_event_(std::string_view s_event_name, const event_data& m_event) {
+void frame::on_event_(std::string_view event_name, const event_data& m_event) {
     event_data m_data;
-    m_data.add(std::string(s_event_name));
+    m_data.add(std::string(event_name));
     for (std::size_t i = 0; i < m_event.get_num_param(); ++i)
         m_data.add(m_event.get(i));
 
     fire_script("OnEvent", m_data);
 }
 
-void frame::fire_script(const std::string& s_script_name, const event_data& m_data) {
+void frame::fire_script(const std::string& script_name, const event_data& m_data) {
     if (!is_loaded())
         return;
 
-    auto iter_h = signal_list_.find(s_script_name);
+    auto iter_h = signal_list_.find(script_name);
     if (iter_h == signal_list_.end())
         return;
 
@@ -1066,33 +1064,33 @@ void frame::fire_script(const std::string& s_script_name, const event_data& m_da
         // Call the handlers
         iter_h->second(*this, m_data);
     } catch (const std::exception& m_exception) {
-        std::string s_error = m_exception.what();
-        gui::out << gui::error << s_error << std::endl;
-        m_event_emitter.fire_event("LUA_ERROR", {s_error});
+        std::string error = m_exception.what();
+        gui::out << gui::error << error << std::endl;
+        m_event_emitter.fire_event("LUA_ERROR", {error});
     }
 
     m_addon_registry.set_current_addon(p_old_add_on);
 }
 
-void frame::register_event(const std::string& s_event_name) {
+void frame::register_event(const std::string& event_name) {
     if (b_virtual_)
         return;
 
     m_event_receiver_.register_event(
-        s_event_name, [=](const event_data& m_event) { return on_event_(s_event_name, m_event); });
+        event_name, [=](const event_data& m_event) { return on_event_(event_name, m_event); });
 }
 
-void frame::unregister_event(const std::string& s_event_name) {
+void frame::unregister_event(const std::string& event_name) {
     if (b_virtual_)
         return;
 
-    m_event_receiver_.unregister_event(s_event_name);
+    m_event_receiver_.unregister_event(event_name);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& button_list) {
     reg_drag_list_.clear();
-    for (const auto& s_button : button_list)
-        reg_drag_list_.insert(s_button);
+    for (const auto& button : button_list)
+        reg_drag_list_.insert(button);
 }
 
 void frame::set_clamped_to_screen(bool b_is_clamped_to_screen) {
@@ -1117,26 +1115,26 @@ void frame::set_frame_strata(frame_strata m_strata) {
     }
 }
 
-void frame::set_frame_strata(const std::string& s_strata) {
+void frame::set_frame_strata(const std::string& strata_name) {
     frame_strata m_strata;
 
-    if (s_strata == "BACKGROUND")
+    if (strata_name == "BACKGROUND")
         m_strata = frame_strata::background;
-    else if (s_strata == "LOW")
+    else if (strata_name == "LOW")
         m_strata = frame_strata::low;
-    else if (s_strata == "MEDIUM")
+    else if (strata_name == "MEDIUM")
         m_strata = frame_strata::medium;
-    else if (s_strata == "HIGH")
+    else if (strata_name == "HIGH")
         m_strata = frame_strata::high;
-    else if (s_strata == "DIALOG")
+    else if (strata_name == "DIALOG")
         m_strata = frame_strata::dialog;
-    else if (s_strata == "FULLSCREEN")
+    else if (strata_name == "FULLSCREEN")
         m_strata = frame_strata::fullscreen;
-    else if (s_strata == "FULLSCREEN_DIALOG")
+    else if (strata_name == "FULLSCREEN_DIALOG")
         m_strata = frame_strata::fullscreen_dialog;
-    else if (s_strata == "TOOLTIP")
+    else if (strata_name == "TOOLTIP")
         m_strata = frame_strata::tooltip;
-    else if (s_strata == "PARENT") {
+    else if (strata_name == "PARENT") {
         if (b_virtual_) {
             m_strata = frame_strata::parent;
         } else {
@@ -1147,7 +1145,7 @@ void frame::set_frame_strata(const std::string& s_strata) {
         }
     } else {
         gui::out << gui::warning << "gui::" << type_.back()
-                 << " : Unknown strata : \"" + s_strata + "\"." << std::endl;
+                 << " : Unknown strata : \"" + strata_name + "\"." << std::endl;
         return;
     }
 

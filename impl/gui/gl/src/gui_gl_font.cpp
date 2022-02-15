@@ -71,7 +71,7 @@ void release_freetype() {
 } // namespace
 
 font::font(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
@@ -88,8 +88,8 @@ font::font(
     //    since advance sometimes doesn't cover the whole glyph
     //    (typical example is the 'w' character, in Consolas:9).
 
-    if (!utils::file_exists(s_font_file))
-        throw gui::exception("gui::gl::font", "Cannot find file \"" + s_font_file + "\".");
+    if (!utils::file_exists(font_file))
+        throw gui::exception("gui::gl::font", "Cannot find file \"" + font_file + "\".");
 
     FT_Library m_ft      = get_freetype();
     FT_Stroker m_stroker = nullptr;
@@ -99,30 +99,29 @@ font::font(
         // Add some space between letters to prevent artifacts
         const std::size_t ui_spacing = 1;
 
-        if (FT_New_Face(m_ft, s_font_file.c_str(), 0, &m_face_) != 0) {
+        if (FT_New_Face(m_ft, font_file.c_str(), 0, &m_face_) != 0) {
             throw gui::exception(
-                "gui::gl::font",
-                "Error loading font : \"" + s_font_file + "\" : cannot load face.");
+                "gui::gl::font", "Error loading font : \"" + font_file + "\" : cannot load face.");
         }
 
         if (ui_outline > 0) {
             if (FT_Stroker_New(m_ft, &m_stroker) != 0) {
                 throw gui::exception(
                     "gui::gl::font",
-                    "Error loading font : \"" + s_font_file + "\" : cannot create stroker.");
+                    "Error loading font : \"" + font_file + "\" : cannot create stroker.");
             }
         }
 
         if (FT_Select_Charmap(m_face_, FT_ENCODING_UNICODE) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + s_font_file +
+                "gui::gl::font", "Error loading font : \"" + font_file +
                                      "\" : cannot select Unicode character map.");
         }
 
         if (FT_Set_Pixel_Sizes(m_face_, 0, ui_size) != 0) {
             throw gui::exception(
                 "gui::gl::font",
-                "Error loading font : \"" + s_font_file + "\" : cannot set font size.");
+                "Error loading font : \"" + font_file + "\" : cannot set font size.");
         }
 
         FT_Int32 load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
@@ -223,13 +222,13 @@ font::font(
 
                 if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot load character "
-                             << ui_code_point << " in font \"" << s_font_file << "\"." << std::endl;
+                             << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
                 if (FT_Get_Glyph(m_face_->glyph, &m_glyph) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character "
-                             << ui_code_point << " in font \"" << s_font_file << "\"." << std::endl;
+                             << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
@@ -254,12 +253,12 @@ font::font(
 
                 // Some characters do not have a bitmap, like white spaces.
                 // This is legal, and we should just have blank geometry for them.
-                const ub32color::chanel* s_buffer = m_bitmap.buffer;
-                if (s_buffer) {
+                const ub32color::chanel* buffer = m_bitmap.buffer;
+                if (buffer) {
                     for (std::size_t j = 0; j < m_bitmap.rows; ++j) {
                         std::size_t ui_row_offset = (y + j) * ui_final_width + x;
-                        for (std::size_t i = 0; i < m_bitmap.width; ++i, ++s_buffer)
-                            data[i + ui_row_offset] = ub32color(255, 255, 255, *s_buffer);
+                        for (std::size_t i = 0; i < m_bitmap.width; ++i, ++buffer)
+                            data[i + ui_row_offset] = ub32color(255, 255, 255, *buffer);
                     }
                 }
 

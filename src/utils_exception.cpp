@@ -2,17 +2,17 @@
 
 namespace lxgui::utils {
 
-exception::exception(const std::string& s_message) : s_message_(s_message) {}
+exception::exception(const std::string& message) : message_(message) {}
 
-exception::exception(const std::string& s_class_name, const std::string& s_message) :
-    s_message_(s_class_name + " : " + s_message) {}
+exception::exception(const std::string& class_name, const std::string& message) :
+    message_(class_name + " : " + message) {}
 
 const std::string& exception::get_description() const {
-    return s_message_;
+    return message_;
 }
 
 const char* exception::what() const noexcept {
-    return s_message_.c_str();
+    return message_.c_str();
 }
 
 } // namespace lxgui::utils

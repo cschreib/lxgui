@@ -8,7 +8,7 @@
 namespace lxgui::gui::sfml {
 
 font::font(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
@@ -17,8 +17,8 @@ font::font(
     ui_outline_(ui_outline),
     ui_default_code_point_(ui_default_code_point),
     code_points_(code_points) {
-    if (!m_font_.loadFromFile(s_font_file)) {
-        throw gui::exception("gui::sfml::font", "Could not load font file '" + s_font_file + "'.");
+    if (!m_font_.loadFromFile(font_file)) {
+        throw gui::exception("gui::sfml::font", "Could not load font file '" + font_file + "'.");
     }
 
     // Need to request in advance the glyphs that we will use

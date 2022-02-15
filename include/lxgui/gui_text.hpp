@@ -71,13 +71,13 @@ public:
     float get_scaling_factor() const;
 
     /// Sets the text to render (unicode character set).
-    /** \param sText The text to render
+    /** \param content The text to render
      *   \note This text can be formated :<br>
      *         - "|cAARRGGBB" : sets text color (hexadecimal).<br>
      *         - "|r" : sets text color to default.<br>
      *         - "||" : writes "|".
      */
-    void set_text(const utils::ustring& s_text);
+    void set_text(const utils::ustring& content);
 
     /// Returns the text that will be rendered (unicode character set).
     /** \return The text that will be rendered (unicode character set)
@@ -159,16 +159,16 @@ public:
     std::size_t get_num_lines() const;
 
     /// Returns the lenght of a provided string.
-    /** \param sString The string to measure
+    /** \param content The string to measure
      *   \return The lenght of the provided string
      */
-    float get_string_width(const std::string& s_string) const;
+    float get_string_width(const std::string& content) const;
 
     /// Returns the lenght of a provided string.
-    /** \param sString The string to measure
+    /** \param content The string to measure
      *   \return The lenght of the provided string
      */
-    float get_string_width(const utils::ustring& s_string) const;
+    float get_string_width(const utils::ustring& content) const;
 
     /// Returns the length of a single character.
     /** \param uiChar The character to measure
@@ -352,7 +352,7 @@ private:
 
     std::shared_ptr<font> p_font_;
     std::shared_ptr<font> p_outline_font_;
-    utils::ustring        s_unicode_text_;
+    utils::ustring        unicode_text_;
 
     mutable bool        b_update_cache_ = false;
     mutable float       f_w_            = 0.0f;

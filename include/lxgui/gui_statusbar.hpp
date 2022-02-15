@@ -37,16 +37,16 @@ public:
     explicit status_bar(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Returns 'true' if this status_bar can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& s_script_name) const override;
+    bool can_use_script(const std::string& script_name) const override;
 
     /// Copies a region's parameters into this status_bar (inheritance).
     /** \param mObj The region to copy
@@ -80,9 +80,9 @@ public:
     void set_bar_draw_layer(layer m_bar_layer);
 
     /// Sets the draw layer of this status_bar's bar texture.
-    /** \param sBarLayer The layer
+    /** \param bar_layer_name The layer
      */
-    void set_bar_draw_layer(const std::string& s_bar_layer);
+    void set_bar_draw_layer(const std::string& bar_layer_name);
 
     /// Sets this status_bar's bar texture.
     /** \param pBarTexture The bar texture
@@ -100,9 +100,9 @@ public:
     void set_orientation(orientation m_orientation);
 
     /// Sets this status_bar's orientation.
-    /** \param sOrientation The orientation ("VERTICAL" or "HORIZONTAL")
+    /** \param orientation_name The orientation ("VERTICAL" or "HORIZONTAL")
      */
-    void set_orientation(const std::string& s_orientation);
+    void set_orientation(const std::string& orientation_name);
 
     /// Reverses this status_bar.
     /** \param bReversed 'true' to reverse it

@@ -19,10 +19,10 @@ public:
     explicit check_button(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Copies a region's parameters into this check button (inheritance).
     /** \param mObj The region to copy
@@ -105,7 +105,7 @@ protected:
 
     bool b_checked_ = false;
 
-    utils::observer_ptr<texture> p_checked_texture_         = nullptr;
+    utils::observer_ptr<texture> p_checked_texture_          = nullptr;
     utils::observer_ptr<texture> p_disabled_checked_texture_ = nullptr;
 };
 

@@ -19,7 +19,7 @@ class font final : public gui::font {
 public:
     /// Constructor.
     /** \param pRenderer   The SDL render to create the font for
-     *   \param sFontFile   The name of the font file to read
+     *   \param font_file   The name of the font file to read
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
@@ -29,7 +29,7 @@ public:
      */
     font(
         SDL_Renderer*                        p_renderer,
-        const std::string&                   s_font_file,
+        const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,

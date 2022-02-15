@@ -34,7 +34,7 @@ public:
     event_emitter& operator=(event_emitter&&) = delete;
 
     /// Registers a callback to an event.
-    /** \param sEventName The name of the event to listen to
+    /** \param event_name The name of the event to listen to
      *   \param mCallback  The function to execute when the event is triggered
      *   \return A object representing the connection between this emitter and the callback.
      *   \note To avoid dangling references, the caller should store the returned connection
@@ -44,13 +44,13 @@ public:
      *   \see fire_event
      */
     utils::connection
-    register_event(const std::string& s_event_name, event_handler_function m_callback);
+    register_event(const std::string& event_name, event_handler_function m_callback);
 
     /// Emmit a new event.
-    /** \param sEventName The ID of the event which has occurred
+    /** \param event_name The ID of the event which has occurred
      *   \param mData      The payload of the event
      */
-    void fire_event(const std::string& s_event_name, event_data m_data = event_data{});
+    void fire_event(const std::string& event_name, event_data m_data = event_data{});
 
 private:
     std::unordered_map<std::string, event_signal> registered_event_list_;

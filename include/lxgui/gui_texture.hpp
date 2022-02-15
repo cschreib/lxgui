@@ -28,10 +28,10 @@ public:
     explicit texture(utils::control_block& m_block, manager& m_manager);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    std::string serialize(const std::string& s_tab) const override;
+    std::string serialize(const std::string& tab) const override;
 
     /// Renders this region on the current render target.
     void render() const override;
@@ -119,9 +119,9 @@ public:
     void set_blend_mode(blend_mode m_blend_mode);
 
     /// Sets this texture's blending mode.
-    /** \param sBlendMode The new blending mode
+    /** \param blend_mode_name The new blending mode
      */
-    void set_blend_mode(const std::string& s_blend_mode);
+    void set_blend_mode(const std::string& blend_mode_name);
 
     /// Sets this texture's filtering mode.
     /** \param mFilter The new filtering mode
@@ -129,9 +129,9 @@ public:
     void set_filter_mode(material::filter m_filter);
 
     /// Sets this texture's blending mode.
-    /** \param sFilter The new filtering mode
+    /** \param filter_name The new filtering mode
      */
-    void set_filter_mode(const std::string& s_filter);
+    void set_filter_mode(const std::string& filter_name);
 
     /// Makes this texture appear without any color.
     /** \param bIsDesaturated 'true' if you want to remove colors
@@ -172,26 +172,24 @@ public:
     void set_tex_coord_modifies_rect(bool b_tex_coord_modifies_rect);
 
     /// Sets this texture's texture file.
-    /** \param sFile The file from which to read data
+    /** \param file_name The file from which to read data
      *   \note This function takes care of checking that the file can be opened.
-     *   \note This function is not compatible with set_color() : only the latest
-     *         you have called will apply.
+     *   \note This function will replace the solid color set by set_solid_color(). If you need
+     *         to blend the texture with a color, use set_vertex_color() instead.
      */
-    void set_texture(const std::string& s_file);
+    void set_texture(const std::string& file_name);
 
     /// Reads texture data from a render_target.
     /** \param pRenderTarget The render_target from which to read the data
-     *   \note This function is only meant for internal use and is not available
-     *         to the Lua API.
-     *   \note This function is not compatible with set_color() : only the latest
-     *         you have called will apply.
+     *   \note This function will replace the solid color set by set_solid_color(). If you need
+     *         to blend the texture with a color, use set_vertex_color() instead.
      */
     void set_texture(std::shared_ptr<render_target> p_render_target);
 
     /// Sets this texture's color.
     /** \param mColor The color to use
-     *   \note This function is not compatible with set_texture() : only the latest
-     *         you have called will apply.
+     *   \note This function will replace the texture set by set_texture() with a solid color.
+     *         If you need to blend the texture with a color, use set_vertex_color() instead.
      */
     void set_solid_color(const color& m_color);
 

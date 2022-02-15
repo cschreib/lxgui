@@ -275,8 +275,8 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @tparam string group The name of the Unicode code group to allow
      *   @function add_allowed_code_points_for_group
      */
-    m_sol.set_function("add_allowed_code_points_for_group", [&](const std::string& s_group_name) {
-        add_allowed_code_points_for_group(s_group_name);
+    m_sol.set_function("add_allowed_code_points_for_group", [&](const std::string& group_name) {
+        add_allowed_code_points_for_group(group_name);
     });
 
     /** Adds a new range to the set of allowed code points for a given language.
@@ -287,8 +287,8 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @tparam string language The language code (e.g., "en", "ru", etc.)
      *   @function add_allowed_code_points_for_language
      */
-    m_sol.set_function("add_allowed_code_points_for_language", [&](const std::string& s_language) {
-        add_allowed_code_points_for_language(s_language);
+    m_sol.set_function("add_allowed_code_points_for_language", [&](const std::string& language) {
+        add_allowed_code_points_for_language(language);
     });
 
     /** Attempts to automatically detect the set of allowed code points based on preferred
@@ -312,16 +312,16 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @function load_translations
      *   @tparam string folder The folder to search for translations
      */
-    m_sol.set_function("load_translations", [&](const std::string& s_folder_path) {
-        load_translations(s_folder_path);
+    m_sol.set_function("load_translations", [&](const std::string& folder_path) {
+        load_translations(folder_path);
     });
 
     /** Loads translations form a file.
      *   @function load_translation_file
      *   @tparam string filename The file from which to read new translations
      */
-    m_sol.set_function("load_translation_file", [&](const std::string& s_filename) {
-        load_translation_file(s_filename);
+    m_sol.set_function("load_translation_file", [&](const std::string& filename) {
+        load_translation_file(filename);
     });
 
     /** Translate a string or message, with arguments.
@@ -332,10 +332,9 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @param ... Data to display in the translatable string (e.g., the player's health value).
      *   @treturn string The translated message encoded as UTF-8.
      */
-    m_sol.set_function(
-        "localize_string", [&](const std::string& s_key, sol::variadic_args m_v_args) {
-            return localize(s_key, m_v_args);
-        });
+    m_sol.set_function("localize_string", [&](const std::string& key, sol::variadic_args m_v_args) {
+        return localize(key, m_v_args);
+    });
 
     /** Format a string with arguments.
      *   The arguments are passed as individual parameters after the string to translate.
@@ -346,8 +345,8 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @param ... Data to display in the formatted string (e.g., the player's health value).
      *   @treturn string The formatted string encoded as UTF-8.
      */
-    m_sol.set_function("format_string", [&](const std::string& s_key, sol::variadic_args m_v_args) {
-        return format_string(s_key, m_v_args);
+    m_sol.set_function("format_string", [&](const std::string& key, sol::variadic_args m_v_args) {
+        return format_string(key, m_v_args);
     });
 }
 

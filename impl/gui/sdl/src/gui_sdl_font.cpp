@@ -12,7 +12,7 @@ namespace lxgui::gui::sdl {
 
 font::font(
     SDL_Renderer*                        p_renderer,
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
@@ -24,10 +24,10 @@ font::font(
             "gui::sdl::font", "Could not initialise SDL_ttf: " + std::string(TTF_GetError()));
     }
 
-    TTF_Font* p_font = TTF_OpenFont(s_font_file.c_str(), ui_size_);
+    TTF_Font* p_font = TTF_OpenFont(font_file.c_str(), ui_size_);
     if (!p_font) {
         throw gui::exception(
-            "gui::sdl::font", "Could not load font file '" + s_font_file + "' at size " +
+            "gui::sdl::font", "Could not load font file '" + font_file + "' at size " +
                                   utils::to_string(ui_size) + ": " + std::string(TTF_GetError()) +
                                   ".");
     }
@@ -133,14 +133,14 @@ font::font(
             if (TTF_GlyphMetrics(p_font, ui_alt_char, &min_x, &max_x, &min_y, &max_y, &advance) !=
                 0) {
                 gui::out << gui::warning << "gui::sdl::font : Cannot load character "
-                         << ui_code_point << " in font \"" << s_font_file << "\"." << std::endl;
+                         << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }
 
             SDL_Surface* p_glyph_surface = TTF_RenderGlyph_Blended(p_font, ui_alt_char, m_color);
             if (!p_glyph_surface) {
                 gui::out << gui::warning << "gui::sdl::font : Cannot draw character "
-                         << ui_code_point << " in font \"" << s_font_file << "\"." << std::endl;
+                         << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }
 

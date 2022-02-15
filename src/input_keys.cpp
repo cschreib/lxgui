@@ -92,18 +92,18 @@ std::string_view get_key_codename(key m_key) {
     case key::k_f10: return "F10";
     case key::k_numlock: return "Num. Lock";
     case key::k_scroll: return "Scr. Lock";
-    case key::k_numpa_d7: return "7 (Num.)";
-    case key::k_numpa_d8: return "8 (Num.)";
-    case key::k_numpa_d9: return "9 (Num.)";
+    case key::k_numpad_7: return "7 (Num.)";
+    case key::k_numpad_8: return "8 (Num.)";
+    case key::k_numpad_9: return "9 (Num.)";
     case key::k_subtract: return "- (Num.)";
-    case key::k_numpa_d4: return "4 (Num.)";
-    case key::k_numpa_d5: return "5 (Num.)";
-    case key::k_numpa_d6: return "6 (Num.)";
+    case key::k_numpad_4: return "4 (Num.)";
+    case key::k_numpad_5: return "5 (Num.)";
+    case key::k_numpad_6: return "6 (Num.)";
     case key::k_add: return "+ (Num.)";
-    case key::k_numpa_d1: return "1 (Num.)";
-    case key::k_numpa_d2: return "2 (Num.)";
-    case key::k_numpa_d3: return "3 (Num.)";
-    case key::k_numpa_d0: return "0 (Num.)";
+    case key::k_numpad_1: return "1 (Num.)";
+    case key::k_numpad_2: return "2 (Num.)";
+    case key::k_numpad_3: return "3 (Num.)";
+    case key::k_numpad_0: return "0 (Num.)";
     case key::k_decimal: return ". (Num.)";
     case key::k_f11: return "F11";
     case key::k_f12: return "F12";
@@ -155,11 +155,11 @@ std::string_view get_key_codename(key m_key) {
     }
 }
 
-key get_key_from_codename(std::string_view s_key) {
+key get_key_from_codename(std::string_view key_name) {
     using index_t = std::underlying_type_t<key>;
 
     for (index_t i = 0; i < static_cast<index_t>(key::k_maxkey); ++i) {
-        if (s_key == get_key_codename(static_cast<key>(i)))
+        if (key_name == get_key_codename(static_cast<key>(i)))
             return static_cast<key>(i);
     }
 
@@ -238,18 +238,18 @@ std::string_view get_localizable_key_name(key m_key) {
     case key::k_f10: return "{key_f10}";
     case key::k_numlock: return "{key_num_lock}";
     case key::k_scroll: return "{key_scroll_lock}";
-    case key::k_numpa_d7: return "{key_numpad_7}";
-    case key::k_numpa_d8: return "{key_numpad_8}";
-    case key::k_numpa_d9: return "{key_numpad_9}";
+    case key::k_numpad_7: return "{key_numpad_7}";
+    case key::k_numpad_8: return "{key_numpad_8}";
+    case key::k_numpad_9: return "{key_numpad_9}";
     case key::k_subtract: return "{key_numpad_minus}";
-    case key::k_numpa_d4: return "{key_numpad_4}";
-    case key::k_numpa_d5: return "{key_numpad_5}";
-    case key::k_numpa_d6: return "{key_numpad_6}";
+    case key::k_numpad_4: return "{key_numpad_4}";
+    case key::k_numpad_5: return "{key_numpad_5}";
+    case key::k_numpad_6: return "{key_numpad_6}";
     case key::k_add: return "{key_numpad_plus}";
-    case key::k_numpa_d1: return "{key_numpad_1}";
-    case key::k_numpa_d2: return "{key_numpad_2}";
-    case key::k_numpa_d3: return "{key_numpad_3}";
-    case key::k_numpa_d0: return "{key_numpad_0}";
+    case key::k_numpad_1: return "{key_numpad_1}";
+    case key::k_numpad_2: return "{key_numpad_2}";
+    case key::k_numpad_3: return "{key_numpad_3}";
+    case key::k_numpad_0: return "{key_numpad_0}";
     case key::k_decimal: return "{key_numpad_period}";
     case key::k_f11: return "{key_f11}";
     case key::k_f12: return "{key_f12}";

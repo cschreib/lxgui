@@ -42,12 +42,12 @@ public:
         const sf::Image& m_data, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
 
     /// Constructor for textures.
-    /** \param sFileName     The file from which the texture data is loaded
+    /** \param file_name     The file from which the texture data is loaded
      *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const std::string& s_file_name, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
+        const std::string& file_name, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
 
     /// Constructor for atlas textures.
     /** \param mTexture  The atlas texture holding this material's texture

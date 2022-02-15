@@ -9,19 +9,19 @@ namespace lxgui::gui {
 event_receiver::event_receiver(event_emitter& m_emitter) : m_event_emitter_(m_emitter) {}
 
 void event_receiver::register_event(
-    const std::string& s_event_name, event_handler_function m_callback) {
+    const std::string& event_name, event_handler_function m_callback) {
     utils::connection m_connection =
-        m_event_emitter_.register_event(s_event_name, std::move(m_callback));
-    registered_events_.push_back({s_event_name, std::move(m_connection)});
+        m_event_emitter_.register_event(event_name, std::move(m_callback));
+    registered_events_.push_back({event_name, std::move(m_connection)});
 }
 
-void event_receiver::unregister_event(const std::string& s_event_name) {
+void event_receiver::unregister_event(const std::string& event_name) {
     auto m_iter = utils::find_if(
-        registered_events_, [&](const auto& m_event) { return m_event.s_name == s_event_name; });
+        registered_events_, [&](const auto& m_event) { return m_event.name == event_name; });
 
     if (m_iter == registered_events_.end()) {
         gui::out << gui::warning << "event_emitter : "
-                 << "Event \"" << s_event_name << "\" is not registered to this event_receiver."
+                 << "Event \"" << event_name << "\" is not registered to this event_receiver."
                  << std::endl;
 
         return;

@@ -6,33 +6,33 @@
 
 namespace lxgui::gui {
 
-bool registry::check_region_name(std::string_view s_name) const {
-    if (utils::has_no_content(s_name)) {
+bool registry::check_region_name(std::string_view name) const {
+    if (utils::has_no_content(name)) {
         gui::out << gui::error << "gui::registry : "
                  << "Cannot create a region with a blank name." << std::endl;
         return false;
     }
 
-    if (utils::is_number(s_name[0])) {
+    if (utils::is_number(name[0])) {
         gui::out << gui::error << "gui::registry : "
-                 << "A region's name cannot start by a number : \"" << s_name << "\" is forbidden."
+                 << "A region's name cannot start by a number : \"" << name << "\" is forbidden."
                  << std::endl;
         return false;
     }
 
-    std::size_t ui_pos = s_name.find("$");
-    if (ui_pos != s_name.npos && ui_pos != 0) {
+    std::size_t ui_pos = name.find("$");
+    if (ui_pos != name.npos && ui_pos != 0) {
         gui::out << gui::error << "gui::registry : "
                  << "A region's name cannot contain the character '$' except at the begining : \""
-                 << s_name << "\" is forbidden." << std::endl;
+                 << name << "\" is forbidden." << std::endl;
         return false;
     }
 
-    for (auto c : s_name) {
+    for (auto c : name) {
         if ((std::isalnum(c) == 0) && c != '_' && c != '$') {
             gui::out << gui::error << "gui::registry : "
                      << "A region's name can only contain alphanumeric symbols, or underscores : \""
-                     << s_name << "\" is forbidden." << std::endl;
+                     << name << "\" is forbidden." << std::endl;
             return false;
         }
     }
@@ -63,8 +63,8 @@ void registry::remove_region(const region& p_obj) {
     named_object_list_.erase(p_obj.get_name());
 }
 
-utils::observer_ptr<const region> registry::get_region_by_name(std::string_view s_name) const {
-    auto iter = named_object_list_.find(std::string{s_name});
+utils::observer_ptr<const region> registry::get_region_by_name(std::string_view name) const {
+    auto iter = named_object_list_.find(std::string{name});
     if (iter != named_object_list_.end())
         return iter->second;
     else

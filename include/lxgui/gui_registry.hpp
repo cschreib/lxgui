@@ -23,10 +23,10 @@ public:
     registry& operator=(registry&& m_mgr) = default;
 
     /// Checks the provided string is suitable for naming a region.
-    /** \param sName The string to test
+    /** \param name The string to test
      *   \return 'true' if the provided string can be the name of a region
      */
-    bool check_region_name(std::string_view s_name) const;
+    bool check_region_name(std::string_view name) const;
 
     /// Adds a region to be handled by this registry.
     /** \param pObj The object to add
@@ -40,18 +40,18 @@ public:
     void remove_region(const region& m_obj);
 
     /// Returns the region associated with the given name.
-    /** \param sName    The name of the region you're after
+    /** \param name    The name of the region you're after
      *   \return The region associated with the given name, or nullptr if not found
      */
-    utils::observer_ptr<const region> get_region_by_name(std::string_view s_name) const;
+    utils::observer_ptr<const region> get_region_by_name(std::string_view name) const;
 
     /// Returns the region associated with the given name.
-    /** \param sName    The name of the region you're after
+    /** \param name    The name of the region you're after
      *   \return The region associated with the given name, or nullptr if not found
      */
-    utils::observer_ptr<region> get_region_by_name(std::string_view s_name) {
+    utils::observer_ptr<region> get_region_by_name(std::string_view name) {
         return utils::const_pointer_cast<region>(
-            const_cast<const registry*>(this)->get_region_by_name(s_name));
+            const_cast<const registry*>(this)->get_region_by_name(name));
     }
 
 private:

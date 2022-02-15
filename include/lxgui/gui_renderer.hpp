@@ -234,18 +234,18 @@ public:
         const matrix4f&     m_model_transform = matrix4f::identity);
 
     /// Creates a new material from a texture file.
-    /** \param sFileName The name of the file
+    /** \param file_name The name of the file
      *   \param mFilter   The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
      *         The gui library is completely unaware of this.
      */
     std::shared_ptr<material> create_material(
-        const std::string& s_file_name, material::filter m_filter = material::filter::none);
+        const std::string& file_name, material::filter m_filter = material::filter::none);
 
     /// Creates a new material from a texture file.
-    /** \param sAtlasCategory The category of atlas in which to create the texture
-     *   \param sFileName      The name of the file
+    /** \param atlas_category The category of atlas in which to create the texture
+     *   \param file_name      The name of the file
      *   \param mFilter        The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
@@ -265,8 +265,8 @@ public:
      *         material.
      */
     std::shared_ptr<material> create_atlas_material(
-        const std::string& s_atlas_category,
-        const std::string& s_file_name,
+        const std::string& atlas_category,
+        const std::string& file_name,
         material::filter   m_filter = material::filter::none);
 
     /// Creates a new material from a portion of a render target.
@@ -302,7 +302,7 @@ public:
         const vector2ui& m_dimensions, material::filter m_filter = material::filter::none) = 0;
 
     /// Creates a new font.
-    /** \param sFontFile   The file from which to read the font
+    /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
      *   \param lCodePoints The list of Unicode characters to load
@@ -315,15 +315,15 @@ public:
      *         must be rendered above the outlined font to fill the actual characters.
      */
     std::shared_ptr<font> create_font(
-        const std::string&                   s_font_file,
+        const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point);
 
     /// Creates a new font.
-    /** \param sAtlasCategory The category of atlas in which to create the font texture
-     *   \param sFontFile      The file from which to read the font
+    /** \param atlas_category The category of atlas in which to create the font texture
+     *   \param font_file      The file from which to read the font
      *   \param uiSize         The requested size of the characters (in points)
      *   \param uiOutline      The thickness of the outline (in points)
      *   \param lCodePoints    The list of Unicode characters to load
@@ -334,8 +334,8 @@ public:
      *   \note See create_atlas_material() for more information on atlases.
      */
     std::shared_ptr<font> create_atlas_font(
-        const std::string&                   s_atlas_category,
-        const std::string&                   s_font_file,
+        const std::string&                   atlas_category,
+        const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,
@@ -411,14 +411,14 @@ protected:
         const matrix4f&     m_model_transform) = 0;
 
     /// Creates a new material from a texture file.
-    /** \param sFileName The name of the file
+    /** \param file_name The name of the file
      *   \param mFilter   The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
      *         The gui library is completely unaware of this.
      */
     virtual std::shared_ptr<material>
-    create_material_(const std::string& s_file_name, material::filter m_filter) = 0;
+    create_material_(const std::string& file_name, material::filter m_filter) = 0;
 
     /// Creates a new atlas with a given texture filter mode.
     /** \param mFilter The filtering to apply to the texture
@@ -427,7 +427,7 @@ protected:
     virtual std::shared_ptr<atlas> create_atlas_(material::filter m_filter) = 0;
 
     /// Creates a new font.
-    /** \param sFontFile   The file from which to read the font
+    /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
      *   \param lCodePoints The list of Unicode characters to load
@@ -437,13 +437,13 @@ protected:
      *         from using any other font type, including bitmap fonts.
      */
     virtual std::shared_ptr<font> create_font_(
-        const std::string&                   s_font_file,
+        const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) = 0;
 
-    atlas& get_atlas_(const std::string& s_atlas_category, material::filter m_filter);
+    atlas& get_atlas_(const std::string& atlas_category, material::filter m_filter);
 
     std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
     std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  atlas_list_;

@@ -19,39 +19,39 @@ source::source(sf::Window& m_window) : m_window_(m_window) {
 }
 
 utils::ustring source::get_clipboard_content() {
-    auto s_utf_string = sf::Clipboard::getString().toUtf32();
-    return utils::ustring(s_utf_string.begin(), s_utf_string.end());
+    auto utf_string = sf::Clipboard::getString().toUtf32();
+    return utils::ustring(utf_string.begin(), utf_string.end());
 }
 
-void source::set_clipboard_content(const utils::ustring& s_content) {
-    sf::Clipboard::setString(sf::String::fromUtf32(s_content.begin(), s_content.end()));
+void source::set_clipboard_content(const utils::ustring& content) {
+    sf::Clipboard::setString(sf::String::fromUtf32(content.begin(), content.end()));
 }
 
-void source::set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) {
-    auto m_iter = cursor_map_.find(s_file_name);
+void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) {
+    auto m_iter = cursor_map_.find(file_name);
     if (m_iter == cursor_map_.end()) {
         sf::Image m_image;
-        if (!m_image.loadFromFile(s_file_name)) {
+        if (!m_image.loadFromFile(file_name)) {
             throw gui::exception(
-                "input::sfml::source", "Could not load cursor file '" + s_file_name + "'.");
+                "input::sfml::source", "Could not load cursor file '" + file_name + "'.");
         }
 
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromPixels(
             m_image.getPixelsPtr(), m_image.getSize(), sf::Vector2u(m_hot_spot.x, m_hot_spot.y));
-        m_iter = cursor_map_.insert(std::make_pair(s_file_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
     }
 
     m_window_.setMouseCursor(*m_iter->second);
 }
 
 void source::reset_mouse_cursor() {
-    const std::string s_name = "system_arrow";
-    auto              m_iter = cursor_map_.find(s_name);
+    const std::string name   = "system_arrow";
+    auto              m_iter = cursor_map_.find(name);
     if (m_iter == cursor_map_.end()) {
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromSystem(sf::Cursor::Arrow);
-        m_iter = cursor_map_.insert(std::make_pair(s_name, std::move(p_cursor))).first;
+        m_iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
     }
 
     m_window_.setMouseCursor(*m_iter->second);
@@ -125,18 +125,18 @@ key source::from_sfml_(int ui_sf_key) const {
     case Keyboard::F8: return key::k_f8;
     case Keyboard::F9: return key::k_f9;
     case Keyboard::F10: return key::k_f10;
-    case Keyboard::Numpad7: return key::k_numpa_d7;
-    case Keyboard::Numpad8: return key::k_numpa_d8;
-    case Keyboard::Numpad9: return key::k_numpa_d9;
+    case Keyboard::Numpad7: return key::k_numpad_7;
+    case Keyboard::Numpad8: return key::k_numpad_8;
+    case Keyboard::Numpad9: return key::k_numpad_9;
     case Keyboard::Subtract: return key::k_subtract;
-    case Keyboard::Numpad4: return key::k_numpa_d4;
-    case Keyboard::Numpad5: return key::k_numpa_d5;
-    case Keyboard::Numpad6: return key::k_numpa_d6;
+    case Keyboard::Numpad4: return key::k_numpad_4;
+    case Keyboard::Numpad5: return key::k_numpad_5;
+    case Keyboard::Numpad6: return key::k_numpad_6;
     case Keyboard::Add: return key::k_add;
-    case Keyboard::Numpad1: return key::k_numpa_d1;
-    case Keyboard::Numpad2: return key::k_numpa_d2;
-    case Keyboard::Numpad3: return key::k_numpa_d3;
-    case Keyboard::Numpad0: return key::k_numpa_d0;
+    case Keyboard::Numpad1: return key::k_numpad_1;
+    case Keyboard::Numpad2: return key::k_numpad_2;
+    case Keyboard::Numpad3: return key::k_numpad_3;
+    case Keyboard::Numpad0: return key::k_numpad_0;
     case Keyboard::F11: return key::k_f11;
     case Keyboard::F12: return key::k_f12;
     case Keyboard::F13: return key::k_f13;

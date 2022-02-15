@@ -19,62 +19,62 @@ texture::texture(utils::control_block& m_block, manager& m_manager) :
 }
 
 std::string texture::serialize(const std::string& sTab) const {
-    std::ostringstream s_str;
-    s_str << base::serialize(sTab);
+    std::ostringstream str;
+    str << base::serialize(sTab);
 
     std::visit(
         [&](const auto& m_data) {
             using content_type = std::decay_t<decltype(m_data)>;
 
             if constexpr (std::is_same_v<content_type, std::string>) {
-                s_str << sTab << "  # File        : " << m_data << "\n";
+                str << sTab << "  # File        : " << m_data << "\n";
             } else if constexpr (std::is_same_v<content_type, gradient>) {
-                s_str << sTab << "  # Gradient    :\n";
-                s_str << sTab << "  #-###\n";
-                s_str << sTab << "  |   # min color   : " << m_data.get_min_color() << "\n";
-                s_str << sTab << "  |   # max color   : " << m_data.get_max_color() << "\n";
-                s_str << sTab << "  |   # orientation : ";
+                str << sTab << "  # Gradient    :\n";
+                str << sTab << "  #-###\n";
+                str << sTab << "  |   # min color   : " << m_data.get_min_color() << "\n";
+                str << sTab << "  |   # max color   : " << m_data.get_max_color() << "\n";
+                str << sTab << "  |   # orientation : ";
                 switch (m_data.get_orientation()) {
-                case gradient::orientation::horizontal: s_str << "HORIZONTAL\n"; break;
-                case gradient::orientation::vertical: s_str << "VERTICAL\n"; break;
-                default: s_str << "<error>\n"; break;
+                case gradient::orientation::horizontal: str << "HORIZONTAL\n"; break;
+                case gradient::orientation::vertical: str << "VERTICAL\n"; break;
+                default: str << "<error>\n"; break;
                 }
-                s_str << sTab << "  #-###\n";
+                str << sTab << "  #-###\n";
             } else if constexpr (std::is_same_v<content_type, color>) {
-                s_str << sTab << "  # Color       : " << m_data << "\n";
+                str << sTab << "  # Color       : " << m_data << "\n";
             }
         },
         m_content_);
 
-    s_str << sTab << "  # Tex. coord. :\n";
-    s_str << sTab << "  #-###\n";
-    s_str << sTab << "  |   # top-left     : (" << m_quad_.v[0].uvs << ")\n";
-    s_str << sTab << "  |   # top-right    : (" << m_quad_.v[1].uvs << ")\n";
-    s_str << sTab << "  |   # bottom-right : (" << m_quad_.v[2].uvs << ")\n";
-    s_str << sTab << "  |   # bottom-left  : (" << m_quad_.v[3].uvs << ")\n";
-    s_str << sTab << "  #-###\n";
-    s_str << sTab << "  # TexCModRect : " << b_tex_coord_modifies_rect_ << "\n";
+    str << sTab << "  # Tex. coord. :\n";
+    str << sTab << "  #-###\n";
+    str << sTab << "  |   # top-left     : (" << m_quad_.v[0].uvs << ")\n";
+    str << sTab << "  |   # top-right    : (" << m_quad_.v[1].uvs << ")\n";
+    str << sTab << "  |   # bottom-right : (" << m_quad_.v[2].uvs << ")\n";
+    str << sTab << "  |   # bottom-left  : (" << m_quad_.v[3].uvs << ")\n";
+    str << sTab << "  #-###\n";
+    str << sTab << "  # TexCModRect : " << b_tex_coord_modifies_rect_ << "\n";
 
-    s_str << sTab << "  # Blend mode  : ";
+    str << sTab << "  # Blend mode  : ";
     switch (m_blend_mode_) {
-    case blend_mode::none: s_str << "NONE\n"; break;
-    case blend_mode::blend: s_str << "BLEND\n"; break;
-    case blend_mode::key: s_str << "KEY\n"; break;
-    case blend_mode::add: s_str << "ADD\n"; break;
-    case blend_mode::mod: s_str << "MOD\n"; break;
-    default: s_str << "<error>\n"; break;
+    case blend_mode::none: str << "NONE\n"; break;
+    case blend_mode::blend: str << "BLEND\n"; break;
+    case blend_mode::key: str << "KEY\n"; break;
+    case blend_mode::add: str << "ADD\n"; break;
+    case blend_mode::mod: str << "MOD\n"; break;
+    default: str << "<error>\n"; break;
     }
 
-    s_str << sTab << "  # Filter      : ";
+    str << sTab << "  # Filter      : ";
     switch (m_filter_) {
-    case material::filter::none: s_str << "NONE\n"; break;
-    case material::filter::linear: s_str << "LINEAR\n"; break;
-    default: s_str << "<error>\n"; break;
+    case material::filter::none: str << "NONE\n"; break;
+    case material::filter::linear: str << "LINEAR\n"; break;
+    default: str << "<error>\n"; break;
     }
 
-    s_str << sTab << "  # Desaturated : " << b_is_desaturated_ << "\n";
+    str << sTab << "  # Desaturated : " << b_is_desaturated_ << "\n";
 
-    return s_str.str();
+    return str.str();
 }
 
 void texture::render() const {
@@ -203,22 +203,23 @@ void texture::set_blend_mode(blend_mode m_blend_mode) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_blend_mode(const std::string& s_blend_mode) {
+void texture::set_blend_mode(const std::string& blend_mode_name) {
     blend_mode m_new_blend_mode = blend_mode::blend;
 
-    if (s_blend_mode == "BLEND")
+    if (blend_mode_name == "BLEND")
         m_blend_mode_ = blend_mode::blend;
-    else if (s_blend_mode == "ADD")
+    else if (blend_mode_name == "ADD")
         m_blend_mode_ = blend_mode::add;
-    else if (s_blend_mode == "MOD")
+    else if (blend_mode_name == "MOD")
         m_blend_mode_ = blend_mode::mod;
-    else if (s_blend_mode == "KEY")
+    else if (blend_mode_name == "KEY")
         m_blend_mode_ = blend_mode::key;
-    else if (s_blend_mode == "NONE")
+    else if (blend_mode_name == "NONE")
         m_blend_mode_ = blend_mode::none;
     else {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Unknown blending : \"" << s_blend_mode << "\". Using \"BLEND\"." << std::endl;
+                 << "Unknown blending : \"" << blend_mode_name << "\". Using \"BLEND\"."
+                 << std::endl;
     }
 
     set_blend_mode(m_new_blend_mode);
@@ -232,22 +233,22 @@ void texture::set_filter_mode(material::filter m_filter) {
 
     if (std::holds_alternative<std::string>(m_content_)) {
         // Force re-load of the material
-        std::string s_file_name = std::get<std::string>(m_content_);
-        m_content_              = std::string{};
-        set_texture(s_file_name);
+        std::string file_name = std::get<std::string>(m_content_);
+        m_content_            = std::string{};
+        set_texture(file_name);
     }
 }
 
-void texture::set_filter_mode(const std::string& s_filter) {
+void texture::set_filter_mode(const std::string& filter_name) {
     material::filter m_new_filter = material::filter::none;
 
-    if (s_filter == "NONE")
+    if (filter_name == "NONE")
         m_new_filter = material::filter::none;
-    else if (s_filter == "LINEAR")
+    else if (filter_name == "LINEAR")
         m_new_filter = material::filter::linear;
     else {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Unknown filtering : \"" << s_filter << "\". Using \"NONE\"." << std::endl;
+                 << "Unknown filtering : \"" << filter_name << "\". Using \"NONE\"." << std::endl;
     }
 
     set_filter_mode(m_new_filter);
@@ -346,18 +347,18 @@ void texture::update_dimensions_from_tex_coord_() {
     set_dimensions(m_extent * vector2f(m_quad_.mat->get_canvas_dimensions()));
 }
 
-void texture::set_texture(const std::string& s_file) {
-    std::string s_parsed_file = parse_file_name(s_file);
-    m_content_                = s_parsed_file;
+void texture::set_texture(const std::string& file_name) {
+    std::string parsed_file = parse_file_name(file_name);
+    m_content_              = parsed_file;
 
-    if (s_parsed_file.empty())
+    if (parsed_file.empty())
         return;
 
     auto& m_renderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> p_mat;
-    if (utils::file_exists(s_parsed_file))
-        p_mat = m_renderer.create_atlas_material("GUI", s_parsed_file, m_filter_);
+    if (utils::file_exists(parsed_file))
+        p_mat = m_renderer.create_atlas_material("GUI", parsed_file, m_filter_);
 
     m_quad_.mat = p_mat;
 
@@ -374,7 +375,7 @@ void texture::set_texture(const std::string& s_file) {
             set_height(m_quad_.mat->get_rect().height());
     } else {
         gui::out << gui::error << "gui::" << type_.back() << " : "
-                 << "Cannot load file \"" << s_parsed_file << "\" for \"" << s_name_
+                 << "Cannot load file \"" << parsed_file << "\" for \"" << name_
                  << "\".\nUsing white texture instead." << std::endl;
     }
 

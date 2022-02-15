@@ -14,8 +14,8 @@ class region;
 
 /// Struct holding all the core information about a region necessary for its creation.
 struct region_core_attributes {
-    std::string s_object_type;
-    std::string s_name;
+    std::string object_type;
+    std::string name;
     bool        b_virtual = false;
 
     utils::observer_ptr<frame> p_parent = nullptr;

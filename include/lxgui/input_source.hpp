@@ -75,17 +75,17 @@ public:
     virtual utils::ustring get_clipboard_content() = 0;
 
     /// Replace the content of the clipboard.
-    /** \param sContent The new clipboard content
+    /** \param content The new clipboard content
      */
-    virtual void set_clipboard_content(const utils::ustring& s_content) = 0;
+    virtual void set_clipboard_content(const utils::ustring& content) = 0;
 
     /// Sets the mouse cursor to a given image on disk.
-    /** \param sFileName The cursor image
+    /** \param file_name The cursor image
      *   \param mHotSpot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
     virtual void
-    set_mouse_cursor(const std::string& s_file_name, const gui::vector2i& m_hot_spot) = 0;
+    set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) = 0;
 
     /// Sets the mouse cursor back to the default (arrow).
     virtual void reset_mouse_cursor() = 0;

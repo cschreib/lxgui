@@ -182,10 +182,10 @@ public:
     virtual void update(float f_delta);
 
     /// Prints all relevant information about this region in a string.
-    /** \param sTab The offset to give to all lines
+    /** \param tab The offset to give to all lines
      *   \return All relevant information about this region
      */
-    virtual std::string serialize(const std::string& s_tab) const;
+    virtual std::string serialize(const std::string& tab) const;
 
     /// Copies a region's parameters into this region (inheritance).
     /** \param mObj The region to copy
@@ -367,10 +367,10 @@ public:
     const std::string& get_object_type() const;
 
     /// Checks if this region is of the provided type.
-    /** \param sType The type to test
+    /** \param type_name The type to test
      *   \return 'true' if this region is of the provided type
      */
-    bool is_object_type(const std::string& s_type) const;
+    bool is_object_type(const std::string& type_name) const;
 
     /// Checks if this region is of the provided type.
     /** \return 'true' if this region is of the provided type
@@ -428,12 +428,10 @@ public:
     void set_all_points(const utils::observer_ptr<region>& p_obj);
 
     /// Adjusts this regions anchors to fit the provided region.
-    /** \param sObjName The name of the object to fit to
-     *   \note Removes all anchors and defines two new ones.<br>
-     *         This version is to be used by virtual regions to
-     *         preserve the anchor hierarchy.
+    /** \param obj_name The name of the object to fit to
+     *   \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const std::string& s_obj_name);
+    void set_all_points(const std::string& obj_name);
 
     /// Adds/replaces an anchor.
     /** \param mAnchor The anchor to add
@@ -600,7 +598,7 @@ public:
     const addon* get_addon() const;
 
     /// Convert an addon-relative file path to a application-relative path
-    /** \param sFileName The raw file name
+    /** \param file_name The raw file name
      *   \return The modified file name
      *   \note All file names must be relative to the current working directory
      *         (typically, the application's executable path),
@@ -609,7 +607,7 @@ public:
      *         "|" in front of a file name, which will then be interpreted as relative
      *         to the addon directory. This function takes care of this transformation.
      */
-    std::string parse_file_name(const std::string& s_file_name) const;
+    std::string parse_file_name(const std::string& file_name) const;
 
     /// Returns this region's manager.
     /** \return This region's manager
@@ -684,15 +682,15 @@ protected:
     template<typename T>
     void create_glue_(T* p_self);
 
-    void        set_lua_member_(std::string s_key, sol::stack_object m_value);
-    sol::object get_lua_member_(const std::string& s_key) const;
+    void        set_lua_member_(std::string key, sol::stack_object m_value);
+    sol::object get_lua_member_(const std::string& key) const;
 
     /// Sets this region's name.
-    /** \param sName This region's name
+    /** \param name This region's name
      *   \note Can only be called once. If you need to set both the name and the parent
      *         at the same time (typically, at creation), use set_name_and_parent_().
      */
-    void set_name_(const std::string& s_name);
+    void set_name_(const std::string& name);
 
     /// Changes this region's parent.
     /** \param pParent The new parent
@@ -701,20 +699,20 @@ protected:
     void set_parent_(utils::observer_ptr<frame> p_parent);
 
     /// Sets this region's name and parent at once.
-    /** \param sName This region's name
+    /** \param name This region's name
      *   \param pParent The new parent
      *   \note The name can only be set once. If you need to just change the
      *         parent, call set_parent_().
      */
-    void set_name_and_parent_(const std::string& s_name, utils::observer_ptr<frame> p_parent);
+    void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> p_parent);
 
     manager& m_manager_;
 
     const addon* p_add_on_ = nullptr;
 
-    std::string s_name_;
-    std::string s_raw_name_;
-    std::string s_lua_name_;
+    std::string name_;
+    std::string raw_name_;
+    std::string lua_name_;
     std::size_t ui_id_ = std::numeric_limits<std::size_t>::max();
 
     utils::observer_ptr<frame> p_parent_ = nullptr;

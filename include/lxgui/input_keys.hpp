@@ -8,8 +8,6 @@
 
 namespace lxgui::input {
 
-enum class mouse_state { up = 0, dragged, clicked, released, DOUBLE, LONG };
-
 enum class mouse_button : std::uint8_t { left = 0, right, middle };
 
 enum class key : std::uint8_t {
@@ -84,18 +82,18 @@ enum class key : std::uint8_t {
     k_f10          = 0x44,
     k_numlock      = 0x45,
     k_scroll       = 0x46, /// Scroll Lock
-    k_numpa_d7      = 0x47,
-    k_numpa_d8      = 0x48,
-    k_numpa_d9      = 0x49,
+    k_numpad_7     = 0x47,
+    k_numpad_8     = 0x48,
+    k_numpad_9     = 0x49,
     k_subtract     = 0x4A, /// - on numeric keypad
-    k_numpa_d4      = 0x4B,
-    k_numpa_d5      = 0x4C,
-    k_numpa_d6      = 0x4D,
+    k_numpad_4     = 0x4B,
+    k_numpad_5     = 0x4C,
+    k_numpad_6     = 0x4D,
     k_add          = 0x4E, /// + on numeric keypad
-    k_numpa_d1      = 0x4F,
-    k_numpa_d2      = 0x50,
-    k_numpa_d3      = 0x51,
-    k_numpa_d0      = 0x52,
+    k_numpad_1     = 0x4F,
+    k_numpad_2     = 0x50,
+    k_numpad_3     = 0x51,
+    k_numpad_0     = 0x52,
     k_decimal      = 0x53, /// . on numeric keypad
     k_oem_102      = 0x56, /// < > | on UK/Germany keyboards
     k_f11          = 0x57,
@@ -187,11 +185,11 @@ std::string_view get_localizable_mouse_button_name(mouse_button m_id);
 std::string_view get_key_codename(key m_key);
 
 /// Returns the key code from the standard English name of a key.
-/** \param sKey The name of the key
+/** \param key_name The name of the key
  *   \return The key code
  *   \note The name of the key must be from get_key_codename().
  */
-key get_key_from_codename(std::string_view s_key);
+key get_key_from_codename(std::string_view key_name);
 
 /// Returns the localizable name of the provided key.
 /** \param mKey The key

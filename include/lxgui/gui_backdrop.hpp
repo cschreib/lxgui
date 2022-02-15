@@ -40,9 +40,9 @@ public:
     void copy_from(const backdrop& mbackdrop);
 
     /// Sets the background texture.
-    /** \param sBackgroundFile The background texture
+    /** \param background_file The background texture
      */
-    void set_background(const std::string& s_background_file);
+    void set_background(const std::string& background_file);
 
     /// Returns this backdrop's background file.
     /** \return This backdrop's background file
@@ -103,7 +103,7 @@ public:
     const bounds2f& get_edge_insets() const;
 
     /// Sets the edge/corner texture.
-    /** \param sEdgeFile The edge/corner texture
+    /** \param edge_file The edge/corner texture
      *   \note This texture's width must be 8 times greater than its
      *         height.<br><br>
      *         texture parts are interpreted as :<br>
@@ -116,7 +116,7 @@ public:
      *         - [3/4, 7/8] : bottom-left corner
      *         - [7/8,   1] : bottom-right corner
      */
-    void set_edge(const std::string& s_edge_file);
+    void set_edge(const std::string& edge_file);
 
     /// Returns this backdrop's edge file.
     /** \return This backdrop's edge file
@@ -164,7 +164,7 @@ private:
 
     frame& m_parent_;
 
-    std::string               s_background_file_;
+    std::string               background_file_;
     color                     m_background_color_ = color::empty;
     std::shared_ptr<material> p_background_texture_;
     bool                      b_background_tilling_ = false;
@@ -172,7 +172,7 @@ private:
     float                     f_original_tile_size_ = 0.0f;
     bounds2f                  background_insets_;
 
-    std::string               s_edge_file_;
+    std::string               edge_file_;
     color                     m_edge_color_ = color::empty;
     std::shared_ptr<material> p_edge_texture_;
     bounds2f                  edge_insets_;

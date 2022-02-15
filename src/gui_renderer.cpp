@@ -161,10 +161,10 @@ void renderer::set_quad_batching_enabled(bool b_enabled) {
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material(const std::string& s_file_name, material::filter m_filter) {
-    std::string s_backed_name =
-        utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + s_file_name;
-    auto m_iter = texture_list_.find(s_backed_name);
+renderer::create_material(const std::string& file_name, material::filter m_filter) {
+    std::string backed_name =
+        utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + file_name;
+    auto m_iter = texture_list_.find(backed_name);
     if (m_iter != texture_list_.end()) {
         if (std::shared_ptr<gui::material> p_lock = m_iter->second.lock())
             return p_lock;
@@ -173,8 +173,8 @@ renderer::create_material(const std::string& s_file_name, material::filter m_fil
     }
 
     try {
-        std::shared_ptr<gui::material> p_tex = create_material_(s_file_name, m_filter);
-        texture_list_[s_file_name]           = p_tex;
+        std::shared_ptr<gui::material> p_tex = create_material_(file_name, m_filter);
+        texture_list_[file_name]             = p_tex;
         return p_tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
@@ -184,35 +184,35 @@ renderer::create_material(const std::string& s_file_name, material::filter m_fil
 
 namespace {
 std::string hash_font_parameters(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
-    std::string s_font_name = s_font_file + "|s" + utils::to_string(ui_size);
+    std::string font_name = font_file + "|s" + utils::to_string(ui_size);
     if (ui_outline > 0u)
-        s_font_name += "|o" + utils::to_string(ui_outline);
+        font_name += "|o" + utils::to_string(ui_outline);
 
     for (const code_point_range& m_range : code_points)
-        s_font_name +=
+        font_name +=
             "|c" + utils::to_string(m_range.ui_first) + "-" + utils::to_string(m_range.ui_last);
 
-    s_font_name += "|d" + utils::to_string(ui_default_code_point);
+    font_name += "|d" + utils::to_string(ui_default_code_point);
 
-    return s_font_name;
+    return font_name;
 }
 } // namespace
 
 std::shared_ptr<gui::font> renderer::create_font(
-    const std::string&                   s_font_file,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
-    const std::string s_font_name =
-        hash_font_parameters(s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+    const std::string font_name =
+        hash_font_parameters(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 
-    auto m_iter = font_list_.find(s_font_name);
+    auto m_iter = font_list_.find(font_name);
     if (m_iter != font_list_.end()) {
         if (std::shared_ptr<gui::font> p_lock = m_iter->second.lock())
             return p_lock;
@@ -221,9 +221,9 @@ std::shared_ptr<gui::font> renderer::create_font(
     }
 
     std::shared_ptr<gui::font> p_font =
-        create_font_(s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        create_font_(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 
-    font_list_[s_font_name] = p_font;
+    font_list_[font_name] = p_font;
     return p_font;
 }
 
@@ -270,42 +270,40 @@ void renderer::auto_detect_settings() {
     b_quad_batching_enabled_ = true;
 }
 
-atlas& renderer::get_atlas_(const std::string& s_atlas_category, material::filter m_filter) {
+atlas& renderer::get_atlas_(const std::string& atlas_category, material::filter m_filter) {
     std::shared_ptr<gui::atlas> p_atlas;
 
-    std::string s_baked_atlas_name =
-        utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + s_atlas_category;
-    auto m_iter = atlas_list_.find(s_baked_atlas_name);
+    std::string baked_atlas_name =
+        utils::to_string(static_cast<std::size_t>(m_filter)) + '|' + atlas_category;
+    auto m_iter = atlas_list_.find(baked_atlas_name);
     if (m_iter != atlas_list_.end()) {
         p_atlas = m_iter->second;
     }
 
     if (!p_atlas) {
-        p_atlas                         = create_atlas_(m_filter);
-        atlas_list_[s_baked_atlas_name] = p_atlas;
+        p_atlas                       = create_atlas_(m_filter);
+        atlas_list_[baked_atlas_name] = p_atlas;
     }
 
     return *p_atlas;
 }
 
 std::shared_ptr<material> renderer::create_atlas_material(
-    const std::string& s_atlas_category,
-    const std::string& s_file_name,
-    material::filter   m_filter) {
+    const std::string& atlas_category, const std::string& file_name, material::filter m_filter) {
     if (!is_texture_atlas_enabled())
-        return create_material(s_file_name, m_filter);
+        return create_material(file_name, m_filter);
 
-    auto& m_atlas = get_atlas_(s_atlas_category, m_filter);
+    auto& m_atlas = get_atlas_(atlas_category, m_filter);
 
-    auto p_tex = m_atlas.fetch_material(s_file_name);
+    auto p_tex = m_atlas.fetch_material(file_name);
     if (p_tex)
         return p_tex;
 
-    p_tex = create_material(s_file_name, m_filter);
+    p_tex = create_material(file_name, m_filter);
     if (!p_tex)
         return nullptr;
 
-    auto p_added_tex = m_atlas.add_material(s_file_name, *p_tex);
+    auto p_added_tex = m_atlas.add_material(file_name, *p_tex);
     if (p_added_tex)
         return p_added_tex;
     else
@@ -313,32 +311,32 @@ std::shared_ptr<material> renderer::create_atlas_material(
 }
 
 std::shared_ptr<font> renderer::create_atlas_font(
-    const std::string&                   s_atlas_category,
-    const std::string&                   s_font_file,
+    const std::string&                   atlas_category,
+    const std::string&                   font_file,
     std::size_t                          ui_size,
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point) {
     if (!is_texture_atlas_enabled())
-        return create_font(s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        return create_font(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 
-    auto& m_atlas = get_atlas_(s_atlas_category, material::filter::none);
+    auto& m_atlas = get_atlas_(atlas_category, material::filter::none);
 
-    const std::string s_font_name =
-        hash_font_parameters(s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+    const std::string font_name =
+        hash_font_parameters(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
 
-    auto p_font = m_atlas.fetch_font(s_font_name);
+    auto p_font = m_atlas.fetch_font(font_name);
     if (p_font)
         return p_font;
 
-    p_font = create_font(s_font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+    p_font = create_font(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
     if (!p_font)
         return nullptr;
 
-    if (m_atlas.add_font(s_font_name, p_font))
+    if (m_atlas.add_font(font_name, p_font))
         return p_font;
 
-    font_list_[s_font_name] = p_font;
+    font_list_[font_name] = p_font;
     return p_font;
 }
 

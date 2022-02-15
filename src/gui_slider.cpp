@@ -26,41 +26,41 @@ slider::slider(utils::control_block& m_block, manager& m_manager) : frame(m_bloc
     register_for_drag({"LeftButton"});
 }
 
-std::string slider::serialize(const std::string& s_tab) const {
-    std::ostringstream s_str;
+std::string slider::serialize(const std::string& tab) const {
+    std::ostringstream str;
 
-    s_str << base::serialize(s_tab);
-    s_str << s_tab << "  # Orientation: ";
+    str << base::serialize(tab);
+    str << tab << "  # Orientation: ";
     switch (m_orientation_) {
-    case orientation::horizontal: s_str << "HORIZONTAL"; break;
-    case orientation::vertical: s_str << "VERTICAL"; break;
+    case orientation::horizontal: str << "HORIZONTAL"; break;
+    case orientation::vertical: str << "VERTICAL"; break;
     }
-    s_str << "\n";
-    s_str << s_tab << "  # Value      : " << f_value_ << "\n";
-    s_str << s_tab << "  # Min value  : " << f_min_value_ << "\n";
-    s_str << s_tab << "  # Max value  : " << f_max_value_ << "\n";
-    s_str << s_tab << "  # Step       : " << f_value_step_ << "\n";
-    s_str << s_tab << "  # Click out  : " << b_allow_clicks_outside_thumb_ << "\n";
+    str << "\n";
+    str << tab << "  # Value      : " << f_value_ << "\n";
+    str << tab << "  # Min value  : " << f_min_value_ << "\n";
+    str << tab << "  # Max value  : " << f_max_value_ << "\n";
+    str << tab << "  # Step       : " << f_value_step_ << "\n";
+    str << tab << "  # Click out  : " << b_allow_clicks_outside_thumb_ << "\n";
 
-    return s_str.str();
+    return str.str();
 }
 
-bool slider::can_use_script(const std::string& s_script_name) const {
-    if (base::can_use_script(s_script_name))
+bool slider::can_use_script(const std::string& script_name) const {
+    if (base::can_use_script(script_name))
         return true;
-    else if (s_script_name == "OnValueChanged")
+    else if (script_name == "OnValueChanged")
         return true;
     else
         return false;
 }
 
-void slider::fire_script(const std::string& s_script_name, const event_data& m_data) {
+void slider::fire_script(const std::string& script_name, const event_data& m_data) {
     alive_checker m_checker(*this);
-    base::fire_script(s_script_name, m_data);
+    base::fire_script(script_name, m_data);
     if (!m_checker.is_alive())
         return;
 
-    if (s_script_name == "OnDragStart") {
+    if (script_name == "OnDragStart") {
         if (p_thumb_texture_ &&
             p_thumb_texture_->is_in_region({m_data.get<float>(1), m_data.get<float>(2)})) {
             anchor& m_anchor = p_thumb_texture_->modify_point(anchor_point::center);
@@ -72,14 +72,14 @@ void slider::fire_script(const std::string& s_script_name, const event_data& m_d
 
             b_thumb_moved_ = true;
         }
-    } else if (s_script_name == "OnDragStop") {
+    } else if (script_name == "OnDragStop") {
         if (p_thumb_texture_) {
             if (get_manager().get_root().is_moving(*p_thumb_texture_))
                 get_manager().get_root().stop_moving();
 
             b_thumb_moved_ = false;
         }
-    } else if (s_script_name == "OnMouseDown") {
+    } else if (script_name == "OnMouseDown") {
         if (b_allow_clicks_outside_thumb_) {
             const vector2f m_apparent_size = get_apparent_dimensions();
 
@@ -114,7 +114,7 @@ void slider::copy_from(const region& m_obj) {
 
     if (const texture* p_thumb = p_slider->get_thumb_texture().get()) {
         region_core_attributes m_attr;
-        m_attr.s_name      = p_thumb->get_name();
+        m_attr.name        = p_thumb->get_name();
         m_attr.inheritance = {p_slider->get_thumb_texture()};
 
         auto p_texture =
@@ -262,7 +262,7 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> p_texture) {
     p_thumb_texture_->set_draw_layer(m_thumb_layer_);
     p_thumb_texture_->clear_all_points();
     p_thumb_texture_->set_point(
-        anchor_point::center, p_thumb_texture_->get_parent().get() == this ? "$parent" : s_name_,
+        anchor_point::center, p_thumb_texture_->get_parent().get() == this ? "$parent" : name_,
         m_orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
 
     notify_thumb_texture_needs_update_();
@@ -273,7 +273,7 @@ void slider::set_orientation(orientation m_orientation) {
         m_orientation_ = m_orientation;
         if (p_thumb_texture_) {
             p_thumb_texture_->set_point(
-                anchor_point::center, s_name_,
+                anchor_point::center, name_,
                 m_orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
         }
 
@@ -281,18 +281,15 @@ void slider::set_orientation(orientation m_orientation) {
     }
 }
 
-void slider::set_orientation(const std::string& s_orientation) {
+void slider::set_orientation(const std::string& orientation_name) {
     orientation m_orientation = orientation::horizontal;
-    if (s_orientation == "VERTICAL")
+    if (orientation_name == "VERTICAL")
         m_orientation = orientation::vertical;
-    else if (s_orientation == "HORIZONTAL")
+    else if (orientation_name == "HORIZONTAL")
         m_orientation = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << " : "
-                    "Unknown orientation : \"" +
-                        s_orientation + "\". Using \"HORIZONTAL\"."
-                 << std::endl;
+        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown orientation : \""
+                 << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
     }
 
     set_orientation(m_orientation);
@@ -304,22 +301,22 @@ void slider::set_thumb_draw_layer(layer m_thumb_layer) {
         p_thumb_texture_->set_draw_layer(m_thumb_layer_);
 }
 
-void slider::set_thumb_draw_layer(const std::string& s_thumb_layer) {
-    if (s_thumb_layer == "ARTWORK")
+void slider::set_thumb_draw_layer(const std::string& thumb_layer_name) {
+    if (thumb_layer_name == "ARTWORK")
         m_thumb_layer_ = layer::artwork;
-    else if (s_thumb_layer == "BACKGROUND")
+    else if (thumb_layer_name == "BACKGROUND")
         m_thumb_layer_ = layer::background;
-    else if (s_thumb_layer == "BORDER")
+    else if (thumb_layer_name == "BORDER")
         m_thumb_layer_ = layer::border;
-    else if (s_thumb_layer == "HIGHLIGHT")
+    else if (thumb_layer_name == "HIGHLIGHT")
         m_thumb_layer_ = layer::highlight;
-    else if (s_thumb_layer == "OVERLAY")
+    else if (thumb_layer_name == "OVERLAY")
         m_thumb_layer_ = layer::overlay;
     else {
         gui::out << gui::warning << "gui::" << type_.back()
                  << " : "
                     "Unknown layer type : \"" +
-                        s_thumb_layer + "\". Using \"OVERLAY\"."
+                        thumb_layer_name + "\". Using \"OVERLAY\"."
                  << std::endl;
         m_thumb_layer_ = layer::overlay;
     }

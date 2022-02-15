@@ -48,11 +48,12 @@ public:
     addon_registry& operator=(addon_registry&&) = delete;
 
     /// Parse all addons inside a directory.
-    /** \note The directory must contain a file named addon.txt, and
+    /** \param directory The directory to load addons from
+     *   \note The directory must contain a file named addon.txt, and
      *         listing all enabled (and possibly disabled) addons.
      *         Each addon is then a sub-directory.
      */
-    void load_addon_directory(const std::string& s_directory);
+    void load_addon_directory(const std::string& directory);
 
     /// Returns the addon that is being parsed.
     /** \return The addon that is being parsed
@@ -72,12 +73,12 @@ public:
     void save_variables() const;
 
 private:
-    void load_addon_toc_(const std::string& s_add_on_name, const std::string& s_add_on_directory);
+    void load_addon_toc_(const std::string& add_on_name, const std::string& add_on_directory);
     void load_addon_files_(const addon& m_add_on);
 
     void save_variables_(const addon& m_add_on) const noexcept;
 
-    void parse_layout_file_(const std::string& s_file, const addon& m_add_on);
+    void parse_layout_file_(const std::string& file, const addon& m_add_on);
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;

@@ -22,23 +22,23 @@ using ustring      = std::u32string;
 using ustring_view = std::u32string_view;
 
 [[nodiscard]] string_view trim(string_view s, char c_pattern);
-[[nodiscard]] string_view trim(string_view s, string_view s_patterns);
+[[nodiscard]] string_view trim(string_view s, string_view patterns);
 
-void replace(string& s, string_view s_pattern, string_view s_replacement);
+void replace(string& s, string_view pattern, string_view replacement);
 
-[[nodiscard]] std::size_t count_occurrences(string_view s, string_view s_pattern);
+[[nodiscard]] std::size_t count_occurrences(string_view s, string_view pattern);
 
-[[nodiscard]] std::vector<string_view>  cut(string_view s, string_view s_delim);
-[[nodiscard]] std::vector<ustring_view> cut(ustring_view s, ustring_view s_delim);
+[[nodiscard]] std::vector<string_view>  cut(string_view s, string_view delim);
+[[nodiscard]] std::vector<ustring_view> cut(ustring_view s, ustring_view delim);
 
-[[nodiscard]] std::vector<string_view>  cut_each(string_view s, string_view s_delim);
-[[nodiscard]] std::vector<ustring_view> cut_each(ustring_view s, ustring_view s_delim);
+[[nodiscard]] std::vector<string_view>  cut_each(string_view s, string_view delim);
+[[nodiscard]] std::vector<ustring_view> cut_each(ustring_view s, ustring_view delim);
 
-[[nodiscard]] std::pair<string_view, string_view>   cut_first(string_view s, string_view s_delim);
-[[nodiscard]] std::pair<ustring_view, ustring_view> cut_first(ustring_view s, ustring_view s_delim);
+[[nodiscard]] std::pair<string_view, string_view>   cut_first(string_view s, string_view delim);
+[[nodiscard]] std::pair<ustring_view, ustring_view> cut_first(ustring_view s, ustring_view delim);
 
-[[nodiscard]] bool starts_with(string_view s, string_view s_pattern);
-[[nodiscard]] bool ends_with(string_view s, string_view s_pattern);
+[[nodiscard]] bool starts_with(string_view s, string_view pattern);
+[[nodiscard]] bool ends_with(string_view s, string_view pattern);
 
 [[nodiscard]] bool has_no_content(string_view s);
 

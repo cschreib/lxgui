@@ -147,25 +147,25 @@ public:
     void update(float f_delta) override;
 
     /// Calls a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \param mData       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& s_script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
 
     /// Returns 'true' if this edit_box can use a script.
-    /** \param sScriptName The name of the script
+    /** \param script_name The name of the script
      *   \note This method can be overriden if needed.
      */
-    bool can_use_script(const std::string& s_script_name) const override;
+    bool can_use_script(const std::string& script_name) const override;
 
     /// Sets the content of this edit_box.
-    /** \param sText The content of this edit_box
+    /** \param content The content of this edit_box
      */
-    void set_text(const utils::ustring& s_text);
+    void set_text(const utils::ustring& content);
 
     /// Returns the content of this edit_box.
     /** \return The content of this edit_box
@@ -192,9 +192,9 @@ public:
     void set_highlight_color(const color& m_color);
 
     /// Inserts some text after the cursor.
-    /** \param sText The text to insert
+    /** \param content The text to insert
      */
-    void insert_after_cursor(const utils::ustring& s_text);
+    void insert_after_cursor(const utils::ustring& content);
 
     /// Returns the current position of the cursor.
     /** \return The position of the cursor (0: before first character,
@@ -303,10 +303,10 @@ public:
     std::size_t get_max_history_lines() const;
 
     /// Adds a new history line to the history line list.
-    /** \param sHistoryLine The content of this history line
+    /** \param history_line The content of this history line
      *   \note This option is only available to single line edit_boxes.
      */
-    void add_history_line(const utils::ustring& s_history_line);
+    void add_history_line(const utils::ustring& history_line);
 
     /// Returns the history line list.
     /** \return The history line list
@@ -354,10 +354,10 @@ public:
     void set_font_string(utils::observer_ptr<font_string> p_font);
 
     /// Sets the font (file and size) to render the content.
-    /** \param sFontName The file path to the .ttf file
+    /** \param font_name The file path to the .ttf file
      *   \param fHeight   The font height
      */
-    void set_font(const std::string& s_font_name, float f_height);
+    void set_font(const std::string& font_name, float f_height);
 
     /// Notifies this frame that it has received or lost focus.
     /** \param bFocus 'true' if focus is received, 'false' if lost
@@ -390,7 +390,7 @@ protected:
     void update_font_string_();
     void update_carret_position_();
 
-    bool        add_char_(char32_t s_char);
+    bool        add_char_(char32_t c);
     bool        remove_char_();
     std::size_t get_letter_id_at_(const vector2f& m_position) const;
     bool        move_carret_at_(const vector2f& m_position);
@@ -399,8 +399,8 @@ protected:
 
     void process_key_(input::key ui_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed);
 
-    utils::ustring           s_unicode_text_;
-    utils::ustring           s_displayed_text_;
+    utils::ustring           unicode_text_;
+    utils::ustring           displayed_text_;
     utils::ustring::iterator iter_carret_pos_;
     utils::ustring::iterator iter_carret_pos_old_;
 
@@ -413,8 +413,6 @@ protected:
     bool        b_password_mode_  = false;
     bool        b_multi_line_     = false;
     bool        b_arrows_ignored_ = false;
-
-    std::string s_combo_key_;
 
     utils::observer_ptr<texture> p_highlight_            = nullptr;
     color                        m_highlight_color_      = color(1.0f, 1.0f, 1.0f, 0.5f);
