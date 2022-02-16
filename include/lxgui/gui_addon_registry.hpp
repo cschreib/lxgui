@@ -31,7 +31,7 @@ public:
     /// Constructor.
     /** \param mLua          The GUI Lua state
      *   \param mLocalizer    The localizer class, to load new translation into
-     *   \param mEventEmitter The event emitter, to fire "addon loaded" events
+     *   \param event_emitter The event emitter, to fire "addon loaded" events
      *   \param mRoot         The GUI root, to create new frames into
      *   \param mVirtualRoot  The virtual root, to create new virtual frames into
      */

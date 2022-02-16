@@ -17,7 +17,7 @@ namespace lxgui::gui::sdl {
 class render_target final : public gui::render_target {
 public:
     /// Constructor.
-    /** \param pRenderer   The SDL render to create the render_target for
+    /** \param renderer   The SDL render to create the render_target for
      *   \param mDimensions The dimensions of the render_target
      *   \param mFilter     The filtering to apply to the target texture when displayed
      */
@@ -69,7 +69,7 @@ public:
     const matrix4f& get_view_matrix() const;
 
     /// Checks if the machine is capable of using render targets.
-    /** \param pRenderer The renderer to check for availability
+    /** \param renderer The renderer to check for availability
      *   \note If not, this function throws a gui::exception.
      */
     static void check_availability(SDL_Renderer* p_renderer);

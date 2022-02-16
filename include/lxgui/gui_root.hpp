@@ -79,7 +79,7 @@ public:
     bool is_caching_enabled() const;
 
     /// updates this root and its regions.
-    /** \param fDelta The time elapsed since the last call
+    /** \param delta The time elapsed since the last call
      */
     void update(float f_delta);
 

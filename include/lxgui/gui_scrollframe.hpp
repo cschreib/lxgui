@@ -42,7 +42,7 @@ public:
     ~scroll_frame() override;
 
     /// Updates this region's logic.
-    /** \param fDelta Time spent since last update
+    /** \param delta Time spent since last update
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.

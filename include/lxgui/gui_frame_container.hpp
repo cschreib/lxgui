@@ -45,7 +45,7 @@ public:
     /// Constructor.
     /** \param mFactory  The GUI object factory
      *   \param mRegistry The registry in which new frames should be registered
-     *   \param pRenderer The frame_renderer that will render these frames (nullptr if none).
+     *   \param renderer The frame_renderer that will render these frames (nullptr if none).
      */
     explicit frame_container(factory& m_factory, registry& m_registry, frame_renderer* p_renderer);
 

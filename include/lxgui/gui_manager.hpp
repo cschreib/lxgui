@@ -44,8 +44,8 @@ class manager : utils::enable_observer_from_this<manager> {
 public:
     /// Constructor.
     /** \param mBlock       The owner pointer control block
-     *   \param pInputSource The input source to use
-     *   \param pRenderer    The renderer implementation
+     *   \param input_source The input source to use
+     *   \param renderer    The renderer implementation
      */
     manager(
         utils::control_block&          m_block,
@@ -179,7 +179,7 @@ public:
     void render_ui() const;
 
     /// Updates this manager and its regions.
-    /** \param fDelta The time elapsed since the last call
+    /** \param delta The time elapsed since the last call
      */
     void update_ui(float f_delta);
 

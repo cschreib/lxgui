@@ -26,14 +26,14 @@ std::string to_lower(std::string str) {
 std::string get_environment_variable(const std::string& name) {
 #if defined(LXGUI_PLATFORM_WINDOWS)
     // Windows has std::getenv, but MSVC offers a safer alternative that it insists on using
-    char*       sBuffer = nullptr;
-    std::size_t uiSize  = 0;
-    if (_dupenv_s(&sBuffer, &uiSize, sName.c_str()) != 0 || sBuffer == nullptr)
+    char*       buffer = nullptr;
+    std::size_t size   = 0;
+    if (_dupenv_s(&buffer, &size, name.c_str()) != 0 || buffer == nullptr)
         return "";
 
-    std::string sResult = sBuffer;
-    free(sBuffer);
-    return sResult;
+    std::string result = buffer;
+    free(buffer);
+    return result;
 #else
     const char* result = std::getenv(name.c_str());
     return result != nullptr ? result : "";

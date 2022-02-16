@@ -74,7 +74,7 @@ public:
 
     /// Creates a new frame.
     /** \param mRegistry The registry in which to register this frame
-     *   \param pRenderer The frame_renderer that will render this frame
+     *   \param renderer The frame_renderer that will render this frame
      *   \param mAttr     The attributes of the frame
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the

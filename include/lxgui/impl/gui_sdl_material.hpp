@@ -23,7 +23,7 @@ namespace lxgui::gui::sdl {
 class material final : public gui::material {
 public:
     /// Constructor for textures.
-    /** \param pRenderer     The SDL render to create the material for
+    /** \param renderer     The SDL render to create the material for
      *   \param mDimensions   The requested texture dimensions
      *   \param bRenderTarget Create the material for a render target or only for display
      *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
@@ -37,7 +37,7 @@ public:
         filter           m_filter        = filter::none);
 
     /// Constructor for textures.
-    /** \param pRenderer     The SDL render to create the material for
+    /** \param renderer     The SDL render to create the material for
      *   \param file_name     The file from which the texture data is loaded
      *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled
      * alpha \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
@@ -51,7 +51,7 @@ public:
         filter             m_filter = filter::none);
 
     /// Constructor for atlas textures.
-    /** \param pRenderer The SDL render to create the material for
+    /** \param renderer The SDL render to create the material for
      *   \param pTexture  The texture object of the atlas
      *   \param mRect     The position of this texture inside the atlas
      *   \param mFilter   Use texture filtering or not (see set_filter())

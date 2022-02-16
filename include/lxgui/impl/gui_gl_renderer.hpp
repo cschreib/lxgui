@@ -20,7 +20,7 @@ namespace lxgui::gui::gl {
 class renderer final : public gui::renderer {
 public:
     /// Constructor.
-    /** \param mWindowDimensions The initial window dimensions (in pixels)
+    /** \param window_dimensions The initial window dimensions (in pixels)
      *   \param bInitGLEW         Set to 'true' to initialise GLEW
      *   \note Use notify_window_resized() if the size of the window changes later.
      */

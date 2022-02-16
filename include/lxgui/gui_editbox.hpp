@@ -139,7 +139,7 @@ public:
     void copy_from(const region& m_obj) override;
 
     /// Updates this region's logic.
-    /** \param fDelta Time spent since last update
+    /** \param delta Time spent since last update
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
@@ -360,7 +360,7 @@ public:
     void set_font(const std::string& font_name, float f_height);
 
     /// Notifies this frame that it has received or lost focus.
-    /** \param bFocus 'true' if focus is received, 'false' if lost
+    /** \param focus 'true' if focus is received, 'false' if lost
      */
     void notify_focus(bool b_focus) override;
 

@@ -284,7 +284,7 @@ public:
     void render() const override;
 
     /// Updates this region's logic.
-    /** \param fDelta Time spent since last update
+    /** \param delta Time spent since last update
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
@@ -1120,7 +1120,7 @@ public:
     bool is_auto_focus_enabled() const;
 
     /// Asks for focus for this frame.
-    /** \param bFocus 'true' to ask for focus, 'false' to release it
+    /** \param focus 'true' to ask for focus, 'false' to release it
      *   \note Focus can be lost if another frame asks for focus later.
      *         The focus will be restored automaticallly when that other frame
      *         releases focus, or it can be requested again by calling set_focus(true).
@@ -1133,7 +1133,7 @@ public:
     bool has_focus() const;
 
     /// Flags this object as rendered by another object.
-    /** \param pRenderer The object that will take care of rendering this region
+    /** \param renderer The object that will take care of rendering this region
      *   \note By default, objects are rendered by the gui::manager.
      *   \note The renderer also takes care of providing inputs.
      *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
@@ -1212,7 +1212,7 @@ public:
     void notify_invisible() override;
 
     /// Notifies this frame that it has received or lost focus.
-    /** \param bFocus 'true' if focus is received, 'false' if lost
+    /** \param focus 'true' if focus is received, 'false' if lost
      */
     virtual void notify_focus(bool b_focus);
 

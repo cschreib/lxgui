@@ -177,7 +177,7 @@ public:
     virtual void render() const;
 
     /// Updates this region's logic.
-    /** \param fDelta Time spent since last update
+    /** \param delta Time spent since last update
      */
     virtual void update(float f_delta);
 

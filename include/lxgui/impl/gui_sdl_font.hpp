@@ -18,7 +18,7 @@ namespace lxgui::gui::sdl {
 class font final : public gui::font {
 public:
     /// Constructor.
-    /** \param pRenderer   The SDL render to create the font for
+    /** \param renderer   The SDL render to create the font for
      *   \param font_file   The name of the font file to read
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)

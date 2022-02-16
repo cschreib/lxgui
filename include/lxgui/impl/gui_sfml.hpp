@@ -17,7 +17,7 @@ class RenderWindow;
 namespace lxgui::gui::sfml {
 
 /// Create a new gui::manager using a full SFML implementation.
-/** \param mWindow The SFML render window
+/** \param window The SFML render window
  *   \return The new gui::manager instance
  */
 utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& m_window);

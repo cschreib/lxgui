@@ -18,8 +18,8 @@ class material;
 class renderer final : public gui::renderer {
 public:
     /// Constructor.
-    /** \param pRenderer A pre-initialised SDL renderer
-     *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
+    /** \param renderer A pre-initialised SDL renderer
+     *   \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */
     explicit renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image);
 
