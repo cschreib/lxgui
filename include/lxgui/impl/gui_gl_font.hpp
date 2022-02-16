@@ -90,7 +90,7 @@ public:
 private:
     struct character_info {
         char32_t ui_code_point = 0;
-        bounds2f m_u_vs;
+        bounds2f m_uvs;
         bounds2f m_rect;
         float    f_advance = 0.0f;
     };

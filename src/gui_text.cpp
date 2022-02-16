@@ -977,11 +977,11 @@ std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t c) c
     vertex_list[2].pos = m_quad.bottom_right();
     vertex_list[3].pos = m_quad.bottom_left();
 
-    bounds2f m_u_vs    = m_font.get_character_uvs(c);
-    vertex_list[0].uvs = m_u_vs.top_left();
-    vertex_list[1].uvs = m_u_vs.top_right();
-    vertex_list[2].uvs = m_u_vs.bottom_right();
-    vertex_list[3].uvs = m_u_vs.bottom_left();
+    bounds2f m_uvs     = m_font.get_character_uvs(c);
+    vertex_list[0].uvs = m_uvs.top_left();
+    vertex_list[1].uvs = m_uvs.top_right();
+    vertex_list[2].uvs = m_uvs.bottom_right();
+    vertex_list[3].uvs = m_uvs.bottom_left();
 
     return vertex_list;
 }

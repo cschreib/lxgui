@@ -262,10 +262,10 @@ font::font(
                     }
                 }
 
-                m_ci.m_u_vs.left   = x / float(ui_final_width);
-                m_ci.m_u_vs.top    = y / float(ui_final_height);
-                m_ci.m_u_vs.right  = (x + m_bitmap.width) / float(ui_final_width);
-                m_ci.m_u_vs.bottom = (y + m_bitmap.rows) / float(ui_final_height);
+                m_ci.m_uvs.left   = x / float(ui_final_width);
+                m_ci.m_uvs.top    = y / float(ui_final_height);
+                m_ci.m_uvs.right  = (x + m_bitmap.width) / float(ui_final_width);
+                m_ci.m_uvs.bottom = (y + m_bitmap.rows) / float(ui_final_height);
 
                 m_ci.m_rect.left   = m_bitmap_glyph->left;
                 m_ci.m_rect.right  = m_ci.m_rect.left + m_bitmap.width;
@@ -331,8 +331,8 @@ bounds2f font::get_character_uvs(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_u_vs.top_left(), true);
-    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_u_vs.bottom_right(), true);
+    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_uvs.top_left(), true);
+    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_uvs.bottom_right(), true);
     return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
 }
 

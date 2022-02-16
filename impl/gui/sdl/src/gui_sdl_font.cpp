@@ -173,10 +173,10 @@ font::font(
 
             SDL_FreeSurface(p_glyph_surface);
 
-            m_ci.m_u_vs.left   = x / m_canvas_dimensions_float.x;
-            m_ci.m_u_vs.top    = y / m_canvas_dimensions_float.y;
-            m_ci.m_u_vs.right  = (x + ui_glyph_width) / m_canvas_dimensions_float.x;
-            m_ci.m_u_vs.bottom = (y + ui_glyph_height) / m_canvas_dimensions_float.y;
+            m_ci.m_uvs.left   = x / m_canvas_dimensions_float.x;
+            m_ci.m_uvs.top    = y / m_canvas_dimensions_float.y;
+            m_ci.m_uvs.right  = (x + ui_glyph_width) / m_canvas_dimensions_float.x;
+            m_ci.m_uvs.bottom = (y + ui_glyph_height) / m_canvas_dimensions_float.y;
 
             // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
             m_ci.m_rect.left   = -static_cast<float>(ui_outline);
@@ -232,8 +232,8 @@ bounds2f font::get_character_uvs(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_u_vs.top_left(), true);
-    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_u_vs.bottom_right(), true);
+    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_uvs.top_left(), true);
+    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_uvs.bottom_right(), true);
     return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
 }
 
