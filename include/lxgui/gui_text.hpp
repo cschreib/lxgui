@@ -174,7 +174,7 @@ public:
     /** \param uiChar The character to measure
      *   \return The lenght of this character
      */
-    float get_character_width(char32_t ui_char) const;
+    float get_character_width(char32_t c) const;
 
     /// Returns the kerning between two characters.
     /** \param uiChar1 The first character
@@ -185,7 +185,7 @@ public:
      *         you can reduce the space between the two letters, but not
      *         if you put two Vs side to side.
      */
-    float get_character_kerning(char32_t ui_char1, char32_t ui_char2) const;
+    float get_character_kerning(char32_t c1, char32_t c2) const;
 
     /// Returns the height of the text.
     /** \return The height of one text
@@ -307,7 +307,7 @@ public:
     /** \param uiChar The character to draw
      *   \note Uses this text's font texture.
      */
-    quad create_letter_quad(char32_t ui_char) const;
+    quad create_letter_quad(char32_t c) const;
 
     /// Returns the renderer used to render this text.
     /** \return The renderer used to render this text
@@ -328,9 +328,9 @@ private:
     void  notify_cache_dirty_() const;
     float round_to_pixel_(
         float f_value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
-    std::array<vertex, 4> create_letter_quad_(gui::font& m_font, char32_t ui_char) const;
-    std::array<vertex, 4> create_letter_quad_(char32_t ui_char) const;
-    std::array<vertex, 4> create_outline_letter_quad_(char32_t ui_char) const;
+    std::array<vertex, 4> create_letter_quad_(gui::font& m_font, char32_t c) const;
+    std::array<vertex, 4> create_letter_quad_(char32_t c) const;
+    std::array<vertex, 4> create_outline_letter_quad_(char32_t c) const;
 
     renderer& m_renderer_;
 

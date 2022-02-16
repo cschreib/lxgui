@@ -17,8 +17,8 @@ namespace lxgui::gui {
 
 namespace {
 std::string to_lower(std::string str) {
-    for (char& c_char : str)
-        c_char = static_cast<char>(std::tolower(c_char));
+    for (char& c : str)
+        c = static_cast<char>(std::tolower(c));
 
     return str;
 }
@@ -691,8 +691,8 @@ void localizer::auto_detect_allowed_code_points() {
     // Add language-specific groups
     for (const auto& language : languages_) {
         // Extract the language code from the language string (first set of lower case letters)
-        auto m_pos = std::find_if(
-            language.begin(), language.end(), [](char c_char) { return std::isupper(c_char); });
+        auto m_pos =
+            std::find_if(language.begin(), language.end(), [](char c) { return std::isupper(c); });
 
         add_allowed_code_points_for_language(std::string(language.begin(), m_pos));
     }

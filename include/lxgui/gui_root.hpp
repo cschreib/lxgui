@@ -269,7 +269,7 @@ private:
     void on_mouse_wheel_(float f_wheel_scroll, const vector2f& m_mouse_pos);
     void on_drag_start_(input::mouse_button m_button, const vector2f& m_mouse_pos);
     void on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_pos);
-    void on_text_entered_(std::uint32_t ui_char);
+    void on_text_entered_(std::uint32_t c);
     void on_key_state_changed_(input::key m_key, bool b_is_down);
     void on_mouse_button_state_changed_(
         input::mouse_button m_button,

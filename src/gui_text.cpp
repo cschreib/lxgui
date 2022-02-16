@@ -162,8 +162,8 @@ bool is_format(const item& m_item) {
     return m_item.index() == 1u;
 }
 
-bool is_character(const item& m_item, char32_t ui_char) {
-    return m_item.index() == 0u && std::get<char32_t>(m_item) == ui_char;
+bool is_character(const item& m_item, char32_t c) {
+    return m_item.index() == 0u && std::get<char32_t>(m_item) == c;
 }
 
 float get_width(const text& m_text, const item& m_item) {
@@ -420,18 +420,18 @@ float text::get_string_width(const utils::ustring& content) const {
         *this, parser::parse_string(m_renderer_, content, b_formatting_enabled_));
 }
 
-float text::get_character_width(char32_t ui_char) const {
+float text::get_character_width(char32_t c) const {
     if (b_ready_) {
-        if (ui_char == U'\t')
+        if (c == U'\t')
             return 4.0f * p_font_->get_character_width(U' ') * f_scaling_factor_;
         else
-            return p_font_->get_character_width(ui_char) * f_scaling_factor_;
+            return p_font_->get_character_width(c) * f_scaling_factor_;
     } else
         return 0.0f;
 }
 
-float text::get_character_kerning(char32_t ui_char1, char32_t ui_char2) const {
-    return p_font_->get_character_kerning(ui_char1, ui_char2) * f_scaling_factor_;
+float text::get_character_kerning(char32_t c1, char32_t c2) const {
+    return p_font_->get_character_kerning(c1, c2) * f_scaling_factor_;
 }
 
 void text::set_alignment_x(const alignment_x& m_align_x) {
@@ -634,7 +634,7 @@ void text::update_() const {
                         // be able to put the last one on the next line
                         auto                      iter_char2 = iter_char1 + 1;
                         std::vector<parser::item> erased_content;
-                        std::size_t               ui_char_to_erase  = 0;
+                        std::size_t               chars_to_erase    = 0;
                         float                     f_last_word_width = 0.0f;
                         bool                      b_last_was_word   = false;
                         while (m_line.f_width > f_box_w_ && iter_char2 != iter_line_begin) {
@@ -646,7 +646,7 @@ void text::update_() const {
                                     f_last_word_width += parser::get_full_advance(
                                         *this, iter_char2, iter_line_begin);
                                     erased_content.insert(erased_content.begin(), *iter_char2);
-                                    ++ui_char_to_erase;
+                                    ++chars_to_erase;
 
                                     m_line.f_width -= f_last_word_width;
                                     f_last_word_width = 0.0f;
@@ -656,7 +656,7 @@ void text::update_() const {
                                 f_last_word_width +=
                                     parser::get_full_advance(*this, iter_char2, iter_line_begin);
                                 erased_content.insert(erased_content.begin(), *iter_char2);
-                                ++ui_char_to_erase;
+                                ++chars_to_erase;
 
                                 b_last_was_word = true;
                             }
@@ -665,7 +665,7 @@ void text::update_() const {
                         if (b_remove_starting_spaces_) {
                             while (iter_char2 != iter_char1 + 1 &&
                                    parser::is_whitespace(*iter_char2)) {
-                                --ui_char_to_erase;
+                                --chars_to_erase;
                                 erased_content.erase(erased_content.begin());
                                 ++iter_char2;
                             }
@@ -673,7 +673,7 @@ void text::update_() const {
 
                         m_line.f_width -= f_last_word_width;
                         m_line.content.erase(
-                            m_line.content.end() - ui_char_to_erase, m_line.content.end());
+                            m_line.content.end() - chars_to_erase, m_line.content.end());
                         lines.push_back(m_line);
 
                         m_line.f_width  = parser::get_string_width(*this, erased_content);
@@ -689,15 +689,15 @@ void text::update_() const {
                             DEBUG_LOG("       Ellipsis");
                             // FIXME: this doesn't account for kerning between the "..." and prev
                             // char
-                            float       f_word_width     = get_string_width(U"...");
-                            auto        iter_char2       = iter_char1 + 1;
-                            std::size_t ui_char_to_erase = 0;
+                            float       f_word_width   = get_string_width(U"...");
+                            auto        iter_char2     = iter_char1 + 1;
+                            std::size_t chars_to_erase = 0;
                             while (m_line.f_width + f_word_width > f_box_w_ &&
                                    iter_char2 != iter_line_begin) {
                                 --iter_char2;
                                 m_line.f_width -=
                                     parser::get_full_advance(*this, iter_char2, iter_line_begin);
-                                ++ui_char_to_erase;
+                                ++chars_to_erase;
                             }
 
                             DEBUG_LOG(
@@ -705,24 +705,24 @@ void text::update_() const {
                                 " / " + utils::to_string(mLine.lContent.size()));
 
                             m_line.content.erase(
-                                m_line.content.end() - ui_char_to_erase, m_line.content.end());
+                                m_line.content.end() - chars_to_erase, m_line.content.end());
                             m_line.content.push_back(U'.');
                             m_line.content.push_back(U'.');
                             m_line.content.push_back(U'.');
                             m_line.f_width += f_word_width;
                         } else {
                             DEBUG_LOG("       Truncate");
-                            auto        iter_char2       = iter_char1 + 1;
-                            std::size_t ui_char_to_erase = 0;
+                            auto        iter_char2     = iter_char1 + 1;
+                            std::size_t chars_to_erase = 0;
                             while (m_line.f_width > f_box_w_ && iter_char2 != iter_line_begin) {
                                 --iter_char2;
                                 m_line.f_width -=
                                     parser::get_full_advance(*this, iter_char2, iter_line_begin);
-                                ++ui_char_to_erase;
+                                ++chars_to_erase;
                             }
 
                             m_line.content.erase(
-                                m_line.content.end() - ui_char_to_erase, m_line.content.end());
+                                m_line.content.end() - chars_to_erase, m_line.content.end());
                         }
 
                         if (!b_word_wrap_) {
@@ -968,8 +968,8 @@ void text::update_() const {
     b_update_cache_ = false;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t ui_char) const {
-    bounds2f m_quad = m_font.get_character_bounds(ui_char) * f_scaling_factor_;
+std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t c) const {
+    bounds2f m_quad = m_font.get_character_bounds(c) * f_scaling_factor_;
 
     std::array<vertex, 4> vertex_list;
     vertex_list[0].pos = m_quad.top_left();
@@ -977,7 +977,7 @@ std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t ui_c
     vertex_list[2].pos = m_quad.bottom_right();
     vertex_list[3].pos = m_quad.bottom_left();
 
-    bounds2f m_u_vs    = m_font.get_character_uvs(ui_char);
+    bounds2f m_u_vs    = m_font.get_character_uvs(c);
     vertex_list[0].uvs = m_u_vs.top_left();
     vertex_list[1].uvs = m_u_vs.top_right();
     vertex_list[2].uvs = m_u_vs.bottom_right();
@@ -986,18 +986,18 @@ std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t ui_c
     return vertex_list;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(char32_t ui_char) const {
-    return create_letter_quad_(*p_font_, ui_char);
+std::array<vertex, 4> text::create_letter_quad_(char32_t c) const {
+    return create_letter_quad_(*p_font_, c);
 }
 
-std::array<vertex, 4> text::create_outline_letter_quad_(char32_t ui_char) const {
-    return create_letter_quad_(*p_outline_font_, ui_char);
+std::array<vertex, 4> text::create_outline_letter_quad_(char32_t c) const {
+    return create_letter_quad_(*p_outline_font_, c);
 }
 
-quad text::create_letter_quad(char32_t ui_char) const {
+quad text::create_letter_quad(char32_t c) const {
     quad m_output;
     m_output.mat = p_font_->get_texture().lock();
-    m_output.v   = create_letter_quad_(ui_char);
+    m_output.v   = create_letter_quad_(c);
 
     return m_output;
 }

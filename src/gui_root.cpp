@@ -631,16 +631,16 @@ void root::on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_p
     }
 }
 
-void root::on_text_entered_(std::uint32_t ui_char) {
+void root::on_text_entered_(std::uint32_t c) {
     if (auto p_focus = get_focussed_frame()) {
         event_data m_data;
-        m_data.add(utils::unicode_to_utf8(utils::ustring(1, ui_char)));
-        m_data.add(ui_char);
+        m_data.add(utils::unicode_to_utf8(utils::ustring(1, c)));
+        m_data.add(c);
 
         p_focus->fire_script("OnChar", m_data);
     } else {
         // Forward to the world
-        m_world_input_dispatcher_.on_text_entered(ui_char);
+        m_world_input_dispatcher_.on_text_entered(c);
     }
 }
 

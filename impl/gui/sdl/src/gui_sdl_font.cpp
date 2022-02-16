@@ -213,22 +213,22 @@ std::size_t font::get_size() const {
     return ui_size_;
 }
 
-const font::character_info* font::get_character_(char32_t ui_char) const {
+const font::character_info* font::get_character_(char32_t c) const {
     for (const auto& m_info : range_list_) {
-        if (ui_char < m_info.m_range.ui_first || ui_char > m_info.m_range.ui_last)
+        if (c < m_info.m_range.ui_first || c > m_info.m_range.ui_last)
             continue;
 
-        return &m_info.data[ui_char - m_info.m_range.ui_first];
+        return &m_info.data[c - m_info.m_range.ui_first];
     }
 
-    if (ui_char != ui_default_code_point_)
+    if (c != ui_default_code_point_)
         return get_character_(ui_default_code_point_);
     else
         return nullptr;
 }
 
-bounds2f font::get_character_uvs(char32_t ui_char) const {
-    const character_info* p_char = get_character_(ui_char);
+bounds2f font::get_character_uvs(char32_t c) const {
+    const character_info* p_char = get_character_(c);
     if (!p_char)
         return bounds2f{};
 
@@ -237,24 +237,24 @@ bounds2f font::get_character_uvs(char32_t ui_char) const {
     return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
 }
 
-bounds2f font::get_character_bounds(char32_t ui_char) const {
-    const character_info* p_char = get_character_(ui_char);
+bounds2f font::get_character_bounds(char32_t c) const {
+    const character_info* p_char = get_character_(c);
     if (!p_char)
         return bounds2f{};
 
     return p_char->m_rect;
 }
 
-float font::get_character_width(char32_t ui_char) const {
-    const character_info* p_char = get_character_(ui_char);
+float font::get_character_width(char32_t c) const {
+    const character_info* p_char = get_character_(c);
     if (!p_char)
         return 0.0f;
 
     return p_char->f_advance;
 }
 
-float font::get_character_height(char32_t ui_char) const {
-    const character_info* p_char = get_character_(ui_char);
+float font::get_character_height(char32_t c) const {
+    const character_info* p_char = get_character_(c);
     if (!p_char)
         return 0.0f;
 

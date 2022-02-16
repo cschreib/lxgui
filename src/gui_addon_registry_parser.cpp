@@ -56,10 +56,10 @@ public:
         if (m_iter == line_offsets_.end())
             return std::make_pair(0, 0);
 
-        std::size_t ui_line_nbr    = m_iter - line_offsets_.begin();
-        std::size_t ui_char_offset = ui_offset - *m_iter + 1u;
+        std::size_t ui_line_nbr = m_iter - line_offsets_.begin();
+        std::size_t char_offset = ui_offset - *m_iter + 1u;
 
-        return std::make_pair(ui_line_nbr, ui_char_offset);
+        return std::make_pair(ui_line_nbr, char_offset);
     }
 
     std::string get_location(std::size_t ui_offset) const {
@@ -80,15 +80,15 @@ private:
 std::string normalize_node_name(const std::string& name, bool b_capital_first) {
     std::string normalized;
     bool        b_next_capitalize = b_capital_first;
-    for (auto c_char : name) {
+    for (auto c : name) {
         if (b_next_capitalize)
-            c_char = std::toupper(c_char);
+            c = std::toupper(c);
 
-        b_next_capitalize = c_char == '_';
+        b_next_capitalize = c == '_';
         if (b_next_capitalize)
             continue;
 
-        normalized.push_back(c_char);
+        normalized.push_back(c);
     }
 
     return normalized;

@@ -47,25 +47,25 @@ public:
      *   \note The uv coordinates are normalised, i.e. they range from
      *         0 to 1. They are arranged as {u1, v1, u2, v2}.
      */
-    bounds2f get_character_uvs(char32_t ui_char) const override;
+    bounds2f get_character_uvs(char32_t c) const override;
 
     /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
     /** \param uiChar The unicode character
      *   \return The rect coordinates of this character (in pixels, relative to the baseline)
      */
-    bounds2f get_character_bounds(char32_t ui_char) const override;
+    bounds2f get_character_bounds(char32_t c) const override;
 
     /// Returns the width of a character in pixels.
     /** \param uiChar The unicode character
      *   \return The width of the character in pixels.
      */
-    float get_character_width(char32_t ui_char) const override;
+    float get_character_width(char32_t c) const override;
 
     /// Returns the height of a character in pixels.
     /** \param uiChar The unicode character
      *   \return The height of the character in pixels.
      */
-    float get_character_height(char32_t ui_char) const override;
+    float get_character_height(char32_t c) const override;
 
     /// Return the kerning amount between two characters.
     /** \param uiChar1 The first unicode character
@@ -76,7 +76,7 @@ public:
      *         the two to be closer than with 'VW'. This has no effect
      *         for fixed width fonts (like Courrier, etc).
      */
-    float get_character_kerning(char32_t ui_char1, char32_t ui_char2) const override;
+    float get_character_kerning(char32_t c1, char32_t c2) const override;
 
     /// Returns the underlying material to use for rendering.
     /** \return The underlying material to use for rendering
@@ -101,7 +101,7 @@ private:
         std::vector<character_info> data;
     };
 
-    const character_info* get_character_(char32_t ui_char) const;
+    const character_info* get_character_(char32_t c) const;
 
     std::size_t ui_size_               = 0u;
     char32_t    ui_default_code_point_ = 0u;

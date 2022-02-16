@@ -26,9 +26,9 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
         on_key_released(m_key);
     }));
 
-    connections_.push_back(m_source.on_text_entered.connect([&](std::uint32_t ui_char) {
+    connections_.push_back(m_source.on_text_entered.connect([&](std::uint32_t c) {
         // Forward
-        on_text_entered(ui_char);
+        on_text_entered(c);
     }));
 
     connections_.push_back(m_source.on_mouse_pressed.connect(

@@ -1120,8 +1120,8 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
             get_manager().get_window().set_clipboard_content(selected);
         }
     } else if (m_key == key::k_v && b_ctrl_is_pressed) {
-        for (char32_t c_char : get_manager().get_window().get_clipboard_content()) {
-            if (!add_char_(c_char))
+        for (char32_t c : get_manager().get_window().get_clipboard_content()) {
+            if (!add_char_(c))
                 break;
             if (!m_checker.is_alive())
                 return;
