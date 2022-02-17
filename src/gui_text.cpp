@@ -43,11 +43,11 @@ struct line {
 };
 
 std::vector<item>
-parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool b_formatting_enabled) {
+parse_string(renderer& m_renderer, const utils::ustring_view& sCaption, bool formatting_enabled) {
     std::vector<item> content;
     for (auto iter_char = sCaption.begin(); iter_char != sCaption.end(); ++iter_char) {
         // Read format tags
-        if (*iter_char == U'|' && b_formatting_enabled) {
+        if (*iter_char == U'|' && formatting_enabled) {
             ++iter_char;
             if (iter_char == sCaption.end())
                 break;
@@ -288,7 +288,7 @@ text::text(
     if (!p_font_)
         return;
 
-    b_ready_ = true;
+    is_ready_ = true;
 }
 
 float text::get_line_height() const {
@@ -321,10 +321,10 @@ const utils::ustring& text::get_text() const {
     return unicode_text_;
 }
 
-void text::set_color(const color& m_color, bool b_force_color) {
-    if (m_color_ != m_color || b_force_color_ != b_force_color) {
-        m_color_       = m_color;
-        b_force_color_ = b_force_color;
+void text::set_color(const color& m_color, bool force_color) {
+    if (m_color_ != m_color || force_color_ != force_color) {
+        m_color_     = m_color;
+        force_color_ = force_color;
         if (m_renderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
@@ -394,7 +394,7 @@ float text::get_text_width() const {
 }
 
 float text::get_text_height() const {
-    if (!b_ready_)
+    if (!is_ready_)
         return 0.0f;
 
     std::size_t count    = std::count(unicode_text_.begin(), unicode_text_.end(), U'\n');
@@ -413,15 +413,15 @@ float text::get_string_width(const std::string& content) const {
 }
 
 float text::get_string_width(const utils::ustring& content) const {
-    if (!b_ready_)
+    if (!is_ready_)
         return 0.0f;
 
     return parser::get_string_width(
-        *this, parser::parse_string(m_renderer_, content, b_formatting_enabled_));
+        *this, parser::parse_string(m_renderer_, content, formatting_enabled_));
 }
 
 float text::get_character_width(char32_t c) const {
-    if (b_ready_) {
+    if (is_ready_) {
         if (c == U'\t')
             return 4.0f * p_font_->get_character_width(U' ') * f_scaling_factor_;
         else
@@ -478,52 +478,52 @@ float text::get_line_spacing() const {
     return f_line_spacing_;
 }
 
-void text::set_remove_starting_spaces(bool b_remove_starting_spaces) {
-    if (b_remove_starting_spaces_ != b_remove_starting_spaces) {
-        b_remove_starting_spaces_ = b_remove_starting_spaces;
+void text::set_remove_starting_spaces(bool remove_starting_spaces) {
+    if (remove_starting_spaces_ != remove_starting_spaces) {
+        remove_starting_spaces_ = remove_starting_spaces;
         notify_cache_dirty_();
     }
 }
 
 bool text::get_remove_starting_spaces() const {
-    return b_remove_starting_spaces_;
+    return remove_starting_spaces_;
 }
 
-void text::enable_word_wrap(bool b_wrap, bool b_add_ellipsis) {
-    if (b_word_wrap_ != b_wrap || b_add_ellipsis_ != b_add_ellipsis) {
-        b_word_wrap_    = b_wrap;
-        b_add_ellipsis_ = b_add_ellipsis;
+void text::enable_word_wrap(bool wrap, bool add_ellipsis) {
+    if (word_wrap_enabled_ != wrap || ellipsis_enabled_ != add_ellipsis) {
+        word_wrap_enabled_ = wrap;
+        ellipsis_enabled_  = add_ellipsis;
         notify_cache_dirty_();
     }
 }
 
 bool text::is_word_wrap_enabled() const {
-    return b_word_wrap_;
+    return word_wrap_enabled_;
 }
 
-void text::enable_formatting(bool b_formatting) {
-    if (b_formatting != b_formatting_enabled_) {
-        b_formatting_enabled_ = b_formatting;
+void text::enable_formatting(bool formatting) {
+    if (formatting != formatting_enabled_) {
+        formatting_enabled_ = formatting;
         if (m_renderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
 }
 
 void text::render(const matrix4f& m_transform) const {
-    if (!b_ready_ || unicode_text_.empty())
+    if (!is_ready_ || unicode_text_.empty())
         return;
 
-    bool b_use_vertex_cache =
+    bool use_vertex_cache =
         m_renderer_.is_vertex_cache_enabled() && !m_renderer_.is_quad_batching_enabled();
 
-    if ((b_use_vertex_cache && !p_vertex_cache_) || (b_use_vertex_cache && quad_list_.empty()))
-        b_update_cache_ = true;
+    if ((use_vertex_cache && !p_vertex_cache_) || (use_vertex_cache && quad_list_.empty()))
+        update_cache_flag_ = true;
 
     update_();
 
     if (p_outline_font_) {
         if (const auto p_mat = p_outline_font_->get_texture().lock()) {
-            if (b_use_vertex_cache && p_outline_vertex_cache_) {
+            if (use_vertex_cache && p_outline_vertex_cache_) {
                 m_renderer_.render_cache(p_mat.get(), *p_outline_vertex_cache_, m_transform);
             } else {
                 std::vector<std::array<vertex, 4>> quads_copy = outline_quad_list_;
@@ -539,7 +539,7 @@ void text::render(const matrix4f& m_transform) const {
     }
 
     if (const auto p_mat = p_font_->get_texture().lock()) {
-        if (b_use_vertex_cache && p_vertex_cache_) {
+        if (use_vertex_cache && p_vertex_cache_) {
             m_renderer_.render_cache(p_mat.get(), *p_vertex_cache_, m_transform);
         } else {
             std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
@@ -547,7 +547,7 @@ void text::render(const matrix4f& m_transform) const {
                 for (std::size_t i = 0; i < 4; ++i) {
                     m_quad[i].pos = m_quad[i].pos * m_transform;
 
-                    if (!b_formatting_enabled_ || b_force_color_ || m_quad[i].col == color::empty) {
+                    if (!formatting_enabled_ || force_color_ || m_quad[i].col == color::empty) {
                         m_quad[i].col = m_color_;
                     }
 
@@ -569,7 +569,7 @@ void text::render(const matrix4f& m_transform) const {
 }
 
 void text::notify_cache_dirty_() const {
-    b_update_cache_ = true;
+    update_cache_flag_ = true;
 }
 
 float text::round_to_pixel_(float f_value, utils::rounding_method m_method) const {
@@ -577,7 +577,7 @@ float text::round_to_pixel_(float f_value, utils::rounding_method m_method) cons
 }
 
 void text::update_() const {
-    if (!b_ready_ || !b_update_cache_)
+    if (!is_ready_ || !update_cache_flag_)
         return;
 
     // Update the line list, read format tags, do word wrapping, ...
@@ -603,7 +603,7 @@ void text::update_() const {
 
             // Parse the line
             std::vector<parser::item> parsed_content =
-                parser::parse_string(m_renderer_, *iter_manual, b_formatting_enabled_);
+                parser::parse_string(m_renderer_, *iter_manual, formatting_enabled_);
 
             // Make a temporary line array
             std::vector<parser::line> lines;
@@ -612,7 +612,7 @@ void text::update_() const {
             parser::line m_line;
             m_line.f_width = 0.0f;
 
-            bool b_done = false;
+            bool done = false;
             for (auto iter_char1 = parsed_content.begin(); iter_char1 != parsed_content.end();
                  ++iter_char1) {
                 DEBUG_LOG("      Get width");
@@ -628,7 +628,7 @@ void text::update_() const {
                     auto m_iter_space = std::find_if(
                         m_line.content.begin(), m_line.content.end(), &parser::is_whitespace);
 
-                    if (m_iter_space != m_line.content.end() && b_word_wrap_) {
+                    if (m_iter_space != m_line.content.end() && word_wrap_enabled_) {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
@@ -636,12 +636,12 @@ void text::update_() const {
                         std::vector<parser::item> erased_content;
                         std::size_t               chars_to_erase    = 0;
                         float                     f_last_word_width = 0.0f;
-                        bool                      b_last_was_word   = false;
+                        bool                      last_was_word     = false;
                         while (m_line.f_width > f_box_w_ && iter_char2 != iter_line_begin) {
                             --iter_char2;
 
                             if (parser::is_whitespace(*iter_char2)) {
-                                if (!b_last_was_word || b_remove_starting_spaces_ ||
+                                if (!last_was_word || remove_starting_spaces_ ||
                                     m_line.f_width - f_last_word_width > f_box_w_) {
                                     f_last_word_width += parser::get_full_advance(
                                         *this, iter_char2, iter_line_begin);
@@ -658,11 +658,11 @@ void text::update_() const {
                                 erased_content.insert(erased_content.begin(), *iter_char2);
                                 ++chars_to_erase;
 
-                                b_last_was_word = true;
+                                last_was_word = true;
                             }
                         }
 
-                        if (b_remove_starting_spaces_) {
+                        if (remove_starting_spaces_) {
                             while (iter_char2 != iter_char1 + 1 &&
                                    parser::is_whitespace(*iter_char2)) {
                                 --chars_to_erase;
@@ -685,7 +685,7 @@ void text::update_() const {
                         // wrap is disabled. Anyway, this line is just
                         // too long for the text box : our only option
                         // is to truncate it.
-                        if (b_add_ellipsis_) {
+                        if (ellipsis_enabled_) {
                             DEBUG_LOG("       Ellipsis");
                             // FIXME: this doesn't account for kerning between the "..." and prev
                             // char
@@ -725,11 +725,11 @@ void text::update_() const {
                                 m_line.content.end() - chars_to_erase, m_line.content.end());
                         }
 
-                        if (!b_word_wrap_) {
+                        if (!word_wrap_enabled_) {
                             DEBUG_LOG("       Display single line");
                             // Word wrap is disabled, so we can only display one line anyway.
                             line_list.push_back(m_line);
-                            b_done = true;
+                            done = true;
                             break;
                         }
 
@@ -773,7 +773,7 @@ void text::update_() const {
                 }
             }
 
-            if (b_done)
+            if (done)
                 break;
 
             DEBUG_LOG("     End");
@@ -784,12 +784,12 @@ void text::update_() const {
             for (auto& line : lines) {
                 line_list.push_back(std::move(line));
                 if (line_list.size() == ui_max_line_nbr) {
-                    b_done = true;
+                    done = true;
                     break;
                 }
             }
 
-            if (b_done)
+            if (done)
                 break;
             DEBUG_LOG("     .");
         }
@@ -955,7 +955,7 @@ void text::update_() const {
         std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
         for (auto& m_quad : quads_copy)
             for (std::size_t i = 0; i < 4; ++i) {
-                if (!b_formatting_enabled_ || b_force_color_ || m_quad[i].col == color::empty) {
+                if (!formatting_enabled_ || force_color_ || m_quad[i].col == color::empty) {
                     m_quad[i].col = m_color_;
                 }
 
@@ -965,7 +965,7 @@ void text::update_() const {
         p_vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
     }
 
-    b_update_cache_ = false;
+    update_cache_flag_ = false;
 }
 
 std::array<vertex, 4> text::create_letter_quad_(gui::font& m_font, char32_t c) const {

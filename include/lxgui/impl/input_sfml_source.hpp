@@ -46,7 +46,7 @@ private:
     sf::Window& m_window_;
 
     gui::vector2i m_old_mouse_pos_;
-    bool          b_first_mouse_move_ = true;
+    bool          first_mouse_move_ = true;
 
     std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> cursor_map_;
 };

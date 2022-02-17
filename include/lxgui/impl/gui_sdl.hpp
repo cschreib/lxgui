@@ -16,7 +16,7 @@ namespace lxgui::gui::sdl {
  *   \return The new gui::manager instance
  */
 utils::owner_ptr<gui::manager>
-create_manager(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise_sdl_image = true);
+create_manager(SDL_Window* p_window, SDL_Renderer* p_renderer, bool initialise_sdl_image = true);
 
 } // namespace lxgui::gui::sdl
 

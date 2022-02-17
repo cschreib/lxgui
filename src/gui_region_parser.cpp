@@ -66,23 +66,23 @@ region::parse_dimension_(const layout_node& m_node) {
 void region::parse_size_node_(const layout_node& m_node) {
     if (const layout_node* p_size_block = m_node.try_get_child("Size")) {
         auto m_dimensions = parse_dimension_(*p_size_block);
-        bool b_has_x      = m_dimensions.second.x.has_value();
-        bool b_has_y      = m_dimensions.second.y.has_value();
+        bool has_x        = m_dimensions.second.x.has_value();
+        bool has_y        = m_dimensions.second.y.has_value();
         if (m_dimensions.first == anchor_type::abs) {
-            if (b_has_x && b_has_y) {
+            if (has_x && has_y) {
                 set_dimensions(
                     vector2f(m_dimensions.second.x.value(), m_dimensions.second.y.value()));
-            } else if (b_has_x)
+            } else if (has_x)
                 set_width(m_dimensions.second.x.value());
-            else if (b_has_y)
+            else if (has_y)
                 set_height(m_dimensions.second.y.value());
         } else {
-            if (b_has_x && b_has_y) {
+            if (has_x && has_y) {
                 set_relative_dimensions(
                     vector2f(m_dimensions.second.x.value(), m_dimensions.second.y.value()));
-            } else if (b_has_x)
+            } else if (has_x)
                 set_relative_width(m_dimensions.second.x.value());
-            else if (b_has_y)
+            else if (has_y)
                 set_relative_height(m_dimensions.second.y.value());
         }
     }

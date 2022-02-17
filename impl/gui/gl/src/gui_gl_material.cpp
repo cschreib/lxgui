@@ -40,7 +40,7 @@ std::size_t next_pot(std::size_t ui_size) {
 }
 
 material::material(const vector2ui& m_dimensions, wrap m_wrap, filter m_filter) :
-    gui::material(false), m_wrap_(m_wrap), m_filter_(m_filter), b_is_owner_(true) {
+    gui::material(false), m_wrap_(m_wrap), m_filter_(m_filter), is_owner_(true) {
     if (only_power_of_two)
         m_canvas_dimensions_ = vector2ui(next_pot(m_dimensions.x), next_pot(m_dimensions.y));
     else
@@ -102,15 +102,15 @@ material::material(
     m_filter_(m_filter),
     ui_texture_handle_(ui_texture_handle),
     m_rect_(m_rect),
-    b_is_owner_(false) {}
+    is_owner_(false) {}
 
 material::~material() {
-    if (b_is_owner_)
+    if (is_owner_)
         glDeleteTextures(1, &ui_texture_handle_);
 }
 
 void material::set_wrap(wrap m_wrap) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception(
             "gui::gl::material", "A material in an atlas cannot change its wrapping mode.");
     }
@@ -135,7 +135,7 @@ void material::set_wrap(wrap m_wrap) {
 }
 
 void material::set_filter(filter m_filter) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception(
             "gui::gl::material", "A material in an atlas cannot change its filtering.");
     }
@@ -189,11 +189,11 @@ bool material::uses_same_texture(const gui::material& m_other) const {
 }
 
 bool material::set_dimensions(const vector2ui& m_dimensions) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception("gui::gl::material", "A material in an atlas cannot be resized.");
     }
 
-    bool b_canvas_updated = false;
+    bool canvas_updated = false;
 
     if (m_dimensions.x > m_canvas_dimensions_.x || m_dimensions.y > m_canvas_dimensions_.y) {
         vector2ui m_canvas_dimensions = m_dimensions;
@@ -239,11 +239,11 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
         glBindTexture(GL_TEXTURE_2D, previous_id);
 
         m_canvas_dimensions_ = m_canvas_dimensions;
-        b_canvas_updated     = true;
+        canvas_updated       = true;
     }
 
     m_rect_ = bounds2f(0, m_dimensions.x, 0, m_dimensions.y);
-    return b_canvas_updated;
+    return canvas_updated;
 }
 
 void material::update_texture(const ub32color* p_data) {

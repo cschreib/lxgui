@@ -27,7 +27,7 @@ class frame;
 
 /// Contains gui::layered_region
 struct layer_container {
-    bool                                             b_disabled = false;
+    bool                                             is_disabled = false;
     std::vector<utils::observer_ptr<layered_region>> region_list;
 };
 
@@ -324,28 +324,28 @@ public:
     void enable_draw_layer(layer m_layer_id);
 
     /// Sets if this frame can receive mouse input (click & move).
-    /** \param bIsMouseEnabled 'true' to enable
+    /** \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse(bool b_is_mouse_enabled);
+    void enable_mouse(bool is_mouse_enabled);
 
     /// Sets if this frame can receive mouse click input.
-    /** \param bIsMouseEnabled 'true' to enable
+    /** \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_click(bool b_is_mouse_enabled);
+    void enable_mouse_click(bool is_mouse_enabled);
 
     /// Sets if this frame can receive mouse move input.
-    /** \param bIsMouseEnabled 'true' to enable
+    /** \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_move(bool b_is_mouse_enabled);
+    void enable_mouse_move(bool is_mouse_enabled);
 
     /// Sets if this frame can receive mouse wheel input.
-    /** \param bIsMouseWheelEnabled 'true' to enable
+    /** \param is_mouse_wheel_enabled 'true' to enable
      */
-    void enable_mouse_wheel(bool b_is_mouse_wheel_enabled);
+    void enable_mouse_wheel(bool is_mouse_wheel_enabled);
 
     /// Sets if this frame can receive keyboard input from a specific key.
     /** \param key_name              The key to capture
-     *   \param bIsCaptureEnabled 'true' to enable
+     *   \param is_capture_enabled 'true' to enable
      *   \note If the frame captures the key, other frames below it will not be able to receive
      *         the input from this key. The format of the input key name is standard English,
      *         with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
@@ -353,7 +353,7 @@ public:
      *         simultaneously.
      *   \see is_key_capture_enabled()
      */
-    void enable_key_capture(const std::string& key_name, bool b_is_capture_enabled);
+    void enable_key_capture(const std::string& key_name, bool is_capture_enabled);
 
     /// Checks if this frame has a script defined.
     /** \param script_name The name of the script to check
@@ -976,10 +976,10 @@ public:
     void register_for_drag(const std::vector<std::string>& button_list);
 
     /// Sets if this frame is clamped to screen.
-    /** \param bIsClampedToScreen 'true' if this frame is clamped to screen
+    /** \param is_clamped_to_screen 'true' if this frame is clamped to screen
      *   \note If 'true', the frame can't go out of the screen.
      */
-    void set_clamped_to_screen(bool b_is_clamped_to_screen);
+    void set_clamped_to_screen(bool is_clamped_to_screen);
 
     /// Sets this frame's strata.
     /** \param mStrata The new strata
@@ -1044,9 +1044,9 @@ public:
     void set_min_width(float f_min_width);
 
     /// Sets if this frame can be moved by the user.
-    /** \param bIsMovable 'true' to allow the user to move this frame
+    /** \param is_movable 'true' to allow the user to move this frame
      */
-    void set_movable(bool b_is_movable);
+    void set_movable(bool is_movable);
 
     /// Removes this region from its parent and return an owning pointer.
     /** \return An owning pointer to this region
@@ -1054,9 +1054,9 @@ public:
     utils::owner_ptr<region> release_from_parent() override;
 
     /// Sets if this frame can be resized by the user.
-    /** \param bIsResizable 'true' to allow the user to resize this frame
+    /** \param is_resizable 'true' to allow the user to resize this frame
      */
-    void set_resizable(bool b_is_resizable);
+    void set_resizable(bool is_resizable);
 
     /// Sets this frame's scale.
     /** \param fScale The new scale
@@ -1064,13 +1064,13 @@ public:
     void set_scale(float f_scale);
 
     /// Sets if this frame is at top level.
-    /** \param bIsTopLevel 'true' to put the frame at top level
+    /** \param is_top_level 'true' to put the frame at top level
      *   \note A top-level frame will be raised to the foreground if it or
      *         any of its children are clicked. This should typically be
      *         set to 'true' for any "dialog" or "window" frame, which
      *         can be moved around, and not for "element" frames (buttons, etc.).
      */
-    void set_top_level(bool b_is_top_level);
+    void set_top_level(bool is_top_level);
 
     /// Increases this frame's level so it's the highest of the strata.
     /** \note All its children are raised of the same ammount.
@@ -1079,9 +1079,9 @@ public:
     void raise();
 
     /// Sets if this frame has been moved by the user.
-    /** \param bIsUserPlaced 'true' if this frame has been moved by the user
+    /** \param is_user_placed 'true' if this frame has been moved by the user
      */
-    void set_user_placed(bool b_is_user_placed);
+    void set_user_placed(bool is_user_placed);
 
     /// Starts moving this frame with the mouse.
     void start_moving();
@@ -1110,9 +1110,9 @@ public:
     void hide() override;
 
     /// Enables automatic focus when this frame is shown or raised.
-    /** \param bEnable 'true' to enable auto focus
+    /** \param enable 'true' to enable auto focus
      */
-    void enable_auto_focus(bool b_enable);
+    void enable_auto_focus(bool enable);
 
     /// Checks if automatic focus is enabled.
     /** \return 'true' if automatic focus is enabled
@@ -1125,7 +1125,7 @@ public:
      *         The focus will be restored automaticallly when that other frame
      *         releases focus, or it can be requested again by calling set_focus(true).
      */
-    void set_focus(bool b_focus);
+    void set_focus(bool focus);
 
     /// Check if this frame currently has focus.
     /** \return 'true' if the frame has focus, 'false' otherwise
@@ -1193,13 +1193,13 @@ public:
     void set_height(float f_abs_height) override;
 
     /// Tells this frame it is being overed by the mouse.
-    /** \param bMouseInFrame 'true' if the mouse is above this frame
+    /** \param mouse_in_frame 'true' if the mouse is above this frame
      *   \param mMousePos     The mouse coordinates in pixels
      *   \note Always use the mouse position set by this function and
      *         not the one returned by the input_manager, because there
      *         can be an offset applied (for example with scroll_frame).
      */
-    virtual void notify_mouse_in_frame(bool b_mouse_in_frame, const vector2f& m_mouse_pos);
+    virtual void notify_mouse_in_frame(bool mouse_in_frame, const vector2f& m_mouse_pos);
 
     /// Notifies this region that it is now visible on screen.
     /** \note Automatically called by show()/hide().
@@ -1214,7 +1214,7 @@ public:
     /// Notifies this frame that it has received or lost focus.
     /** \param focus 'true' if focus is received, 'false' if lost
      */
-    virtual void notify_focus(bool b_focus);
+    virtual void notify_focus(bool focus);
 
     /// Notifies this region that it has been fully loaded.
     /** \note Calls the "OnLoad" script.
@@ -1267,26 +1267,26 @@ protected:
 
     void add_level_(int amount);
 
-    void propagate_renderer_(bool b_rendered);
+    void propagate_renderer_(bool rendered);
 
     void update_borders_() override;
 
     utils::connection define_script_(
         const std::string& script_name,
         const std::string& content,
-        bool               b_append,
+        bool               append,
         const script_info& m_info);
 
     utils::connection define_script_(
         const std::string&      script_name,
         sol::protected_function m_handler,
-        bool                    b_append,
+        bool                    append,
         const script_info&      m_info);
 
     utils::connection define_script_(
         const std::string& script_name,
         script_function    m_handler,
-        bool               b_append,
+        bool               append,
         const script_info& m_info);
 
     void on_event_(std::string_view event_name, const event_data& m_event);
@@ -1304,23 +1304,23 @@ protected:
     std::set<std::string> reg_drag_list_;
     std::set<std::string> reg_key_list_;
 
-    int          level_          = 0;
-    frame_strata m_strata_       = frame_strata::medium;
-    bool         b_is_top_level_ = false;
+    int          level_        = 0;
+    frame_strata m_strata_     = frame_strata::medium;
+    bool         is_top_level_ = false;
 
     utils::observer_ptr<frame_renderer> p_renderer_ = nullptr;
 
     std::unique_ptr<backdrop> p_backdrop_;
 
-    bool b_is_mouse_click_enabled_ = false;
-    bool b_is_mouse_move_enabled_  = false;
-    bool b_is_mouse_wheel_enabled_ = false;
-    bool b_is_movable_             = false;
-    bool b_is_clamped_to_screen_   = false;
-    bool b_is_resizable_           = false;
-    bool b_is_user_placed_         = false;
+    bool is_mouse_click_enabled_ = false;
+    bool is_mouse_move_enabled_  = false;
+    bool is_mouse_wheel_enabled_ = false;
+    bool is_movable_             = false;
+    bool is_clamped_to_screen_   = false;
+    bool is_resizable_           = false;
+    bool is_user_placed_         = false;
 
-    bool b_build_layer_list_ = false;
+    bool build_layer_list_flag_ = false;
 
     bounds2f abs_hit_rect_inset_list_ = bounds2f::zero;
     bounds2f rel_hit_rect_inset_list_ = bounds2f::zero;
@@ -1334,14 +1334,12 @@ protected:
 
     float f_scale_ = 1.0f;
 
-    bool b_mouse_in_frame_ = false;
+    bool is_mouse_in_frame_ = false;
 
     utils::owner_ptr<region> p_title_region_ = nullptr;
 
-    bool b_mouse_dragged_in_frame_ = false;
-
-    bool b_focus_      = false;
-    bool b_auto_focus_ = false;
+    bool is_focused_    = false;
+    bool is_auto_focus_ = false;
 };
 
 } // namespace lxgui::gui

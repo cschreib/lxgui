@@ -21,7 +21,7 @@ public:
     /** \param renderer A pre-initialised SDL renderer
      *   \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */
-    explicit renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image);
+    explicit renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image);
 
     /// Returns a human-readable name for this renderer.
     /** \return A human-readable name for this renderer
@@ -206,9 +206,9 @@ protected:
         const matrix4f&          m_model_transform) override;
 
 private:
-    SDL_Renderer* p_renderer_                       = nullptr;
-    bool          b_pre_multiplied_alpha_supported_ = false;
-    std::size_t   ui_texture_max_size_              = 0u;
+    SDL_Renderer* p_renderer_                     = nullptr;
+    bool          pre_multiplied_alpha_supported_ = false;
+    std::size_t   ui_texture_max_size_            = 0u;
 
     vector2ui m_window_dimensions_;
     matrix4f  m_view_matrix_;

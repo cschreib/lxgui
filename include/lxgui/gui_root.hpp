@@ -59,10 +59,10 @@ public:
     void render() const;
 
     /// Enables or disables interface caching.
-    /** \param bEnable 'true' to enable, 'false' to disable
+    /** \param enable 'true' to enable, 'false' to disable
      *   \see toggle_caching()
      */
-    void enable_caching(bool b_enable);
+    void enable_caching(bool enable);
 
     /// Toggles interface caching.
     /** \note Disabled by default. Enabling this will most likely improve performances,
@@ -270,11 +270,11 @@ private:
     void on_drag_start_(input::mouse_button m_button, const vector2f& m_mouse_pos);
     void on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_pos);
     void on_text_entered_(std::uint32_t c);
-    void on_key_state_changed_(input::key m_key, bool b_is_down);
+    void on_key_state_changed_(input::key m_key, bool is_down);
     void on_mouse_button_state_changed_(
         input::mouse_button m_button,
-        bool                b_is_down,
-        bool                b_is_double_click,
+        bool                is_down,
+        bool                is_double_click,
         const vector2f&     m_mouse_pos);
 
     manager&                 m_manager_;
@@ -286,7 +286,7 @@ private:
     // Rendering
     vector2ui m_screen_dimensions_;
 
-    bool b_enable_caching_ = false;
+    bool caching_enabled_ = false;
 
     std::shared_ptr<render_target> p_render_target_;
     quad                           m_screen_quad_;
@@ -308,10 +308,10 @@ private:
     std::function<void()> m_apply_constraint_func_;
 
     vector2f m_resize_start_;
-    bool     b_resize_width_       = false;
-    bool     b_resize_height_      = false;
-    bool     b_resize_from_right_  = false;
-    bool     b_resize_from_bottom_ = false;
+    bool     is_resizing_width_       = false;
+    bool     is_resizing_height_      = false;
+    bool     is_resizing_from_right_  = false;
+    bool     is_resizing_from_bottom_ = false;
 
     // Keyboard IO
     std::vector<utils::observer_ptr<frame>> focus_stack_;

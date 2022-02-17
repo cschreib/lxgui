@@ -233,9 +233,9 @@ public:
 
         return std::visit(
             [&](const auto& m_item) {
-                constexpr bool b_is_string =
+                constexpr bool is_string =
                     std::is_same_v<std::decay_t<decltype(m_item)>, std::string>;
-                if constexpr (b_is_string) {
+                if constexpr (is_string) {
                     if constexpr (sizeof...(Args) == 0)
                         return m_item;
                     else

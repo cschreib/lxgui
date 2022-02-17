@@ -33,9 +33,9 @@ public:
     /// Default constructor
     /** \param dDuration The time interval between each tick
      *   \param mType     See TimerType
-     *   \param bTicks    The timer ticks immediately
+     *   \param ticks_now    The timer ticks immediately
      */
-    periodic_timer(double d_duration, start_type m_type, bool b_ticks);
+    periodic_timer(double d_duration, start_type m_type, bool ticks_now);
 
     /// Returns the time elapsed since the last tick.
     /** \return The time elapsed since last tick
@@ -75,10 +75,10 @@ public:
     void update(double d_delta);
 
 private:
-    double d_elapsed_    = 0.0;
-    double d_duration_   = 0.0;
-    bool   b_paused_     = true;
-    bool   b_first_tick_ = true;
+    double d_elapsed_  = 0.0;
+    double d_duration_ = 0.0;
+    bool   paused_     = true;
+    bool   first_tick_ = true;
 
     start_type m_type_ = start_type::paused;
 };
@@ -175,13 +175,13 @@ public:
     /// Selects a portion of the content.
     /** \param uiStart      The first character to select
      *   \param uiEnd        The last character to select
-     *   \param bForceUpdate 'true' to bypass all redundancy checks
+     *   \param force_update 'true' to bypass all redundancy checks
      *   \note Will select (uiEnd - uiStart) characters
      */
     void highlight_text(
-        std::size_t ui_start       = 0u,
-        std::size_t ui_end         = std::numeric_limits<std::size_t>::max(),
-        bool        b_force_update = false);
+        std::size_t ui_start     = 0u,
+        std::size_t ui_end       = std::numeric_limits<std::size_t>::max(),
+        bool        force_update = false);
 
     /// Deselects the selected text, if any.
     void unlight_text();
@@ -234,21 +234,21 @@ public:
     double get_blink_speed() const;
 
     /// Makes this edit_box allow numeric characters only.
-    /** \param bNumericOnly 'true' to only allow numeric characters
+    /** \param numeric_only 'true' to only allow numeric characters
      */
-    void set_numeric_only(bool b_numeric_only);
+    void set_numeric_only(bool numeric_only);
 
     /// Makes this edit_box allow positive numbers only.
-    /** \param bPositiveOnly 'true' to only allow positive numbers
+    /** \param positive_only 'true' to only allow positive numbers
      *   \note Only workds if set_numeric_only(true) has been called.
      */
-    void set_positive_only(bool b_positive_only);
+    void set_positive_only(bool positive_only);
 
     /// Makes this edit_box allow integer numbers only.
-    /** \param bIntegerOnly 'true' to only allow integer numbers
+    /** \param integer_only 'true' to only allow integer numbers
      *   \note Only workds if set_numeric_only(true) has been called.
      */
-    void set_integer_only(bool b_integer_only);
+    void set_integer_only(bool integer_only);
 
     /// Checks if this edit_box allows numeric characters only.
     /** \return 'true' if this edit_box allows numeric characters only
@@ -266,11 +266,11 @@ public:
     bool is_integer_only() const;
 
     /// Enables password mode.
-    /** \param bEnable 'true' to enable password mode
+    /** \param enable 'true' to enable password mode
      *   \note In password mode, the content of the edit_box is replaced
      *         by stars (*).
      */
-    void enable_password_mode(bool b_enable);
+    void enable_password_mode(bool enable);
 
     /// Checks if this edit_box is in password mode.
     /** \return 'true' if this edit_box is in password mode
@@ -278,14 +278,14 @@ public:
     bool is_password_mode_enabled() const;
 
     /// Allows this edit_box to have several lines in it.
-    /** \param bMultiLine 'true' to allow several lines in this edit_box
+    /** \param multi_line 'true' to allow several lines in this edit_box
      *   \note The behavior of a "multi line" edit_box is very different from
      *         a single line one.<br>
      *         History lines are only available to single line edit_boxes.<br>
      *         Scrolling in a single line edit_box is done horizontally, while
      *         it is only done vertically in a multi line one.
      */
-    void set_multi_line(bool b_multi_line);
+    void set_multi_line(bool multi_line);
 
     /// Checks if this edit_box can have several lines in it.
     /** \return 'true' if this edit_box can have several lines in it
@@ -318,9 +318,9 @@ public:
     void clear_history();
 
     /// Sets whether keyboard arrows move the carret or not.
-    /** \param bArrowsIgnored 'true' to ignore arrow keys
+    /** \param arrows_ignored 'true' to ignore arrow keys
      */
-    void set_arrows_ignored(bool b_arrows_ignored);
+    void set_arrows_ignored(bool arrows_ignored);
 
     /// Sets the insets used to render the content text.
     /** \param insets (left, right, top, bottom)
@@ -362,7 +362,7 @@ public:
     /// Notifies this frame that it has received or lost focus.
     /** \param focus 'true' if focus is received, 'false' if lost
      */
-    void notify_focus(bool b_focus) override;
+    void notify_focus(bool focus) override;
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
@@ -394,31 +394,31 @@ protected:
     bool        remove_char_();
     std::size_t get_letter_id_at_(const vector2f& m_position) const;
     bool        move_carret_at_(const vector2f& m_position);
-    bool        move_carret_horizontally_(bool b_forward = true);
-    bool        move_carret_vertically_(bool b_down = true);
+    bool        move_carret_horizontally_(bool forward = true);
+    bool        move_carret_vertically_(bool down = true);
 
-    void process_key_(input::key ui_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed);
+    void process_key_(input::key ui_key, bool shift_is_pressed, bool ctrl_is_pressed);
 
     utils::ustring           unicode_text_;
     utils::ustring           displayed_text_;
     utils::ustring::iterator iter_carret_pos_;
     utils::ustring::iterator iter_carret_pos_old_;
 
-    std::size_t ui_display_pos_   = 0;
-    std::size_t ui_num_letters_   = 0;
-    std::size_t ui_max_letters_   = std::numeric_limits<std::size_t>::max();
-    bool        b_numeric_only_   = false;
-    bool        b_positive_only_  = false;
-    bool        b_integer_only_   = false;
-    bool        b_password_mode_  = false;
-    bool        b_multi_line_     = false;
-    bool        b_arrows_ignored_ = false;
+    std::size_t ui_display_pos_     = 0;
+    std::size_t ui_num_letters_     = 0;
+    std::size_t ui_max_letters_     = std::numeric_limits<std::size_t>::max();
+    bool        is_numeric_only_    = false;
+    bool        is_positive_only_   = false;
+    bool        is_integer_only_    = false;
+    bool        is_password_mode_   = false;
+    bool        is_multi_line_      = false;
+    bool        are_arrows_ignored_ = false;
 
     utils::observer_ptr<texture> p_highlight_            = nullptr;
     color                        m_highlight_color_      = color(1.0f, 1.0f, 1.0f, 0.5f);
     std::size_t                  ui_selection_start_pos_ = 0u;
     std::size_t                  ui_selection_end_pos_   = 0u;
-    bool                         b_selected_text_        = false;
+    bool                         is_text_selected_       = false;
 
     utils::observer_ptr<texture> p_carret_      = nullptr;
     double                       d_blink_speed_ = 0.5;

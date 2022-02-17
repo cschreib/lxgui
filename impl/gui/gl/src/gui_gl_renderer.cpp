@@ -36,10 +36,10 @@ namespace lxgui::gui::gl {
 thread_local std::weak_ptr<renderer::shader_cache> renderer::p_static_shader_cache;
 #endif
 
-renderer::renderer(const vector2ui& m_window_dimensions, bool b_init_glew [[maybe_unused]]) :
+renderer::renderer(const vector2ui& m_window_dimensions, bool init_glew [[maybe_unused]]) :
     m_window_dimensions_(m_window_dimensions) {
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
-    if (b_init_glew)
+    if (init_glew)
         glewInit();
 #endif
 
@@ -406,9 +406,9 @@ GLuint create_program(const char* vertex_shader_source, const char* fragment_sha
 
 void renderer::compile_programs_() {
     // Shaders are compiled once, and reused by other renderers
-    thread_local bool b_shader_cached = false;
+    thread_local bool shader_cached = false;
 
-    if (!b_shader_cached) {
+    if (!shader_cached) {
         char vertex_shader[] = "#version 300 es                                           \n"
                                "layout(location = 0) in vec2 a_position;                  \n"
                                "layout(location = 1) in vec4 a_color;                     \n"
@@ -459,7 +459,7 @@ void renderer::compile_programs_() {
             glGetUniformLocation(p_shader_cache_->ui_program, "i_type");
 
         p_static_shader_cache = p_shader_cache_;
-        b_shader_cached       = true;
+        shader_cached         = true;
     } else {
         p_shader_cache_ = p_static_shader_cache.lock();
     }

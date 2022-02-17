@@ -23,13 +23,13 @@ class material final : public gui::material {
 public:
     /// Constructor for textures.
     /** \param mDimensions   The requested texture dimensions
-     *   \param bRenderTarget Create the material for a render target or only for display
+     *   \param is_render_target Create the material for a render target or only for display
      *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
      *   \param mFilter       Use texture filtering or not (see set_filter())
      */
     material(
         const vector2ui& m_dimensions,
-        bool             b_render_target,
+        bool             is_render_target,
         wrap             m_wrap   = wrap::repeat,
         filter           m_filter = filter::none);
 
@@ -136,7 +136,7 @@ private:
     wrap      m_wrap_   = wrap::repeat;
     filter    m_filter_ = filter::none;
 
-    bool               b_render_target_ = false;
+    bool               is_render_target_ = false;
     sf::RenderTexture  m_render_texture_;
     sf::Texture        m_texture_;
     const sf::Texture* p_atlas_texture_ = nullptr;

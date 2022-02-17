@@ -40,9 +40,9 @@ public:
 
     /// Tells this renderer that it should (or not) render another frame.
     /** \param pFrame    The frame to render
-     *   \param bRendered 'true' if this renderer needs to render that new object
+     *   \param rendered 'true' if this renderer needs to render that new object
      */
-    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool b_rendered);
+    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool rendered);
 
     /// Tells this renderer that a frame has changed strata.
     /** \param pFrame The frame which has changed
@@ -103,7 +103,7 @@ protected:
     void render_strata_(const strata& m_strata) const;
 
     std::array<strata, 8> strata_list_;
-    bool                  b_strata_list_updated_ = false;
+    bool                  strata_list_updated_ = false;
 };
 
 } // namespace lxgui::gui

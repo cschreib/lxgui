@@ -83,10 +83,10 @@ public:
     float get_interface_scaling_factor() const;
 
     /// Enables or disables interface caching.
-    /** \param bEnableCaching 'true' to enable, 'false' to disable
+    /** \param enable_caching 'true' to enable, 'false' to disable
      *   \see toggle_caching()
      */
-    void enable_caching(bool b_enable_caching);
+    void enable_caching(bool enable_caching);
 
     /// Toggles interface caching.
     /** \note Disabled by default. Enabling this will most likely improve performances,
@@ -353,7 +353,7 @@ private:
     // Persistent state
     float                              f_scaling_factor_      = 1.0f;
     float                              f_base_scaling_factor_ = 1.0f;
-    bool                               b_enable_caching_      = false;
+    bool                               enable_caching_        = false;
     std::function<void(gui::manager&)> p_lua_regs_;
     std::vector<std::string>           gui_directory_list_;
 
@@ -375,11 +375,11 @@ private:
     utils::owner_ptr<virtual_root>  p_virtual_root_;
     std::unique_ptr<addon_registry> p_add_on_registry_;
 
-    bool b_loaded_          = false;
-    bool b_reload_ui_       = false;
-    bool b_close_ui_        = false;
-    bool b_first_iteration_ = true;
-    bool b_updating_        = false;
+    bool is_loaded_          = false;
+    bool reload_ui_flag_     = false;
+    bool close_ui_flag_      = false;
+    bool is_first_iteration_ = true;
+    bool is_updating_        = false;
 };
 
 } // namespace lxgui::gui

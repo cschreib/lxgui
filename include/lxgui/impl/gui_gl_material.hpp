@@ -130,7 +130,7 @@ private:
     filter        m_filter_          = filter::none;
     std::uint32_t ui_texture_handle_ = 0u;
     bounds2f      m_rect_;
-    bool          b_is_owner_ = false;
+    bool          is_owner_ = false;
 
     static bool        only_power_of_two;
     static std::size_t maximum_size;

@@ -271,10 +271,10 @@ public:
     virtual void hide();
 
     /// shows/hides this region.
-    /** \param bIsShown 'true' if you want to show this region
+    /** \param is_shown 'true' if you want to show this region
      *   \note See show() and hide() for more infos.
      */
-    void set_shown(bool b_is_shown);
+    void set_shown(bool is_shown);
 
     /// Checks if this region is shown.
     /** \return 'true' if this region is shown
@@ -717,11 +717,10 @@ protected:
 
     utils::observer_ptr<frame> p_parent_ = nullptr;
 
-    bool b_special_  = false;
-    bool b_inherits_ = false;
-    bool b_virtual_  = false;
-    bool b_loaded_   = false;
-    bool b_ready_    = true;
+    bool is_special_ = false;
+    bool is_virtual_ = false;
+    bool is_loaded_  = false;
+    bool is_ready_   = true;
 
     std::vector<std::string> type_;
 
@@ -730,9 +729,9 @@ protected:
     bounds2<bool>                            defined_border_list_;
     bounds2f                                 border_list_;
 
-    float f_alpha_      = 1.0f;
-    bool  b_is_shown_   = true;
-    bool  b_is_visible_ = true;
+    float f_alpha_    = 1.0f;
+    bool  is_shown_   = true;
+    bool  is_visible_ = true;
 
     vector2f m_dimensions_;
 

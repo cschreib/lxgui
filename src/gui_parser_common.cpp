@@ -37,7 +37,7 @@ region_core_attributes parse_core_attributes(
                      << std::endl;
         }
     } else {
-        m_attr.b_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
+        m_attr.is_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
 
         if (const layout_attribute* p_attr = m_node.try_get_attribute("parent")) {
             std::string parent       = p_attr->get_value<std::string>();

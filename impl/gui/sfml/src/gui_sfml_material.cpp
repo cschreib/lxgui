@@ -8,7 +8,7 @@
 namespace lxgui::gui::sfml {
 
 material::material(
-    const vector2ui& m_dimensions, bool b_render_target, wrap m_wrap, filter m_filter) :
+    const vector2ui& m_dimensions, bool is_render_target, wrap m_wrap, filter m_filter) :
     gui::material(false),
     m_dimensions_(m_dimensions),
     m_canvas_dimensions_(m_dimensions),
@@ -22,9 +22,9 @@ material::material(
                                        utils::to_string(m_dimensions_.y) + ").");
     }
 
-    b_render_target_ = b_render_target;
+    is_render_target_ = is_render_target;
 
-    if (b_render_target_) {
+    if (is_render_target_) {
         if (!m_render_texture_.create(m_dimensions_.x, m_dimensions_.y)) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create render target with dimensions " +
@@ -48,7 +48,7 @@ material::material(
 }
 
 material::material(const sf::Image& m_data, wrap m_wrap, filter m_filter) : gui::material(false) {
-    b_render_target_ = false;
+    is_render_target_ = false;
     m_texture_.loadFromImage(m_data);
     m_texture_.setSmooth(m_filter == filter::linear);
     m_texture_.setRepeated(m_wrap == wrap::repeat);
@@ -63,7 +63,7 @@ material::material(const sf::Image& m_data, wrap m_wrap, filter m_filter) : gui:
 
 material::material(const std::string& file_name, wrap m_wrap, filter m_filter) :
     gui::material(false) {
-    b_render_target_ = false;
+    is_render_target_ = false;
     sf::Image m_data;
     if (!m_data.loadFromFile(file_name))
         throw utils::exception("gui::sfml::material", "loading failed: '" + file_name + "'.");
@@ -96,7 +96,7 @@ void material::set_wrap(wrap m_wrap) {
 
     m_wrap_ = m_wrap;
 
-    if (b_render_target_)
+    if (is_render_target_)
         m_render_texture_.setRepeated(m_wrap == wrap::repeat);
     else
         m_texture_.setRepeated(m_wrap == wrap::repeat);
@@ -110,7 +110,7 @@ void material::set_filter(filter m_filter) {
 
     m_filter_ = m_filter;
 
-    if (b_render_target_)
+    if (is_render_target_)
         m_render_texture_.setSmooth(m_filter == filter::linear);
     else
         m_texture_.setSmooth(m_filter == filter::linear);
@@ -121,7 +121,7 @@ material::filter material::get_filter() const {
 }
 
 void material::update_texture(const ub32color* p_data) {
-    if (b_render_target_)
+    if (is_render_target_)
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
 
     if (p_atlas_texture_)
@@ -167,7 +167,7 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
     }
 
-    if (!b_render_target_)
+    if (!is_render_target_)
         return false;
 
     if (m_dimensions.x > sf::Texture::getMaximumSize() ||
@@ -202,14 +202,14 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
 }
 
 sf::RenderTexture* material::get_render_texture() {
-    if (!b_render_target_)
+    if (!is_render_target_)
         return nullptr;
 
     return &m_render_texture_;
 }
 
 const sf::Texture* material::get_texture() const {
-    if (b_render_target_)
+    if (is_render_target_)
         return &m_render_texture_.getTexture();
     else if (p_atlas_texture_)
         return p_atlas_texture_;

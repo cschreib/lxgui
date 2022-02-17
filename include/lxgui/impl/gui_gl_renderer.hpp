@@ -21,10 +21,10 @@ class renderer final : public gui::renderer {
 public:
     /// Constructor.
     /** \param window_dimensions The initial window dimensions (in pixels)
-     *   \param bInitGLEW         Set to 'true' to initialise GLEW
+     *   \param init_glew         Set to 'true' to initialise GLEW
      *   \note Use notify_window_resized() if the size of the window changes later.
      */
-    explicit renderer(const vector2ui& m_window_dimensions, bool b_init_glew = true);
+    explicit renderer(const vector2ui& m_window_dimensions, bool init_glew = true);
 
     /// Returns a human-readable name for this renderer.
     /** \return A human-readable name for this renderer

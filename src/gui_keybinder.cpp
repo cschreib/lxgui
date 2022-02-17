@@ -48,9 +48,9 @@ utils::connection keybinder::register_key_binding(std::string_view name, functio
 void keybinder::set_key_binding(
     std::string_view name,
     input::key       m_key,
-    bool             b_shift_is_pressed,
-    bool             b_ctrl_is_pressed,
-    bool             b_alt_is_pressed) {
+    bool             shift_is_pressed,
+    bool             ctrl_is_pressed,
+    bool             alt_is_pressed) {
     auto m_iter = utils::find_if(
         key_bindings_, [&](const auto& m_binding) { return m_binding.name == name; });
 
@@ -60,32 +60,32 @@ void keybinder::set_key_binding(
     }
 
     m_iter->m_key = m_key;
-    m_iter->b_shift_is_pressed =
-        b_shift_is_pressed || m_key == input::key::k_lshift || m_key == input::key::k_rshift;
-    m_iter->b_ctrl_is_pressed =
-        b_ctrl_is_pressed || m_key == input::key::k_lcontrol || m_key == input::key::k_rcontrol;
-    m_iter->b_alt_is_pressed =
-        b_alt_is_pressed || m_key == input::key::k_lmenu || m_key == input::key::k_rmenu;
+    m_iter->shift_is_pressed =
+        shift_is_pressed || m_key == input::key::k_lshift || m_key == input::key::k_rshift;
+    m_iter->ctrl_is_pressed =
+        ctrl_is_pressed || m_key == input::key::k_lcontrol || m_key == input::key::k_rcontrol;
+    m_iter->alt_is_pressed =
+        alt_is_pressed || m_key == input::key::k_lmenu || m_key == input::key::k_rmenu;
 }
 
 void keybinder::set_key_binding(std::string_view name, std::string_view key) {
-    bool b_shift_is_pressed = false;
-    bool b_ctrl_is_pressed  = false;
-    bool b_alt_is_pressed   = false;
+    bool shift_is_pressed = false;
+    bool ctrl_is_pressed  = false;
+    bool alt_is_pressed   = false;
 
     const auto tokens = utils::cut(key, "-");
     for (auto token : tokens) {
         if (token == "Shift")
-            b_shift_is_pressed = true;
+            shift_is_pressed = true;
         else if (token == "Ctrl")
-            b_ctrl_is_pressed = true;
+            ctrl_is_pressed = true;
         else if (token == "Alt")
-            b_alt_is_pressed = true;
+            alt_is_pressed = true;
     }
 
     set_key_binding(
-        name, input::get_key_from_codename(tokens.back()), b_shift_is_pressed, b_ctrl_is_pressed,
-        b_alt_is_pressed);
+        name, input::get_key_from_codename(tokens.back()), shift_is_pressed, ctrl_is_pressed,
+        alt_is_pressed);
 }
 
 void keybinder::remove_key_binding(std::string_view name) {
@@ -101,11 +101,11 @@ void keybinder::remove_key_binding(std::string_view name) {
 }
 
 keybinder::key_binding* keybinder::find_binding_(
-    input::key mKey, bool b_shift_is_pressed, bool bCtrlIsPressed, bool bAltIsPressed) {
+    input::key mKey, bool shift_is_pressed, bool bCtrlIsPressed, bool bAltIsPressed) {
     auto m_iter = utils::find_if(key_bindings_, [&](const auto& m_binding) {
-        return m_binding.m_key == mKey && m_binding.b_shift_is_pressed == b_shift_is_pressed &&
-               m_binding.b_ctrl_is_pressed == bCtrlIsPressed &&
-               m_binding.b_alt_is_pressed == bAltIsPressed;
+        return m_binding.m_key == mKey && m_binding.shift_is_pressed == shift_is_pressed &&
+               m_binding.ctrl_is_pressed == bCtrlIsPressed &&
+               m_binding.alt_is_pressed == bAltIsPressed;
     });
 
     if (m_iter == key_bindings_.end())
@@ -115,9 +115,8 @@ keybinder::key_binding* keybinder::find_binding_(
 }
 
 bool keybinder::on_key_down(
-    input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed) {
-    auto* p_key_binding =
-        find_binding_(m_key, b_shift_is_pressed, b_ctrl_is_pressed, b_alt_is_pressed);
+    input::key m_key, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed) {
+    auto* p_key_binding = find_binding_(m_key, shift_is_pressed, ctrl_is_pressed, alt_is_pressed);
     if (!p_key_binding)
         return false;
 

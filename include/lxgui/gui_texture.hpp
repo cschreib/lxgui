@@ -81,11 +81,10 @@ public:
      */
     std::array<float, 8> get_tex_coord() const;
 
-    /// Checks if this texture's dimensions are affected by texture coordinates.
-    /** \return 'true' if this texture's dimensions are affected by texture
-     *           coordinates
+    /// Checks if this texture can stretch to match the region dimensions
+    /** \return 'true' if this texture can stretch to match the region dimensions
      */
-    bool get_tex_coord_modifies_rect() const;
+    bool get_texture_stretching() const;
 
     /// Checks if this texture is defined as a texture file.
     /** \return 'true' if the texture is defined a texture file, 'false' otherwise
@@ -134,9 +133,9 @@ public:
     void set_filter_mode(const std::string& filter_name);
 
     /// Makes this texture appear without any color.
-    /** \param bIsDesaturated 'true' if you want to remove colors
+    /** \param is_desaturated 'true' if you want to remove colors
      */
-    void set_desaturated(bool b_is_desaturated);
+    void set_desaturated(bool is_desaturated);
 
     /// Adds a gradient effect to this texture.
     /** \param mGradient The gradient to add
@@ -166,10 +165,10 @@ public:
      */
     void set_tex_coord(const std::array<float, 8>& texture_coords);
 
-    /// Sets whether this texture's dimensions are affected by texture coordinates.
-    /** \param bTexCoordModifiesRect 'true' to make dimensions change with tex coords
+    /// Sets whether this texture can stretch to match the region dimensions.
+    /** \param texture_stretching 'true' to allow texture stretching change with tex coords
      */
-    void set_tex_coord_modifies_rect(bool b_tex_coord_modifies_rect);
+    void set_texture_stretching(bool texture_stretching);
 
     /// Sets this texture's texture file.
     /** \param file_name The file from which to read data
@@ -234,10 +233,10 @@ private:
     using content      = std::variant<color, std::string, gradient>;
     content m_content_ = color::white;
 
-    blend_mode       m_blend_mode_              = blend_mode::blend;
-    material::filter m_filter_                  = material::filter::none;
-    bool             b_is_desaturated_          = false;
-    bool             b_tex_coord_modifies_rect_ = false;
+    blend_mode       m_blend_mode_                  = blend_mode::blend;
+    material::filter m_filter_                      = material::filter::none;
+    bool             is_desaturated_                = false;
+    bool             is_texture_stretching_enabled_ = true;
 
     renderer& m_renderer_;
     quad      m_quad_;

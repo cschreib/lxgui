@@ -40,7 +40,7 @@ std::string slider::serialize(const std::string& tab) const {
     str << tab << "  # Min value  : " << f_min_value_ << "\n";
     str << tab << "  # Max value  : " << f_max_value_ << "\n";
     str << tab << "  # Step       : " << f_value_step_ << "\n";
-    str << tab << "  # Click out  : " << b_allow_clicks_outside_thumb_ << "\n";
+    str << tab << "  # Click out  : " << allow_clicks_outside_thumb_ << "\n";
 
     return str.str();
 }
@@ -70,17 +70,17 @@ void slider::fire_script(const std::string& script_name, const event_data& m_dat
                 m_orientation_ == orientation::horizontal ? constraint::x : constraint::y,
                 [&]() { constrain_thumb_(); });
 
-            b_thumb_moved_ = true;
+            is_thumb_dragged_ = true;
         }
     } else if (script_name == "OnDragStop") {
         if (p_thumb_texture_) {
             if (get_manager().get_root().is_moving(*p_thumb_texture_))
                 get_manager().get_root().stop_moving();
 
-            b_thumb_moved_ = false;
+            is_thumb_dragged_ = false;
         }
     } else if (script_name == "OnMouseDown") {
-        if (b_allow_clicks_outside_thumb_) {
+        if (allow_clicks_outside_thumb_) {
             const vector2f m_apparent_size = get_apparent_dimensions();
 
             float f_value;
@@ -140,7 +140,7 @@ void slider::constrain_thumb_() {
 
     float f_old_value = f_value_;
 
-    if (b_thumb_moved_) {
+    if (is_thumb_dragged_) {
         if (m_orientation_ == orientation::horizontal)
             f_value_ =
                 p_thumb_texture_->get_point(anchor_point::center).m_offset.x / m_apparent_size.x;
@@ -222,14 +222,14 @@ void slider::set_min_max_values(float f_min, float f_max) {
     }
 }
 
-void slider::set_value(float f_value, bool b_silent) {
+void slider::set_value(float f_value, bool silent) {
     f_value = std::clamp(f_value, f_min_value_, f_max_value_);
     step_value(f_value, f_value_step_);
 
     if (f_value != f_value_) {
         f_value_ = f_value;
 
-        if (!b_silent)
+        if (!silent)
             fire_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
@@ -349,16 +349,16 @@ layer slider::get_thumb_draw_layer() const {
     return m_thumb_layer_;
 }
 
-void slider::set_allow_clicks_outside_thumb(bool b_allow) {
-    b_allow_clicks_outside_thumb_ = b_allow;
+void slider::set_allow_clicks_outside_thumb(bool allow) {
+    allow_clicks_outside_thumb_ = allow;
 }
 
 bool slider::are_clicks_outside_thumb_allowed() const {
-    return b_allow_clicks_outside_thumb_;
+    return allow_clicks_outside_thumb_;
 }
 
 bool slider::is_in_region(const vector2f& m_position) const {
-    if (b_allow_clicks_outside_thumb_) {
+    if (allow_clicks_outside_thumb_) {
         if (base::is_in_region(m_position))
             return true;
     }

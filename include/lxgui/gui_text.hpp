@@ -87,9 +87,9 @@ public:
 
     /// Sets this text's default color.
     /** \param mColor      The default color
-     *   \param bForceColor 'true' to ignore color tags
+     *   \param force_color 'true' to ignore color tags
      */
-    void set_color(const color& m_color, bool b_force_color = false);
+    void set_color(const color& m_color, bool force_color = false);
 
     /// Returns this text's default color.
     /** \return This text's default color
@@ -239,7 +239,7 @@ public:
     float get_line_spacing() const;
 
     /// Allows removal of a line's starting spaces.
-    /** \param bRemoveStartingSpaces 'true' to remove them
+    /** \param remove_starting_spaces 'true' to remove them
      *   \note The text box does word wrapping : it cuts too long
      *         lines only between words. But sometimes, the rendered
      *         text must be cut between several spaces. By default,
@@ -247,7 +247,7 @@ public:
      *         the next line. You can change this behavior by setting
      *         this function to 'true'.
      */
-    void set_remove_starting_spaces(bool b_remove_starting_spaces);
+    void set_remove_starting_spaces(bool remove_starting_spaces);
 
     /// Checks if starting spaces removing is active.
     /** \return 'true' if starting spaces removing is active
@@ -255,12 +255,12 @@ public:
     bool get_remove_starting_spaces() const;
 
     /// Allows word wrap when the line is too long for the text box.
-    /** \param bWrap        'true' to enable word wrap
-     *   \param bAddEllipsis 'true' to put "..." at the end of a truncated line
+    /** \param wrap        'true' to enable word wrap
+     *   \param add_ellipsis 'true' to put "..." at the end of a truncated line
      *   \note Enabled by default.
      */
 
-    void enable_word_wrap(bool b_wrap, bool b_add_ellipsis);
+    void enable_word_wrap(bool wrap, bool add_ellipsis);
 
     /// Checks if word wrap is enabled.
     /** \return 'true' if word wrap is enabled
@@ -268,13 +268,13 @@ public:
     bool is_word_wrap_enabled() const;
 
     /// Enables color formatting.
-    /** \param bFormatting 'true' to enable color formatting
+    /** \param formatting 'true' to enable color formatting
      *   \note Enabled by default.
      *   \note - "|cAARRGGBB" : sets text color (hexadecimal).<br>
      *         - "|r" : sets text color to default.<br>
      *         - "||" : writes "|".
      */
-    void enable_formatting(bool b_formatting);
+    void enable_formatting(bool formatting);
 
     /// Renders this text at the given position.
     /** \param mTransform The transform to apply to the text
@@ -334,30 +334,30 @@ private:
 
     renderer& m_renderer_;
 
-    bool        b_ready_                  = false;
-    float       f_scaling_factor_         = 1.0f;
-    float       f_tracking_               = 0.0f;
-    float       f_line_spacing_           = 1.0f;
-    bool        b_remove_starting_spaces_ = false;
-    bool        b_word_wrap_              = true;
-    bool        b_add_ellipsis_           = false;
-    color       m_color_                  = color::white;
-    bool        b_force_color_            = false;
-    float       f_alpha_                  = 1.0f;
-    bool        b_formatting_enabled_     = false;
-    float       f_box_w_                  = std::numeric_limits<float>::infinity();
-    float       f_box_h_                  = std::numeric_limits<float>::infinity();
-    alignment_x m_align_x_                = alignment_x::left;
-    alignment_y m_align_y_                = alignment_y::middle;
+    bool        is_ready_               = false;
+    float       f_scaling_factor_       = 1.0f;
+    float       f_tracking_             = 0.0f;
+    float       f_line_spacing_         = 1.0f;
+    bool        remove_starting_spaces_ = false;
+    bool        word_wrap_enabled_      = true;
+    bool        ellipsis_enabled_       = false;
+    color       m_color_                = color::white;
+    bool        force_color_            = false;
+    float       f_alpha_                = 1.0f;
+    bool        formatting_enabled_     = false;
+    float       f_box_w_                = std::numeric_limits<float>::infinity();
+    float       f_box_h_                = std::numeric_limits<float>::infinity();
+    alignment_x m_align_x_              = alignment_x::left;
+    alignment_y m_align_y_              = alignment_y::middle;
 
     std::shared_ptr<font> p_font_;
     std::shared_ptr<font> p_outline_font_;
     utils::ustring        unicode_text_;
 
-    mutable bool        b_update_cache_ = false;
-    mutable float       f_w_            = 0.0f;
-    mutable float       f_h_            = 0.0f;
-    mutable std::size_t ui_num_lines_   = 0u;
+    mutable bool        update_cache_flag_ = false;
+    mutable float       f_w_               = 0.0f;
+    mutable float       f_h_               = 0.0f;
+    mutable std::size_t ui_num_lines_      = 0u;
 
     mutable std::vector<std::array<vertex, 4>> quad_list_;
     mutable std::shared_ptr<vertex_cache>      p_vertex_cache_;

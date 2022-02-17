@@ -307,9 +307,9 @@ protected:
     void parse_attributes_(const layout_node& m_node) override;
     void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    state m_state_          = state::up;
-    bool  b_highlighted_    = false;
-    bool  b_lock_highlight_ = false;
+    state m_state_             = state::up;
+    bool  is_highlighted_      = false;
+    bool  is_highlight_locked_ = false;
 
     utils::ustring content_;
 

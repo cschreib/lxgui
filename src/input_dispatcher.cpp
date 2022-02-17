@@ -57,8 +57,8 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
             // Forward
             on_mouse_released(m_button, m_mouse_pos);
 
-            if (b_mouse_dragged_ && m_button == m_mouse_drag_button_) {
-                b_mouse_dragged_ = false;
+            if (is_mouse_dragged_ && m_button == m_mouse_drag_button_) {
+                is_mouse_dragged_ = false;
                 on_mouse_drag_stop(m_button, m_mouse_pos);
             }
         }));
@@ -80,7 +80,7 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
             // Forward
             on_mouse_moved(m_movement, m_mouse_pos);
 
-            if (!b_mouse_dragged_) {
+            if (!is_mouse_dragged_) {
                 std::size_t ui_mouse_button_pressed = std::numeric_limits<std::size_t>::max();
                 for (std::size_t i = 0; i < mouse_button_number; ++i) {
                     if (mouse_is_down(static_cast<mouse_button>(i))) {
@@ -90,7 +90,7 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
                 }
 
                 if (ui_mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
-                    b_mouse_dragged_     = true;
+                    is_mouse_dragged_    = true;
                     m_mouse_drag_button_ = static_cast<mouse_button>(ui_mouse_button_pressed);
                     on_mouse_drag_start(m_mouse_drag_button_, m_mouse_pos);
                 }

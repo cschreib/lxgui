@@ -40,11 +40,11 @@ public:
 
         line_offsets_.push_back(ui_prev_pos);
 
-        b_is_open_ = true;
+        is_open_ = true;
     }
 
     bool is_open() const {
-        return b_is_open_;
+        return is_open_;
     }
 
     const std::string& get_content() const {
@@ -71,21 +71,21 @@ public:
     }
 
 private:
-    bool                     b_is_open_ = false;
+    bool                     is_open_ = false;
     std::string              file_name_;
     std::string              file_content_;
     std::vector<std::size_t> line_offsets_;
 };
 
-std::string normalize_node_name(const std::string& name, bool b_capital_first) {
+std::string normalize_node_name(const std::string& name, bool capital_first) {
     std::string normalized;
-    bool        b_next_capitalize = b_capital_first;
+    bool        next_capitalize = capital_first;
     for (auto c : name) {
-        if (b_next_capitalize)
+        if (next_capitalize)
             c = std::toupper(c);
 
-        b_next_capitalize = c == '_';
-        if (b_next_capitalize)
+        next_capitalize = c == '_';
+        if (next_capitalize)
             continue;
 
         normalized.push_back(c);
@@ -203,7 +203,7 @@ void addon_registry::parse_layout_file_(const std::string& file, const addon& m_
     }
 
     layout_node m_root;
-    bool        b_parsed = false;
+    bool        parsed = false;
 
     const std::string extension = utils::get_file_extension(file);
 
@@ -222,7 +222,7 @@ void addon_registry::parse_layout_file_(const std::string& file, const addon& m_
         }
 
         set_node(m_file, m_root, m_doc.first_child());
-        b_parsed = true;
+        parsed = true;
     }
 #endif
 
@@ -230,11 +230,11 @@ void addon_registry::parse_layout_file_(const std::string& file, const addon& m_
     if (extension == ".yml" || extension == ".yaml") {
         ryml::Tree m_tree = ryml::parse(ryml::to_csubstr(m_file.get_content()));
         set_node(m_file, m_tree, m_root, m_tree.rootref().first_child());
-        b_parsed = true;
+        parsed = true;
     }
 #endif
 
-    if (!b_parsed) {
+    if (!parsed) {
         gui::out << gui::error << file
                  << ": no parser registered for extension '" + extension + "'." << std::endl;
         return;
@@ -268,7 +268,7 @@ void addon_registry::parse_layout_file_(const std::string& file, const addon& m_
                 if (p_parent) {
                     p_frame = p_parent->create_child(std::move(m_attr));
                 } else {
-                    if (m_attr.b_virtual)
+                    if (m_attr.is_virtual)
                         p_frame = m_virtual_root_.create_root_frame(std::move(m_attr));
                     else
                         p_frame = m_root_.create_root_frame(std::move(m_attr));

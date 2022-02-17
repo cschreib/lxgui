@@ -123,9 +123,9 @@ public:
 
     /// Sets this slider's value.
     /** \param fValue  The value
-     *   \param bSilent 'true' to prevent OnValueChanged to be fired
+     *   \param silent 'true' to prevent OnValueChanged to be fired
      */
-    void set_value(float f_value, bool b_silent = false);
+    void set_value(float f_value, bool silent = false);
 
     /// Returns this slider's value.
     /** \return This slider's value
@@ -158,9 +158,9 @@ public:
     layer get_thumb_draw_layer() const;
 
     /// Allows the user to click anywhere in the slider to relocate the thumb.
-    /** \param bAllow 'true' to allow it, 'false' to allow clicks on the thumb only
+    /** \param allow 'true' to allow it, 'false' to allow clicks on the thumb only
      */
-    void set_allow_clicks_outside_thumb(bool b_allow);
+    void set_allow_clicks_outside_thumb(bool allow);
 
     /// Checks if clicks are allowed outside of the thumb.
     /** \return 'true' if it is the case
@@ -202,12 +202,12 @@ protected:
     float f_max_value_  = 1.0f;
     float f_value_step_ = 0.1f;
 
-    bool b_allow_clicks_outside_thumb_ = true;
+    bool allow_clicks_outside_thumb_ = true;
 
     layer                        m_thumb_layer_   = layer::overlay;
     utils::observer_ptr<texture> p_thumb_texture_ = nullptr;
 
-    bool b_thumb_moved_ = false;
+    bool is_thumb_dragged_ = false;
 };
 
 } // namespace lxgui::gui

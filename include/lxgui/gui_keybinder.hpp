@@ -66,16 +66,16 @@ public:
     /// Binds an action to a key.
     /** \param name           The action to bind
      *   \param mKey            The key to bind
-     *   \param bShiftIsPressed 'true' if the Shift key must be pressed
-     *   \param bCtrlIsPressed  'true' if the Ctrl key must be pressed
-     *   \param bAltIsPressed   'true' if the Alt key must be pressed
+     *   \param shift_is_pressed 'true' if the Shift key must be pressed
+     *   \param ctrl_is_pressed  'true' if the Ctrl key must be pressed
+     *   \param alt_is_pressed   'true' if the Alt key must be pressed
      */
     void set_key_binding(
         std::string_view name,
         input::key       m_key,
-        bool             b_shift_is_pressed,
-        bool             b_ctrl_is_pressed,
-        bool             b_alt_is_pressed);
+        bool             shift_is_pressed,
+        bool             ctrl_is_pressed,
+        bool             alt_is_pressed);
 
     /// Unbinds an action.
     /** \param name The action to unbind
@@ -84,29 +84,29 @@ public:
 
     /// Called when a key is pressed.
     /** \param mKey            The key that is pressed
-     *   \param bShiftIsPressed Is the Shift key pressed
-     *   \param bCtrlIsPressed  Is the Ctrl key pressed
-     *   \param bAltIsPressed   Is the Alt key pressed
+     *   \param shift_is_pressed Is the Shift key pressed
+     *   \param ctrl_is_pressed  Is the Ctrl key pressed
+     *   \param alt_is_pressed   Is the Alt key pressed
      *   \return 'true' if a key binding was found matching this key combination,
      *           'false' otherwise.
      */
-    bool on_key_down(
-        input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
+    bool
+    on_key_down(input::key m_key, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed);
 
 private:
     struct key_binding {
         std::string name;
 
-        input::key m_key              = input::key::k_unassigned;
-        bool       b_shift_is_pressed = false;
-        bool       b_ctrl_is_pressed  = false;
-        bool       b_alt_is_pressed   = false;
+        input::key m_key            = input::key::k_unassigned;
+        bool       shift_is_pressed = false;
+        bool       ctrl_is_pressed  = false;
+        bool       alt_is_pressed   = false;
 
         signal_type m_signal;
     };
 
     key_binding* find_binding_(
-        input::key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed, bool b_alt_is_pressed);
+        input::key m_key, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed);
 
     std::vector<key_binding> key_bindings_;
 };

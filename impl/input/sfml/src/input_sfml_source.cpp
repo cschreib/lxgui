@@ -202,12 +202,12 @@ void source::on_sfml_event(const sf::Event& m_event) {
     } else if (m_event.type == sf::Event::MouseMoved) {
         gui::vector2i m_mouse_pos(m_event.mouseMove.x, m_event.mouseMove.y);
         gui::vector2i m_mouse_delta;
-        if (!b_first_mouse_move_) {
+        if (!first_mouse_move_) {
             m_mouse_delta    = m_mouse_pos - m_old_mouse_pos_;
             m_old_mouse_pos_ = m_mouse_pos;
         }
 
-        b_first_mouse_move_ = false;
+        first_mouse_move_ = false;
 
         m_mouse_.m_position = gui::vector2f(m_mouse_pos.x, m_mouse_pos.y);
         on_mouse_moved(gui::vector2f(m_mouse_delta.x, m_mouse_delta.y), m_mouse_.m_position);

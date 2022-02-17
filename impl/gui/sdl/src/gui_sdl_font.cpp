@@ -17,7 +17,7 @@ font::font(
     std::size_t                          ui_outline,
     const std::vector<code_point_range>& code_points,
     char32_t                             ui_default_code_point,
-    bool                                 b_pre_multiplied_alpha_supported) :
+    bool                                 pre_multiplied_alpha_supported) :
     ui_size_(ui_size), ui_default_code_point_(ui_default_code_point) {
     if (!TTF_WasInit() && TTF_Init() != 0) {
         throw gui::exception(
@@ -196,7 +196,7 @@ font::font(
     TTF_CloseFont(p_font);
 
     // Pre-multiply alpha
-    if (b_pre_multiplied_alpha_supported) {
+    if (pre_multiplied_alpha_supported) {
         const std::size_t ui_area = m_canvas_dimensions.x * m_canvas_dimensions.y;
         for (std::size_t i = 0; i < ui_area; ++i) {
             float a = p_texture_pixels[i].a / 255.0f;

@@ -35,7 +35,7 @@ void print_frames(const std::array<strata, 8>& strata_list) {
 }
 
 void frame_renderer::notify_strata_needs_redraw_(strata& m_strata) {
-    m_strata.b_redraw = true;
+    m_strata.redraw_flag = true;
 }
 
 void frame_renderer::notify_strata_needs_redraw(frame_strata m_strata) {
@@ -43,7 +43,7 @@ void frame_renderer::notify_strata_needs_redraw(frame_strata m_strata) {
 }
 
 void frame_renderer::notify_rendered_frame(
-    const utils::observer_ptr<frame>& p_frame, bool b_rendered) {
+    const utils::observer_ptr<frame>& p_frame, bool rendered) {
     if (!p_frame)
         return;
 
@@ -54,7 +54,7 @@ void frame_renderer::notify_rendered_frame(
     const auto m_frame_strata = p_frame->get_frame_strata();
     auto&      m_strata       = strata_list_[static_cast<std::size_t>(m_frame_strata)];
 
-    if (b_rendered)
+    if (rendered)
         add_to_strata_list_(m_strata, p_frame);
     else
         remove_from_strata_list_(m_strata, p_frame);
@@ -162,7 +162,7 @@ void frame_renderer::remove_from_strata_list_(
 void frame_renderer::add_to_level_list_(level& m_level, const utils::observer_ptr<frame>& p_frame) {
     m_level.frame_list.push_back(p_frame);
     notify_strata_needs_redraw_(*m_level.p_strata);
-    b_strata_list_updated_ = true;
+    strata_list_updated_ = true;
 }
 
 void frame_renderer::remove_from_level_list_(
@@ -174,7 +174,7 @@ void frame_renderer::remove_from_level_list_(
 
     m_level.frame_list.erase(m_iter);
     notify_strata_needs_redraw_(*m_level.p_strata);
-    b_strata_list_updated_ = true;
+    strata_list_updated_ = true;
 }
 
 void frame_renderer::render_strata_(const strata& m_strata) const {
@@ -189,18 +189,18 @@ void frame_renderer::clear_strata_list_() {
     for (auto& m_strata : strata_list_) {
         m_strata.level_list.clear();
         m_strata.p_render_target = nullptr;
-        m_strata.b_redraw        = true;
+        m_strata.redraw_flag     = true;
     }
 
-    b_strata_list_updated_ = true;
+    strata_list_updated_ = true;
 }
 
 bool frame_renderer::has_strata_list_changed_() const {
-    return b_strata_list_updated_;
+    return strata_list_updated_;
 }
 
 void frame_renderer::reset_strata_list_changed_flag_() {
-    b_strata_list_updated_ = false;
+    strata_list_updated_ = false;
 }
 
 } // namespace lxgui::gui

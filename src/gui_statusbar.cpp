@@ -30,7 +30,7 @@ std::string status_bar::serialize(const std::string& tab) const {
     case orientation::vertical: str << "VERTICAL"; break;
     }
     str << "\n";
-    str << tab << "  # Reversed   : " << b_reversed_ << "\n";
+    str << tab << "  # Reversed   : " << is_reversed_ << "\n";
     str << tab << "  # Value      : " << f_value_ << "\n";
     str << tab << "  # Min value  : " << f_min_value_ << "\n";
     str << tab << "  # Max value  : " << f_max_value_ << "\n";
@@ -159,7 +159,7 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
 
     std::string parent = p_bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
-    if (b_reversed_)
+    if (is_reversed_)
         p_bar_texture_->set_point(anchor_point::top_right, parent);
     else
         p_bar_texture_->set_point(anchor_point::bottom_left, parent);
@@ -196,19 +196,19 @@ void status_bar::set_orientation(const std::string& orientation_name) {
     set_orientation(m_orientation);
 }
 
-void status_bar::set_reversed(bool b_reversed) {
-    if (b_reversed == b_reversed_)
+void status_bar::set_reversed(bool reversed) {
+    if (reversed == is_reversed_)
         return;
 
-    b_reversed_ = b_reversed;
+    is_reversed_ = reversed;
 
     if (p_bar_texture_) {
-        if (b_reversed_)
+        if (is_reversed_)
             p_bar_texture_->set_point(anchor_point::top_right);
         else
             p_bar_texture_->set_point(anchor_point::bottom_left);
 
-        if (!b_virtual_)
+        if (!is_virtual_)
             p_bar_texture_->notify_borders_need_update();
     }
 }
@@ -238,7 +238,7 @@ status_bar::orientation status_bar::get_orientation() const {
 }
 
 bool status_bar::is_reversed() const {
-    return b_reversed_;
+    return is_reversed_;
 }
 
 void status_bar::create_bar_texture_() {
@@ -259,7 +259,7 @@ void status_bar::create_glue() {
 }
 
 void status_bar::update(float f_delta) {
-    if (b_update_bar_texture_ && p_bar_texture_) {
+    if (update_bar_texture_flag_ && p_bar_texture_) {
         float f_coef = (f_value_ - f_min_value_) / (f_max_value_ - f_min_value_);
 
         if (m_orientation_ == orientation::horizontal)
@@ -269,12 +269,12 @@ void status_bar::update(float f_delta) {
 
         std::array<float, 4> uvs = initial_text_coords_;
         if (m_orientation_ == orientation::horizontal) {
-            if (b_reversed_)
+            if (is_reversed_)
                 uvs[0] = (uvs[0] - uvs[2]) * f_coef + uvs[2];
             else
                 uvs[2] = (uvs[2] - uvs[0]) * f_coef + uvs[0];
         } else {
-            if (b_reversed_)
+            if (is_reversed_)
                 uvs[3] = (uvs[3] - uvs[1]) * f_coef + uvs[1];
             else
                 uvs[1] = (uvs[1] - uvs[3]) * f_coef + uvs[3];
@@ -282,7 +282,7 @@ void status_bar::update(float f_delta) {
 
         p_bar_texture_->set_tex_rect(uvs);
 
-        b_update_bar_texture_ = false;
+        update_bar_texture_flag_ = false;
     }
 
     alive_checker m_checker(*this);
@@ -292,7 +292,7 @@ void status_bar::update(float f_delta) {
 }
 
 void status_bar::notify_bar_texture_needs_update_() {
-    b_update_bar_texture_ = true;
+    update_bar_texture_flag_ = true;
 }
 
 } // namespace lxgui::gui

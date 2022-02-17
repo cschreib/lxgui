@@ -12,13 +12,13 @@
 
 namespace lxgui::input { namespace sdl {
 
-source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise_sdl_image) :
+source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool initialise_sdl_image) :
     p_window_(p_window), p_renderer_(p_renderer) {
     m_window_dimensions_ = get_window_pixel_size_();
 
     update_pixel_per_unit_();
 
-    if (b_initialise_sdl_image) {
+    if (initialise_sdl_image) {
         int img_flags = IMG_INIT_PNG;
         if ((IMG_Init(img_flags) & img_flags) == 0) {
             throw gui::exception(

@@ -198,7 +198,7 @@ font::font(
         std::size_t x = 0, y = 0;
 
         if (FT_HAS_KERNING(m_face_))
-            b_kerning_ = true;
+            kerning_ = true;
 
         float f_y_offset = 0.0f;
         if (FT_IS_SCALABLE(m_face_)) {
@@ -361,7 +361,7 @@ float font::get_character_height(char32_t c) const {
 }
 
 float font::get_character_kerning(char32_t c1, char32_t c2) const {
-    if (b_kerning_) {
+    if (kerning_) {
         FT_Vector m_kerning;
         FT_UInt   ui_prev = FT_Get_Char_Index(m_face_, c1);
         FT_UInt   ui_next = FT_Get_Char_Index(m_face_, c2);

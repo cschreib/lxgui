@@ -35,7 +35,7 @@ void backdrop::set_background(const std::string& background_file) {
     if (background_file_ == background_file)
         return;
 
-    b_cache_dirty_      = true;
+    is_cache_dirty_     = true;
     m_background_color_ = color::empty;
 
     if (background_file.empty()) {
@@ -72,7 +72,7 @@ void backdrop::set_background_color(const color& m_color) {
     if (m_background_color_ == m_color)
         return;
 
-    b_cache_dirty_ = true;
+    is_cache_dirty_ = true;
 
     p_background_texture_ = nullptr;
     m_background_color_   = m_color;
@@ -85,24 +85,24 @@ color backdrop::get_background_color() const {
     return m_background_color_;
 }
 
-void backdrop::set_background_tilling(bool b_background_tilling) {
-    if (b_background_tilling_ == b_background_tilling)
+void backdrop::set_background_tilling(bool is_tilling) {
+    if (is_background_tilling_ == is_tilling)
         return;
 
-    b_background_tilling_ = b_background_tilling;
-    b_cache_dirty_        = true;
+    is_background_tilling_ = is_tilling;
+    is_cache_dirty_        = true;
 }
 
 bool backdrop::is_background_tilling() const {
-    return b_background_tilling_;
+    return is_background_tilling_;
 }
 
 void backdrop::set_tile_size(float f_tile_size) {
     if (f_tile_size_ == f_tile_size)
         return;
 
-    f_tile_size_   = f_tile_size;
-    b_cache_dirty_ = true;
+    f_tile_size_    = f_tile_size;
+    is_cache_dirty_ = true;
 }
 
 float backdrop::get_tile_size() const {
@@ -114,7 +114,7 @@ void backdrop::set_background_insets(const bounds2f& insets) {
         return;
 
     background_insets_ = insets;
-    b_cache_dirty_     = true;
+    is_cache_dirty_    = true;
 }
 
 const bounds2f& backdrop::get_background_insets() const {
@@ -125,8 +125,8 @@ void backdrop::set_edge_insets(const bounds2f& insets) {
     if (edge_insets_ == insets)
         return;
 
-    edge_insets_   = insets;
-    b_cache_dirty_ = true;
+    edge_insets_    = insets;
+    is_cache_dirty_ = true;
 }
 
 const bounds2f& backdrop::get_edge_insets() const {
@@ -137,8 +137,8 @@ void backdrop::set_edge(const std::string& edge_file) {
     if (edge_file == edge_file_)
         return;
 
-    b_cache_dirty_ = true;
-    m_edge_color_  = color::empty;
+    is_cache_dirty_ = true;
+    m_edge_color_   = color::empty;
 
     if (edge_file.empty()) {
         p_edge_texture_ = nullptr;
@@ -184,7 +184,7 @@ void backdrop::set_edge_color(const color& m_color) {
     if (m_edge_color_ == m_color)
         return;
 
-    b_cache_dirty_  = true;
+    is_cache_dirty_ = true;
     p_edge_texture_ = nullptr;
     m_edge_color_   = m_color;
     edge_file_      = "";
@@ -203,8 +203,8 @@ void backdrop::set_edge_size(float f_edge_size) {
     if (f_edge_size_ == f_edge_size)
         return;
 
-    f_edge_size_   = f_edge_size;
-    b_cache_dirty_ = true;
+    f_edge_size_    = f_edge_size;
+    is_cache_dirty_ = true;
 }
 
 float backdrop::get_edge_size() const {
@@ -216,43 +216,43 @@ void backdrop::set_vertex_color(const color& m_color) {
         return;
 
     m_vertex_color_ = m_color;
-    b_cache_dirty_  = true;
+    is_cache_dirty_ = true;
 }
 
 void backdrop::render() const {
     float f_alpha = m_parent_.get_effective_alpha();
     if (f_alpha != f_cache_alpha_)
-        b_cache_dirty_ = true;
+        is_cache_dirty_ = true;
 
     auto& m_renderer = m_parent_.get_manager().get_renderer();
-    bool  b_use_vertex_cache =
+    bool  use_vertex_cache =
         m_renderer.is_vertex_cache_enabled() && !m_renderer.is_quad_batching_enabled();
 
-    bool b_has_background = p_background_texture_ || m_background_color_ != color::empty;
-    bool b_has_edge       = p_edge_texture_ || m_edge_color_ != color::empty;
+    bool has_background = p_background_texture_ || m_background_color_ != color::empty;
+    bool has_edge       = p_edge_texture_ || m_edge_color_ != color::empty;
 
-    if (b_has_background) {
-        if ((b_use_vertex_cache && !p_background_cache_) ||
-            (!b_use_vertex_cache && background_quads_.empty()))
-            b_cache_dirty_ = true;
+    if (has_background) {
+        if ((use_vertex_cache && !p_background_cache_) ||
+            (!use_vertex_cache && background_quads_.empty()))
+            is_cache_dirty_ = true;
     }
 
-    if (b_has_edge) {
-        if ((b_use_vertex_cache && !p_edge_cache_) || (!b_use_vertex_cache && edge_quads_.empty()))
-            b_cache_dirty_ = true;
+    if (has_edge) {
+        if ((use_vertex_cache && !p_edge_cache_) || (!use_vertex_cache && edge_quads_.empty()))
+            is_cache_dirty_ = true;
     }
 
     update_cache_();
 
-    if (b_has_background) {
-        if (b_use_vertex_cache && p_background_cache_)
+    if (has_background) {
+        if (use_vertex_cache && p_background_cache_)
             m_renderer.render_cache(p_background_texture_.get(), *p_background_cache_);
         else
             m_renderer.render_quads(p_background_texture_.get(), background_quads_);
     }
 
-    if (b_has_edge) {
-        if (b_use_vertex_cache && p_edge_cache_)
+    if (has_edge) {
+        if (use_vertex_cache && p_edge_cache_)
             m_renderer.render_cache(p_edge_texture_.get(), *p_edge_cache_);
         else
             m_renderer.render_quads(p_edge_texture_.get(), edge_quads_);
@@ -260,11 +260,11 @@ void backdrop::render() const {
 }
 
 void backdrop::notify_borders_updated() const {
-    b_cache_dirty_ = true;
+    is_cache_dirty_ = true;
 }
 
 void backdrop::update_cache_() const {
-    if (!b_cache_dirty_)
+    if (!is_cache_dirty_)
         return;
 
     background_quads_.clear();
@@ -278,8 +278,8 @@ void backdrop::update_cache_() const {
     update_background_(m_color);
     update_edge_(m_color);
 
-    f_cache_alpha_ = f_alpha;
-    b_cache_dirty_ = false;
+    f_cache_alpha_  = f_alpha;
+    is_cache_dirty_ = false;
 }
 
 void repeat_wrap(
@@ -287,7 +287,7 @@ void repeat_wrap(
     std::vector<std::array<vertex, 4>>& output,
     const bounds2f&                     m_source_uvs,
     float                               f_tile_size,
-    bool                                b_rotated,
+    bool                                is_rotated,
     const color                         m_color,
     const bounds2f&                     m_destination) {
     const auto  m_d_top_left  = m_destination.top_left();
@@ -320,7 +320,7 @@ void repeat_wrap(
             m_quad[3].pos =
                 m_parent.round_to_pixel(m_d_top_left + vector2f(f_sx, f_sy + f_d_height));
 
-            if (b_rotated) {
+            if (is_rotated) {
                 f_s_height *= f_d_width / f_tile_size;
                 f_s_width *= f_d_height / f_tile_size;
                 m_quad[0].uvs = m_s_top_left + vector2f(0.0f, f_s_height);
@@ -371,7 +371,7 @@ void backdrop::update_background_(color m_color) const {
         float f_rounded_tile_size =
             m_parent_.round_to_pixel(f_tile_size_, utils::rounding_method::nearest_not_zero);
 
-        if (p_background_texture_->is_in_atlas() && b_background_tilling_ &&
+        if (p_background_texture_->is_in_atlas() && is_background_tilling_ &&
             f_rounded_tile_size > 1.0f) {
             repeat_wrap(
                 m_parent_, background_quads_, m_canvas_uvs, f_rounded_tile_size, false, m_color,
@@ -433,7 +433,7 @@ void backdrop::update_edge_(color mColor) const {
     const float f_rounded_edge_size =
         m_parent_.round_to_pixel(f_edge_size_, utils::rounding_method::nearest_not_zero);
 
-    auto repeat_wrap_edge = [&](const bounds2f& m_source_uvs, bool b_rotated,
+    auto repeat_wrap_edge = [&](const bounds2f& m_source_uvs, bool is_rotated,
                                 const bounds2f& m_destination) {
         if (p_edge_texture_) {
             const vector2f m_canvas_tl =
@@ -445,7 +445,7 @@ void backdrop::update_edge_(color mColor) const {
 
             if (p_edge_texture_->is_in_atlas() && f_rounded_edge_size > 1.0f) {
                 repeat_wrap(
-                    m_parent_, edge_quads_, m_canvas_uvs, f_rounded_edge_size, b_rotated, mColor,
+                    m_parent_, edge_quads_, m_canvas_uvs, f_rounded_edge_size, is_rotated, mColor,
                     m_destination);
             } else {
                 edge_quads_.emplace_back();
@@ -462,7 +462,7 @@ void backdrop::update_edge_(color mColor) const {
                     m_quad[2].uvs = m_canvas_uvs.bottom_right();
                     m_quad[3].uvs = m_canvas_uvs.bottom_left();
                 } else {
-                    if (b_rotated) {
+                    if (is_rotated) {
                         float f_factor = m_destination.width() / f_rounded_edge_size;
                         m_quad[0].uvs  = m_canvas_uvs.top_left() +
                                         vector2f(0.0, f_factor * m_canvas_uvs.height());

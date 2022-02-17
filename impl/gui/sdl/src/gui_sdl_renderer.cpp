@@ -15,15 +15,14 @@
 
 namespace lxgui::gui::sdl {
 
-renderer::renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image) :
-    p_renderer_(p_renderer) {
+renderer::renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image) : p_renderer_(p_renderer) {
     int window_width, window_height;
     SDL_GetRendererOutputSize(p_renderer_, &window_width, &window_height);
     m_window_dimensions_ = vector2ui(window_width, window_height);
 
     render_target::check_availability(p_renderer);
 
-    if (b_initialise_sdl_image) {
+    if (initialise_sdl_image) {
         int img_flags = IMG_INIT_PNG;
         if ((IMG_Init(img_flags) & img_flags) == 0) {
             throw gui::exception(
@@ -46,7 +45,7 @@ renderer::renderer(SDL_Renderer* p_renderer, bool b_initialise_sdl_image) :
     SDL_Texture* p_texture = SDL_CreateTexture(
         p_renderer_, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, 4u, 4u);
 
-    b_pre_multiplied_alpha_supported_ =
+    pre_multiplied_alpha_supported_ =
         (SDL_SetTextureBlendMode(
              p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) == 0);
 
@@ -91,8 +90,8 @@ matrix4f renderer::get_view() const {
     return m_raw_view_matrix_;
 }
 
-color premultiply_alpha(const color& m_color, bool b_pre_multiplied_alpha_supported) {
-    if (b_pre_multiplied_alpha_supported)
+color premultiply_alpha(const color& m_color, bool pre_multiplied_alpha_supported) {
+    if (pre_multiplied_alpha_supported)
         return color(
             m_color.r * m_color.a, m_color.g * m_color.a, m_color.b * m_color.a, m_color.a);
     else
@@ -178,7 +177,7 @@ make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_
     m_data.m_dest_quad.x = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.x));
     m_data.m_dest_quad.y = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.y));
 
-    bool b_axis_swapped = false;
+    bool axis_swapped = false;
     if (vertex_list[i_ds[0]].uvs.x < vertex_list[i_ds[1]].uvs.x) {
         if (vertex_list[i_ds[1]].uvs.y < vertex_list[i_ds[2]].uvs.y) {
             // No rotation and no flip
@@ -189,7 +188,7 @@ make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_
             uv_index2     = 1;
         }
     } else if (vertex_list[i_ds[0]].uvs.y < vertex_list[i_ds[1]].uvs.y) {
-        b_axis_swapped = true;
+        axis_swapped = true;
 
         if (vertex_list[i_ds[1]].uvs.x > vertex_list[i_ds[2]].uvs.x) {
             // Rotated 90 degrees clockwise
@@ -220,7 +219,7 @@ make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_
             uv_index2     = 3;
         }
     } else if (vertex_list[i_ds[0]].uvs.y > vertex_list[i_ds[1]].uvs.y) {
-        b_axis_swapped = true;
+        axis_swapped = true;
 
         if (vertex_list[i_ds[1]].uvs.x < vertex_list[i_ds[2]].uvs.x) {
             // Rotated 90 degrees counter-clockwise
@@ -238,7 +237,7 @@ make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_
         }
     }
 
-    if (b_axis_swapped)
+    if (axis_swapped)
         std::swap(width, height);
 
     m_data.m_src_quad = SDL_Rect{
@@ -277,7 +276,7 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
         if (m_data.m_dest_quad.w == 0 || m_data.m_dest_quad.h == 0)
             return;
 
-        if (b_pre_multiplied_alpha_supported_) {
+        if (pre_multiplied_alpha_supported_) {
             if (SDL_SetTextureBlendMode(
                     p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) !=
                 0) {
@@ -293,7 +292,7 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             view_list[0].col == view_list[3].col) {
             const auto m_color = view_list[0].col;
 
-            if (b_pre_multiplied_alpha_supported_) {
+            if (pre_multiplied_alpha_supported_) {
                 SDL_SetTextureColorMod(
                     p_texture, m_color.r * m_color.a * 255, m_color.g * m_color.a * 255,
                     m_color.b * m_color.a * 255);
@@ -304,15 +303,14 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
 
             SDL_SetTextureAlphaMod(p_texture, m_color.a * 255);
 
-            bool b_coords_all_in_texture = m_data.m_src_quad.x >= 0 && m_data.m_src_quad.y >= 0 &&
-                                           m_data.m_src_quad.x + m_data.m_src_quad.w <= tex_width &&
-                                           m_data.m_src_quad.y + m_data.m_src_quad.h <= tex_height;
+            bool coords_all_in_texture = m_data.m_src_quad.x >= 0 && m_data.m_src_quad.y >= 0 &&
+                                         m_data.m_src_quad.x + m_data.m_src_quad.w <= tex_width &&
+                                         m_data.m_src_quad.y + m_data.m_src_quad.h <= tex_height;
 
-            bool b_one_pixel = (tex_height == 1 || m_data.m_dest_quad.h == 1) &&
-                               (tex_width == 1 || m_data.m_dest_quad.w == 1);
+            bool one_pixel = (tex_height == 1 || m_data.m_dest_quad.h == 1) &&
+                             (tex_width == 1 || m_data.m_dest_quad.w == 1);
 
-            if (p_mat->get_wrap() == material::wrap::clamp || b_coords_all_in_texture ||
-                b_one_pixel) {
+            if (p_mat->get_wrap() == material::wrap::clamp || coords_all_in_texture || one_pixel) {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(
                     p_renderer_, p_texture, &m_data.m_src_quad, &m_data.m_dest_quad, m_data.angle,
@@ -320,13 +318,13 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             } else {
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
-                const bool  b_axis_swapped = std::abs(m_data.angle) == 90;
+                const bool  axis_swapped = std::abs(m_data.angle) == 90;
                 const float f_x_factor =
                     float(m_data.m_dest_display_quad.w) /
-                    float(b_axis_swapped ? m_data.m_src_quad.h : m_data.m_src_quad.w);
+                    float(axis_swapped ? m_data.m_src_quad.h : m_data.m_src_quad.w);
                 const float f_y_factor =
                     float(m_data.m_dest_display_quad.h) /
-                    float(b_axis_swapped ? m_data.m_src_quad.w : m_data.m_src_quad.h);
+                    float(axis_swapped ? m_data.m_src_quad.w : m_data.m_src_quad.h);
 
                 int sy = m_data.m_src_quad.y;
                 while (sy < m_data.m_src_quad.y + m_data.m_src_quad.h) {
@@ -347,16 +345,16 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                         const int s_x2 = s_x1 + temp_s_width;
 
                         int dx = m_data.m_dest_display_quad.x +
-                                 static_cast<int>((b_axis_swapped ? s_y1 : s_x1) * f_x_factor);
+                                 static_cast<int>((axis_swapped ? s_y1 : s_x1) * f_x_factor);
                         int dy = m_data.m_dest_display_quad.y +
-                                 static_cast<int>((b_axis_swapped ? s_x1 : s_y1) * f_y_factor);
+                                 static_cast<int>((axis_swapped ? s_x1 : s_y1) * f_y_factor);
 
                         int temp_d_width =
                             m_data.m_dest_display_quad.x +
-                            static_cast<int>((b_axis_swapped ? s_y2 : s_x2) * f_x_factor) - dx;
+                            static_cast<int>((axis_swapped ? s_y2 : s_x2) * f_x_factor) - dx;
                         int temp_d_height =
                             m_data.m_dest_display_quad.y +
-                            static_cast<int>((b_axis_swapped ? s_x2 : s_y2) * f_y_factor) - dy;
+                            static_cast<int>((axis_swapped ? s_x2 : s_y2) * f_y_factor) - dy;
 
                         if (m_data.angle == 90)
                             dx += temp_d_width;
@@ -367,7 +365,7 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                             dy += temp_d_height;
                         }
 
-                        if (b_axis_swapped)
+                        if (axis_swapped)
                             std::swap(temp_d_width, temp_d_height);
 
                         const SDL_Rect m_src_quad{
@@ -402,7 +400,7 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             view_list[0].col == view_list[3].col) {
             // Same color for all vertices
             const auto& m_color = view_list[0].col;
-            if (b_pre_multiplied_alpha_supported_) {
+            if (pre_multiplied_alpha_supported_) {
                 SDL_SetRenderDrawBlendMode(
                     p_renderer_, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
                 SDL_SetRenderDrawColor(
@@ -421,10 +419,10 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
             const color color_quad[4] = {
-                premultiply_alpha(view_list[0].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(view_list[1].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(view_list[2].col, b_pre_multiplied_alpha_supported_),
-                premultiply_alpha(view_list[3].col, b_pre_multiplied_alpha_supported_)};
+                premultiply_alpha(view_list[0].col, pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[1].col, pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[2].col, pre_multiplied_alpha_supported_),
+                premultiply_alpha(view_list[3].col, pre_multiplied_alpha_supported_)};
 
             sdl::material m_temp_mat(p_renderer_, vector2ui(m_dest_quad.w, m_dest_quad.h), false);
             ub32color*    p_pixel_data = m_temp_mat.lock_pointer();
@@ -466,8 +464,7 @@ SDL_Renderer* renderer::get_sdl_renderer() const {
 std::shared_ptr<gui::material>
 renderer::create_material_(const std::string& file_name, material::filter m_filter) {
     return std::make_shared<sdl::material>(
-        p_renderer_, file_name, b_pre_multiplied_alpha_supported_, material::wrap::repeat,
-        m_filter);
+        p_renderer_, file_name, pre_multiplied_alpha_supported_, material::wrap::repeat, m_filter);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter m_filter) {
@@ -534,7 +531,7 @@ std::shared_ptr<gui::font> renderer::create_font_(
     char32_t                             ui_default_code_point) {
     return std::make_shared<sdl::font>(
         p_renderer_, font_file, ui_size, ui_outline, code_points, ui_default_code_point,
-        b_pre_multiplied_alpha_supported_);
+        pre_multiplied_alpha_supported_);
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) {

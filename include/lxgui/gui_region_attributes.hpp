@@ -16,7 +16,7 @@ class region;
 struct region_core_attributes {
     std::string object_type;
     std::string name;
-    bool        b_virtual = false;
+    bool        is_virtual = false;
 
     utils::observer_ptr<frame> p_parent = nullptr;
 

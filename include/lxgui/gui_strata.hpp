@@ -38,7 +38,7 @@ struct level {
 /// Contains gui::level
 struct strata {
     std::map<int, level>           level_list;
-    bool                           b_redraw = true;
+    bool                           redraw_flag = true;
     std::shared_ptr<render_target> p_render_target;
     quad                           m_quad;
 };

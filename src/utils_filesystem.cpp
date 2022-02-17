@@ -21,11 +21,11 @@ string_vector get_directory_list(const std::string& rel_path) {
     return dir_list;
 }
 
-string_vector get_file_list(const std::string& rel_path, bool b_with_path) {
+string_vector get_file_list(const std::string& rel_path, bool with_path) {
     string_vector file_list;
     for (const auto& m_entry : std::filesystem::directory_iterator(rel_path)) {
         if (m_entry.is_regular_file()) {
-            if (b_with_path)
+            if (with_path)
                 file_list.push_back(m_entry.path().relative_path().u8string());
             else
                 file_list.push_back(m_entry.path().filename().u8string());
@@ -36,7 +36,7 @@ string_vector get_file_list(const std::string& rel_path, bool b_with_path) {
 }
 
 string_vector
-get_file_list(const std::string& rel_path, bool b_with_path, const std::string& extensions) {
+get_file_list(const std::string& rel_path, bool with_path, const std::string& extensions) {
     auto extension_list = utils::cut(extensions, ",");
     for (auto& extension : extension_list)
         extension = utils::trim(extension, ' ');
@@ -46,7 +46,7 @@ get_file_list(const std::string& rel_path, bool b_with_path, const std::string& 
         if (m_entry.is_regular_file()) {
             if (utils::find(extension_list, m_entry.path().extension().u8string()) !=
                 extension_list.end()) {
-                if (b_with_path)
+                if (with_path)
                     file_list.push_back(m_entry.path().relative_path().u8string());
                 else
                     file_list.push_back(m_entry.path().filename().u8string());

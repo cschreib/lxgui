@@ -264,8 +264,8 @@ void font_string::register_on_lua(sol::state& m_lua) {
     /** @function set_word_wrap
      */
     m_class.set_function(
-        "set_word_wrap", [](font_string& m_self, bool b_wrap, sol::optional<bool> b_ellipsis) {
-            m_self.set_word_wrap(b_wrap, b_ellipsis.value_or(false));
+        "set_word_wrap", [](font_string& m_self, bool wrap, sol::optional<bool> ellipsis) {
+            m_self.set_word_wrap(wrap, ellipsis.value_or(false));
         });
 
     /** @function set_text
@@ -273,9 +273,9 @@ void font_string::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_text",
         sol::overload(
-            [](font_string& m_self, bool b_value) {
+            [](font_string& m_self, bool value) {
                 m_self.set_text(utils::utf8_to_unicode(
-                    m_self.get_manager().get_localizer().localize(b_value ? "{true}" : "{false}")));
+                    m_self.get_manager().get_localizer().localize(value ? "{true}" : "{false}")));
             },
             [](font_string& m_self, int value) {
                 m_self.set_text(utils::utf8_to_unicode(

@@ -74,10 +74,10 @@ void texture::register_on_lua(sol::state& m_lua) {
             coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], coords[6], coords[7]);
     });
 
-    /** @function get_tex_coord_modifies_rect
+    /** @function get_texture_stretching
      */
     m_class.set_function(
-        "get_tex_coord_modifies_rect", member_function<&texture::get_tex_coord_modifies_rect>());
+        "get_texture_stretching", member_function<&texture::get_texture_stretching>());
 
     /** @function get_texture
      */
@@ -213,10 +213,10 @@ void texture::register_on_lua(sol::state& m_lua) {
                      f_bottom_right_y, f_bottom_left_x, f_bottom_left_y});
             }));
 
-    /** @function set_tex_coord_modifies_rect
+    /** @function set_texture_stretching
      */
     m_class.set_function(
-        "set_tex_coord_modifies_rect", member_function<&texture::set_tex_coord_modifies_rect>());
+        "set_texture_stretching", member_function<&texture::set_texture_stretching>());
 
     /** @function set_texture
      */

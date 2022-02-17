@@ -103,7 +103,7 @@ public:
 protected:
     void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    bool b_checked_ = false;
+    bool is_checked_ = false;
 
     utils::observer_ptr<texture> p_checked_texture_          = nullptr;
     utils::observer_ptr<texture> p_disabled_checked_texture_ = nullptr;

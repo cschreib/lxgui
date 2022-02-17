@@ -105,13 +105,13 @@ public:
     void set_orientation(const std::string& orientation_name);
 
     /// Reverses this status_bar.
-    /** \param bReversed 'true' to reverse it
+    /** \param reversed 'true' to reverse it
      *   \note By default, if the status bar is oriented horizontally
      *         (vertically), if will grow from left to right (bottom to top).
      *         You can use this function to reverse the growth, that is
      *         make it grow from right to left.
      */
-    void set_reversed(bool b_reversed);
+    void set_reversed(bool reversed);
 
     /// Returns this status_bar's minimum value.
     /** \return This status_bar's minimum value
@@ -185,10 +185,10 @@ protected:
     void parse_attributes_(const layout_node& m_node) override;
     void parse_all_nodes_before_children_(const layout_node& m_node) override;
 
-    bool b_update_bar_texture_ = false;
+    bool update_bar_texture_flag_ = false;
 
     orientation m_orientation_ = orientation::horizontal;
-    bool        b_reversed_    = false;
+    bool        is_reversed_   = false;
 
     float f_value_     = 0.0f;
     float f_min_value_ = 0.0f;

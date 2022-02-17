@@ -36,7 +36,7 @@ frame::~frame() {
     child_list_.clear();
     region_list_.clear();
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         // Tell the renderer to no longer render this region
         get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
         p_renderer_ = nullptr;
@@ -48,7 +48,7 @@ frame::~frame() {
 }
 
 void frame::render() const {
-    if (!b_is_visible_ || !b_ready_)
+    if (!is_visible_ || !is_ready_)
         return;
 
     if (p_backdrop_)
@@ -56,7 +56,7 @@ void frame::render() const {
 
     // Render child regions
     for (const auto& m_layer : layer_list_) {
-        if (m_layer.b_disabled)
+        if (m_layer.is_disabled)
             continue;
 
         for (const auto& p_region : m_layer.region_list) {
@@ -89,27 +89,27 @@ std::string frame::serialize(const std::string& tab) const {
     case frame_strata::tooltip: str << "TOOLTIP\n"; break;
     }
     str << tab << "  # Level       : " << level_ << "\n";
-    str << tab << "  # TopLevel    : " << b_is_top_level_;
-    if (!b_is_top_level_ && get_top_level_parent())
+    str << tab << "  # TopLevel    : " << is_top_level_;
+    if (!is_top_level_ && get_top_level_parent())
         str << " (" << get_top_level_parent()->get_name() << ")\n";
     else
         str << "\n";
-    if (!b_is_mouse_click_enabled_ && !b_is_mouse_move_enabled_ && !!b_is_mouse_wheel_enabled_)
+    if (!is_mouse_click_enabled_ && !is_mouse_move_enabled_ && !!is_mouse_wheel_enabled_)
         str << tab << "  # Inputs      : none\n";
     else {
         str << tab << "  # Inputs      :\n";
         str << tab << "  |-###\n";
-        if (b_is_mouse_click_enabled_)
+        if (is_mouse_click_enabled_)
             str << tab << "  |   # mouse click\n";
-        if (b_is_mouse_move_enabled_)
+        if (is_mouse_move_enabled_)
             str << tab << "  |   # mouse move\n";
-        if (b_is_mouse_wheel_enabled_)
+        if (is_mouse_wheel_enabled_)
             str << tab << "  |   # mouse wheel\n";
         str << tab << "  |-###\n";
     }
-    str << tab << "  # Movable     : " << b_is_movable_ << "\n";
-    str << tab << "  # Resizable   : " << b_is_resizable_ << "\n";
-    str << tab << "  # Clamped     : " << b_is_clamped_to_screen_ << "\n";
+    str << tab << "  # Movable     : " << is_movable_ << "\n";
+    str << tab << "  # Resizable   : " << is_resizable_ << "\n";
+    str << tab << "  # Clamped     : " << is_clamped_to_screen_ << "\n";
     str << tab << "  # HRect inset :\n";
     str << tab << "  |-###\n";
     str << tab << "  |   # left   : " << abs_hit_rect_inset_list_.left << "\n";
@@ -251,7 +251,7 @@ void frame::copy_from(const region& m_obj) {
         p_new_art->notify_loaded();
     }
 
-    b_build_layer_list_ = true;
+    build_layer_list_flag_ = true;
 
     if (p_frame->p_backdrop_) {
         p_backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
@@ -290,7 +290,7 @@ void frame::create_title_region() {
 
     region_core_attributes m_attr;
     m_attr.object_type = "Region";
-    m_attr.b_virtual   = is_virtual();
+    m_attr.is_virtual  = is_virtual();
     m_attr.name        = "$parentTitleRegion";
     m_attr.p_parent    = observer_from(this);
 
@@ -378,7 +378,7 @@ void frame::check_position_() {
         border_list_.bottom = border_list_.top + f_max_height_;
     }
 
-    if (b_is_clamped_to_screen_) {
+    if (is_clamped_to_screen_) {
         vector2f m_screen_dimensions = get_top_level_renderer()->get_target_dimensions();
 
         if (border_list_.right > m_screen_dimensions.x) {
@@ -429,39 +429,39 @@ void frame::check_position_() {
 
 void frame::disable_draw_layer(layer m_layer_id) {
     layer_container& m_layer = layer_list_[static_cast<std::size_t>(m_layer_id)];
-    if (!m_layer.b_disabled) {
-        m_layer.b_disabled = true;
+    if (!m_layer.is_disabled) {
+        m_layer.is_disabled = true;
         notify_renderer_need_redraw();
     }
 }
 
 void frame::enable_draw_layer(layer m_layer_id) {
     layer_container& m_layer = layer_list_[static_cast<std::size_t>(m_layer_id)];
-    if (!m_layer.b_disabled) {
-        m_layer.b_disabled = false;
+    if (!m_layer.is_disabled) {
+        m_layer.is_disabled = false;
         notify_renderer_need_redraw();
     }
 }
 
-void frame::enable_mouse(bool b_is_mouse_enabled) {
-    enable_mouse_click(b_is_mouse_enabled);
-    enable_mouse_move(b_is_mouse_enabled);
+void frame::enable_mouse(bool is_mouse_enabled) {
+    enable_mouse_click(is_mouse_enabled);
+    enable_mouse_move(is_mouse_enabled);
 }
 
-void frame::enable_mouse_click(bool b_is_mouse_enabled) {
-    b_is_mouse_click_enabled_ = b_is_mouse_enabled;
+void frame::enable_mouse_click(bool is_mouse_enabled) {
+    is_mouse_click_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_move(bool b_is_mouse_enabled) {
-    b_is_mouse_move_enabled_ = b_is_mouse_enabled;
+void frame::enable_mouse_move(bool is_mouse_enabled) {
+    is_mouse_move_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_wheel(bool b_is_mouse_wheel_enabled) {
-    b_is_mouse_wheel_enabled_ = b_is_mouse_wheel_enabled;
+void frame::enable_mouse_wheel(bool is_mouse_wheel_enabled) {
+    is_mouse_wheel_enabled_ = is_mouse_wheel_enabled;
 }
 
-void frame::enable_key_capture(const std::string& key_name, bool b_is_capture_enabled) {
-    if (b_is_capture_enabled)
+void frame::enable_key_capture(const std::string& key_name, bool is_capture_enabled) {
+    if (is_capture_enabled)
         reg_key_list_.erase(key_name);
     else
         reg_key_list_.insert(key_name);
@@ -470,7 +470,7 @@ void frame::enable_key_capture(const std::string& key_name, bool b_is_capture_en
 void frame::notify_loaded() {
     base::notify_loaded();
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         alive_checker m_checker(*this);
         fire_script("OnLoad");
         if (!m_checker.is_alive())
@@ -479,7 +479,7 @@ void frame::notify_loaded() {
 }
 
 void frame::notify_layers_need_update() {
-    b_build_layer_list_ = true;
+    build_layer_list_flag_ = true;
 }
 
 bool frame::has_script(const std::string& script_name) const {
@@ -502,7 +502,7 @@ utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_r
     notify_layers_need_update();
     notify_renderer_need_redraw();
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         // Add shortcut to region as entry in Lua table
         std::string raw_name = p_added_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
@@ -541,7 +541,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
     notify_renderer_need_redraw();
     p_removed_region->set_parent_(nullptr);
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         // Remove shortcut to region
         std::string raw_name = p_removed_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
@@ -556,8 +556,8 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
 
 utils::observer_ptr<layered_region>
 frame::create_layered_region(layer m_layer, region_core_attributes m_attr) {
-    m_attr.b_virtual = is_virtual();
-    m_attr.p_parent  = observer_from(this);
+    m_attr.is_virtual = is_virtual();
+    m_attr.p_parent   = observer_from(this);
 
     auto p_region = get_manager().get_factory().create_layered_region(get_registry(), m_attr);
 
@@ -570,8 +570,8 @@ frame::create_layered_region(layer m_layer, region_core_attributes m_attr) {
 }
 
 utils::observer_ptr<frame> frame::create_child(region_core_attributes m_attr) {
-    m_attr.b_virtual = is_virtual();
-    m_attr.p_parent  = observer_from(this);
+    m_attr.is_virtual = is_virtual();
+    m_attr.p_parent   = observer_from(this);
 
     auto p_new_frame = get_manager().get_factory().create_frame(
         get_registry(), get_top_level_renderer().get(), m_attr);
@@ -598,7 +598,7 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> p_child) {
     utils::observer_ptr<frame> p_added_child = p_child;
     child_list_.push_back(std::move(p_child));
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         utils::observer_ptr<frame_renderer> p_old_top_level_renderer =
             p_added_child->get_top_level_renderer();
         utils::observer_ptr<frame_renderer> p_new_top_level_renderer = get_top_level_renderer();
@@ -637,12 +637,12 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_
     // NB: the iterator is not removed yet; it will be removed later in update().
     auto p_removed_child = std::move(*m_iter);
 
-    bool b_notify_renderer = false;
-    if (!b_virtual_) {
+    bool notify_renderer = false;
+    if (!is_virtual_) {
         utils::observer_ptr<frame_renderer> p_top_level_renderer = get_top_level_renderer();
-        b_notify_renderer =
+        notify_renderer =
             !p_child->get_renderer() && p_top_level_renderer.get() != &get_manager().get_root();
-        if (b_notify_renderer) {
+        if (notify_renderer) {
             p_top_level_renderer->notify_rendered_frame(p_child, false);
             p_child->propagate_renderer_(false);
         }
@@ -650,8 +650,8 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_
 
     p_removed_child->set_parent_(nullptr);
 
-    if (!b_virtual_) {
-        if (b_notify_renderer) {
+    if (!is_virtual_) {
+        if (notify_renderer) {
             get_manager().get_root().notify_rendered_frame(p_child, true);
             p_child->propagate_renderer_(true);
         }
@@ -770,21 +770,20 @@ float frame::get_scale() const {
 }
 
 bool frame::is_clamped_to_screen() const {
-    return b_is_clamped_to_screen_;
+    return is_clamped_to_screen_;
 }
 
 bool frame::is_in_region(const vector2f& m_position) const {
     if (p_title_region_ && p_title_region_->is_in_region(m_position))
         return true;
 
-    bool b_is_in_x_range =
-        border_list_.left + abs_hit_rect_inset_list_.left <= m_position.x &&
-        m_position.x <= border_list_.right - abs_hit_rect_inset_list_.right - 1.0f;
-    bool b_is_in_y_range =
+    bool is_in_x_range = border_list_.left + abs_hit_rect_inset_list_.left <= m_position.x &&
+                         m_position.x <= border_list_.right - abs_hit_rect_inset_list_.right - 1.0f;
+    bool is_in_y_range =
         border_list_.top + abs_hit_rect_inset_list_.top <= m_position.y &&
         m_position.y <= border_list_.bottom - abs_hit_rect_inset_list_.bottom - 1.0f;
 
-    return b_is_in_x_range && b_is_in_y_range;
+    return is_in_x_range && is_in_y_range;
 }
 
 utils::observer_ptr<const frame>
@@ -796,15 +795,15 @@ frame::find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) 
 }
 
 bool frame::is_mouse_click_enabled() const {
-    return b_is_mouse_click_enabled_;
+    return is_mouse_click_enabled_;
 }
 
 bool frame::is_mouse_move_enabled() const {
-    return b_is_mouse_move_enabled_;
+    return is_mouse_move_enabled_;
 }
 
 bool frame::is_mouse_wheel_enabled() const {
-    return b_is_mouse_wheel_enabled_;
+    return is_mouse_wheel_enabled_;
 }
 
 bool frame::is_registered_for_drag(const std::string& button_name) const {
@@ -816,19 +815,19 @@ bool frame::is_key_capture_enabled(const std::string& key_name) const {
 }
 
 bool frame::is_movable() const {
-    return b_is_movable_;
+    return is_movable_;
 }
 
 bool frame::is_resizable() const {
-    return b_is_resizable_;
+    return is_resizable_;
 }
 
 bool frame::is_top_level() const {
-    return b_is_top_level_;
+    return is_top_level_;
 }
 
 bool frame::is_user_placed() const {
-    return b_is_user_placed_;
+    return is_user_placed_;
 }
 
 std::string frame::get_adjusted_script_name(const std::string& script_name) {
@@ -900,7 +899,7 @@ std::string hijack_sol_error_message(
 utils::connection frame::define_script_(
     const std::string& script_name,
     const std::string& content,
-    bool               b_append,
+    bool               append,
     const script_info& m_info) {
     // Create the Lua function from the provided string
     sol::state& m_lua = get_lua_();
@@ -929,13 +928,13 @@ utils::connection frame::define_script_(
     sol::protected_function m_handler = m_result;
 
     // Forward it as any other Lua function
-    return define_script_(script_name, std::move(m_handler), b_append, m_info);
+    return define_script_(script_name, std::move(m_handler), append, m_info);
 }
 
 utils::connection frame::define_script_(
     const std::string&      script_name,
     sol::protected_function m_handler,
-    bool                    b_append,
+    bool                    append,
     const script_info&      m_info) {
     auto m_wrapped_handler = [m_handler = std::move(m_handler),
                               m_info](frame& m_self, const event_data& m_args) {
@@ -973,13 +972,13 @@ utils::connection frame::define_script_(
         }
     };
 
-    return define_script_(script_name, std::move(m_wrapped_handler), b_append, m_info);
+    return define_script_(script_name, std::move(m_wrapped_handler), append, m_info);
 }
 
 utils::connection frame::define_script_(
     const std::string& script_name,
     script_function    m_handler,
-    bool               b_append,
+    bool               append,
     const script_info& /*mInfo*/) {
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
@@ -1001,7 +1000,7 @@ utils::connection frame::define_script_(
     }
 
     auto& handler_list = signal_list_[script_name];
-    if (!b_append) {
+    if (!append) {
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
         // They will be deleted later, when we know it is safe.
@@ -1073,7 +1072,7 @@ void frame::fire_script(const std::string& script_name, const event_data& m_data
 }
 
 void frame::register_event(const std::string& event_name) {
-    if (b_virtual_)
+    if (is_virtual_)
         return;
 
     m_event_receiver_.register_event(
@@ -1081,7 +1080,7 @@ void frame::register_event(const std::string& event_name) {
 }
 
 void frame::unregister_event(const std::string& event_name) {
-    if (b_virtual_)
+    if (is_virtual_)
         return;
 
     m_event_receiver_.unregister_event(event_name);
@@ -1093,13 +1092,13 @@ void frame::register_for_drag(const std::vector<std::string>& button_list) {
         reg_drag_list_.insert(button);
 }
 
-void frame::set_clamped_to_screen(bool b_is_clamped_to_screen) {
-    b_is_clamped_to_screen_ = b_is_clamped_to_screen;
+void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
+    is_clamped_to_screen_ = is_clamped_to_screen;
 }
 
 void frame::set_frame_strata(frame_strata m_strata) {
     if (m_strata == frame_strata::parent) {
-        if (!b_virtual_) {
+        if (!is_virtual_) {
             if (p_parent_)
                 m_strata = p_parent_->get_frame_strata();
             else
@@ -1109,7 +1108,7 @@ void frame::set_frame_strata(frame_strata m_strata) {
 
     std::swap(m_strata_, m_strata);
 
-    if (m_strata_ != m_strata && !b_virtual_) {
+    if (m_strata_ != m_strata && !is_virtual_) {
         get_top_level_renderer()->notify_frame_strata_changed(
             observer_from(this), m_strata, m_strata_);
     }
@@ -1135,7 +1134,7 @@ void frame::set_frame_strata(const std::string& strata_name) {
     else if (strata_name == "TOOLTIP")
         m_strata = frame_strata::tooltip;
     else if (strata_name == "PARENT") {
-        if (b_virtual_) {
+        if (is_virtual_) {
             m_strata = frame_strata::parent;
         } else {
             if (p_parent_)
@@ -1171,7 +1170,7 @@ void frame::set_level(int level_id) {
 
     std::swap(level_id, level_);
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         get_top_level_renderer()->notify_frame_level_changed(observer_from(this), level_id, level_);
     }
 }
@@ -1193,7 +1192,7 @@ void frame::set_max_height(float f_max_height) {
     if (f_max_height >= f_min_height_)
         f_max_height_ = f_max_height;
 
-    if (f_max_height_ != f_max_height && !b_virtual_)
+    if (f_max_height_ != f_max_height && !is_virtual_)
         notify_borders_need_update();
 }
 
@@ -1204,7 +1203,7 @@ void frame::set_max_width(float f_max_width) {
     if (f_max_width >= f_min_width_)
         f_max_width_ = f_max_width;
 
-    if (f_max_width_ != f_max_width && !b_virtual_)
+    if (f_max_width_ != f_max_width && !is_virtual_)
         notify_borders_need_update();
 }
 
@@ -1212,7 +1211,7 @@ void frame::set_min_height(float f_min_height) {
     if (f_min_height <= f_max_height_)
         f_min_height_ = f_min_height;
 
-    if (f_min_height_ != f_min_height && !b_virtual_)
+    if (f_min_height_ != f_min_height && !is_virtual_)
         notify_borders_need_update();
 }
 
@@ -1220,12 +1219,12 @@ void frame::set_min_width(float f_min_width) {
     if (f_min_width <= f_max_width_)
         f_min_width_ = f_min_width;
 
-    if (f_min_width_ != f_min_width && !b_virtual_)
+    if (f_min_width_ != f_min_width && !is_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_movable(bool b_is_movable) {
-    b_is_movable_ = b_is_movable;
+void frame::set_movable(bool is_movable) {
+    is_movable_ = is_movable;
 }
 
 utils::owner_ptr<region> frame::release_from_parent() {
@@ -1236,8 +1235,8 @@ utils::owner_ptr<region> frame::release_from_parent() {
         return get_manager().get_root().remove_root_frame(p_self);
 }
 
-void frame::set_resizable(bool b_is_resizable) {
-    b_is_resizable_ = b_is_resizable;
+void frame::set_resizable(bool is_resizable) {
+    is_resizable_ = is_resizable;
 }
 
 void frame::set_scale(float f_scale) {
@@ -1246,12 +1245,12 @@ void frame::set_scale(float f_scale) {
         notify_renderer_need_redraw();
 }
 
-void frame::set_top_level(bool b_is_top_level) {
-    b_is_top_level_ = b_is_top_level;
+void frame::set_top_level(bool is_top_level) {
+    is_top_level_ = is_top_level;
 }
 
 void frame::raise() {
-    if (!b_is_top_level_)
+    if (!is_top_level_)
         return;
 
     int  old_level            = level_;
@@ -1272,33 +1271,33 @@ void frame::raise() {
         level_ = old_level;
 }
 
-void frame::enable_auto_focus(bool b_enable) {
-    b_auto_focus_ = b_enable;
+void frame::enable_auto_focus(bool enable) {
+    is_auto_focus_ = enable;
 }
 
 bool frame::is_auto_focus_enabled() const {
-    return b_auto_focus_;
+    return is_auto_focus_;
 }
 
-void frame::set_focus(bool b_focus) {
+void frame::set_focus(bool focus) {
     auto& m_root = get_manager().get_root();
-    if (b_focus)
+    if (focus)
         m_root.request_focus(observer_from(this));
     else
         m_root.release_focus(*this);
 }
 
 bool frame::has_focus() const {
-    return b_focus_;
+    return is_focused_;
 }
 
-void frame::notify_focus(bool b_focus) {
-    if (b_focus_ == b_focus)
+void frame::notify_focus(bool focus) {
+    if (is_focused_ == focus)
         return;
 
-    b_focus_ = b_focus;
+    is_focused_ = focus;
 
-    if (b_focus_)
+    if (is_focused_)
         fire_script("OnFocusGained");
     else
         fire_script("OnFocusLost");
@@ -1317,12 +1316,12 @@ void frame::add_level_(int amount) {
         m_child.add_level_(amount);
 }
 
-void frame::set_user_placed(bool b_is_user_placed) {
-    b_is_user_placed_ = b_is_user_placed;
+void frame::set_user_placed(bool is_user_placed) {
+    is_user_placed_ = is_user_placed;
 }
 
 void frame::start_moving() {
-    if (!b_is_movable_)
+    if (!is_movable_)
         return;
 
     set_user_placed(true);
@@ -1335,7 +1334,7 @@ void frame::stop_moving() {
 }
 
 void frame::start_sizing(const anchor_point& m_point) {
-    if (!b_is_resizable_)
+    if (!is_resizable_)
         return;
 
     set_user_placed(true);
@@ -1347,16 +1346,16 @@ void frame::stop_sizing() {
         get_manager().get_root().stop_sizing();
 }
 
-void frame::propagate_renderer_(bool b_rendered) {
+void frame::propagate_renderer_(bool rendered) {
     auto p_top_level_renderer = get_top_level_renderer();
     for (const auto& p_child : child_list_) {
         if (!p_child)
             continue;
 
         if (!p_child->get_renderer())
-            p_top_level_renderer->notify_rendered_frame(p_child, b_rendered);
+            p_top_level_renderer->notify_rendered_frame(p_child, rendered);
 
-        p_child->propagate_renderer_(b_rendered);
+        p_child->propagate_renderer_(rendered);
     }
 }
 
@@ -1387,7 +1386,7 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const 
 void frame::notify_visible() {
     alive_checker m_checker(*this);
 
-    if (b_auto_focus_) {
+    if (is_auto_focus_) {
         set_focus(true);
         if (!m_checker.is_alive())
             return;
@@ -1443,7 +1442,7 @@ void frame::notify_invisible() {
 }
 
 void frame::notify_renderer_need_redraw() {
-    if (b_virtual_)
+    if (is_virtual_)
         return;
 
     get_top_level_renderer()->notify_strata_needs_redraw(m_strata_);
@@ -1463,58 +1462,58 @@ void frame::notify_scaling_factor_updated() {
 }
 
 void frame::show() {
-    if (b_is_shown_)
+    if (is_shown_)
         return;
 
-    bool b_was_visible = b_is_visible_;
+    bool was_visible = is_visible_;
     base::show();
 
-    if (!b_was_visible)
+    if (!was_visible)
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::hide() {
-    if (!b_is_shown_)
+    if (!is_shown_)
         return;
 
-    bool b_was_visible = b_is_visible_;
+    bool was_visible = is_visible_;
     base::hide();
 
-    if (b_was_visible)
+    if (was_visible)
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::notify_mouse_in_frame(bool b_mouse_inframe, const vector2f& /*mPosition*/) {
+void frame::notify_mouse_in_frame(bool mouse_inframe, const vector2f& /*mPosition*/) {
     alive_checker m_checker(*this);
 
-    if (b_mouse_inframe) {
-        if (!b_mouse_in_frame_) {
+    if (mouse_inframe) {
+        if (!is_mouse_in_frame_) {
             fire_script("OnEnter");
             if (!m_checker.is_alive())
                 return;
         }
 
-        b_mouse_in_frame_ = true;
+        is_mouse_in_frame_ = true;
     } else {
-        if (b_mouse_in_frame_) {
+        if (is_mouse_in_frame_) {
             fire_script("OnLeave");
             if (!m_checker.is_alive())
                 return;
         }
 
-        b_mouse_in_frame_ = false;
+        is_mouse_in_frame_ = false;
     }
 }
 
 void frame::update_borders_() {
-    const bool b_old_ready     = b_ready_;
+    const bool old_ready       = is_ready_;
     const auto old_border_list = border_list_;
 
     base::update_borders_();
 
     check_position_();
 
-    if (border_list_ != old_border_list || b_ready_ != b_old_ready) {
+    if (border_list_ != old_border_list || is_ready_ != old_ready) {
         get_manager().get_root().notify_hovered_frame_dirty();
         if (p_backdrop_)
             p_backdrop_->notify_borders_updated();
@@ -1531,7 +1530,7 @@ void frame::update(float f_delta) {
     base::update(f_delta);
     DEBUG_LOG("   #");
 
-    if (b_build_layer_list_) {
+    if (build_layer_list_flag_) {
         DEBUG_LOG("   Build layers");
         // Clear layers' content
         for (auto& m_layer : layer_list_)
@@ -1550,7 +1549,7 @@ void frame::update(float f_delta) {
                     .region_list.push_back(p_region);
         }
 
-        b_build_layer_list_ = false;
+        build_layer_list_flag_ = false;
     }
 
     if (is_visible()) {

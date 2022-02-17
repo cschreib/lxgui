@@ -51,14 +51,14 @@ void check_button::register_on_lua(sol::state& m_lua) {
 
     /** Check or uncheck the button.
      *   @function set_checked
-     *   @tparam boolean checked 'true' to check, 'false' to uncheck (if nil or missing, equivalent
-     * to 'true')
+     *   @tparam boolean is_checked 'true' to check, 'false' to uncheck (if nil or missing,
+     * equivalent to 'true')
      */
     /** Checks the button.
      *   @function set_checked
      */
-    m_class.set_function("set_checked", [](check_button& m_self, sol::optional<bool> b_checked) {
-        if (b_checked.value_or(true))
+    m_class.set_function("set_checked", [](check_button& m_self, sol::optional<bool> is_checked) {
+        if (is_checked.value_or(true))
             m_self.check();
         else
             m_self.uncheck();

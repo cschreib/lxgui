@@ -81,23 +81,23 @@ float manager::get_interface_scaling_factor() const {
     return f_scaling_factor_;
 }
 
-void manager::enable_caching(bool b_enable_caching) {
-    b_enable_caching_ = b_enable_caching;
+void manager::enable_caching(bool enable_caching) {
+    enable_caching_ = enable_caching;
     if (p_root_)
-        p_root_->enable_caching(b_enable_caching_);
+        p_root_->enable_caching(enable_caching_);
 }
 
 void manager::toggle_caching() {
-    b_enable_caching_ = !b_enable_caching_;
+    enable_caching_ = !enable_caching_;
     if (p_root_)
-        p_root_->enable_caching(b_enable_caching_);
+        p_root_->enable_caching(enable_caching_);
 }
 
 bool manager::is_caching_enabled() const {
     if (p_root_)
         return p_root_->is_caching_enabled();
     else
-        return b_enable_caching_;
+        return enable_caching_;
 }
 
 void manager::add_addon_directory(const std::string& directory) {
@@ -118,7 +118,7 @@ const sol::state& manager::get_lua() const {
 }
 
 void manager::read_files_() {
-    if (b_loaded_ || p_add_on_registry_)
+    if (is_loaded_ || p_add_on_registry_)
         return;
 
     p_add_on_registry_ = std::make_unique<addon_registry>(
@@ -129,7 +129,7 @@ void manager::read_files_() {
 }
 
 void manager::load_ui() {
-    if (b_loaded_)
+    if (is_loaded_)
         return;
 
     p_factory_      = std::make_unique<factory>(*this);
@@ -139,19 +139,19 @@ void manager::load_ui() {
     create_lua_();
     read_files_();
 
-    b_loaded_   = true;
-    b_close_ui_ = false;
+    is_loaded_     = true;
+    close_ui_flag_ = false;
 }
 
 void manager::close_ui() {
-    if (b_updating_)
-        b_close_ui_ = true;
+    if (is_updating_)
+        close_ui_flag_ = true;
     else
         close_ui_now();
 }
 
 void manager::close_ui_now() {
-    if (!b_loaded_)
+    if (!is_loaded_)
         return;
 
     if (p_add_on_registry_)
@@ -165,13 +165,13 @@ void manager::close_ui_now() {
 
     p_localizer_->clear_translations();
 
-    b_loaded_          = false;
-    b_first_iteration_ = true;
+    is_loaded_          = false;
+    is_first_iteration_ = true;
 }
 
 void manager::reload_ui() {
-    if (b_updating_)
-        b_reload_ui_ = true;
+    if (is_updating_)
+        reload_ui_flag_ = true;
     else
         reload_ui_now();
 }
@@ -183,7 +183,7 @@ void manager::reload_ui_now() {
     load_ui();
     gui::out << "Done." << std::endl;
 
-    b_reload_ui_ = false;
+    reload_ui_flag_ = false;
 }
 
 void manager::render_ui() const {
@@ -195,28 +195,28 @@ void manager::render_ui() const {
 }
 
 bool manager::is_loaded() const {
-    return b_loaded_;
+    return is_loaded_;
 }
 
 void manager::update_ui(float f_delta) {
-    b_updating_ = true;
+    is_updating_ = true;
 
     DEBUG_LOG(" Update regions...");
     p_root_->update(f_delta);
 
-    if (b_first_iteration_) {
+    if (is_first_iteration_) {
         DEBUG_LOG(" Entering world...");
         get_event_emitter().fire_event("ENTERING_WORLD");
-        b_first_iteration_ = false;
+        is_first_iteration_ = false;
 
         p_root_->notify_hovered_frame_dirty();
     }
 
-    b_updating_ = false;
+    is_updating_ = false;
 
-    if (b_reload_ui_)
+    if (reload_ui_flag_)
         reload_ui_now();
-    if (b_close_ui_)
+    if (close_ui_flag_)
         close_ui_now();
 }
 

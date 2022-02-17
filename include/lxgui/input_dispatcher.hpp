@@ -153,7 +153,7 @@ private:
 
     double d_double_click_time_ = 0.25;
 
-    bool         b_mouse_dragged_     = false;
+    bool         is_mouse_dragged_    = false;
     mouse_button m_mouse_drag_button_ = mouse_button::left;
 
     source& m_source_;

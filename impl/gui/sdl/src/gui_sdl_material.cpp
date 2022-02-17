@@ -21,10 +21,10 @@ int material::get_premultiplied_alpha_blend_mode() {
 material::material(
     SDL_Renderer*    p_renderer,
     const vector2ui& m_dimensions,
-    bool             b_render_target,
+    bool             is_render_target,
     wrap             m_wrap,
     filter           m_filter) :
-    gui::material(false), p_renderer_(p_renderer), b_is_owner_(true) {
+    gui::material(false), p_renderer_(p_renderer), is_owner_(true) {
     SDL_RendererInfo m_info;
     if (SDL_GetRendererInfo(p_renderer, &m_info) != 0) {
         throw gui::exception("gui::sdl::material", "Could not get renderer information.");
@@ -48,13 +48,13 @@ material::material(
 
     p_texture_ = SDL_CreateTexture(
         p_renderer, SDL_PIXELFORMAT_ABGR8888,
-        b_render_target ? SDL_TEXTUREACCESS_TARGET : SDL_TEXTUREACCESS_STREAMING, m_dimensions.x,
+        is_render_target ? SDL_TEXTUREACCESS_TARGET : SDL_TEXTUREACCESS_STREAMING, m_dimensions.x,
         m_dimensions.y);
 
     if (p_texture_ == nullptr) {
         throw gui::exception(
             "gui::sdl::material", "Could not create " +
-                                      std::string(b_render_target ? "render target" : "texture") +
+                                      std::string(is_render_target ? "render target" : "texture") +
                                       " with dimensions " + utils::to_string(m_dimensions.x) +
                                       " x " + utils::to_string(m_dimensions.y) + ".");
     }
@@ -67,7 +67,7 @@ material::material(
     m_canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
     m_wrap_              = m_wrap;
     m_filter_            = m_filter;
-    b_render_target_     = b_render_target;
+    is_render_target_    = is_render_target;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
@@ -75,10 +75,10 @@ material::material(
 material::material(
     SDL_Renderer*      p_renderer,
     const std::string& file_name,
-    bool               b_pre_multiplied_alpha_supported,
+    bool               pre_multiplied_alpha_supported,
     wrap               m_wrap,
     filter             m_filter) :
-    gui::material(false), p_renderer_(p_renderer), b_is_owner_(true) {
+    gui::material(false), p_renderer_(p_renderer), is_owner_(true) {
     // Load file
     SDL_Surface* p_surface = IMG_Load(file_name.c_str());
     if (p_surface == nullptr) {
@@ -95,7 +95,7 @@ material::material(
     }
 
     // Pre-multiply alpha
-    if (b_pre_multiplied_alpha_supported)
+    if (pre_multiplied_alpha_supported)
         premultiply_alpha(p_converted_surface);
 
     const std::size_t ui_width  = p_converted_surface->w;
@@ -136,7 +136,7 @@ material::material(
     m_canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
     m_wrap_              = m_wrap;
     m_filter_            = m_filter;
-    b_render_target_     = false;
+    is_render_target_    = false;
 
     m_rect_ = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 }
@@ -148,7 +148,7 @@ material::material(
     m_rect_(m_rect),
     m_filter_(m_filter),
     p_texture_(p_texture),
-    b_is_owner_(false) {
+    is_owner_(false) {
     int    canvas_width = 0, canvas_height = 0, access = 0;
     Uint32 ui_texture_format = 0;
     SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
@@ -158,12 +158,12 @@ material::material(
 }
 
 material::~material() noexcept {
-    if (p_texture_ && b_is_owner_)
+    if (p_texture_ && is_owner_)
         SDL_DestroyTexture(p_texture_);
 }
 
 void material::set_wrap(wrap m_wrap) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception(
             "gui::sdl::material", "A material in an atlas cannot change its wrapping mode.");
     }
@@ -176,7 +176,7 @@ material::wrap material::get_wrap() const {
 }
 
 void material::set_filter(filter m_filter) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception(
             "gui::sdl::material", "A material in an atlas cannot change its filtering.");
     }
@@ -213,11 +213,11 @@ bool material::uses_same_texture(const gui::material& m_other) const {
 }
 
 bool material::set_dimensions(const vector2ui& m_dimensions) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception("gui::sdl::material", "A material in an atlas cannot be resized.");
     }
 
-    if (!b_render_target_)
+    if (!is_render_target_)
         return false;
 
     SDL_RendererInfo m_info;
@@ -232,7 +232,7 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
         }
     }
 
-    bool b_canvas_updated = false;
+    bool canvas_updated = false;
 
     if (m_dimensions.x > m_canvas_dimensions_.x || m_dimensions.y > m_canvas_dimensions_.y) {
         // SDL is not efficient at resizing render texture, so use an exponential growth pattern
@@ -258,13 +258,13 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
         SDL_DestroyTexture(p_texture_);
         p_texture_           = p_texture;
         m_canvas_dimensions_ = m_canvas_dimensions;
-        b_canvas_updated     = true;
+        canvas_updated       = true;
     }
 
     m_dimensions_ = m_dimensions;
     m_rect_       = bounds2f(0, m_dimensions_.x, 0, m_dimensions_.y);
 
-    return b_canvas_updated;
+    return canvas_updated;
 }
 
 const ub32color* material::lock_pointer(std::size_t* p_pitch) const {
@@ -281,7 +281,7 @@ const ub32color* material::lock_pointer(std::size_t* p_pitch) const {
 }
 
 ub32color* material::lock_pointer(std::size_t* p_pitch) {
-    if (!b_is_owner_) {
+    if (!is_owner_) {
         throw gui::exception(
             "gui::sdl::material", "A material in an atlas cannot update its data.");
     }
@@ -294,7 +294,7 @@ void material::unlock_pointer() const {
 }
 
 SDL_Texture* material::get_render_texture() {
-    if (!b_render_target_)
+    if (!is_render_target_)
         return nullptr;
 
     return p_texture_;

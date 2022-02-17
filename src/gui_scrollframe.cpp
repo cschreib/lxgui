@@ -47,7 +47,7 @@ void scroll_frame::fire_script(const std::string& script_name, const event_data&
         return;
 
     if (script_name == "OnSizeChanged")
-        b_rebuild_scroll_render_target_ = true;
+        rebuild_scroll_render_target_flag_ = true;
 }
 
 void scroll_frame::copy_from(const region& m_obj) {
@@ -97,7 +97,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> p_frame) {
         p_scroll_texture->notify_loaded();
         p_scroll_texture_ = p_scroll_texture;
 
-        b_rebuild_scroll_render_target_ = true;
+        rebuild_scroll_render_target_flag_ = true;
     }
 
     p_scroll_child_ = p_frame;
@@ -113,10 +113,10 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> p_frame) {
         p_scroll_child_->set_point(anchor_point::top_left, get_name(), -m_scroll_);
 
         update_scroll_range_();
-        b_update_scroll_range_ = false;
+        update_scroll_range_flag_ = false;
     }
 
-    b_redraw_scroll_render_target_ = true;
+    redraw_scroll_render_target_flag_ = true;
 }
 
 void scroll_frame::set_horizontal_scroll(float f_horizontal_scroll) {
@@ -131,7 +131,7 @@ void scroll_frame::set_horizontal_scroll(float f_horizontal_scroll) {
         p_scroll_child_->modify_point(anchor_point::top_left).m_offset = -m_scroll_;
         p_scroll_child_->notify_borders_need_update();
 
-        b_redraw_scroll_render_target_ = true;
+        redraw_scroll_render_target_flag_ = true;
     }
 }
 
@@ -155,7 +155,7 @@ void scroll_frame::set_vertical_scroll(float f_vertical_scroll) {
         p_scroll_child_->modify_point(anchor_point::top_left).m_offset = -m_scroll_;
         p_scroll_child_->notify_borders_need_update();
 
-        b_redraw_scroll_render_target_ = true;
+        redraw_scroll_render_target_flag_ = true;
     }
 }
 
@@ -178,25 +178,25 @@ void scroll_frame::update(float f_delta) {
         return;
 
     if (p_scroll_child_ && m_old_child_size != p_scroll_child_->get_apparent_dimensions()) {
-        b_update_scroll_range_         = true;
-        b_redraw_scroll_render_target_ = true;
+        update_scroll_range_flag_         = true;
+        redraw_scroll_render_target_flag_ = true;
     }
 
     if (is_visible()) {
-        if (b_rebuild_scroll_render_target_ && p_scroll_texture_) {
+        if (rebuild_scroll_render_target_flag_ && p_scroll_texture_) {
             rebuild_scroll_render_target_();
-            b_rebuild_scroll_render_target_ = false;
-            b_redraw_scroll_render_target_  = true;
+            rebuild_scroll_render_target_flag_ = false;
+            redraw_scroll_render_target_flag_  = true;
         }
 
-        if (b_update_scroll_range_) {
+        if (update_scroll_range_flag_) {
             update_scroll_range_();
-            b_update_scroll_range_ = false;
+            update_scroll_range_flag_ = false;
         }
 
-        if (p_scroll_child_ && p_scroll_render_target_ && b_redraw_scroll_render_target_) {
+        if (p_scroll_child_ && p_scroll_render_target_ && redraw_scroll_render_target_flag_) {
             render_scroll_strata_list_();
-            b_redraw_scroll_render_target_ = false;
+            redraw_scroll_render_target_flag_ = false;
         }
     }
 }
@@ -223,7 +223,7 @@ void scroll_frame::update_scroll_range_() {
 void scroll_frame::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
-    b_rebuild_scroll_render_target_ = true;
+    rebuild_scroll_render_target_flag_ = true;
 }
 
 void scroll_frame::rebuild_scroll_render_target_() {
@@ -239,7 +239,7 @@ void scroll_frame::rebuild_scroll_render_target_() {
     if (p_scroll_render_target_) {
         p_scroll_render_target_->set_dimensions(m_scaled_size);
         p_scroll_texture_->set_tex_rect(std::array<float, 4>{0.0f, 0.0f, 1.0f, 1.0f});
-        b_update_scroll_range_ = true;
+        update_scroll_range_flag_ = true;
     } else {
         auto& m_renderer        = get_manager().get_renderer();
         p_scroll_render_target_ = m_renderer.create_render_target(m_scaled_size);
@@ -283,7 +283,7 @@ scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& m_pred
 void scroll_frame::notify_strata_needs_redraw(frame_strata m_strata) {
     frame_renderer::notify_strata_needs_redraw(m_strata);
 
-    b_redraw_scroll_render_target_ = true;
+    redraw_scroll_render_target_flag_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -291,14 +291,13 @@ void scroll_frame::create_glue() {
     create_glue_(this);
 }
 
-void scroll_frame::notify_rendered_frame(
-    const utils::observer_ptr<frame>& p_frame, bool b_rendered) {
+void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool rendered) {
     if (!p_frame)
         return;
 
-    frame_renderer::notify_rendered_frame(p_frame, b_rendered);
+    frame_renderer::notify_rendered_frame(p_frame, rendered);
 
-    b_redraw_scroll_render_target_ = true;
+    redraw_scroll_render_target_flag_ = true;
 }
 
 vector2f scroll_frame::get_target_dimensions() const {

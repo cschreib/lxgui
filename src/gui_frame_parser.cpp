@@ -48,7 +48,7 @@ void frame::parse_attributes_(const layout_node& m_node) {
     set_frame_strata(m_node.get_attribute_value_or<std::string>("frameStrata", "PARENT"));
 
     if (const layout_attribute* p_attr = m_node.try_get_attribute("frameLevel")) {
-        if (!b_virtual_) {
+        if (!is_virtual_) {
             std::string frame_level = p_attr->get_value<std::string>();
             int         level       = 0;
             if (frame_level != "PARENT" && utils::from_string(frame_level, level))
@@ -72,15 +72,15 @@ void frame::parse_resize_bounds_node_(const layout_node& m_node) {
     if (const layout_node* p_resize_bounds_node = m_node.try_get_child("ResizeBounds")) {
         if (const layout_node* p_min_node = p_resize_bounds_node->try_get_child("Min")) {
             auto m_dimensions = parse_dimension_(*p_min_node);
-            bool b_has_x      = m_dimensions.second.x.has_value();
-            bool b_has_y      = m_dimensions.second.y.has_value();
+            bool has_x        = m_dimensions.second.x.has_value();
+            bool has_y        = m_dimensions.second.y.has_value();
             if (m_dimensions.first == anchor_type::abs) {
-                if (b_has_x && b_has_y) {
+                if (has_x && has_y) {
                     set_min_dimensions(
                         vector2f(m_dimensions.second.x.value(), m_dimensions.second.y.value()));
-                } else if (b_has_x)
+                } else if (has_x)
                     set_min_width(m_dimensions.second.x.value());
-                else if (b_has_y)
+                else if (has_y)
                     set_min_height(m_dimensions.second.y.value());
             } else {
                 gui::out << gui::warning << p_min_node->get_location() << " : "
@@ -91,15 +91,15 @@ void frame::parse_resize_bounds_node_(const layout_node& m_node) {
 
         if (const layout_node* p_max_node = p_resize_bounds_node->try_get_child("Max")) {
             auto m_dimensions = parse_dimension_(*p_max_node);
-            bool b_has_x      = m_dimensions.second.x.has_value();
-            bool b_has_y      = m_dimensions.second.y.has_value();
+            bool has_x        = m_dimensions.second.x.has_value();
+            bool has_y        = m_dimensions.second.y.has_value();
             if (m_dimensions.first == anchor_type::abs) {
-                if (b_has_x && b_has_y) {
+                if (has_x && has_y) {
                     set_max_dimensions(
                         vector2f(m_dimensions.second.x.value(), m_dimensions.second.y.value()));
-                } else if (b_has_x)
+                } else if (has_x)
                     set_max_width(m_dimensions.second.x.value());
-                else if (b_has_y)
+                else if (has_y)
                     set_max_height(m_dimensions.second.y.value());
             } else {
                 gui::out << gui::warning << p_max_node->get_location() << " : "

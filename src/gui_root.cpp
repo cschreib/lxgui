@@ -79,7 +79,7 @@ vector2f root::get_target_dimensions() const {
 void root::render() const {
     m_renderer_.set_view(matrix4f::view(get_target_dimensions()));
 
-    if (b_enable_caching_) {
+    if (caching_enabled_) {
         m_renderer_.render_quad(m_screen_quad_);
     } else {
         for (const auto& m_strata : strata_list_) {
@@ -99,7 +99,7 @@ void root::create_caching_render_target_() {
                  << "Unable to create render_target for GUI caching :\n"
                  << e.get_description() << std::endl;
 
-        b_enable_caching_ = false;
+        caching_enabled_ = false;
         return;
     }
 
@@ -146,18 +146,18 @@ void root::update(float f_delta) {
     // Removed destroyed frames
     garbage_collect();
 
-    bool b_redraw = has_strata_list_changed_();
+    bool redraw_flag = has_strata_list_changed_();
     reset_strata_list_changed_flag_();
 
-    if (b_redraw)
+    if (redraw_flag)
         notify_hovered_frame_dirty();
 
-    if (b_enable_caching_) {
+    if (caching_enabled_) {
         DEBUG_LOG(" Redraw strata...");
 
         try {
             for (auto& m_strata : strata_list_) {
-                if (m_strata.b_redraw) {
+                if (m_strata.redraw_flag) {
                     if (!m_strata.p_render_target)
                         create_strata_cache_render_target_(m_strata);
 
@@ -176,16 +176,16 @@ void root::update(float f_delta) {
                         m_renderer_.end();
                     }
 
-                    b_redraw = true;
+                    redraw_flag = true;
                 }
 
-                m_strata.b_redraw = false;
+                m_strata.redraw_flag = false;
             }
 
             if (!p_render_target_)
                 create_caching_render_target_();
 
-            if (b_redraw && p_render_target_) {
+            if (redraw_flag && p_render_target_) {
                 m_renderer_.begin(p_render_target_);
 
                 vector2f m_view = vector2f(p_render_target_->get_canvas_dimensions()) /
@@ -206,27 +206,27 @@ void root::update(float f_delta) {
                      << "Unable to create render_target for strata :\n"
                      << e.get_description() << std::endl;
 
-            b_enable_caching_ = false;
+            caching_enabled_ = false;
         }
     }
 }
 
 void root::toggle_caching() {
-    b_enable_caching_ = !b_enable_caching_;
+    caching_enabled_ = !caching_enabled_;
 
-    if (b_enable_caching_) {
+    if (caching_enabled_) {
         for (auto& m_strata : strata_list_)
-            m_strata.b_redraw = true;
+            m_strata.redraw_flag = true;
     }
 }
 
-void root::enable_caching(bool b_enable) {
-    if (b_enable_caching_ != b_enable)
+void root::enable_caching(bool enable) {
+    if (caching_enabled_ != enable)
         toggle_caching();
 }
 
 bool root::is_caching_enabled() const {
-    return b_enable_caching_;
+    return caching_enabled_;
 }
 
 void root::notify_scaling_factor_updated() {
@@ -308,31 +308,31 @@ void root::start_sizing(utils::observer_ptr<region> p_obj, anchor_point m_point)
         switch (m_point) {
         case anchor_point::top_left:
         case anchor_point::top:
-            m_opposite_point      = anchor_point::bottom_right;
-            m_offset              = borders.bottom_right();
-            b_resize_from_right_  = false;
-            b_resize_from_bottom_ = false;
+            m_opposite_point         = anchor_point::bottom_right;
+            m_offset                 = borders.bottom_right();
+            is_resizing_from_right_  = false;
+            is_resizing_from_bottom_ = false;
             break;
         case anchor_point::top_right:
         case anchor_point::right:
-            m_opposite_point      = anchor_point::bottom_left;
-            m_offset              = borders.bottom_left();
-            b_resize_from_right_  = true;
-            b_resize_from_bottom_ = false;
+            m_opposite_point         = anchor_point::bottom_left;
+            m_offset                 = borders.bottom_left();
+            is_resizing_from_right_  = true;
+            is_resizing_from_bottom_ = false;
             break;
         case anchor_point::bottom_right:
         case anchor_point::bottom:
-            m_opposite_point      = anchor_point::top_left;
-            m_offset              = borders.top_left();
-            b_resize_from_right_  = true;
-            b_resize_from_bottom_ = true;
+            m_opposite_point         = anchor_point::top_left;
+            m_offset                 = borders.top_left();
+            is_resizing_from_right_  = true;
+            is_resizing_from_bottom_ = true;
             break;
         case anchor_point::bottom_left:
         case anchor_point::left:
-            m_opposite_point      = anchor_point::top_right;
-            m_offset              = borders.top_right();
-            b_resize_from_right_  = false;
-            b_resize_from_bottom_ = true;
+            m_opposite_point         = anchor_point::top_right;
+            m_offset                 = borders.top_right();
+            is_resizing_from_right_  = false;
+            is_resizing_from_bottom_ = true;
             break;
         case anchor_point::center:
             gui::out << gui::error << "gui::manager : "
@@ -348,14 +348,14 @@ void root::start_sizing(utils::observer_ptr<region> p_obj, anchor_point m_point)
         m_resize_start_ = p_sized_object_->get_apparent_dimensions();
 
         if (m_point == anchor_point::left || m_point == anchor_point::right) {
-            b_resize_width_  = true;
-            b_resize_height_ = false;
+            is_resizing_width_  = true;
+            is_resizing_height_ = false;
         } else if (m_point == anchor_point::top || m_point == anchor_point::bottom) {
-            b_resize_width_  = false;
-            b_resize_height_ = true;
+            is_resizing_width_  = false;
+            is_resizing_height_ = true;
         } else {
-            b_resize_width_  = true;
-            b_resize_height_ = true;
+            is_resizing_width_  = true;
+            is_resizing_height_ = true;
         }
     }
 }
@@ -521,22 +521,22 @@ void root::on_mouse_moved_(const vector2f& m_movement, const vector2f& m_mouse_p
             p_moved_object_->notify_borders_need_update();
     } else if (p_sized_object_) {
         float f_width;
-        if (b_resize_from_right_)
+        if (is_resizing_from_right_)
             f_width = std::max(0.0f, m_resize_start_.x + m_mouse_movement_.x);
         else
             f_width = std::max(0.0f, m_resize_start_.x - m_mouse_movement_.x);
 
         float f_height;
-        if (b_resize_from_bottom_)
+        if (is_resizing_from_bottom_)
             f_height = std::max(0.0f, m_resize_start_.y + m_mouse_movement_.y);
         else
             f_height = std::max(0.0f, m_resize_start_.y - m_mouse_movement_.y);
 
-        if (b_resize_width_ && b_resize_height_)
+        if (is_resizing_width_ && is_resizing_height_)
             p_sized_object_->set_dimensions(vector2f(f_width, f_height));
-        else if (b_resize_width_)
+        else if (is_resizing_width_)
             p_sized_object_->set_width(f_width);
-        else if (b_resize_height_)
+        else if (is_resizing_height_)
             p_sized_object_->set_height(f_height);
     }
 
@@ -644,18 +644,18 @@ void root::on_text_entered_(std::uint32_t c) {
     }
 }
 
-std::string get_key_name(
-    input::key m_key, bool b_is_shift_pressed, bool b_is_ctrl_pressed, bool b_is_alt_pressed) {
+std::string
+get_key_name(input::key m_key, bool is_shift_pressed, bool is_ctrl_pressed, bool is_alt_pressed) {
     std::string name;
 
     if (m_key != input::key::k_lcontrol && m_key != input::key::k_rcontrol &&
         m_key != input::key::k_lshift && m_key != input::key::k_rshift &&
         m_key != input::key::k_lmenu && m_key != input::key::k_rmenu) {
-        if (b_is_ctrl_pressed)
+        if (is_ctrl_pressed)
             name = "Ctrl-";
-        if (b_is_alt_pressed)
+        if (is_alt_pressed)
             name.append("Alt-");
-        if (b_is_shift_pressed)
+        if (is_shift_pressed)
             name.append("Shift-");
     }
 
@@ -664,14 +664,13 @@ std::string get_key_name(
     return name;
 }
 
-void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
+void root::on_key_state_changed_(input::key m_key, bool is_down) {
     const auto& m_input_dispatcher = get_manager().get_input_dispatcher();
-    bool        b_is_shift_pressed = m_input_dispatcher.shift_is_pressed();
-    bool        b_is_ctrl_pressed  = m_input_dispatcher.ctrl_is_pressed();
-    bool        b_is_alt_pressed   = m_input_dispatcher.alt_is_pressed();
+    bool        is_shift_pressed   = m_input_dispatcher.shift_is_pressed();
+    bool        is_ctrl_pressed    = m_input_dispatcher.ctrl_is_pressed();
+    bool        is_alt_pressed     = m_input_dispatcher.alt_is_pressed();
 
-    std::string key_name =
-        get_key_name(m_key, b_is_shift_pressed, b_is_ctrl_pressed, b_is_alt_pressed);
+    std::string key_name = get_key_name(m_key, is_shift_pressed, is_ctrl_pressed, is_alt_pressed);
 
     // First, give priority to the focussed frame
     utils::observer_ptr<frame> p_topmost_frame = get_focussed_frame();
@@ -687,11 +686,11 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
         event_data m_data;
         m_data.add(static_cast<std::underlying_type_t<input::key>>(m_key));
         m_data.add(key_name);
-        m_data.add(b_is_shift_pressed);
-        m_data.add(b_is_ctrl_pressed);
-        m_data.add(b_is_alt_pressed);
+        m_data.add(is_shift_pressed);
+        m_data.add(is_ctrl_pressed);
+        m_data.add(is_alt_pressed);
 
-        if (b_is_down)
+        if (is_down)
             p_topmost_frame->fire_script("OnKeyDown", m_data);
         else
             p_topmost_frame->fire_script("OnKeyUp", m_data);
@@ -699,11 +698,11 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
         return;
     }
 
-    if (b_is_down) {
+    if (is_down) {
         // If no frame is found, try the keybinder
         try {
             if (get_keybinder().on_key_down(
-                    m_key, b_is_shift_pressed, b_is_ctrl_pressed, b_is_alt_pressed))
+                    m_key, is_shift_pressed, is_ctrl_pressed, is_alt_pressed))
                 return;
         } catch (const std::exception& m_exception) {
             std::string error = m_exception.what();
@@ -714,31 +713,28 @@ void root::on_key_state_changed_(input::key m_key, bool b_is_down) {
     }
 
     // Forward to the world
-    if (b_is_down)
+    if (is_down)
         m_world_input_dispatcher_.on_key_pressed(m_key);
     else
         m_world_input_dispatcher_.on_key_released(m_key);
 }
 
 void root::on_mouse_button_state_changed_(
-    input::mouse_button m_button,
-    bool                b_is_down,
-    bool                b_is_double_click,
-    const vector2f&     m_mouse_pos) {
+    input::mouse_button m_button, bool is_down, bool is_double_click, const vector2f& m_mouse_pos) {
     utils::observer_ptr<frame> p_hovered_frame = find_topmost_frame([&](const frame& m_frame) {
         return m_frame.is_in_region(m_mouse_pos) && m_frame.is_mouse_click_enabled();
     });
 
-    if (b_is_down && !b_is_double_click) {
+    if (is_down && !is_double_click) {
         if (!p_hovered_frame || p_hovered_frame != get_focussed_frame())
             clear_focus();
     }
 
     if (!p_hovered_frame) {
         // Forward to the world
-        if (b_is_double_click)
+        if (is_double_click)
             m_world_input_dispatcher_.on_mouse_double_clicked(m_button, m_mouse_pos);
-        else if (b_is_down)
+        else if (is_down)
             m_world_input_dispatcher_.on_mouse_pressed(m_button, m_mouse_pos);
         else
             m_world_input_dispatcher_.on_mouse_released(m_button, m_mouse_pos);
@@ -750,9 +746,9 @@ void root::on_mouse_button_state_changed_(
     m_data.add(m_mouse_pos.x);
     m_data.add(m_mouse_pos.y);
 
-    if (b_is_double_click) {
+    if (is_double_click) {
         p_hovered_frame->fire_script("OnDoubleClicked", m_data);
-    } else if (b_is_down) {
+    } else if (is_down) {
         if (auto* p_top_level = p_hovered_frame->get_top_level_parent().get())
             p_top_level->raise();
 

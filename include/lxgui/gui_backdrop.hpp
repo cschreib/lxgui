@@ -62,9 +62,9 @@ public:
     color get_background_color() const;
 
     /// Enables tilling for the background texture.
-    /** \param bBackgroundTilling 'true' to enable tilling
+    /** \param is_tilling 'true' to enable tilling
      */
-    void set_background_tilling(bool b_background_tilling);
+    void set_background_tilling(bool is_tilling);
 
     /// Checks if tilling is enabled for the background texture.
     /** \return 'true' if tilling is enabled for the background texture
@@ -167,9 +167,9 @@ private:
     std::string               background_file_;
     color                     m_background_color_ = color::empty;
     std::shared_ptr<material> p_background_texture_;
-    bool                      b_background_tilling_ = false;
-    float                     f_tile_size_          = 0.0f;
-    float                     f_original_tile_size_ = 0.0f;
+    bool                      is_background_tilling_ = false;
+    float                     f_tile_size_           = 0.0f;
+    float                     f_original_tile_size_  = 0.0f;
     bounds2f                  background_insets_;
 
     std::string               edge_file_;
@@ -181,8 +181,8 @@ private:
 
     color m_vertex_color_ = color::white;
 
-    mutable bool  b_cache_dirty_ = true;
-    mutable float f_cache_alpha_ = std::numeric_limits<float>::quiet_NaN();
+    mutable bool  is_cache_dirty_ = true;
+    mutable float f_cache_alpha_  = std::numeric_limits<float>::quiet_NaN();
     mutable std::vector<std::array<vertex, 4>> background_quads_;
     mutable std::shared_ptr<vertex_cache>      p_background_cache_;
     mutable std::vector<std::array<vertex, 4>> edge_quads_;

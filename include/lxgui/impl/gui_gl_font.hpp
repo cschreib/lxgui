@@ -104,7 +104,7 @@ private:
 
     FT_Face     m_face_                = nullptr;
     std::size_t ui_size_               = 0u;
-    bool        b_kerning_             = false;
+    bool        kerning_               = false;
     char32_t    ui_default_code_point_ = 0u;
 
     std::shared_ptr<gl::material> p_texture_;

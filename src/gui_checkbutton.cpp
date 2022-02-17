@@ -56,7 +56,7 @@ void check_button::copy_from(const region& m_obj) {
 }
 
 void check_button::check() {
-    if (!b_checked_) {
+    if (!is_checked_) {
         if (m_state_ == state::disabled) {
             if (p_disabled_checked_texture_)
                 p_disabled_checked_texture_->show();
@@ -67,19 +67,19 @@ void check_button::check() {
                 p_checked_texture_->show();
         }
 
-        b_checked_ = true;
+        is_checked_ = true;
     }
 }
 
 void check_button::uncheck() {
-    if (b_checked_) {
+    if (is_checked_) {
         if (p_disabled_checked_texture_)
             p_disabled_checked_texture_->hide();
 
         if (p_checked_texture_)
             p_checked_texture_->hide();
 
-        b_checked_ = false;
+        is_checked_ = false;
     }
 }
 
@@ -115,7 +115,7 @@ void check_button::release() {
 }
 
 bool check_button::is_checked() const {
-    return b_checked_;
+    return is_checked_;
 }
 
 void check_button::set_checked_texture(utils::observer_ptr<texture> p_texture) {

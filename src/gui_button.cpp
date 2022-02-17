@@ -229,7 +229,7 @@ void button::set_highlight_texture(utils::observer_ptr<texture> p_texture) {
     if (!p_highlight_texture_)
         return;
 
-    p_highlight_texture_->set_shown(b_highlighted_);
+    p_highlight_texture_->set_shown(is_highlighted_);
 }
 
 void button::set_normal_text(utils::observer_ptr<font_string> p_font) {
@@ -252,7 +252,7 @@ void button::set_highlight_text(utils::observer_ptr<font_string> p_font) {
     if (!p_highlight_text_)
         return;
 
-    p_highlight_text_->set_shown(b_highlighted_);
+    p_highlight_text_->set_shown(is_highlighted_);
     p_highlight_text_->set_text(content_);
 }
 
@@ -378,7 +378,7 @@ void button::release() {
 }
 
 void button::highlight() {
-    if (!b_highlighted_) {
+    if (!is_highlighted_) {
         if (p_highlight_texture_) {
             p_highlight_texture_->show();
         }
@@ -390,12 +390,12 @@ void button::highlight() {
             p_current_font_string_->show();
         }
 
-        b_highlighted_ = true;
+        is_highlighted_ = true;
     }
 }
 
 void button::unlight() {
-    if (!b_lock_highlight_ && b_highlighted_) {
+    if (!is_highlight_locked_ && is_highlighted_) {
         if (p_highlight_texture_) {
             p_highlight_texture_->hide();
         }
@@ -414,7 +414,7 @@ void button::unlight() {
                 p_current_font_string_->show();
         }
 
-        b_highlighted_ = false;
+        is_highlighted_ = false;
     }
 }
 
@@ -424,14 +424,14 @@ button::state button::get_button_state() const {
 
 void button::lock_highlight() {
     highlight();
-    b_lock_highlight_ = true;
+    is_highlight_locked_ = true;
 }
 
 void button::unlock_highlight() {
-    if (!b_mouse_in_frame_)
+    if (!is_mouse_in_frame_)
         unlight();
 
-    b_lock_highlight_ = false;
+    is_highlight_locked_ = false;
 }
 
 void button::set_pushed_text_offset(const vector2f& m_offset) {

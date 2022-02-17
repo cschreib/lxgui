@@ -53,7 +53,7 @@ std::string texture::serialize(const std::string& sTab) const {
     str << sTab << "  |   # bottom-right : (" << m_quad_.v[2].uvs << ")\n";
     str << sTab << "  |   # bottom-left  : (" << m_quad_.v[3].uvs << ")\n";
     str << sTab << "  #-###\n";
-    str << sTab << "  # TexCModRect : " << b_tex_coord_modifies_rect_ << "\n";
+    str << sTab << "  # Stretching : " << is_texture_stretching_enabled_ << "\n";
 
     str << sTab << "  # Blend mode  : ";
     switch (m_blend_mode_) {
@@ -72,7 +72,7 @@ std::string texture::serialize(const std::string& sTab) const {
     default: str << "<error>\n"; break;
     }
 
-    str << sTab << "  # Desaturated : " << b_is_desaturated_ << "\n";
+    str << sTab << "  # Desaturated : " << is_desaturated_ << "\n";
 
     return str.str();
 }
@@ -114,7 +114,7 @@ void texture::copy_from(const region& m_obj) {
 
     this->set_blend_mode(p_texture->get_blend_mode());
     this->set_tex_coord(p_texture->get_tex_coord());
-    this->set_tex_coord_modifies_rect(p_texture->get_tex_coord_modifies_rect());
+    this->set_texture_stretching(p_texture->get_texture_stretching());
     this->set_desaturated(p_texture->is_desaturated());
 }
 
@@ -161,8 +161,8 @@ std::array<float, 8> texture::get_tex_coord() const {
     return m_coords;
 }
 
-bool texture::get_tex_coord_modifies_rect() const {
-    return b_tex_coord_modifies_rect_;
+bool texture::get_texture_stretching() const {
+    return is_texture_stretching_enabled_;
 }
 
 bool texture::has_texture_file() const {
@@ -184,7 +184,7 @@ color texture::get_vertex_color(std::size_t ui_index) const {
 }
 
 bool texture::is_desaturated() const {
-    return b_is_desaturated_;
+    return is_desaturated_;
 }
 
 void texture::set_blend_mode(blend_mode m_blend_mode) {
@@ -254,12 +254,12 @@ void texture::set_filter_mode(const std::string& filter_name) {
     set_filter_mode(m_new_filter);
 }
 
-void texture::set_desaturated(bool b_is_desaturated) {
-    if (b_is_desaturated_ == b_is_desaturated)
+void texture::set_desaturated(bool is_desaturated) {
+    if (is_desaturated_ == is_desaturated)
         return;
 
-    b_is_desaturated_ = b_is_desaturated;
-    if (b_is_desaturated) {
+    is_desaturated_ = is_desaturated;
+    if (is_desaturated) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "Texture de-saturation is not yet implemented." << std::endl;
     }
@@ -298,7 +298,7 @@ void texture::set_tex_rect(const std::array<float, 4>& texture_rect) {
         m_quad_.v[3].uvs =
             m_quad_.mat->get_canvas_uv(vector2f(texture_rect[0], texture_rect[3]), true);
 
-        if (b_tex_coord_modifies_rect_)
+        if (!is_texture_stretching_enabled_)
             update_dimensions_from_tex_coord_();
     } else {
         m_quad_.v[0].uvs = vector2f(texture_rect[0], texture_rect[1]);
@@ -321,7 +321,7 @@ void texture::set_tex_coord(const std::array<float, 8>& texture_coords) {
         m_quad_.v[3].uvs =
             m_quad_.mat->get_canvas_uv(vector2f(texture_coords[6], texture_coords[7]), true);
 
-        if (b_tex_coord_modifies_rect_)
+        if (!is_texture_stretching_enabled_)
             update_dimensions_from_tex_coord_();
     } else {
         m_quad_.v[0].uvs = vector2f(texture_coords[0], texture_coords[1]);
@@ -333,11 +333,11 @@ void texture::set_tex_coord(const std::array<float, 8>& texture_coords) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord_modifies_rect(bool b_tex_coord_modifies_rect) {
-    if (b_tex_coord_modifies_rect_ != b_tex_coord_modifies_rect) {
-        b_tex_coord_modifies_rect_ = b_tex_coord_modifies_rect;
+void texture::set_texture_stretching(bool texture_stretching) {
+    if (is_texture_stretching_enabled_ != texture_stretching) {
+        is_texture_stretching_enabled_ = texture_stretching;
 
-        if (b_tex_coord_modifies_rect_ && m_quad_.mat)
+        if (!is_texture_stretching_enabled_ && m_quad_.mat)
             update_dimensions_from_tex_coord_();
     }
 }

@@ -46,21 +46,21 @@ utils::owner_ptr<region> layered_region::release_from_parent() {
 }
 
 void layered_region::show() {
-    if (!b_is_shown_) {
-        b_is_shown_ = true;
+    if (!is_shown_) {
+        is_shown_ = true;
         notify_renderer_need_redraw();
     }
 }
 
 void layered_region::hide() {
-    if (b_is_shown_) {
-        b_is_shown_ = false;
+    if (is_shown_) {
+        is_shown_ = false;
         notify_renderer_need_redraw();
     }
 }
 
 bool layered_region::is_visible() const {
-    return p_parent_->is_visible() && b_is_shown_;
+    return p_parent_->is_visible() && is_shown_;
 }
 
 layer layered_region::get_draw_layer() const {
@@ -80,7 +80,7 @@ void layered_region::set_draw_layer(const std::string& layer_name) {
 }
 
 void layered_region::notify_renderer_need_redraw() {
-    if (b_virtual_)
+    if (is_virtual_)
         return;
 
     if (p_parent_)

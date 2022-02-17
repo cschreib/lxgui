@@ -15,7 +15,7 @@ struct addon {
     std::string ui_version;
     std::string author;
 
-    bool b_enabled = true;
+    bool enabled = true;
 
     std::string main_directory;
     std::string directory;

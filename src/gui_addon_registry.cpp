@@ -39,7 +39,7 @@ void addon_registry::load_addon_toc_(
         return;
 
     addon m_add_on;
-    m_add_on.b_enabled      = true;
+    m_add_on.enabled        = true;
     m_add_on.main_directory = utils::cut(add_on_directory, "/").back();
     m_add_on.directory      = add_on_directory + "/" + add_on_name;
 
@@ -68,14 +68,14 @@ void addon_registry::load_addon_toc_(
                     m_add_on.ui_version = value;
 
                     if (m_add_on.ui_version == lxgui_ui_version)
-                        m_add_on.b_enabled = true;
+                        m_add_on.enabled = true;
                     else {
                         gui::out << gui::warning << "gui::manager : "
                                  << "Wrong UI version for \"" << add_on_name
                                  << "\" (got : " << m_add_on.ui_version
                                  << ", expected : " << lxgui_ui_version << "). AddOn disabled."
                                  << std::endl;
-                        m_add_on.b_enabled = false;
+                        m_add_on.enabled = false;
                     }
                 } else if (key == "Title")
                     m_add_on.name = value;
@@ -149,7 +149,7 @@ void addon_registry::load_addon_directory(const std::string& directory) {
 
     std::vector<addon*> core_add_on_stack;
     std::vector<addon*> add_on_stack;
-    bool                b_core = false;
+    bool                core = false;
 
     auto& add_ons = add_on_list_[directory];
 
@@ -166,7 +166,7 @@ void addon_registry::load_addon_directory(const std::string& directory) {
             if (line_view[0] == '#') {
                 line_view = line_view.substr(1);
                 line_view = utils::trim(line_view, ' ');
-                b_core    = line_view == "Core";
+                core      = line_view == "Core";
             } else {
                 auto args = utils::cut_first(line_view, ":");
                 if (!args.first.empty() && !args.second.empty()) {
@@ -174,12 +174,12 @@ void addon_registry::load_addon_directory(const std::string& directory) {
                     std::string_view value = utils::trim(args.second, ' ');
                     auto             iter  = add_ons.find(std::string{key});
                     if (iter != add_ons.end()) {
-                        if (b_core)
+                        if (core)
                             core_add_on_stack.push_back(&iter->second);
                         else
                             add_on_stack.push_back(&iter->second);
 
-                        iter->second.b_enabled = value == "1";
+                        iter->second.enabled = value == "1";
                     }
                 }
             }
@@ -188,12 +188,12 @@ void addon_registry::load_addon_directory(const std::string& directory) {
     }
 
     for (auto* p_add_on : core_add_on_stack) {
-        if (p_add_on->b_enabled)
+        if (p_add_on->enabled)
             this->load_addon_files_(*p_add_on);
     }
 
     for (auto* p_add_on : add_on_stack) {
-        if (p_add_on->b_enabled)
+        if (p_add_on->enabled)
             this->load_addon_files_(*p_add_on);
     }
 

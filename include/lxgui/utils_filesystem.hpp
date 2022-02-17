@@ -17,10 +17,10 @@ bool make_directory(const std::string& path);
 
 string_vector get_directory_list(const std::string& rel_path);
 
-string_vector get_file_list(const std::string& rel_path, bool b_with_path = false);
+string_vector get_file_list(const std::string& rel_path, bool with_path = false);
 
 string_vector
-get_file_list(const std::string& rel_path, bool b_with_path, const std::string& extensions);
+get_file_list(const std::string& rel_path, bool with_path, const std::string& extensions);
 
 std::string get_file_extension(const std::string& file);
 

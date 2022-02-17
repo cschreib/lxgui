@@ -24,7 +24,7 @@ region::region(utils::control_block& m_block, manager& m_manager) :
 }
 
 region::~region() {
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         // Tell this region's anchor parents that it is no longer anchored to them
         for (auto& m_anchor : anchor_list_) {
             if (m_anchor) {
@@ -93,8 +93,8 @@ std::string region::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << tab << "  # Name        : " << name_
-        << " (" + std::string(b_ready_ ? "ready" : "not ready") +
-               std::string(b_special_ ? ", special)\n" : ")\n");
+        << " (" + std::string(is_ready_ ? "ready" : "not ready") +
+               std::string(is_special_ ? ", special)\n" : ")\n");
     str << tab << "  # Raw name    : " << raw_name_ << "\n";
     str << tab << "  # Lua name    : " << lua_name_ << "\n";
     str << tab << "  # Type        : " << type_.back() << "\n";
@@ -120,7 +120,7 @@ std::string region::serialize(const std::string& tab) const {
     str << tab << "  |   # bottom : " << border_list_.bottom << "\n";
     str << tab << "  |-###\n";
     str << tab << "  # Alpha       : " << f_alpha_ << "\n";
-    str << tab << "  # Shown       : " << b_is_shown_ << "\n";
+    str << tab << "  # Shown       : " << is_shown_ << "\n";
     str << tab << "  # Abs width   : " << m_dimensions_.x << "\n";
     str << tab << "  # Abs height  : " << m_dimensions_.y << "\n";
 
@@ -128,8 +128,6 @@ std::string region::serialize(const std::string& tab) const {
 }
 
 void region::copy_from(const region& m_obj) {
-    b_inherits_ = true;
-
     // Inherit properties
     this->set_alpha(m_obj.get_alpha());
     this->set_shown(m_obj.is_shown());
@@ -187,38 +185,38 @@ void region::set_alpha(float f_alpha) {
 }
 
 void region::show() {
-    if (b_is_shown_)
+    if (is_shown_)
         return;
 
-    b_is_shown_ = true;
+    is_shown_ = true;
 
-    if (!b_is_visible_ && (!p_parent_ || p_parent_->is_visible()))
+    if (!is_visible_ && (!p_parent_ || p_parent_->is_visible()))
         notify_visible();
 }
 
 void region::hide() {
-    if (!b_is_shown_)
+    if (!is_shown_)
         return;
 
-    b_is_shown_ = false;
+    is_shown_ = false;
 
-    if (b_is_visible_)
+    if (is_visible_)
         notify_invisible();
 }
 
-void region::set_shown(bool b_is_shown) {
-    if (b_is_shown)
+void region::set_shown(bool is_shown) {
+    if (is_shown)
         show();
     else
         hide();
 }
 
 bool region::is_shown() const {
-    return b_is_shown_;
+    return is_shown_;
 }
 
 bool region::is_visible() const {
-    return b_is_visible_;
+    return is_visible_;
 }
 
 void region::set_dimensions(const vector2f& m_dimensions) {
@@ -227,7 +225,7 @@ void region::set_dimensions(const vector2f& m_dimensions) {
 
     m_dimensions_ = m_dimensions;
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -239,7 +237,7 @@ void region::set_width(float f_abs_width) {
 
     m_dimensions_.x = f_abs_width;
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -251,7 +249,7 @@ void region::set_height(float f_abs_height) {
 
     m_dimensions_.y = f_abs_height;
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -313,7 +311,7 @@ void region::set_name_(const std::string& name) {
             }
         }
 
-        if (!b_virtual_)
+        if (!is_virtual_)
             name_ = lua_name_;
     } else {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
@@ -331,7 +329,7 @@ void region::set_parent_(utils::observer_ptr<frame> p_parent) {
     if (p_parent_ != p_parent) {
         p_parent_ = std::move(p_parent);
 
-        if (!b_virtual_)
+        if (!is_virtual_)
             notify_borders_need_update();
     }
 }
@@ -349,7 +347,7 @@ void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<f
     p_parent_ = std::move(p_parent);
     set_name_(name);
 
-    if (!b_virtual_)
+    if (!is_virtual_)
         notify_borders_need_update();
 }
 
@@ -390,18 +388,18 @@ const bounds2f& region::get_borders() const {
 }
 
 void region::clear_all_points() {
-    bool b_had_anchors = false;
+    bool had_anchors = false;
     for (auto& m_anchor : anchor_list_) {
         if (m_anchor) {
             m_anchor.reset();
-            b_had_anchors = true;
+            had_anchors = true;
         }
     }
 
-    if (b_had_anchors) {
+    if (had_anchors) {
         defined_border_list_ = bounds2<bool>(false, false, false, false);
 
-        if (!b_virtual_) {
+        if (!is_virtual_) {
             update_anchors_();
             notify_borders_need_update();
             notify_renderer_need_redraw();
@@ -426,7 +424,7 @@ void region::set_all_points(const std::string& obj_name) {
 
     defined_border_list_ = bounds2<bool>(true, true, true, true);
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
@@ -470,7 +468,7 @@ void region::set_point(const anchor_data& m_anchor) {
     default: break;
     }
 
-    if (!b_virtual_) {
+    if (!is_virtual_) {
         update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
@@ -528,11 +526,11 @@ const std::array<std::optional<anchor>, 9>& region::get_point_list() const {
 }
 
 bool region::is_virtual() const {
-    return b_virtual_;
+    return is_virtual_;
 }
 
 void region::set_virtual() {
-    b_virtual_ = true;
+    is_virtual_ = true;
 }
 
 void region::add_anchored_object(region& m_obj) {
@@ -651,10 +649,10 @@ void region::update_borders_() {
 
     DEBUG_LOG("  Update anchors for " + sLuaName_);
 
-    const bool b_old_ready     = b_ready_;
+    const bool old_is_ready    = is_ready_;
     const auto old_border_list = border_list_;
 
-    b_ready_ = true;
+    is_ready_ = true;
 
     if (!anchor_list_.empty()) {
         float f_left = 0.0f, f_right = 0.0f, f_top = 0.0f, f_bottom = 0.0f;
@@ -676,11 +674,11 @@ void region::update_borders_() {
 
         DEBUG_LOG("  Make borders");
         if (!make_borders_(f_top, f_bottom, f_y_center, f_rounded_height))
-            b_ready_ = false;
+            is_ready_ = false;
         if (!make_borders_(f_left, f_right, f_x_center, f_rounded_width))
-            b_ready_ = false;
+            is_ready_ = false;
 
-        if (b_ready_) {
+        if (is_ready_) {
             if (f_right < f_left)
                 f_right = f_left + 1;
             if (f_bottom < f_top)
@@ -691,7 +689,7 @@ void region::update_borders_() {
             border_list_ = bounds2f::zero;
     } else {
         border_list_ = bounds2f(0.0, 0.0, m_dimensions_.x, m_dimensions_.y);
-        b_ready_     = false;
+        is_ready_    = false;
     }
 
     DEBUG_LOG("  Final borders");
@@ -705,7 +703,7 @@ void region::update_borders_() {
     DEBUG_LOG("    top=" + utils::to_string(lBorderList_.top));
     DEBUG_LOG("    bottom=" + utils::to_string(lBorderList_.bottom));
 
-    if (border_list_ != old_border_list || b_ready_ != b_old_ready) {
+    if (border_list_ != old_border_list || is_ready_ != old_is_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
@@ -785,11 +783,11 @@ void region::remove_glue() {
 }
 
 void region::set_special() {
-    b_special_ = true;
+    is_special_ = true;
 }
 
 bool region::is_special() const {
-    return b_special_;
+    return is_special_;
 }
 
 void region::notify_renderer_need_redraw() {}
@@ -799,11 +797,11 @@ const std::vector<utils::observer_ptr<region>>& region::get_anchored_objects() c
 }
 
 void region::notify_loaded() {
-    b_loaded_ = true;
+    is_loaded_ = true;
 }
 
 bool region::is_loaded() const {
-    return b_loaded_;
+    return is_loaded_;
 }
 
 utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const {
@@ -813,11 +811,11 @@ utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const
 }
 
 void region::notify_visible() {
-    b_is_visible_ = true;
+    is_visible_ = true;
 }
 
 void region::notify_invisible() {
-    b_is_visible_ = false;
+    is_visible_ = false;
 }
 
 std::string region::parse_file_name(const std::string& file_name) const {

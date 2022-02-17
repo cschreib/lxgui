@@ -30,7 +30,7 @@ void renderer::begin(std::shared_ptr<render_target> p_target) {
                             "Vertex caches will be disabled."
                          << std::endl;
 
-                b_vertex_cache_enabled_ = false;
+                vertex_cache_enabled_ = false;
             }
         }
     }
@@ -153,11 +153,11 @@ void renderer::render_cache(
 }
 
 bool renderer::is_quad_batching_enabled() const {
-    return b_quad_batching_enabled_;
+    return quad_batching_enabled_;
 }
 
-void renderer::set_quad_batching_enabled(bool b_enabled) {
-    b_quad_batching_enabled_ = b_enabled;
+void renderer::set_quad_batching_enabled(bool enabled) {
+    quad_batching_enabled_ = enabled;
 }
 
 std::shared_ptr<gui::material>
@@ -228,11 +228,11 @@ std::shared_ptr<gui::font> renderer::create_font(
 }
 
 bool renderer::is_texture_atlas_enabled() const {
-    return b_texture_atlas_enabled_ && is_texture_atlas_supported();
+    return texture_atlas_enabled_ && is_texture_atlas_supported();
 }
 
-void renderer::set_texture_atlas_enabled(bool b_enabled) {
-    b_texture_atlas_enabled_ = b_enabled;
+void renderer::set_texture_atlas_enabled(bool enabled) {
+    texture_atlas_enabled_ = enabled;
 }
 
 std::size_t renderer::get_texture_atlas_page_size() const {
@@ -257,17 +257,17 @@ std::size_t renderer::get_num_texture_atlas_pages() const {
 }
 
 bool renderer::is_vertex_cache_enabled() const {
-    return b_vertex_cache_enabled_ && is_vertex_cache_supported();
+    return vertex_cache_enabled_ && is_vertex_cache_supported();
 }
 
-void renderer::set_vertex_cache_enabled(bool b_enabled) {
-    b_vertex_cache_enabled_ = b_enabled;
+void renderer::set_vertex_cache_enabled(bool enabled) {
+    vertex_cache_enabled_ = enabled;
 }
 
 void renderer::auto_detect_settings() {
-    b_vertex_cache_enabled_  = true;
-    b_texture_atlas_enabled_ = true;
-    b_quad_batching_enabled_ = true;
+    vertex_cache_enabled_  = true;
+    texture_atlas_enabled_ = true;
+    quad_batching_enabled_ = true;
 }
 
 atlas& renderer::get_atlas_(const std::string& atlas_category, material::filter m_filter) {

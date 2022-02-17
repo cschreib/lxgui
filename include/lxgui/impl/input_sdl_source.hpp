@@ -23,7 +23,7 @@ public:
      *   \param renderer The SDL renderer, or null if using raw OpenGL
      *   \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */
-    explicit source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool b_initialise_sdl_image);
+    explicit source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool initialise_sdl_image);
 
     source(const source&) = delete;
     source& operator=(const source&) = delete;

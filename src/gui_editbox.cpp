@@ -83,7 +83,7 @@ void edit_box::update(float f_delta) {
     if (!m_checker.is_alive())
         return;
 
-    if (b_focus_) {
+    if (has_focus()) {
         m_carret_timer_.update(f_delta);
 
         if (m_carret_timer_.ticks()) {
@@ -111,22 +111,22 @@ void edit_box::fire_script(const std::string& script_name, const event_data& m_d
     alive_checker m_checker(*this);
 
     // Do not fire OnKeyUp/OnKeyDown events when typing
-    bool b_bypass_event = false;
+    bool bypass_event = false;
     if (has_focus() && (script_name == "OnKeyUp" || script_name == "OnKeyDown"))
-        b_bypass_event = true;
+        bypass_event = true;
     if (!has_focus() && (script_name == "OnChar"))
-        b_bypass_event = true;
+        bypass_event = true;
 
-    if (!b_bypass_event) {
+    if (!bypass_event) {
         base::fire_script(script_name, m_data);
         if (!m_checker.is_alive())
             return;
     }
 
     if (script_name == "OnKeyDown" && has_focus()) {
-        key  m_key              = m_data.get<key>(0);
-        bool b_shift_is_pressed = m_data.get<bool>(2);
-        bool b_ctrl_is_pressed  = m_data.get<bool>(3);
+        key  m_key            = m_data.get<key>(0);
+        bool shift_is_pressed = m_data.get<bool>(2);
+        bool ctrl_is_pressed  = m_data.get<bool>(3);
 
         if (m_key == key::k_return || m_key == key::k_numpadenter) {
             fire_script("OnEnterPressed");
@@ -154,7 +154,7 @@ void edit_box::fire_script(const std::string& script_name, const event_data& m_d
                 return;
         }
 
-        process_key_(m_key, b_shift_is_pressed, b_ctrl_is_pressed);
+        process_key_(m_key, shift_is_pressed, ctrl_is_pressed);
 
         if (!m_checker.is_alive())
             return;
@@ -231,14 +231,15 @@ const utils::ustring& edit_box::get_text() const {
 }
 
 void edit_box::unlight_text() {
-    ui_selection_start_pos_ = ui_selection_end_pos_ = 0u;
-    b_selected_text_                                = false;
+    ui_selection_start_pos_ = 0u;
+    ui_selection_end_pos_   = 0u;
+    is_text_selected_       = false;
 
     if (p_highlight_)
         p_highlight_->hide();
 }
 
-void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool b_force_update) {
+void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool force_update) {
     if (!p_highlight_)
         create_highlight_();
 
@@ -248,9 +249,9 @@ void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool b_f
     std::size_t ui_left  = std::min(ui_start, ui_end);
     std::size_t ui_right = std::max(ui_start, ui_end);
 
-    if (ui_selection_start_pos_ != ui_start || ui_selection_end_pos_ != ui_end || b_force_update) {
+    if (ui_selection_start_pos_ != ui_start || ui_selection_end_pos_ != ui_end || force_update) {
         if (ui_left != ui_right) {
-            b_selected_text_ = true;
+            is_text_selected_ = true;
 
             if (ui_right >= ui_display_pos_ && ui_left < ui_display_pos_ + displayed_text_.size() &&
                 p_font_string_ && p_font_string_->get_text_object()) {
@@ -284,7 +285,7 @@ void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool b_f
             } else
                 p_highlight_->hide();
         } else {
-            b_selected_text_ = false;
+            is_text_selected_ = false;
             p_highlight_->hide();
         }
     }
@@ -312,7 +313,7 @@ void edit_box::insert_after_cursor(const utils::ustring& content) {
     if (content.empty())
         return;
 
-    if (b_numeric_only_ && !utils::is_number(content))
+    if (is_numeric_only_ && !utils::is_number(content))
         return;
 
     if (unicode_text_.size() + content.size() <= ui_max_letters_) {
@@ -381,13 +382,13 @@ double edit_box::get_blink_speed() const {
     return d_blink_speed_;
 }
 
-void edit_box::set_numeric_only(bool b_numeric_only) {
-    if (b_numeric_only_ == b_numeric_only)
+void edit_box::set_numeric_only(bool numeric_only) {
+    if (is_numeric_only_ == numeric_only)
         return;
 
-    b_numeric_only_ = b_numeric_only;
+    is_numeric_only_ = numeric_only;
 
-    if (b_numeric_only_) {
+    if (is_numeric_only_) {
         check_text_();
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
@@ -395,13 +396,13 @@ void edit_box::set_numeric_only(bool b_numeric_only) {
     }
 }
 
-void edit_box::set_positive_only(bool b_positive_only) {
-    if (b_positive_only_ == b_positive_only)
+void edit_box::set_positive_only(bool positive_only) {
+    if (is_positive_only_ == positive_only)
         return;
 
-    b_positive_only_ = b_positive_only;
+    is_positive_only_ = positive_only;
 
-    if (b_numeric_only_ && b_positive_only_) {
+    if (is_numeric_only_ && is_positive_only_) {
         check_text_();
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
@@ -409,13 +410,13 @@ void edit_box::set_positive_only(bool b_positive_only) {
     }
 }
 
-void edit_box::set_integer_only(bool b_integer_only) {
-    if (b_integer_only_ == b_integer_only)
+void edit_box::set_integer_only(bool integer_only) {
+    if (is_integer_only_ == integer_only)
         return;
 
-    b_integer_only_ = b_integer_only;
+    is_integer_only_ = integer_only;
 
-    if (b_numeric_only_ && b_integer_only_) {
+    if (is_numeric_only_ && is_integer_only_) {
         check_text_();
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
@@ -424,22 +425,22 @@ void edit_box::set_integer_only(bool b_integer_only) {
 }
 
 bool edit_box::is_numeric_only() const {
-    return b_numeric_only_;
+    return is_numeric_only_;
 }
 
 bool edit_box::is_positive_only() const {
-    return b_positive_only_;
+    return is_positive_only_;
 }
 
 bool edit_box::is_integer_only() const {
-    return b_integer_only_;
+    return is_integer_only_;
 }
 
-void edit_box::enable_password_mode(bool b_enable) {
-    if (b_password_mode_ == b_enable)
+void edit_box::enable_password_mode(bool enable) {
+    if (is_password_mode_ == enable)
         return;
 
-    b_password_mode_ = b_enable;
+    is_password_mode_ = enable;
 
     update_displayed_text_();
     update_font_string_();
@@ -447,17 +448,17 @@ void edit_box::enable_password_mode(bool b_enable) {
 }
 
 bool edit_box::is_password_mode_enabled() const {
-    return b_password_mode_;
+    return is_password_mode_;
 }
 
-void edit_box::set_multi_line(bool b_multi_line) {
-    if (b_multi_line_ == b_multi_line)
+void edit_box::set_multi_line(bool multi_line) {
+    if (is_multi_line_ == multi_line)
         return;
 
-    b_multi_line_ = b_multi_line;
+    is_multi_line_ = multi_line;
 
     if (p_font_string_)
-        p_font_string_->set_word_wrap(b_multi_line_, b_multi_line_);
+        p_font_string_->set_word_wrap(is_multi_line_, is_multi_line_);
 
     check_text_();
     iter_carret_pos_ = unicode_text_.end();
@@ -467,7 +468,7 @@ void edit_box::set_multi_line(bool b_multi_line) {
 }
 
 bool edit_box::is_multi_line() const {
-    return b_multi_line_;
+    return is_multi_line_;
 }
 
 void edit_box::set_max_history_lines(std::size_t ui_max_history_lines) {
@@ -494,7 +495,7 @@ std::size_t edit_box::get_max_history_lines() const {
 }
 
 void edit_box::add_history_line(const utils::ustring& history_line) {
-    if (b_multi_line_)
+    if (is_multi_line_)
         return;
 
     history_line_list_.push_back(history_line);
@@ -517,8 +518,8 @@ void edit_box::clear_history() {
     ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
 }
 
-void edit_box::set_arrows_ignored(bool b_arrows_ignored) {
-    b_arrows_ignored_ = b_arrows_ignored;
+void edit_box::set_arrows_ignored(bool arrows_ignored) {
+    are_arrows_ignored_ = arrows_ignored;
 }
 
 void edit_box::set_text_insets(const bounds2f& insets) {
@@ -539,11 +540,11 @@ const bounds2f& edit_box::get_text_insets() const {
     return text_insets_;
 }
 
-void edit_box::notify_focus(bool b_focus) {
-    if (b_focus_ == b_focus)
+void edit_box::notify_focus(bool focus) {
+    if (has_focus() == focus)
         return;
 
-    if (b_focus) {
+    if (focus) {
         if (!p_carret_)
             create_carret_();
 
@@ -558,7 +559,7 @@ void edit_box::notify_focus(bool b_focus) {
         unlight_text();
     }
 
-    base::notify_focus(b_focus);
+    base::notify_focus(focus);
 }
 
 void edit_box::notify_scaling_factor_updated() {
@@ -575,7 +576,7 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> p_font) {
     if (!p_font_string_)
         return;
 
-    p_font_string_->set_word_wrap(b_multi_line_, b_multi_line_);
+    p_font_string_->set_word_wrap(is_multi_line_, is_multi_line_);
 
     p_font_string_->set_dimensions(vector2f(0, 0));
     p_font_string_->clear_all_points();
@@ -661,17 +662,17 @@ void edit_box::check_text_() {
 
     // TODO: use localizer's locale for these checks
     // https://github.com/cschreib/lxgui/issues/88
-    if (b_numeric_only_ && !utils::is_number(unicode_text_)) {
+    if (is_numeric_only_ && !utils::is_number(unicode_text_)) {
         unicode_text_.clear();
         return;
     }
 
-    if (b_integer_only_ && !utils::is_integer(unicode_text_)) {
+    if (is_integer_only_ && !utils::is_integer(unicode_text_)) {
         unicode_text_.clear();
         return;
     }
 
-    if (b_positive_only_) {
+    if (is_positive_only_) {
         double d_value = 0.0;
         if (!utils::from_string(unicode_text_, d_value) || d_value < 0.0) {
             unicode_text_.clear();
@@ -684,12 +685,12 @@ void edit_box::update_displayed_text_() {
     if (!p_font_string_ || !p_font_string_->get_text_object())
         return;
 
-    if (b_password_mode_)
+    if (is_password_mode_)
         displayed_text_ = utils::ustring(unicode_text_.size(), U'*');
     else
         displayed_text_ = unicode_text_;
 
-    if (!b_multi_line_) {
+    if (!is_multi_line_) {
         text* p_text_object = p_font_string_->get_text_object();
 
         if (!std::isinf(p_text_object->get_box_width())) {
@@ -712,7 +713,7 @@ void edit_box::update_font_string_() {
 
     p_font_string_->set_text(displayed_text_);
 
-    if (b_selected_text_)
+    if (is_text_selected_)
         highlight_text(ui_selection_start_pos_, ui_selection_end_pos_, true);
 }
 
@@ -741,7 +742,7 @@ void edit_box::update_carret_position_() {
         text*                    p_text = p_font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;
 
-        if (!b_multi_line_) {
+        if (!is_multi_line_) {
             std::size_t ui_global_pos = iter_carret_pos_ - unicode_text_.begin();
 
             if (ui_display_pos_ > ui_global_pos) {
@@ -813,14 +814,14 @@ void edit_box::update_carret_position_() {
     }
 
     m_carret_timer_.zero();
-    if (b_focus_)
+    if (has_focus())
         p_carret_->show();
     else
         p_carret_->hide();
 }
 
 bool edit_box::add_char_(char32_t c) {
-    if (b_selected_text_)
+    if (is_text_selected_)
         remove_char_();
 
     if (get_num_letters() >= ui_max_letters_)
@@ -828,15 +829,15 @@ bool edit_box::add_char_(char32_t c) {
 
     // TODO: use localizer for these checks, if possible
     // https://github.com/cschreib/lxgui/issues/88
-    if (b_numeric_only_) {
+    if (is_numeric_only_) {
         if (c == U'.') {
-            if (b_integer_only_)
+            if (is_integer_only_)
                 return false;
 
             if (unicode_text_.find(U'.') != utils::ustring::npos)
                 return false;
         } else if (c == U'+' || c == U'-') {
-            if (b_positive_only_)
+            if (is_positive_only_)
                 return false;
 
             if (iter_carret_pos_ != unicode_text_.begin() ||
@@ -862,7 +863,7 @@ bool edit_box::add_char_(char32_t c) {
 }
 
 bool edit_box::remove_char_() {
-    if (b_selected_text_) {
+    if (is_text_selected_) {
         if (ui_selection_start_pos_ != ui_selection_end_pos_) {
             std::size_t ui_left  = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
             std::size_t ui_right = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
@@ -904,7 +905,7 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
     float f_local_x = m_position.x - border_list_.left - text_insets_.left;
     // float fLocalY = mPosition.y - lBorderList_.top  - lTextInsets_.top;
 
-    if (!b_multi_line_) {
+    if (!is_multi_line_) {
         if (m_position.x < border_list_.left + text_insets_.left)
             return ui_display_pos_;
         else if (m_position.x > border_list_.right - text_insets_.right)
@@ -937,8 +938,8 @@ bool edit_box::move_carret_at_(const vector2f& m_position) {
         return false;
 }
 
-bool edit_box::move_carret_horizontally_(bool b_forward) {
-    if (b_forward) {
+bool edit_box::move_carret_horizontally_(bool forward) {
+    if (forward) {
         if (iter_carret_pos_ != unicode_text_.end()) {
             ++iter_carret_pos_;
             update_displayed_text_();
@@ -969,15 +970,15 @@ bool edit_box::move_carret_horizontally_(bool b_forward) {
     }
 }
 
-bool edit_box::move_carret_vertically_(bool b_down) {
-    if (b_multi_line_) {
+bool edit_box::move_carret_vertically_(bool down) {
+    if (is_multi_line_) {
         // TODO: Implement for multi line edit_box
         // https://github.com/cschreib/lxgui/issues/39
         return false;
     } else {
         utils::ustring::iterator iter_old = iter_carret_pos_;
 
-        if (b_down)
+        if (down)
             iter_carret_pos_ = unicode_text_.end();
         else
             iter_carret_pos_ = unicode_text_.begin();
@@ -997,11 +998,11 @@ bool edit_box::move_carret_vertically_(bool b_down) {
     }
 }
 
-void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_pressed) {
+void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_pressed) {
     alive_checker m_checker(*this);
 
     if (m_key == key::k_return || m_key == key::k_numpadenter) {
-        if (b_multi_line_) {
+        if (is_multi_line_) {
             if (add_char_(U'\n')) {
                 event_data m_key_event;
                 m_key_event.add(std::string("\n"));
@@ -1018,8 +1019,8 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
         std::size_t ui_previous_carret_pos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
-        if (b_shift_is_pressed) {
-            if (b_selected_text_)
+        if (shift_is_pressed) {
+            if (is_text_selected_)
                 highlight_text(ui_selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
             else
                 highlight_text(ui_previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
@@ -1031,8 +1032,8 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
         std::size_t ui_previous_carret_pos = get_cursor_position();
         set_cursor_position(0u);
 
-        if (b_shift_is_pressed) {
-            if (b_selected_text_)
+        if (shift_is_pressed) {
+            if (is_text_selected_)
                 highlight_text(ui_selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
             else
                 highlight_text(ui_previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
@@ -1041,7 +1042,7 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
 
         return;
     } else if (m_key == key::k_back || m_key == key::k_delete) {
-        if (b_selected_text_ || m_key == key::k_delete || move_carret_horizontally_(false)) {
+        if (is_text_selected_ || m_key == key::k_delete || move_carret_horizontally_(false)) {
             remove_char_();
             fire_script("OnTextChanged");
             if (!m_checker.is_alive())
@@ -1049,12 +1050,12 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
         }
     } else if (
         m_key == key::k_left || m_key == key::k_right ||
-        (b_multi_line_ && (m_key == key::k_up || m_key == key::k_down))) {
-        if (!b_arrows_ignored_) {
+        (is_multi_line_ && (m_key == key::k_up || m_key == key::k_down))) {
+        if (!are_arrows_ignored_) {
             std::size_t ui_previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
             if (m_key == key::k_left || m_key == key::k_right) {
-                if (b_selected_text_ && !b_shift_is_pressed) {
+                if (is_text_selected_ && !shift_is_pressed) {
                     std::size_t ui_offset = 0;
                     if (m_key == key::k_left)
                         ui_offset = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
@@ -1066,12 +1067,12 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
                 } else
                     move_carret_horizontally_(m_key == key::k_right);
             } else {
-                if (b_multi_line_)
+                if (is_multi_line_)
                     move_carret_vertically_(m_key == key::k_down);
             }
 
-            if (b_shift_is_pressed) {
-                if (b_selected_text_) {
+            if (shift_is_pressed) {
+                if (is_text_selected_) {
                     std::size_t ui_new_end_pos = iter_carret_pos_ - unicode_text_.begin();
                     if (ui_new_end_pos != ui_selection_start_pos_)
                         highlight_text(ui_selection_start_pos_, ui_new_end_pos);
@@ -1084,7 +1085,7 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
                 unlight_text();
         }
     } else if (
-        !b_multi_line_ && (m_key == key::k_up || m_key == key::k_down) &&
+        !is_multi_line_ && (m_key == key::k_up || m_key == key::k_down) &&
         !history_line_list_.empty()) {
         if (m_key == key::k_up) {
             if (ui_current_history_line_ != 0u) {
@@ -1112,14 +1113,14 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
                 }
             }
         }
-    } else if (m_key == key::k_c && b_ctrl_is_pressed) {
+    } else if (m_key == key::k_c && ctrl_is_pressed) {
         if (ui_selection_end_pos_ != ui_selection_start_pos_) {
             std::size_t    ui_min_pos = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
             std::size_t    ui_max_pos = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
             utils::ustring selected   = unicode_text_.substr(ui_min_pos, ui_max_pos - ui_min_pos);
             get_manager().get_window().set_clipboard_content(selected);
         }
-    } else if (m_key == key::k_v && b_ctrl_is_pressed) {
+    } else if (m_key == key::k_v && ctrl_is_pressed) {
         for (char32_t c : get_manager().get_window().get_clipboard_content()) {
             if (!add_char_(c))
                 break;
@@ -1129,8 +1130,8 @@ void edit_box::process_key_(key m_key, bool b_shift_is_pressed, bool b_ctrl_is_p
     }
 }
 
-periodic_timer::periodic_timer(double d_duration, start_type m_type, bool b_tick_first) :
-    d_elapsed_(b_tick_first ? d_duration : 0.0), d_duration_(d_duration), m_type_(m_type) {
+periodic_timer::periodic_timer(double d_duration, start_type m_type, bool ticks_now) :
+    d_elapsed_(ticks_now ? d_duration : 0.0), d_duration_(d_duration), m_type_(m_type) {
     if (m_type == start_type::now)
         start();
 }
@@ -1144,17 +1145,17 @@ double periodic_timer::get_period() const {
 }
 
 bool periodic_timer::is_paused() const {
-    return b_paused_;
+    return paused_;
 }
 
 bool periodic_timer::ticks() {
-    if (m_type_ == start_type::first_tick && b_first_tick_) {
+    if (m_type_ == start_type::first_tick && first_tick_) {
         start();
-        b_first_tick_ = false;
+        first_tick_ = false;
     }
 
     if (d_elapsed_ >= d_duration_) {
-        if (!b_paused_)
+        if (!paused_)
             zero();
 
         return true;
@@ -1164,15 +1165,15 @@ bool periodic_timer::ticks() {
 
 void periodic_timer::stop() {
     d_elapsed_ = 0.0;
-    b_paused_  = true;
+    paused_    = true;
 }
 
 void periodic_timer::pause() {
-    b_paused_ = true;
+    paused_ = true;
 }
 
 void periodic_timer::start() {
-    b_paused_ = false;
+    paused_ = false;
 }
 
 void periodic_timer::zero() {

@@ -83,7 +83,7 @@ public:
      *   \note Returns an empty string if none
      */
     std::string_view get_value() const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return value_;
     }
 
@@ -92,7 +92,7 @@ public:
      *   \return This node's value as string, or a default value if empty
      */
     std::string_view get_value_or(std::string_view fallback) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         if (value_.empty())
             return fallback;
         else
@@ -106,7 +106,7 @@ public:
      */
     template<typename T>
     T get_value() const {
-        b_accessed_ = true;
+        accessed_ = true;
         T m_value{};
         if (!utils::from_string(value_, m_value)) {
             throw utils::exception(
@@ -123,7 +123,7 @@ public:
      */
     template<typename T>
     T get_value_or(T fallback) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         T m_value{};
         if (!utils::from_string(value_, m_value))
             m_value = fallback;
@@ -161,26 +161,26 @@ public:
 
     /// Flag this node as "not accessed" for later warnings.
     void mark_as_not_accessed() const {
-        b_accessed_ = false;
+        accessed_ = false;
     }
 
     /// Flag this node as "fully accessed" for later warnings; no check will be done.
     void bypass_access_check() const {
-        b_access_bypass_ = true;
+        access_bypass_ = true;
     }
 
     /// Check if this node was accessed by the parser.
     /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
      */
     bool was_accessed() const {
-        return b_accessed_;
+        return accessed_;
     }
 
     /// Check if this node should be bypassed for access checks.
     /** \return 'true' if this node should be bypassed, 'false' otherwise.
      */
     bool is_access_check_bypassed() const {
-        return b_access_bypass_;
+        return access_bypass_;
     }
 
 protected:
@@ -189,8 +189,8 @@ protected:
     std::string location_;
     std::string value_location_;
 
-    mutable bool b_accessed_      = false;
-    mutable bool b_access_bypass_ = false;
+    mutable bool accessed_      = false;
+    mutable bool access_bypass_ = false;
 };
 
 /// An node in a layout file
@@ -222,7 +222,7 @@ public:
      *   \return The child at the specified index
      */
     const layout_node& get_child(std::size_t ui_index) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return child_list_[ui_index];
     }
 
@@ -230,7 +230,7 @@ public:
     /** \return A view to the list of children
      */
     children_view get_children() const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return children_view(child_list_);
     }
 
@@ -251,7 +251,7 @@ public:
      *   \return A view to the list of children with a given name
      */
     filtered_children_view get_children(std::string_view name) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return filtered_children_view(child_list_, {}, {name});
     }
 
@@ -260,7 +260,7 @@ public:
      *   \return The first child with a given name, or null if none
      */
     const layout_node* try_get_child(std::string_view name) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         for (const layout_node& m_node : get_children(name)) {
             return &m_node;
         }
@@ -275,7 +275,7 @@ public:
      *         to avoid throwing.
      */
     const layout_node& get_child(std::string_view name) const {
-        b_accessed_ = true;
+        accessed_ = true;
         if (const layout_node* p_child = try_get_child(name))
             return *p_child;
         else
@@ -289,7 +289,7 @@ public:
      *   \return 'true' if at least one child exists, 'false' otherwise
      */
     bool has_child(std::string_view name) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return try_get_child(name) != nullptr;
     }
 
@@ -300,7 +300,7 @@ public:
      *         to avoid throwing.
      */
     const layout_attribute* try_get_attribute(std::string_view name) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         for (const layout_attribute& m_node : attr_list_) {
             if (m_node.get_name() == name)
                 return &m_node;
@@ -316,7 +316,7 @@ public:
      *         to avoid throwing.
      */
     const layout_attribute& get_attribute(std::string_view name) const {
-        b_accessed_ = true;
+        accessed_ = true;
         if (const layout_attribute* p_attr = try_get_attribute(name))
             return *p_attr;
         else
@@ -330,7 +330,7 @@ public:
      *   \return 'true' if attribute is specified, 'false' otherwise
      */
     bool has_attribute(std::string_view name) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return try_get_attribute(name) != nullptr;
     }
 
@@ -341,7 +341,7 @@ public:
      *         to avoid throwing.
      */
     std::string_view get_attribute_value(std::string_view name) const {
-        b_accessed_ = true;
+        accessed_ = true;
         return get_attribute(name).get_value();
     }
 
@@ -353,7 +353,7 @@ public:
      */
     template<typename T>
     T get_attribute_value(std::string_view name) const {
-        b_accessed_ = true;
+        accessed_ = true;
         return get_attribute(name).get_value<T>();
     }
 
@@ -364,7 +364,7 @@ public:
      */
     std::string_view
     get_attribute_value_or(std::string_view name, std::string_view fallback) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         if (const auto* p_attr = try_get_attribute(name))
             return p_attr->get_value_or(fallback);
         else
@@ -378,7 +378,7 @@ public:
      */
     template<typename T>
     T get_attribute_value_or(std::string_view name, T fallback) const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         if (const auto* p_attr = try_get_attribute(name))
             return p_attr->get_value_or<T>(fallback);
         else
@@ -393,7 +393,7 @@ public:
     /** \return A view to the list of attributes
      */
     attribute_view get_attributes() const noexcept {
-        b_accessed_ = true;
+        accessed_ = true;
         return attribute_view(attr_list_);
     }
 
@@ -419,7 +419,7 @@ public:
      *         a non-modifying alternative, use get_attribute_value_or().
      */
     std::string_view get_or_set_attribute_value(std::string_view name, std::string_view value) {
-        b_accessed_ = true;
+        accessed_ = true;
         if (const auto* p_attr = try_get_attribute(name))
             return p_attr->get_value();
         else {
@@ -437,13 +437,13 @@ private:
 
 template<>
 inline std::string layout_attribute::get_value<std::string>() const {
-    b_accessed_ = true;
+    accessed_ = true;
     return value_;
 }
 
 template<>
 inline bool layout_attribute::get_value<bool>() const {
-    b_accessed_ = true;
+    accessed_ = true;
     if (value_ == "true")
         return true;
     else if (value_ == "false")

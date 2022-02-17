@@ -96,7 +96,7 @@ const sol::state& factory::get_lua() const {
 
 bool factory::finalize_object_(
     registry& m_registry, region& m_object, const region_core_attributes& m_attr) {
-    if (m_attr.b_virtual)
+    if (m_attr.is_virtual)
         m_object.set_virtual();
 
     if (m_attr.p_parent)

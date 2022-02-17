@@ -59,7 +59,7 @@ public:
     bool is_quad_batching_enabled() const;
 
     /// Enables/disables quad batching.
-    /** \param bEnabled 'true' to enable quad batching, 'false' to disable it
+    /** \param enabled 'true' to enable quad batching, 'false' to disable it
      *   \note Quad batching is enabled by default.
      *   \note When quad batching is disabled, each call to render_quads() renders
      *         immediately to the screen. This can lead to a large number of draw
@@ -68,7 +68,7 @@ public:
      *         (i.e., when the texture changes, when another immediate rendering
      *         call is requested, or the frame ends).
      */
-    void set_quad_batching_enabled(bool b_enabled);
+    void set_quad_batching_enabled(bool enabled);
 
     /// Returns the maximum texture width/height (in pixels).
     /** \return The maximum texture width/height (in pixels)
@@ -88,7 +88,7 @@ public:
     bool is_texture_atlas_enabled() const;
 
     /// Enables/disables texture atlases.
-    /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
+    /** \param enabled 'true' to enable texture atlases, 'false' to disable them
      *   \note Texture atlases are enabled by default. Changing this flag will only
      *         impact newly created materials. Existing materials will not be affected.
      *   \note In general, texture atlases only increase performance when vertex caches
@@ -97,7 +97,7 @@ public:
      *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
      *         disable texture atlases if vertex caches are not supported.
      */
-    void set_texture_atlas_enabled(bool b_enabled);
+    void set_texture_atlas_enabled(bool enabled);
 
     /// Returns the width/height of a texture atlas page (in pixels).
     /** \return The width/height of a texture atlas page (in pixels)
@@ -131,11 +131,11 @@ public:
     bool is_vertex_cache_enabled() const;
 
     /// Enables/disables vertex caches.
-    /** \param bEnabled 'true' to enable vertex caches, 'false' to disable them
+    /** \param enabled 'true' to enable vertex caches, 'false' to disable them
      *   \note Even if enabled with this function, vertex caches may not be supported
      *         by the renderer, see is_vertex_cache_supported().
      */
-    void set_vertex_cache_enabled(bool b_enabled);
+    void set_vertex_cache_enabled(bool enabled);
 
     /// Automatically determines the best rendering settings for the current platform.
     void auto_detect_settings();
@@ -452,9 +452,9 @@ protected:
 private:
     bool uses_same_texture_(const material* p_mat1, const material* p_mat2) const;
 
-    bool        b_texture_atlas_enabled_    = true;
-    bool        b_vertex_cache_enabled_     = true;
-    bool        b_quad_batching_enabled_    = true;
+    bool        texture_atlas_enabled_      = true;
+    bool        vertex_cache_enabled_       = true;
+    bool        quad_batching_enabled_      = true;
     std::size_t ui_texture_atlas_page_size_ = 0u;
 
     struct quad_batcher {

@@ -62,11 +62,11 @@ public:
     float get_font_height() const;
 
     /// Adds or remove the outline around the text.
-    /** \param bIsOutlined 'true' to enable the outline
+    /** \param is_outlined 'true' to enable the outline
      *   \note The thickness of this outline is constant and
      *         does not depend on the font's size.
      */
-    void set_outlined(bool b_is_outlined);
+    void set_outlined(bool is_outlined);
 
     /// Check if this font_string is outlined.
     /** \return 'true' if this font_string is outlined
@@ -194,13 +194,13 @@ public:
     const utils::ustring& get_text() const;
 
     /// Sets whether large text is truncated or wrapped.
-    /** \param bCanNonSpaceWrap 'true' to truncate the text
+    /** \param can_non_space_wrap 'true' to truncate the text
      *   \note This applies to large chunks of text with no
      *         spaces. When truncated, "..." is appended at
      *         the line's end. Else, the "word" is cut and
      *         continues on the next line.
      */
-    void set_non_space_wrap(bool b_can_non_space_wrap);
+    void set_non_space_wrap(bool can_non_space_wrap);
 
     /// Checks if this font_string draws a shadow under its text.
     /** \return 'true' if this font_string draws a shadow under its text
@@ -208,16 +208,16 @@ public:
     bool has_shadow() const;
 
     /// Sets whether this font_string should draw a shadow under its text.
-    /** \param bHasShadow 'true' to enable shadow
+    /** \param has_shadow 'true' to enable shadow
      */
-    void set_shadow(bool b_has_shadow);
+    void set_shadow(bool has_shadow);
 
     /// Enables word wrap.
-    /** \param bCanWordWrap 'true' to enable word wrap
-     *   \param bAddEllipsis 'true' to put "..." at the end of a truncated line
+    /** \param can_word_wrap 'true' to enable word wrap
+     *   \param add_ellipsis 'true' to put "..." at the end of a truncated line
      *   \note Enabled by default.
      */
-    void set_word_wrap(bool b_can_word_wrap, bool b_add_ellipsis);
+    void set_word_wrap(bool can_word_wrap, bool add_ellipsis);
 
     /// Checks if word wrap is enabled.
     /** \return 'true' if word wrap is enabled
@@ -225,10 +225,10 @@ public:
     bool can_word_wrap() const;
 
     /// Enables color formatting.
-    /** \param bFormatting 'true' to enable color formatting
+    /** \param formatting 'true' to enable color formatting
      *   \note Enabled by default. See text::enable_formatting().
      */
-    void enable_formatting(bool b_formatting);
+    void enable_formatting(bool formatting);
 
     /// Checks if color formatting is enabled.
     /** \return 'true' if color formatting is enabled
@@ -287,14 +287,14 @@ private:
     alignment_y m_align_y_      = alignment_y::middle;
     vector2f    m_offset_       = vector2f::zero;
 
-    bool  b_is_outlined_        = false;
-    bool  b_can_non_space_wrap_ = false;
-    bool  b_can_word_wrap_      = true;
-    bool  b_add_ellipsis_       = true;
-    bool  b_formatting_enabled_ = true;
-    color m_text_color_         = color::white;
+    bool  is_outlined_            = false;
+    bool  non_space_wrap_enabled_ = false;
+    bool  word_wrap_enabled_      = true;
+    bool  ellipsis_enabled_       = true;
+    bool  formatting_enabled_     = true;
+    color m_text_color_           = color::white;
 
-    bool     b_has_shadow_    = false;
+    bool     has_shadow_      = false;
     color    m_shadow_color_  = color::black;
     vector2f m_shadow_offset_ = vector2f::zero;
 };

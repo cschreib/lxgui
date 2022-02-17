@@ -24,7 +24,7 @@ public:
      *   \param uiOutline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
-     *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled
+     *   \param pre_multiplied_alpha_supported Set to 'true' if the renderer supports pre-multipled
      * alpha
      */
     font(
@@ -34,7 +34,7 @@ public:
         std::size_t                          ui_outline,
         const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point,
-        bool                                 b_pre_multiplied_alpha_supported);
+        bool                                 pre_multiplied_alpha_supported);
 
     /// Get the size of the font in pixels.
     /** \return The size of the font in pixels
