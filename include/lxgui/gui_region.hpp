@@ -179,7 +179,7 @@ public:
     /// Updates this region's logic.
     /** \param delta Time spent since last update
      */
-    virtual void update(float f_delta);
+    virtual void update(float delta);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -242,10 +242,10 @@ public:
     void destroy();
 
     /// Changes this region's alpha (opacity).
-    /** \param fAlpha The new alpha value
+    /** \param alpha The new alpha value
      *   \note Default is 1.0f.
      */
-    void set_alpha(float f_alpha);
+    void set_alpha(float alpha);
 
     /// Returns this region's alpha (opacity).
     /** \return This region's alpha (opacity).
@@ -292,14 +292,14 @@ public:
     virtual void set_dimensions(const vector2f& m_dimensions);
 
     /// Changes this region's absolute width (in pixels).
-    /** \param fAbsWidth The new width
+    /** \param abs_width The new width
      */
-    virtual void set_width(float f_abs_width);
+    virtual void set_width(float abs_width);
 
     /// Changes this region's absolute height (in pixels).
-    /** \param fAbsHeight The new height
+    /** \param abs_height The new height
      */
-    virtual void set_height(float f_abs_height);
+    virtual void set_height(float abs_height);
 
     /// Changes this region's dimensions (relative to its parent).
     /** \param mDimensions The new dimensions (relative)
@@ -307,14 +307,14 @@ public:
     void set_relative_dimensions(const vector2f& m_dimensions);
 
     /// Changes this region's width (relative to its parent).
-    /** \param fRelWidth The new width
+    /** \param rel_width The new width
      */
-    void set_relative_width(float f_rel_width);
+    void set_relative_width(float rel_width);
 
     /// Changes this region's height (relative to its parent).
-    /** \param fRelHeight The new height
+    /** \param rel_height The new height
      */
-    void set_relative_height(float f_rel_height);
+    void set_relative_height(float rel_height);
 
     /// Returns this region's explicitly-defined width and height (in pixels).
     /** \return This region's explicitly-defined width and height (in pixels)
@@ -477,12 +477,12 @@ public:
     const std::array<std::optional<anchor>, 9>& get_point_list() const;
 
     /// Round an absolute position on screen to the nearest physical pixel.
-    /** \param fValue The input absolute position (can be fractional)
+    /** \param value The input absolute position (can be fractional)
      *   \param mMethod   The rounding method
      *   \return The position of the nearest physical pixel
      */
     float round_to_pixel(
-        float f_value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
+        float value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
 
     /// Round an absolute position on screen to the nearest physical pixel.
     /** \param mPosition The input absolute position (can be fractional)
@@ -665,14 +665,10 @@ protected:
     parse_dimension_(const layout_node& m_node);
 
     void read_anchors_(
-        float& f_left,
-        float& f_right,
-        float& f_top,
-        float& f_bottom,
-        float& f_x_center,
-        float& f_y_center) const;
+        float& left, float& right, float& top, float& bottom, float& x_center, float& y_center)
+        const;
 
-    bool make_borders_(float& f_min, float& f_max, float f_center, float f_size) const;
+    bool make_borders_(float& min, float& max, float center, float size) const;
 
     virtual void update_borders_();
     virtual void update_anchors_();
@@ -729,7 +725,7 @@ protected:
     bounds2<bool>                            defined_border_list_;
     bounds2f                                 border_list_;
 
-    float f_alpha_    = 1.0f;
+    float alpha_      = 1.0f;
     bool  is_shown_   = true;
     bool  is_visible_ = true;
 

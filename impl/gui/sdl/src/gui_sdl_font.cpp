@@ -108,7 +108,7 @@ font::font(
 
     const SDL_Color m_color = {255, 255, 255, 255};
 
-    const float f_y_offset = TTF_FontDescent(p_font);
+    const float y_offset = TTF_FontDescent(p_font);
 
     for (const code_point_range& m_range : code_points) {
         range_info m_info;
@@ -181,10 +181,10 @@ font::font(
             // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
             m_ci.m_rect.left   = -static_cast<float>(ui_outline);
             m_ci.m_rect.right  = m_ci.m_rect.left + ui_glyph_width;
-            m_ci.m_rect.top    = f_y_offset - static_cast<float>(ui_outline);
+            m_ci.m_rect.top    = y_offset - static_cast<float>(ui_outline);
             m_ci.m_rect.bottom = m_ci.m_rect.top + ui_glyph_height;
 
-            m_ci.f_advance = advance;
+            m_ci.advance = advance;
 
             // Advance a column
             x += ui_glyph_width + ui_spacing;
@@ -250,7 +250,7 @@ float font::get_character_width(char32_t c) const {
     if (!p_char)
         return 0.0f;
 
-    return p_char->f_advance;
+    return p_char->advance;
 }
 
 float font::get_character_height(char32_t c) const {

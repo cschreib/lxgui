@@ -46,7 +46,7 @@ private:
     SDL_Window*   p_window_   = nullptr;
     SDL_Renderer* p_renderer_ = nullptr;
 
-    float f_pixels_per_unit_ = 1.0f;
+    float pixels_per_unit_ = 1.0f;
 
     using wrapped_cursor = std::unique_ptr<SDL_Cursor, void (*)(SDL_Cursor*)>;
     std::unordered_map<std::string, wrapped_cursor> cursor_map_;

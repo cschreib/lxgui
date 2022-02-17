@@ -34,7 +34,7 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
     connections_.push_back(m_source.on_mouse_pressed.connect(
         [&](input::mouse_button m_button, gui::vector2f m_mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= f_scaling_factor_;
+            m_mouse_pos /= scaling_factor_;
 
             // Record press time
             auto m_time_last = mouse_pressed_time_[static_cast<std::size_t>(m_button)];
@@ -52,7 +52,7 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
     connections_.push_back(m_source.on_mouse_released.connect(
         [&](input::mouse_button m_button, gui::vector2f m_mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= f_scaling_factor_;
+            m_mouse_pos /= scaling_factor_;
 
             // Forward
             on_mouse_released(m_button, m_mouse_pos);
@@ -64,18 +64,18 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
         }));
 
     connections_.push_back(
-        m_source.on_mouse_wheel.connect([&](float f_wheel, gui::vector2f m_mouse_pos) {
+        m_source.on_mouse_wheel.connect([&](float wheel, gui::vector2f m_mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= f_scaling_factor_;
+            m_mouse_pos /= scaling_factor_;
             // Forward
-            on_mouse_wheel(f_wheel, m_mouse_pos);
+            on_mouse_wheel(wheel, m_mouse_pos);
         }));
 
     connections_.push_back(
         m_source.on_mouse_moved.connect([&](gui::vector2f m_movement, gui::vector2f m_mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_movement /= f_scaling_factor_;
-            m_mouse_pos /= f_scaling_factor_;
+            m_movement /= scaling_factor_;
+            m_mouse_pos /= scaling_factor_;
 
             // Forward
             on_mouse_moved(m_movement, m_mouse_pos);
@@ -155,11 +155,11 @@ bool dispatcher::ctrl_is_pressed() const {
 }
 
 gui::vector2f dispatcher::get_mouse_position() const {
-    return m_source_.get_mouse_state().m_position / f_scaling_factor_;
+    return m_source_.get_mouse_state().m_position / scaling_factor_;
 }
 
 float dispatcher::get_mouse_wheel() const {
-    return m_source_.get_mouse_state().f_wheel;
+    return m_source_.get_mouse_state().wheel;
 }
 
 const source& dispatcher::get_source() const {
@@ -170,12 +170,12 @@ source& dispatcher::get_source() {
     return m_source_;
 }
 
-void dispatcher::set_interface_scaling_factor(float f_scaling_factor) {
-    f_scaling_factor_ = f_scaling_factor;
+void dispatcher::set_interface_scaling_factor(float scaling_factor) {
+    scaling_factor_ = scaling_factor;
 }
 
 float dispatcher::get_interface_scaling_factor() const {
-    return f_scaling_factor_;
+    return scaling_factor_;
 }
 
 } // namespace lxgui::input

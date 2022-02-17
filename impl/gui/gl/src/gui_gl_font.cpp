@@ -200,14 +200,14 @@ font::font(
         if (FT_HAS_KERNING(m_face_))
             kerning_ = true;
 
-        float f_y_offset = 0.0f;
+        float y_offset = 0.0f;
         if (FT_IS_SCALABLE(m_face_)) {
             FT_Fixed m_scale = m_face_->size->metrics.y_scale;
-            f_y_offset       = ft_ceil<6>(FT_MulFix(m_face_->ascender, m_scale)) +
-                         ft_ceil<6>(FT_MulFix(m_face_->descender, m_scale));
+            y_offset         = ft_ceil<6>(FT_MulFix(m_face_->ascender, m_scale)) +
+                       ft_ceil<6>(FT_MulFix(m_face_->descender, m_scale));
         } else {
-            f_y_offset = ft_ceil<6>(m_face_->size->metrics.ascender) +
-                         ft_ceil<6>(m_face_->size->metrics.descender);
+            y_offset = ft_ceil<6>(m_face_->size->metrics.ascender) +
+                       ft_ceil<6>(m_face_->size->metrics.descender);
         }
 
         for (const code_point_range& m_range : code_points) {
@@ -269,10 +269,10 @@ font::font(
 
                 m_ci.m_rect.left   = m_bitmap_glyph->left;
                 m_ci.m_rect.right  = m_ci.m_rect.left + m_bitmap.width;
-                m_ci.m_rect.top    = f_y_offset - m_bitmap_glyph->top;
+                m_ci.m_rect.top    = y_offset - m_bitmap_glyph->top;
                 m_ci.m_rect.bottom = m_ci.m_rect.top + m_bitmap.rows;
 
-                m_ci.f_advance = ft_round<16>(m_bitmap_glyph->root.advance.x);
+                m_ci.advance = ft_round<16>(m_bitmap_glyph->root.advance.x);
 
                 // Advance a column
                 x += m_bitmap.width + ui_spacing;
@@ -349,7 +349,7 @@ float font::get_character_width(char32_t c) const {
     if (!p_char)
         return 0.0f;
 
-    return p_char->f_advance;
+    return p_char->advance;
 }
 
 float font::get_character_height(char32_t c) const {

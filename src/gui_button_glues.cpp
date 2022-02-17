@@ -213,9 +213,9 @@ void button::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_disabled_text_color",
         sol::overload(
-            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+            [](button& m_self, float r, float g, float b, sol::optional<float> a) {
                 if (auto p_font_string = m_self.get_disabled_text())
-                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_disabled_text())
@@ -236,9 +236,9 @@ void button::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_highlight_text_color",
         sol::overload(
-            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+            [](button& m_self, float r, float g, float b, sol::optional<float> a) {
                 if (auto p_font_string = m_self.get_highlight_text())
-                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_highlight_text())
@@ -259,9 +259,9 @@ void button::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_normal_text_color",
         sol::overload(
-            [](button& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+            [](button& m_self, float r, float g, float b, sol::optional<float> a) {
                 if (auto p_font_string = m_self.get_normal_text())
-                    p_font_string->set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& m_self, const std::string& s) {
                 if (auto p_font_string = m_self.get_normal_text())
@@ -275,8 +275,8 @@ void button::register_on_lua(sol::state& m_lua) {
     /** @function set_pushed_text_offset
      */
     m_class.set_function(
-        "set_pushed_text_offset", [](button& m_self, float f_x_offset, float f_y_offset) {
-            m_self.set_pushed_text_offset(vector2f(f_x_offset, f_y_offset));
+        "set_pushed_text_offset", [](button& m_self, float x_offset, float y_offset) {
+            m_self.set_pushed_text_offset(vector2f(x_offset, y_offset));
         });
 
     /** @function set_pushed_texture

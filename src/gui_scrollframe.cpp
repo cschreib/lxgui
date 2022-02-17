@@ -119,9 +119,9 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> p_frame) {
     redraw_scroll_render_target_flag_ = true;
 }
 
-void scroll_frame::set_horizontal_scroll(float f_horizontal_scroll) {
-    if (m_scroll_.x != f_horizontal_scroll) {
-        m_scroll_.x = f_horizontal_scroll;
+void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
+    if (m_scroll_.x != horizontal_scroll) {
+        m_scroll_.x = horizontal_scroll;
 
         alive_checker m_checker(*this);
         fire_script("OnHorizontalScroll");
@@ -143,9 +143,9 @@ float scroll_frame::get_horizontal_scroll_range() const {
     return m_scroll_range_.x;
 }
 
-void scroll_frame::set_vertical_scroll(float f_vertical_scroll) {
-    if (m_scroll_.y != f_vertical_scroll) {
-        m_scroll_.y = f_vertical_scroll;
+void scroll_frame::set_vertical_scroll(float vertical_scroll) {
+    if (m_scroll_.y != vertical_scroll) {
+        m_scroll_.y = vertical_scroll;
 
         alive_checker m_checker(*this);
         fire_script("OnVerticalScroll");
@@ -167,13 +167,13 @@ float scroll_frame::get_vertical_scroll_range() const {
     return m_scroll_range_.y;
 }
 
-void scroll_frame::update(float f_delta) {
+void scroll_frame::update(float delta) {
     vector2f m_old_child_size;
     if (p_scroll_child_)
         m_old_child_size = p_scroll_child_->get_apparent_dimensions();
 
     alive_checker m_checker(*this);
-    base::update(f_delta);
+    base::update(delta);
     if (!m_checker.is_alive())
         return;
 
@@ -232,9 +232,9 @@ void scroll_frame::rebuild_scroll_render_target_() {
     if (m_apparent_size.x <= 0 || m_apparent_size.y <= 0)
         return;
 
-    float     f_factor      = get_manager().get_interface_scaling_factor();
-    vector2ui m_scaled_size = vector2ui(
-        std::round(m_apparent_size.x * f_factor), std::round(m_apparent_size.y * f_factor));
+    float     factor = get_manager().get_interface_scaling_factor();
+    vector2ui m_scaled_size =
+        vector2ui(std::round(m_apparent_size.x * factor), std::round(m_apparent_size.y * factor));
 
     if (p_scroll_render_target_) {
         p_scroll_render_target_->set_dimensions(m_scaled_size);

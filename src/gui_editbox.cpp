@@ -76,15 +76,15 @@ void edit_box::copy_from(const region& m_obj) {
     }
 }
 
-void edit_box::update(float f_delta) {
+void edit_box::update(float delta) {
     alive_checker m_checker(*this);
 
-    base::update(f_delta);
+    base::update(delta);
     if (!m_checker.is_alive())
         return;
 
     if (has_focus()) {
-        m_carret_timer_.update(f_delta);
+        m_carret_timer_.update(delta);
 
         if (m_carret_timer_.ticks()) {
             if (!p_carret_)
@@ -262,24 +262,24 @@ void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool for
                 else
                     ui_left = ui_left - ui_display_pos_;
 
-                float f_left_pos = text_insets_.left;
+                float left_pos = text_insets_.left;
                 if (ui_left < p_text->get_num_letters())
-                    f_left_pos += p_text->get_letter_quad(ui_left)[0].pos.x;
+                    left_pos += p_text->get_letter_quad(ui_left)[0].pos.x;
 
-                ui_right          = ui_right - ui_display_pos_;
-                float f_right_pos = text_insets_.left;
+                ui_right        = ui_right - ui_display_pos_;
+                float right_pos = text_insets_.left;
                 if (ui_right < displayed_text_.size()) {
                     if (ui_right < p_text->get_num_letters())
-                        f_right_pos += p_text->get_letter_quad(ui_right)[0].pos.x;
+                        right_pos += p_text->get_letter_quad(ui_right)[0].pos.x;
                 } else {
                     ui_right = displayed_text_.size() - 1;
                     if (ui_right < p_text->get_num_letters())
-                        f_right_pos += p_text->get_letter_quad(ui_right)[2].pos.x;
+                        right_pos += p_text->get_letter_quad(ui_right)[2].pos.x;
                 }
 
-                p_highlight_->set_point(anchor_point::left, name_, vector2f(f_left_pos, 0));
+                p_highlight_->set_point(anchor_point::left, name_, vector2f(left_pos, 0));
                 p_highlight_->set_point(
-                    anchor_point::right, name_, anchor_point::left, vector2f(f_right_pos, 0));
+                    anchor_point::right, name_, anchor_point::left, vector2f(right_pos, 0));
 
                 p_highlight_->show();
             } else
@@ -589,10 +589,10 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> p_font) {
     create_carret_();
 }
 
-void edit_box::set_font(const std::string& font_name, float f_height) {
+void edit_box::set_font(const std::string& font_name, float height) {
     create_font_string_();
 
-    p_font_string_->set_font(font_name, f_height);
+    p_font_string_->set_font(font_name, height);
 
     create_carret_();
 }
@@ -723,21 +723,21 @@ void edit_box::update_carret_position_() {
 
     if (unicode_text_.empty()) {
         anchor_point m_point;
-        float        f_offset = 0.0f;
+        float        offset = 0.0f;
         switch (p_font_string_->get_alignment_x()) {
         case alignment_x::left:
-            m_point  = anchor_point::left;
-            f_offset = text_insets_.left - 1;
+            m_point = anchor_point::left;
+            offset  = text_insets_.left - 1;
             break;
         case alignment_x::center: m_point = anchor_point::center; break;
         case alignment_x::right:
-            m_point  = anchor_point::right;
-            f_offset = -text_insets_.right - 1;
+            m_point = anchor_point::right;
+            offset  = -text_insets_.right - 1;
             break;
         default: m_point = anchor_point::left; break;
         }
 
-        p_carret_->set_point(anchor_point::center, m_point, vector2f(f_offset, 0.0f));
+        p_carret_->set_point(anchor_point::center, m_point, vector2f(offset, 0.0f));
     } else {
         text*                    p_text = p_font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;
@@ -747,17 +747,17 @@ void edit_box::update_carret_position_() {
 
             if (ui_display_pos_ > ui_global_pos) {
                 // The carret has been positioned before the start of the displayed string
-                float          f_box_width            = p_text->get_box_width();
-                float          f_left_string_max_size = f_box_width * 0.25f;
-                float          f_left_string_size     = 0.0f;
+                float          box_width            = p_text->get_box_width();
+                float          left_string_max_size = box_width * 0.25f;
+                float          left_string_size     = 0.0f;
                 utils::ustring left_string;
 
                 utils::ustring::iterator iter = iter_carret_pos_;
                 while ((iter != unicode_text_.begin()) &&
-                       (f_left_string_size < f_left_string_max_size)) {
+                       (left_string_size < left_string_max_size)) {
                     --iter;
                     left_string.insert(left_string.begin(), *iter);
-                    f_left_string_size = p_text->get_string_width(left_string);
+                    left_string_size = p_text->get_string_width(left_string);
                 }
 
                 ui_display_pos_ = iter - unicode_text_.begin();
@@ -768,17 +768,17 @@ void edit_box::update_carret_position_() {
             std::size_t ui_carret_pos = ui_global_pos - ui_display_pos_;
             if (ui_carret_pos > displayed_text_.size()) {
                 // The carret has been positioned after the end of the displayed string
-                float          f_box_width            = p_text->get_box_width();
-                float          f_left_string_max_size = f_box_width * 0.75f;
-                float          f_left_string_size     = 0.0f;
+                float          box_width            = p_text->get_box_width();
+                float          left_string_max_size = box_width * 0.75f;
+                float          left_string_size     = 0.0f;
                 utils::ustring left_string;
 
                 utils::ustring::iterator iter = iter_carret_pos_;
                 while ((iter_carret_pos_ != unicode_text_.begin()) &&
-                       (f_left_string_size < f_left_string_max_size)) {
+                       (left_string_size < left_string_max_size)) {
                     --iter;
                     left_string.insert(left_string.begin(), *iter);
-                    f_left_string_size = p_text->get_string_width(left_string);
+                    left_string_size = p_text->get_string_width(left_string);
                 }
 
                 ui_display_pos_ = iter - unicode_text_.begin();
@@ -794,23 +794,23 @@ void edit_box::update_carret_position_() {
                                   (iter_carret_pos_ - unicode_text_.begin()) - ui_display_pos_;
         }
 
-        float f_y_offset = static_cast<float>((p_text->get_num_lines() - 1)) *
-                           (p_text->get_line_height() * p_text->get_line_spacing());
+        float y_offset = static_cast<float>((p_text->get_num_lines() - 1)) *
+                         (p_text->get_line_height() * p_text->get_line_spacing());
 
         std::size_t ui_index = iter_display_carret - displayed_text_.begin();
 
-        float f_x_offset = text_insets_.left;
+        float x_offset = text_insets_.left;
         if (ui_index < displayed_text_.size()) {
             if (ui_index < p_text->get_num_letters())
-                f_x_offset += p_text->get_letter_quad(ui_index)[0].pos.x;
+                x_offset += p_text->get_letter_quad(ui_index)[0].pos.x;
         } else {
             ui_index = displayed_text_.size() - 1;
             if (ui_index < p_text->get_num_letters())
-                f_x_offset += p_text->get_letter_quad(ui_index)[2].pos.x;
+                x_offset += p_text->get_letter_quad(ui_index)[2].pos.x;
         }
 
         p_carret_->set_point(
-            anchor_point::center, anchor_point::left, vector2f(f_x_offset, f_y_offset));
+            anchor_point::center, anchor_point::left, vector2f(x_offset, y_offset));
     }
 
     m_carret_timer_.zero();
@@ -902,7 +902,7 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
 
     const text* p_text = p_font_string_->get_text_object();
 
-    float f_local_x = m_position.x - border_list_.left - text_insets_.left;
+    float local_x = m_position.x - border_list_.left - text_insets_.left;
     // float fLocalY = mPosition.y - lBorderList_.top  - lTextInsets_.top;
 
     if (!is_multi_line_) {
@@ -916,7 +916,7 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
 
         for (std::size_t ui_index = 0u; ui_index < ui_num_letters; ++ui_index) {
             const auto& m_quad = p_text->get_letter_quad(ui_index);
-            if (f_local_x < 0.5f * (m_quad[0].pos.x + m_quad[2].pos.x))
+            if (local_x < 0.5f * (m_quad[0].pos.x + m_quad[2].pos.x))
                 return ui_index + ui_display_pos_;
         }
 

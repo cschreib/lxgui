@@ -136,9 +136,9 @@ void font_string::register_on_lua(sol::state& m_lua) {
     /** @function set_font
      */
     m_class.set_function(
-        "set_font", [](font_string& m_self, const std::string& file, float f_height,
+        "set_font", [](font_string& m_self, const std::string& file, float height,
                        sol::optional<std::string> flags) {
-            m_self.set_font(file, f_height);
+            m_self.set_font(file, height);
 
             if (flags.has_value()) {
                 if (flags.value().find("OUTLINE") != std::string::npos ||
@@ -190,16 +190,16 @@ void font_string::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_shadow_color",
         sol::overload(
-            [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
-                m_self.set_shadow_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+            [](font_string& m_self, float r, float g, float b, sol::optional<float> a) {
+                m_self.set_shadow_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](font_string& m_self, const std::string& s) { m_self.set_shadow_color(color(s)); }));
 
     /** @function set_shadow_offset
      */
     m_class.set_function(
-        "set_shadow_offset", [](font_string& m_self, float f_x_offset, float f_y_offset) {
-            m_self.set_shadow_offset(vector2f(f_x_offset, f_y_offset));
+        "set_shadow_offset", [](font_string& m_self, float x_offset, float y_offset) {
+            m_self.set_shadow_offset(vector2f(x_offset, y_offset));
         });
 
     /** @function set_spacing
@@ -215,8 +215,8 @@ void font_string::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_text_color",
         sol::overload(
-            [](font_string& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
-                m_self.set_text_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+            [](font_string& m_self, float r, float g, float b, sol::optional<float> a) {
+                m_self.set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](font_string& m_self, const std::string& s) { m_self.set_text_color(color(s)); }));
 

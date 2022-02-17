@@ -96,20 +96,20 @@ public:
     orientation get_orientation() const;
 
     /// Sets the slider's value range.
-    /** \param fMin The minimum value
-     *   \param fMax The maximum value
+    /** \param min_value The minimum value
+     *   \param max_value The maximum value
      */
-    void set_min_max_values(float f_min, float f_max);
+    void set_min_max_values(float min_value, float max_value);
 
     /// Sets this slider's minimum value.
-    /** \param fMin The minimum value
+    /** \param min The minimum value
      */
-    void set_min_value(float f_min);
+    void set_min_value(float min_value);
 
     /// Sets this slider's maximum value.
-    /** \param fMax The maximum value
+    /** \param max_value The maximum value
      */
-    void set_max_value(float f_max);
+    void set_max_value(float max_value);
 
     /// Returns this slider's minimum value.
     /** \return This slider's minimum value
@@ -122,10 +122,10 @@ public:
     float get_max_value() const;
 
     /// Sets this slider's value.
-    /** \param fValue  The value
+    /** \param value  The value
      *   \param silent 'true' to prevent OnValueChanged to be fired
      */
-    void set_value(float f_value, bool silent = false);
+    void set_value(float value, bool silent = false);
 
     /// Returns this slider's value.
     /** \return This slider's value
@@ -133,9 +133,9 @@ public:
     float get_value() const;
 
     /// Sets this slider's value step.
-    /** \param fValueStep The new step
+    /** \param value_step The new step
      */
-    void set_value_step(float f_value_step);
+    void set_value_step(float value_step);
 
     /// Returns this slider's value step.
     /** \return This slider's value step
@@ -197,10 +197,10 @@ protected:
 
     orientation m_orientation_ = orientation::vertical;
 
-    float f_value_      = 0.0f;
-    float f_min_value_  = 0.0f;
-    float f_max_value_  = 1.0f;
-    float f_value_step_ = 0.1f;
+    float value_      = 0.0f;
+    float min_value_  = 0.0f;
+    float max_value_  = 1.0f;
+    float value_step_ = 0.1f;
 
     bool allow_clicks_outside_thumb_ = true;
 

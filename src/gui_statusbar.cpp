@@ -31,9 +31,9 @@ std::string status_bar::serialize(const std::string& tab) const {
     }
     str << "\n";
     str << tab << "  # Reversed   : " << is_reversed_ << "\n";
-    str << tab << "  # Value      : " << f_value_ << "\n";
-    str << tab << "  # Min value  : " << f_min_value_ << "\n";
-    str << tab << "  # Max value  : " << f_max_value_ << "\n";
+    str << tab << "  # Value      : " << value_ << "\n";
+    str << tab << "  # Min value  : " << min_value_ << "\n";
+    str << tab << "  # Max value  : " << max_value_ << "\n";
 
     return str.str();
 }
@@ -77,43 +77,39 @@ void status_bar::copy_from(const region& m_obj) {
     }
 }
 
-void status_bar::set_min_value(float f_min) {
-    if (f_min != f_min_value_) {
-        f_min_value_ = f_min;
-        if (f_min_value_ > f_max_value_)
-            f_min_value_ = f_max_value_;
-        f_value_ = f_value_ > f_max_value_ ? f_max_value_
-                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+void status_bar::set_min_value(float min_value) {
+    if (min_value != min_value_) {
+        min_value_ = min_value;
+        if (min_value_ > max_value_)
+            min_value_ = max_value_;
+        value_ = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
         notify_bar_texture_needs_update_();
     }
 }
 
-void status_bar::set_max_value(float f_max) {
-    if (f_max != f_max_value_) {
-        f_max_value_ = f_max;
-        if (f_max_value_ < f_min_value_)
-            f_max_value_ = f_min_value_;
-        f_value_ = f_value_ > f_max_value_ ? f_max_value_
-                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+void status_bar::set_max_value(float max_value) {
+    if (max_value != max_value_) {
+        max_value_ = max_value;
+        if (max_value_ < min_value_)
+            max_value_ = min_value_;
+        value_ = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
         notify_bar_texture_needs_update_();
     }
 }
 
-void status_bar::set_min_max_values(float f_min, float f_max) {
-    if (f_min != f_min_value_ || f_max != f_max_value_) {
-        f_min_value_ = std::min(f_min, f_max);
-        f_max_value_ = std::max(f_min, f_max);
-        f_value_     = f_value_ > f_max_value_ ? f_max_value_
-                                           : (f_value_ < f_min_value_ ? f_min_value_ : f_value_);
+void status_bar::set_min_max_values(float min_value, float max_value) {
+    if (min_value != min_value_ || max_value != max_value_) {
+        min_value_ = std::min(min_value, max_value);
+        max_value_ = std::max(min_value, max_value);
+        value_     = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
         notify_bar_texture_needs_update_();
     }
 }
 
-void status_bar::set_value(float f_value) {
-    f_value =
-        f_value > f_max_value_ ? f_max_value_ : (f_value < f_min_value_ ? f_min_value_ : f_value);
-    if (f_value != f_value_) {
-        f_value_ = f_value;
+void status_bar::set_value(float value) {
+    value = value > max_value_ ? max_value_ : (value < min_value_ ? min_value_ : value);
+    if (value != value_) {
+        value_ = value;
         notify_bar_texture_needs_update_();
     }
 }
@@ -214,15 +210,15 @@ void status_bar::set_reversed(bool reversed) {
 }
 
 float status_bar::get_min_value() const {
-    return f_min_value_;
+    return min_value_;
 }
 
 float status_bar::get_max_value() const {
-    return f_max_value_;
+    return max_value_;
 }
 
 float status_bar::get_value() const {
-    return f_value_;
+    return value_;
 }
 
 layer status_bar::get_bar_draw_layer() const {
@@ -258,26 +254,26 @@ void status_bar::create_glue() {
     create_glue_(this);
 }
 
-void status_bar::update(float f_delta) {
+void status_bar::update(float delta) {
     if (update_bar_texture_flag_ && p_bar_texture_) {
-        float f_coef = (f_value_ - f_min_value_) / (f_max_value_ - f_min_value_);
+        float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
         if (m_orientation_ == orientation::horizontal)
-            p_bar_texture_->set_relative_dimensions(vector2f(f_coef, 1.0f));
+            p_bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
         else
-            p_bar_texture_->set_relative_dimensions(vector2f(1.0f, f_coef));
+            p_bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
 
         std::array<float, 4> uvs = initial_text_coords_;
         if (m_orientation_ == orientation::horizontal) {
             if (is_reversed_)
-                uvs[0] = (uvs[0] - uvs[2]) * f_coef + uvs[2];
+                uvs[0] = (uvs[0] - uvs[2]) * coef + uvs[2];
             else
-                uvs[2] = (uvs[2] - uvs[0]) * f_coef + uvs[0];
+                uvs[2] = (uvs[2] - uvs[0]) * coef + uvs[0];
         } else {
             if (is_reversed_)
-                uvs[3] = (uvs[3] - uvs[1]) * f_coef + uvs[1];
+                uvs[3] = (uvs[3] - uvs[1]) * coef + uvs[1];
             else
-                uvs[1] = (uvs[1] - uvs[3]) * f_coef + uvs[3];
+                uvs[1] = (uvs[1] - uvs[3]) * coef + uvs[3];
         }
 
         p_bar_texture_->set_tex_rect(uvs);
@@ -286,7 +282,7 @@ void status_bar::update(float f_delta) {
     }
 
     alive_checker m_checker(*this);
-    base::update(f_delta);
+    base::update(delta);
     if (!m_checker.is_alive())
         return;
 }

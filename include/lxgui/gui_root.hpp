@@ -81,7 +81,7 @@ public:
     /// updates this root and its regions.
     /** \param delta The time elapsed since the last call
      */
-    void update(float f_delta);
+    void update(float delta);
 
     /// Tells this object that the global interface scaling factor has changed.
     void notify_scaling_factor_updated();
@@ -266,7 +266,7 @@ private:
 
     void on_window_resized_(const vector2ui& m_dimensions);
     void on_mouse_moved_(const vector2f& m_movement, const vector2f& m_mouse_pos);
-    void on_mouse_wheel_(float f_wheel_scroll, const vector2f& m_mouse_pos);
+    void on_mouse_wheel_(float wheel_scroll, const vector2f& m_mouse_pos);
     void on_drag_start_(input::mouse_button m_button, const vector2f& m_mouse_pos);
     void on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_pos);
     void on_text_entered_(std::uint32_t c);

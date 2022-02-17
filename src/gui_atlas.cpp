@@ -83,58 +83,58 @@ bool atlas_page::empty() const {
     return true;
 }
 
-std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height) const {
-    constexpr float f_padding = 1.0f; // pixels
+std::optional<bounds2f> atlas_page::find_location_(float width, float height) const {
+    constexpr float padding = 1.0f; // pixels
 
-    bounds2f mStartQuad(0, f_width, 0, f_height);
+    bounds2f start_quad(0, width, 0, height);
     if (empty())
-        return mStartQuad;
+        return start_quad;
 
-    const float fAtlasWidth  = get_width_();
-    const float fAtlasHeight = get_height_();
+    const float atlas_width   = get_width_();
+    const float atlast_height = get_height_();
 
     std::vector<bounds2f> occupied_space;
     occupied_space.reserve(texture_list_.size());
 
-    float fMaxWidth  = 0.0f;
-    float fMaxHeight = 0.0f;
+    float max_width  = 0.0f;
+    float max_height = 0.0f;
 
     auto apply_padding = [&](bounds2f m_rect) {
-        m_rect.right += f_padding;
-        m_rect.bottom += f_padding;
+        m_rect.right += padding;
+        m_rect.bottom += padding;
         return m_rect;
     };
 
     for (const auto& p_mat : texture_list_) {
         if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock()) {
             occupied_space.push_back(apply_padding(p_lock->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, occupied_space.back().right);
-            fMaxHeight = std::max(fMaxHeight, occupied_space.back().bottom);
+            max_width  = std::max(max_width, occupied_space.back().right);
+            max_height = std::max(max_height, occupied_space.back().bottom);
         }
     }
 
     for (const auto& p_font : font_list_) {
         if (std::shared_ptr<gui::font> p_lock = p_font.second.lock()) {
             occupied_space.push_back(apply_padding(p_lock->get_texture().lock()->get_rect()));
-            fMaxWidth  = std::max(fMaxWidth, occupied_space.back().right);
-            fMaxHeight = std::max(fMaxHeight, occupied_space.back().bottom);
+            max_width  = std::max(max_width, occupied_space.back().right);
+            max_height = std::max(max_height, occupied_space.back().bottom);
         }
     }
 
-    float    fBestArea = std::numeric_limits<float>::infinity();
-    bounds2f mBestQuad;
+    float    best_area = std::numeric_limits<float>::infinity();
+    bounds2f best_quad;
 
     for (const auto& m_rect_source : occupied_space) {
         auto m_test_position = [&](const vector2f& m_pos) {
-            const bounds2f m_test_quad = mStartQuad + m_pos;
-            if (m_test_quad.right > fAtlasWidth || m_test_quad.bottom > fAtlasHeight)
+            const bounds2f m_test_quad = start_quad + m_pos;
+            if (m_test_quad.right > atlas_width || m_test_quad.bottom > atlast_height)
                 return;
 
-            const float f_new_max_width  = std::max(fMaxWidth, m_test_quad.right);
-            const float f_new_max_height = std::max(fMaxHeight, m_test_quad.bottom);
-            const float f_new_area       = f_new_max_width * f_new_max_height;
+            const float new_max_width  = std::max(max_width, m_test_quad.right);
+            const float new_max_height = std::max(max_height, m_test_quad.bottom);
+            const float new_area       = new_max_width * new_max_height;
 
-            if (f_new_area >= fBestArea)
+            if (new_area >= best_area)
                 return;
 
             for (const auto& m_rect_other : occupied_space) {
@@ -142,16 +142,16 @@ std::optional<bounds2f> atlas_page::find_location_(float f_width, float f_height
                     return;
             }
 
-            fBestArea = f_new_area;
-            mBestQuad = m_test_quad;
+            best_area = new_area;
+            best_quad = m_test_quad;
         };
 
         m_test_position(m_rect_source.top_right());
         m_test_position(m_rect_source.bottom_left());
     }
 
-    if (std::isfinite(fBestArea))
-        return mBestQuad;
+    if (std::isfinite(best_area))
+        return best_quad;
     else
         return std::nullopt;
 }

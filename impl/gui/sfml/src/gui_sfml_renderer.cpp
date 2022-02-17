@@ -51,18 +51,17 @@ void renderer::end_() {
 void renderer::set_view_(const matrix4f& m_view_matrix) {
     static const float rad_to_deg = 180.0f / std::acos(-1.0f);
 
-    float f_scale_x = std::sqrt(
+    float scale_x = std::sqrt(
         m_view_matrix(0, 0) * m_view_matrix(0, 0) + m_view_matrix(1, 0) * m_view_matrix(1, 0));
-    float f_scale_y = std::sqrt(
+    float scale_y = std::sqrt(
         m_view_matrix(0, 1) * m_view_matrix(0, 1) + m_view_matrix(1, 1) * m_view_matrix(1, 1));
-    float f_angle =
-        std::atan2(m_view_matrix(0, 1) / f_scale_y, m_view_matrix(0, 0) / f_scale_x) * rad_to_deg;
+    float angle =
+        std::atan2(m_view_matrix(0, 1) / scale_y, m_view_matrix(0, 0) / scale_x) * rad_to_deg;
 
     sf::View m_view;
-    m_view.setCenter(
-        sf::Vector2f(-m_view_matrix(3, 0) / f_scale_x, -m_view_matrix(3, 1) / f_scale_y));
-    m_view.rotate(f_angle);
-    m_view.setSize(sf::Vector2f(2.0f / f_scale_x, 2.0 / f_scale_y));
+    m_view.setCenter(sf::Vector2f(-m_view_matrix(3, 0) / scale_x, -m_view_matrix(3, 1) / scale_y));
+    m_view.rotate(angle);
+    m_view.setSize(sf::Vector2f(2.0f / scale_x, 2.0 / scale_y));
 
     p_current_sfml_target_->setView(m_view);
 }

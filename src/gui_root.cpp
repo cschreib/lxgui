@@ -137,10 +137,10 @@ void root::create_strata_cache_render_target_(strata& m_strata) {
     m_strata.m_quad.v[3].uvs = m_strata.m_quad.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void root::update(float f_delta) {
+void root::update(float delta) {
     // Update logics on root frames from parent to children.
     for (auto& m_frame : get_root_frames()) {
-        m_frame.update(f_delta);
+        m_frame.update(delta);
     }
 
     // Removed destroyed frames
@@ -520,24 +520,24 @@ void root::on_mouse_moved_(const vector2f& m_movement, const vector2f& m_mouse_p
         if (p_moved_object_)
             p_moved_object_->notify_borders_need_update();
     } else if (p_sized_object_) {
-        float f_width;
+        float width;
         if (is_resizing_from_right_)
-            f_width = std::max(0.0f, m_resize_start_.x + m_mouse_movement_.x);
+            width = std::max(0.0f, m_resize_start_.x + m_mouse_movement_.x);
         else
-            f_width = std::max(0.0f, m_resize_start_.x - m_mouse_movement_.x);
+            width = std::max(0.0f, m_resize_start_.x - m_mouse_movement_.x);
 
-        float f_height;
+        float height;
         if (is_resizing_from_bottom_)
-            f_height = std::max(0.0f, m_resize_start_.y + m_mouse_movement_.y);
+            height = std::max(0.0f, m_resize_start_.y + m_mouse_movement_.y);
         else
-            f_height = std::max(0.0f, m_resize_start_.y - m_mouse_movement_.y);
+            height = std::max(0.0f, m_resize_start_.y - m_mouse_movement_.y);
 
         if (is_resizing_width_ && is_resizing_height_)
-            p_sized_object_->set_dimensions(vector2f(f_width, f_height));
+            p_sized_object_->set_dimensions(vector2f(width, height));
         else if (is_resizing_width_)
-            p_sized_object_->set_width(f_width);
+            p_sized_object_->set_width(width);
         else if (is_resizing_height_)
-            p_sized_object_->set_height(f_height);
+            p_sized_object_->set_height(height);
     }
 
     if (p_dragged_frame_) {
@@ -553,19 +553,19 @@ void root::on_mouse_moved_(const vector2f& m_movement, const vector2f& m_mouse_p
     }
 }
 
-void root::on_mouse_wheel_(float f_wheel_scroll, const vector2f& m_mouse_pos) {
+void root::on_mouse_wheel_(float wheel_scroll, const vector2f& m_mouse_pos) {
     utils::observer_ptr<frame> p_hovered_frame = find_topmost_frame([&](const frame& m_frame) {
         return m_frame.is_in_region(m_mouse_pos) && m_frame.is_mouse_wheel_enabled();
     });
 
     if (!p_hovered_frame) {
         // Forward to the world
-        m_world_input_dispatcher_.on_mouse_wheel(f_wheel_scroll, m_mouse_pos);
+        m_world_input_dispatcher_.on_mouse_wheel(wheel_scroll, m_mouse_pos);
         return;
     }
 
     event_data m_data;
-    m_data.add(f_wheel_scroll);
+    m_data.add(wheel_scroll);
     m_data.add(m_mouse_pos.x);
     m_data.add(m_mouse_pos.y);
     p_hovered_frame->fire_script("OnMouseWheel", m_data);

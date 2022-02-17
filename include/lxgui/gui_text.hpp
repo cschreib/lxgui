@@ -63,7 +63,7 @@ public:
      *         font object) and interface units. By default this is set to 1, but needs to
      *         be changed on high DPI systems.
      */
-    void set_scaling_factor(float f_scaling_factor);
+    void set_scaling_factor(float scaling_factor);
 
     /// Returns the scaling factor used when rendering glyphs.
     /** \return The scaling factor used when rendering glyphs
@@ -97,9 +97,9 @@ public:
     const color& get_color() const;
 
     /// Sets this text's transparency (alpha).
-    /** \param fAlpha The new alpha value
+    /** \param alpha The new alpha value
      */
-    void set_alpha(float f_alpha);
+    void set_alpha(float alpha);
 
     /// Returns this text's transparency (alpha).
     /** \return This text's transparency (alpha)
@@ -107,23 +107,23 @@ public:
     float get_alpha() const;
 
     /// Sets the dimensions of the text box.
-    /** \param fW The new witdh
-     *   \param fH The new height
+    /** \param box_width The new witdh
+     *   \param box_height The new height
      *   \note To remove the text box, use 0.0f.
      */
-    void set_dimensions(float f_w, float f_h);
+    void set_box_dimensions(float box_width, float box_height);
 
     /// Sets the width of the text box.
-    /** \param fBoxW The new witdh
+    /** \param box_width The new witdh
      *   \note To remove it, use 0.0f.
      */
-    void set_box_width(float f_box_w);
+    void set_box_width(float box_width);
 
     /// Sets the height of the text box.
-    /** \param fBoxH The new height
+    /** \param box_height The new height
      *   \note To remove it, use 0.0f.
      */
-    void set_box_height(float f_box_h);
+    void set_box_height(float box_height);
 
     /// Returns the width of the rendered text.
     /** \return The width of the rendered text
@@ -171,14 +171,14 @@ public:
     float get_string_width(const utils::ustring& content) const;
 
     /// Returns the length of a single character.
-    /** \param uiChar The character to measure
+    /** \param c The character to measure
      *   \return The lenght of this character
      */
     float get_character_width(char32_t c) const;
 
     /// Returns the kerning between two characters.
-    /** \param uiChar1 The first character
-     *   \param uiChar2 The second character
+    /** \param c1 The first character
+     *   \param c2 The second character
      *   \return The kerning between two characters
      *   \note Kerning is a letter spacing adjustment that makes the
      *         text look more condensed : is you stick an A near a V,
@@ -196,29 +196,29 @@ public:
     /// Sets text horizontal alignment.
     /** \param mAlignX The new horizontal alignment
      */
-    void set_alignment_x(const alignment_x& m_align_x);
+    void set_alignment_x(alignment_x m_align_x);
 
     /// Sets text vertical alignment.
     /** \param mAlignY The new vertical alignment
      */
-    void set_alignment_y(const alignment_y& m_align_y);
+    void set_alignment_y(alignment_y m_align_y);
 
     /// Returns the text horizontal alignment.
     /** \return The text horizontal alignment
      */
-    const alignment_x& get_alignment_x() const;
+    alignment_x get_alignment_x() const;
 
     /// Returns the text vertical alignment.
     /** \return The text vertical alignment
      */
-    const alignment_y& get_alignment_y() const;
+    alignment_y get_alignment_y() const;
 
     /// Sets this text's tracking.
-    /** \param fTracking The new tracking
+    /** \param tracking The new tracking
      *   \note Tracking is the space between each character. Default
      *         is 0.
      */
-    void set_tracking(float f_tracking);
+    void set_tracking(float tracking);
 
     /// Returns this text's tracking.
     /** \return This text's tracking
@@ -226,12 +226,12 @@ public:
     float get_tracking() const;
 
     /// Sets this text's line spacing.
-    /** \param fLineSpacing The new line spacing
+    /** \param line_spacing The new line spacing
      *   \note Line spacing is a coefficient that, multiplied by the
      *         height of a line, gives the space between two lines.
      *         Default is 1.5f.
      */
-    void set_line_spacing(float f_line_spacing);
+    void set_line_spacing(float line_spacing);
 
     /// Returns this text's line spacing.
     /** \return This text's line spacing
@@ -304,7 +304,7 @@ public:
     const std::array<vertex, 4>& get_letter_quad(std::size_t ui_index) const;
 
     /// Creates a quad that contains the provided character.
-    /** \param uiChar The character to draw
+    /** \param c The character to draw
      *   \note Uses this text's font texture.
      */
     quad create_letter_quad(char32_t c) const;
@@ -327,7 +327,7 @@ private:
     void  update_() const;
     void  notify_cache_dirty_() const;
     float round_to_pixel_(
-        float f_value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
+        float value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
     std::array<vertex, 4> create_letter_quad_(gui::font& m_font, char32_t c) const;
     std::array<vertex, 4> create_letter_quad_(char32_t c) const;
     std::array<vertex, 4> create_outline_letter_quad_(char32_t c) const;
@@ -335,18 +335,18 @@ private:
     renderer& m_renderer_;
 
     bool        is_ready_               = false;
-    float       f_scaling_factor_       = 1.0f;
-    float       f_tracking_             = 0.0f;
-    float       f_line_spacing_         = 1.0f;
+    float       scaling_factor_         = 1.0f;
+    float       tracking_               = 0.0f;
+    float       line_spacing_           = 1.0f;
     bool        remove_starting_spaces_ = false;
     bool        word_wrap_enabled_      = true;
     bool        ellipsis_enabled_       = false;
     color       m_color_                = color::white;
     bool        force_color_            = false;
-    float       f_alpha_                = 1.0f;
+    float       alpha_                  = 1.0f;
     bool        formatting_enabled_     = false;
-    float       f_box_w_                = std::numeric_limits<float>::infinity();
-    float       f_box_h_                = std::numeric_limits<float>::infinity();
+    float       box_width_              = std::numeric_limits<float>::infinity();
+    float       box_height_             = std::numeric_limits<float>::infinity();
     alignment_x m_align_x_              = alignment_x::left;
     alignment_y m_align_y_              = alignment_y::middle;
 
@@ -355,8 +355,8 @@ private:
     utils::ustring        unicode_text_;
 
     mutable bool        update_cache_flag_ = false;
-    mutable float       f_w_               = 0.0f;
-    mutable float       f_h_               = 0.0f;
+    mutable float       width_             = 0.0f;
+    mutable float       height_            = 0.0f;
     mutable std::size_t ui_num_lines_      = 0u;
 
     mutable std::vector<std::array<vertex, 4>> quad_list_;

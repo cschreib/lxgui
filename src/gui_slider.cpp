@@ -13,11 +13,11 @@
 
 namespace lxgui::gui {
 
-void step_value(float& f_value, float f_step) {
+void step_value(float& value, float step) {
     // Makes the value a multiple of the step :
     // fValue = N*fStep, where N is an integer.
-    if (f_step != 0.0f)
-        f_value = std::round(f_value / f_step) * f_step;
+    if (step != 0.0f)
+        value = std::round(value / step) * step;
 }
 
 slider::slider(utils::control_block& m_block, manager& m_manager) : frame(m_block, m_manager) {
@@ -36,10 +36,10 @@ std::string slider::serialize(const std::string& tab) const {
     case orientation::vertical: str << "VERTICAL"; break;
     }
     str << "\n";
-    str << tab << "  # Value      : " << f_value_ << "\n";
-    str << tab << "  # Min value  : " << f_min_value_ << "\n";
-    str << tab << "  # Max value  : " << f_max_value_ << "\n";
-    str << tab << "  # Step       : " << f_value_step_ << "\n";
+    str << tab << "  # Value      : " << value_ << "\n";
+    str << tab << "  # Min value  : " << min_value_ << "\n";
+    str << tab << "  # Max value  : " << max_value_ << "\n";
+    str << tab << "  # Step       : " << value_step_ << "\n";
     str << tab << "  # Click out  : " << allow_clicks_outside_thumb_ << "\n";
 
     return str.str();
@@ -83,15 +83,15 @@ void slider::fire_script(const std::string& script_name, const event_data& m_dat
         if (allow_clicks_outside_thumb_) {
             const vector2f m_apparent_size = get_apparent_dimensions();
 
-            float f_value;
+            float value;
             if (m_orientation_ == orientation::horizontal) {
-                float f_offset = m_data.get<float>(1) - border_list_.left;
-                f_value        = f_offset / m_apparent_size.x;
-                set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
+                float offset = m_data.get<float>(1) - border_list_.left;
+                value        = offset / m_apparent_size.x;
+                set_value(value * (max_value_ - min_value_) + min_value_);
             } else {
-                float f_offset = m_data.get<float>(2) - border_list_.top;
-                f_value        = f_offset / m_apparent_size.y;
-                set_value(f_value * (f_max_value_ - f_min_value_) + f_min_value_);
+                float offset = m_data.get<float>(2) - border_list_.top;
+                value        = offset / m_apparent_size.y;
+                set_value(value * (max_value_ - min_value_) + min_value_);
             }
         }
     }
@@ -129,7 +129,7 @@ void slider::copy_from(const region& m_obj) {
 }
 
 void slider::constrain_thumb_() {
-    if (f_max_value_ == f_min_value_)
+    if (max_value_ == min_value_)
         return;
 
     const vector2f m_apparent_size = get_apparent_dimensions();
@@ -138,50 +138,50 @@ void slider::constrain_thumb_() {
         (m_orientation_ == orientation::vertical && m_apparent_size.y <= 0))
         return;
 
-    float f_old_value = f_value_;
+    float old_value = value_;
 
     if (is_thumb_dragged_) {
         if (m_orientation_ == orientation::horizontal)
-            f_value_ =
+            value_ =
                 p_thumb_texture_->get_point(anchor_point::center).m_offset.x / m_apparent_size.x;
         else
-            f_value_ =
+            value_ =
                 p_thumb_texture_->get_point(anchor_point::center).m_offset.y / m_apparent_size.y;
 
-        f_value_ = f_value_ * (f_max_value_ - f_min_value_) + f_min_value_;
-        f_value_ = std::clamp(f_value_, f_min_value_, f_max_value_);
-        step_value(f_value_, f_value_step_);
+        value_ = value_ * (max_value_ - min_value_) + min_value_;
+        value_ = std::clamp(value_, min_value_, max_value_);
+        step_value(value_, value_step_);
     }
 
-    float f_coef = (f_value_ - f_min_value_) / (f_max_value_ - f_min_value_);
+    float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
     anchor& m_anchor = p_thumb_texture_->modify_point(anchor_point::center);
 
     vector2f m_new_offset;
     if (m_orientation_ == orientation::horizontal)
-        m_new_offset = vector2f(m_apparent_size.x * f_coef, 0);
+        m_new_offset = vector2f(m_apparent_size.x * coef, 0);
     else
-        m_new_offset = vector2f(0, m_apparent_size.y * f_coef);
+        m_new_offset = vector2f(0, m_apparent_size.y * coef);
 
     if (m_new_offset != m_anchor.m_offset) {
         m_anchor.m_offset = m_new_offset;
         p_thumb_texture_->notify_borders_need_update();
     }
 
-    if (f_value_ != f_old_value)
+    if (value_ != old_value)
         fire_script("OnValueChanged");
 }
 
-void slider::set_min_value(float f_min) {
-    if (f_min != f_min_value_) {
-        f_min_value_ = f_min;
-        if (f_min_value_ > f_max_value_)
-            f_min_value_ = f_max_value_;
+void slider::set_min_value(float min_value) {
+    if (min_value != min_value_) {
+        min_value_ = min_value;
+        if (min_value_ > max_value_)
+            min_value_ = max_value_;
         else
-            step_value(f_min_value_, f_value_step_);
+            step_value(min_value_, value_step_);
 
-        if (f_value_ < f_min_value_) {
-            f_value_ = f_min_value_;
+        if (value_ < min_value_) {
+            value_ = min_value_;
             fire_script("OnValueChanged");
         }
 
@@ -189,16 +189,16 @@ void slider::set_min_value(float f_min) {
     }
 }
 
-void slider::set_max_value(float f_max) {
-    if (f_max != f_max_value_) {
-        f_max_value_ = f_max;
-        if (f_max_value_ < f_min_value_)
-            f_max_value_ = f_min_value_;
+void slider::set_max_value(float max_value) {
+    if (max_value != max_value_) {
+        max_value_ = max_value;
+        if (max_value_ < min_value_)
+            max_value_ = min_value_;
         else
-            step_value(f_max_value_, f_value_step_);
+            step_value(max_value_, value_step_);
 
-        if (f_value_ > f_max_value_) {
-            f_value_ = f_max_value_;
+        if (value_ > max_value_) {
+            value_ = max_value_;
             fire_script("OnValueChanged");
         }
 
@@ -206,15 +206,15 @@ void slider::set_max_value(float f_max) {
     }
 }
 
-void slider::set_min_max_values(float f_min, float f_max) {
-    if (f_min != f_min_value_ || f_max != f_max_value_) {
-        f_min_value_ = std::min(f_min, f_max);
-        f_max_value_ = std::max(f_min, f_max);
-        step_value(f_min_value_, f_value_step_);
-        step_value(f_max_value_, f_value_step_);
+void slider::set_min_max_values(float min_value, float max_value) {
+    if (min_value != min_value_ || max_value != max_value_) {
+        min_value_ = std::min(min_value, max_value);
+        max_value_ = std::max(min_value, max_value);
+        step_value(min_value_, value_step_);
+        step_value(max_value_, value_step_);
 
-        if (f_value_ > f_max_value_ || f_value_ < f_min_value_) {
-            f_value_ = std::clamp(f_value_, f_min_value_, f_max_value_);
+        if (value_ > max_value_ || value_ < min_value_) {
+            value_ = std::clamp(value_, min_value_, max_value_);
             fire_script("OnValueChanged");
         }
 
@@ -222,12 +222,12 @@ void slider::set_min_max_values(float f_min, float f_max) {
     }
 }
 
-void slider::set_value(float f_value, bool silent) {
-    f_value = std::clamp(f_value, f_min_value_, f_max_value_);
-    step_value(f_value, f_value_step_);
+void slider::set_value(float value, bool silent) {
+    value = std::clamp(value, min_value_, max_value_);
+    step_value(value, value_step_);
 
-    if (f_value != f_value_) {
-        f_value_ = f_value;
+    if (value != value_) {
+        value_ = value;
 
         if (!silent)
             fire_script("OnValueChanged");
@@ -236,18 +236,18 @@ void slider::set_value(float f_value, bool silent) {
     }
 }
 
-void slider::set_value_step(float f_value_step) {
-    if (f_value_step_ != f_value_step) {
-        f_value_step_ = f_value_step;
+void slider::set_value_step(float value_step) {
+    if (value_step_ != value_step) {
+        value_step_ = value_step;
 
-        step_value(f_min_value_, f_value_step_);
-        step_value(f_max_value_, f_value_step_);
+        step_value(min_value_, value_step_);
+        step_value(max_value_, value_step_);
 
-        float f_old_value = f_value_;
-        f_value_          = std::clamp(f_value_, f_min_value_, f_max_value_);
-        step_value(f_value_, f_value_step_);
+        float old_value = value_;
+        value_          = std::clamp(value_, min_value_, max_value_);
+        step_value(value_, value_step_);
 
-        if (f_value_ != f_old_value)
+        if (value_ != old_value)
             fire_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
@@ -326,19 +326,19 @@ void slider::set_thumb_draw_layer(const std::string& thumb_layer_name) {
 }
 
 float slider::get_min_value() const {
-    return f_min_value_;
+    return min_value_;
 }
 
 float slider::get_max_value() const {
-    return f_max_value_;
+    return max_value_;
 }
 
 float slider::get_value() const {
-    return f_value_;
+    return value_;
 }
 
 float slider::get_value_step() const {
-    return f_value_step_;
+    return value_step_;
 }
 
 slider::orientation slider::get_orientation() const {
@@ -370,7 +370,7 @@ void slider::update_thumb_texture_() {
     if (!p_thumb_texture_)
         return;
 
-    if (f_max_value_ == f_min_value_) {
+    if (max_value_ == min_value_) {
         p_thumb_texture_->hide();
         return;
     } else

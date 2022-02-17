@@ -119,11 +119,11 @@ public:
     double get_doubleclick_time() const;
 
     /// Sets the scaling factor applied to the interface.
-    /** \param fScalingFactor The new scaling factor (default: 1)
+    /** \param scaling_factor The new scaling factor (default: 1)
      *   \note This is the conversion factor between UI units and pixels in the display.
      *         This factor should match gui::renderer::get_interface_scaling_factor().
      */
-    void set_interface_scaling_factor(float f_scaling_factor);
+    void set_interface_scaling_factor(float scaling_factor);
 
     /// Return the current interface scaling factor.
     /** \return The current interface scaling factor
@@ -149,7 +149,7 @@ private:
     std::array<time_point, key_number>          key_pressed_time_   = {};
     std::array<time_point, mouse_button_number> mouse_pressed_time_ = {};
 
-    float f_scaling_factor_ = 1.0f;
+    float scaling_factor_ = 1.0f;
 
     double d_double_click_time_ = 0.25;
 

@@ -61,7 +61,7 @@ public:
     manager& operator=(manager&& m_mgr) = delete;
 
     /// Sets the global UI scaling factor.
-    /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
+    /** \param scaling_factor The factor to use for rescaling (1: no rescaling, default)
      *   \note This value determines how to convert sizing units or position coordinates
      *         into actual number of pixels. By default, units specified for sizes and
      *         positions are 1:1 mapping with pixels on the screen. If designing the UI
@@ -74,7 +74,7 @@ public:
      *         the interface to users with poorer eye sight, which would benefit from larger
      *         font sizes and larger icons.
      */
-    void set_interface_scaling_factor(float f_scaling_factor);
+    void set_interface_scaling_factor(float scaling_factor);
 
     /// Returns the current UI scaling factor.
     /** \return The current UI scaling factor
@@ -181,7 +181,7 @@ public:
     /// Updates this manager and its regions.
     /** \param delta The time elapsed since the last call
      */
-    void update_ui(float f_delta);
+    void update_ui(float delta);
 
     /// Returns the GUI Lua state (sol wrapper).
     /** \return The GUI Lua state
@@ -351,9 +351,9 @@ private:
     void read_files_();
 
     // Persistent state
-    float                              f_scaling_factor_      = 1.0f;
-    float                              f_base_scaling_factor_ = 1.0f;
-    bool                               enable_caching_        = false;
+    float                              scaling_factor_      = 1.0f;
+    float                              base_scaling_factor_ = 1.0f;
+    bool                               enable_caching_      = false;
     std::function<void(gui::manager&)> p_lua_regs_;
     std::vector<std::string>           gui_directory_list_;
 

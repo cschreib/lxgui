@@ -180,10 +180,10 @@ matrix4f operator*(const matrix4f& m1, const matrix4f& m2) noexcept {
 vector2f operator*(const matrix4f& m, const vector2f& v) noexcept {
     vector2f r;
 
-    const float f_inv_w = 1.0f / (m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3));
+    const float inv_w = 1.0f / (m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3));
 
-    r.x = (m(0, 0) * v.x + m(0, 1) * v.y + m(0, 3)) * f_inv_w;
-    r.y = (m(1, 0) * v.x + m(1, 1) * v.y + m(1, 3)) * f_inv_w;
+    r.x = (m(0, 0) * v.x + m(0, 1) * v.y + m(0, 3)) * inv_w;
+    r.y = (m(1, 0) * v.x + m(1, 1) * v.y + m(1, 3)) * inv_w;
 
     return r;
 }
@@ -191,10 +191,10 @@ vector2f operator*(const matrix4f& m, const vector2f& v) noexcept {
 vector2f operator*(const vector2f& v, const matrix4f& m) noexcept {
     vector2f r;
 
-    const float f_inv_w = 1.0f / (m(0, 3) * v.x + m(1, 3) * v.y + m(3, 3));
+    const float inv_w = 1.0f / (m(0, 3) * v.x + m(1, 3) * v.y + m(3, 3));
 
-    r.x = (m(0, 0) * v.x + m(1, 0) * v.y + m(3, 0)) * f_inv_w;
-    r.y = (m(0, 1) * v.x + m(1, 1) * v.y + m(3, 1)) * f_inv_w;
+    r.x = (m(0, 0) * v.x + m(1, 0) * v.y + m(3, 0)) * inv_w;
+    r.y = (m(0, 1) * v.x + m(1, 1) * v.y + m(3, 1)) * inv_w;
 
     return r;
 }

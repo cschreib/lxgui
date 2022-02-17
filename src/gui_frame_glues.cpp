@@ -571,13 +571,13 @@ void frame::register_on_lua(sol::state& m_lua) {
         p_backdrop->set_edge(m_self.parse_file_name(m_table["edgeFile"].get_or<std::string>("")));
         p_backdrop->set_background_tilling(m_table["tile"].get_or(false));
 
-        float f_tile_size = m_table["tileSize"].get_or<float>(0.0);
-        if (f_tile_size != 0)
-            p_backdrop->set_tile_size(f_tile_size);
+        float tile_size = m_table["tileSize"].get_or<float>(0.0);
+        if (tile_size != 0)
+            p_backdrop->set_tile_size(tile_size);
 
-        float f_edge_size = m_table["edgeSize"].get_or<float>(0.0);
-        if (f_edge_size != 0)
-            p_backdrop->set_edge_size(f_edge_size);
+        float edge_size = m_table["edgeSize"].get_or<float>(0.0);
+        if (edge_size != 0)
+            p_backdrop->set_edge_size(edge_size);
 
         if (m_table["insets"] != sol::lua_nil) {
             p_backdrop->set_background_insets(bounds2f(
@@ -595,9 +595,8 @@ void frame::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_backdrop_border_color",
         sol::overload(
-            [](frame& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
-                m_self.get_or_create_backdrop().set_edge_color(
-                    color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+            [](frame& m_self, float r, float g, float b, sol::optional<float> a) {
+                m_self.get_or_create_backdrop().set_edge_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](frame& m_self, const std::string& s) {
                 m_self.get_or_create_backdrop().set_edge_color(color(s));
@@ -608,9 +607,9 @@ void frame::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_backdrop_color",
         sol::overload(
-            [](frame& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+            [](frame& m_self, float r, float g, float b, sol::optional<float> a) {
                 m_self.get_or_create_backdrop().set_background_color(
-                    color(f_r, f_g, f_b, f_a.value_or(1.0f)));
+                    color(r, g, b, a.value_or(1.0f)));
             },
             [](frame& m_self, const std::string& s) {
                 m_self.get_or_create_backdrop().set_background_color(color(s));
@@ -638,21 +637,20 @@ void frame::register_on_lua(sol::state& m_lua) {
     /** @function set_hit_rect_insets
      */
     m_class.set_function(
-        "set_hit_rect_insets",
-        [](frame& m_self, float f_left, float f_right, float f_top, float f_bottom) {
-            m_self.set_abs_hit_rect_insets(bounds2f(f_left, f_right, f_top, f_bottom));
+        "set_hit_rect_insets", [](frame& m_self, float left, float right, float top, float bottom) {
+            m_self.set_abs_hit_rect_insets(bounds2f(left, right, top, bottom));
         });
 
     /** @function set_max_dimensions
      */
-    m_class.set_function("set_max_dimensions", [](frame& m_self, float f_width, float f_height) {
-        m_self.set_max_dimensions(vector2f(f_width, f_height));
+    m_class.set_function("set_max_dimensions", [](frame& m_self, float width, float height) {
+        m_self.set_max_dimensions(vector2f(width, height));
     });
 
     /** @function set_min_dimensions
      */
-    m_class.set_function("set_min_dimensions", [](frame& m_self, float f_width, float f_height) {
-        m_self.set_min_dimensions(vector2f(f_width, f_height));
+    m_class.set_function("set_min_dimensions", [](frame& m_self, float width, float height) {
+        m_self.set_min_dimensions(vector2f(width, height));
     });
 
     /** @function set_max_width

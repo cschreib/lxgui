@@ -52,7 +52,7 @@ manager::manager(
         // Update the scaling factor; on mobile platforms, rotating the screen will
         // trigger a change of window size and resolution, which the scaling factor "hint"
         // will pick up.
-        set_interface_scaling_factor(f_base_scaling_factor_);
+        set_interface_scaling_factor(base_scaling_factor_);
 
         p_renderer_->notify_window_resized(m_dimensions);
     });
@@ -62,23 +62,23 @@ manager::~manager() {
     close_ui_now();
 }
 
-void manager::set_interface_scaling_factor(float f_scaling_factor) {
-    float f_full_scaling_factor = f_scaling_factor * p_window_->get_interface_scaling_factor_hint();
+void manager::set_interface_scaling_factor(float scaling_factor) {
+    float full_scaling_factor = scaling_factor * p_window_->get_interface_scaling_factor_hint();
 
-    if (f_full_scaling_factor == f_scaling_factor_)
+    if (full_scaling_factor == scaling_factor_)
         return;
 
-    f_base_scaling_factor_ = f_scaling_factor;
-    f_scaling_factor_      = f_full_scaling_factor;
+    base_scaling_factor_ = scaling_factor;
+    scaling_factor_      = full_scaling_factor;
 
-    p_input_dispatcher_->set_interface_scaling_factor(f_scaling_factor_);
+    p_input_dispatcher_->set_interface_scaling_factor(scaling_factor_);
 
     p_root_->notify_scaling_factor_updated();
     p_root_->notify_hovered_frame_dirty();
 }
 
 float manager::get_interface_scaling_factor() const {
-    return f_scaling_factor_;
+    return scaling_factor_;
 }
 
 void manager::enable_caching(bool enable_caching) {
@@ -198,11 +198,11 @@ bool manager::is_loaded() const {
     return is_loaded_;
 }
 
-void manager::update_ui(float f_delta) {
+void manager::update_ui(float delta) {
     is_updating_ = true;
 
     DEBUG_LOG(" Update regions...");
-    p_root_->update(f_delta);
+    p_root_->update(delta);
 
     if (is_first_iteration_) {
         DEBUG_LOG(" Entering world...");

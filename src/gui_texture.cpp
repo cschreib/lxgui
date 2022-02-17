@@ -81,12 +81,12 @@ void texture::render() const {
     if (!is_visible())
         return;
 
-    float f_alpha = get_effective_alpha();
+    float alpha = get_effective_alpha();
 
-    if (f_alpha != 1.0f) {
+    if (alpha != 1.0f) {
         quad m_blended_quad = m_quad_;
         for (std::size_t i = 0; i < 4; ++i)
-            m_blended_quad.v[i].col.a *= f_alpha;
+            m_blended_quad.v[i].col.a *= alpha;
 
         m_renderer_.render_quad(m_blended_quad);
     } else {

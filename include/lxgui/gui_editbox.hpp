@@ -144,7 +144,7 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float f_delta) override;
+    void update(float delta) override;
 
     /// Calls a script.
     /** \param script_name The name of the script
@@ -355,9 +355,9 @@ public:
 
     /// Sets the font (file and size) to render the content.
     /** \param font_name The file path to the .ttf file
-     *   \param fHeight   The font height
+     *   \param height   The font height
      */
-    void set_font(const std::string& font_name, float f_height);
+    void set_font(const std::string& font_name, float height);
 
     /// Notifies this frame that it has received or lost focus.
     /** \param focus 'true' if focus is received, 'false' if lost

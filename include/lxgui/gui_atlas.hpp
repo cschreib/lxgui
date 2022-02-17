@@ -95,11 +95,11 @@ protected:
 
 private:
     /// Try to insert a new texture into this page, and return the best position if any
-    /** \param fWidth  The width of the texture to insert
-     *   \param fHeight The height of the texture to insert
+    /** \param width  The width of the texture to insert
+     *   \param height The height of the texture to insert
      *   \return The new position for this texture, or std::nullopt if it does not fit
      */
-    std::optional<bounds2f> find_location_(float f_width, float f_height) const;
+    std::optional<bounds2f> find_location_(float width, float height) const;
 
     std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
     std::unordered_map<std::string, std::weak_ptr<gui::font>>     font_list_;

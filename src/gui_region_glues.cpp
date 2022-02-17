@@ -291,8 +291,8 @@ void region::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_point", [](region& m_self, const std::string& point,
                         sol::optional<std::variant<std::string, region*>> m_parent,
-                        sol::optional<std::string> relative_point, sol::optional<float> f_x_offset,
-                        sol::optional<float> f_y_offset) {
+                        sol::optional<std::string> relative_point, sol::optional<float> x_offset,
+                        sol::optional<float> y_offset) {
             // point
             anchor_point m_point = anchor::get_anchor_point(point);
 
@@ -315,12 +315,12 @@ void region::register_on_lua(sol::state& m_lua) {
                 m_parent_point = anchor::get_anchor_point(relative_point.value());
 
             // x, y
-            float f_abs_x = f_x_offset.value_or(0.0f);
-            float f_abs_y = f_y_offset.value_or(0.0f);
+            float abs_x = x_offset.value_or(0.0f);
+            float abs_y = y_offset.value_or(0.0f);
 
             m_self.set_point(
                 m_point, p_parent ? p_parent->get_name() : "", m_parent_point,
-                vector2f(f_abs_x, f_abs_y));
+                vector2f(abs_x, abs_y));
         });
 
     /** @function set_rel_point
@@ -329,7 +329,7 @@ void region::register_on_lua(sol::state& m_lua) {
         "set_rel_point", [](region& m_self, const std::string& point,
                             sol::optional<std::variant<std::string, region*>> m_parent,
                             sol::optional<std::string>                        relative_point,
-                            sol::optional<float> f_x_offset, sol::optional<float> f_y_offset) {
+                            sol::optional<float> x_offset, sol::optional<float> y_offset) {
             // point
             anchor_point m_point = anchor::get_anchor_point(point);
 
@@ -352,12 +352,12 @@ void region::register_on_lua(sol::state& m_lua) {
                 m_parent_point = anchor::get_anchor_point(relative_point.value());
 
             // x, y
-            float f_rel_x = f_x_offset.value_or(0.0f);
-            float f_rel_y = f_y_offset.value_or(0.0f);
+            float rel_x = x_offset.value_or(0.0f);
+            float rel_y = y_offset.value_or(0.0f);
 
             m_self.set_point(
                 m_point, p_parent ? p_parent->get_name() : "", m_parent_point,
-                vector2f(f_rel_x, f_rel_y), anchor_type::rel);
+                vector2f(rel_x, rel_y), anchor_type::rel);
         });
 
     /** @function set_width

@@ -119,7 +119,7 @@ std::string region::serialize(const std::string& tab) const {
     str << tab << "  |   # right  : " << border_list_.right << "\n";
     str << tab << "  |   # bottom : " << border_list_.bottom << "\n";
     str << tab << "  |-###\n";
-    str << tab << "  # Alpha       : " << f_alpha_ << "\n";
+    str << tab << "  # Alpha       : " << alpha_ << "\n";
     str << tab << "  # Shown       : " << is_shown_ << "\n";
     str << tab << "  # Abs width   : " << m_dimensions_.x << "\n";
     str << tab << "  # Abs height  : " << m_dimensions_.y << "\n";
@@ -166,7 +166,7 @@ bool region::is_object_type(const std::string& type_name) const {
 }
 
 float region::get_alpha() const {
-    return f_alpha_;
+    return alpha_;
 }
 
 float region::get_effective_alpha() const {
@@ -177,9 +177,9 @@ float region::get_effective_alpha() const {
     }
 }
 
-void region::set_alpha(float f_alpha) {
-    if (f_alpha_ != f_alpha) {
-        f_alpha_ = f_alpha;
+void region::set_alpha(float alpha) {
+    if (alpha_ != alpha) {
+        alpha_ = alpha;
         notify_renderer_need_redraw();
     }
 }
@@ -231,11 +231,11 @@ void region::set_dimensions(const vector2f& m_dimensions) {
     }
 }
 
-void region::set_width(float f_abs_width) {
-    if (m_dimensions_.x == f_abs_width)
+void region::set_width(float abs_width) {
+    if (m_dimensions_.x == abs_width)
         return;
 
-    m_dimensions_.x = f_abs_width;
+    m_dimensions_.x = abs_width;
 
     if (!is_virtual_) {
         notify_borders_need_update();
@@ -243,11 +243,11 @@ void region::set_width(float f_abs_width) {
     }
 }
 
-void region::set_height(float f_abs_height) {
-    if (m_dimensions_.y == f_abs_height)
+void region::set_height(float abs_height) {
+    if (m_dimensions_.y == abs_height)
         return;
 
-    m_dimensions_.y = f_abs_height;
+    m_dimensions_.y = abs_height;
 
     if (!is_virtual_) {
         notify_borders_need_update();
@@ -262,18 +262,18 @@ void region::set_relative_dimensions(const vector2f& m_dimensions) {
         set_dimensions(m_dimensions * get_top_level_renderer()->get_target_dimensions());
 }
 
-void region::set_relative_width(float f_rel_width) {
+void region::set_relative_width(float rel_width) {
     if (p_parent_)
-        set_width(f_rel_width * p_parent_->get_apparent_dimensions().x);
+        set_width(rel_width * p_parent_->get_apparent_dimensions().x);
     else
-        set_width(f_rel_width * get_top_level_renderer()->get_target_dimensions().x);
+        set_width(rel_width * get_top_level_renderer()->get_target_dimensions().x);
 }
 
-void region::set_relative_height(float f_rel_height) {
+void region::set_relative_height(float rel_height) {
     if (p_parent_)
-        set_height(f_rel_height * p_parent_->get_apparent_dimensions().y);
+        set_height(rel_height * p_parent_->get_apparent_dimensions().y);
     else
-        set_height(f_rel_height * get_top_level_renderer()->get_target_dimensions().y);
+        set_height(rel_height * get_top_level_renderer()->get_target_dimensions().y);
 }
 
 const vector2f& region::get_dimensions() const {
@@ -545,37 +545,37 @@ void region::remove_anchored_object(region& m_obj) {
         anchored_object_list_.erase(m_iter);
 }
 
-float region::round_to_pixel(float f_value, utils::rounding_method m_method) const {
-    float f_scaling_factor = get_manager().get_interface_scaling_factor();
-    return utils::round(f_value, 1.0f / f_scaling_factor, m_method);
+float region::round_to_pixel(float value, utils::rounding_method m_method) const {
+    float scaling_factor = get_manager().get_interface_scaling_factor();
+    return utils::round(value, 1.0f / scaling_factor, m_method);
 }
 
 vector2f region::round_to_pixel(const vector2f& m_position, utils::rounding_method m_method) const {
-    float f_scaling_factor = get_manager().get_interface_scaling_factor();
+    float scaling_factor = get_manager().get_interface_scaling_factor();
     return vector2f(
-        utils::round(m_position.x, 1.0f / f_scaling_factor, m_method),
-        utils::round(m_position.y, 1.0f / f_scaling_factor, m_method));
+        utils::round(m_position.x, 1.0f / scaling_factor, m_method),
+        utils::round(m_position.y, 1.0f / scaling_factor, m_method));
 }
 
-bool region::make_borders_(float& f_min, float& f_max, float f_center, float f_size) const {
-    if (std::isinf(f_min) && std::isinf(f_max)) {
-        if (!std::isinf(f_size) && f_size > 0.0f && !std::isinf(f_center)) {
-            f_min = f_center - f_size / 2.0f;
-            f_max = f_center + f_size / 2.0f;
+bool region::make_borders_(float& min, float& max, float center, float size) const {
+    if (std::isinf(min) && std::isinf(max)) {
+        if (!std::isinf(size) && size > 0.0f && !std::isinf(center)) {
+            min = center - size / 2.0f;
+            max = center + size / 2.0f;
         } else
             return false;
-    } else if (std::isinf(f_max)) {
-        if (!std::isinf(f_size) && f_size > 0.0f)
-            f_max = f_min + f_size;
-        else if (!std::isinf(f_center))
-            f_max = f_min + 2.0f * (f_center - f_min);
+    } else if (std::isinf(max)) {
+        if (!std::isinf(size) && size > 0.0f)
+            max = min + size;
+        else if (!std::isinf(center))
+            max = min + 2.0f * (center - min);
         else
             return false;
-    } else if (std::isinf(f_min)) {
-        if (!std::isinf(f_size) && f_size > 0.0f)
-            f_min = f_max - f_size;
-        else if (!std::isinf(f_center))
-            f_min = f_max - 2.0f * (f_max - f_center);
+    } else if (std::isinf(min)) {
+        if (!std::isinf(size) && size > 0.0f)
+            min = max - size;
+        else if (!std::isinf(center))
+            min = max - 2.0f * (max - center);
         else
             return false;
     }
@@ -584,16 +584,11 @@ bool region::make_borders_(float& f_min, float& f_max, float f_center, float f_s
 }
 
 void region::read_anchors_(
-    float& f_left,
-    float& f_right,
-    float& f_top,
-    float& f_bottom,
-    float& f_x_center,
-    float& f_y_center) const {
-    f_left   = +std::numeric_limits<float>::infinity();
-    f_right  = -std::numeric_limits<float>::infinity();
-    f_top    = +std::numeric_limits<float>::infinity();
-    f_bottom = -std::numeric_limits<float>::infinity();
+    float& left, float& right, float& top, float& bottom, float& x_center, float& y_center) const {
+    left   = +std::numeric_limits<float>::infinity();
+    right  = -std::numeric_limits<float>::infinity();
+    top    = +std::numeric_limits<float>::infinity();
+    bottom = -std::numeric_limits<float>::infinity();
 
     for (const auto& m_opt_anchor : anchor_list_) {
         if (!m_opt_anchor)
@@ -604,40 +599,40 @@ void region::read_anchors_(
 
         switch (m_anchor.m_point) {
         case anchor_point::top_left:
-            f_top  = std::min<float>(f_top, m_anchor_point.y);
-            f_left = std::min<float>(f_left, m_anchor_point.x);
+            top  = std::min<float>(top, m_anchor_point.y);
+            left = std::min<float>(left, m_anchor_point.x);
             break;
         case anchor_point::top:
-            f_top      = std::min<float>(f_top, m_anchor_point.y);
-            f_x_center = m_anchor_point.x;
+            top      = std::min<float>(top, m_anchor_point.y);
+            x_center = m_anchor_point.x;
             break;
         case anchor_point::top_right:
-            f_top   = std::min<float>(f_top, m_anchor_point.y);
-            f_right = std::max<float>(f_right, m_anchor_point.x);
+            top   = std::min<float>(top, m_anchor_point.y);
+            right = std::max<float>(right, m_anchor_point.x);
             break;
         case anchor_point::right:
-            f_right    = std::max<float>(f_right, m_anchor_point.x);
-            f_y_center = m_anchor_point.y;
+            right    = std::max<float>(right, m_anchor_point.x);
+            y_center = m_anchor_point.y;
             break;
         case anchor_point::bottom_right:
-            f_bottom = std::max<float>(f_bottom, m_anchor_point.y);
-            f_right  = std::max<float>(f_right, m_anchor_point.x);
+            bottom = std::max<float>(bottom, m_anchor_point.y);
+            right  = std::max<float>(right, m_anchor_point.x);
             break;
         case anchor_point::bottom:
-            f_bottom   = std::max<float>(f_bottom, m_anchor_point.y);
-            f_x_center = m_anchor_point.x;
+            bottom   = std::max<float>(bottom, m_anchor_point.y);
+            x_center = m_anchor_point.x;
             break;
         case anchor_point::bottom_left:
-            f_bottom = std::max<float>(f_bottom, m_anchor_point.y);
-            f_left   = std::min<float>(f_left, m_anchor_point.x);
+            bottom = std::max<float>(bottom, m_anchor_point.y);
+            left   = std::min<float>(left, m_anchor_point.x);
             break;
         case anchor_point::left:
-            f_left     = std::min<float>(f_left, m_anchor_point.x);
-            f_y_center = m_anchor_point.y;
+            left     = std::min<float>(left, m_anchor_point.x);
+            y_center = m_anchor_point.y;
             break;
         case anchor_point::center:
-            f_x_center = m_anchor_point.x;
-            f_y_center = m_anchor_point.y;
+            x_center = m_anchor_point.x;
+            y_center = m_anchor_point.y;
             break;
         }
     }
@@ -655,16 +650,16 @@ void region::update_borders_() {
     is_ready_ = true;
 
     if (!anchor_list_.empty()) {
-        float f_left = 0.0f, f_right = 0.0f, f_top = 0.0f, f_bottom = 0.0f;
-        float f_x_center = 0.0f, f_y_center = 0.0f;
+        float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
+        float x_center = 0.0f, y_center = 0.0f;
 
-        float f_rounded_width =
+        float rounded_width =
             round_to_pixel(m_dimensions_.x, utils::rounding_method::nearest_not_zero);
-        float f_rounded_height =
+        float rounded_height =
             round_to_pixel(m_dimensions_.y, utils::rounding_method::nearest_not_zero);
 
         DEBUG_LOG("  Read anchors");
-        read_anchors_(f_left, f_right, f_top, f_bottom, f_x_center, f_y_center);
+        read_anchors_(left, right, top, bottom, x_center, y_center);
         DEBUG_LOG("    left=" + utils::to_string(fLeft));
         DEBUG_LOG("    right=" + utils::to_string(fRight));
         DEBUG_LOG("    top=" + utils::to_string(fTop));
@@ -673,18 +668,18 @@ void region::update_borders_() {
         DEBUG_LOG("    y_center=" + utils::to_string(fYCenter));
 
         DEBUG_LOG("  Make borders");
-        if (!make_borders_(f_top, f_bottom, f_y_center, f_rounded_height))
+        if (!make_borders_(top, bottom, y_center, rounded_height))
             is_ready_ = false;
-        if (!make_borders_(f_left, f_right, f_x_center, f_rounded_width))
+        if (!make_borders_(left, right, x_center, rounded_width))
             is_ready_ = false;
 
         if (is_ready_) {
-            if (f_right < f_left)
-                f_right = f_left + 1;
-            if (f_bottom < f_top)
-                f_bottom = f_top + 1;
+            if (right < left)
+                right = left + 1;
+            if (bottom < top)
+                bottom = top + 1;
 
-            border_list_ = bounds2f(f_left, f_right, f_top, f_bottom);
+            border_list_ = bounds2f(left, right, top, bottom);
         } else
             border_list_ = bounds2f::zero;
     } else {

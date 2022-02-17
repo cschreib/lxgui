@@ -47,7 +47,7 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float f_delta) override;
+    void update(float delta) override;
 
     /// Copies a region's parameters into this scroll_frame (inheritance).
     /** \param mObj The region to copy
@@ -91,9 +91,9 @@ public:
     }
 
     /// Sets the horizontal offset of the scroll child.
-    /** \param fHorizontalScroll The horizontal offset
+    /** \param horizontal_scroll The horizontal offset
      */
-    void set_horizontal_scroll(float f_horizontal_scroll);
+    void set_horizontal_scroll(float horizontal_scroll);
 
     /// Returns the horizontal offset of the scroll child.
     /** \return The horizontal offset of the scroll child
@@ -106,9 +106,9 @@ public:
     float get_horizontal_scroll_range() const;
 
     /// Sets the vertical offset of the scroll child.
-    /** \param fVerticalScroll The vertical offset
+    /** \param vertical_scroll The vertical offset
      */
-    void set_vertical_scroll(float f_vertical_scroll);
+    void set_vertical_scroll(float vertical_scroll);
 
     /// Returns the vertical offset of the scroll child.
     /** \return The vertical offset of the scroll child

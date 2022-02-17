@@ -83,7 +83,7 @@ bounds2f font::get_character_bounds(char32_t c) const {
     // TODO: this should use the font ascender + descender for fYOffset
     // https://github.com/cschreib/lxgui/issues/97
     const float          fYOffset = uiSize_;
-    const sf::FloatRect& mSFRect  = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
+    const sf::FloatRect& mSFRect  = mFont_.getGlyph(c, uiSize_, false, uiOutline_).bounds;
 
     bounds2f mRect;
     mRect.left   = mSFRect.left;
@@ -93,15 +93,15 @@ bounds2f font::get_character_bounds(char32_t c) const {
 #else
     // TODO: this should use the font ascender + descender for fYOffset
     // https://github.com/cschreib/lxgui/issues/97
-    const float          f_y_offset = ui_size_;
-    const float          f_offset   = static_cast<float>(ui_outline_);
-    const sf::FloatRect& m_sf_rect  = m_font_.getGlyph(c, ui_size_, false, ui_outline_).bounds;
+    const float          y_offset  = ui_size_;
+    const float          offset    = static_cast<float>(ui_outline_);
+    const sf::FloatRect& m_sf_rect = m_font_.getGlyph(c, ui_size_, false, ui_outline_).bounds;
 
     bounds2f m_rect;
-    m_rect.left   = m_sf_rect.left - f_offset;
-    m_rect.right  = m_sf_rect.left - f_offset + m_sf_rect.width;
-    m_rect.top    = m_sf_rect.top - f_offset + f_y_offset;
-    m_rect.bottom = m_sf_rect.top - f_offset + f_y_offset + m_sf_rect.height;
+    m_rect.left   = m_sf_rect.left - offset;
+    m_rect.right  = m_sf_rect.left - offset + m_sf_rect.width;
+    m_rect.top    = m_sf_rect.top - offset + y_offset;
+    m_rect.bottom = m_sf_rect.top - offset + y_offset + m_sf_rect.height;
 #endif
 
     return m_rect;

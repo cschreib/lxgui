@@ -105,8 +105,8 @@ void manager::create_lua_() {
      *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
      * textures, etc.)
      */
-    m_lua.set_function("set_interface_scaling_factor", [&](float f_scaling) {
-        set_interface_scaling_factor(f_scaling);
+    m_lua.set_function("set_interface_scaling_factor", [&](float scaling) {
+        set_interface_scaling_factor(scaling);
     });
 
     /** Return the global interface scaling factor.

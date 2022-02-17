@@ -117,9 +117,9 @@ public:
 
     /// Sets this font_string's font (file and size).
     /** \param font_name The file path to the .ttf file
-     *   \param fHeight   The font height
+     *   \param height   The font height
      */
-    void set_font(const std::string& font_name, float f_height);
+    void set_font(const std::string& font_name, float height);
 
     /// Sets this font_string's horizontal aligment behavior.
     /** \param mAlignX The horizontal alignment behavior
@@ -149,17 +149,17 @@ public:
     void set_offset(const vector2f& m_offset);
 
     /// Sets the space between each letter.
-    /** \param fSpacing The space between each letter
+    /** \param spacing The space between each letter
      */
-    void set_spacing(float f_spacing);
+    void set_spacing(float spacing);
 
     /// Sets the space between each line as a fraction of the font height.
-    /** \param fLineSpacing The space between each line, as a relative factor of the font height
+    /** \param line_spacing The space between each line, as a relative factor of the font height
      *   \note A line spacing of 1 is the default and results in fairly dense text. To increase
      *         the space between lines, set the line spacing to a larger value, for example 1.5
      *         results in 50% more space.
      */
-    void set_line_spacing(float f_line_spacing);
+    void set_line_spacing(float line_spacing);
 
     /// Sets the text color.
     /** \param mTextColor The text color
@@ -279,13 +279,13 @@ private:
 
     utils::ustring content_;
     std::string    font_name_;
-    float          f_height_ = 0.0f;
+    float          height_ = 0.0f;
 
-    float       f_spacing_      = 0.0f;
-    float       f_line_spacing_ = 1.0f;
-    alignment_x m_align_x_      = alignment_x::center;
-    alignment_y m_align_y_      = alignment_y::middle;
-    vector2f    m_offset_       = vector2f::zero;
+    float       spacing_      = 0.0f;
+    float       line_spacing_ = 1.0f;
+    alignment_x m_align_x_    = alignment_x::center;
+    alignment_y m_align_y_    = alignment_y::middle;
+    vector2f    m_offset_     = vector2f::zero;
 
     bool  is_outlined_            = false;
     bool  non_space_wrap_enabled_ = false;

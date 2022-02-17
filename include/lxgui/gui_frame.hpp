@@ -289,7 +289,7 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float f_delta) override;
+    void update(float delta) override;
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -1024,24 +1024,24 @@ public:
     void set_min_dimensions(const vector2f& m_min);
 
     /// Sets this frame's maximum height.
-    /** \param fMaxHeight The maximum height this frame can have
+    /** \param max_height The maximum height this frame can have
      */
-    void set_max_height(float f_max_height);
+    void set_max_height(float max_height);
 
     /// Sets this frame's maximum width.
-    /** \param fMaxWidth  The maximum width this frame can have
+    /** \param max_width  The maximum width this frame can have
      */
-    void set_max_width(float f_max_width);
+    void set_max_width(float max_width);
 
     /// Sets this frame's minimum height.
-    /** \param fMinHeight The minimum height this frame can have
+    /** \param min_height The minimum height this frame can have
      */
-    void set_min_height(float f_min_height);
+    void set_min_height(float min_height);
 
     /// Sets this frame's minimum width.
-    /** \param fMinWidth  The minimum width this frame can have
+    /** \param min_width  The minimum width this frame can have
      */
-    void set_min_width(float f_min_width);
+    void set_min_width(float min_width);
 
     /// Sets if this frame can be moved by the user.
     /** \param is_movable 'true' to allow the user to move this frame
@@ -1059,9 +1059,9 @@ public:
     void set_resizable(bool is_resizable);
 
     /// Sets this frame's scale.
-    /** \param fScale The new scale
+    /** \param scale The new scale
      */
-    void set_scale(float f_scale);
+    void set_scale(float scale);
 
     /// Sets if this frame is at top level.
     /** \param is_top_level 'true' to put the frame at top level
@@ -1183,14 +1183,14 @@ public:
     void set_dimensions(const vector2f& m_dimensions) override;
 
     /// Changes this region's absolute width (in pixels).
-    /** \param fAbsWidth The new width
+    /** \param abs_width The new width
      */
-    void set_width(float f_abs_width) override;
+    void set_width(float abs_width) override;
 
     /// Changes this region's absolute height (in pixels).
-    /** \param fAbsHeight The new height
+    /** \param abs_height The new height
      */
-    void set_height(float f_abs_height) override;
+    void set_height(float abs_height) override;
 
     /// Tells this frame it is being overed by the mouse.
     /** \param mouse_in_frame 'true' if the mouse is above this frame
@@ -1325,14 +1325,14 @@ protected:
     bounds2f abs_hit_rect_inset_list_ = bounds2f::zero;
     bounds2f rel_hit_rect_inset_list_ = bounds2f::zero;
 
-    float f_min_width_  = 0.0f;
-    float f_max_width_  = std::numeric_limits<float>::infinity();
-    float f_min_height_ = 0.0f;
-    float f_max_height_ = std::numeric_limits<float>::infinity();
+    float min_width_  = 0.0f;
+    float max_width_  = std::numeric_limits<float>::infinity();
+    float min_height_ = 0.0f;
+    float max_height_ = std::numeric_limits<float>::infinity();
 
     vector2f m_old_size_;
 
-    float f_scale_ = 1.0f;
+    float scale_ = 1.0f;
 
     bool is_mouse_in_frame_ = false;
 

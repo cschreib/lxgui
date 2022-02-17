@@ -156,9 +156,9 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     /** @function set_font
      */
     m_class.set_function(
-        "set_font", [](edit_box& m_self, const std::string& file, float f_height,
+        "set_font", [](edit_box& m_self, const std::string& file, float height,
                        sol::optional<std::string> flags) {
-            m_self.set_font(file, f_height);
+            m_self.set_font(file, height);
 
             auto* p_font_string = m_self.get_font_string().get();
             if (!p_font_string)
@@ -222,9 +222,8 @@ void edit_box::register_on_lua(sol::state& m_lua) {
     /** @function set_text_insets
      */
     m_class.set_function(
-        "set_text_insets",
-        [](edit_box& m_self, float f_left, float f_right, float f_top, float f_bottom) {
-            m_self.set_text_insets(bounds2f(f_left, f_right, f_top, f_bottom));
+        "set_text_insets", [](edit_box& m_self, float left, float right, float top, float bottom) {
+            m_self.set_text_insets(bounds2f(left, right, top, bottom));
         });
 }
 

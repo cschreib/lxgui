@@ -98,12 +98,12 @@ color premultiply_alpha(const color& m_color, bool pre_multiplied_alpha_supporte
         return m_color;
 }
 
-color interpolate_color(const color& m_color1, const color& m_color2, float f_interp) {
+color interpolate_color(const color& m_color1, const color& m_color2, float interp) {
     return color(
-        m_color1.r * (1.0f - f_interp) + m_color2.r * f_interp,
-        m_color1.g * (1.0f - f_interp) + m_color2.g * f_interp,
-        m_color1.b * (1.0f - f_interp) + m_color2.b * f_interp,
-        m_color1.a * (1.0f - f_interp) + m_color2.a * f_interp);
+        m_color1.r * (1.0f - interp) + m_color2.r * interp,
+        m_color1.g * (1.0f - interp) + m_color2.g * interp,
+        m_color1.b * (1.0f - interp) + m_color2.b * interp,
+        m_color1.a * (1.0f - interp) + m_color2.a * interp);
 }
 
 ub32color to_ub32color(const color& m_color) {
@@ -122,7 +122,7 @@ struct sdl_render_data {
 };
 
 sdl_render_data
-make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_tex_height) {
+make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_height) {
     sdl_render_data m_data;
 
     // First, re-order vertices as top-left, top-right, bottom-right, bottom-left
@@ -241,14 +241,13 @@ make_rects(const std::array<vertex, 4>& vertex_list, float f_tex_width, float f_
         std::swap(width, height);
 
     m_data.m_src_quad = SDL_Rect{
-        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.x * f_tex_width),
-        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.y * f_tex_height),
+        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.x * tex_width),
+        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.y * tex_height),
         (int)std::round(
-            (vertex_list[i_ds[uv_index2]].uvs.x - vertex_list[i_ds[uv_index1]].uvs.x) *
-            f_tex_width),
+            (vertex_list[i_ds[uv_index2]].uvs.x - vertex_list[i_ds[uv_index1]].uvs.x) * tex_width),
         (int)std::round(
             (vertex_list[i_ds[uv_index2]].uvs.y - vertex_list[i_ds[uv_index1]].uvs.y) *
-            f_tex_height)};
+            tex_height)};
 
     m_data.m_dest_quad.w = width;
     m_data.m_dest_quad.h = height;
@@ -319,10 +318,10 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
                 const bool  axis_swapped = std::abs(m_data.angle) == 90;
-                const float f_x_factor =
+                const float x_factor =
                     float(m_data.m_dest_display_quad.w) /
                     float(axis_swapped ? m_data.m_src_quad.h : m_data.m_src_quad.w);
-                const float f_y_factor =
+                const float y_factor =
                     float(m_data.m_dest_display_quad.h) /
                     float(axis_swapped ? m_data.m_src_quad.w : m_data.m_src_quad.h);
 
@@ -345,16 +344,16 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                         const int s_x2 = s_x1 + temp_s_width;
 
                         int dx = m_data.m_dest_display_quad.x +
-                                 static_cast<int>((axis_swapped ? s_y1 : s_x1) * f_x_factor);
+                                 static_cast<int>((axis_swapped ? s_y1 : s_x1) * x_factor);
                         int dy = m_data.m_dest_display_quad.y +
-                                 static_cast<int>((axis_swapped ? s_x1 : s_y1) * f_y_factor);
+                                 static_cast<int>((axis_swapped ? s_x1 : s_y1) * y_factor);
 
                         int temp_d_width =
                             m_data.m_dest_display_quad.x +
-                            static_cast<int>((axis_swapped ? s_y2 : s_x2) * f_x_factor) - dx;
+                            static_cast<int>((axis_swapped ? s_y2 : s_x2) * x_factor) - dx;
                         int temp_d_height =
                             m_data.m_dest_display_quad.y +
-                            static_cast<int>((axis_swapped ? s_x2 : s_y2) * f_y_factor) - dy;
+                            static_cast<int>((axis_swapped ? s_x2 : s_y2) * y_factor) - dy;
 
                         if (m_data.angle == 90)
                             dx += temp_d_width;

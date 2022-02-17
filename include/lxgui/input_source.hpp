@@ -43,7 +43,7 @@ public:
     struct mouse_state {
         std::array<bool, mouse_button_number> button_state = {};
         gui::vector2f                         m_position;
-        float                                 f_wheel = 0.0f;
+        float                                 wheel = 0.0f;
     };
 
     /// Constructor.

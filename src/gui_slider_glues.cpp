@@ -107,10 +107,9 @@ void slider::register_on_lua(sol::state& m_lua) {
 
     /** @function set_value
      */
-    m_class.set_function(
-        "set_value", [](slider& m_self, float f_value, sol::optional<bool> silent) {
-            m_self.set_value(f_value, silent.value_or(false));
-        });
+    m_class.set_function("set_value", [](slider& m_self, float value, sol::optional<bool> silent) {
+        m_self.set_value(value, silent.value_or(false));
+    });
 }
 
 } // namespace lxgui::gui

@@ -117,11 +117,11 @@ std::string frame::serialize(const std::string& tab) const {
     str << tab << "  |   # top    : " << abs_hit_rect_inset_list_.top << "\n";
     str << tab << "  |   # bottom : " << abs_hit_rect_inset_list_.bottom << "\n";
     str << tab << "  |-###\n";
-    str << tab << "  # Min width   : " << f_min_width_ << "\n";
-    str << tab << "  # Max width   : " << f_max_width_ << "\n";
-    str << tab << "  # Min height  : " << f_min_height_ << "\n";
-    str << tab << "  # Max height  : " << f_max_height_ << "\n";
-    str << tab << "  # Scale       : " << f_scale_ << "\n";
+    str << tab << "  # Min width   : " << min_width_ << "\n";
+    str << tab << "  # Max width   : " << max_width_ << "\n";
+    str << tab << "  # Min height  : " << min_height_ << "\n";
+    str << tab << "  # Max height  : " << max_height_ << "\n";
+    str << tab << "  # Scale       : " << scale_ << "\n";
     if (p_title_region_) {
         str << tab << "  # Title reg.  :\n";
         str << tab << "  |-###\n";
@@ -353,75 +353,75 @@ utils::observer_ptr<const layered_region> frame::get_region(const std::string& n
 
 void frame::set_dimensions(const vector2f& m_dimensions) {
     base::set_dimensions(vector2f(
-        std::min(std::max(m_dimensions.x, f_min_width_), f_max_width_),
-        std::min(std::max(m_dimensions.y, f_min_height_), f_max_height_)));
+        std::min(std::max(m_dimensions.x, min_width_), max_width_),
+        std::min(std::max(m_dimensions.y, min_height_), max_height_)));
 }
 
-void frame::set_width(float f_abs_width) {
-    base::set_width(std::min(std::max(f_abs_width, f_min_width_), f_max_width_));
+void frame::set_width(float abs_width) {
+    base::set_width(std::min(std::max(abs_width, min_width_), max_width_));
 }
 
-void frame::set_height(float f_abs_height) {
-    base::set_height(std::min(std::max(f_abs_height, f_min_height_), f_max_height_));
+void frame::set_height(float abs_height) {
+    base::set_height(std::min(std::max(abs_height, min_height_), max_height_));
 }
 
 void frame::check_position_() {
-    if (border_list_.right - border_list_.left < f_min_width_) {
-        border_list_.right = border_list_.left + f_min_width_;
-    } else if (border_list_.right - border_list_.left > f_max_width_) {
-        border_list_.right = border_list_.left + f_max_width_;
+    if (border_list_.right - border_list_.left < min_width_) {
+        border_list_.right = border_list_.left + min_width_;
+    } else if (border_list_.right - border_list_.left > max_width_) {
+        border_list_.right = border_list_.left + max_width_;
     }
 
-    if (border_list_.bottom - border_list_.top < f_min_height_) {
-        border_list_.bottom = border_list_.top + f_min_height_;
-    } else if (border_list_.bottom - border_list_.top > f_max_height_) {
-        border_list_.bottom = border_list_.top + f_max_height_;
+    if (border_list_.bottom - border_list_.top < min_height_) {
+        border_list_.bottom = border_list_.top + min_height_;
+    } else if (border_list_.bottom - border_list_.top > max_height_) {
+        border_list_.bottom = border_list_.top + max_height_;
     }
 
     if (is_clamped_to_screen_) {
         vector2f m_screen_dimensions = get_top_level_renderer()->get_target_dimensions();
 
         if (border_list_.right > m_screen_dimensions.x) {
-            float f_width = border_list_.right - border_list_.left;
-            if (f_width > m_screen_dimensions.x) {
+            float width = border_list_.right - border_list_.left;
+            if (width > m_screen_dimensions.x) {
                 border_list_.left  = 0;
                 border_list_.right = m_screen_dimensions.x;
             } else {
                 border_list_.right = m_screen_dimensions.x;
-                border_list_.left  = m_screen_dimensions.x - f_width;
+                border_list_.left  = m_screen_dimensions.x - width;
             }
         }
 
         if (border_list_.left < 0) {
-            float f_width = border_list_.right - border_list_.left;
+            float width = border_list_.right - border_list_.left;
             if (border_list_.right - border_list_.left > m_screen_dimensions.x) {
                 border_list_.left  = 0;
                 border_list_.right = m_screen_dimensions.x;
             } else {
                 border_list_.left  = 0;
-                border_list_.right = f_width;
+                border_list_.right = width;
             }
         }
 
         if (border_list_.bottom > m_screen_dimensions.y) {
-            float f_height = border_list_.bottom - border_list_.top;
-            if (f_height > m_screen_dimensions.y) {
+            float height = border_list_.bottom - border_list_.top;
+            if (height > m_screen_dimensions.y) {
                 border_list_.top    = 0;
                 border_list_.bottom = m_screen_dimensions.y;
             } else {
                 border_list_.bottom = m_screen_dimensions.y;
-                border_list_.top    = m_screen_dimensions.y - f_height;
+                border_list_.top    = m_screen_dimensions.y - height;
             }
         }
 
         if (border_list_.top < 0) {
-            float f_height = border_list_.bottom - border_list_.top;
-            if (f_height > m_screen_dimensions.y) {
+            float height = border_list_.bottom - border_list_.top;
+            if (height > m_screen_dimensions.y) {
                 border_list_.top    = 0;
                 border_list_.bottom = m_screen_dimensions.y;
             } else {
                 border_list_.top    = 0;
-                border_list_.bottom = f_height;
+                border_list_.bottom = height;
             }
         }
     }
@@ -678,16 +678,16 @@ frame::const_child_list_view frame::get_children() const {
 
 float frame::get_effective_alpha() const {
     if (p_parent_)
-        return f_alpha_ * p_parent_->get_effective_alpha();
+        return alpha_ * p_parent_->get_effective_alpha();
     else
-        return f_alpha_;
+        return alpha_;
 }
 
 float frame::get_effective_scale() const {
     if (p_parent_)
-        return f_scale_ * p_parent_->get_effective_scale();
+        return scale_ * p_parent_->get_effective_scale();
     else
-        return f_scale_;
+        return scale_;
 }
 
 int frame::get_level() const {
@@ -738,11 +738,11 @@ const bounds2f& frame::get_rel_hit_rect_insets() const {
 }
 
 vector2f frame::get_max_dimensions() const {
-    return vector2f(f_max_width_, f_max_height_);
+    return vector2f(max_width_, max_height_);
 }
 
 vector2f frame::get_min_dimensions() const {
-    return vector2f(f_min_width_, f_min_height_);
+    return vector2f(min_width_, min_height_);
 }
 
 std::size_t frame::get_num_children() const {
@@ -766,7 +766,7 @@ std::size_t frame::get_rough_num_regions() const {
 }
 
 float frame::get_scale() const {
-    return f_scale_;
+    return scale_;
 }
 
 bool frame::is_clamped_to_screen() const {
@@ -1185,41 +1185,41 @@ void frame::set_min_dimensions(const vector2f& m_min) {
     set_min_height(m_min.y);
 }
 
-void frame::set_max_height(float f_max_height) {
-    if (f_max_height < 0.0f)
-        f_max_height = std::numeric_limits<float>::infinity();
+void frame::set_max_height(float max_height) {
+    if (max_height < 0.0f)
+        max_height = std::numeric_limits<float>::infinity();
 
-    if (f_max_height >= f_min_height_)
-        f_max_height_ = f_max_height;
+    if (max_height >= min_height_)
+        max_height_ = max_height;
 
-    if (f_max_height_ != f_max_height && !is_virtual_)
+    if (max_height_ != max_height && !is_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_max_width(float f_max_width) {
-    if (f_max_width < 0.0f)
-        f_max_width = std::numeric_limits<float>::infinity();
+void frame::set_max_width(float max_width) {
+    if (max_width < 0.0f)
+        max_width = std::numeric_limits<float>::infinity();
 
-    if (f_max_width >= f_min_width_)
-        f_max_width_ = f_max_width;
+    if (max_width >= min_width_)
+        max_width_ = max_width;
 
-    if (f_max_width_ != f_max_width && !is_virtual_)
+    if (max_width_ != max_width && !is_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_min_height(float f_min_height) {
-    if (f_min_height <= f_max_height_)
-        f_min_height_ = f_min_height;
+void frame::set_min_height(float min_height) {
+    if (min_height <= max_height_)
+        min_height_ = min_height;
 
-    if (f_min_height_ != f_min_height && !is_virtual_)
+    if (min_height_ != min_height && !is_virtual_)
         notify_borders_need_update();
 }
 
-void frame::set_min_width(float f_min_width) {
-    if (f_min_width <= f_max_width_)
-        f_min_width_ = f_min_width;
+void frame::set_min_width(float min_width) {
+    if (min_width <= max_width_)
+        min_width_ = min_width;
 
-    if (f_min_width_ != f_min_width && !is_virtual_)
+    if (min_width_ != min_width && !is_virtual_)
         notify_borders_need_update();
 }
 
@@ -1239,9 +1239,9 @@ void frame::set_resizable(bool is_resizable) {
     is_resizable_ = is_resizable;
 }
 
-void frame::set_scale(float f_scale) {
-    f_scale_ = f_scale;
-    if (f_scale_ != f_scale)
+void frame::set_scale(float scale) {
+    scale_ = scale;
+    if (scale_ != scale)
         notify_renderer_need_redraw();
 }
 
@@ -1520,14 +1520,14 @@ void frame::update_borders_() {
     }
 }
 
-void frame::update(float f_delta) {
+void frame::update(float delta) {
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
     alive_checker m_checker(*this);
 
     DEBUG_LOG("  ~");
-    base::update(f_delta);
+    base::update(delta);
     DEBUG_LOG("   #");
 
     if (build_layer_list_flag_) {
@@ -1555,19 +1555,19 @@ void frame::update(float f_delta) {
     if (is_visible()) {
         DEBUG_LOG("   On update");
         event_data m_data;
-        m_data.add(f_delta);
+        m_data.add(delta);
         fire_script("OnUpdate", m_data);
         if (!m_checker.is_alive())
             return;
     }
 
     if (p_title_region_)
-        p_title_region_->update(f_delta);
+        p_title_region_->update(delta);
 
     // Update regions
     DEBUG_LOG("   Update regions");
     for (auto& m_region : get_regions())
-        m_region.update(f_delta);
+        m_region.update(delta);
 
     // Remove deleted regions
     {
@@ -1580,7 +1580,7 @@ void frame::update(float f_delta) {
     // Update children
     DEBUG_LOG("   Update children");
     for (auto& m_child : get_children()) {
-        m_child.update(f_delta);
+        m_child.update(delta);
         if (!m_checker.is_alive())
             return;
     }

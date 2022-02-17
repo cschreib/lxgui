@@ -173,7 +173,7 @@ void source::on_sfml_event(const sf::Event& m_event) {
         if (c >= 32 && c != 127)
             on_text_entered(c);
     } else if (m_event.type == sf::Event::MouseWheelMoved) {
-        m_mouse_.f_wheel += m_event.mouseWheel.delta;
+        m_mouse_.wheel += m_event.mouseWheel.delta;
         const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
         on_mouse_wheel(m_event.mouseWheel.delta, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
     } else if (m_event.type == sf::Event::Resized) {

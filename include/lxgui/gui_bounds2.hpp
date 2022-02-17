@@ -117,32 +117,32 @@ bounds2<T> operator-(const bounds2<T>& m_quad, const vector2<T>& m_offset) noexc
 }
 
 template<typename T>
-bounds2<T> operator*(const bounds2<T>& m_quad, T f_scale) noexcept {
+bounds2<T> operator*(const bounds2<T>& m_quad, T scale) noexcept {
     bounds2<T> m_tmp = m_quad;
-    m_tmp.left *= f_scale;
-    m_tmp.right *= f_scale;
-    m_tmp.top *= f_scale;
-    m_tmp.bottom *= f_scale;
+    m_tmp.left *= scale;
+    m_tmp.right *= scale;
+    m_tmp.top *= scale;
+    m_tmp.bottom *= scale;
     return m_tmp;
 }
 
 template<typename T>
-bounds2<T> operator*(T f_scale, const bounds2<T>& m_quad) noexcept {
+bounds2<T> operator*(T scale, const bounds2<T>& m_quad) noexcept {
     bounds2<T> m_tmp = m_quad;
-    m_tmp.left *= f_scale;
-    m_tmp.right *= f_scale;
-    m_tmp.top *= f_scale;
-    m_tmp.bottom *= f_scale;
+    m_tmp.left *= scale;
+    m_tmp.right *= scale;
+    m_tmp.top *= scale;
+    m_tmp.bottom *= scale;
     return m_tmp;
 }
 
 template<typename T>
-bounds2<T> operator/(const bounds2<T>& m_quad, T f_scale) noexcept {
+bounds2<T> operator/(const bounds2<T>& m_quad, T scale) noexcept {
     bounds2<T> m_tmp = m_quad;
-    m_tmp.left /= f_scale;
-    m_tmp.right /= f_scale;
-    m_tmp.top /= f_scale;
-    m_tmp.bottom /= f_scale;
+    m_tmp.left /= scale;
+    m_tmp.right /= scale;
+    m_tmp.top /= scale;
+    m_tmp.bottom /= scale;
     return m_tmp;
 }
 

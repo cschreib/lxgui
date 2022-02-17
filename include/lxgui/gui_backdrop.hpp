@@ -72,10 +72,10 @@ public:
     bool is_background_tilling() const;
 
     /// Sets the appearent tile size.
-    /** \param fTileSize The new tile size
-     *   \note Tile will be scaled by fTileSize/backgroundTextureSize.
+    /** \param tile_size The new tile size
+     *   \note Tile will be scaled by tile_size/background_texture_size.
      */
-    void set_tile_size(float f_tile_size);
+    void set_tile_size(float tile_size);
 
     /// Returns this backdrop's tile size.
     /** \return This backdrop's tile size
@@ -136,10 +136,10 @@ public:
     color get_edge_color() const;
 
     /// Sets the appearent edge size.
-    /** \param fEdgeSize The new edge size
-     *   \note Edges will be scaled by fEdgeSize/edgeTextureHeight.
+    /** \param edge_size The new edge size
+     *   \note Edges will be scaled by edge_size/edge_texture_height.
      */
-    void set_edge_size(float f_edge_size);
+    void set_edge_size(float edge_size);
 
     /// Returns this backdrop's edge size.
     /** \return This backdrop's edge size
@@ -168,21 +168,21 @@ private:
     color                     m_background_color_ = color::empty;
     std::shared_ptr<material> p_background_texture_;
     bool                      is_background_tilling_ = false;
-    float                     f_tile_size_           = 0.0f;
-    float                     f_original_tile_size_  = 0.0f;
+    float                     tile_size_             = 0.0f;
+    float                     original_tile_size_    = 0.0f;
     bounds2f                  background_insets_;
 
     std::string               edge_file_;
     color                     m_edge_color_ = color::empty;
     std::shared_ptr<material> p_edge_texture_;
     bounds2f                  edge_insets_;
-    float                     f_edge_size_          = 0.0f;
-    float                     f_original_edge_size_ = 0.0f;
+    float                     edge_size_          = 0.0f;
+    float                     original_edge_size_ = 0.0f;
 
     color m_vertex_color_ = color::white;
 
     mutable bool  is_cache_dirty_ = true;
-    mutable float f_cache_alpha_  = std::numeric_limits<float>::quiet_NaN();
+    mutable float cache_alpha_    = std::numeric_limits<float>::quiet_NaN();
     mutable std::vector<std::array<vertex, 4>> background_quads_;
     mutable std::shared_ptr<vertex_cache>      p_background_cache_;
     mutable std::vector<std::array<vertex, 4>> edge_quads_;

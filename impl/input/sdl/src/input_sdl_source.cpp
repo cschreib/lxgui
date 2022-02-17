@@ -75,7 +75,7 @@ void source::reset_mouse_cursor() {
 }
 
 float source::get_interface_scaling_factor_hint() const {
-    return f_pixels_per_unit_;
+    return pixels_per_unit_;
 }
 
 key source::from_sdl_(int sdl_key) const {
@@ -200,7 +200,7 @@ void source::update_pixel_per_unit_() {
     int unit_width, unit_height;
     SDL_GetWindowSize(p_window_, &unit_width, &unit_height);
 
-    f_pixels_per_unit_ =
+    pixels_per_unit_ =
         std::min(m_pixel_size.x / float(unit_width), m_pixel_size.y / float(unit_height));
 }
 
@@ -242,7 +242,7 @@ void source::on_sdl_event(const SDL_Event& m_event) {
         gui::vector2f m_mouse_pos;
         if (m_event.type == SDL_MOUSEBUTTONDOWN) {
             m_mouse_pos = gui::vector2f(
-                m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
+                m_event.button.x * pixels_per_unit_, m_event.button.y * pixels_per_unit_);
         } else {
             // Reset "previous" mouse position to avoid triggering incorrect
             // drag events. With touch devices, the mouse position does not change
@@ -275,10 +275,10 @@ void source::on_sdl_event(const SDL_Event& m_event) {
         gui::vector2f m_mouse_pos;
         if (m_event.type == SDL_MOUSEBUTTONUP) {
             m_mouse_pos = gui::vector2f(
-                m_event.button.x * f_pixels_per_unit_, m_event.button.y * f_pixels_per_unit_);
+                m_event.button.x * pixels_per_unit_, m_event.button.y * pixels_per_unit_);
         } else {
             m_mouse_pos = gui::vector2f(
-                m_event.tfinger.x * f_pixels_per_unit_, m_event.tfinger.y * f_pixels_per_unit_);
+                m_event.tfinger.x * pixels_per_unit_, m_event.tfinger.y * pixels_per_unit_);
         }
 
         on_mouse_released(m_button, m_mouse_pos);
@@ -291,11 +291,11 @@ void source::on_sdl_event(const SDL_Event& m_event) {
         break;
     }
     case SDL_MOUSEWHEEL: {
-        float f_delta =
+        float delta =
             (m_event.wheel.direction == SDL_MOUSEWHEEL_NORMAL ? m_event.wheel.y : -m_event.wheel.y);
-        m_mouse_.f_wheel += f_delta;
+        m_mouse_.wheel += delta;
 
-        on_mouse_wheel(f_delta, m_mouse_.m_position);
+        on_mouse_wheel(delta, m_mouse_.m_position);
         break;
     }
     case SDL_TEXTINPUT: {

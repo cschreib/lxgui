@@ -20,41 +20,40 @@ void font_string::render() const {
     if (!p_text_ || !is_ready_ || !is_visible())
         return;
 
-    float f_x = 0.0f, f_y = 0.0f;
+    float x = 0.0f, y = 0.0f;
 
     if (std::isinf(p_text_->get_box_width())) {
         switch (m_align_x_) {
-        case alignment_x::left: f_x = border_list_.left; break;
-        case alignment_x::center: f_x = (border_list_.left + border_list_.right) / 2; break;
-        case alignment_x::right: f_x = border_list_.right; break;
+        case alignment_x::left: x = border_list_.left; break;
+        case alignment_x::center: x = (border_list_.left + border_list_.right) / 2; break;
+        case alignment_x::right: x = border_list_.right; break;
         }
     } else {
-        f_x = border_list_.left;
+        x = border_list_.left;
     }
 
     if (std::isinf(p_text_->get_box_height())) {
         switch (m_align_y_) {
-        case alignment_y::top: f_y = border_list_.top; break;
-        case alignment_y::middle: f_y = (border_list_.top + border_list_.bottom) / 2; break;
-        case alignment_y::bottom: f_y = border_list_.bottom; break;
+        case alignment_y::top: y = border_list_.top; break;
+        case alignment_y::middle: y = (border_list_.top + border_list_.bottom) / 2; break;
+        case alignment_y::bottom: y = border_list_.bottom; break;
         }
     } else {
-        f_y = border_list_.top;
+        y = border_list_.top;
     }
 
-    f_x += m_offset_.x;
-    f_y += m_offset_.y;
+    x += m_offset_.x;
+    y += m_offset_.y;
 
     p_text_->set_alpha(get_effective_alpha());
 
     if (has_shadow_) {
         p_text_->set_color(m_shadow_color_, true);
-        p_text_->render(
-            matrix4f::translation(round_to_pixel(vector2f(f_x, f_y) + m_shadow_offset_)));
+        p_text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y) + m_shadow_offset_)));
     }
 
     p_text_->set_color(m_text_color_);
-    p_text_->render(matrix4f::translation(round_to_pixel(vector2f(f_x, f_y))));
+    p_text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y))));
 }
 
 std::string font_string::serialize(const std::string& tab) const {
@@ -63,12 +62,12 @@ std::string font_string::serialize(const std::string& tab) const {
     str << base::serialize(tab);
 
     str << tab << "  # Font name   : " << font_name_ << "\n";
-    str << tab << "  # Font height : " << f_height_ << "\n";
+    str << tab << "  # Font height : " << height_ << "\n";
     str << tab << "  # Text ready  : " << (p_text_ != nullptr) << "\n";
     str << tab << "  # Text        : \"" << utils::unicode_to_utf8(content_) << "\"\n";
     str << tab << "  # Outlined    : " << is_outlined_ << "\n";
     str << tab << "  # Text color  : " << m_text_color_ << "\n";
-    str << tab << "  # Spacing     : " << f_spacing_ << "\n";
+    str << tab << "  # Spacing     : " << spacing_ << "\n";
     str << tab << "  # Justify     :\n";
     str << tab << "  #-###\n";
     str << tab << "  |   # horizontal : ";
@@ -108,9 +107,9 @@ void font_string::copy_from(const region& m_obj) {
         return;
 
     std::string font_name = p_font_string->get_font_name();
-    float       f_height  = p_font_string->get_font_height();
-    if (!font_name.empty() && f_height != 0)
-        this->set_font(font_name, f_height);
+    float       height    = p_font_string->get_font_height();
+    if (!font_name.empty() && height != 0)
+        this->set_font(font_name, height);
 
     this->set_alignment_x(p_font_string->get_alignment_x());
     this->set_alignment_y(p_font_string->get_alignment_y());
@@ -132,7 +131,7 @@ const std::string& font_string::get_font_name() const {
 }
 
 float font_string::get_font_height() const {
-    return f_height_;
+    return height_;
 }
 
 void font_string::set_outlined(bool is_outlined) {
@@ -171,11 +170,11 @@ const vector2f& font_string::get_offset() const {
 }
 
 float font_string::get_spacing() const {
-    return f_spacing_;
+    return spacing_;
 }
 
 float font_string::get_line_spacing() const {
-    return f_line_spacing_;
+    return line_spacing_;
 }
 
 const color& font_string::get_text_color() const {
@@ -186,7 +185,7 @@ void font_string::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
     if (p_text_)
-        set_font(font_name_, f_height_);
+        set_font(font_name_, height_);
 }
 
 void font_string::create_text_object_() {
@@ -194,7 +193,7 @@ void font_string::create_text_object_() {
         return;
 
     std::size_t ui_pixel_height = static_cast<std::size_t>(
-        std::round(get_manager().get_interface_scaling_factor() * f_height_));
+        std::round(get_manager().get_interface_scaling_factor() * height_));
 
     auto&       m_renderer  = get_manager().get_renderer();
     const auto& m_localizer = get_manager().get_localizer();
@@ -220,14 +219,14 @@ void font_string::create_text_object_() {
     p_text_->set_text(content_);
     p_text_->set_alignment_x(m_align_x_);
     p_text_->set_alignment_y(m_align_y_);
-    p_text_->set_tracking(f_spacing_);
+    p_text_->set_tracking(spacing_);
     p_text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
     p_text_->enable_formatting(formatting_enabled_);
 }
 
-void font_string::set_font(const std::string& font_name, float f_height) {
+void font_string::set_font(const std::string& font_name, float height) {
     font_name_ = parse_file_name(font_name);
-    f_height_  = f_height;
+    height_    = height;
 
     create_text_object_();
 
@@ -290,25 +289,25 @@ void font_string::set_offset(const vector2f& m_offset) {
         notify_renderer_need_redraw();
 }
 
-void font_string::set_spacing(float f_spacing) {
-    if (f_spacing_ == f_spacing)
+void font_string::set_spacing(float spacing) {
+    if (spacing_ == spacing)
         return;
 
-    f_spacing_ = f_spacing;
+    spacing_ = spacing;
     if (p_text_) {
-        p_text_->set_tracking(f_spacing_);
+        p_text_->set_tracking(spacing_);
         if (!is_virtual_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_line_spacing(float f_line_spacing) {
-    if (f_line_spacing_ == f_line_spacing)
+void font_string::set_line_spacing(float line_spacing) {
+    if (line_spacing_ == line_spacing)
         return;
 
-    f_line_spacing_ = f_line_spacing;
+    line_spacing_ = line_spacing;
     if (p_text_) {
-        p_text_->set_line_spacing(f_line_spacing_);
+        p_text_->set_line_spacing(line_spacing_);
         if (!is_virtual_)
             notify_renderer_need_redraw();
     }
@@ -427,62 +426,62 @@ void font_string::update_borders_() {
     is_ready_                  = true;
 
     if (!anchor_list_.empty()) {
-        float f_left = 0.0f, f_right = 0.0f, f_top = 0.0f, f_bottom = 0.0f;
-        float f_x_center = 0.0f, f_y_center = 0.0f;
+        float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
+        float x_center = 0.0f, y_center = 0.0f;
 
         DEBUG_LOG("  Read anchors");
-        read_anchors_(f_left, f_right, f_top, f_bottom, f_x_center, f_y_center);
+        read_anchors_(left, right, top, bottom, x_center, y_center);
 
-        float f_box_width = std::numeric_limits<float>::infinity();
+        float box_width = std::numeric_limits<float>::infinity();
         if (get_dimensions().x != 0.0f)
-            f_box_width = get_dimensions().x;
+            box_width = get_dimensions().x;
         else if (defined_border_list_.left && defined_border_list_.right)
-            f_box_width = f_right - f_left;
+            box_width = right - left;
 
-        float f_box_height = std::numeric_limits<float>::infinity();
+        float box_height = std::numeric_limits<float>::infinity();
         if (get_dimensions().y != 0.0f)
-            f_box_height = get_dimensions().y;
+            box_height = get_dimensions().y;
         else if (defined_border_list_.top && defined_border_list_.bottom)
-            f_box_height = f_bottom - f_top;
+            box_height = bottom - top;
 
-        f_box_width  = round_to_pixel(f_box_width, utils::rounding_method::nearest_not_zero);
-        f_box_height = round_to_pixel(f_box_height, utils::rounding_method::nearest_not_zero);
+        box_width  = round_to_pixel(box_width, utils::rounding_method::nearest_not_zero);
+        box_height = round_to_pixel(box_height, utils::rounding_method::nearest_not_zero);
 
-        p_text_->set_dimensions(f_box_width, f_box_height);
+        p_text_->set_box_dimensions(box_width, box_height);
 
         DEBUG_LOG("  Make borders");
-        if (std::isinf(f_box_height))
-            f_box_height = p_text_->get_height();
-        if (std::isinf(f_box_width))
-            f_box_width = p_text_->get_width();
+        if (std::isinf(box_height))
+            box_height = p_text_->get_height();
+        if (std::isinf(box_width))
+            box_width = p_text_->get_width();
 
-        if (!make_borders_(f_top, f_bottom, f_y_center, f_box_height))
+        if (!make_borders_(top, bottom, y_center, box_height))
             is_ready_ = false;
-        if (!make_borders_(f_left, f_right, f_x_center, f_box_width))
+        if (!make_borders_(left, right, x_center, box_width))
             is_ready_ = false;
 
         if (is_ready_) {
-            if (f_right < f_left)
-                f_right = f_left + 1.0f;
-            if (f_bottom < f_top)
-                f_bottom = f_top + 1.0f;
+            if (right < left)
+                right = left + 1.0f;
+            if (bottom < top)
+                bottom = top + 1.0f;
 
-            border_list_.left   = f_left;
-            border_list_.right  = f_right;
-            border_list_.top    = f_top;
-            border_list_.bottom = f_bottom;
+            border_list_.left   = left;
+            border_list_.right  = right;
+            border_list_.top    = top;
+            border_list_.bottom = bottom;
         } else
             border_list_ = bounds2f::zero;
     } else {
-        float f_box_width = get_dimensions().x;
-        if (f_box_width == 0.0)
-            f_box_width = p_text_->get_width();
+        float box_width = get_dimensions().x;
+        if (box_width == 0.0)
+            box_width = p_text_->get_width();
 
-        float f_box_height = get_dimensions().y;
-        if (f_box_height == 0.0)
-            f_box_height = p_text_->get_height();
+        float box_height = get_dimensions().y;
+        if (box_height == 0.0)
+            box_height = p_text_->get_height();
 
-        border_list_ = bounds2f(0.0, 0.0, f_box_width, f_box_height);
+        border_list_ = bounds2f(0.0, 0.0, box_width, box_height);
         is_ready_    = false;
     }
 

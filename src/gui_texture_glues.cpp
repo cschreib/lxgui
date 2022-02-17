@@ -147,16 +147,15 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_gradient",
         sol::overload(
-            [](texture& m_self, const std::string& orientation, float f_min_r, float f_min_g,
-               float f_min_b, float f_max_r, float f_max_g, float f_max_b) {
+            [](texture& m_self, const std::string& orientation, float min_r, float min_g,
+               float min_b, float max_r, float max_g, float max_b) {
                 sol::optional<gradient::orientation> m_orientation =
                     get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
                 m_self.set_gradient(gradient(
-                    m_orientation.value(), color(f_min_r, f_min_g, f_min_b),
-                    color(f_max_r, f_max_g, f_max_b)));
+                    m_orientation.value(), color(min_r, min_g, min_b), color(max_r, max_g, max_b)));
             },
             [](texture& m_self, const std::string& orientation, const std::string& min_color,
                const std::string& max_color) {
@@ -174,17 +173,16 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_gradient_alpha",
         sol::overload(
-            [](texture& m_self, const std::string& orientation, float f_min_r, float f_min_g,
-               float f_min_b, float f_min_a, float f_max_r, float f_max_g, float f_max_b,
-               float f_max_a) {
+            [](texture& m_self, const std::string& orientation, float min_r, float min_g,
+               float min_b, float min_a, float max_r, float max_g, float max_b, float max_a) {
                 sol::optional<gradient::orientation> m_orientation =
                     get_gradient_orientation(orientation);
                 if (!m_orientation.has_value())
                     return;
 
                 m_self.set_gradient(gradient(
-                    m_orientation.value(), color(f_min_r, f_min_g, f_min_b, f_min_a),
-                    color(f_max_r, f_max_g, f_max_b, f_max_a)));
+                    m_orientation.value(), color(min_r, min_g, min_b, min_a),
+                    color(max_r, max_g, max_b, max_a)));
             },
             [](texture& m_self, const std::string& orientation, const std::string& min_color,
                const std::string& max_color) {
@@ -202,15 +200,15 @@ void texture::register_on_lua(sol::state& m_lua) {
     m_class.set_function(
         "set_tex_coord",
         sol::overload(
-            [](texture& m_self, float f_left, float f_top, float f_right, float f_bottom) {
-                m_self.set_tex_rect({f_left, f_top, f_right, f_bottom});
+            [](texture& m_self, float left, float top, float right, float bottom) {
+                m_self.set_tex_rect({left, top, right, bottom});
             },
-            [](texture& m_self, float f_top_left_x, float f_top_left_y, float f_top_right_x,
-               float f_top_right_y, float f_bottom_right_x, float f_bottom_right_y,
-               float f_bottom_left_x, float f_bottom_left_y) {
+            [](texture& m_self, float top_left_x, float top_left_y, float top_right_x,
+               float top_right_y, float bottom_right_x, float bottom_right_y, float bottom_left_x,
+               float bottom_left_y) {
                 m_self.set_tex_coord(
-                    {f_top_left_x, f_top_left_y, f_top_right_x, f_top_right_y, f_bottom_right_x,
-                     f_bottom_right_y, f_bottom_left_x, f_bottom_left_y});
+                    {top_left_x, top_left_y, top_right_x, top_right_y, bottom_right_x,
+                     bottom_right_y, bottom_left_x, bottom_left_y});
             }));
 
     /** @function set_texture_stretching
@@ -221,20 +219,19 @@ void texture::register_on_lua(sol::state& m_lua) {
     /** @function set_texture
      */
     m_class.set_function(
-        "set_texture",
-        sol::overload(
-            [](texture& m_self, const std::string& texture) {
-                if (!texture.empty() && texture[0] == '#') {
-                    // This is actually a color hash
-                    m_self.set_solid_color(color(texture));
-                } else {
-                    // Normal texture file
-                    m_self.set_texture(texture);
-                }
-            },
-            [](texture& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
-                m_self.set_solid_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)));
-            }));
+        "set_texture", sol::overload(
+                           [](texture& m_self, const std::string& texture) {
+                               if (!texture.empty() && texture[0] == '#') {
+                                   // This is actually a color hash
+                                   m_self.set_solid_color(color(texture));
+                               } else {
+                                   // Normal texture file
+                                   m_self.set_texture(texture);
+                               }
+                           },
+                           [](texture& m_self, float r, float g, float b, sol::optional<float> a) {
+                               m_self.set_solid_color(color(r, g, b, a.value_or(1.0f)));
+                           }));
 
     /** @function set_vertex_color
      */
@@ -244,17 +241,16 @@ void texture::register_on_lua(sol::state& m_lua) {
             [](texture& m_self, const std::string& s) {
                 m_self.set_vertex_color(color(s), std::numeric_limits<std::size_t>::max());
             },
-            [](texture& m_self, float f_r, float f_g, float f_b, sol::optional<float> f_a) {
+            [](texture& m_self, float r, float g, float b, sol::optional<float> a) {
                 m_self.set_vertex_color(
-                    color(f_r, f_g, f_b, f_a.value_or(1.0f)),
-                    std::numeric_limits<std::size_t>::max());
+                    color(r, g, b, a.value_or(1.0f)), std::numeric_limits<std::size_t>::max());
             },
             [](texture& m_self, std::size_t ui_index, const std::string& s) {
                 m_self.set_vertex_color(color(s), ui_index);
             },
-            [](texture& m_self, std::size_t ui_index, float f_r, float f_g, float f_b,
-               sol::optional<float> f_a) {
-                m_self.set_vertex_color(color(f_r, f_g, f_b, f_a.value_or(1.0f)), ui_index);
+            [](texture& m_self, std::size_t ui_index, float r, float g, float b,
+               sol::optional<float> a) {
+                m_self.set_vertex_color(color(r, g, b, a.value_or(1.0f)), ui_index);
             }));
 }
 

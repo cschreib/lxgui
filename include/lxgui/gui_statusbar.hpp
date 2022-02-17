@@ -54,25 +54,25 @@ public:
     void copy_from(const region& m_obj) override;
 
     /// Sets this status_bar's minimum value.
-    /** \param fMin The minimum value
+    /** \param min_value The minimum value
      */
-    void set_min_value(float f_min);
+    void set_min_value(float min_value);
 
     /// Sets this status_bar's maximum value.
-    /** \param fMax The maximum value
+    /** \param max_value The maximum value
      */
-    void set_max_value(float f_max);
+    void set_max_value(float max_value);
 
     /// Sets this status_bar's value range.
-    /** \param fMin The minimum value
-     *   \param fMax The maximum value
+    /** \param min_value The minimum value
+     *   \param max_value The maximum value
      */
-    void set_min_max_values(float f_min, float f_max);
+    void set_min_max_values(float min_value, float max_value);
 
     /// Sets this status_bar's value.
-    /** \param fValue The value
+    /** \param value The value
      */
-    void set_value(float f_value);
+    void set_value(float value);
 
     /// Sets the draw layer of this status_bar's bar texture.
     /** \param mBarLayer The layer
@@ -171,7 +171,7 @@ public:
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
-    void update(float f_delta) override;
+    void update(float delta) override;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& m_lua);
@@ -190,9 +190,9 @@ protected:
     orientation m_orientation_ = orientation::horizontal;
     bool        is_reversed_   = false;
 
-    float f_value_     = 0.0f;
-    float f_min_value_ = 0.0f;
-    float f_max_value_ = 1.0f;
+    float value_     = 0.0f;
+    float min_value_ = 0.0f;
+    float max_value_ = 1.0f;
 
     color                        m_bar_color_         = color::white;
     layer                        m_bar_layer_         = layer::artwork;
