@@ -5,8 +5,8 @@
 
 namespace lxgui::utils {
 
-float round(float value, float unit, rounding_method m_method) {
-    switch (m_method) {
+float round(float value, float unit, rounding_method method) {
+    switch (method) {
     case rounding_method::nearest: return std::round(value / unit) * unit;
     case rounding_method::nearest_not_zero:
         if (value > 0.0f)

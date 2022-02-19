@@ -156,7 +156,7 @@ class region : public utils::enable_observer_from_this<region> {
 
 public:
     /// Contructor.
-    explicit region(utils::control_block& m_block, manager& m_manager);
+    explicit region(utils::control_block& block, manager& mgr);
 
     /// Destructor.
     ~region() override;
@@ -188,9 +188,9 @@ public:
     virtual std::string serialize(const std::string& tab) const;
 
     /// Copies a region's parameters into this region (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    virtual void copy_from(const region& m_obj);
+    virtual void copy_from(const region& obj);
 
     /// Tells this region that its borders need updating.
     virtual void notify_borders_need_update();
@@ -287,9 +287,9 @@ public:
     virtual bool is_visible() const;
 
     /// Changes this region's absolute dimensions (in pixels).
-    /** \param mDimensions The new dimensions
+    /** \param dimensions The new dimensions
      */
-    virtual void set_dimensions(const vector2f& m_dimensions);
+    virtual void set_dimensions(const vector2f& dimensions);
 
     /// Changes this region's absolute width (in pixels).
     /** \param abs_width The new width
@@ -302,9 +302,9 @@ public:
     virtual void set_height(float abs_height);
 
     /// Changes this region's dimensions (relative to its parent).
-    /** \param mDimensions The new dimensions (relative)
+    /** \param dimensions The new dimensions (relative)
      */
-    void set_relative_dimensions(const vector2f& m_dimensions);
+    void set_relative_dimensions(const vector2f& dimensions);
 
     /// Changes this region's width (relative to its parent).
     /** \param rel_width The new width
@@ -356,10 +356,10 @@ public:
     bool is_apparent_height_defined() const;
 
     /// Checks if the provided coordinates are inside this region.
-    /** \param mPosition The coordinates to test
+    /** \param position The coordinates to test
      *   \return 'true' if the provided coordinates are inside this region
      */
-    virtual bool is_in_region(const vector2f& m_position) const;
+    virtual bool is_in_region(const vector2f& position) const;
 
     /// Returns the type of this region.
     /** \return The type of this region
@@ -434,25 +434,25 @@ public:
     void set_all_points(const std::string& obj_name);
 
     /// Adds/replaces an anchor.
-    /** \param mAnchor The anchor to add
+    /** \param anchor The anchor to add
      */
-    void set_point(const anchor_data& m_anchor);
+    void set_point(const anchor_data& anchor);
 
     /// Adds/replaces an anchor.
-    /** \param mArgs Argument to construct a new anchor_data
+    /** \param args Argument to construct a new anchor_data
      */
     template<typename... Args>
-    void set_point(Args&&... m_args) {
+    void set_point(Args&&... args) {
         constexpr auto set_point_overload =
             static_cast<void (region::*)(const anchor_data&)>(&region::set_point);
-        (this->*set_point_overload)(anchor_data{std::forward<Args>(m_args)...});
+        (this->*set_point_overload)(anchor_data{std::forward<Args>(args)...});
     }
 
     /// Checks if this region depends on another.
-    /** \param mObj The region to test
+    /** \param obj The region to test
      *   \note Usefull to detect circular refences.
      */
-    bool depends_on(const region& m_obj) const;
+    bool depends_on(const region& obj) const;
 
     /// Returns the number of defined anchors.
     /** \return The number of defined anchors
@@ -460,16 +460,16 @@ public:
     std::size_t get_num_point() const;
 
     /// Returns one of this region's anchor to modify it.
-    /** \param mPoint The anchor point
+    /** \param point The anchor point
      *   \return A pointer to the anchor, nullptr if none
      */
-    anchor& modify_point(anchor_point m_point);
+    anchor& modify_point(anchor_point point);
 
     /// Returns one of this region's anchor.
-    /** \param mPoint The anchor point
+    /** \param point The anchor point
      *   \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(anchor_point m_point) const;
+    const anchor& get_point(anchor_point point) const;
 
     /// Returns all of this regions's anchors.
     /** \return All of this regions's anchors
@@ -482,29 +482,29 @@ public:
      *   \return The position of the nearest physical pixel
      */
     float round_to_pixel(
-        float value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
+        float value, utils::rounding_method method = utils::rounding_method::nearest) const;
 
     /// Round an absolute position on screen to the nearest physical pixel.
-    /** \param mPosition The input absolute position (can be fractional)
-     *   \param mMethod   The rounding method
+    /** \param position The input absolute position (can be fractional)
+     *   \param method   The rounding method
      *   \return The position of the nearest physical pixel
      */
     vector2f round_to_pixel(
-        const vector2f&        m_position,
-        utils::rounding_method m_method = utils::rounding_method::nearest) const;
+        const vector2f&        position,
+        utils::rounding_method method = utils::rounding_method::nearest) const;
 
     /// Notifies this region that another one is anchored to it.
-    /** \param mObj The anchored region
+    /** \param obj The anchored region
      *   \note Anchored objects get their borders automatically updated
      *         whenever this objet's borders are updated.
      */
-    void add_anchored_object(region& m_obj);
+    void add_anchored_object(region& obj);
 
     /// Notifies this region that another one is no longer anchored to it.
-    /** \param mObj The region no longer anchored
+    /** \param obj The region no longer anchored
      *   \see add_anchored_object()
      */
-    void remove_anchored_object(region& m_obj);
+    void remove_anchored_object(region& obj);
 
     /// Checks if this region is virtual.
     /** \return 'true' if this region is virtual
@@ -613,14 +613,14 @@ public:
     /** \return This region's manager
      */
     manager& get_manager() {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns this region's manager.
     /** \return This region's manager
      */
     const manager& get_manager() const {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
@@ -640,12 +640,12 @@ public:
     void remove_glue();
 
     /// Parses data from a layout_node.
-    /** \param mNode The layout node
+    /** \param node The layout node
      */
-    virtual void parse_layout(const layout_node& m_node);
+    virtual void parse_layout(const layout_node& node);
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     template<typename ObjectType>
     friend const ObjectType* down_cast(const region* p_self);
@@ -657,12 +657,11 @@ public:
 
 protected:
     // Layout parsing
-    virtual void parse_attributes_(const layout_node& m_node);
-    virtual void parse_size_node_(const layout_node& m_node);
-    virtual void parse_anchor_node_(const layout_node& m_node);
-    color        parse_color_node_(const layout_node& m_node);
-    std::pair<anchor_type, vector2<std::optional<float>>>
-    parse_dimension_(const layout_node& m_node);
+    virtual void parse_attributes_(const layout_node& node);
+    virtual void parse_size_node_(const layout_node& node);
+    virtual void parse_anchor_node_(const layout_node& node);
+    color        parse_color_node_(const layout_node& node);
+    std::pair<anchor_type, vector2<std::optional<float>>> parse_dimension_(const layout_node& node);
 
     void read_anchors_(
         float& left, float& right, float& top, float& bottom, float& x_center, float& y_center)
@@ -678,7 +677,7 @@ protected:
     template<typename T>
     void create_glue_(T* p_self);
 
-    void        set_lua_member_(std::string key, sol::stack_object m_value);
+    void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
 
     /// Sets this region's name.
@@ -702,9 +701,9 @@ protected:
      */
     void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> p_parent);
 
-    manager& m_manager_;
+    manager& manager_;
 
-    const addon* p_add_on_ = nullptr;
+    const addon* p_addon_ = nullptr;
 
     std::string name_;
     std::string raw_name_;
@@ -729,7 +728,7 @@ protected:
     bool  is_shown_   = true;
     bool  is_visible_ = true;
 
-    vector2f m_dimensions_;
+    vector2f dimensions_;
 
     std::vector<utils::observer_ptr<region>> anchored_object_list_;
 

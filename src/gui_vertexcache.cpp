@@ -2,6 +2,6 @@
 
 namespace lxgui::gui {
 
-vertex_cache::vertex_cache(type m_type) : m_type_(m_type) {}
+vertex_cache::vertex_cache(type type) : type_(type) {}
 
 } // namespace lxgui::gui

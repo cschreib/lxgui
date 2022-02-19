@@ -18,21 +18,21 @@
 
 namespace lxgui::gui {
 
-region::region(utils::control_block& m_block, manager& m_manager) :
-    utils::enable_observer_from_this<region>(m_block), m_manager_(m_manager) {
+region::region(utils::control_block& block, manager& mgr) :
+    utils::enable_observer_from_this<region>(block), manager_(mgr) {
     type_.push_back(class_name);
 }
 
 region::~region() {
     if (!is_virtual_) {
         // Tell this region's anchor parents that it is no longer anchored to them
-        for (auto& m_anchor : anchor_list_) {
-            if (m_anchor) {
-                if (auto* p_anchor_parent = m_anchor->get_parent().get())
+        for (auto& anchor : anchor_list_) {
+            if (anchor) {
+                if (auto* p_anchor_parent = anchor->get_parent().get())
                     p_anchor_parent->remove_anchored_object(*this);
             }
 
-            m_anchor.reset();
+            anchor.reset();
         }
 
         // Replace anchors pointing to this region by absolute anchors
@@ -45,37 +45,33 @@ region::~region() {
                 continue;
 
             std::vector<anchor_point> anchored_point_list;
-            for (const auto& m_anchor : p_obj->get_point_list()) {
-                if (m_anchor && m_anchor->get_parent().get() == this)
-                    anchored_point_list.push_back(m_anchor->m_point);
+            for (const auto& anchor : p_obj->get_point_list()) {
+                if (anchor && anchor->get_parent().get() == this)
+                    anchored_point_list.push_back(anchor->point);
             }
 
-            for (const auto& m_point : anchored_point_list) {
-                const anchor& m_anchor     = p_obj->get_point(m_point);
-                anchor_data   m_new_anchor = anchor_data(m_point, "", anchor_point::top_left);
-                m_new_anchor.m_offset      = m_anchor.m_offset;
+            for (const auto& point : anchored_point_list) {
+                const anchor& anchor     = p_obj->get_point(point);
+                anchor_data   new_anchor = anchor_data(point, "", anchor_point::top_left);
+                new_anchor.offset        = anchor.offset;
 
-                switch (m_anchor.m_parent_point) {
-                case anchor_point::top_left:
-                    m_new_anchor.m_offset += border_list_.top_left();
-                    break;
-                case anchor_point::top: m_new_anchor.m_offset.y += border_list_.top; break;
-                case anchor_point::top_right:
-                    m_new_anchor.m_offset += border_list_.top_right();
-                    break;
-                case anchor_point::right: m_new_anchor.m_offset.x += border_list_.right; break;
+                switch (anchor.parent_point) {
+                case anchor_point::top_left: new_anchor.offset += border_list_.top_left(); break;
+                case anchor_point::top: new_anchor.offset.y += border_list_.top; break;
+                case anchor_point::top_right: new_anchor.offset += border_list_.top_right(); break;
+                case anchor_point::right: new_anchor.offset.x += border_list_.right; break;
                 case anchor_point::bottom_right:
-                    m_new_anchor.m_offset += border_list_.bottom_right();
+                    new_anchor.offset += border_list_.bottom_right();
                     break;
-                case anchor_point::bottom: m_new_anchor.m_offset.y += border_list_.bottom; break;
+                case anchor_point::bottom: new_anchor.offset.y += border_list_.bottom; break;
                 case anchor_point::bottom_left:
-                    m_new_anchor.m_offset += border_list_.bottom_left();
+                    new_anchor.offset += border_list_.bottom_left();
                     break;
-                case anchor_point::left: m_new_anchor.m_offset.x += border_list_.left; break;
-                case anchor_point::center: m_new_anchor.m_offset += border_list_.center(); break;
+                case anchor_point::left: new_anchor.offset.x += border_list_.left; break;
+                case anchor_point::center: new_anchor.offset += border_list_.center(); break;
                 }
 
-                p_obj->set_point(m_new_anchor);
+                p_obj->set_point(new_anchor);
             }
 
             p_obj->update_anchors_();
@@ -105,9 +101,9 @@ std::string region::serialize(const std::string& tab) const {
     str << tab << "  # Num anchors : " << get_num_point() << "\n";
     if (!anchor_list_.empty()) {
         str << tab << "  |-###\n";
-        for (const auto& m_anchor : anchor_list_) {
-            if (m_anchor) {
-                str << m_anchor->serialize(tab);
+        for (const auto& anchor : anchor_list_) {
+            if (anchor) {
+                str << anchor->serialize(tab);
                 str << tab << "  |-###\n";
             }
         }
@@ -121,23 +117,23 @@ std::string region::serialize(const std::string& tab) const {
     str << tab << "  |-###\n";
     str << tab << "  # Alpha       : " << alpha_ << "\n";
     str << tab << "  # Shown       : " << is_shown_ << "\n";
-    str << tab << "  # Abs width   : " << m_dimensions_.x << "\n";
-    str << tab << "  # Abs height  : " << m_dimensions_.y << "\n";
+    str << tab << "  # Abs width   : " << dimensions_.x << "\n";
+    str << tab << "  # Abs height  : " << dimensions_.y << "\n";
 
     return str.str();
 }
 
-void region::copy_from(const region& m_obj) {
+void region::copy_from(const region& obj) {
     // Inherit properties
-    this->set_alpha(m_obj.get_alpha());
-    this->set_shown(m_obj.is_shown());
-    this->set_dimensions(m_obj.get_dimensions());
+    this->set_alpha(obj.get_alpha());
+    this->set_shown(obj.is_shown());
+    this->set_dimensions(obj.get_dimensions());
 
-    for (const auto& m_anchor : m_obj.get_point_list()) {
-        if (!m_anchor)
+    for (const auto& anchor : obj.get_point_list()) {
+        if (!anchor)
             continue;
 
-        this->set_point(m_anchor->get_data());
+        this->set_point(anchor->get_data());
     }
 }
 
@@ -219,11 +215,11 @@ bool region::is_visible() const {
     return is_visible_;
 }
 
-void region::set_dimensions(const vector2f& m_dimensions) {
-    if (m_dimensions_ == m_dimensions)
+void region::set_dimensions(const vector2f& dimensions) {
+    if (dimensions_ == dimensions)
         return;
 
-    m_dimensions_ = m_dimensions;
+    dimensions_ = dimensions;
 
     if (!is_virtual_) {
         notify_borders_need_update();
@@ -232,10 +228,10 @@ void region::set_dimensions(const vector2f& m_dimensions) {
 }
 
 void region::set_width(float abs_width) {
-    if (m_dimensions_.x == abs_width)
+    if (dimensions_.x == abs_width)
         return;
 
-    m_dimensions_.x = abs_width;
+    dimensions_.x = abs_width;
 
     if (!is_virtual_) {
         notify_borders_need_update();
@@ -244,10 +240,10 @@ void region::set_width(float abs_width) {
 }
 
 void region::set_height(float abs_height) {
-    if (m_dimensions_.y == abs_height)
+    if (dimensions_.y == abs_height)
         return;
 
-    m_dimensions_.y = abs_height;
+    dimensions_.y = abs_height;
 
     if (!is_virtual_) {
         notify_borders_need_update();
@@ -255,11 +251,11 @@ void region::set_height(float abs_height) {
     }
 }
 
-void region::set_relative_dimensions(const vector2f& m_dimensions) {
+void region::set_relative_dimensions(const vector2f& dimensions) {
     if (p_parent_)
-        set_dimensions(m_dimensions * p_parent_->get_apparent_dimensions());
+        set_dimensions(dimensions * p_parent_->get_apparent_dimensions());
     else
-        set_dimensions(m_dimensions * get_top_level_renderer()->get_target_dimensions());
+        set_dimensions(dimensions * get_top_level_renderer()->get_target_dimensions());
 }
 
 void region::set_relative_width(float rel_width) {
@@ -277,7 +273,7 @@ void region::set_relative_height(float rel_height) {
 }
 
 const vector2f& region::get_dimensions() const {
-    return m_dimensions_;
+    return dimensions_;
 }
 
 vector2f region::get_apparent_dimensions() const {
@@ -285,17 +281,17 @@ vector2f region::get_apparent_dimensions() const {
 }
 
 bool region::is_apparent_width_defined() const {
-    return m_dimensions_.x > 0.0f || (defined_border_list_.left && defined_border_list_.right);
+    return dimensions_.x > 0.0f || (defined_border_list_.left && defined_border_list_.right);
 }
 
 bool region::is_apparent_height_defined() const {
-    return m_dimensions_.y > 0.0f || (defined_border_list_.top && defined_border_list_.bottom);
+    return dimensions_.y > 0.0f || (defined_border_list_.top && defined_border_list_.bottom);
 }
 
-bool region::is_in_region(const vector2f& m_position) const {
+bool region::is_in_region(const vector2f& position) const {
     return (
-        (border_list_.left <= m_position.x && m_position.x <= border_list_.right - 1) &&
-        (border_list_.top <= m_position.y && m_position.y <= border_list_.bottom - 1));
+        (border_list_.left <= position.x && position.x <= border_list_.right - 1) &&
+        (border_list_.top <= position.y && position.y <= border_list_.bottom - 1));
 }
 
 void region::set_name_(const std::string& name) {
@@ -389,9 +385,9 @@ const bounds2f& region::get_borders() const {
 
 void region::clear_all_points() {
     bool had_anchors = false;
-    for (auto& m_anchor : anchor_list_) {
-        if (m_anchor) {
-            m_anchor.reset();
+    for (auto& anchor : anchor_list_) {
+        if (anchor) {
+            anchor.reset();
             had_anchors = true;
         }
     }
@@ -441,10 +437,10 @@ void region::set_all_points(const utils::observer_ptr<region>& p_obj) {
     set_all_points(p_obj ? p_obj->get_name() : "");
 }
 
-void region::set_point(const anchor_data& m_anchor) {
-    anchor_list_[static_cast<int>(m_anchor.m_point)].emplace(*this, m_anchor);
+void region::set_point(const anchor_data& anchor) {
+    anchor_list_[static_cast<int>(anchor.point)].emplace(*this, anchor);
 
-    switch (m_anchor.m_point) {
+    switch (anchor.point) {
     case anchor_point::top_left:
         defined_border_list_.top  = true;
         defined_border_list_.left = true;
@@ -475,17 +471,17 @@ void region::set_point(const anchor_data& m_anchor) {
     }
 }
 
-bool region::depends_on(const region& m_obj) const {
-    for (const auto& m_anchor : anchor_list_) {
-        if (!m_anchor)
+bool region::depends_on(const region& obj) const {
+    for (const auto& anchor : anchor_list_) {
+        if (!anchor)
             continue;
 
-        const region* p_parent = m_anchor->get_parent().get();
-        if (p_parent == &m_obj)
+        const region* p_parent = anchor->get_parent().get();
+        if (p_parent == &obj)
             return true;
 
         if (p_parent)
-            return p_parent->depends_on(m_obj);
+            return p_parent->depends_on(obj);
     }
 
     return false;
@@ -493,32 +489,32 @@ bool region::depends_on(const region& m_obj) const {
 
 std::size_t region::get_num_point() const {
     std::size_t ui_num_anchors = 0u;
-    for (const auto& m_anchor : anchor_list_) {
-        if (m_anchor)
+    for (const auto& anchor : anchor_list_) {
+        if (anchor)
             ++ui_num_anchors;
     }
 
     return ui_num_anchors;
 }
 
-anchor& region::modify_point(anchor_point m_point) {
-    auto& m_anchor = anchor_list_[static_cast<int>(m_point)];
-    if (!m_anchor) {
+anchor& region::modify_point(anchor_point point) {
+    auto& anchor = anchor_list_[static_cast<int>(point)];
+    if (!anchor) {
         throw gui::exception(
             "region", "Cannot modify a point that does not exist. Use set_point() first.");
     }
 
-    return *m_anchor;
+    return *anchor;
 }
 
-const anchor& region::get_point(anchor_point m_point) const {
-    const auto& m_anchor = anchor_list_[static_cast<int>(m_point)];
-    if (!m_anchor) {
+const anchor& region::get_point(anchor_point point) const {
+    const auto& anchor = anchor_list_[static_cast<int>(point)];
+    if (!anchor) {
         throw gui::exception(
             "region", "Cannot get a point that does not exist. Use set_point() first.");
     }
 
-    return *m_anchor;
+    return *anchor;
 }
 
 const std::array<std::optional<anchor>, 9>& region::get_point_list() const {
@@ -533,28 +529,28 @@ void region::set_virtual() {
     is_virtual_ = true;
 }
 
-void region::add_anchored_object(region& m_obj) {
-    anchored_object_list_.push_back(observer_from(&m_obj));
+void region::add_anchored_object(region& obj) {
+    anchored_object_list_.push_back(observer_from(&obj));
 }
 
-void region::remove_anchored_object(region& m_obj) {
-    auto m_iter = utils::find_if(
-        anchored_object_list_, [&](const auto& p_ptr) { return p_ptr.get() == &m_obj; });
+void region::remove_anchored_object(region& obj) {
+    auto iter = utils::find_if(
+        anchored_object_list_, [&](const auto& p_ptr) { return p_ptr.get() == &obj; });
 
-    if (m_iter != anchored_object_list_.end())
-        anchored_object_list_.erase(m_iter);
+    if (iter != anchored_object_list_.end())
+        anchored_object_list_.erase(iter);
 }
 
-float region::round_to_pixel(float value, utils::rounding_method m_method) const {
+float region::round_to_pixel(float value, utils::rounding_method method) const {
     float scaling_factor = get_manager().get_interface_scaling_factor();
-    return utils::round(value, 1.0f / scaling_factor, m_method);
+    return utils::round(value, 1.0f / scaling_factor, method);
 }
 
-vector2f region::round_to_pixel(const vector2f& m_position, utils::rounding_method m_method) const {
+vector2f region::round_to_pixel(const vector2f& position, utils::rounding_method method) const {
     float scaling_factor = get_manager().get_interface_scaling_factor();
     return vector2f(
-        utils::round(m_position.x, 1.0f / scaling_factor, m_method),
-        utils::round(m_position.y, 1.0f / scaling_factor, m_method));
+        utils::round(position.x, 1.0f / scaling_factor, method),
+        utils::round(position.y, 1.0f / scaling_factor, method));
 }
 
 bool region::make_borders_(float& min, float& max, float center, float size) const {
@@ -590,49 +586,49 @@ void region::read_anchors_(
     top    = +std::numeric_limits<float>::infinity();
     bottom = -std::numeric_limits<float>::infinity();
 
-    for (const auto& m_opt_anchor : anchor_list_) {
-        if (!m_opt_anchor)
+    for (const auto& opt_anchor : anchor_list_) {
+        if (!opt_anchor)
             continue;
 
-        const anchor&  m_anchor       = m_opt_anchor.value();
-        const vector2f m_anchor_point = m_anchor.get_point(*this);
+        const anchor&  anchor       = opt_anchor.value();
+        const vector2f anchor_point = anchor.get_point(*this);
 
-        switch (m_anchor.m_point) {
+        switch (anchor.point) {
         case anchor_point::top_left:
-            top  = std::min<float>(top, m_anchor_point.y);
-            left = std::min<float>(left, m_anchor_point.x);
+            top  = std::min<float>(top, anchor_point.y);
+            left = std::min<float>(left, anchor_point.x);
             break;
         case anchor_point::top:
-            top      = std::min<float>(top, m_anchor_point.y);
-            x_center = m_anchor_point.x;
+            top      = std::min<float>(top, anchor_point.y);
+            x_center = anchor_point.x;
             break;
         case anchor_point::top_right:
-            top   = std::min<float>(top, m_anchor_point.y);
-            right = std::max<float>(right, m_anchor_point.x);
+            top   = std::min<float>(top, anchor_point.y);
+            right = std::max<float>(right, anchor_point.x);
             break;
         case anchor_point::right:
-            right    = std::max<float>(right, m_anchor_point.x);
-            y_center = m_anchor_point.y;
+            right    = std::max<float>(right, anchor_point.x);
+            y_center = anchor_point.y;
             break;
         case anchor_point::bottom_right:
-            bottom = std::max<float>(bottom, m_anchor_point.y);
-            right  = std::max<float>(right, m_anchor_point.x);
+            bottom = std::max<float>(bottom, anchor_point.y);
+            right  = std::max<float>(right, anchor_point.x);
             break;
         case anchor_point::bottom:
-            bottom   = std::max<float>(bottom, m_anchor_point.y);
-            x_center = m_anchor_point.x;
+            bottom   = std::max<float>(bottom, anchor_point.y);
+            x_center = anchor_point.x;
             break;
         case anchor_point::bottom_left:
-            bottom = std::max<float>(bottom, m_anchor_point.y);
-            left   = std::min<float>(left, m_anchor_point.x);
+            bottom = std::max<float>(bottom, anchor_point.y);
+            left   = std::min<float>(left, anchor_point.x);
             break;
         case anchor_point::left:
-            left     = std::min<float>(left, m_anchor_point.x);
-            y_center = m_anchor_point.y;
+            left     = std::min<float>(left, anchor_point.x);
+            y_center = anchor_point.y;
             break;
         case anchor_point::center:
-            x_center = m_anchor_point.x;
-            y_center = m_anchor_point.y;
+            x_center = anchor_point.x;
+            y_center = anchor_point.y;
             break;
         }
     }
@@ -654,9 +650,9 @@ void region::update_borders_() {
         float x_center = 0.0f, y_center = 0.0f;
 
         float rounded_width =
-            round_to_pixel(m_dimensions_.x, utils::rounding_method::nearest_not_zero);
+            round_to_pixel(dimensions_.x, utils::rounding_method::nearest_not_zero);
         float rounded_height =
-            round_to_pixel(m_dimensions_.y, utils::rounding_method::nearest_not_zero);
+            round_to_pixel(dimensions_.y, utils::rounding_method::nearest_not_zero);
 
         DEBUG_LOG("  Read anchors");
         read_anchors_(left, right, top, bottom, x_center, y_center);
@@ -683,7 +679,7 @@ void region::update_borders_() {
         } else
             border_list_ = bounds2f::zero;
     } else {
-        border_list_ = bounds2f(0.0, 0.0, m_dimensions_.x, m_dimensions_.y);
+        border_list_ = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
         is_ready_    = false;
     }
 
@@ -709,11 +705,11 @@ void region::update_borders_() {
 
 void region::update_anchors_() {
     std::vector<utils::observer_ptr<region>> anchor_parent_list;
-    for (auto& m_anchor : anchor_list_) {
-        if (!m_anchor)
+    for (auto& anchor : anchor_list_) {
+        if (!anchor)
             continue;
 
-        utils::observer_ptr<region> p_obj = m_anchor->get_parent();
+        utils::observer_ptr<region> p_obj = anchor->get_parent();
         if (p_obj) {
             if (p_obj->depends_on(*this)) {
                 gui::out << gui::error << "gui::" << type_.back()
@@ -721,10 +717,10 @@ void region::update_anchors_() {
                          << "\"" << name_ << "\" and \"" << p_obj->get_name()
                          << "\" depend on "
                             "eachothers (directly or indirectly).\n\""
-                         << anchor::get_anchor_point_name(m_anchor->m_point) << "\" anchor removed."
+                         << anchor::get_anchor_point_name(anchor->point) << "\" anchor removed."
                          << std::endl;
 
-                m_anchor.reset();
+                anchor.reset();
                 continue;
             }
 
@@ -819,30 +815,30 @@ std::string region::parse_file_name(const std::string& file_name) const {
 
     std::string new_file = file_name;
 
-    const addon* p_add_on = get_addon();
-    if (new_file[0] == '|' && p_add_on) {
+    const addon* p_addon = get_addon();
+    if (new_file[0] == '|' && p_addon) {
         new_file[0] = '/';
-        new_file    = p_add_on->directory + new_file;
+        new_file    = p_addon->directory + new_file;
     }
 
     return new_file;
 }
 
 void region::set_addon(const addon* p_add_on) {
-    if (p_add_on_) {
+    if (p_addon_) {
         gui::out << gui::warning << "gui::" << type_.back()
                  << " : set_addon() can only be called once." << std::endl;
         return;
     }
 
-    p_add_on_ = p_add_on;
+    p_addon_ = p_add_on;
 }
 
 const addon* region::get_addon() const {
-    if (!p_add_on_ && p_parent_)
+    if (!p_addon_ && p_parent_)
         return p_parent_->get_addon();
     else
-        return p_add_on_;
+        return p_addon_;
 }
 
 registry& region::get_registry() {

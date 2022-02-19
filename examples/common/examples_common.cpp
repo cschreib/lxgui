@@ -99,20 +99,20 @@ void examples_setup_gui(gui::manager& manager) {
     // A "child" frame is owned by another frame.
     utils::observer_ptr<gui::frame> fps_frame;
     fps_frame = manager.get_root().create_root_frame<gui::frame>("FPSCounter");
-    fps_frame->set_point(gui::anchor_point::TOP_LEFT);
+    fps_frame->set_point(gui::anchor_point::top_left);
     fps_frame->set_point(
-        gui::anchor_point::BOTTOM_RIGHT, "FontstringTestFrameText", gui::anchor_point::TOP_RIGHT);
+        gui::anchor_point::bottom_right, "FontstringTestFrameText", gui::anchor_point::top_right);
 
     // Create a font_string in the frame
     utils::observer_ptr<gui::font_string> fps_text;
     fps_text =
-        fps_frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
-    fps_text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f(0, -5));
+        fps_frame->create_layered_region<gui::font_string>(gui::layer::artwork, "$parentText");
+    fps_text->set_point(gui::anchor_point::bottom_right, gui::vector2f(0, -5));
     fps_text->set_font("interface/fonts/main.ttf", 15);
-    fps_text->set_alignment_y(gui::alignment_y::BOTTOM);
-    fps_text->set_alignment_x(gui::alignment_x::RIGHT);
+    fps_text->set_alignment_y(gui::alignment_y::bottom);
+    fps_text->set_alignment_x(gui::alignment_x::right);
     fps_text->set_outlined(true);
-    fps_text->set_text_color(gui::color::RED);
+    fps_text->set_text_color(gui::color::red);
     fps_text->notify_loaded();
 
     // Create the scripts for this frame

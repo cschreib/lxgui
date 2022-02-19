@@ -23,44 +23,44 @@ namespace lxgui::gui::sdl {
 class material final : public gui::material {
 public:
     /// Constructor for textures.
-    /** \param renderer     The SDL render to create the material for
-     *   \param mDimensions   The requested texture dimensions
+    /** \param rdr     The SDL render to create the material for
+     *   \param dimensions   The requested texture dimensions
      *   \param is_render_target Create the material for a render target or only for display
-     *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-     *   \param mFilter       Use texture filtering or not (see set_filter())
+     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     *   \param filt       Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*    p_renderer,
-        const vector2ui& m_dimensions,
+        SDL_Renderer*    rdr,
+        const vector2ui& dimensions,
         bool             is_render_target = false,
-        wrap             m_wrap           = wrap::repeat,
-        filter           m_filter         = filter::none);
+        wrap             wrap             = wrap::repeat,
+        filter           filter           = filter::none);
 
     /// Constructor for textures.
-    /** \param renderer     The SDL render to create the material for
+    /** \param rdr     The SDL render to create the material for
      *   \param file_name     The file from which the texture data is loaded
      *   \param pre_multiplied_alpha_supported 'true' if the renderer supports pre-multipled alpha
-     *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-     *   \param mFilter       Use texture filtering or not (see set_filter())
+     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     *   \param filt       Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*      p_renderer,
+        SDL_Renderer*      rdr,
         const std::string& file_name,
         bool               pre_multiplied_alpha_supported,
-        wrap               m_wrap   = wrap::repeat,
-        filter             m_filter = filter::none);
+        wrap               wrap   = wrap::repeat,
+        filter             filter = filter::none);
 
     /// Constructor for atlas textures.
-    /** \param renderer The SDL render to create the material for
+    /** \param rdr The SDL render to create the material for
      *   \param pTexture  The texture object of the atlas
-     *   \param mRect     The position of this texture inside the atlas
-     *   \param mFilter   Use texture filtering or not (see set_filter())
+     *   \param rect     The position of this texture inside the atlas
+     *   \param filt   Use texture filtering or not (see set_filter())
      */
     material(
-        SDL_Renderer*   p_renderer,
+        SDL_Renderer*   rdr,
         SDL_Texture*    p_texture,
-        const bounds2f& m_rect,
-        filter          m_filter = filter::none);
+        const bounds2f& rect,
+        filter          filter = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -90,14 +90,14 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    bool uses_same_texture(const gui::material& m_other) const override;
+    bool uses_same_texture(const gui::material& other) const override;
 
     /// Resizes this texture.
-    /** \param mDimensions The new texture dimensions
+    /** \param dimensions The new texture dimensions
      *   \return 'true' if the function had to re-create a new texture object
      *   \note All the previous data that was stored in this texture will be lost.
      */
-    bool set_dimensions(const vector2ui& m_dimensions);
+    bool set_dimensions(const vector2ui& dimensions);
 
     /// Premultiplies an image by its alpha component.
     /** \note Premultiplied alpha is a rendering technique that allows perfect
@@ -111,16 +111,16 @@ public:
     static int get_premultiplied_alpha_blend_mode();
 
     /// Sets the wrap mode of this texture.
-    /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
+    /** \param wrp How to adjust texture coordinates that are outside the [0,1] range
      */
-    void set_wrap(wrap m_wrap);
+    void set_wrap(wrap wrp);
 
     /// Sets the filter mode of this texture.
-    /** \param mFilter Use texture filtering or not
+    /** \param filt Use texture filtering or not
      *   \note When texture filtering is disabled, enlarged textures get pixelated.
      *         Else, the GPU uses an averaging algorithm to blur the pixels.
      */
-    void set_filter(filter m_filter);
+    void set_filter(filter filt);
 
     /// Returns the filter mode of this texture.
     /** \return The filter mode of this texture
@@ -164,11 +164,11 @@ public:
 private:
     SDL_Renderer* p_renderer_ = nullptr;
 
-    vector2ui m_dimensions_;
-    vector2ui m_canvas_dimensions_;
-    bounds2f  m_rect_;
-    wrap      m_wrap_           = wrap::repeat;
-    filter    m_filter_         = filter::none;
+    vector2ui dimensions_;
+    vector2ui canvas_dimensions_;
+    bounds2f  rect_;
+    wrap      wrap_             = wrap::repeat;
+    filter    filter_           = filter::none;
     bool      is_render_target_ = false;
 
     SDL_Texture* p_texture_ = nullptr;

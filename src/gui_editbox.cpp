@@ -17,9 +17,9 @@ using namespace lxgui::input;
 
 namespace lxgui::gui {
 
-edit_box::edit_box(utils::control_block& m_block, manager& m_manager) :
-    frame(m_block, m_manager),
-    m_carret_timer_(d_blink_speed_, periodic_timer::start_type::first_tick, false) {
+edit_box::edit_box(utils::control_block& block, manager& mgr) :
+    frame(block, mgr),
+    carret_timer_(d_blink_speed_, periodic_timer::start_type::first_tick, false) {
     type_.push_back(class_name);
 
     iter_carret_pos_     = unicode_text_.begin();
@@ -43,10 +43,10 @@ bool edit_box::can_use_script(const std::string& script_name) const {
         return false;
 }
 
-void edit_box::copy_from(const region& m_obj) {
-    base::copy_from(m_obj);
+void edit_box::copy_from(const region& obj) {
+    base::copy_from(obj);
 
-    const edit_box* p_edit_box = down_cast<edit_box>(&m_obj);
+    const edit_box* p_edit_box = down_cast<edit_box>(&obj);
     if (!p_edit_box)
         return;
 
@@ -61,12 +61,12 @@ void edit_box::copy_from(const region& m_obj) {
     this->set_text_insets(p_edit_box->get_text_insets());
 
     if (const font_string* p_fs = p_edit_box->get_font_string().get()) {
-        region_core_attributes m_attr;
-        m_attr.name        = p_fs->get_name();
-        m_attr.inheritance = {p_edit_box->get_font_string()};
+        region_core_attributes attr;
+        attr.name        = p_fs->get_name();
+        attr.inheritance = {p_edit_box->get_font_string()};
 
         auto p_font =
-            this->create_layered_region<font_string>(p_fs->get_draw_layer(), std::move(m_attr));
+            this->create_layered_region<font_string>(p_fs->get_draw_layer(), std::move(attr));
 
         if (p_font) {
             p_font->set_special();
@@ -77,16 +77,16 @@ void edit_box::copy_from(const region& m_obj) {
 }
 
 void edit_box::update(float delta) {
-    alive_checker m_checker(*this);
+    alive_checker checker(*this);
 
     base::update(delta);
-    if (!m_checker.is_alive())
+    if (!checker.is_alive())
         return;
 
     if (has_focus()) {
-        m_carret_timer_.update(delta);
+        carret_timer_.update(delta);
 
-        if (m_carret_timer_.ticks()) {
+        if (carret_timer_.ticks()) {
             if (!p_carret_)
                 create_carret_();
 
@@ -102,13 +102,13 @@ void edit_box::update(float delta) {
     if (iter_carret_pos_ != iter_carret_pos_old_) {
         iter_carret_pos_old_ = iter_carret_pos_;
         fire_script("OnCursorChanged");
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
     }
 }
 
-void edit_box::fire_script(const std::string& script_name, const event_data& m_data) {
-    alive_checker m_checker(*this);
+void edit_box::fire_script(const std::string& script_name, const event_data& data) {
+    alive_checker checker(*this);
 
     // Do not fire OnKeyUp/OnKeyDown events when typing
     bool bypass_event = false;
@@ -118,51 +118,51 @@ void edit_box::fire_script(const std::string& script_name, const event_data& m_d
         bypass_event = true;
 
     if (!bypass_event) {
-        base::fire_script(script_name, m_data);
-        if (!m_checker.is_alive())
+        base::fire_script(script_name, data);
+        if (!checker.is_alive())
             return;
     }
 
     if (script_name == "OnKeyDown" && has_focus()) {
-        key  m_key            = m_data.get<key>(0);
-        bool shift_is_pressed = m_data.get<bool>(2);
-        bool ctrl_is_pressed  = m_data.get<bool>(3);
+        key  key_id           = data.get<key>(0);
+        bool shift_is_pressed = data.get<bool>(2);
+        bool ctrl_is_pressed  = data.get<bool>(3);
 
-        if (m_key == key::k_return || m_key == key::k_numpadenter) {
+        if (key_id == key::k_return || key_id == key::k_numpadenter) {
             fire_script("OnEnterPressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
-        } else if (m_key == key::k_tab) {
+        } else if (key_id == key::k_tab) {
             fire_script("OnTabPressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
-        } else if (m_key == key::k_up) {
+        } else if (key_id == key::k_up) {
             fire_script("OnUpPressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
-        } else if (m_key == key::k_down) {
+        } else if (key_id == key::k_down) {
             fire_script("OnDownPressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
-        } else if (m_key == key::k_space) {
+        } else if (key_id == key::k_space) {
             fire_script("OnSpacePressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
-        } else if (m_key == key::k_escape) {
+        } else if (key_id == key::k_escape) {
             fire_script("OnEscapePressed");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
         }
 
-        process_key_(m_key, shift_is_pressed, ctrl_is_pressed);
+        process_key_(key_id, shift_is_pressed, ctrl_is_pressed);
 
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
     } else if (script_name == "OnChar" && has_focus()) {
-        std::uint32_t c = m_data.get<std::uint32_t>(1);
+        std::uint32_t c = data.get<std::uint32_t>(1);
         if (add_char_(c)) {
             fire_script("OnTextChanged");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
         }
     } else if (script_name == "OnSizeChanged") {
@@ -171,10 +171,9 @@ void edit_box::fire_script(const std::string& script_name, const event_data& m_d
         update_carret_position_();
     } else if (script_name == "OnDragStart") {
         ui_selection_end_pos_ = ui_selection_start_pos_ =
-            get_letter_id_at_(vector2f(m_data.get<float>(1), m_data.get<float>(2)));
+            get_letter_id_at_(vector2f(data.get<float>(1), data.get<float>(2)));
     } else if (script_name == "OnDragMove") {
-        std::size_t ui_pos =
-            get_letter_id_at_(vector2f(m_data.get<float>(0), m_data.get<float>(1)));
+        std::size_t ui_pos = get_letter_id_at_(vector2f(data.get<float>(0), data.get<float>(1)));
         if (ui_pos != ui_selection_end_pos_) {
             if (ui_pos != std::numeric_limits<std::size_t>::max()) {
                 highlight_text(ui_selection_start_pos_, ui_pos);
@@ -190,12 +189,12 @@ void edit_box::fire_script(const std::string& script_name, const event_data& m_d
         }
     } else if (script_name == "OnMouseDown") {
         set_focus(true);
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
 
         unlight_text();
 
-        move_carret_at_({m_data.get<float>(1), m_data.get<float>(2)});
+        move_carret_at_({data.get<float>(1), data.get<float>(2)});
     }
 }
 
@@ -215,14 +214,14 @@ void edit_box::set_text(const utils::ustring& content) {
     update_font_string_();
     update_carret_position_();
 
-    alive_checker m_checker(*this);
+    alive_checker checker(*this);
 
     fire_script("OnTextSet");
-    if (!m_checker.is_alive())
+    if (!checker.is_alive())
         return;
 
     fire_script("OnTextChanged");
-    if (!m_checker.is_alive())
+    if (!checker.is_alive())
         return;
 }
 
@@ -294,11 +293,11 @@ void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool for
     ui_selection_end_pos_   = ui_end;
 }
 
-void edit_box::set_highlight_color(const color& m_color) {
-    if (m_highlight_color_ == m_color)
+void edit_box::set_highlight_color(const color& c) {
+    if (highlight_color_ == c)
         return;
 
-    m_highlight_color_ = m_color;
+    highlight_color_ = c;
 
     if (!p_highlight_)
         create_highlight_();
@@ -306,7 +305,7 @@ void edit_box::set_highlight_color(const color& m_color) {
     if (!p_highlight_)
         return;
 
-    p_highlight_->set_solid_color(m_highlight_color_);
+    p_highlight_->set_solid_color(highlight_color_);
 }
 
 void edit_box::insert_after_cursor(const utils::ustring& content) {
@@ -374,8 +373,8 @@ void edit_box::set_blink_speed(double d_blink_speed) {
     if (d_blink_speed_ == d_blink_speed)
         return;
 
-    d_blink_speed_  = d_blink_speed;
-    m_carret_timer_ = periodic_timer(d_blink_speed_, periodic_timer::start_type::first_tick, false);
+    d_blink_speed_ = d_blink_speed;
+    carret_timer_  = periodic_timer(d_blink_speed_, periodic_timer::start_type::first_tick, false);
 }
 
 double edit_box::get_blink_speed() const {
@@ -551,7 +550,7 @@ void edit_box::notify_focus(bool focus) {
         if (p_carret_)
             p_carret_->show();
 
-        m_carret_timer_.zero();
+        carret_timer_.zero();
     } else {
         if (p_carret_)
             p_carret_->hide();
@@ -623,7 +622,7 @@ void edit_box::create_highlight_() {
     p_highlight->set_point(anchor_point::top, vector2f(0.0f, text_insets_.top));
     p_highlight->set_point(anchor_point::bottom, vector2f(0.0f, -text_insets_.bottom));
 
-    p_highlight->set_solid_color(m_highlight_color_);
+    p_highlight->set_solid_color(highlight_color_);
 
     p_highlight->notify_loaded();
     p_highlight_ = p_highlight;
@@ -647,11 +646,11 @@ void edit_box::create_carret_() {
         p_carret_ = p_carret;
     }
 
-    quad m_quad = p_font_string_->get_text_object()->create_letter_quad(U'|');
+    quad quad = p_font_string_->get_text_object()->create_letter_quad(U'|');
     for (std::size_t i = 0; i < 4; ++i)
-        m_quad.v[i].col = p_font_string_->get_text_color();
+        quad.v[i].col = p_font_string_->get_text_color();
 
-    p_carret_->set_quad(m_quad);
+    p_carret_->set_quad(quad);
 
     update_carret_position_();
 }
@@ -722,22 +721,22 @@ void edit_box::update_carret_position_() {
         return;
 
     if (unicode_text_.empty()) {
-        anchor_point m_point;
+        anchor_point point;
         float        offset = 0.0f;
         switch (p_font_string_->get_alignment_x()) {
         case alignment_x::left:
-            m_point = anchor_point::left;
-            offset  = text_insets_.left - 1;
+            point  = anchor_point::left;
+            offset = text_insets_.left - 1;
             break;
-        case alignment_x::center: m_point = anchor_point::center; break;
+        case alignment_x::center: point = anchor_point::center; break;
         case alignment_x::right:
-            m_point = anchor_point::right;
-            offset  = -text_insets_.right - 1;
+            point  = anchor_point::right;
+            offset = -text_insets_.right - 1;
             break;
-        default: m_point = anchor_point::left; break;
+        default: point = anchor_point::left; break;
         }
 
-        p_carret_->set_point(anchor_point::center, m_point, vector2f(offset, 0.0f));
+        p_carret_->set_point(anchor_point::center, point, vector2f(offset, 0.0f));
     } else {
         text*                    p_text = p_font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;
@@ -813,7 +812,7 @@ void edit_box::update_carret_position_() {
             anchor_point::center, anchor_point::left, vector2f(x_offset, y_offset));
     }
 
-    m_carret_timer_.zero();
+    carret_timer_.zero();
     if (has_focus())
         p_carret_->show();
     else
@@ -857,7 +856,7 @@ bool edit_box::add_char_(char32_t c) {
     if (p_carret_)
         p_carret_->show();
 
-    m_carret_timer_.zero();
+    carret_timer_.zero();
 
     return true;
 }
@@ -888,12 +887,12 @@ bool edit_box::remove_char_() {
     if (p_carret_)
         p_carret_->show();
 
-    m_carret_timer_.zero();
+    carret_timer_.zero();
 
     return true;
 }
 
-std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
+std::size_t edit_box::get_letter_id_at_(const vector2f& position) const {
     if (!p_font_string_ || !p_font_string_->get_text_object())
         return std::numeric_limits<std::size_t>::max();
 
@@ -902,21 +901,21 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
 
     const text* p_text = p_font_string_->get_text_object();
 
-    float local_x = m_position.x - border_list_.left - text_insets_.left;
-    // float fLocalY = mPosition.y - lBorderList_.top  - lTextInsets_.top;
+    float local_x = position.x - border_list_.left - text_insets_.left;
+    // float local_y = position.y - border_list_.top  - text_insets_.top;
 
     if (!is_multi_line_) {
-        if (m_position.x < border_list_.left + text_insets_.left)
+        if (position.x < border_list_.left + text_insets_.left)
             return ui_display_pos_;
-        else if (m_position.x > border_list_.right - text_insets_.right)
+        else if (position.x > border_list_.right - text_insets_.right)
             return displayed_text_.size() + ui_display_pos_;
 
         std::size_t ui_num_letters =
             std::min<std::size_t>(p_text->get_num_letters(), displayed_text_.size());
 
         for (std::size_t ui_index = 0u; ui_index < ui_num_letters; ++ui_index) {
-            const auto& m_quad = p_text->get_letter_quad(ui_index);
-            if (local_x < 0.5f * (m_quad[0].pos.x + m_quad[2].pos.x))
+            const auto& quad = p_text->get_letter_quad(ui_index);
+            if (local_x < 0.5f * (quad[0].pos.x + quad[2].pos.x))
                 return ui_index + ui_display_pos_;
         }
 
@@ -928,8 +927,8 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& m_position) const {
     }
 }
 
-bool edit_box::move_carret_at_(const vector2f& m_position) {
-    std::size_t ui_pos = get_letter_id_at_(m_position);
+bool edit_box::move_carret_at_(const vector2f& position) {
+    std::size_t ui_pos = get_letter_id_at_(position);
     if (ui_pos != std::numeric_limits<std::size_t>::max()) {
         iter_carret_pos_ = unicode_text_.begin() + ui_pos;
         update_carret_position_();
@@ -948,7 +947,7 @@ bool edit_box::move_carret_horizontally_(bool forward) {
             if (p_carret_)
                 p_carret_->show();
 
-            m_carret_timer_.zero();
+            carret_timer_.zero();
 
             return true;
         } else
@@ -962,7 +961,7 @@ bool edit_box::move_carret_horizontally_(bool forward) {
             if (p_carret_)
                 p_carret_->show();
 
-            m_carret_timer_.zero();
+            carret_timer_.zero();
 
             return true;
         } else
@@ -990,7 +989,7 @@ bool edit_box::move_carret_vertically_(bool down) {
             if (p_carret_)
                 p_carret_->show();
 
-            m_carret_timer_.zero();
+            carret_timer_.zero();
 
             return true;
         } else
@@ -998,24 +997,24 @@ bool edit_box::move_carret_vertically_(bool down) {
     }
 }
 
-void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_pressed) {
-    alive_checker m_checker(*this);
+void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pressed) {
+    alive_checker checker(*this);
 
-    if (m_key == key::k_return || m_key == key::k_numpadenter) {
+    if (key_id == key::k_return || key_id == key::k_numpadenter) {
         if (is_multi_line_) {
             if (add_char_(U'\n')) {
-                event_data m_key_event;
-                m_key_event.add(std::string("\n"));
-                fire_script("OnChar", m_key_event);
-                if (!m_checker.is_alive())
+                event_data key_event;
+                key_event.add(std::string("\n"));
+                fire_script("OnChar", key_event);
+                if (!checker.is_alive())
                     return;
 
                 fire_script("OnTextChanged");
-                if (!m_checker.is_alive())
+                if (!checker.is_alive())
                     return;
             }
         }
-    } else if (m_key == key::k_end) {
+    } else if (key_id == key::k_end) {
         std::size_t ui_previous_carret_pos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
@@ -1028,7 +1027,7 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
             unlight_text();
 
         return;
-    } else if (m_key == key::k_home) {
+    } else if (key_id == key::k_home) {
         std::size_t ui_previous_carret_pos = get_cursor_position();
         set_cursor_position(0u);
 
@@ -1041,23 +1040,23 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
             unlight_text();
 
         return;
-    } else if (m_key == key::k_back || m_key == key::k_delete) {
-        if (is_text_selected_ || m_key == key::k_delete || move_carret_horizontally_(false)) {
+    } else if (key_id == key::k_back || key_id == key::k_delete) {
+        if (is_text_selected_ || key_id == key::k_delete || move_carret_horizontally_(false)) {
             remove_char_();
             fire_script("OnTextChanged");
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
         }
     } else if (
-        m_key == key::k_left || m_key == key::k_right ||
-        (is_multi_line_ && (m_key == key::k_up || m_key == key::k_down))) {
+        key_id == key::k_left || key_id == key::k_right ||
+        (is_multi_line_ && (key_id == key::k_up || key_id == key::k_down))) {
         if (!are_arrows_ignored_) {
             std::size_t ui_previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
-            if (m_key == key::k_left || m_key == key::k_right) {
+            if (key_id == key::k_left || key_id == key::k_right) {
                 if (is_text_selected_ && !shift_is_pressed) {
                     std::size_t ui_offset = 0;
-                    if (m_key == key::k_left)
+                    if (key_id == key::k_left)
                         ui_offset = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
                     else
                         ui_offset = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
@@ -1065,10 +1064,10 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
                     iter_carret_pos_ = unicode_text_.begin() + ui_offset;
                     update_carret_position_();
                 } else
-                    move_carret_horizontally_(m_key == key::k_right);
+                    move_carret_horizontally_(key_id == key::k_right);
             } else {
                 if (is_multi_line_)
-                    move_carret_vertically_(m_key == key::k_down);
+                    move_carret_vertically_(key_id == key::k_down);
             }
 
             if (shift_is_pressed) {
@@ -1085,9 +1084,9 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
                 unlight_text();
         }
     } else if (
-        !is_multi_line_ && (m_key == key::k_up || m_key == key::k_down) &&
+        !is_multi_line_ && (key_id == key::k_up || key_id == key::k_down) &&
         !history_line_list_.empty()) {
-        if (m_key == key::k_up) {
+        if (key_id == key::k_up) {
             if (ui_current_history_line_ != 0u) {
                 if (ui_current_history_line_ == std::numeric_limits<std::size_t>::max())
                     ui_current_history_line_ = history_line_list_.size() - 1;
@@ -1095,7 +1094,7 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
                     --ui_current_history_line_;
 
                 set_text(history_line_list_[ui_current_history_line_]);
-                if (!m_checker.is_alive())
+                if (!checker.is_alive())
                     return;
             }
         } else {
@@ -1103,36 +1102,36 @@ void edit_box::process_key_(key m_key, bool shift_is_pressed, bool ctrl_is_press
                 if (ui_current_history_line_ + 1 == history_line_list_.size()) {
                     ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
                     set_text(U"");
-                    if (!m_checker.is_alive())
+                    if (!checker.is_alive())
                         return;
                 } else {
                     ++ui_current_history_line_;
                     set_text(history_line_list_[ui_current_history_line_]);
-                    if (!m_checker.is_alive())
+                    if (!checker.is_alive())
                         return;
                 }
             }
         }
-    } else if (m_key == key::k_c && ctrl_is_pressed) {
+    } else if (key_id == key::k_c && ctrl_is_pressed) {
         if (ui_selection_end_pos_ != ui_selection_start_pos_) {
             std::size_t    ui_min_pos = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
             std::size_t    ui_max_pos = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
             utils::ustring selected   = unicode_text_.substr(ui_min_pos, ui_max_pos - ui_min_pos);
             get_manager().get_window().set_clipboard_content(selected);
         }
-    } else if (m_key == key::k_v && ctrl_is_pressed) {
+    } else if (key_id == key::k_v && ctrl_is_pressed) {
         for (char32_t c : get_manager().get_window().get_clipboard_content()) {
             if (!add_char_(c))
                 break;
-            if (!m_checker.is_alive())
+            if (!checker.is_alive())
                 return;
         }
     }
 }
 
-periodic_timer::periodic_timer(double d_duration, start_type m_type, bool ticks_now) :
-    d_elapsed_(ticks_now ? d_duration : 0.0), d_duration_(d_duration), m_type_(m_type) {
-    if (m_type == start_type::now)
+periodic_timer::periodic_timer(double d_duration, start_type type, bool ticks_now) :
+    d_elapsed_(ticks_now ? d_duration : 0.0), d_duration_(d_duration), type_(type) {
+    if (type == start_type::now)
         start();
 }
 
@@ -1149,7 +1148,7 @@ bool periodic_timer::is_paused() const {
 }
 
 bool periodic_timer::ticks() {
-    if (m_type_ == start_type::first_tick && first_tick_) {
+    if (type_ == start_type::first_tick && first_tick_) {
         start();
         first_tick_ = false;
     }

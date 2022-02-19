@@ -160,29 +160,29 @@ enum class key : std::uint8_t {
 };
 
 /// Returns a standard English name for the provided mouse button.
-/** \param mID The ID code of the mouse button
+/** \param button_id The ID code of the mouse button
  *   \note This will return a standard English button name, e.g., "LeftButton" for the left mouse
  *         button. This can be used for string-based key identification in scripts, where key
  *         integer codes would be less usable, or for displaying debug or error messages.
  */
-std::string_view get_mouse_button_codename(mouse_button m_id);
+std::string_view get_mouse_button_codename(mouse_button button_id);
 
 /// Returns the localizable name of the provided mouse button.
-/** \param mID The ID code of the mouse button
+/** \param button_id The ID code of the mouse button
  *   \return The localizable name of the provided mouse button
  *   \note This will return localizable button names, e.g., "{mouse_left}" for the left mouse
  *         button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
-std::string_view get_localizable_mouse_button_name(mouse_button m_id);
+std::string_view get_localizable_mouse_button_name(mouse_button button_id);
 
 /// Returns a standard English name for the provided key.
-/** \param mKey The key
+/** \param key_id The key
  *   \return The name of the provided key
  *   \note This will return a standard English key name, e.g., "Enter" for the Enter key.
  *         This can be used for string-based key identification in scripts, where key integer
  *         codes would be less usable, or for displaying debug or error messages.
  */
-std::string_view get_key_codename(key m_key);
+std::string_view get_key_codename(key key_id);
 
 /// Returns the key code from the standard English name of a key.
 /** \param key_name The name of the key
@@ -192,12 +192,12 @@ std::string_view get_key_codename(key m_key);
 key get_key_from_codename(std::string_view key_name);
 
 /// Returns the localizable name of the provided key.
-/** \param mKey The key
+/** \param key_id The key
  *   \return The localizable name of the provided key
  *   \note This will return localizable key names, e.g., "{key_enter}" for the Enter key.
  *         Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
-std::string_view get_localizable_key_name(key m_key);
+std::string_view get_localizable_key_name(key key_id);
 
 constexpr std::size_t mouse_button_number = 3u;
 constexpr std::size_t key_number          = static_cast<std::size_t>(key::k_maxkey);

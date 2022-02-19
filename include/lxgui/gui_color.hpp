@@ -62,8 +62,8 @@ color operator*(const color& c1, const color& c2) noexcept;
 color operator*(const color& c1, float f) noexcept;
 color operator*(float f, const color& c2) noexcept;
 
-std::ostream& operator<<(std::ostream& m_stream, const color& m_color);
-std::istream& operator>>(std::istream& m_stream, color& m_color);
+std::ostream& operator<<(std::ostream& stream, const color& c);
+std::istream& operator>>(std::istream& stream, color& c);
 
 } // namespace lxgui::gui
 

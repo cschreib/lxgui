@@ -17,7 +17,7 @@ public:
     exception() = default;
 
     /// Copy constructor
-    exception(const exception& m_other) = default;
+    exception(const exception& other) = default;
 
     /// Simple message exception.
     /** \param message The message to throw

@@ -11,8 +11,8 @@ namespace lxgui::utils::view {
 template<typename BaseIterator>
 struct standard_dereferencer {
     using data_type = decltype(*std::declval<BaseIterator>());
-    static data_type dereference(const BaseIterator& m_iter) {
-        return *m_iter;
+    static data_type dereference(const BaseIterator& iter) {
+        return *iter;
     }
 };
 
@@ -20,8 +20,8 @@ struct standard_dereferencer {
 template<typename BaseIterator>
 struct smart_ptr_dereferencer {
     using data_type = decltype(*std::declval<BaseIterator>()->get());
-    static data_type dereference(const BaseIterator& m_iter) {
-        return *m_iter->get();
+    static data_type dereference(const BaseIterator& iter) {
+        return *iter->get();
     }
 };
 
@@ -29,8 +29,8 @@ struct smart_ptr_dereferencer {
 template<typename BaseIterator>
 struct ptr_dereferencer {
     using data_type = decltype(**std::declval<BaseIterator>());
-    static data_type dereference(const BaseIterator& m_iter) {
-        return **m_iter;
+    static data_type dereference(const BaseIterator& iter) {
+        return **iter;
     }
 };
 
@@ -45,8 +45,8 @@ struct no_filter {
 /// Filter non-null
 template<typename BaseIterator>
 struct non_null_filter {
-    static bool is_included(const BaseIterator& m_iter) {
-        return *m_iter != nullptr;
+    static bool is_included(const BaseIterator& iter) {
+        return *iter != nullptr;
     }
 };
 
@@ -67,77 +67,75 @@ public:
     using filter       = Filter<base_iterator>;
     using data_type    = typename dereferencer::data_type;
 
-    explicit adaptor(ContainerType& m_collection) : m_collection_(m_collection) {}
-    explicit adaptor(ContainerType& m_collection, dereferencer&& m_deref, filter&& m_filter) :
-        m_collection_(m_collection), m_deref_(std::move(m_deref)), m_filter_(std::move(m_filter)) {}
+    explicit adaptor(ContainerType& collection) : collection_(collection) {}
+    explicit adaptor(ContainerType& collection, dereferencer&& deref, filter&& filter) :
+        collection_(collection), deref_(std::move(deref)), filter_(std::move(filter)) {}
 
-    adaptor(const adaptor& m_other) : m_collection_(m_other.m_collection_) {}
-    adaptor(adaptor&& m_other) : m_collection_(m_other.m_collection_) {}
-    adaptor& operator=(const adaptor& m_other) {
-        m_collection_ = m_other.m_collection_;
+    adaptor(const adaptor& other) : collection_(other.collection_) {}
+    adaptor(adaptor&& other) : collection_(other.collection_) {}
+    adaptor& operator=(const adaptor& other) {
+        collection_ = other.collection_;
         return *this;
     }
-    adaptor& operator=(adaptor&& m_other) {
-        m_collection_ = m_other.m_collection_;
+    adaptor& operator=(adaptor&& other) {
+        collection_ = other.collection_;
         return *this;
     }
 
     class iterator {
     public:
-        explicit iterator(const adaptor& m_adaptor, base_iterator m_iter) :
-            m_adaptor_(m_adaptor), m_iter_(m_iter) {}
+        explicit iterator(const adaptor& adaptor, base_iterator iter) :
+            adaptor_(adaptor), iter_(iter) {}
 
         iterator& operator++() {
             do {
-                ++m_iter_;
-            } while (m_iter_ != m_adaptor_.m_collection_.end() &&
-                     !m_adaptor_.m_filter_.is_included(m_iter_));
+                ++iter_;
+            } while (iter_ != adaptor_.collection_.end() && !adaptor_.filter_.is_included(iter_));
 
             return *this;
         }
 
         iterator operator++(int) {
-            iterator m_old = *this;
+            iterator old = *this;
             this->   operator++();
-            return m_old;
+            return old;
         }
 
-        bool operator==(const iterator& m_other) const {
-            return m_iter_ == m_other.m_iter_;
+        bool operator==(const iterator& other) const {
+            return iter_ == other.iter_;
         }
-        bool operator!=(const iterator& m_other) const {
-            return m_iter_ != m_other.m_iter_;
+        bool operator!=(const iterator& other) const {
+            return iter_ != other.iter_;
         }
 
         data_type operator*() const {
-            return m_adaptor_.m_deref_.dereference(m_iter_);
+            return adaptor_.deref_.dereference(iter_);
         }
         data_type operator->() const {
-            return m_adaptor_.m_deref_.dereference(m_iter_);
+            return adaptor_.deref_.dereference(iter_);
         }
 
     private:
-        const adaptor& m_adaptor_;
-        base_iterator  m_iter_;
+        const adaptor& adaptor_;
+        base_iterator  iter_;
     };
 
     iterator begin() const {
-        iterator m_iter(*this, m_collection_.begin());
-        if (m_collection_.begin() != m_collection_.end() &&
-            !m_filter_.is_included(m_collection_.begin())) {
-            ++m_iter;
+        iterator iter(*this, collection_.begin());
+        if (collection_.begin() != collection_.end() && !filter_.is_included(collection_.begin())) {
+            ++iter;
         }
-        return m_iter;
+        return iter;
     }
 
     iterator end() const {
-        return iterator(*this, m_collection_.end());
+        return iterator(*this, collection_.end());
     }
 
 private:
-    ContainerType& m_collection_;
-    dereferencer   m_deref_;
-    filter         m_filter_;
+    ContainerType& collection_;
+    dereferencer   deref_;
+    filter         filter_;
 };
 
 } // namespace lxgui::utils::view

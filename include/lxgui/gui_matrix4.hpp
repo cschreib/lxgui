@@ -13,7 +13,7 @@ struct matrix4f {
     using element_type = float;
 
     matrix4f() noexcept = default;
-    matrix4f(std::initializer_list<element_type> m_list) noexcept;
+    matrix4f(std::initializer_list<element_type> list) noexcept;
     explicit matrix4f(const element_type* mat) noexcept;
 
     element_type& operator()(std::size_t row, std::size_t col) noexcept {

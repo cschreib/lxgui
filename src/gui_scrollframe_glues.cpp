@@ -35,62 +35,60 @@
 
 namespace lxgui::gui {
 
-void scroll_frame::register_on_lua(sol::state& m_lua) {
-    auto m_class = m_lua.new_usertype<scroll_frame>(
+void scroll_frame::register_on_lua(sol::state& lua) {
+    auto type = lua.new_usertype<scroll_frame>(
         "ScrollFrame", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
         member_function<&scroll_frame::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&scroll_frame::set_lua_member_>());
 
     /** @function get_horizontal_scroll
      */
-    m_class.set_function(
+    type.set_function(
         "get_horizontal_scroll", member_function<&scroll_frame::get_horizontal_scroll>());
 
     /** @function get_horizontal_scroll_range
      */
-    m_class.set_function(
+    type.set_function(
         "get_horizontal_scroll_range",
         member_function<&scroll_frame::get_horizontal_scroll_range>());
 
     /** @function get_scroll_child
      */
-    m_class.set_function(
+    type.set_function(
         "get_scroll_child", member_function< // select the right overload for Lua
                                 static_cast<const utils::observer_ptr<frame>& (scroll_frame::*)()>(
                                     &scroll_frame::get_scroll_child)>());
 
     /** @function get_vertical_scroll
      */
-    m_class.set_function(
-        "get_vertical_scroll", member_function<&scroll_frame::get_vertical_scroll>());
+    type.set_function("get_vertical_scroll", member_function<&scroll_frame::get_vertical_scroll>());
 
     /** @function get_vertical_scroll_range
      */
-    m_class.set_function(
+    type.set_function(
         "get_vertical_scroll_range", member_function<&scroll_frame::get_vertical_scroll_range>());
 
     /** @function set_horizontal_scroll
      */
-    m_class.set_function(
+    type.set_function(
         "set_horizontal_scroll", member_function<&scroll_frame::set_horizontal_scroll>());
 
     /** @function set_scroll_child
      */
-    m_class.set_function(
-        "set_scroll_child", [](scroll_frame& m_self, std::variant<std::string, frame*> m_child) {
-            utils::observer_ptr<frame> p_child = get_object<frame>(m_self.get_manager(), m_child);
+    type.set_function(
+        "set_scroll_child", [](scroll_frame& self, std::variant<std::string, frame*> child) {
+            utils::observer_ptr<frame> p_child = get_object<frame>(self.get_manager(), child);
 
             utils::owner_ptr<frame> p_scroll_child;
             if (p_child)
                 p_scroll_child = utils::static_pointer_cast<frame>(p_child->release_from_parent());
 
-            m_self.set_scroll_child(std::move(p_scroll_child));
+            self.set_scroll_child(std::move(p_scroll_child));
         });
 
     /** @function set_vertical_scroll
      */
-    m_class.set_function(
-        "set_vertical_scroll", member_function<&scroll_frame::set_vertical_scroll>());
+    type.set_function("set_vertical_scroll", member_function<&scroll_frame::set_vertical_scroll>());
 }
 
 } // namespace lxgui::gui

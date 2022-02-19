@@ -48,23 +48,23 @@ namespace {
 
 // Global state for the Freetype library (one per thread)
 thread_local std::size_t ui_ft_count = 0u;
-thread_local FT_Library  m_shared_ft = nullptr;
+thread_local FT_Library  shared_ft   = nullptr;
 
 FT_Library get_freetype() {
     if (ui_ft_count == 0u) {
-        if (FT_Init_FreeType(&m_shared_ft))
+        if (FT_Init_FreeType(&shared_ft))
             throw lxgui::gui::exception("gui::gl::font", "Error initializing FreeType !");
     }
 
     ++ui_ft_count;
-    return m_shared_ft;
+    return shared_ft;
 }
 
 void release_freetype() {
     if (ui_ft_count != 0u) {
         --ui_ft_count;
         if (ui_ft_count == 0u)
-            FT_Done_FreeType(m_shared_ft);
+            FT_Done_FreeType(shared_ft);
     }
 }
 
@@ -91,34 +91,34 @@ font::font(
     if (!utils::file_exists(font_file))
         throw gui::exception("gui::gl::font", "Cannot find file \"" + font_file + "\".");
 
-    FT_Library m_ft      = get_freetype();
-    FT_Stroker m_stroker = nullptr;
-    FT_Glyph   m_glyph   = nullptr;
+    FT_Library ft      = get_freetype();
+    FT_Stroker stroker = nullptr;
+    FT_Glyph   glyph   = nullptr;
 
     try {
         // Add some space between letters to prevent artifacts
         const std::size_t ui_spacing = 1;
 
-        if (FT_New_Face(m_ft, font_file.c_str(), 0, &m_face_) != 0) {
+        if (FT_New_Face(ft, font_file.c_str(), 0, &face_) != 0) {
             throw gui::exception(
                 "gui::gl::font", "Error loading font : \"" + font_file + "\" : cannot load face.");
         }
 
         if (ui_outline > 0) {
-            if (FT_Stroker_New(m_ft, &m_stroker) != 0) {
+            if (FT_Stroker_New(ft, &stroker) != 0) {
                 throw gui::exception(
                     "gui::gl::font",
                     "Error loading font : \"" + font_file + "\" : cannot create stroker.");
             }
         }
 
-        if (FT_Select_Charmap(m_face_, FT_ENCODING_UNICODE) != 0) {
+        if (FT_Select_Charmap(face_, FT_ENCODING_UNICODE) != 0) {
             throw gui::exception(
                 "gui::gl::font", "Error loading font : \"" + font_file +
                                      "\" : cannot select Unicode character map.");
         }
 
-        if (FT_Set_Pixel_Sizes(m_face_, 0, ui_size) != 0) {
+        if (FT_Set_Pixel_Sizes(face_, 0, ui_size) != 0) {
             throw gui::exception(
                 "gui::gl::font",
                 "Error loading font : \"" + font_file + "\" : cannot set font size.");
@@ -131,35 +131,35 @@ font::font(
         // Calculate maximum width, height and bearing
         std::size_t ui_max_height = 0, ui_max_width = 0;
         std::size_t ui_num_char = 0;
-        for (const code_point_range& m_range : code_points) {
-            for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
+        for (const code_point_range& range : code_points) {
+            for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
                  ++ui_code_point) {
-                if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0)
+                if (FT_Load_Char(face_, ui_code_point, load_flags) != 0)
                     continue;
 
-                if (FT_Get_Glyph(m_face_->glyph, &m_glyph) != 0)
+                if (FT_Get_Glyph(face_->glyph, &glyph) != 0)
                     continue;
 
-                if (m_glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
+                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
                     FT_Stroker_Set(
-                        m_stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
+                        stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
                         FT_STROKER_LINEJOIN_ROUND, 0);
-                    FT_Glyph_StrokeBorder(&m_glyph, m_stroker, false, true);
+                    FT_Glyph_StrokeBorder(&glyph, stroker, false, true);
                 }
 
-                FT_Glyph_To_Bitmap(&m_glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
-                const FT_Bitmap& m_bitmap = reinterpret_cast<FT_BitmapGlyph>(m_glyph)->bitmap;
+                FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
+                const FT_Bitmap& bitmap = reinterpret_cast<FT_BitmapGlyph>(glyph)->bitmap;
 
-                if (m_bitmap.rows > ui_max_height)
-                    ui_max_height = m_bitmap.rows;
+                if (bitmap.rows > ui_max_height)
+                    ui_max_height = bitmap.rows;
 
-                if (m_bitmap.width > ui_max_width)
-                    ui_max_width = m_bitmap.width;
+                if (bitmap.width > ui_max_width)
+                    ui_max_width = bitmap.width;
 
                 ++ui_num_char;
 
-                FT_Done_Glyph(m_glyph);
-                m_glyph = nullptr;
+                FT_Done_Glyph(glyph);
+                glyph = nullptr;
             }
         }
 
@@ -197,114 +197,114 @@ font::font(
 
         std::size_t x = 0, y = 0;
 
-        if (FT_HAS_KERNING(m_face_))
+        if (FT_HAS_KERNING(face_))
             kerning_ = true;
 
         float y_offset = 0.0f;
-        if (FT_IS_SCALABLE(m_face_)) {
-            FT_Fixed m_scale = m_face_->size->metrics.y_scale;
-            y_offset         = ft_ceil<6>(FT_MulFix(m_face_->ascender, m_scale)) +
-                       ft_ceil<6>(FT_MulFix(m_face_->descender, m_scale));
+        if (FT_IS_SCALABLE(face_)) {
+            FT_Fixed scale = face_->size->metrics.y_scale;
+            y_offset       = ft_ceil<6>(FT_MulFix(face_->ascender, scale)) +
+                       ft_ceil<6>(FT_MulFix(face_->descender, scale));
         } else {
-            y_offset = ft_ceil<6>(m_face_->size->metrics.ascender) +
-                       ft_ceil<6>(m_face_->size->metrics.descender);
+            y_offset = ft_ceil<6>(face_->size->metrics.ascender) +
+                       ft_ceil<6>(face_->size->metrics.descender);
         }
 
-        for (const code_point_range& m_range : code_points) {
-            range_info m_info;
-            m_info.m_range = m_range;
-            m_info.data.resize(m_range.ui_last - m_range.ui_first + 1);
+        for (const code_point_range& range : code_points) {
+            range_info info;
+            info.range = range;
+            info.data.resize(range.ui_last - range.ui_first + 1);
 
-            for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
+            for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
                  ++ui_code_point) {
-                character_info& m_ci = m_info.data[ui_code_point - m_range.ui_first];
-                m_ci.ui_code_point   = ui_code_point;
+                character_info& ci = info.data[ui_code_point - range.ui_first];
+                ci.ui_code_point   = ui_code_point;
 
-                if (FT_Load_Char(m_face_, ui_code_point, load_flags) != 0) {
+                if (FT_Load_Char(face_, ui_code_point, load_flags) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot load character "
                              << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
-                if (FT_Get_Glyph(m_face_->glyph, &m_glyph) != 0) {
+                if (FT_Get_Glyph(face_->glyph, &glyph) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character "
                              << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
-                if (m_glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
+                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
                     FT_Stroker_Set(
-                        m_stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
+                        stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
                         FT_STROKER_LINEJOIN_ROUND, 0);
-                    FT_Glyph_Stroke(&m_glyph, m_stroker, true);
+                    FT_Glyph_Stroke(&glyph, stroker, true);
                 }
 
                 // Warning: after this line, do not use mGlyph! Use mBitmapGlyph.root
-                FT_Glyph_To_Bitmap(&m_glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
-                FT_BitmapGlyph m_bitmap_glyph = reinterpret_cast<FT_BitmapGlyph>(m_glyph);
+                FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
+                FT_BitmapGlyph bitmap_glyph = reinterpret_cast<FT_BitmapGlyph>(glyph);
 
-                const FT_Bitmap& m_bitmap = m_bitmap_glyph->bitmap;
+                const FT_Bitmap& bitmap = bitmap_glyph->bitmap;
 
                 // If at end of row, jump to next line
-                if (x + m_bitmap.width > ui_final_width - 1) {
+                if (x + bitmap.width > ui_final_width - 1) {
                     y += ui_max_height + ui_spacing;
                     x = 0;
                 }
 
                 // Some characters do not have a bitmap, like white spaces.
                 // This is legal, and we should just have blank geometry for them.
-                const ub32color::chanel* buffer = m_bitmap.buffer;
+                const ub32color::chanel* buffer = bitmap.buffer;
                 if (buffer) {
-                    for (std::size_t j = 0; j < m_bitmap.rows; ++j) {
+                    for (std::size_t j = 0; j < bitmap.rows; ++j) {
                         std::size_t ui_row_offset = (y + j) * ui_final_width + x;
-                        for (std::size_t i = 0; i < m_bitmap.width; ++i, ++buffer)
+                        for (std::size_t i = 0; i < bitmap.width; ++i, ++buffer)
                             data[i + ui_row_offset] = ub32color(255, 255, 255, *buffer);
                     }
                 }
 
-                m_ci.m_uvs.left   = x / float(ui_final_width);
-                m_ci.m_uvs.top    = y / float(ui_final_height);
-                m_ci.m_uvs.right  = (x + m_bitmap.width) / float(ui_final_width);
-                m_ci.m_uvs.bottom = (y + m_bitmap.rows) / float(ui_final_height);
+                ci.uvs.left   = x / float(ui_final_width);
+                ci.uvs.top    = y / float(ui_final_height);
+                ci.uvs.right  = (x + bitmap.width) / float(ui_final_width);
+                ci.uvs.bottom = (y + bitmap.rows) / float(ui_final_height);
 
-                m_ci.m_rect.left   = m_bitmap_glyph->left;
-                m_ci.m_rect.right  = m_ci.m_rect.left + m_bitmap.width;
-                m_ci.m_rect.top    = y_offset - m_bitmap_glyph->top;
-                m_ci.m_rect.bottom = m_ci.m_rect.top + m_bitmap.rows;
+                ci.rect.left   = bitmap_glyph->left;
+                ci.rect.right  = ci.rect.left + bitmap.width;
+                ci.rect.top    = y_offset - bitmap_glyph->top;
+                ci.rect.bottom = ci.rect.top + bitmap.rows;
 
-                m_ci.advance = ft_round<16>(m_bitmap_glyph->root.advance.x);
+                ci.advance = ft_round<16>(bitmap_glyph->root.advance.x);
 
                 // Advance a column
-                x += m_bitmap.width + ui_spacing;
+                x += bitmap.width + ui_spacing;
 
-                FT_Done_Glyph(m_glyph);
-                m_glyph = nullptr;
+                FT_Done_Glyph(glyph);
+                glyph = nullptr;
             }
 
-            range_list_.push_back(std::move(m_info));
+            range_list_.push_back(std::move(info));
         }
 
-        FT_Stroker_Done(m_stroker);
+        FT_Stroker_Done(stroker);
 
         gl::material::premultiply_alpha(data);
 
         p_texture_ = std::make_shared<gl::material>(vector2ui(ui_final_width, ui_final_height));
         p_texture_->update_texture(data.data());
     } catch (...) {
-        if (m_glyph)
-            FT_Done_Glyph(m_glyph);
-        if (m_stroker)
-            FT_Stroker_Done(m_stroker);
-        if (m_face_)
-            FT_Done_Face(m_face_);
+        if (glyph)
+            FT_Done_Glyph(glyph);
+        if (stroker)
+            FT_Stroker_Done(stroker);
+        if (face_)
+            FT_Done_Face(face_);
         release_freetype();
         throw;
     }
 }
 
 font::~font() {
-    if (m_face_)
-        FT_Done_Face(m_face_);
+    if (face_)
+        FT_Done_Face(face_);
     release_freetype();
 }
 
@@ -313,11 +313,11 @@ std::size_t font::get_size() const {
 }
 
 const font::character_info* font::get_character_(char32_t c) const {
-    for (const auto& m_info : range_list_) {
-        if (c < m_info.m_range.ui_first || c > m_info.m_range.ui_last)
+    for (const auto& info : range_list_) {
+        if (c < info.range.ui_first || c > info.range.ui_last)
             continue;
 
-        return &m_info.data[c - m_info.m_range.ui_first];
+        return &info.data[c - info.range.ui_first];
     }
 
     if (c != ui_default_code_point_)
@@ -331,9 +331,9 @@ bounds2f font::get_character_uvs(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_uvs.top_left(), true);
-    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_uvs.bottom_right(), true);
-    return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
+    vector2f top_left     = p_texture_->get_canvas_uv(p_char->uvs.top_left(), true);
+    vector2f bottom_right = p_texture_->get_canvas_uv(p_char->uvs.bottom_right(), true);
+    return bounds2f(top_left.x, bottom_right.x, top_left.y, bottom_right.y);
 }
 
 bounds2f font::get_character_bounds(char32_t c) const {
@@ -341,7 +341,7 @@ bounds2f font::get_character_bounds(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    return p_char->m_rect;
+    return p_char->rect;
 }
 
 float font::get_character_width(char32_t c) const {
@@ -357,16 +357,16 @@ float font::get_character_height(char32_t c) const {
     if (!p_char)
         return 0.0f;
 
-    return p_char->m_rect.height();
+    return p_char->rect.height();
 }
 
 float font::get_character_kerning(char32_t c1, char32_t c2) const {
     if (kerning_) {
-        FT_Vector m_kerning;
-        FT_UInt   ui_prev = FT_Get_Char_Index(m_face_, c1);
-        FT_UInt   ui_next = FT_Get_Char_Index(m_face_, c2);
-        if (FT_Get_Kerning(m_face_, ui_prev, ui_next, FT_KERNING_UNFITTED, &m_kerning) != 0)
-            return ft_round<6>(m_kerning.x);
+        FT_Vector kerning;
+        FT_UInt   ui_prev = FT_Get_Char_Index(face_, c1);
+        FT_UInt   ui_next = FT_Get_Char_Index(face_, c2);
+        if (FT_Get_Kerning(face_, ui_prev, ui_next, FT_KERNING_UNFITTED, &kerning) != 0)
+            return ft_round<6>(kerning.x);
         else
             return 0.0f;
     } else

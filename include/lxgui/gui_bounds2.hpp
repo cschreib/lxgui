@@ -10,20 +10,20 @@ template<typename T>
 struct bounds2 {
     constexpr bounds2() = default;
 
-    constexpr bounds2(T m_left, T m_right, T m_top, T m_bottom) noexcept :
-        left(m_left), right(m_right), top(m_top), bottom(m_bottom) {}
+    constexpr bounds2(T left, T right, T top, T bottom) noexcept :
+        left(left), right(right), top(top), bottom(bottom) {}
 
-    constexpr bounds2(const vector2<T>& m_center, const vector2<T>& m_size) noexcept :
-        left(m_center.x - m_size.x / 2),
-        right(left + m_size.x),
-        top(m_center.y - m_size.y / 2),
-        bottom(top + m_size.y) {}
+    constexpr bounds2(const vector2<T>& center, const vector2<T>& size) noexcept :
+        left(center.x - size.x / 2),
+        right(left + size.x),
+        top(center.y - size.y / 2),
+        bottom(top + size.y) {}
 
-    void set(T m_left, T m_right, T m_top, T m_bottom) noexcept {
-        left   = m_left;
-        right  = m_right;
-        top    = m_top;
-        bottom = m_bottom;
+    void set(T left, T right, T top, T bottom) noexcept {
+        left   = left;
+        right  = right;
+        top    = top;
+        bottom = bottom;
     }
 
     vector2<T> top_left() const noexcept {
@@ -58,27 +58,25 @@ struct bounds2 {
         return vector2<T>(width(), height());
     }
 
-    bool contains(const vector2<T>& m_point) const {
-        return m_point.x >= left && m_point.x < right && m_point.y >= top && m_point.y < bottom;
+    bool contains(const vector2<T>& point) const {
+        return point.x >= left && point.x < right && point.y >= top && point.y < bottom;
     }
 
-    bool overlaps(const bounds2<T>& m_quad) const {
-        auto range_overlaps = [](T m_min1, T m_max1, T m_min2, T m_max2) {
-            return (m_min1 >= m_min2 && m_min1 < m_max2) || (m_min2 >= m_min1 && m_min2 < m_max1);
+    bool overlaps(const bounds2<T>& quad) const {
+        auto range_overlaps = [](T min1, T max1, T min2, T max2) {
+            return (min1 >= min2 && min1 < max2) || (min2 >= min1 && min2 < max1);
         };
 
-        return range_overlaps(left, right, m_quad.left, m_quad.right) &&
-               range_overlaps(top, bottom, m_quad.top, m_quad.bottom);
+        return range_overlaps(left, right, quad.left, quad.right) &&
+               range_overlaps(top, bottom, quad.top, quad.bottom);
     }
 
-    bool operator==(const bounds2<T>& m_quad) const {
-        return left == m_quad.left && right == m_quad.right && top == m_quad.top &&
-               bottom == m_quad.bottom;
+    bool operator==(const bounds2<T>& quad) const {
+        return left == quad.left && right == quad.right && top == quad.top && bottom == quad.bottom;
     }
 
-    bool operator!=(const bounds2<T>& m_quad) const {
-        return left != m_quad.left || right != m_quad.right || top != m_quad.top ||
-               bottom != m_quad.bottom;
+    bool operator!=(const bounds2<T>& quad) const {
+        return left != quad.left || right != quad.right || top != quad.top || bottom != quad.bottom;
     }
 
     static const bounds2 zero;
@@ -87,63 +85,63 @@ struct bounds2 {
 };
 
 template<typename T>
-bounds2<T> operator+(const vector2<T>& m_offset, const bounds2<T>& m_quad) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left += m_offset.x;
-    m_tmp.right += m_offset.x;
-    m_tmp.top += m_offset.y;
-    m_tmp.bottom += m_offset.y;
-    return m_tmp;
+bounds2<T> operator+(const vector2<T>& offset, const bounds2<T>& quad) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left += offset.x;
+    tmp.right += offset.x;
+    tmp.top += offset.y;
+    tmp.bottom += offset.y;
+    return tmp;
 }
 
 template<typename T>
-bounds2<T> operator+(const bounds2<T>& m_quad, const vector2<T>& m_offset) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left += m_offset.x;
-    m_tmp.right += m_offset.x;
-    m_tmp.top += m_offset.y;
-    m_tmp.bottom += m_offset.y;
-    return m_tmp;
+bounds2<T> operator+(const bounds2<T>& quad, const vector2<T>& offset) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left += offset.x;
+    tmp.right += offset.x;
+    tmp.top += offset.y;
+    tmp.bottom += offset.y;
+    return tmp;
 }
 
 template<typename T>
-bounds2<T> operator-(const bounds2<T>& m_quad, const vector2<T>& m_offset) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left -= m_offset.x;
-    m_tmp.right -= m_offset.x;
-    m_tmp.top -= m_offset.y;
-    m_tmp.bottom -= m_offset.y;
-    return m_tmp;
+bounds2<T> operator-(const bounds2<T>& quad, const vector2<T>& offset) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left -= offset.x;
+    tmp.right -= offset.x;
+    tmp.top -= offset.y;
+    tmp.bottom -= offset.y;
+    return tmp;
 }
 
 template<typename T>
-bounds2<T> operator*(const bounds2<T>& m_quad, T scale) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left *= scale;
-    m_tmp.right *= scale;
-    m_tmp.top *= scale;
-    m_tmp.bottom *= scale;
-    return m_tmp;
+bounds2<T> operator*(const bounds2<T>& quad, T scale) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left *= scale;
+    tmp.right *= scale;
+    tmp.top *= scale;
+    tmp.bottom *= scale;
+    return tmp;
 }
 
 template<typename T>
-bounds2<T> operator*(T scale, const bounds2<T>& m_quad) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left *= scale;
-    m_tmp.right *= scale;
-    m_tmp.top *= scale;
-    m_tmp.bottom *= scale;
-    return m_tmp;
+bounds2<T> operator*(T scale, const bounds2<T>& quad) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left *= scale;
+    tmp.right *= scale;
+    tmp.top *= scale;
+    tmp.bottom *= scale;
+    return tmp;
 }
 
 template<typename T>
-bounds2<T> operator/(const bounds2<T>& m_quad, T scale) noexcept {
-    bounds2<T> m_tmp = m_quad;
-    m_tmp.left /= scale;
-    m_tmp.right /= scale;
-    m_tmp.top /= scale;
-    m_tmp.bottom /= scale;
-    return m_tmp;
+bounds2<T> operator/(const bounds2<T>& quad, T scale) noexcept {
+    bounds2<T> tmp = quad;
+    tmp.left /= scale;
+    tmp.right /= scale;
+    tmp.top /= scale;
+    tmp.bottom /= scale;
+    return tmp;
 }
 
 template<typename T>
@@ -153,8 +151,8 @@ using bounds2f = bounds2<float>;
 using bounds2i = bounds2<int>;
 
 template<typename O, typename T>
-O& operator<<(O& m_stream, const bounds2<T>& m_quad) {
-    return m_stream << "(" << m_quad.top_left() << "), (" << m_quad.bottom_right() << ")";
+O& operator<<(O& stream, const bounds2<T>& quad) {
+    return stream << "(" << quad.top_left() << "), (" << quad.bottom_right() << ")";
 }
 
 } // namespace lxgui::gui

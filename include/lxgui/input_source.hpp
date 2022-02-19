@@ -42,7 +42,7 @@ public:
 
     struct mouse_state {
         std::array<bool, mouse_button_number> button_state = {};
-        gui::vector2f                         m_position;
+        gui::vector2f                         position;
         float                                 wheel = 0.0f;
     };
 
@@ -81,11 +81,10 @@ public:
 
     /// Sets the mouse cursor to a given image on disk.
     /** \param file_name The cursor image
-     *   \param mHotSpot The pixel position of the tip of the pointer in the image
+     *   \param hot_spot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
-    virtual void
-    set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) = 0;
+    virtual void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) = 0;
 
     /// Sets the mouse cursor back to the default (arrow).
     virtual void reset_mouse_cursor() = 0;
@@ -110,10 +109,10 @@ public:
     utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
 
 protected:
-    key_state   m_keyboard_;
-    mouse_state m_mouse_;
+    key_state   keyboard_;
+    mouse_state mouse_;
 
-    gui::vector2ui m_window_dimensions_;
+    gui::vector2ui window_dimensions_;
 };
 
 } // namespace lxgui::input

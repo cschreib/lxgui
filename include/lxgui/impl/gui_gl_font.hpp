@@ -90,19 +90,19 @@ public:
 private:
     struct character_info {
         char32_t ui_code_point = 0;
-        bounds2f m_uvs;
-        bounds2f m_rect;
+        bounds2f uvs;
+        bounds2f rect;
         float    advance = 0.0f;
     };
 
     struct range_info {
-        code_point_range            m_range;
+        code_point_range            range;
         std::vector<character_info> data;
     };
 
     const character_info* get_character_(char32_t c) const;
 
-    FT_Face     m_face_                = nullptr;
+    FT_Face     face_                  = nullptr;
     std::size_t ui_size_               = 0u;
     bool        kerning_               = false;
     char32_t    ui_default_code_point_ = 0u;

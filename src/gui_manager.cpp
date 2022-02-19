@@ -35,12 +35,12 @@
 namespace lxgui::gui {
 
 manager::manager(
-    utils::control_block&          m_block,
+    utils::control_block&          block,
     std::unique_ptr<input::source> p_input_source,
-    std::unique_ptr<renderer>      p_renderer) :
-    utils::enable_observer_from_this<manager>(m_block),
+    std::unique_ptr<renderer>      rdr) :
+    utils::enable_observer_from_this<manager>(block),
     p_input_source_(std::move(p_input_source)),
-    p_renderer_(std::move(p_renderer)),
+    p_renderer_(std::move(rdr)),
     p_window_(std::make_unique<input::window>(*p_input_source_)),
     p_input_dispatcher_(std::make_unique<input::dispatcher>(*p_input_source_)),
     p_world_input_dispatcher_(std::make_unique<input::world_dispatcher>()),
@@ -48,13 +48,13 @@ manager::manager(
     p_localizer_(std::make_unique<localizer>()) {
     set_interface_scaling_factor(1.0f);
 
-    p_window_->on_window_resized.connect([&](const vector2ui& m_dimensions) {
+    p_window_->on_window_resized.connect([&](const vector2ui& dimensions) {
         // Update the scaling factor; on mobile platforms, rotating the screen will
         // trigger a change of window size and resolution, which the scaling factor "hint"
         // will pick up.
         set_interface_scaling_factor(base_scaling_factor_);
 
-        p_renderer_->notify_window_resized(m_dimensions);
+        p_renderer_->notify_window_resized(dimensions);
     });
 }
 
@@ -118,14 +118,14 @@ const sol::state& manager::get_lua() const {
 }
 
 void manager::read_files_() {
-    if (is_loaded_ || p_add_on_registry_)
+    if (is_loaded_ || p_addon_registry_)
         return;
 
-    p_add_on_registry_ = std::make_unique<addon_registry>(
+    p_addon_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
 
     for (const auto& directory : gui_directory_list_)
-        p_add_on_registry_->load_addon_directory(directory);
+        p_addon_registry_->load_addon_directory(directory);
 }
 
 void manager::load_ui() {
@@ -154,14 +154,14 @@ void manager::close_ui_now() {
     if (!is_loaded_)
         return;
 
-    if (p_add_on_registry_)
-        p_add_on_registry_->save_variables();
+    if (p_addon_registry_)
+        p_addon_registry_->save_variables();
 
-    p_virtual_root_    = nullptr;
-    p_root_            = nullptr;
-    p_factory_         = nullptr;
-    p_add_on_registry_ = nullptr;
-    p_lua_             = nullptr;
+    p_virtual_root_   = nullptr;
+    p_root_           = nullptr;
+    p_factory_        = nullptr;
+    p_addon_registry_ = nullptr;
+    p_lua_            = nullptr;
 
     p_localizer_->clear_translations();
 
@@ -226,15 +226,15 @@ std::string manager::print_ui() const {
     s << "\n\n######################## Regions "
          "########################\n\n########################\n"
       << std::endl;
-    for (const auto& m_frame : p_root_->get_root_frames()) {
-        s << m_frame.serialize("") << "\n########################\n" << std::endl;
+    for (const auto& frame : p_root_->get_root_frames()) {
+        s << frame.serialize("") << "\n########################\n" << std::endl;
     }
 
     s << "\n\n#################### Virtual Regions "
          "####################\n\n########################\n"
       << std::endl;
-    for (const auto& m_frame : p_virtual_root_->get_root_frames()) {
-        s << m_frame.serialize("") << "\n########################\n" << std::endl;
+    for (const auto& frame : p_virtual_root_->get_root_frames()) {
+        s << frame.serialize("") << "\n########################\n" << std::endl;
     }
 
     return s.str();

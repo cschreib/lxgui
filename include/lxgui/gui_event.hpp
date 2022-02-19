@@ -26,11 +26,11 @@ public:
     event_data& operator=(event_data&&) = default;
 
     /// Adds a parameter to this event.
-    /** \param mValue The value
+    /** \param value The value
      */
     template<typename T>
-    void add(T&& m_value) {
-        arg_list_.push_back(std::forward<T>(m_value));
+    void add(T&& value) {
+        arg_list_.push_back(std::forward<T>(value));
     }
 
     /// Returns a parameter of this event.

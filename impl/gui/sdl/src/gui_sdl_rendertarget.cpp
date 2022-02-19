@@ -9,9 +9,9 @@
 namespace lxgui::gui::sdl {
 
 render_target::render_target(
-    SDL_Renderer* p_renderer, const vector2ui& m_dimensions, material::filter m_filter) {
-    p_texture_ = std::make_shared<sdl::material>(
-        p_renderer, m_dimensions, true, material::wrap::repeat, m_filter);
+    SDL_Renderer* rdr, const vector2ui& dimensions, material::filter filt) {
+    p_texture_ =
+        std::make_shared<sdl::material>(rdr, dimensions, true, material::wrap::repeat, filt);
 }
 
 void render_target::begin() {
@@ -19,16 +19,15 @@ void render_target::begin() {
         throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
 
-    m_view_matrix_ = matrix4f::view(vector2f(get_canvas_dimensions()));
+    view_matrix_ = matrix4f::view(vector2f(get_canvas_dimensions()));
 }
 
 void render_target::end() {
     SDL_SetRenderTarget(p_texture_->get_renderer(), nullptr);
 }
 
-void render_target::clear(const color& m_color) {
-    SDL_SetRenderDrawColor(
-        p_texture_->get_renderer(), m_color.r * 255, m_color.g * 255, m_color.b * 255, m_color.a * 255);
+void render_target::clear(const color& c) {
+    SDL_SetRenderDrawColor(p_texture_->get_renderer(), c.r * 255, c.g * 255, c.b * 255, c.a * 255);
 
     SDL_RenderClear(p_texture_->get_renderer());
 }
@@ -41,8 +40,8 @@ vector2ui render_target::get_canvas_dimensions() const {
     return p_texture_->get_canvas_dimensions();
 }
 
-bool render_target::set_dimensions(const vector2ui& m_dimensions) {
-    return p_texture_->set_dimensions(m_dimensions);
+bool render_target::set_dimensions(const vector2ui& dimensions) {
+    return p_texture_->set_dimensions(dimensions);
 }
 
 std::weak_ptr<sdl::material> render_target::get_material() {
@@ -54,14 +53,14 @@ SDL_Texture* render_target::get_render_texture() {
 }
 
 const matrix4f& render_target::get_view_matrix() const {
-    return m_view_matrix_;
+    return view_matrix_;
 }
 
-void render_target::check_availability(SDL_Renderer* p_renderer) {
-    SDL_RendererInfo m_info;
-    SDL_GetRendererInfo(p_renderer, &m_info);
+void render_target::check_availability(SDL_Renderer* rdr) {
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(rdr, &info);
 
-    if ((m_info.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
+    if ((info.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
         throw gui::exception(
             "gui::sdl::render_target", "Render targets are not supported by hardware.");
     }

@@ -53,29 +53,29 @@ private:
 
 public:
     /// Constructor.
-    /** \param mManager The GUI manager
+    /** \param mgr The GUI manager
      */
-    explicit factory(manager& m_manager);
+    explicit factory(manager& mgr);
 
-    factory(const factory& m_mgr) = delete;
-    factory(factory&& m_mgr)      = delete;
-    factory& operator=(const factory& m_mgr) = delete;
-    factory& operator=(factory&& m_mgr) = delete;
+    // Non-copiable, non-movable
+    factory(const factory&) = delete;
+    factory(factory&&)      = delete;
+    factory& operator=(const factory&) = delete;
+    factory& operator=(factory&&) = delete;
 
     /// Creates a new region.
-    /** \param mRegistry The registry in which to register this object
-     *   \param mAttr     The attributes of the object
+    /** \param reg The registry in which to register this object
+     *   \param attr     The attributes of the object
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the
      *         object is directly usable.
      */
-    utils::owner_ptr<region>
-    create_region(registry& m_registry, const region_core_attributes& m_attr);
+    utils::owner_ptr<region> create_region(registry& reg, const region_core_attributes& attr);
 
     /// Creates a new frame.
-    /** \param mRegistry The registry in which to register this frame
-     *   \param renderer The frame_renderer that will render this frame
-     *   \param mAttr     The attributes of the frame
+    /** \param reg The registry in which to register this frame
+     *   \param rdr The frame_renderer that will render this frame
+     *   \param attr     The attributes of the frame
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the
      *         frame is directly usable. However, you still need to call
@@ -83,18 +83,18 @@ public:
      *         you require on this frame. If you do not, the frame's OnLoad
      *         callback will not fire.
      */
-    utils::owner_ptr<frame> create_frame(
-        registry& m_registry, frame_renderer* p_renderer, const region_core_attributes& m_attr);
+    utils::owner_ptr<frame>
+    create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr);
 
     /// Creates a new layered_region.
-    /** \param mRegistry The registry in which to register this region
-     *   \param mAttr     The attributes of the region
+    /** \param reg The registry in which to register this region
+     *   \param attr     The attributes of the region
      *   \return The new layered_region
      *   \note This function takes care of the basic initializing: the
      *         region is directly usable.
      */
     utils::owner_ptr<layered_region>
-    create_layered_region(registry& m_registry, const region_core_attributes& m_attr);
+    create_layered_region(registry& reg, const region_core_attributes& attr);
 
     /// Registers a new object type.
     /** \note Set the first template argument as the C++ type of this object.
@@ -125,12 +125,11 @@ public:
     const sol::state& get_lua() const;
 
 private:
-    bool
-    finalize_object_(registry& m_registry, region& m_object, const region_core_attributes& m_attr);
+    bool finalize_object_(registry& reg, region& object, const region_core_attributes& attr);
 
-    void apply_inheritance_(region& m_object, const region_core_attributes& m_attr);
+    void apply_inheritance_(region& object, const region_core_attributes& attr);
 
-    manager& m_manager_;
+    manager& manager_;
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;

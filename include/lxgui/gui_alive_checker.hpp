@@ -21,7 +21,9 @@ class region;
 class alive_checker {
 public:
     /// Contructor.
-    explicit alive_checker(region& m_object) : p_object_(m_object.observer_from_this()) {}
+    /** \param object The object to monitor
+     */
+    explicit alive_checker(region& object) : p_object_(object.observer_from_this()) {}
 
     // Non-copiable, non-movable
     alive_checker(const alive_checker&) = delete;

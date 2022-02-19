@@ -36,8 +36,8 @@ namespace lxgui::gui::gl {
 thread_local std::weak_ptr<renderer::shader_cache> renderer::p_static_shader_cache;
 #endif
 
-renderer::renderer(const vector2ui& m_window_dimensions, bool init_glew [[maybe_unused]]) :
-    m_window_dimensions_(m_window_dimensions) {
+renderer::renderer(const vector2ui& window_dimensions, bool init_glew [[maybe_unused]]) :
+    window_dimensions_(window_dimensions) {
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     if (init_glew)
         glewInit();
@@ -73,17 +73,17 @@ renderer::shader_cache::~shader_cache() {
 #endif
 
 void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
-    matrix4f m_current_view_matrix;
+    matrix4f current_view_matrix;
 
     if (p_target) {
         p_current_target_ = std::static_pointer_cast<gl::render_target>(p_target);
         p_current_target_->begin();
 
-        m_current_view_matrix = p_current_target_->get_view_matrix();
+        current_view_matrix = p_current_target_->get_view_matrix();
     } else {
-        glViewport(0.0f, 0.0f, m_window_dimensions_.x, m_window_dimensions_.y);
+        glViewport(0.0f, 0.0f, window_dimensions_.x, window_dimensions_.y);
 
-        m_current_view_matrix = matrix4f::view(vector2f(m_window_dimensions_));
+        current_view_matrix = matrix4f::view(vector2f(window_dimensions_));
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -100,7 +100,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
     glDisable(GL_ALPHA_TEST);
 #endif
 
-    set_view_(m_current_view_matrix);
+    set_view_(current_view_matrix);
 }
 
 void renderer::end_() {
@@ -110,18 +110,18 @@ void renderer::end_() {
     }
 }
 
-void renderer::set_view_(const matrix4f& m_view_matrix) {
-    m_current_view_matrix_ = m_view_matrix;
+void renderer::set_view_(const matrix4f& view_matrix) {
+    current_view_matrix_ = view_matrix;
 
-    matrix4f m_corrected_view = m_view_matrix;
+    matrix4f corrected_view = view_matrix;
     if (!p_current_target_) {
         // Rendering to main screen, flip Y
         for (std::size_t i = 0; i < 4; ++i)
-            m_corrected_view(i, 1) *= -1.0f;
+            corrected_view(i, 1) *= -1.0f;
     }
 
 #if defined(LXGUI_OPENGL3)
-    glUniformMatrix4fv(p_shader_cache_->proj_location, 1, GL_FALSE, m_corrected_view.data);
+    glUniformMatrix4fv(p_shader_cache_->proj_location, 1, GL_FALSE, corrected_view.data);
 #else
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(mCorrectedView.data);
@@ -131,7 +131,7 @@ void renderer::set_view_(const matrix4f& m_view_matrix) {
 }
 
 matrix4f renderer::get_view() const {
-    return m_current_view_matrix_;
+    return current_view_matrix_;
 }
 
 void renderer::render_quads_(
@@ -147,7 +147,7 @@ void renderer::render_quads_(
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        for (const auto& v : lQuadList) {
+        for (const auto& v : quad_list) {
             for (std::size_t i = 0; i < 6; ++i) {
                 std::size_t j = lIDs[i];
                 float       a = v[j].col.a;
@@ -160,7 +160,7 @@ void renderer::render_quads_(
     } else {
         glDisable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        for (const auto& v : lQuadList) {
+        for (const auto& v : quad_list) {
             for (std::size_t i = 0; i < 6; ++i) {
                 std::size_t j = lIDs[i];
                 float       a = v[j].col.a;
@@ -190,13 +190,13 @@ void renderer::render_quads_(
 
 void renderer::render_cache_(
     const gui::material*     p_material,
-    const gui::vertex_cache& m_cache,
-    const matrix4f&          m_model_transform) {
+    const gui::vertex_cache& cache,
+    const matrix4f&          model_transform) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    const gl::material*     p_mat      = static_cast<const gl::material*>(p_material);
-    const gl::vertex_cache& m_gl_cache = static_cast<const gl::vertex_cache&>(m_cache);
+    const gl::material*     p_mat    = static_cast<const gl::material*>(p_material);
+    const gl::vertex_cache& gl_cache = static_cast<const gl::vertex_cache&>(cache);
 
     // Setup uniforms
     int type = 0;
@@ -211,24 +211,24 @@ void renderer::render_cache_(
     }
 
     glUniform1i(p_shader_cache_->type_location, type);
-    glUniformMatrix4fv(p_shader_cache_->model_location, 1, GL_FALSE, m_model_transform.data);
+    glUniformMatrix4fv(p_shader_cache_->model_location, 1, GL_FALSE, model_transform.data);
 
     // Render
-    m_gl_cache.render();
+    gl_cache.render();
 #endif
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material_(const std::string& file_name, material::filter m_filter) {
+renderer::create_material_(const std::string& file_name, material::filter filt) {
     if (!utils::ends_with(file_name, ".png"))
         throw gui::exception(
             "gui::gl::renderer", "Unsupported texture format '" + file_name + "'.");
 
-    return create_material_png_(file_name, m_filter);
+    return create_material_png_(file_name, filt);
 }
 
-std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter m_filter) {
-    return std::make_shared<gl::atlas>(*this, m_filter);
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter filt) {
+    return std::make_shared<gl::atlas>(*this, filt);
 }
 
 std::size_t renderer::get_texture_max_size() const {
@@ -236,9 +236,9 @@ std::size_t renderer::get_texture_max_size() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& m_dimensions, const ub32color* p_pixel_data, material::filter m_filter) {
+    const vector2ui& dimensions, const ub32color* p_pixel_data, material::filter filt) {
     std::shared_ptr<gl::material> p_tex =
-        std::make_shared<gl::material>(m_dimensions, material::wrap::repeat, m_filter);
+        std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
 
     p_tex->update_texture(p_pixel_data);
 
@@ -246,20 +246,20 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> p_render_target, const bounds2f& m_location) {
+    std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) {
     auto p_tex =
         std::static_pointer_cast<gl::render_target>(p_render_target)->get_material().lock();
-    if (m_location == p_render_target->get_rect()) {
+    if (location == p_render_target->get_rect()) {
         return std::move(p_tex);
     } else {
         return std::make_shared<gl::material>(
-            p_tex->get_handle(), p_tex->get_canvas_dimensions(), m_location, p_tex->get_filter());
+            p_tex->get_handle(), p_tex->get_canvas_dimensions(), location, p_tex->get_filter());
     }
 }
 
 std::shared_ptr<gui::render_target>
-renderer::create_render_target(const vector2ui& m_dimensions, material::filter m_filter) {
-    return std::make_shared<gl::render_target>(m_dimensions, m_filter);
+renderer::create_render_target(const vector2ui& dimensions, material::filter filt) {
+    return std::make_shared<gl::render_target>(dimensions, filt);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(
@@ -288,29 +288,29 @@ bool renderer::is_vertex_cache_supported() const {
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type m_type) {
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    return std::make_shared<gl::vertex_cache>(m_type);
+    return std::make_shared<gl::vertex_cache>(type);
 #endif
 }
 
-void renderer::notify_window_resized(const vector2ui& m_new_dimensions) {
-    m_window_dimensions_ = m_new_dimensions;
+void renderer::notify_window_resized(const vector2ui& new_dimensions) {
+    window_dimensions_ = new_dimensions;
 }
 
 #if !defined(LXGUI_OPENGL3)
-bool renderer::is_gl_extension_supported(const std::string& sExtension) {
+bool renderer::is_gl_extension_supported(const std::string& extension) {
     // Extension names should not have spaces
-    if (sExtension.find(' ') != std::string::npos || sExtension.empty())
+    if (extension.find(' ') != std::string::npos || extension.empty())
         return false;
 
-    GLint uiNumExtension = 0;
-    glGetIntegerv(GL_NUM_EXTENSIONS, &uiNumExtension);
+    GLint num_extensions = 0;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
 
-    for (GLuint uiIndex = 0; uiIndex < static_cast<GLUint>(uiNumExtension); ++uiIndex) {
-        if (sExtension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, uiIndex)))
+    for (GLuint index = 0; index < static_cast<GLUint>(num_extensions); ++index) {
+        if (extension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, index)))
             return true;
     }
 
@@ -319,13 +319,13 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension) {
 #endif
 
 #if defined(LXGUI_OPENGL3)
-GLuint create_shader(GLenum m_type, const char* shader_source) {
+GLuint create_shader(GLenum type, const char* shader_source) {
     // Create the shader
-    GLuint ui_shader = glCreateShader(m_type);
+    GLuint ui_shader = glCreateShader(type);
     if (ui_shader == 0) {
         throw gui::exception(
             "gl::renderer", "Could not create " +
-                                std::string(m_type == GL_VERTEX_SHADER ? "vertex" : "fragment") +
+                                std::string(type == GL_VERTEX_SHADER ? "vertex" : "fragment") +
                                 " shader.");
     }
 

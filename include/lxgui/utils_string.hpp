@@ -103,7 +103,7 @@ template<typename T>
         return "null";
 }
 
-[[nodiscard]] string to_string(const utils::variant& m_value);
+[[nodiscard]] string to_string(const utils::variant& value);
 
 template<typename... Args>
 [[nodiscard]] ustring to_ustring(Args&&... args) {

@@ -37,14 +37,15 @@ class root :
     public utils::enable_observer_from_this<root> {
 public:
     /// Constructor.
-    /** \param mBlock   The owner pointer control block
-     *   \param mManager The GUI manager
+    /** \param block   The owner pointer control block
+     *   \param mgr The GUI manager
      */
-    explicit root(utils::control_block& m_block, manager& m_manager);
+    explicit root(utils::control_block& block, manager& mgr);
 
     /// Destructor.
     ~root() override;
 
+    // Non-copiable, non-movable
     root(const root&) = delete;
     root(root&&)      = delete;
     root& operator=(const root&) = delete;
@@ -106,8 +107,8 @@ public:
     /// Check if a given frame is being hovered.
     /** \return 'true' if hovered, 'false' otherwise
      */
-    bool is_hovered(const frame& m_frame) const {
-        return p_hovered_frame_.get() == &m_frame;
+    bool is_hovered(const frame& obj) const {
+        return p_hovered_frame_.get() == &obj;
     }
 
     /// Returns the currently dragged frame, if any.
@@ -127,8 +128,8 @@ public:
     /// Check if a given frame is being dragged.
     /** \return 'true' if dragged, 'false' otherwise
      */
-    bool is_dragged(const frame& m_frame) const {
-        return p_dragged_frame_.get() == &m_frame;
+    bool is_dragged(const frame& obj) const {
+        return p_dragged_frame_.get() == &obj;
     }
 
     /// Start manually moving a region with the mouse.
@@ -141,9 +142,9 @@ public:
      */
     void start_moving(
         utils::observer_ptr<region> p_obj,
-        anchor*                     p_anchor                = nullptr,
-        constraint                  m_constraint            = constraint::none,
-        std::function<void()>       m_apply_constraint_func = nullptr);
+        anchor*                     p_anchor              = nullptr,
+        constraint                  constraint            = constraint::none,
+        std::function<void()>       apply_constraint_func = nullptr);
 
     /// Stops movement for the current object.
     /** \note Does nothing if no object is being moved
@@ -151,18 +152,18 @@ public:
     void stop_moving();
 
     /// Checks if the given object is allowed to move.
-    /** \param mObj The object to check
+    /** \param obj The object to check
      *   \return 'true' if the given object is allowed to move
      */
-    bool is_moving(const region& m_obj) const;
+    bool is_moving(const region& obj) const;
 
     /// Starts manually resizing a region with the mouse.
     /** \param pObj   The object to resize
-     *   \param mPoint The sizing point
+     *   \param point The sizing point
      *   \note Resizing is handled by the root, you don't need to do anything except
      *         calling stop_sizing() when you are done.
      */
-    void start_sizing(utils::observer_ptr<region> p_obj, anchor_point m_point);
+    void start_sizing(utils::observer_ptr<region> p_obj, anchor_point point);
 
     /// Stops sizing for the current object.
     /** \note Does nothing if no object is being resized
@@ -170,10 +171,10 @@ public:
     void stop_sizing();
 
     /// Checks if the given object is allowed to be resized.
-    /** \param mObj The object to check
+    /** \param obj The object to check
      *   \return 'true' if the given object is allowed to be resized
      */
-    bool is_sizing(const region& m_obj) const;
+    bool is_sizing(const region& obj) const;
 
     /// Sets whether keyboard input should be focussed.
     /** \param pReceiver The frame that requires focus
@@ -189,7 +190,7 @@ public:
     /// Give up focus of keyboard input.
     /** \param mReceiver The event receiver that releases focus
      */
-    void release_focus(const frame& m_receiver);
+    void release_focus(const frame& receiver);
 
     /// Release all requested focus.
     void clear_focus();
@@ -217,79 +218,76 @@ public:
     /** \return The manager instance associated with this root
      */
     manager& get_manager() {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns the manager instance associated with this root.
     /** \return The manager instance associated with this root
      */
     const manager& get_manager() const {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     registry& get_registry() {
-        return m_object_registry_;
+        return object_registry_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     const registry& get_registry() const {
-        return m_object_registry_;
+        return object_registry_;
     }
 
     /// Returns the keybinder object, which enables binding global actions to key presses.
     /** \return The keybinder object
      */
     keybinder& get_keybinder() {
-        return m_keybinder_;
+        return keybinder_;
     }
 
     /// Returns the keybinder object, which enables binding global actions to key presses.
     /** \return The keybinder object
      */
     const keybinder& get_keybinder() const {
-        return m_keybinder_;
+        return keybinder_;
     }
 
 private:
     void create_caching_render_target_();
-    void create_strata_cache_render_target_(strata& m_strata);
+    void create_strata_cache_render_target_(strata& strata_obj);
 
     void clear_hovered_frame_();
     void update_hovered_frame_();
     void set_hovered_frame_(
-        utils::observer_ptr<frame> p_frame, const vector2f& m_mouse_pos = vector2f::zero);
+        utils::observer_ptr<frame> p_frame, const vector2f& mouse_pos = vector2f::zero);
 
-    void on_window_resized_(const vector2ui& m_dimensions);
-    void on_mouse_moved_(const vector2f& m_movement, const vector2f& m_mouse_pos);
-    void on_mouse_wheel_(float wheel_scroll, const vector2f& m_mouse_pos);
-    void on_drag_start_(input::mouse_button m_button, const vector2f& m_mouse_pos);
-    void on_drag_stop_(input::mouse_button m_button, const vector2f& m_mouse_pos);
+    void on_window_resized_(const vector2ui& dimensions);
+    void on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos);
+    void on_mouse_wheel_(float wheel_scroll, const vector2f& mouse_pos);
+    void on_drag_start_(input::mouse_button button, const vector2f& mouse_pos);
+    void on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos);
     void on_text_entered_(std::uint32_t c);
-    void on_key_state_changed_(input::key m_key, bool is_down);
+    void on_key_state_changed_(input::key key, bool is_down);
     void on_mouse_button_state_changed_(
-        input::mouse_button m_button,
-        bool                is_down,
-        bool                is_double_click,
-        const vector2f&     m_mouse_pos);
+        input::mouse_button button, bool is_down, bool is_double_click, const vector2f& mouse_pos);
 
-    manager&                 m_manager_;
-    renderer&                m_renderer_;
-    registry                 m_object_registry_;
-    keybinder                m_keybinder_;
-    input::world_dispatcher& m_world_input_dispatcher_;
+    manager&                 manager_;
+    renderer&                renderer_;
+    registry                 object_registry_;
+    keybinder                keybinder_;
+    input::world_dispatcher& world_input_dispatcher_;
 
     // Rendering
-    vector2ui m_screen_dimensions_;
+    vector2ui screen_dimensions_;
 
     bool caching_enabled_ = false;
 
     std::shared_ptr<render_target> p_render_target_;
-    quad                           m_screen_quad_;
+    quad                           screen_quad_;
 
     // IO
     std::vector<utils::scoped_connection> connections_;
@@ -300,14 +298,14 @@ private:
 
     utils::observer_ptr<region> p_moved_object_ = nullptr;
     utils::observer_ptr<region> p_sized_object_ = nullptr;
-    vector2f                    m_mouse_movement_;
+    vector2f                    mouse_movement_;
 
     anchor*               p_moved_anchor_ = nullptr;
-    vector2f              m_movement_start_position_;
-    constraint            m_constraint_ = constraint::none;
-    std::function<void()> m_apply_constraint_func_;
+    vector2f              movement_start_position_;
+    constraint            constraint_ = constraint::none;
+    std::function<void()> apply_constraint_func_;
 
-    vector2f m_resize_start_;
+    vector2f resize_start_;
     bool     is_resizing_width_       = false;
     bool     is_resizing_height_      = false;
     bool     is_resizing_from_right_  = false;

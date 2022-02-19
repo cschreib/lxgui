@@ -26,12 +26,12 @@ namespace lxgui::gui::sfml {
 class vertex_cache final : public gui::vertex_cache {
 public:
     /// Constructor.
-    /** \param mType The type of data this cache will hold
+    /** \param type The type of data this cache will hold
      *   \details A default constructed vertex cache holds no data. Use update()
      *            to store vertices to be rendered. The size hint can enable the cache to be
      *            pre-allocated, which will avoid a reallocation when update() is called.
      */
-    explicit vertex_cache(type m_type);
+    explicit vertex_cache(type type);
 
     /// Update the data stored in the cache to form new triangles.
     /** \param vertex_data The vertices to cache
@@ -53,7 +53,7 @@ public:
 
 private:
     std::size_t      ui_num_vertex_ = 0u;
-    sf::VertexBuffer m_buffer_;
+    sf::VertexBuffer buffer_;
 };
 
 } // namespace lxgui::gui::sfml

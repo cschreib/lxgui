@@ -224,14 +224,14 @@
 
 namespace lxgui::gui {
 
-void localizer::register_on_lua(sol::state& m_sol) {
+void localizer::register_on_lua(sol::state& lua) {
     /** Returns the preferred languages to display the GUI.
      *   @see set_preferred_languages
      *   @function get_preferred_languages
      *   @treturn table A table listing the languages selected to display the UI
      *
      */
-    m_sol.set_function(
+    lua.set_function(
         "get_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Sets the preferred languages to display the GUI.
@@ -244,7 +244,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @function set_preferred_languages
      *   @tparam table languages A table listing the languages to use to display the GUI
      */
-    m_sol.set_function(
+    lua.set_function(
         "set_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Removes all allowed code points.
@@ -254,7 +254,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
      *   @function clear_allowed_code_points
      */
-    m_sol.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
+    lua.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
 
     /** Adds a new range to the set of allowed code points.
      *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
@@ -262,7 +262,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @tparam integer last The last code point in the range
      *   @function add_allowed_code_points
      */
-    m_sol.set_function("add_allowed_code_points", [&](char32_t ui_first, char32_t ui_last) {
+    lua.set_function("add_allowed_code_points", [&](char32_t ui_first, char32_t ui_last) {
         add_allowed_code_points(code_point_range{ui_first, ui_last});
     });
 
@@ -275,7 +275,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @tparam string group The name of the Unicode code group to allow
      *   @function add_allowed_code_points_for_group
      */
-    m_sol.set_function("add_allowed_code_points_for_group", [&](const std::string& group_name) {
+    lua.set_function("add_allowed_code_points_for_group", [&](const std::string& group_name) {
         add_allowed_code_points_for_group(group_name);
     });
 
@@ -287,7 +287,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @tparam string language The language code (e.g., "en", "ru", etc.)
      *   @function add_allowed_code_points_for_language
      */
-    m_sol.set_function("add_allowed_code_points_for_language", [&](const std::string& language) {
+    lua.set_function("add_allowed_code_points_for_language", [&](const std::string& language) {
         add_allowed_code_points_for_language(language);
     });
 
@@ -297,14 +297,14 @@ void localizer::register_on_lua(sol::state& m_sol) {
      * effect until the GUI is re-loaded, see @{Manager.reload_ui}.
      *   @function auto_detect_allowed_code_points
      */
-    m_sol.set_function(
+    lua.set_function(
         "auto_detect_allowed_code_points", [&]() { auto_detect_allowed_code_points(); });
 
     /** Sets the default character to display if a character is missing from a font.
      *   @tparam integer character The Unicode UTF-32 code point of the character to display
      *   @function set_fallback_code_point
      */
-    m_sol.set_function("set_fallback_code_point", [&](char32_t ui_code_point) {
+    lua.set_function("set_fallback_code_point", [&](char32_t ui_code_point) {
         set_fallback_code_point(ui_code_point);
     });
 
@@ -312,7 +312,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @function load_translations
      *   @tparam string folder The folder to search for translations
      */
-    m_sol.set_function("load_translations", [&](const std::string& folder_path) {
+    lua.set_function("load_translations", [&](const std::string& folder_path) {
         load_translations(folder_path);
     });
 
@@ -320,7 +320,7 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @function load_translation_file
      *   @tparam string filename The file from which to read new translations
      */
-    m_sol.set_function("load_translation_file", [&](const std::string& filename) {
+    lua.set_function("load_translation_file", [&](const std::string& filename) {
         load_translation_file(filename);
     });
 
@@ -332,8 +332,8 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @param ... Data to display in the translatable string (e.g., the player's health value).
      *   @treturn string The translated message encoded as UTF-8.
      */
-    m_sol.set_function("localize_string", [&](const std::string& key, sol::variadic_args m_v_args) {
-        return localize(key, m_v_args);
+    lua.set_function("localize_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return localize(key, v_args);
     });
 
     /** Format a string with arguments.
@@ -345,8 +345,8 @@ void localizer::register_on_lua(sol::state& m_sol) {
      *   @param ... Data to display in the formatted string (e.g., the player's health value).
      *   @treturn string The formatted string encoded as UTF-8.
      */
-    m_sol.set_function("format_string", [&](const std::string& key, sol::variadic_args m_v_args) {
-        return format_string(key, m_v_args);
+    lua.set_function("format_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return format_string(key, v_args);
     });
 }
 

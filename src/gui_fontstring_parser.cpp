@@ -6,50 +6,50 @@
 
 namespace lxgui::gui {
 
-void font_string::parse_layout(const layout_node& m_node) {
-    layered_region::parse_layout(m_node);
+void font_string::parse_layout(const layout_node& node) {
+    layered_region::parse_layout(node);
 
-    if (const layout_node* p_color_node = m_node.try_get_child("Color"))
+    if (const layout_node* p_color_node = node.try_get_child("Color"))
         set_text_color(parse_color_node_(*p_color_node));
 
-    parse_shadow_node_(m_node);
+    parse_shadow_node_(node);
 }
 
-void font_string::parse_attributes_(const layout_node& m_node) {
-    layered_region::parse_attributes_(m_node);
+void font_string::parse_attributes_(const layout_node& node) {
+    layered_region::parse_attributes_(node);
 
     set_font(
-        m_node.get_attribute_value_or<std::string>("font", ""),
-        m_node.get_attribute_value_or<float>("fontHeight", 0.0f));
+        node.get_attribute_value_or<std::string>("font", ""),
+        node.get_attribute_value_or<float>("fontHeight", 0.0f));
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("text")) {
+    if (const layout_attribute* p_attr = node.try_get_attribute("text")) {
         set_text(utils::utf8_to_unicode(
             get_manager().get_localizer().localize(p_attr->get_value<std::string>())));
     }
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("nonspacewrap"))
+    if (const layout_attribute* p_attr = node.try_get_attribute("nonspacewrap"))
         set_non_space_wrap(p_attr->get_value<bool>());
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("spacing"))
+    if (const layout_attribute* p_attr = node.try_get_attribute("spacing"))
         set_spacing(p_attr->get_value<float>());
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("lineSpacing"))
+    if (const layout_attribute* p_attr = node.try_get_attribute("lineSpacing"))
         set_line_spacing(p_attr->get_value<float>());
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("outline")) {
+    if (const layout_attribute* p_attr = node.try_get_attribute("outline")) {
         const std::string& outline = p_attr->get_value<std::string>();
         if (outline == "NORMAL" || outline == "THICK")
             set_outlined(true);
         else if (outline == "NONE")
             set_outlined(false);
         else {
-            gui::out << gui::warning << m_node.get_location() << " : "
+            gui::out << gui::warning << node.get_location() << " : "
                      << "Unknown outline type for " << name_ << " : \"" << outline << "\"."
                      << std::endl;
         }
     }
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("alignX")) {
+    if (const layout_attribute* p_attr = node.try_get_attribute("alignX")) {
         const std::string& align_x = p_attr->get_value<std::string>();
         if (align_x == "LEFT")
             set_alignment_x(alignment_x::left);
@@ -58,13 +58,13 @@ void font_string::parse_attributes_(const layout_node& m_node) {
         else if (align_x == "RIGHT")
             set_alignment_x(alignment_x::right);
         else {
-            gui::out << gui::warning << m_node.get_location() << " : "
+            gui::out << gui::warning << node.get_location() << " : "
                      << "Unknown horizontal alignment behavior for " << name_ << " : \"" << align_x
                      << "\"." << std::endl;
         }
     }
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("alignY")) {
+    if (const layout_attribute* p_attr = node.try_get_attribute("alignY")) {
         const std::string& align_y = p_attr->get_value<std::string>();
         if (align_y == "TOP")
             set_alignment_y(alignment_y::top);
@@ -73,15 +73,15 @@ void font_string::parse_attributes_(const layout_node& m_node) {
         else if (align_y == "BOTTOM")
             set_alignment_y(alignment_y::bottom);
         else {
-            gui::out << gui::warning << m_node.get_location() << " : "
+            gui::out << gui::warning << node.get_location() << " : "
                      << "Unknown vertical alignment behavior for " << name_ << " : \"" << align_y
                      << "\"." << std::endl;
         }
     }
 }
 
-void font_string::parse_shadow_node_(const layout_node& m_node) {
-    if (const layout_node* p_shadow_node = m_node.try_get_child("Shadow")) {
+void font_string::parse_shadow_node_(const layout_node& node) {
+    if (const layout_node* p_shadow_node = node.try_get_child("Shadow")) {
         set_shadow(true);
 
         if (const layout_node* p_color_node = p_shadow_node->try_get_child("Color"))

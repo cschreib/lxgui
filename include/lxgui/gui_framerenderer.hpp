@@ -23,20 +23,14 @@ public:
     /// Destructor
     virtual ~frame_renderer() = default;
 
-    /// Non-copiable
+    // Non-copiable, non-movable
     frame_renderer(const frame_renderer&) = delete;
-
-    /// Non-movable
-    frame_renderer(frame_renderer&&) = delete;
-
-    /// Non-copiable
+    frame_renderer(frame_renderer&&)      = delete;
     frame_renderer& operator=(const frame_renderer&) = delete;
-
-    /// Non-movable
     frame_renderer& operator=(frame_renderer&&) = delete;
 
     /// Tells this renderer that one of its region requires redraw.
-    virtual void notify_strata_needs_redraw(frame_strata m_strata);
+    virtual void notify_strata_needs_redraw(frame_strata strata_id);
 
     /// Tells this renderer that it should (or not) render another frame.
     /** \param pFrame    The frame to render
@@ -46,13 +40,13 @@ public:
 
     /// Tells this renderer that a frame has changed strata.
     /** \param pFrame The frame which has changed
-     *   \param mOldStrata The old frame strata
-     *   \param mNewStrata The new frame strata
+     *   \param old_strata_id The old frame strata
+     *   \param new_strata_id The new frame strata
      */
     virtual void notify_frame_strata_changed(
         const utils::observer_ptr<frame>& p_frame,
-        frame_strata                      m_old_strata,
-        frame_strata                      m_new_strata);
+        frame_strata                      old_strata_id,
+        frame_strata                      new_strata_id);
 
     /// Tells this renderer that a frame has changed level.
     /** \param pFrame The frame which has changed
@@ -68,39 +62,39 @@ public:
     virtual vector2f get_target_dimensions() const = 0;
 
     /// Find the top-most frame matching the provided predicate
-    /** \param mPredicate A function returning 'true' if the frame can be selected
+    /** \param predicate A function returning 'true' if the frame can be selected
      *   \return The topmost frame, or nullptr if none
      */
     utils::observer_ptr<const frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const;
+    find_topmost_frame(const std::function<bool(const frame&)>& predicate) const;
 
     /// Find the top-most frame matching the provided predicate
-    /** \param mPredicate A function returning 'true' if the frame can be selected
+    /** \param predicate A function returning 'true' if the frame can be selected
      *   \return The topmost frame, or nullptr if none
      */
     utils::observer_ptr<frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) {
+    find_topmost_frame(const std::function<bool(const frame&)>& predicate) {
         return utils::const_pointer_cast<frame>(
-            const_cast<const frame_renderer*>(this)->find_topmost_frame(m_predicate));
+            const_cast<const frame_renderer*>(this)->find_topmost_frame(predicate));
     }
 
     /// Returns the highest level on the provided strata.
-    /** \param mframe_strata The strata to inspect
+    /** \param strata_id The strata to inspect
      *   \return The highest level on the provided strata
      */
-    int get_highest_level(frame_strata mframe_strata) const;
+    int get_highest_level(frame_strata strata_id) const;
 
 protected:
-    void add_to_strata_list_(strata& m_strata, const utils::observer_ptr<frame>& p_frame);
-    void remove_from_strata_list_(strata& m_strata, const utils::observer_ptr<frame>& p_frame);
-    void add_to_level_list_(level& m_level, const utils::observer_ptr<frame>& p_frame);
-    void remove_from_level_list_(level& m_level, const utils::observer_ptr<frame>& p_frame);
+    void add_to_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& p_frame);
+    void remove_from_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& p_frame);
+    void add_to_level_list_(level& level_obj, const utils::observer_ptr<frame>& p_frame);
+    void remove_from_level_list_(level& level_obj, const utils::observer_ptr<frame>& p_frame);
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();
-    void notify_strata_needs_redraw_(strata& m_strata);
+    void notify_strata_needs_redraw_(strata& strata_obj);
 
-    void render_strata_(const strata& m_strata) const;
+    void render_strata_(const strata& strata_obj) const;
 
     std::array<strata, 8> strata_list_;
     bool                  strata_list_updated_ = false;

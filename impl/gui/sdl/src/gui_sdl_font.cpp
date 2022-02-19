@@ -42,8 +42,8 @@ font::font(
 
     // Calculate maximum width and height
     std::size_t ui_num_char = 0;
-    for (const code_point_range& m_range : code_points) {
-        for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
+    for (const code_point_range& range : code_points) {
+        for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
              ++ui_code_point) {
             if (ui_code_point > std::numeric_limits<Uint16>::max())
                 break;
@@ -94,31 +94,30 @@ font::font(
     p_texture_ =
         std::make_shared<sdl::material>(p_renderer, vector2ui(ui_final_width, ui_final_height));
 
-    vector2ui m_canvas_dimensions       = p_texture_->get_canvas_dimensions();
-    vector2f  m_canvas_dimensions_float = vector2f(m_canvas_dimensions);
+    vector2ui canvas_dimensions       = p_texture_->get_canvas_dimensions();
+    vector2f  canvas_dimensions_float = vector2f(canvas_dimensions);
 
     std::size_t ui_pitch         = 0;
     ub32color*  p_texture_pixels = p_texture_->lock_pointer(&ui_pitch);
     std::fill(
-        p_texture_pixels, p_texture_pixels + ui_pitch * m_canvas_dimensions.y,
-        ub32color(0, 0, 0, 0));
+        p_texture_pixels, p_texture_pixels + ui_pitch * canvas_dimensions.y, ub32color(0, 0, 0, 0));
 
     std::size_t x = 0, y = 0;
     std::size_t ui_line_max_height = max_height;
 
-    const SDL_Color m_color = {255, 255, 255, 255};
+    const SDL_Color color = {255, 255, 255, 255};
 
     const float y_offset = TTF_FontDescent(p_font);
 
-    for (const code_point_range& m_range : code_points) {
-        range_info m_info;
-        m_info.m_range = m_range;
-        m_info.data.resize(m_range.ui_last - m_range.ui_first + 1);
+    for (const code_point_range& range : code_points) {
+        range_info info;
+        info.range = range;
+        info.data.resize(range.ui_last - range.ui_first + 1);
 
-        for (char32_t ui_code_point = m_range.ui_first; ui_code_point <= m_range.ui_last;
+        for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
              ++ui_code_point) {
-            character_info& m_ci = m_info.data[ui_code_point - m_range.ui_first];
-            m_ci.ui_code_point   = ui_code_point;
+            character_info& ci = info.data[ui_code_point - range.ui_first];
+            ci.ui_code_point   = ui_code_point;
 
             if (ui_code_point > std::numeric_limits<Uint16>::max()) {
                 gui::out << gui::warning << "gui::sdl::font : Cannot load character "
@@ -137,7 +136,7 @@ font::font(
                 continue;
             }
 
-            SDL_Surface* p_glyph_surface = TTF_RenderGlyph_Blended(p_font, ui_alt_char, m_color);
+            SDL_Surface* p_glyph_surface = TTF_RenderGlyph_Blended(p_font, ui_alt_char, color);
             if (!p_glyph_surface) {
                 gui::out << gui::warning << "gui::sdl::font : Cannot draw character "
                          << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
@@ -156,7 +155,7 @@ font::font(
             ui_line_max_height = std::max(ui_line_max_height, ui_glyph_height);
 
             // If at end of row, jump to next line
-            if (x + ui_glyph_width > static_cast<std::size_t>(m_canvas_dimensions.x) - 1) {
+            if (x + ui_glyph_width > static_cast<std::size_t>(canvas_dimensions.x) - 1) {
                 y += ui_line_max_height + ui_spacing;
                 x = 0;
             }
@@ -173,31 +172,31 @@ font::font(
 
             SDL_FreeSurface(p_glyph_surface);
 
-            m_ci.m_uvs.left   = x / m_canvas_dimensions_float.x;
-            m_ci.m_uvs.top    = y / m_canvas_dimensions_float.y;
-            m_ci.m_uvs.right  = (x + ui_glyph_width) / m_canvas_dimensions_float.x;
-            m_ci.m_uvs.bottom = (y + ui_glyph_height) / m_canvas_dimensions_float.y;
+            ci.uvs.left   = x / canvas_dimensions_float.x;
+            ci.uvs.top    = y / canvas_dimensions_float.y;
+            ci.uvs.right  = (x + ui_glyph_width) / canvas_dimensions_float.x;
+            ci.uvs.bottom = (y + ui_glyph_height) / canvas_dimensions_float.y;
 
             // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
-            m_ci.m_rect.left   = -static_cast<float>(ui_outline);
-            m_ci.m_rect.right  = m_ci.m_rect.left + ui_glyph_width;
-            m_ci.m_rect.top    = y_offset - static_cast<float>(ui_outline);
-            m_ci.m_rect.bottom = m_ci.m_rect.top + ui_glyph_height;
+            ci.rect.left   = -static_cast<float>(ui_outline);
+            ci.rect.right  = ci.rect.left + ui_glyph_width;
+            ci.rect.top    = y_offset - static_cast<float>(ui_outline);
+            ci.rect.bottom = ci.rect.top + ui_glyph_height;
 
-            m_ci.advance = advance;
+            ci.advance = advance;
 
             // Advance a column
             x += ui_glyph_width + ui_spacing;
         }
 
-        range_list_.push_back(std::move(m_info));
+        range_list_.push_back(std::move(info));
     }
 
     TTF_CloseFont(p_font);
 
     // Pre-multiply alpha
     if (pre_multiplied_alpha_supported) {
-        const std::size_t ui_area = m_canvas_dimensions.x * m_canvas_dimensions.y;
+        const std::size_t ui_area = canvas_dimensions.x * canvas_dimensions.y;
         for (std::size_t i = 0; i < ui_area; ++i) {
             float a = p_texture_pixels[i].a / 255.0f;
             p_texture_pixels[i].r *= a;
@@ -214,11 +213,11 @@ std::size_t font::get_size() const {
 }
 
 const font::character_info* font::get_character_(char32_t c) const {
-    for (const auto& m_info : range_list_) {
-        if (c < m_info.m_range.ui_first || c > m_info.m_range.ui_last)
+    for (const auto& info : range_list_) {
+        if (c < info.range.ui_first || c > info.range.ui_last)
             continue;
 
-        return &m_info.data[c - m_info.m_range.ui_first];
+        return &info.data[c - info.range.ui_first];
     }
 
     if (c != ui_default_code_point_)
@@ -232,9 +231,9 @@ bounds2f font::get_character_uvs(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    vector2f m_top_left     = p_texture_->get_canvas_uv(p_char->m_uvs.top_left(), true);
-    vector2f m_bottom_right = p_texture_->get_canvas_uv(p_char->m_uvs.bottom_right(), true);
-    return bounds2f(m_top_left.x, m_bottom_right.x, m_top_left.y, m_bottom_right.y);
+    vector2f top_left     = p_texture_->get_canvas_uv(p_char->uvs.top_left(), true);
+    vector2f bottom_right = p_texture_->get_canvas_uv(p_char->uvs.bottom_right(), true);
+    return bounds2f(top_left.x, bottom_right.x, top_left.y, bottom_right.y);
 }
 
 bounds2f font::get_character_bounds(char32_t c) const {
@@ -242,7 +241,7 @@ bounds2f font::get_character_bounds(char32_t c) const {
     if (!p_char)
         return bounds2f{};
 
-    return p_char->m_rect;
+    return p_char->rect;
 }
 
 float font::get_character_width(char32_t c) const {
@@ -258,7 +257,7 @@ float font::get_character_height(char32_t c) const {
     if (!p_char)
         return 0.0f;
 
-    return p_char->m_rect.height();
+    return p_char->rect.height();
 }
 
 float font::get_character_kerning(char32_t, char32_t) const {

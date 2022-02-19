@@ -38,7 +38,7 @@ class layered_region : public region {
 
 public:
     /// Constructor.
-    explicit layered_region(utils::control_block& m_block, manager& m_manager);
+    explicit layered_region(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -77,9 +77,9 @@ public:
     layer get_draw_layer() const;
 
     /// Sets this layered_region's draw layer.
-    /** \param mLayer The new layer
+    /** \param layer_id The new layer
      */
-    virtual void set_draw_layer(layer m_layer);
+    virtual void set_draw_layer(layer layer_id);
 
     /// Sets this layered_region's draw layer.
     /** \param layer_name The new layer
@@ -92,19 +92,19 @@ public:
     void notify_renderer_need_redraw() override;
 
     /// Parses data from a layout_node.
-    /** \param mNode The layout node
+    /** \param node The layout node
      */
-    void parse_layout(const layout_node& m_node) override;
+    void parse_layout(const layout_node& node) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "LayeredRegion";
 
 protected:
-    void parse_attributes_(const layout_node& m_node) override;
+    void parse_attributes_(const layout_node& node) override;
 
-    layer m_layer_ = layer::artwork;
+    layer layer_ = layer::artwork;
 };
 
 } // namespace lxgui::gui

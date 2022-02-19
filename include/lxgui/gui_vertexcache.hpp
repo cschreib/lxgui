@@ -34,11 +34,11 @@ public:
     };
 
     /// Constructor.
-    /** \param mType The type of data this cache will hold
+    /** \param type The type of data this cache will hold
      *   \details A default constructed vertex cache holds no data. Use update()
      *            to store vertices to be rendered.
      */
-    explicit vertex_cache(type m_type);
+    explicit vertex_cache(type type);
 
     /// Destructor.
     virtual ~vertex_cache() = default;
@@ -64,7 +64,7 @@ public:
     virtual void update(const vertex* vertex_data, std::size_t ui_num_vertex) = 0;
 
 protected:
-    type m_type_ = type::triangles;
+    type type_ = type::triangles;
 };
 
 } // namespace lxgui::gui

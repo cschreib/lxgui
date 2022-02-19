@@ -15,12 +15,13 @@ class region;
 /// Keeps track of created UI objects and records their names for lookup.
 class registry {
 public:
-    registry()                      = default;
-    virtual ~registry()             = default;
-    registry(const registry& m_mgr) = default;
-    registry(registry&& m_mgr)      = default;
-    registry& operator=(const registry& m_mgr) = default;
-    registry& operator=(registry&& m_mgr) = default;
+    registry()          = default;
+    virtual ~registry() = default;
+
+    registry(const registry&) = default;
+    registry(registry&&)      = default;
+    registry& operator=(const registry&) = default;
+    registry& operator=(registry&&) = default;
 
     /// Checks the provided string is suitable for naming a region.
     /** \param name The string to test
@@ -35,9 +36,9 @@ public:
     bool add_region(utils::observer_ptr<region> p_obj);
 
     /// Removes a region from this registry.
-    /** \param mObj The object to remove
+    /** \param obj The object to remove
      */
-    void remove_region(const region& m_obj);
+    void remove_region(const region& obj);
 
     /// Returns the region associated with the given name.
     /** \param name    The name of the region you're after

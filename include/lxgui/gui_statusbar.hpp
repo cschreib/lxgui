@@ -34,7 +34,7 @@ public:
     enum class orientation { horizontal, vertical };
 
     /// Constructor.
-    explicit status_bar(utils::control_block& m_block, manager& m_manager);
+    explicit status_bar(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -49,9 +49,9 @@ public:
     bool can_use_script(const std::string& script_name) const override;
 
     /// Copies a region's parameters into this status_bar (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Sets this status_bar's minimum value.
     /** \param min_value The minimum value
@@ -75,9 +75,9 @@ public:
     void set_value(float value);
 
     /// Sets the draw layer of this status_bar's bar texture.
-    /** \param mBarLayer The layer
+    /** \param bar_layer The layer
      */
-    void set_bar_draw_layer(layer m_bar_layer);
+    void set_bar_draw_layer(layer bar_layer);
 
     /// Sets the draw layer of this status_bar's bar texture.
     /** \param bar_layer_name The layer
@@ -90,14 +90,14 @@ public:
     void set_bar_texture(utils::observer_ptr<texture> p_bar_texture);
 
     /// Sets this status_bar's bar color.
-    /** \param mBarColor The bar color
+    /** \param bar_color The bar color
      */
-    void set_bar_color(const color& m_bar_color);
+    void set_bar_color(const color& bar_color);
 
     /// Sets this status_bar's orientation.
-    /** \param mOrientation The orientation
+    /** \param orientation The orientation
      */
-    void set_orientation(orientation m_orientation);
+    void set_orientation(orientation orient);
 
     /// Sets this status_bar's orientation.
     /** \param orientation_name The orientation ("VERTICAL" or "HORIZONTAL")
@@ -174,7 +174,7 @@ public:
     void update(float delta) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "StatusBar";
 
@@ -182,20 +182,20 @@ protected:
     void create_bar_texture_();
     void notify_bar_texture_needs_update_();
 
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_all_nodes_before_children_(const layout_node& m_node) override;
+    void parse_attributes_(const layout_node& node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
 
     bool update_bar_texture_flag_ = false;
 
-    orientation m_orientation_ = orientation::horizontal;
-    bool        is_reversed_   = false;
+    orientation orientation_ = orientation::horizontal;
+    bool        is_reversed_ = false;
 
     float value_     = 0.0f;
     float min_value_ = 0.0f;
     float max_value_ = 1.0f;
 
-    color                        m_bar_color_         = color::white;
-    layer                        m_bar_layer_         = layer::artwork;
+    color                        bar_color_           = color::white;
+    layer                        bar_layer_           = layer::artwork;
     utils::observer_ptr<texture> p_bar_texture_       = nullptr;
     std::array<float, 4>         initial_text_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 };

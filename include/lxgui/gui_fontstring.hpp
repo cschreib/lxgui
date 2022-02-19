@@ -35,7 +35,7 @@ class font_string : public layered_region {
 
 public:
     /// Constructor.
-    explicit font_string(utils::control_block& m_block, manager& m_manager);
+    explicit font_string(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -47,9 +47,9 @@ public:
     void render() const override;
 
     /// Copies a region's parameters into this font_string (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Returns the name of the font file.
     /** \return The name of the font file
@@ -122,31 +122,31 @@ public:
     void set_font(const std::string& font_name, float height);
 
     /// Sets this font_string's horizontal aligment behavior.
-    /** \param mAlignX The horizontal alignment behavior
+    /** \param align_x The horizontal alignment behavior
      */
-    void set_alignment_x(alignment_x m_align_x);
+    void set_alignment_x(alignment_x align_x);
 
     /// Sets this font_string's vertical aligment behavior.
-    /** \param mAlignY The vertical alignment behavior
+    /** \param align_y The vertical alignment behavior
      */
-    void set_alignment_y(alignment_y m_align_y);
+    void set_alignment_y(alignment_y align_y);
 
     /// Sets this font_string's shadow color.
-    /** \param mShadowColor The shadow color
+    /** \param shadow_color The shadow color
      */
-    void set_shadow_color(const color& m_shadow_color);
+    void set_shadow_color(const color& shadow_color);
 
     /// Sets this font_string's shadow offset.
-    /** \param mShadowOffset Offset
+    /** \param shadow_offset Offset
      *   \note Contains (X, Y) offset.
      */
-    void set_shadow_offset(const vector2f& m_shadow_offset);
+    void set_shadow_offset(const vector2f& shadow_offset);
 
     /// Sets this font_string's offset.
-    /** \param mOffset Offset
+    /** \param offset Offset
      *   \note Contains (X, Y) offset.
      */
-    void set_offset(const vector2f& m_offset);
+    void set_offset(const vector2f& offset);
 
     /// Sets the space between each letter.
     /** \param spacing The space between each letter
@@ -162,9 +162,9 @@ public:
     void set_line_spacing(float line_spacing);
 
     /// Sets the text color.
-    /** \param mTextColor The text color
+    /** \param text_color The text color
      */
-    void set_text_color(const color& m_text_color);
+    void set_text_color(const color& text_color);
 
     /// Checks is large text is truncated or wrapped.
     /** \return 'true' if larget text is truncated
@@ -248,9 +248,9 @@ public:
     void create_glue() override;
 
     /// Parses data from a layout_node.
-    /** \param mNode The layout node
+    /** \param node The layout node
      */
-    void parse_layout(const layout_node& m_node) override;
+    void parse_layout(const layout_node& node) override;
 
     /// Returns the text used to render this font_string.
     /** \return The text used to render this font_string
@@ -263,13 +263,13 @@ public:
     const text* get_text_object() const;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "FontString";
 
 private:
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_shadow_node_(const layout_node& m_node);
+    void parse_attributes_(const layout_node& node) override;
+    void parse_shadow_node_(const layout_node& node);
 
     void create_text_object_();
 
@@ -283,20 +283,20 @@ private:
 
     float       spacing_      = 0.0f;
     float       line_spacing_ = 1.0f;
-    alignment_x m_align_x_    = alignment_x::center;
-    alignment_y m_align_y_    = alignment_y::middle;
-    vector2f    m_offset_     = vector2f::zero;
+    alignment_x align_x_      = alignment_x::center;
+    alignment_y align_y_      = alignment_y::middle;
+    vector2f    offset_       = vector2f::zero;
 
     bool  is_outlined_            = false;
     bool  non_space_wrap_enabled_ = false;
     bool  word_wrap_enabled_      = true;
     bool  ellipsis_enabled_       = true;
     bool  formatting_enabled_     = true;
-    color m_text_color_           = color::white;
+    color text_color_             = color::white;
 
-    bool     has_shadow_      = false;
-    color    m_shadow_color_  = color::black;
-    vector2f m_shadow_offset_ = vector2f::zero;
+    bool     has_shadow_    = false;
+    color    shadow_color_  = color::black;
+    vector2f shadow_offset_ = vector2f::zero;
 };
 
 } // namespace lxgui::gui

@@ -223,157 +223,156 @@
 
 namespace lxgui::gui {
 
-void frame::register_on_lua(sol::state& m_lua) {
-    auto m_class = m_lua.new_usertype<frame>(
+void frame::register_on_lua(sol::state& lua) {
+    auto type = lua.new_usertype<frame>(
         "Frame", sol::base_classes, sol::bases<region>(), sol::meta_function::index,
         member_function<&frame::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&frame::set_lua_member_>());
 
     /** @function add_script
      */
-    m_class.set_function(
-        "add_script", [](frame& m_self, const std::string& name, sol::protected_function m_func) {
-            m_self.add_script(name, std::move(m_func));
+    type.set_function(
+        "add_script", [](frame& self, const std::string& name, sol::protected_function func) {
+            self.add_script(name, std::move(func));
         });
 
     /** @function clear_focus
      */
-    m_class.set_function("clear_focus", [](frame& m_self) { m_self.set_focus(false); });
+    type.set_function("clear_focus", [](frame& self) { self.set_focus(false); });
 
     /** @function create_font_string
      */
-    m_class.set_function(
+    type.set_function(
         "create_font_string",
-        [](frame& m_self, const std::string& name, sol::optional<std::string> layer_name,
+        [](frame& self, const std::string& name, sol::optional<std::string> layer_name,
            sol::optional<std::string> inheritance) {
-            layer m_layer = layer::artwork;
+            layer layer = layer::artwork;
             if (layer_name.has_value())
-                m_layer = parse_layer_type(layer_name.value());
+                layer = parse_layer_type(layer_name.value());
 
-            region_core_attributes m_attr;
-            m_attr.name = name;
-            m_attr.inheritance =
-                m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
+            region_core_attributes attr;
+            attr.name = name;
+            attr.inheritance =
+                self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     inheritance.value_or(""));
 
-            return m_self.create_layered_region<font_string>(m_layer, std::move(m_attr));
+            return self.create_layered_region<font_string>(layer, std::move(attr));
         });
 
     /** @function create_texture
      */
-    m_class.set_function(
+    type.set_function(
         "create_texture",
-        [](frame& m_self, const std::string& name, sol::optional<std::string> layer_name,
+        [](frame& self, const std::string& name, sol::optional<std::string> layer_name,
            sol::optional<std::string> inheritance) {
-            layer m_layer = layer::artwork;
+            layer layer = layer::artwork;
             if (layer_name.has_value())
-                m_layer = parse_layer_type(layer_name.value());
+                layer = parse_layer_type(layer_name.value());
 
-            region_core_attributes m_attr;
-            m_attr.name = name;
-            m_attr.inheritance =
-                m_self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
+            region_core_attributes attr;
+            attr.name = name;
+            attr.inheritance =
+                self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     inheritance.value_or(""));
 
-            return m_self.create_layered_region<texture>(m_layer, std::move(m_attr));
+            return self.create_layered_region<texture>(layer, std::move(attr));
         });
 
     /** @function create_title_region
      */
-    m_class.set_function("create_title_region", member_function<&frame::create_title_region>());
+    type.set_function("create_title_region", member_function<&frame::create_title_region>());
 
     /** @function disable_draw_layer
      */
-    m_class.set_function("disable_draw_layer", [](frame& m_self, const std::string& layer_name) {
-        m_self.disable_draw_layer(parse_layer_type(layer_name));
+    type.set_function("disable_draw_layer", [](frame& self, const std::string& layer_name) {
+        self.disable_draw_layer(parse_layer_type(layer_name));
     });
 
     /** @function enable_draw_layer
      */
-    m_class.set_function("enable_draw_layer", [](frame& m_self, const std::string& layer_name) {
-        m_self.enable_draw_layer(parse_layer_type(layer_name));
+    type.set_function("enable_draw_layer", [](frame& self, const std::string& layer_name) {
+        self.enable_draw_layer(parse_layer_type(layer_name));
     });
 
     /** @function enable_mouse
      */
-    m_class.set_function("enable_mouse", member_function<&frame::enable_mouse>());
+    type.set_function("enable_mouse", member_function<&frame::enable_mouse>());
 
     /** @function enable_mouse_click
      */
-    m_class.set_function("enable_mouse_click", member_function<&frame::enable_mouse_click>());
+    type.set_function("enable_mouse_click", member_function<&frame::enable_mouse_click>());
 
     /** @function enable_mouse_move
      */
-    m_class.set_function("enable_mouse_move", member_function<&frame::enable_mouse_move>());
+    type.set_function("enable_mouse_move", member_function<&frame::enable_mouse_move>());
 
     /** @function enable_mouse_wheel
      */
-    m_class.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
+    type.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
 
     /** @function enable_key_capture
      */
-    m_class.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
+    type.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
 
     /** @function get_backdrop
      */
-    m_class.set_function(
-        "get_backdrop",
-        [](sol::this_state m_lua, const frame& m_self) -> sol::optional<sol::table> {
-            const backdrop* p_backdrop = m_self.get_backdrop();
+    type.set_function(
+        "get_backdrop", [](sol::this_state lua, const frame& self) -> sol::optional<sol::table> {
+            const backdrop* p_backdrop = self.get_backdrop();
             if (!p_backdrop)
                 return sol::nullopt;
 
-            sol::table m_return = sol::state_view(m_lua).create_table();
+            sol::table backdrop_table = sol::state_view(lua).create_table();
 
-            m_return["bgFile"]   = p_backdrop->get_background_file();
-            m_return["edgeFile"] = p_backdrop->get_edge_file();
-            m_return["tile"]     = p_backdrop->is_background_tilling();
+            backdrop_table["bgFile"]   = p_backdrop->get_background_file();
+            backdrop_table["edgeFile"] = p_backdrop->get_edge_file();
+            backdrop_table["tile"]     = p_backdrop->is_background_tilling();
 
-            m_return["tileSize"] = p_backdrop->get_tile_size();
-            m_return["edgeSize"] = p_backdrop->get_edge_size();
+            backdrop_table["tileSize"] = p_backdrop->get_tile_size();
+            backdrop_table["edgeSize"] = p_backdrop->get_edge_size();
 
-            const auto& insets           = p_backdrop->get_background_insets();
-            m_return["insets"]["left"]   = insets.left;
-            m_return["insets"]["right"]  = insets.right;
-            m_return["insets"]["top"]    = insets.top;
-            m_return["insets"]["bottom"] = insets.bottom;
+            const auto& insets                 = p_backdrop->get_background_insets();
+            backdrop_table["insets"]["left"]   = insets.left;
+            backdrop_table["insets"]["right"]  = insets.right;
+            backdrop_table["insets"]["top"]    = insets.top;
+            backdrop_table["insets"]["bottom"] = insets.bottom;
 
-            return std::move(m_return);
+            return std::move(backdrop_table);
         });
 
     /** @function get_backdrop_border_color
      */
-    m_class.set_function(
+    type.set_function(
         "get_backdrop_border_color",
-        [](const frame& m_self) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (!m_self.get_backdrop())
+        [](const frame& self) -> sol::optional<std::tuple<float, float, float, float>> {
+            if (!self.get_backdrop())
                 return sol::nullopt;
 
-            const color& m_color = m_self.get_backdrop()->get_edge_color();
-            return std::make_tuple(m_color.r, m_color.g, m_color.b, m_color.a);
+            const color& color = self.get_backdrop()->get_edge_color();
+            return std::make_tuple(color.r, color.g, color.b, color.a);
         });
 
     /** @function get_backdrop_color
      */
-    m_class.set_function(
+    type.set_function(
         "get_backdrop_color",
-        [](const frame& m_self) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (!m_self.get_backdrop())
+        [](const frame& self) -> sol::optional<std::tuple<float, float, float, float>> {
+            if (!self.get_backdrop())
                 return sol::nullopt;
 
-            const color& m_color = m_self.get_backdrop()->get_background_color();
-            return std::make_tuple(m_color.r, m_color.g, m_color.b, m_color.a);
+            const color& color = self.get_backdrop()->get_background_color();
+            return std::make_tuple(color.r, color.g, color.b, color.a);
         });
 
     /** @function get_children
      */
-    m_class.set_function("get_children", [](const frame& m_self) {
+    type.set_function("get_children", [](const frame& self) {
         std::vector<sol::object> children;
-        children.reserve(m_self.get_rough_num_children());
+        children.reserve(self.get_rough_num_children());
 
-        const auto& m_lua = m_self.get_manager().get_lua();
-        for (const auto& m_child : m_self.get_children()) {
-            children.push_back(m_lua[m_child.get_lua_name()]);
+        const auto& lua = self.get_manager().get_lua();
+        for (const auto& child : self.get_children()) {
+            children.push_back(lua[child.get_lua_name()]);
         }
 
         return sol::as_table(std::move(children));
@@ -381,163 +380,158 @@ void frame::register_on_lua(sol::state& m_lua) {
 
     /** @function get_effective_alpha
      */
-    m_class.set_function("get_effective_alpha", member_function<&frame::get_effective_alpha>());
+    type.set_function("get_effective_alpha", member_function<&frame::get_effective_alpha>());
 
     /** @function get_effective_scale
      */
-    m_class.set_function("get_effective_scale", member_function<&frame::get_effective_scale>());
+    type.set_function("get_effective_scale", member_function<&frame::get_effective_scale>());
 
     /** @function get_frame_level
      */
-    m_class.set_function("get_frame_level", member_function<&frame::get_level>());
+    type.set_function("get_frame_level", member_function<&frame::get_level>());
 
     /** @function get_frame_strata
      */
-    m_class.set_function("get_frame_strata", [](const frame& m_self) {
-        frame_strata m_strata = m_self.get_frame_strata();
-        std::string  strata;
-
-        if (m_strata == frame_strata::background)
-            strata = "BACKGROUND";
-        else if (m_strata == frame_strata::low)
-            strata = "LOW";
-        else if (m_strata == frame_strata::medium)
-            strata = "MEDIUM";
-        else if (m_strata == frame_strata::high)
-            strata = "HIGH";
-        else if (m_strata == frame_strata::dialog)
-            strata = "DIALOG";
-        else if (m_strata == frame_strata::fullscreen)
-            strata = "FULLSCREEN";
-        else if (m_strata == frame_strata::fullscreen_dialog)
-            strata = "FULLSCREEN_DIALOG";
-        else if (m_strata == frame_strata::tooltip)
-            strata = "TOOLTIP";
-
-        return strata;
+    type.set_function("get_frame_strata", [](const frame& self) -> sol::optional<std::string> {
+        frame_strata strata_id = self.get_frame_strata();
+        if (strata_id == frame_strata::background)
+            return std::string("BACKGROUND");
+        else if (strata_id == frame_strata::low)
+            return std::string("LOW");
+        else if (strata_id == frame_strata::medium)
+            return std::string("MEDIUM");
+        else if (strata_id == frame_strata::high)
+            return std::string("HIGH");
+        else if (strata_id == frame_strata::dialog)
+            return std::string("DIALOG");
+        else if (strata_id == frame_strata::fullscreen)
+            return std::string("FULLSCREEN");
+        else if (strata_id == frame_strata::fullscreen_dialog)
+            return std::string("FULLSCREEN_DIALOG");
+        else if (strata_id == frame_strata::tooltip)
+            return std::string("TOOLTIP");
+        else
+            return {};
     });
 
     /** @function get_frame_type
      */
-    m_class.set_function("get_frame_type", member_function<&frame::get_frame_type>());
+    type.set_function("get_frame_type", member_function<&frame::get_frame_type>());
 
     /** @function get_hit_rect_insets
      */
-    m_class.set_function("get_hit_rect_insets", [](const frame& m_self) {
-        const bounds2f& insets = m_self.get_abs_hit_rect_insets();
+    type.set_function("get_hit_rect_insets", [](const frame& self) {
+        const bounds2f& insets = self.get_abs_hit_rect_insets();
         return std::make_tuple(insets.left, insets.right, insets.top, insets.bottom);
     });
 
     /** @function get_max_dimensions
      */
-    m_class.set_function("get_max_dimensions", [](const frame& m_self) {
-        const vector2f& max = m_self.get_max_dimensions();
+    type.set_function("get_max_dimensions", [](const frame& self) {
+        const vector2f& max = self.get_max_dimensions();
         return std::make_tuple(max.x, max.y);
     });
 
     /** @function get_min_dimensions
      */
-    m_class.set_function("get_min_dimensions", [](const frame& m_self) {
-        const vector2f& min = m_self.get_min_dimensions();
+    type.set_function("get_min_dimensions", [](const frame& self) {
+        const vector2f& min = self.get_min_dimensions();
         return std::make_tuple(min.x, min.y);
     });
 
     /** @function get_num_children
      */
-    m_class.set_function("get_num_children", member_function<&frame::get_num_children>());
+    type.set_function("get_num_children", member_function<&frame::get_num_children>());
 
     /** @function get_num_regions
      */
-    m_class.set_function("get_num_regions", member_function<&frame::get_num_regions>());
+    type.set_function("get_num_regions", member_function<&frame::get_num_regions>());
 
     /** @function get_scale
      */
-    m_class.set_function("get_scale", member_function<&frame::get_scale>());
+    type.set_function("get_scale", member_function<&frame::get_scale>());
 
     /** @function get_script
      */
-    m_class.set_function(
-        "get_script", [](const frame& m_self, const std::string& script_name) -> sol::object {
-            if (!m_self.has_script(script_name))
+    type.set_function(
+        "get_script", [](const frame& self, const std::string& script_name) -> sol::object {
+            if (!self.has_script(script_name))
                 return sol::lua_nil;
 
             std::string adjusted_name = get_adjusted_script_name(script_name);
-            return m_self.get_manager().get_lua()[m_self.get_lua_name()][adjusted_name];
+            return self.get_manager().get_lua()[self.get_lua_name()][adjusted_name];
         });
 
     /** @function get_title_region
      */
-    m_class.set_function(
+    type.set_function(
         "get_title_region",
         member_function< // select the right overload for Lua
             static_cast<utils::observer_ptr<region> (frame::*)()>(&frame::get_title_region)>());
 
     /** @function has_script
      */
-    m_class.set_function("has_script", member_function<&frame::has_script>());
+    type.set_function("has_script", member_function<&frame::has_script>());
 
     /** @function is_auto_focus
      */
-    m_class.set_function("is_auto_focus", member_function<&frame::is_auto_focus_enabled>());
+    type.set_function("is_auto_focus", member_function<&frame::is_auto_focus_enabled>());
 
     /** @function is_clamped_to_screen
      */
-    m_class.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
+    type.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
 
     /** @function is_frame_type
      */
-    m_class.set_function("is_frame_type", [](const frame& m_self, const std::string& type) {
-        return m_self.get_frame_type() == type;
+    type.set_function("is_frame_type", [](const frame& self, const std::string& type) {
+        return self.get_frame_type() == type;
     });
 
     /** @function is_mouse_click_enabled
      */
-    m_class.set_function(
-        "is_mouse_click_enabled", member_function<&frame::is_mouse_click_enabled>());
+    type.set_function("is_mouse_click_enabled", member_function<&frame::is_mouse_click_enabled>());
 
     /** @function is_mouse_move_enabled
      */
-    m_class.set_function("is_mouse_move_enabled", member_function<&frame::is_mouse_move_enabled>());
+    type.set_function("is_mouse_move_enabled", member_function<&frame::is_mouse_move_enabled>());
 
     /** @function is_mouse_wheel_enabled
      */
-    m_class.set_function(
-        "is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
+    type.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
 
     /** @function is_key_capture_enabled
      */
-    m_class.set_function(
-        "is_key_capture_enabled", member_function<&frame::is_key_capture_enabled>());
+    type.set_function("is_key_capture_enabled", member_function<&frame::is_key_capture_enabled>());
 
     /** @function is_movable
      */
-    m_class.set_function("is_movable", member_function<&frame::is_movable>());
+    type.set_function("is_movable", member_function<&frame::is_movable>());
 
     /** @function is_resizable
      */
-    m_class.set_function("is_resizable", member_function<&frame::is_resizable>());
+    type.set_function("is_resizable", member_function<&frame::is_resizable>());
 
     /** @function is_top_level
      */
-    m_class.set_function("is_top_level", member_function<&frame::is_top_level>());
+    type.set_function("is_top_level", member_function<&frame::is_top_level>());
 
     /** @function is_user_placed
      */
-    m_class.set_function("is_user_placed", member_function<&frame::is_user_placed>());
+    type.set_function("is_user_placed", member_function<&frame::is_user_placed>());
 
     /** @function raise
      */
-    m_class.set_function("raise", member_function<&frame::raise>());
+    type.set_function("raise", member_function<&frame::raise>());
 
     /** @function register_event
      */
-    m_class.set_function("register_event", member_function<&frame::register_event>());
+    type.set_function("register_event", member_function<&frame::register_event>());
 
     /** @function register_for_drag
      */
-    m_class.set_function(
+    type.set_function(
         "register_for_drag",
-        [](frame& m_self, sol::optional<std::string> button1, sol::optional<std::string> button2,
+        [](frame& self, sol::optional<std::string> button1, sol::optional<std::string> button2,
            sol::optional<std::string> button3) {
             std::vector<std::string> button_list;
             if (button1.has_value())
@@ -547,186 +541,184 @@ void frame::register_on_lua(sol::state& m_lua) {
             if (button3.has_value())
                 button_list.push_back(button3.value());
 
-            m_self.register_for_drag(button_list);
+            self.register_for_drag(button_list);
         });
 
     /** @function set_auto_focus
      */
-    m_class.set_function("set_auto_focus", member_function<&frame::enable_auto_focus>());
+    type.set_function("set_auto_focus", member_function<&frame::enable_auto_focus>());
 
     /** @function set_backdrop
      */
-    m_class.set_function("set_backdrop", [](frame& m_self, sol::optional<sol::table> m_table_opt) {
-        if (!m_table_opt.has_value()) {
-            m_self.set_backdrop(nullptr);
+    type.set_function("set_backdrop", [](frame& self, sol::optional<sol::table> table_opt) {
+        if (!table_opt.has_value()) {
+            self.set_backdrop(nullptr);
             return;
         }
 
-        std::unique_ptr<backdrop> p_backdrop(new backdrop(m_self));
+        std::unique_ptr<backdrop> p_backdrop(new backdrop(self));
 
-        sol::table& m_table = m_table_opt.value();
+        sol::table& table = table_opt.value();
 
-        p_backdrop->set_background(
-            m_self.parse_file_name(m_table["bgFile"].get_or<std::string>("")));
-        p_backdrop->set_edge(m_self.parse_file_name(m_table["edgeFile"].get_or<std::string>("")));
-        p_backdrop->set_background_tilling(m_table["tile"].get_or(false));
+        p_backdrop->set_background(self.parse_file_name(table["bgFile"].get_or<std::string>("")));
+        p_backdrop->set_edge(self.parse_file_name(table["edgeFile"].get_or<std::string>("")));
+        p_backdrop->set_background_tilling(table["tile"].get_or(false));
 
-        float tile_size = m_table["tileSize"].get_or<float>(0.0);
+        float tile_size = table["tileSize"].get_or<float>(0.0);
         if (tile_size != 0)
             p_backdrop->set_tile_size(tile_size);
 
-        float edge_size = m_table["edgeSize"].get_or<float>(0.0);
+        float edge_size = table["edgeSize"].get_or<float>(0.0);
         if (edge_size != 0)
             p_backdrop->set_edge_size(edge_size);
 
-        if (m_table["insets"] != sol::lua_nil) {
+        if (table["insets"] != sol::lua_nil) {
             p_backdrop->set_background_insets(bounds2f(
-                m_table["insets"]["left"].get_or<float>(0),
-                m_table["insets"]["right"].get_or<float>(0),
-                m_table["insets"]["top"].get_or<float>(0),
-                m_table["insets"]["bottom"].get_or<float>(0)));
+                table["insets"]["left"].get_or<float>(0), table["insets"]["right"].get_or<float>(0),
+                table["insets"]["top"].get_or<float>(0),
+                table["insets"]["bottom"].get_or<float>(0)));
         }
 
-        m_self.set_backdrop(std::move(p_backdrop));
+        self.set_backdrop(std::move(p_backdrop));
     });
 
     /** @function set_backdrop_border_color
      */
-    m_class.set_function(
+    type.set_function(
         "set_backdrop_border_color",
         sol::overload(
-            [](frame& m_self, float r, float g, float b, sol::optional<float> a) {
-                m_self.get_or_create_backdrop().set_edge_color(color(r, g, b, a.value_or(1.0f)));
+            [](frame& self, float r, float g, float b, sol::optional<float> a) {
+                self.get_or_create_backdrop().set_edge_color(color(r, g, b, a.value_or(1.0f)));
             },
-            [](frame& m_self, const std::string& s) {
-                m_self.get_or_create_backdrop().set_edge_color(color(s));
+            [](frame& self, const std::string& s) {
+                self.get_or_create_backdrop().set_edge_color(color(s));
             }));
 
     /** @function set_backdrop_color
      */
-    m_class.set_function(
+    type.set_function(
         "set_backdrop_color",
         sol::overload(
-            [](frame& m_self, float r, float g, float b, sol::optional<float> a) {
-                m_self.get_or_create_backdrop().set_background_color(
+            [](frame& self, float r, float g, float b, sol::optional<float> a) {
+                self.get_or_create_backdrop().set_background_color(
                     color(r, g, b, a.value_or(1.0f)));
             },
-            [](frame& m_self, const std::string& s) {
-                m_self.get_or_create_backdrop().set_background_color(color(s));
+            [](frame& self, const std::string& s) {
+                self.get_or_create_backdrop().set_background_color(color(s));
             }));
 
     /** @function set_clamped_to_screen
      */
-    m_class.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
+    type.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
 
     /** @function set_focus
      */
-    m_class.set_function("set_focus", [](frame& m_self) { m_self.set_focus(true); });
+    type.set_function("set_focus", [](frame& self) { self.set_focus(true); });
 
     /** @function set_frame_level
      */
-    m_class.set_function("set_frame_level", member_function<&frame::set_level>());
+    type.set_function("set_frame_level", member_function<&frame::set_level>());
 
     /** @function set_frame_strata
      */
-    m_class.set_function(
+    type.set_function(
         "set_frame_strata",
         member_function< // select the right overload for Lua
             static_cast<void (frame::*)(const std::string&)>(&frame::set_frame_strata)>());
 
     /** @function set_hit_rect_insets
      */
-    m_class.set_function(
-        "set_hit_rect_insets", [](frame& m_self, float left, float right, float top, float bottom) {
-            m_self.set_abs_hit_rect_insets(bounds2f(left, right, top, bottom));
+    type.set_function(
+        "set_hit_rect_insets", [](frame& self, float left, float right, float top, float bottom) {
+            self.set_abs_hit_rect_insets(bounds2f(left, right, top, bottom));
         });
 
     /** @function set_max_dimensions
      */
-    m_class.set_function("set_max_dimensions", [](frame& m_self, float width, float height) {
-        m_self.set_max_dimensions(vector2f(width, height));
+    type.set_function("set_max_dimensions", [](frame& self, float width, float height) {
+        self.set_max_dimensions(vector2f(width, height));
     });
 
     /** @function set_min_dimensions
      */
-    m_class.set_function("set_min_dimensions", [](frame& m_self, float width, float height) {
-        m_self.set_min_dimensions(vector2f(width, height));
+    type.set_function("set_min_dimensions", [](frame& self, float width, float height) {
+        self.set_min_dimensions(vector2f(width, height));
     });
 
     /** @function set_max_width
      */
-    m_class.set_function("set_max_width", member_function<&frame::set_max_width>());
+    type.set_function("set_max_width", member_function<&frame::set_max_width>());
 
     /** @function set_max_height
      */
-    m_class.set_function("set_max_height", member_function<&frame::set_max_height>());
+    type.set_function("set_max_height", member_function<&frame::set_max_height>());
 
     /** @function set_min_width
      */
-    m_class.set_function("set_min_width", member_function<&frame::set_min_width>());
+    type.set_function("set_min_width", member_function<&frame::set_min_width>());
 
     /** @function set_min_height
      */
-    m_class.set_function("set_min_height", member_function<&frame::set_min_height>());
+    type.set_function("set_min_height", member_function<&frame::set_min_height>());
 
     /** @function set_movable
      */
-    m_class.set_function("set_movable", member_function<&frame::set_movable>());
+    type.set_function("set_movable", member_function<&frame::set_movable>());
 
     /** @function set_resizable
      */
-    m_class.set_function("set_resizable", member_function<&frame::set_resizable>());
+    type.set_function("set_resizable", member_function<&frame::set_resizable>());
 
     /** @function set_scale
      */
-    m_class.set_function("set_scale", member_function<&frame::set_scale>());
+    type.set_function("set_scale", member_function<&frame::set_scale>());
 
     /** @function set_script
      */
-    m_class.set_function(
-        "set_script", [](frame& m_self, const std::string& script_name,
-                         sol::optional<sol::protected_function> m_script) {
-            if (!m_self.can_use_script(script_name)) {
-                gui::out << gui::error << m_self.get_frame_type() << " : "
-                         << "\"" << m_self.get_name() << "\" cannot use script \"" << script_name
+    type.set_function(
+        "set_script", [](frame& self, const std::string& script_name,
+                         sol::optional<sol::protected_function> script) {
+            if (!self.can_use_script(script_name)) {
+                gui::out << gui::error << self.get_frame_type() << " : "
+                         << "\"" << self.get_name() << "\" cannot use script \"" << script_name
                          << "\"." << std::endl;
                 return;
             }
 
-            if (m_script.has_value())
-                m_self.set_script(script_name, m_script.value());
+            if (script.has_value())
+                self.set_script(script_name, script.value());
             else
-                m_self.remove_script(script_name);
+                self.remove_script(script_name);
         });
 
     /** @function set_top_level
      */
-    m_class.set_function("set_top_level", member_function<&frame::set_top_level>());
+    type.set_function("set_top_level", member_function<&frame::set_top_level>());
 
     /** @function set_user_placed
      */
-    m_class.set_function("set_user_placed", member_function<&frame::set_user_placed>());
+    type.set_function("set_user_placed", member_function<&frame::set_user_placed>());
 
     /** @function start_moving
      */
-    m_class.set_function("start_moving", member_function<&frame::start_moving>());
+    type.set_function("start_moving", member_function<&frame::start_moving>());
 
     /** @function start_sizing
      */
-    m_class.set_function("start_sizing", [](frame& m_self, const std::string& point) {
-        m_self.start_sizing(anchor::get_anchor_point(point));
+    type.set_function("start_sizing", [](frame& self, const std::string& point) {
+        self.start_sizing(anchor::get_anchor_point(point));
     });
 
     /** @function stop_moving_or_sizing
      */
-    m_class.set_function("stop_moving_or_sizing", [](frame& m_self) {
-        m_self.stop_moving();
-        m_self.stop_sizing();
+    type.set_function("stop_moving_or_sizing", [](frame& self) {
+        self.stop_moving();
+        self.stop_sizing();
     });
 
     /** @function unregister_event
      */
-    m_class.set_function("unregister_event", member_function<&frame::unregister_event>());
+    type.set_function("unregister_event", member_function<&frame::unregister_event>());
 }
 
 } // namespace lxgui::gui

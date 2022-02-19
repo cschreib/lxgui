@@ -290,13 +290,13 @@ bool from_string(ustring_view s, ustring& v) {
 }
 
 bool is_number(string_view s) {
-    std::istringstream m_temp{std::string(s)};
-    m_temp.imbue(std::locale::classic());
+    std::istringstream temp{std::string(s)};
+    temp.imbue(std::locale::classic());
 
     double d_value = 0;
-    m_temp >> d_value;
+    temp >> d_value;
 
-    return !m_temp.fail();
+    return !temp.fail();
 }
 
 bool is_number(ustring_view s) {
@@ -312,13 +312,13 @@ bool is_number(char32_t s) {
 }
 
 bool is_integer(string_view s) {
-    std::istringstream m_temp{std::string(s)};
-    m_temp.imbue(std::locale::classic());
+    std::istringstream temp{std::string(s)};
+    temp.imbue(std::locale::classic());
 
     std::int64_t value = 0;
-    m_temp >> value;
+    temp >> value;
 
-    return !m_temp.fail();
+    return !temp.fail();
 }
 
 bool is_integer(ustring_view s) {
@@ -350,10 +350,10 @@ bool is_whitespace(char32_t c) {
 }
 
 template<typename T>
-string to_string_template(T m_value) {
+string to_string_template(T value) {
     std::ostringstream ss;
     ss.imbue(std::locale::classic());
-    ss << m_value;
+    ss << value;
     return ss.str();
 }
 
@@ -400,16 +400,16 @@ string to_string(void* p) {
     return stream.str();
 }
 
-std::string to_string(const utils::variant& m_value) {
+std::string to_string(const utils::variant& value) {
     return std::visit(
-        [&](const auto& m_inner_value) -> std::string {
-            using inner_type = std::decay_t<decltype(m_inner_value)>;
+        [&](const auto& inner_value) -> std::string {
+            using inner_type = std::decay_t<decltype(inner_value)>;
             if constexpr (std::is_same_v<inner_type, utils::empty>)
                 return "<none>";
             else
-                return to_string(m_inner_value);
+                return to_string(inner_value);
         },
-        m_value);
+        value);
 }
 
 } // namespace lxgui::utils

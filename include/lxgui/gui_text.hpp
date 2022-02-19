@@ -31,25 +31,17 @@ enum class alignment_y { top, middle, bottom };
 class text {
 public:
     /// Constructor.
-    /** \param mRenderer    The renderer instance to use
+    /** \param rdr    The renderer instance to use
      *   \param pFont        The font to use for rendering
      *   \param pOutlineFont The font to use for outlines
      */
     explicit text(
-        renderer&                  m_renderer,
-        std::shared_ptr<gui::font> p_font,
-        std::shared_ptr<gui::font> p_outline_font);
+        renderer& rdr, std::shared_ptr<font> p_font, std::shared_ptr<font> p_outline_font);
 
-    /// Non-copiable
+    // Non-copiable, non-movable
     text(const text&) = delete;
-
-    /// Non-movable
-    text(text&&) = delete;
-
-    /// Non-copiable
+    text(text&&)      = delete;
     text& operator=(const text&) = delete;
-
-    /// Non-movable
     text& operator=(text&&) = delete;
 
     /// Returns the height of one line (constant).
@@ -86,10 +78,10 @@ public:
     const utils::ustring& get_text() const;
 
     /// Sets this text's default color.
-    /** \param mColor      The default color
+    /** \param c      The default color
      *   \param force_color 'true' to ignore color tags
      */
-    void set_color(const color& m_color, bool force_color = false);
+    void set_color(const color& c, bool force_color = false);
 
     /// Returns this text's default color.
     /** \return This text's default color
@@ -194,14 +186,14 @@ public:
     float get_text_height() const;
 
     /// Sets text horizontal alignment.
-    /** \param mAlignX The new horizontal alignment
+    /** \param align_x The new horizontal alignment
      */
-    void set_alignment_x(alignment_x m_align_x);
+    void set_alignment_x(alignment_x align_x);
 
     /// Sets text vertical alignment.
-    /** \param mAlignY The new vertical alignment
+    /** \param align_y The new vertical alignment
      */
-    void set_alignment_y(alignment_y m_align_y);
+    void set_alignment_y(alignment_y align_y);
 
     /// Returns the text horizontal alignment.
     /** \return The text horizontal alignment
@@ -277,14 +269,14 @@ public:
     void enable_formatting(bool formatting);
 
     /// Renders this text at the given position.
-    /** \param mTransform The transform to apply to the text
+    /** \param transform The transform to apply to the text
      *   \note Must be called between renderer::begin() and
      *         renderer::end(). If the transform is left to the default (IDENTITY),
      *         the text will be rendered at the top-left corner of the screen, with the
      *         anchor position (coordinate [0,0]) set by the vertical and horizontal
      *         alignment (see get_alignment() and get_vertical_alignment()).
      */
-    void render(const matrix4f& m_transform = matrix4f::identity) const;
+    void render(const matrix4f& transform = matrix4f::identity) const;
 
     /// Returns the number of letters currently displayed.
     /** \return The number of letters currently displayed
@@ -313,26 +305,28 @@ public:
     /** \return The renderer used to render this text
      */
     const renderer& get_renderer() const {
-        return m_renderer_;
+        return renderer_;
     }
 
     /// Returns the renderer used to render this text.
     /** \return The renderer used to render this text
      */
     renderer& get_renderer() {
-        return m_renderer_;
+        return renderer_;
     }
 
 private:
-    void  update_() const;
-    void  notify_cache_dirty_() const;
+    void update_() const;
+    void notify_cache_dirty_() const;
+
     float round_to_pixel_(
-        float value, utils::rounding_method m_method = utils::rounding_method::nearest) const;
-    std::array<vertex, 4> create_letter_quad_(gui::font& m_font, char32_t c) const;
+        float value, utils::rounding_method method = utils::rounding_method::nearest) const;
+
+    std::array<vertex, 4> create_letter_quad_(gui::font& font, char32_t c) const;
     std::array<vertex, 4> create_letter_quad_(char32_t c) const;
     std::array<vertex, 4> create_outline_letter_quad_(char32_t c) const;
 
-    renderer& m_renderer_;
+    renderer& renderer_;
 
     bool        is_ready_               = false;
     float       scaling_factor_         = 1.0f;
@@ -341,14 +335,14 @@ private:
     bool        remove_starting_spaces_ = false;
     bool        word_wrap_enabled_      = true;
     bool        ellipsis_enabled_       = false;
-    color       m_color_                = color::white;
+    color       color_                  = color::white;
     bool        force_color_            = false;
     float       alpha_                  = 1.0f;
     bool        formatting_enabled_     = false;
     float       box_width_              = std::numeric_limits<float>::infinity();
     float       box_height_             = std::numeric_limits<float>::infinity();
-    alignment_x m_align_x_              = alignment_x::left;
-    alignment_y m_align_y_              = alignment_y::middle;
+    alignment_x align_x_                = alignment_x::left;
+    alignment_y align_y_                = alignment_y::middle;
 
     std::shared_ptr<font> p_font_;
     std::shared_ptr<font> p_outline_font_;

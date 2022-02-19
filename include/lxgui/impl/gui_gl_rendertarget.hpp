@@ -14,10 +14,10 @@ namespace lxgui::gui::gl {
 class render_target final : public gui::render_target {
 public:
     /// Constructor.
-    /** \param mDimensions The dimensions of the render_target
-     *   \param mFilter     The filtering to apply to the target texture when displayed
+    /** \param dimensions The dimensions of the render_target
+     *   \param filt     The filtering to apply to the target texture when displayed
      */
-    render_target(const vector2ui& m_dimensions, material::filter m_filter = material::filter::none);
+    render_target(const vector2ui& dimensions, material::filter filt = material::filter::none);
 
     /// Destructor.
     ~render_target() override;
@@ -29,9 +29,9 @@ public:
     void end() override;
 
     /// Clears the content of this render_target.
-    /** \param mColor The color to use as background
+    /** \param c The color to use as background
      */
-    void clear(const color& m_color) override;
+    void clear(const color& c) override;
 
     /// Returns this render target's pixel rect.
     /** \return This render target's pixel rect
@@ -39,10 +39,10 @@ public:
     bounds2f get_rect() const override;
 
     /// Sets this render target's dimensions.
-    /** \param mDimensions The new dimensions (in pixels)
+    /** \param dimensions The new dimensions (in pixels)
      *   \return 'true' if the function had to re-create a new render target
      */
-    bool set_dimensions(const vector2ui& m_dimensions) override;
+    bool set_dimensions(const vector2ui& dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
@@ -72,7 +72,7 @@ private:
     std::uint32_t                 ui_fbo_handle_ = 0;
     std::shared_ptr<gl::material> p_texture_;
 
-    matrix4f m_view_matrix_;
+    matrix4f view_matrix_;
 };
 
 } // namespace lxgui::gui::gl

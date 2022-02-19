@@ -22,40 +22,39 @@ namespace lxgui::gui::sfml {
 class material final : public gui::material {
 public:
     /// Constructor for textures.
-    /** \param mDimensions   The requested texture dimensions
+    /** \param dimensions   The requested texture dimensions
      *   \param is_render_target Create the material for a render target or only for display
-     *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-     *   \param mFilter       Use texture filtering or not (see set_filter())
+     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     *   \param filt       Use texture filtering or not (see set_filter())
      */
     material(
-        const vector2ui& m_dimensions,
+        const vector2ui& dimensions,
         bool             is_render_target,
-        wrap             m_wrap   = wrap::repeat,
-        filter           m_filter = filter::none);
+        wrap             wrap   = wrap::repeat,
+        filter           filter = filter::none);
 
     /// Constructor for textures.
-    /** \param mData         The image data to use as texture
-     *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-     *   \param mFilter       Use texture filtering or not (see set_filter())
+    /** \param data         The image data to use as texture
+     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     *   \param filt       Use texture filtering or not (see set_filter())
      */
-    explicit material(
-        const sf::Image& m_data, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
+    explicit material(const sf::Image& data, wrap wrp = wrap::repeat, filter filt = filter::none);
 
     /// Constructor for textures.
     /** \param file_name     The file from which the texture data is loaded
-     *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-     *   \param mFilter       Use texture filtering or not (see set_filter())
+     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     *   \param filt       Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const std::string& file_name, wrap m_wrap = wrap::repeat, filter m_filter = filter::none);
+        const std::string& file_name, wrap wrp = wrap::repeat, filter filt = filter::none);
 
     /// Constructor for atlas textures.
     /** \param mTexture  The atlas texture holding this material's texture
-     *   \param mLocation The location of the texture inside the atlas texture (in pixels)
-     *   \param mFilter   Use texture filtering or not (see set_filter())
+     *   \param location The location of the texture inside the atlas texture (in pixels)
+     *   \param filt   Use texture filtering or not (see set_filter())
      */
     explicit material(
-        const sf::Texture& m_texture, const bounds2f& m_location, filter m_filter = filter::none);
+        const sf::Texture& texture, const bounds2f& location, filter filt = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -82,32 +81,32 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    bool uses_same_texture(const gui::material& m_other) const override;
+    bool uses_same_texture(const gui::material& other) const override;
 
     /// Resizes this texture.
-    /** \param mDimensions The new texture dimensions
+    /** \param dimensions The new texture dimensions
      *   \return 'true' if the function had to re-create a new texture object
      *   \note All the previous data that was stored in this texture will be lost.
      */
-    bool set_dimensions(const vector2ui& m_dimensions);
+    bool set_dimensions(const vector2ui& dimensions);
 
     /// Premultiplies an image by its alpha component.
     /** \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(sf::Image& m_data);
+    static void premultiply_alpha(sf::Image& data);
 
     /// Sets the wrap mode of this texture.
-    /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
+    /** \param wrp How to adjust texture coordinates that are outside the [0,1] range
      */
-    void set_wrap(wrap m_wrap);
+    void set_wrap(wrap wrp);
 
     /// Sets the filter mode of this texture.
-    /** \param mFilter Use texture filtering or not
+    /** \param filt Use texture filtering or not
      *   \note When texture filtering is disabled, enlarged textures get pixelated.
      *         Else, the GPU uses an averaging algorithm to blur the pixels.
      */
-    void set_filter(filter m_filter);
+    void set_filter(filter filt);
 
     /// Returns the filter mode of this texture.
     /** \return The filter mode of this texture
@@ -130,15 +129,15 @@ public:
     const sf::Texture* get_texture() const;
 
 private:
-    vector2ui m_dimensions_;
-    vector2ui m_canvas_dimensions_;
-    bounds2f  m_rect_;
-    wrap      m_wrap_   = wrap::repeat;
-    filter    m_filter_ = filter::none;
+    vector2ui dimensions_;
+    vector2ui canvas_dimensions_;
+    bounds2f  rect_;
+    wrap      wrap_   = wrap::repeat;
+    filter    filter_ = filter::none;
 
     bool               is_render_target_ = false;
-    sf::RenderTexture  m_render_texture_;
-    sf::Texture        m_texture_;
+    sf::RenderTexture  render_texture_;
+    sf::Texture        texture_;
     const sf::Texture* p_atlas_texture_ = nullptr;
 
     static const std::size_t maximum_size;

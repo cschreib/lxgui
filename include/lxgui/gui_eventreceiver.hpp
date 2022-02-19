@@ -19,9 +19,9 @@ class event_emitter;
 class event_receiver {
 public:
     /// Constructor.
-    /** \param mEmitter The event emitter to listen to
+    /** \param emitter The event emitter to listen to
      */
-    explicit event_receiver(event_emitter& m_emitter);
+    explicit event_receiver(event_emitter& emitter);
 
     // Non-copiable, non-movable
     event_receiver(const event_receiver&) = delete;
@@ -31,9 +31,9 @@ public:
 
     /// Enables reaction to an event.
     /** \param event_name The name of the event this class should react to
-     *   \param mCallback  The callback function to register to this event
+     *   \param callback  The callback function to register to this event
      */
-    void register_event(const std::string& event_name, event_handler_function m_callback);
+    void register_event(const std::string& event_name, event_handler_function callback);
 
     /// Disables reaction to an event.
     /** \param event_name The name of the event this class shouldn't react to anymore
@@ -43,10 +43,10 @@ public:
 private:
     struct event_connection {
         std::string              name;
-        utils::scoped_connection m_connection;
+        utils::scoped_connection connection;
     };
 
-    event_emitter&                m_event_emitter_;
+    event_emitter&                event_emitter_;
     std::vector<event_connection> registered_events_;
 };
 

@@ -25,8 +25,8 @@
 
 namespace lxgui::gui::gl {
 
-render_target::render_target(const vector2ui& m_dimensions, material::filter m_filter) {
-    p_texture_ = std::make_shared<gl::material>(m_dimensions, material::wrap::repeat, m_filter);
+render_target::render_target(const vector2ui& dimensions, material::filter filt) {
+    p_texture_ = std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
 
     glGenFramebuffers(1, &ui_fbo_handle_);
     glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
@@ -47,20 +47,20 @@ render_target::~render_target() {
 }
 
 void render_target::begin() {
-    vector2f m_view = vector2f(p_texture_->get_canvas_dimensions());
-    m_view_matrix_   = matrix4f::view(m_view);
+    vector2f view = vector2f(p_texture_->get_canvas_dimensions());
+    view_matrix_  = matrix4f::view(view);
 
     glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
 
-    glViewport(0.0f, 0.0f, m_view.x, m_view.y);
+    glViewport(0.0f, 0.0f, view.x, view.y);
 }
 
 void render_target::end() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void render_target::clear(const color& m_color) {
-    glClearColor(m_color.r, m_color.g, m_color.b, m_color.a);
+void render_target::clear(const color& c) {
+    glClearColor(c.r, c.g, c.b, c.a);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -72,8 +72,8 @@ vector2ui render_target::get_canvas_dimensions() const {
     return p_texture_->get_canvas_dimensions();
 }
 
-bool render_target::set_dimensions(const vector2ui& m_dimensions) {
-    if (p_texture_->set_dimensions(m_dimensions)) {
+bool render_target::set_dimensions(const vector2ui& dimensions) {
+    if (p_texture_->set_dimensions(dimensions)) {
         glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
         glFramebufferTexture2D(
             GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
@@ -96,7 +96,7 @@ std::weak_ptr<gl::material> render_target::get_material() {
 }
 
 const matrix4f& render_target::get_view_matrix() const {
-    return m_view_matrix_;
+    return view_matrix_;
 }
 
 void render_target::check_availability() {

@@ -26,13 +26,13 @@ namespace lxgui::gui {
 class file_line_mappings {
 public:
     explicit file_line_mappings(const std::string& file_name) : file_name_(file_name) {
-        std::ifstream m_stream(file_name);
-        if (!m_stream.is_open())
+        std::ifstream stream(file_name);
+        if (!stream.is_open())
             return;
 
         std::string line;
         std::size_t ui_prev_pos = 0u;
-        while (std::getline(m_stream, line)) {
+        while (std::getline(stream, line)) {
             file_content_ += '\n' + line;
             line_offsets_.push_back(ui_prev_pos);
             ui_prev_pos += line.size() + 1u;
@@ -52,22 +52,22 @@ public:
     }
 
     std::pair<std::size_t, std::size_t> get_line_info(std::size_t ui_offset) const {
-        auto m_iter = std::lower_bound(line_offsets_.begin(), line_offsets_.end(), ui_offset);
-        if (m_iter == line_offsets_.end())
+        auto iter = std::lower_bound(line_offsets_.begin(), line_offsets_.end(), ui_offset);
+        if (iter == line_offsets_.end())
             return std::make_pair(0, 0);
 
-        std::size_t ui_line_nbr = m_iter - line_offsets_.begin();
-        std::size_t char_offset = ui_offset - *m_iter + 1u;
+        std::size_t ui_line_nbr = iter - line_offsets_.begin();
+        std::size_t char_offset = ui_offset - *iter + 1u;
 
         return std::make_pair(ui_line_nbr, char_offset);
     }
 
     std::string get_location(std::size_t ui_offset) const {
-        auto m_location = get_line_info(ui_offset);
-        if (m_location.first == 0)
+        auto location = get_line_info(ui_offset);
+        if (location.first == 0)
             return file_name_ + ":?";
         else
-            return file_name_ + ":" + utils::to_string(m_location.first);
+            return file_name_ + ":" + utils::to_string(location.first);
     }
 
 private:
@@ -95,71 +95,70 @@ std::string normalize_node_name(const std::string& name, bool capital_first) {
 }
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
-void set_node(
-    const file_line_mappings& m_file, layout_node& m_node, const pugi::xml_node& m_xml_node) {
-    auto location = m_file.get_location(m_xml_node.offset_debug());
-    m_node.set_location(location);
-    m_node.set_value_location(location);
-    m_node.set_name(normalize_node_name(m_xml_node.name(), true));
+void set_node(const file_line_mappings& file, layout_node& node, const pugi::xml_node& xml_node) {
+    auto location = file.get_location(xml_node.offset_debug());
+    node.set_location(location);
+    node.set_value_location(location);
+    node.set_name(normalize_node_name(xml_node.name(), true));
 
-    for (const auto& m_attr : m_xml_node.attributes()) {
-        std::string name = normalize_node_name(m_attr.name(), false);
-        if (const auto* p_node = m_node.try_get_attribute(name)) {
+    for (const auto& attr : xml_node.attributes()) {
+        std::string name = normalize_node_name(attr.name(), false);
+        if (const auto* p_node = node.try_get_attribute(name)) {
             gui::out << gui::warning << location << " : attribute '" << name
                      << "' duplicated; only first value will be used." << std::endl;
             p_node->mark_as_not_accessed();
             continue;
         }
 
-        auto& m_attrib = m_node.add_attribute();
-        m_attrib.set_location(location);
-        m_attrib.set_value_location(location);
-        m_attrib.set_name(std::move(name));
-        m_attrib.set_value(m_attr.value());
+        auto& attrib = node.add_attribute();
+        attrib.set_location(location);
+        attrib.set_value_location(location);
+        attrib.set_name(std::move(name));
+        attrib.set_value(attr.value());
     }
 
     std::string value;
-    for (const auto& m_elem_node : m_xml_node.children()) {
-        if (m_elem_node.type() == pugi::node_pcdata || m_elem_node.type() == pugi::node_cdata) {
-            value += m_elem_node.value();
+    for (const auto& elem_node : xml_node.children()) {
+        if (elem_node.type() == pugi::node_pcdata || elem_node.type() == pugi::node_cdata) {
+            value += elem_node.value();
         } else {
-            auto& m_child = m_node.add_child();
-            set_node(m_file, m_child, m_elem_node);
+            auto& child = node.add_child();
+            set_node(file, child, elem_node);
         }
     }
 
-    m_node.set_value(value);
+    node.set_value(value);
 }
 #endif
 
 #if defined(LXGUI_ENABLE_YAML_PARSER)
-std::string to_string(const c4::csubstr& m_c_string) {
-    return std::string(m_c_string.data(), m_c_string.size());
+std::string to_string(const c4::csubstr& c_string) {
+    return std::string(c_string.data(), c_string.size());
 }
 
 void set_node(
-    const file_line_mappings& m_file,
-    const ryml::Tree&         m_tree,
-    layout_node&              m_node,
-    const ryml::NodeRef&      m_yaml_node) {
+    const file_line_mappings& file,
+    const ryml::Tree&         tree,
+    layout_node&              node,
+    const ryml::NodeRef&      yaml_node) {
     std::string location;
-    if (m_yaml_node.has_key())
-        location = m_file.get_location(m_yaml_node.key().data() - m_tree.arena().data());
-    else if (m_yaml_node.has_val())
-        location = m_file.get_location(m_yaml_node.val().data() - m_tree.arena().data());
-    m_node.set_location(location);
-    m_node.set_value_location(location);
+    if (yaml_node.has_key())
+        location = file.get_location(yaml_node.key().data() - tree.arena().data());
+    else if (yaml_node.has_val())
+        location = file.get_location(yaml_node.val().data() - tree.arena().data());
+    node.set_location(location);
+    node.set_value_location(location);
 
-    if (m_yaml_node.has_key())
-        m_node.set_name(normalize_node_name(to_string(m_yaml_node.key()), true));
+    if (yaml_node.has_key())
+        node.set_name(normalize_node_name(to_string(yaml_node.key()), true));
 
-    for (const auto& m_elem_node : m_yaml_node.children()) {
-        switch (m_elem_node.type()) {
+    for (const auto& elem_node : yaml_node.children()) {
+        switch (elem_node.type()) {
         case ryml::KEYVAL: {
-            std::string name = normalize_node_name(to_string(m_elem_node.key()), false);
+            std::string name = normalize_node_name(to_string(elem_node.key()), false);
             std::string attr_location =
-                m_file.get_location(m_elem_node.key().data() - m_tree.arena().data());
-            if (const auto* p_node = m_node.try_get_attribute(name)) {
+                file.get_location(elem_node.key().data() - tree.arena().data());
+            if (const auto* p_node = node.try_get_attribute(name)) {
                 gui::out << gui::warning << attr_location << " : attribute '" << name
                          << "' duplicated; only first value will be used." << std::endl;
                 gui::out << gui::warning << std::string(attr_location.size(), ' ')
@@ -170,24 +169,24 @@ void set_node(
                 continue;
             }
 
-            auto& m_attrib = m_node.add_attribute();
-            m_attrib.set_location(std::move(attr_location));
-            m_attrib.set_value_location(
-                m_file.get_location(m_elem_node.val().data() - m_tree.arena().data()));
-            m_attrib.set_name(std::move(name));
-            m_attrib.set_value(to_string(m_elem_node.val()));
+            auto& attrib = node.add_attribute();
+            attrib.set_location(std::move(attr_location));
+            attrib.set_value_location(
+                file.get_location(elem_node.val().data() - tree.arena().data()));
+            attrib.set_name(std::move(name));
+            attrib.set_value(to_string(elem_node.val()));
             break;
         }
         case ryml::KEYMAP: [[fallthrough]];
         case ryml::MAP: [[fallthrough]];
         case ryml::KEYSEQ: {
-            auto& m_child = m_node.add_child();
-            set_node(m_file, m_tree, m_child, m_elem_node);
+            auto& child = node.add_child();
+            set_node(file, tree, child, elem_node);
             break;
         }
         default: {
             gui::out << gui::warning << location << " : unsupported YAML node type: '"
-                     << m_elem_node.type_str() << "'." << std::endl;
+                     << elem_node.type_str() << "'." << std::endl;
             break;
         }
         }
@@ -195,90 +194,89 @@ void set_node(
 }
 #endif
 
-void addon_registry::parse_layout_file_(const std::string& file, const addon& m_add_on) {
-    file_line_mappings m_file(file);
-    if (!m_file.is_open()) {
-        gui::out << gui::error << file << ": could not open file for parsing." << std::endl;
+void addon_registry::parse_layout_file_(const std::string& file_name, const addon& add_on) {
+    file_line_mappings file(file_name);
+    if (!file.is_open()) {
+        gui::out << gui::error << file_name << ": could not open file for parsing." << std::endl;
         return;
     }
 
-    layout_node m_root;
+    layout_node root;
     bool        parsed = false;
 
-    const std::string extension = utils::get_file_extension(file);
+    const std::string extension = utils::get_file_extension(file_name);
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
     if (extension == ".xml") {
         const unsigned int ui_options = pugi::parse_ws_pcdata_single;
 
-        pugi::xml_document     m_doc;
-        pugi::xml_parse_result m_result = m_doc.load_buffer(
-            m_file.get_content().c_str(), m_file.get_content().size(), ui_options);
+        pugi::xml_document     doc;
+        pugi::xml_parse_result result =
+            doc.load_buffer(file.get_content().c_str(), file.get_content().size(), ui_options);
 
-        if (!m_result) {
-            gui::out << gui::error << m_file.get_location(m_result.offset) << ": "
-                     << m_result.description() << std::endl;
+        if (!result) {
+            gui::out << gui::error << file.get_location(result.offset) << ": "
+                     << result.description() << std::endl;
             return;
         }
 
-        set_node(m_file, m_root, m_doc.first_child());
+        set_node(file, root, doc.first_child());
         parsed = true;
     }
 #endif
 
 #if defined(LXGUI_ENABLE_YAML_PARSER)
     if (extension == ".yml" || extension == ".yaml") {
-        ryml::Tree m_tree = ryml::parse(ryml::to_csubstr(m_file.get_content()));
-        set_node(m_file, m_tree, m_root, m_tree.rootref().first_child());
+        ryml::Tree tree = ryml::parse(ryml::to_csubstr(file.get_content()));
+        set_node(file, tree, root, tree.rootref().first_child());
         parsed = true;
     }
 #endif
 
     if (!parsed) {
-        gui::out << gui::error << file
+        gui::out << gui::error << file_name
                  << ": no parser registered for extension '" + extension + "'." << std::endl;
         return;
     }
 
-    for (const auto& m_node : m_root.get_children()) {
-        if (m_node.get_name() == "Script") {
+    for (const auto& node : root.get_children()) {
+        if (node.get_name() == "Script") {
             std::string script_file =
-                m_add_on.directory + "/" + m_node.get_attribute_value<std::string>("file");
+                add_on.directory + "/" + node.get_attribute_value<std::string>("file");
 
             try {
-                m_lua_.do_file(script_file);
+                lua_.do_file(script_file);
             } catch (const sol::error& e) {
                 std::string error = e.what();
 
                 gui::out << gui::error << error << std::endl;
 
-                m_event_emitter_.fire_event("LUA_ERROR", {error});
+                event_emitter_.fire_event("LUA_ERROR", {error});
             }
-        } else if (m_node.get_name() == "Include") {
+        } else if (node.get_name() == "Include") {
             parse_layout_file_(
-                m_add_on.directory + "/" + m_node.get_attribute_value<std::string>("file"),
-                m_add_on);
+                add_on.directory + "/" + node.get_attribute_value<std::string>("file"), add_on);
         } else {
             try {
-                auto m_attr = parse_core_attributes(
-                    m_root_.get_registry(), m_virtual_root_.get_registry(), m_node, nullptr);
+                auto attr = parse_core_attributes(
+                    root_.get_registry(), virtual_root_.get_registry(), node, nullptr);
 
                 utils::observer_ptr<frame> p_frame;
-                auto p_parent = m_attr.p_parent; // copy here to prevent use-after-move
+                auto p_parent = attr.p_parent; // copy here to prevent use-after-move
                 if (p_parent) {
-                    p_frame = p_parent->create_child(std::move(m_attr));
+                    p_frame = p_parent->create_child(std::move(attr));
                 } else {
-                    if (m_attr.is_virtual)
-                        p_frame = m_virtual_root_.create_root_frame(std::move(m_attr));
+                    if (attr.is_virtual)
+                        p_frame = virtual_root_.create_root_frame(std::move(attr));
                     else
-                        p_frame = m_root_.create_root_frame(std::move(m_attr));
+                        p_frame = root_.create_root_frame(std::move(attr));
                 }
 
                 if (!p_frame)
                     continue;
 
-                p_frame->set_addon(&m_add_on);
-                p_frame->parse_layout(m_node);
+                p_frame->set_addon(&add_on);
+                p_frame->parse_layout(node);
                 p_frame->notify_loaded();
             } catch (const utils::exception& e) {
                 gui::out << gui::error << e.get_description() << std::endl;
@@ -286,7 +284,7 @@ void addon_registry::parse_layout_file_(const std::string& file, const addon& m_
         }
     }
 
-    warn_for_not_accessed_node(m_root);
+    warn_for_not_accessed_node(root);
 }
 
 } // namespace lxgui::gui

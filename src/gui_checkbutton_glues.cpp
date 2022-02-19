@@ -17,8 +17,8 @@
 
 namespace lxgui::gui {
 
-void check_button::register_on_lua(sol::state& m_lua) {
-    auto m_class = m_lua.new_usertype<check_button>(
+void check_button::register_on_lua(sol::state& lua) {
+    auto type = lua.new_usertype<check_button>(
         "CheckButton", sol::base_classes, sol::bases<region, frame, button>(),
         sol::meta_function::index, member_function<&check_button::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&check_button::set_lua_member_>());
@@ -27,13 +27,13 @@ void check_button::register_on_lua(sol::state& m_lua) {
      *   @function is_checked
      *   @treturn boolean 'true' if checked, 'false' otherwise
      */
-    m_class.set_function("is_checked", member_function<&check_button::is_checked>());
+    type.set_function("is_checked", member_function<&check_button::is_checked>());
 
     /** Returns this button's checked texture.
      *   @function get_checked_texture
      *   @treturn Texture This button's checked texture
      */
-    m_class.set_function(
+    type.set_function(
         "get_checked_texture",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<texture>& (check_button::*)()>(
@@ -43,7 +43,7 @@ void check_button::register_on_lua(sol::state& m_lua) {
      *   @function get_disabled_checked_texture
      *   @treturn Texture This button's disabled checked texture
      */
-    m_class.set_function(
+    type.set_function(
         "get_disabled_checked_texture",
         member_function< // select the right overload for Lua
             static_cast<const utils::observer_ptr<texture>& (check_button::*)()>(
@@ -57,25 +57,24 @@ void check_button::register_on_lua(sol::state& m_lua) {
     /** Checks the button.
      *   @function set_checked
      */
-    m_class.set_function("set_checked", [](check_button& m_self, sol::optional<bool> is_checked) {
+    type.set_function("set_checked", [](check_button& self, sol::optional<bool> is_checked) {
         if (is_checked.value_or(true))
-            m_self.check();
+            self.check();
         else
-            m_self.uncheck();
+            self.uncheck();
     });
 
     /** Sets this button's checked texture.
      *   @function set_checked_texture
      *   @tparam Texture tex The new texture
      */
-    m_class.set_function(
-        "set_checked_texture", member_function<&check_button::set_checked_texture>());
+    type.set_function("set_checked_texture", member_function<&check_button::set_checked_texture>());
 
     /** Sets this button's disabled checked texture.
      *   @function set_disabled_checked_texture
      *   @tparam Texture tex The new texture
      */
-    m_class.set_function(
+    type.set_function(
         "set_disabled_checked_texture",
         member_function<&check_button::set_disabled_checked_texture>());
 }

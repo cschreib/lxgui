@@ -17,14 +17,14 @@ namespace lxgui::gui::sdl {
 class render_target final : public gui::render_target {
 public:
     /// Constructor.
-    /** \param renderer   The SDL render to create the render_target for
-     *   \param mDimensions The dimensions of the render_target
-     *   \param mFilter     The filtering to apply to the target texture when displayed
+    /** \param rdr   The SDL render to create the render_target for
+     *   \param dimensions The dimensions of the render_target
+     *   \param filt     The filtering to apply to the target texture when displayed
      */
     render_target(
-        SDL_Renderer*    p_renderer,
-        const vector2ui& m_dimensions,
-        material::filter m_filter = material::filter::none);
+        SDL_Renderer*    rdr,
+        const vector2ui& dimensions,
+        material::filter filt = material::filter::none);
 
     /// Begins rendering on this target.
     void begin() override;
@@ -33,9 +33,9 @@ public:
     void end() override;
 
     /// Clears the content of this render_target.
-    /** \param mColor The color to use as background
+    /** \param c The color to use as background
      */
-    void clear(const color& m_color) override;
+    void clear(const color& c) override;
 
     /// Returns this render target's pixel rect.
     /** \return This render target's pixel rect
@@ -43,11 +43,11 @@ public:
     bounds2f get_rect() const override;
 
     /// Sets this render target's dimensions.
-    /** \param mDimensions The new dimensions (in pixels)
+    /** \param dimensions The new dimensions (in pixels)
      *   \return 'true' if the function had to re-create a
      *           new render target
      */
-    bool set_dimensions(const vector2ui& m_dimensions) override;
+    bool set_dimensions(const vector2ui& dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
@@ -69,10 +69,10 @@ public:
     const matrix4f& get_view_matrix() const;
 
     /// Checks if the machine is capable of using render targets.
-    /** \param renderer The renderer to check for availability
+    /** \param rdr The renderer to check for availability
      *   \note If not, this function throws a gui::exception.
      */
-    static void check_availability(SDL_Renderer* p_renderer);
+    static void check_availability(SDL_Renderer* rdr);
 
     /// Returns the underlying SDL render texture object.
     /** return The underlying SDL render texture object
@@ -81,7 +81,7 @@ public:
 
 private:
     std::shared_ptr<sdl::material> p_texture_;
-    matrix4f                       m_view_matrix_;
+    matrix4f                       view_matrix_;
 };
 
 } // namespace lxgui::gui::sdl

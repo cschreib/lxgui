@@ -18,10 +18,10 @@ class material;
 class renderer final : public gui::renderer {
 public:
     /// Constructor.
-    /** \param renderer A pre-initialised SDL renderer
+    /** \param rdr A pre-initialised SDL renderer
      *   \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */
-    explicit renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image);
+    explicit renderer(SDL_Renderer* rdr, bool initialise_sdl_image);
 
     /// Returns a human-readable name for this renderer.
     /** \return A human-readable name for this renderer
@@ -54,30 +54,30 @@ public:
     bool is_texture_vertex_color_supported() const override;
 
     /// Creates a new material from arbitrary pixel data.
-    /** \param mDimensions The dimensions of the material
+    /** \param dimensions The dimensions of the material
      *   \param pPixelData  The color data for all the pixels in the material
-     *   \param mFilter     The filtering to apply to the texture
+     *   \param filt     The filtering to apply to the texture
      *   \return The new material
      */
     std::shared_ptr<gui::material> create_material(
-        const vector2ui& m_dimensions,
+        const vector2ui& dimensions,
         const ub32color* p_pixel_data,
-        material::filter m_filter = material::filter::none) override;
+        material::filter filt = material::filter::none) override;
 
     /// Creates a new material from a portion of a render target.
     /** \param pRenderTarget The render target from which to read the pixels
-     *   \param mLocation     The portion of the render target to use as material
+     *   \param location     The portion of the render target to use as material
      *   \return The new material
      */
     std::shared_ptr<gui::material> create_material(
-        std::shared_ptr<gui::render_target> p_render_target, const bounds2f& m_location) override;
+        std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) override;
 
     /// Creates a new render target.
-    /** \param mDimensions The dimensions of the render target
-     *   \param mFilter     The filtering to apply to the target texture when displayed
+    /** \param dimensions The dimensions of the render target
+     *   \param filt     The filtering to apply to the target texture when displayed
      */
     std::shared_ptr<gui::render_target> create_render_target(
-        const vector2ui& m_dimensions, material::filter m_filter = material::filter::none) override;
+        const vector2ui& dimensions, material::filter filt = material::filter::none) override;
 
     /// Checks if the renderer supports vertex caches.
     /** \return 'true' if supported, 'false' otherwise
@@ -85,15 +85,15 @@ public:
     bool is_vertex_cache_supported() const override;
 
     /// Creates a new empty vertex cache.
-    /** \param mType The type of data this cache will hold
+    /** \param type The type of data this cache will hold
      *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
      */
-    std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type m_type) override;
+    std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type type) override;
 
     /// Notifies the renderer that the render window has been resized.
-    /** \param mNewDimensions The new window dimensions
+    /** \param new_dimensions The new window dimensions
      */
-    void notify_window_resized(const vector2ui& m_new_dimensions) override;
+    void notify_window_resized(const vector2ui& new_dimensions) override;
 
     /// Returns the SDL renderer implementation.
     /** \return the SDL renderer implementation
@@ -103,24 +103,24 @@ public:
 protected:
     /// Creates a new material from a texture file.
     /** \param file_name The name of the file
-     *   \param mFilter   The filtering to apply to the texture
+     *   \param filt   The filtering to apply to the texture
      *   \return The new material
      *   \note Only PNG textures are supported by this implementation (parsed by libpng).
      */
     std::shared_ptr<gui::material>
-    create_material_(const std::string& file_name, material::filter m_filter) override;
+    create_material_(const std::string& file_name, material::filter filt) override;
 
     /// Creates a new atlas with a given texture filter mode.
-    /** \param mFilter The filtering to apply to the texture
+    /** \param filt The filtering to apply to the texture
      *   \return The new atlas
      */
-    std::shared_ptr<gui::atlas> create_atlas_(material::filter m_filter) override;
+    std::shared_ptr<gui::atlas> create_atlas_(material::filter filt) override;
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \note This implementation uses FreeType to load vector fonts and rasterize them.
      *         Bitmap fonts are not yet supported.
@@ -141,7 +141,7 @@ protected:
     void end_() override;
 
     /// Sets the view matrix to use when rendering (viewport).
-    /** \param mViewMatrix The view matrix
+    /** \param view_matrix The view matrix
      *   \note This function is called by default in begin(), which resets the
      *         view to span the entire render target (or the entire screen). Therefore
      *         it is only necessary to use this function when a custom view is required.
@@ -155,7 +155,7 @@ protected:
      *            backends, the view matrix will be simplified to a simpler 2D translate +
      *            rotate + scale transform, or even just translate + scale.
      */
-    void set_view_(const matrix4f& m_view_matrix) override;
+    void set_view_(const matrix4f& view_matrix) override;
 
     /// Renders a quad from a material and array of vertices.
     /** \param pMat         The material to use to to render the quad, or null if none
@@ -186,8 +186,8 @@ protected:
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
-     *   \param mCache          The vertex cache
-     *   \param mModelTransform The transformation matrix to apply to vertices
+     *   \param cache          The vertex cache
+     *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -202,18 +202,18 @@ protected:
      */
     void render_cache_(
         const gui::material*     p_material,
-        const gui::vertex_cache& m_cache,
-        const matrix4f&          m_model_transform) override;
+        const gui::vertex_cache& cache,
+        const matrix4f&          model_transform) override;
 
 private:
     SDL_Renderer* p_renderer_                     = nullptr;
     bool          pre_multiplied_alpha_supported_ = false;
     std::size_t   ui_texture_max_size_            = 0u;
 
-    vector2ui m_window_dimensions_;
-    matrix4f  m_view_matrix_;
-    matrix4f  m_raw_view_matrix_;
-    matrix4f  m_target_view_matrix_;
+    vector2ui window_dimensions_;
+    matrix4f  view_matrix_;
+    matrix4f  raw_view_matrix_;
+    matrix4f  target_view_matrix_;
 
     std::shared_ptr<gui::sdl::render_target> p_current_target_;
 };

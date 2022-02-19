@@ -32,7 +32,7 @@ public:
     enum class orientation { vertical, horizontal };
 
     /// Constructor.
-    explicit slider(utils::control_block& m_block, manager& m_manager);
+    explicit slider(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -48,18 +48,18 @@ public:
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param mData       Stores scripts arguments
+     *   \param data       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Copies a region's parameters into this slider (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Sets the texture to use for the thumb.
     /** \param pTexture The new texture
@@ -81,9 +81,9 @@ public:
     }
 
     /// Sets the orientation of this slider.
-    /** \param mOrientation The orientation of this slider
+    /** \param orient The orientation of this slider
      */
-    void set_orientation(orientation m_orientation);
+    void set_orientation(orientation orient);
 
     /// Sets the orientation of this slider.
     /** \param orientation_name The orientation of this slider ("VERTICAL" or "HORIZONTAL")
@@ -143,9 +143,9 @@ public:
     float get_value_step() const;
 
     /// Sets the draw layer of this slider's thumb texture.
-    /** \param mThumbLayer The layer
+    /** \param thumb_layer The layer
      */
-    void set_thumb_draw_layer(layer m_thumb_layer);
+    void set_thumb_draw_layer(layer thumb_layer);
 
     /// Sets the draw layer of this slider's thumb texture.
     /** \param thumb_layer_name The layer
@@ -169,11 +169,11 @@ public:
     bool are_clicks_outside_thumb_allowed() const;
 
     /// Checks if the provided coordinates are in the slider.
-    /** \param mPosition The coordinate to test
+    /** \param position The coordinate to test
      *   \return 'true' if the provided coordinates are in the slider, its title region,
      *           or its thumb texture
      */
-    bool is_in_region(const vector2f& m_position) const override;
+    bool is_in_region(const vector2f& position) const override;
 
     /// Returns this region's Lua glue.
     void create_glue() override;
@@ -182,7 +182,7 @@ public:
     void notify_borders_need_update() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "Slider";
 
@@ -192,10 +192,10 @@ protected:
 
     void notify_thumb_texture_needs_update_();
 
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_all_nodes_before_children_(const layout_node& m_node) override;
+    void parse_attributes_(const layout_node& node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
 
-    orientation m_orientation_ = orientation::vertical;
+    orientation orientation_ = orientation::vertical;
 
     float value_      = 0.0f;
     float min_value_  = 0.0f;
@@ -204,7 +204,7 @@ protected:
 
     bool allow_clicks_outside_thumb_ = true;
 
-    layer                        m_thumb_layer_   = layer::overlay;
+    layer                        thumb_layer_     = layer::overlay;
     utils::observer_ptr<texture> p_thumb_texture_ = nullptr;
 
     bool is_thumb_dragged_ = false;

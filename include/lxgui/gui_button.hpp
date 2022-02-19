@@ -46,7 +46,7 @@ public:
     enum class state { up, down, disabled };
 
     /// Constructor.
-    explicit button(utils::control_block& m_block, manager& m_manager);
+    explicit button(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -65,18 +65,18 @@ public:
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param mData       Stores scripts arguments
+     *   \param data       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Copies a region's parameters into this button (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Sets this button's text.
     /** \param content The new text
@@ -299,15 +299,15 @@ public:
     const vector2f& get_pushed_text_offset() const;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "Button";
 
 protected:
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_all_nodes_before_children_(const layout_node& m_node) override;
+    void parse_attributes_(const layout_node& node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
 
-    state m_state_             = state::up;
+    state state_               = state::up;
     bool  is_highlighted_      = false;
     bool  is_highlight_locked_ = false;
 
@@ -323,7 +323,7 @@ protected:
     utils::observer_ptr<font_string> p_disabled_text_       = nullptr;
     utils::observer_ptr<font_string> p_current_font_string_ = nullptr;
 
-    vector2f m_pushed_text_offset_ = vector2f::zero;
+    vector2f pushed_text_offset_ = vector2f::zero;
 };
 
 } // namespace lxgui::gui

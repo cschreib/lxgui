@@ -66,21 +66,21 @@ public:
     /// Checks if another material is based on the same texture as the current material.
     /** \return 'true' if both materials use the same texture, 'false' otherwise
      */
-    virtual bool uses_same_texture(const material& m_other) const = 0;
+    virtual bool uses_same_texture(const material& other) const = 0;
 
     /// Returns normalised UV coordinates on the canvas, given local UV coordinates.
-    /** \param mTextureUV      The original UV coordinates, local to this texture
+    /** \param texture_uv      The original UV coordinates, local to this texture
      *   \param from_normalized Set to 'true' if input coordinates are normalised to [0,1]
      *                          and 'false' if input coordinates are in pixels
      */
-    vector2f get_canvas_uv(const vector2f& m_texture_uv, bool from_normalized) const;
+    vector2f get_canvas_uv(const vector2f& texture_uv, bool from_normalized) const;
 
     /// Returns local UV coordinates on the texture, given canvas UV coordinates.
-    /** \param mCanvasUV     The canvas UV coordinates
+    /** \param canvas_uv     The canvas UV coordinates
      *   \param as_normalized Set to 'true' if output coordinates should be normalised to [0,1]
      *                        and 'false' if output coordinates should be in pixels
      */
-    vector2f get_local_uv(const vector2f& m_canvas_uv, bool as_normalized) const;
+    vector2f get_local_uv(const vector2f& canvas_uv, bool as_normalized) const;
 
     /// Checks if the material is embedded in an atlas.
     /** \return 'true' if the material is inside an atlas, 'false' otherwise.

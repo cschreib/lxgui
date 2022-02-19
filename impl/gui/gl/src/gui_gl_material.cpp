@@ -39,18 +39,18 @@ std::size_t next_pot(std::size_t ui_size) {
     return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(ui_size))));
 }
 
-material::material(const vector2ui& m_dimensions, wrap m_wrap, filter m_filter) :
-    gui::material(false), m_wrap_(m_wrap), m_filter_(m_filter), is_owner_(true) {
+material::material(const vector2ui& dimensions, wrap wrp, filter filt) :
+    gui::material(false), wrap_(wrp), filter_(filt), is_owner_(true) {
     if (only_power_of_two)
-        m_canvas_dimensions_ = vector2ui(next_pot(m_dimensions.x), next_pot(m_dimensions.y));
+        canvas_dimensions_ = vector2ui(next_pot(dimensions.x), next_pot(dimensions.y));
     else
-        m_canvas_dimensions_ = m_dimensions;
+        canvas_dimensions_ = dimensions;
 
-    if (m_canvas_dimensions_.x > maximum_size || m_canvas_dimensions_.y > maximum_size) {
+    if (canvas_dimensions_.x > maximum_size || canvas_dimensions_.y > maximum_size) {
         throw gui::exception(
             "gui::gl::material", "Texture dimensions not supported by graphics card : (" +
-                                     utils::to_string(m_canvas_dimensions_.x) + " x " +
-                                     utils::to_string(m_canvas_dimensions_.y) + ").");
+                                     utils::to_string(canvas_dimensions_.x) + " x " +
+                                     utils::to_string(canvas_dimensions_.y) + ").");
     }
 
     GLint previous_id;
@@ -60,10 +60,10 @@ material::material(const vector2ui& m_dimensions, wrap m_wrap, filter m_filter) 
 
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
     glTexImage2D(
-        GL_TEXTURE_2D, 0, GL_RGBA8, m_canvas_dimensions_.x, m_canvas_dimensions_.y, 0, GL_RGBA,
+        GL_TEXTURE_2D, 0, GL_RGBA8, canvas_dimensions_.x, canvas_dimensions_.y, 0, GL_RGBA,
         GL_UNSIGNED_BYTE, nullptr);
 
-    switch (m_wrap) {
+    switch (wrp) {
     case wrap::clamp:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -75,7 +75,7 @@ material::material(const vector2ui& m_dimensions, wrap m_wrap, filter m_filter) 
         break;
     }
 
-    switch (m_filter) {
+    switch (filt) {
     case filter::linear:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -89,19 +89,19 @@ material::material(const vector2ui& m_dimensions, wrap m_wrap, filter m_filter) 
 
     glBindTexture(GL_TEXTURE_2D, previous_id);
 
-    m_rect_ = bounds2f(0, m_dimensions.x, 0, m_dimensions.y);
+    rect_ = bounds2f(0, dimensions.x, 0, dimensions.y);
 }
 
 material::material(
     std::uint32_t    ui_texture_handle,
-    const vector2ui& m_canvas_dimensions,
-    const bounds2f   m_rect,
-    filter           m_filter) :
+    const vector2ui& canvas_dimensions,
+    const bounds2f   rect,
+    filter           filt) :
     gui::material(true),
-    m_canvas_dimensions_(m_canvas_dimensions),
-    m_filter_(m_filter),
+    canvas_dimensions_(canvas_dimensions),
+    filter_(filt),
     ui_texture_handle_(ui_texture_handle),
-    m_rect_(m_rect),
+    rect_(rect),
     is_owner_(false) {}
 
 material::~material() {
@@ -109,7 +109,7 @@ material::~material() {
         glDeleteTextures(1, &ui_texture_handle_);
 }
 
-void material::set_wrap(wrap m_wrap) {
+void material::set_wrap(wrap wrp) {
     if (!is_owner_) {
         throw gui::exception(
             "gui::gl::material", "A material in an atlas cannot change its wrapping mode.");
@@ -119,7 +119,7 @@ void material::set_wrap(wrap m_wrap) {
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
 
-    switch (m_wrap) {
+    switch (wrp) {
     case wrap::clamp:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -134,7 +134,7 @@ void material::set_wrap(wrap m_wrap) {
     glBindTexture(GL_TEXTURE_2D, previous_id);
 }
 
-void material::set_filter(filter m_filter) {
+void material::set_filter(filter filt) {
     if (!is_owner_) {
         throw gui::exception(
             "gui::gl::material", "A material in an atlas cannot change its filtering.");
@@ -144,7 +144,7 @@ void material::set_filter(filter m_filter) {
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
 
-    switch (m_filter) {
+    switch (filt) {
     case filter::linear:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -160,7 +160,7 @@ void material::set_filter(filter m_filter) {
 }
 
 material::filter material::get_filter() const {
-    return m_filter_;
+    return filter_;
 }
 
 void material::bind() const {
@@ -177,32 +177,32 @@ void material::premultiply_alpha(std::vector<ub32color>& data) {
 }
 
 bounds2f material::get_rect() const {
-    return m_rect_;
+    return rect_;
 }
 
 vector2ui material::get_canvas_dimensions() const {
-    return m_canvas_dimensions_;
+    return canvas_dimensions_;
 }
 
-bool material::uses_same_texture(const gui::material& m_other) const {
-    return ui_texture_handle_ == static_cast<const gl::material&>(m_other).ui_texture_handle_;
+bool material::uses_same_texture(const gui::material& other) const {
+    return ui_texture_handle_ == static_cast<const gl::material&>(other).ui_texture_handle_;
 }
 
-bool material::set_dimensions(const vector2ui& m_dimensions) {
+bool material::set_dimensions(const vector2ui& dimensions) {
     if (!is_owner_) {
         throw gui::exception("gui::gl::material", "A material in an atlas cannot be resized.");
     }
 
     bool canvas_updated = false;
 
-    if (m_dimensions.x > m_canvas_dimensions_.x || m_dimensions.y > m_canvas_dimensions_.y) {
-        vector2ui m_canvas_dimensions = m_dimensions;
+    if (dimensions.x > canvas_dimensions_.x || dimensions.y > canvas_dimensions_.y) {
+        vector2ui canvas_dimensions = dimensions;
         if (only_power_of_two) {
-            m_canvas_dimensions.x = next_pot(m_canvas_dimensions.x);
-            m_canvas_dimensions.y = next_pot(m_canvas_dimensions.y);
+            canvas_dimensions.x = next_pot(canvas_dimensions.x);
+            canvas_dimensions.y = next_pot(canvas_dimensions.y);
         }
 
-        if (m_canvas_dimensions.x > maximum_size || m_canvas_dimensions.y > maximum_size)
+        if (canvas_dimensions.x > maximum_size || canvas_dimensions.y > maximum_size)
             return false;
 
         GLint previous_id;
@@ -210,10 +210,10 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
 
         glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
         glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA8, m_canvas_dimensions.x, m_canvas_dimensions.y, 0, GL_RGBA,
+            GL_TEXTURE_2D, 0, GL_RGBA8, canvas_dimensions.x, canvas_dimensions.y, 0, GL_RGBA,
             GL_UNSIGNED_BYTE, nullptr);
 
-        switch (m_wrap_) {
+        switch (wrap_) {
         case wrap::clamp:
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -224,7 +224,7 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             break;
         }
-        switch (m_filter_) {
+        switch (filter_) {
         case filter::linear:
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -238,11 +238,11 @@ bool material::set_dimensions(const vector2ui& m_dimensions) {
 
         glBindTexture(GL_TEXTURE_2D, previous_id);
 
-        m_canvas_dimensions_ = m_canvas_dimensions;
-        canvas_updated       = true;
+        canvas_dimensions_ = canvas_dimensions;
+        canvas_updated     = true;
     }
 
-    m_rect_ = bounds2f(0, m_dimensions.x, 0, m_dimensions.y);
+    rect_ = bounds2f(0, dimensions.x, 0, dimensions.y);
     return canvas_updated;
 }
 
@@ -252,7 +252,7 @@ void material::update_texture(const ub32color* p_data) {
 
     glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
     glTexSubImage2D(
-        GL_TEXTURE_2D, 0, m_rect_.left, m_rect_.top, m_rect_.width(), m_rect_.height(), GL_RGBA,
+        GL_TEXTURE_2D, 0, rect_.left, rect_.top, rect_.width(), rect_.height(), GL_RGBA,
         GL_UNSIGNED_BYTE, p_data);
 
     glBindTexture(GL_TEXTURE_2D, previous_id);

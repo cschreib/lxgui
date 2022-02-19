@@ -43,22 +43,23 @@ class event_emitter;
 class manager : utils::enable_observer_from_this<manager> {
 public:
     /// Constructor.
-    /** \param mBlock       The owner pointer control block
+    /** \param block       The owner pointer control block
      *   \param input_source The input source to use
-     *   \param renderer    The renderer implementation
+     *   \param rdr    The renderer implementation
      */
     manager(
-        utils::control_block&          m_block,
+        utils::control_block&          block,
         std::unique_ptr<input::source> p_input_source,
-        std::unique_ptr<renderer>      p_renderer);
+        std::unique_ptr<renderer>      rdr);
 
     /// Destructor.
     ~manager() override;
 
-    manager(const manager& m_mgr) = delete;
-    manager(manager&& m_mgr)      = delete;
-    manager& operator=(const manager& m_mgr) = delete;
-    manager& operator=(manager&& m_mgr) = delete;
+    // Non-copiable, non-movable
+    manager(const manager&) = delete;
+    manager(manager&&)      = delete;
+    manager& operator=(const manager&) = delete;
+    manager& operator=(manager&&) = delete;
 
     /// Sets the global UI scaling factor.
     /** \param scaling_factor The factor to use for rescaling (1: no rescaling, default)
@@ -323,14 +324,14 @@ public:
     /** \return The registry object
      */
     addon_registry* get_addon_registry() {
-        return p_add_on_registry_.get();
+        return p_addon_registry_.get();
     }
 
     /// Returns the addon registry, which keeps track of loaded addons.
     /** \return The registry object
      */
     const addon_registry* get_addon_registry() const {
-        return p_add_on_registry_.get();
+        return p_addon_registry_.get();
     }
 
 private:
@@ -373,7 +374,7 @@ private:
     std::unique_ptr<sol::state>     p_lua_;
     utils::owner_ptr<root>          p_root_;
     utils::owner_ptr<virtual_root>  p_virtual_root_;
-    std::unique_ptr<addon_registry> p_add_on_registry_;
+    std::unique_ptr<addon_registry> p_addon_registry_;
 
     bool is_loaded_          = false;
     bool reload_ui_flag_     = false;

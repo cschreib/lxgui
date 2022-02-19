@@ -27,7 +27,7 @@
 
 namespace lxgui::gui::gl {
 
-vertex_cache::vertex_cache(type m_type) : gui::vertex_cache(m_type) {
+vertex_cache::vertex_cache(type type) : gui::vertex_cache(type) {
     glGenVertexArrays(1, &ui_vertex_array_);
 
     std::array<std::uint32_t, 2> buffers;
@@ -100,7 +100,7 @@ void vertex_cache::update_indices_if_grow(
 }
 
 void vertex_cache::update(const vertex* vertex_data, std::size_t ui_num_vertex) {
-    if (m_type_ == type::quads) {
+    if (type_ == type::quads) {
         static constexpr std::array<std::uint32_t, 6>  quad_i_ds = {{0, 1, 2, 2, 3, 0}};
         static thread_local std::vector<std::uint32_t> repeated_ids;
 

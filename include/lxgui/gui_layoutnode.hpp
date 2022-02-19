@@ -107,14 +107,14 @@ public:
     template<typename T>
     T get_value() const {
         accessed_ = true;
-        T m_value{};
-        if (!utils::from_string(value_, m_value)) {
+        T value{};
+        if (!utils::from_string(value_, value)) {
             throw utils::exception(
                 std::string(get_location()) + ": could not parse value for '" + std::string(name_) +
                 "': '" + std::string(value_) + "'");
         }
 
-        return m_value;
+        return value;
     }
 
     /// Returns this node's value converted to a specific type, or a default value.
@@ -124,11 +124,11 @@ public:
     template<typename T>
     T get_value_or(T fallback) const noexcept {
         accessed_ = true;
-        T m_value{};
-        if (!utils::from_string(value_, m_value))
-            m_value = fallback;
+        T value{};
+        if (!utils::from_string(value_, value))
+            value = fallback;
 
-        return m_value;
+        return value;
     }
 
     /// Set this node's location.
@@ -238,8 +238,8 @@ public:
     struct name_filter {
         std::string_view filter;
 
-        bool is_included(const BaseIterator& m_iter) const {
-            return m_iter->get_name() == filter;
+        bool is_included(const BaseIterator& iter) const {
+            return iter->get_name() == filter;
         }
     };
 
@@ -261,8 +261,8 @@ public:
      */
     const layout_node* try_get_child(std::string_view name) const noexcept {
         accessed_ = true;
-        for (const layout_node& m_node : get_children(name)) {
-            return &m_node;
+        for (const layout_node& node : get_children(name)) {
+            return &node;
         }
 
         return nullptr;
@@ -301,9 +301,9 @@ public:
      */
     const layout_attribute* try_get_attribute(std::string_view name) const noexcept {
         accessed_ = true;
-        for (const layout_attribute& m_node : attr_list_) {
-            if (m_node.get_name() == name)
-                return &m_node;
+        for (const layout_attribute& node : attr_list_) {
+            if (node.get_name() == name)
+                return &node;
         }
 
         return nullptr;
@@ -423,9 +423,9 @@ public:
         if (const auto* p_attr = try_get_attribute(name))
             return p_attr->get_value();
         else {
-            auto& m_attr = add_attribute();
-            m_attr.set_name(std::string(name));
-            m_attr.set_value(std::string(value));
+            auto& attr = add_attribute();
+            attr.set_name(std::string(name));
+            attr.set_value(std::string(value));
             return value;
         }
     }

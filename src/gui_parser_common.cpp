@@ -11,49 +11,49 @@
 namespace lxgui::gui {
 
 region_core_attributes parse_core_attributes(
-    registry&                  m_registry,
-    virtual_registry&          m_virtual_registry,
-    const layout_node&         m_node,
+    registry&                  reg,
+    virtual_registry&          vreg,
+    const layout_node&         node,
     utils::observer_ptr<frame> p_parent) {
-    region_core_attributes m_attr;
-    m_attr.object_type = m_node.get_name();
-    m_attr.name        = m_node.get_attribute_value<std::string>("name");
+    region_core_attributes attr;
+    attr.object_type = node.get_name();
+    attr.name        = node.get_attribute_value<std::string>("name");
 
     if (p_parent) {
-        m_attr.p_parent = std::move(p_parent);
+        attr.p_parent = std::move(p_parent);
 
-        if (m_node.has_attribute("virtual")) {
-            gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Cannot use the \"virtual\" attribute on \"" << m_attr.name
+        if (node.has_attribute("virtual")) {
+            gui::out << gui::warning << node.get_location() << " : "
+                     << "Cannot use the \"virtual\" attribute on \"" << attr.name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
         }
-        if (m_node.has_attribute("parent")) {
-            gui::out << gui::warning << m_node.get_location() << " : "
-                     << "Cannot use the \"parent\" attribute on \"" << m_attr.name
+        if (node.has_attribute("parent")) {
+            gui::out << gui::warning << node.get_location() << " : "
+                     << "Cannot use the \"parent\" attribute on \"" << attr.name
                      << "\", "
                         "because it is a nested region. Attribute ignored."
                      << std::endl;
         }
     } else {
-        m_attr.is_virtual = m_node.get_attribute_value_or<bool>("virtual", false);
+        attr.is_virtual = node.get_attribute_value_or<bool>("virtual", false);
 
-        if (const layout_attribute* p_attr = m_node.try_get_attribute("parent")) {
+        if (const layout_attribute* p_attr = node.try_get_attribute("parent")) {
             std::string parent       = p_attr->get_value<std::string>();
-            auto        p_parent_obj = m_registry.get_region_by_name(parent);
+            auto        p_parent_obj = reg.get_region_by_name(parent);
             if (!parent.empty() && !p_parent_obj) {
-                gui::out << gui::warning << m_node.get_location() << " : "
-                         << "Cannot find \"" << m_attr.name << "\"'s parent : \"" << parent
+                gui::out << gui::warning << node.get_location() << " : "
+                         << "Cannot find \"" << attr.name << "\"'s parent : \"" << parent
                          << "\". "
                             "No parent given to this region."
                          << std::endl;
             }
 
-            m_attr.p_parent = down_cast<frame>(p_parent_obj);
-            if (p_parent_obj != nullptr && m_attr.p_parent == nullptr) {
-                gui::out << gui::warning << m_node.get_location() << " : "
-                         << "Cannot set  \"" << m_attr.name << "\"'s parent : \"" << parent
+            attr.p_parent = down_cast<frame>(p_parent_obj);
+            if (p_parent_obj != nullptr && attr.p_parent == nullptr) {
+                gui::out << gui::warning << node.get_location() << " : "
+                         << "Cannot set  \"" << attr.name << "\"'s parent : \"" << parent
                          << "\". "
                             "This is not a frame."
                          << std::endl;
@@ -61,42 +61,41 @@ region_core_attributes parse_core_attributes(
         }
     }
 
-    if (const layout_attribute* p_attr = m_node.try_get_attribute("inherits")) {
-        m_attr.inheritance =
-            m_virtual_registry.get_virtual_region_list(p_attr->get_value<std::string>());
+    if (const layout_attribute* p_attr = node.try_get_attribute("inherits")) {
+        attr.inheritance = vreg.get_virtual_region_list(p_attr->get_value<std::string>());
     }
 
-    return m_attr;
+    return attr;
 }
 
-void warn_for_not_accessed_node(const layout_node& m_node) {
-    if (m_node.is_access_check_bypassed())
+void warn_for_not_accessed_node(const layout_node& node) {
+    if (node.is_access_check_bypassed())
         return;
 
-    if (!m_node.was_accessed()) {
-        gui::out << gui::warning << m_node.get_location() << " : "
-                 << "node '" << m_node.get_name()
+    if (!node.was_accessed()) {
+        gui::out << gui::warning << node.get_location() << " : "
+                 << "node '" << node.get_name()
                  << "' was not read by parser; "
                     "check its name is spelled correctly and that it is at the right location."
                  << std::endl;
         return;
     }
 
-    for (const auto& m_attr : m_node.get_attributes()) {
-        if (m_attr.is_access_check_bypassed())
+    for (const auto& attr : node.get_attributes()) {
+        if (attr.is_access_check_bypassed())
             continue;
 
-        if (!m_attr.was_accessed()) {
-            gui::out << gui::warning << m_node.get_location() << " : "
-                     << "attribute '" << m_node.get_name()
+        if (!attr.was_accessed()) {
+            gui::out << gui::warning << node.get_location() << " : "
+                     << "attribute '" << node.get_name()
                      << "' was not read by parser; "
                         "check its name is spelled correctly and that it is at the right location."
                      << std::endl;
         }
     }
 
-    for (const auto& m_child : m_node.get_children())
-        warn_for_not_accessed_node(m_child);
+    for (const auto& child : node.get_children())
+        warn_for_not_accessed_node(child);
 }
 
 } // namespace lxgui::gui

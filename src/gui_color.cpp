@@ -209,49 +209,49 @@ color operator*(float f, const color& c2) noexcept {
     return color(f * c2.r, f * c2.g, f * c2.b, c2.a);
 }
 
-std::ostream& operator<<(std::ostream& m_stream, const color& m_color) {
-    return m_stream << static_cast<std::size_t>(std::round(255.0f * m_color.r)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * m_color.g)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * m_color.b)) << ", "
-                   << static_cast<std::size_t>(std::round(255.0f * m_color.a));
+std::ostream& operator<<(std::ostream& stream, const color& c) {
+    return stream << static_cast<std::size_t>(std::round(255.0f * c.r)) << ", "
+                  << static_cast<std::size_t>(std::round(255.0f * c.g)) << ", "
+                  << static_cast<std::size_t>(std::round(255.0f * c.b)) << ", "
+                  << static_cast<std::size_t>(std::round(255.0f * c.a));
 }
 
-std::istream& operator>>(std::istream& m_stream, color& m_color) {
-    auto pos = m_stream.tellg();
-    char c;
-    m_stream >> c;
-    if (c == '#') {
+std::istream& operator>>(std::istream& stream, color& c) {
+    auto pos = stream.tellg();
+    char start_char;
+    stream >> start_char;
+    if (start_char == '#') {
         char h[3];
         h[2] = '\0';
-        m_stream >> h[0] >> h[1];
-        m_color.r = utils::hex_to_uint(h) / 255.0f;
-        m_stream >> h[0] >> h[1];
-        m_color.g = utils::hex_to_uint(h) / 255.0f;
-        m_stream >> h[0] >> h[1];
-        m_color.b = utils::hex_to_uint(h) / 255.0f;
+        stream >> h[0] >> h[1];
+        c.r = utils::hex_to_uint(h) / 255.0f;
+        stream >> h[0] >> h[1];
+        c.g = utils::hex_to_uint(h) / 255.0f;
+        stream >> h[0] >> h[1];
+        c.b = utils::hex_to_uint(h) / 255.0f;
 
-        pos = m_stream.tellg();
-        if (!m_stream.eof()) {
-            m_stream >> h[0];
-            if (std::isalnum(h[0]) != 0 && !m_stream.eof()) {
-                m_stream >> h[1];
+        pos = stream.tellg();
+        if (!stream.eof()) {
+            stream >> h[0];
+            if (std::isalnum(h[0]) != 0 && !stream.eof()) {
+                stream >> h[1];
                 if (std::isalnum(h[1]) != 0) {
-                    m_color.a = utils::hex_to_uint(h) / 255.0f;
-                    return m_stream;
+                    c.a = utils::hex_to_uint(h) / 255.0f;
+                    return stream;
                 }
             }
         }
 
-        m_stream.seekg(pos);
-        m_color.a = 1.0f;
+        stream.seekg(pos);
+        c.a = 1.0f;
     } else {
-        m_stream.seekg(pos);
+        stream.seekg(pos);
         char delim;
-        m_stream >> m_color.r >> delim >> m_color.g >> delim >> m_color.b >> delim >> m_color.a;
-        m_color *= 1.0f / 255.0f;
+        stream >> c.r >> delim >> c.g >> delim >> c.b >> delim >> c.a;
+        c *= 1.0f / 255.0f;
     }
 
-    return m_stream;
+    return stream;
 }
 
 } // namespace lxgui::gui

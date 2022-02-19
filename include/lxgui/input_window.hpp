@@ -14,9 +14,9 @@ class source;
 class window {
 public:
     /// Initializes this window with a chosen input source.
-    /** \param mSource The input source
+    /** \param src The input source
      */
-    explicit window(source& m_source);
+    explicit window(source& src);
 
     // Non-copiable, non-movable
     window(const window&) = delete;
@@ -36,10 +36,10 @@ public:
 
     /// Sets the mouse cursor to a given image on disk.
     /** \param file_name The cursor image
-     *   \param mHotSpot The pixel position of the tip of the pointer in the image
+     *   \param hot_spot The pixel position of the tip of the pointer in the image
      *   \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
-    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot);
+    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot);
 
     /// Sets the mouse cursor back to the default (arrow).
     void reset_mouse_cursor();
@@ -72,8 +72,8 @@ public:
     utils::signal<void(const gui::vector2ui&)> on_window_resized;
 
 private:
-    source&                  m_source_;
-    utils::scoped_connection m_connection_;
+    source&                  source_;
+    utils::scoped_connection connection_;
 };
 
 } // namespace lxgui::input

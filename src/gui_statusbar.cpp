@@ -15,8 +15,7 @@ std::array<float, 4> select_uvs(const std::array<float, 8>& uvs) {
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
-status_bar::status_bar(utils::control_block& m_block, manager& m_manager) :
-    frame(m_block, m_manager) {
+status_bar::status_bar(utils::control_block& block, manager& mgr) : frame(block, mgr) {
     type_.push_back(class_name);
 }
 
@@ -25,7 +24,7 @@ std::string status_bar::serialize(const std::string& tab) const {
 
     str << base::serialize(tab);
     str << tab << "  # Orientation: ";
-    switch (m_orientation_) {
+    switch (orientation_) {
     case orientation::horizontal: str << "HORIZONTAL"; break;
     case orientation::vertical: str << "VERTICAL"; break;
     }
@@ -47,10 +46,10 @@ bool status_bar::can_use_script(const std::string& script_name) const {
         return false;
 }
 
-void status_bar::copy_from(const region& m_obj) {
-    base::copy_from(m_obj);
+void status_bar::copy_from(const region& obj) {
+    base::copy_from(obj);
 
-    const status_bar* p_status_bar = down_cast<status_bar>(&m_obj);
+    const status_bar* p_status_bar = down_cast<status_bar>(&obj);
     if (!p_status_bar)
         return;
 
@@ -62,12 +61,12 @@ void status_bar::copy_from(const region& m_obj) {
     this->set_reversed(p_status_bar->is_reversed());
 
     if (const texture* p_bar = p_status_bar->get_bar_texture().get()) {
-        region_core_attributes m_attr;
-        m_attr.name        = p_bar->get_name();
-        m_attr.inheritance = {p_status_bar->get_bar_texture()};
+        region_core_attributes attr;
+        attr.name        = p_bar->get_name();
+        attr.inheritance = {p_status_bar->get_bar_texture()};
 
         auto p_bar_texture =
-            this->create_layered_region<texture>(p_bar->get_draw_layer(), std::move(m_attr));
+            this->create_layered_region<texture>(p_bar->get_draw_layer(), std::move(attr));
 
         if (p_bar_texture) {
             p_bar_texture->set_special();
@@ -114,35 +113,31 @@ void status_bar::set_value(float value) {
     }
 }
 
-void status_bar::set_bar_draw_layer(layer m_bar_layer) {
-    m_bar_layer_ = m_bar_layer;
+void status_bar::set_bar_draw_layer(layer bar_layer) {
+    bar_layer_ = bar_layer;
     if (p_bar_texture_)
-        p_bar_texture_->set_draw_layer(m_bar_layer_);
+        p_bar_texture_->set_draw_layer(bar_layer_);
 }
 
 void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
+    layer bar_layer;
     if (bar_layer_name == "ARTWORK")
-        m_bar_layer_ = layer::artwork;
+        bar_layer = layer::artwork;
     else if (bar_layer_name == "BACKGROUND")
-        m_bar_layer_ = layer::background;
+        bar_layer = layer::background;
     else if (bar_layer_name == "BORDER")
-        m_bar_layer_ = layer::border;
+        bar_layer = layer::border;
     else if (bar_layer_name == "HIGHLIGHT")
-        m_bar_layer_ = layer::highlight;
+        bar_layer = layer::highlight;
     else if (bar_layer_name == "OVERLAY")
-        m_bar_layer_ = layer::overlay;
+        bar_layer = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << " : "
-                    "Unknown layer type : \"" +
-                        bar_layer_name + "\". Using \"ARTWORK\"."
-                 << std::endl;
-
-        m_bar_layer_ = layer::artwork;
+        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown layer type : \""
+                 << bar_layer_name << "\". Using \"ARTWORK\"." << std::endl;
+        bar_layer = layer::artwork;
     }
 
-    if (p_bar_texture_)
-        p_bar_texture_->set_draw_layer(m_bar_layer_);
+    set_bar_draw_layer(bar_layer);
 }
 
 void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
@@ -150,7 +145,7 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
     if (!p_bar_texture_)
         return;
 
-    p_bar_texture_->set_draw_layer(m_bar_layer_);
+    p_bar_texture_->set_draw_layer(bar_layer_);
     p_bar_texture_->clear_all_points();
 
     std::string parent = p_bar_texture_->get_parent().get() == this ? "$parent" : name_;
@@ -164,32 +159,33 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
     notify_bar_texture_needs_update_();
 }
 
-void status_bar::set_bar_color(const color& m_bar_color) {
+void status_bar::set_bar_color(const color& bar_color) {
     create_bar_texture_();
 
-    m_bar_color_ = m_bar_color;
-    p_bar_texture_->set_solid_color(m_bar_color_);
+    bar_color_ = bar_color;
+    p_bar_texture_->set_solid_color(bar_color_);
 }
 
-void status_bar::set_orientation(orientation m_orientation) {
-    if (m_orientation != m_orientation_) {
-        m_orientation_ = m_orientation;
-        notify_bar_texture_needs_update_();
-    }
+void status_bar::set_orientation(orientation orient) {
+    if (orient == orientation_)
+        return;
+
+    orientation_ = orient;
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_orientation(const std::string& orientation_name) {
-    orientation m_orientation = orientation::horizontal;
+    orientation orient = orientation::horizontal;
     if (orientation_name == "VERTICAL")
-        m_orientation = orientation::vertical;
+        orient = orientation::vertical;
     else if (orientation_name == "HORIZONTAL")
-        m_orientation = orientation::horizontal;
+        orient = orientation::horizontal;
     else {
         gui::out << gui::warning << "gui::" << type_.back() << " : Unknown orientation : \""
                  << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
     }
 
-    set_orientation(m_orientation);
+    set_orientation(orient);
 }
 
 void status_bar::set_reversed(bool reversed) {
@@ -222,15 +218,15 @@ float status_bar::get_value() const {
 }
 
 layer status_bar::get_bar_draw_layer() const {
-    return m_bar_layer_;
+    return bar_layer_;
 }
 
 const color& status_bar::get_bar_color() const {
-    return m_bar_color_;
+    return bar_color_;
 }
 
 status_bar::orientation status_bar::get_orientation() const {
-    return m_orientation_;
+    return orientation_;
 }
 
 bool status_bar::is_reversed() const {
@@ -241,7 +237,7 @@ void status_bar::create_bar_texture_() {
     if (p_bar_texture_)
         return;
 
-    auto p_bar_texture = create_layered_region<texture>(m_bar_layer_, "$parentBarTexture");
+    auto p_bar_texture = create_layered_region<texture>(bar_layer_, "$parentBarTexture");
     if (!p_bar_texture)
         return;
 
@@ -258,13 +254,13 @@ void status_bar::update(float delta) {
     if (update_bar_texture_flag_ && p_bar_texture_) {
         float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
-        if (m_orientation_ == orientation::horizontal)
+        if (orientation_ == orientation::horizontal)
             p_bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
         else
             p_bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
 
         std::array<float, 4> uvs = initial_text_coords_;
-        if (m_orientation_ == orientation::horizontal) {
+        if (orientation_ == orientation::horizontal) {
             if (is_reversed_)
                 uvs[0] = (uvs[0] - uvs[2]) * coef + uvs[2];
             else
@@ -281,9 +277,9 @@ void status_bar::update(float delta) {
         update_bar_texture_flag_ = false;
     }
 
-    alive_checker m_checker(*this);
+    alive_checker checker(*this);
     base::update(delta);
-    if (!m_checker.is_alive())
+    if (!checker.is_alive())
         return;
 }
 

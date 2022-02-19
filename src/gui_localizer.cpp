@@ -85,11 +85,11 @@ std::vector<std::string> get_default_languages() {
 localizer::localizer() {
     try {
         // Try to set locale to system default.
-        m_locale_ = std::locale("");
-    } catch (const std::exception& m_exception) {
+        locale_ = std::locale("");
+    } catch (const std::exception& exception) {
         // Revert to C locale.
-        m_locale_ = std::locale::classic();
-        gui::out << gui::error << "gui::locale : " << m_exception.what() << std::endl;
+        locale_ = std::locale::classic();
+        gui::out << gui::error << "gui::locale : " << exception.what() << std::endl;
         gui::out << gui::error << "gui::locale : reverting to default classic locale" << std::endl;
     }
 
@@ -98,27 +98,26 @@ localizer::localizer() {
     auto_detect_allowed_code_points();
 
     // Set up Lua sandbox.
-    m_lua_.open_libraries(
+    lua_.open_libraries(
         sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os,
         sol::lib::string, sol::lib::debug);
 
     // Give the translation Lua state the localize_string and format_string function, so
     // it can call it recursively as needed, but not the other functions
     // which could load more translation strings.
-    m_lua_.set_function(
-        "localize_string", [&](const std::string& key, sol::variadic_args m_v_args) {
-            return localize(key, m_v_args);
-        });
-    m_lua_.set_function("format_string", [&](const std::string& key, sol::variadic_args m_v_args) {
-        return format_string(key, m_v_args);
+    lua_.set_function("localize_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return localize(key, v_args);
+    });
+    lua_.set_function("format_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return format_string(key, v_args);
     });
 }
 
-void localizer::set_locale(const std::locale& m_locale) {
-    if (m_locale_ == m_locale)
+void localizer::set_locale(const std::locale& locale) {
+    if (locale_ == locale)
         return;
 
-    m_locale_ = m_locale;
+    locale_ = locale;
     clear_translations();
 }
 
@@ -141,7 +140,7 @@ void localizer::auto_detect_preferred_languages() {
 }
 
 const std::locale& localizer::get_locale() const {
-    return m_locale_;
+    return locale_;
 }
 
 const std::vector<std::string>& localizer::get_preferred_languages() const {
@@ -152,43 +151,41 @@ void localizer::clear_allowed_code_points() {
     code_points_.clear();
 }
 
-void localizer::add_allowed_code_points(const code_point_range& m_range) {
-    if (m_range.ui_last < m_range.ui_first)
+void localizer::add_allowed_code_points(const code_point_range& range) {
+    if (range.ui_last < range.ui_first)
         throw gui::exception("gui::localizer", "code point range must have last >= first");
 
-    code_point_range m_test_range = m_range;
-    auto             m_iter       = code_points_.begin();
+    code_point_range test_range = range;
+    auto             iter       = code_points_.begin();
 
     do {
         // Find next overlapping range
-        m_iter = std::find_if(code_points_.begin(), code_points_.end(), [&](const auto& m_other) {
-            return (m_test_range.ui_first >= m_other.ui_first &&
-                    m_test_range.ui_first <= m_other.ui_last) ||
-                   (m_test_range.ui_last >= m_other.ui_first &&
-                    m_test_range.ui_last <= m_other.ui_last) ||
-                   (m_other.ui_first >= m_test_range.ui_first &&
-                    m_other.ui_first <= m_test_range.ui_last) ||
-                   (m_other.ui_last >= m_test_range.ui_first &&
-                    m_other.ui_last <= m_test_range.ui_last);
+        iter = std::find_if(code_points_.begin(), code_points_.end(), [&](const auto& other) {
+            return (test_range.ui_first >= other.ui_first &&
+                    test_range.ui_first <= other.ui_last) ||
+                   (test_range.ui_last >= other.ui_first && test_range.ui_last <= other.ui_last) ||
+                   (other.ui_first >= test_range.ui_first &&
+                    other.ui_first <= test_range.ui_last) ||
+                   (other.ui_last >= test_range.ui_first && other.ui_last <= test_range.ui_last);
         });
 
-        if (m_iter != code_points_.end()) {
+        if (iter != code_points_.end()) {
             // Combine the ranges
-            m_test_range.ui_first = std::min(m_test_range.ui_first, m_iter->ui_first);
-            m_test_range.ui_last  = std::max(m_test_range.ui_last, m_iter->ui_last);
+            test_range.ui_first = std::min(test_range.ui_first, iter->ui_first);
+            test_range.ui_last  = std::max(test_range.ui_last, iter->ui_last);
 
             // Erase the overlap
-            code_points_.erase(m_iter);
+            code_points_.erase(iter);
         }
-    } while (m_iter != code_points_.end());
+    } while (iter != code_points_.end());
 
     // Add the new range
-    code_points_.push_back(m_test_range);
+    code_points_.push_back(test_range);
 
     // Sort by ascending code point
-    std::sort(
-        code_points_.begin(), code_points_.end(),
-        [](const auto& m_left, const auto& m_right) { return m_left.ui_first < m_right.ui_first; });
+    std::sort(code_points_.begin(), code_points_.end(), [](const auto& left, const auto& right) {
+        return left.ui_first < right.ui_first;
+    });
 }
 
 void localizer::add_allowed_code_points_for_group(const std::string& unicode_group) {
@@ -464,11 +461,11 @@ void localizer::add_allowed_code_points_for_group(const std::string& unicode_gro
         {"supplementary private use area-a", {0xf0000, 0xfffff}},
         {"supplementary private use area-b", {0x100000, 0x10ffff}}};
 
-    auto m_iter = unicode_groups.find(to_lower(unicode_group));
-    if (m_iter == unicode_groups.end())
+    auto iter = unicode_groups.find(to_lower(unicode_group));
+    if (iter == unicode_groups.end())
         throw gui::exception("gui::localizer", "unknown Unicode group '" + unicode_group + "'");
 
-    add_allowed_code_points(m_iter->second);
+    add_allowed_code_points(iter->second);
 }
 
 void localizer::add_allowed_code_points_for_language(const std::string& language_code) {
@@ -667,13 +664,13 @@ void localizer::add_allowed_code_points_for_language(const std::string& language
     // Add "geometric shapes" to allow rendering the "missing character" glyph
     add_allowed_code_points_for_group("geometric shapes");
 
-    for (const auto& m_script : scripts) {
-        if (std::find(m_script.second.begin(), m_script.second.end(), language_code) ==
-            m_script.second.end())
+    for (const auto& script : scripts) {
+        if (std::find(script.second.begin(), script.second.end(), language_code) ==
+            script.second.end())
             continue;
 
-        for (const auto& m_code_range : m_script.first)
-            add_allowed_code_points_for_group(m_code_range);
+        for (const auto& code_range : script.first)
+            add_allowed_code_points_for_group(code_range);
     }
 }
 
@@ -691,10 +688,10 @@ void localizer::auto_detect_allowed_code_points() {
     // Add language-specific groups
     for (const auto& language : languages_) {
         // Extract the language code from the language string (first set of lower case letters)
-        auto m_pos =
+        auto pos =
             std::find_if(language.begin(), language.end(), [](char c) { return std::isupper(c); });
 
-        add_allowed_code_points_for_language(std::string(language.begin(), m_pos));
+        add_allowed_code_points_for_language(std::string(language.begin(), pos));
     }
 }
 
@@ -723,14 +720,14 @@ void localizer::load_translations(const std::string& folder_path) {
     // If no exact match found, look for an approximate match (ignore region)
     const auto files = utils::get_file_list(folder_path, false, "lua");
     for (const std::string& language : languages_) {
-        auto m_iter = std::find_if(files.begin(), files.end(), [&](const std::string& file) {
+        auto iter = std::find_if(files.begin(), files.end(), [&](const std::string& file) {
             return file.size() == 8u && file.substr(0, 2) == language.substr(0, 2);
         });
 
-        if (m_iter == files.end())
+        if (iter == files.end())
             continue;
 
-        std::string language_file = folder_path + "/" + *m_iter;
+        std::string language_file = folder_path + "/" + *iter;
         load_translation_file(language_file);
         return;
     }
@@ -744,36 +741,36 @@ void localizer::load_translations(const std::string& folder_path) {
 }
 
 void localizer::load_translation_file(const std::string& file_name) try {
-    auto m_result = m_lua_.safe_script_file(file_name);
-    if (!m_result.valid()) {
-        sol::error m_error = m_result;
-        gui::out << gui::error << "gui::locale : " << m_error.what() << std::endl;
+    auto result = lua_.safe_script_file(file_name);
+    if (!result.valid()) {
+        sol::error error = result;
+        gui::out << gui::error << "gui::locale : " << error.what() << std::endl;
         return;
     }
 
-    sol::table m_table = m_lua_["localize"];
-    if (m_table == sol::lua_nil) {
+    sol::table table = lua_["localize"];
+    if (table == sol::lua_nil) {
         gui::out << gui::warning << "gui::locale : no 'localize' table in " << file_name
                  << std::endl;
         return;
     }
 
-    m_table.for_each([&](const sol::object& m_key, const sol::object& m_value) {
-        if (!m_key.is<std::string>())
+    table.for_each([&](const sol::object& key, const sol::object& value) {
+        if (!key.is<std::string>())
             return;
-        std::string ks = m_key.as<std::string>();
+        std::string ks = key.as<std::string>();
 
-        if (m_value.is<std::string>())
-            map_.insert(std::make_pair(std::hash<std::string>{}(ks), m_value.as<std::string>()));
-        else if (m_value.is<sol::protected_function>())
-            map_.insert(std::make_pair(
-                std::hash<std::string>{}(ks), m_value.as<sol::protected_function>()));
+        if (value.is<std::string>())
+            map_.insert(std::make_pair(std::hash<std::string>{}(ks), value.as<std::string>()));
+        else if (value.is<sol::protected_function>())
+            map_.insert(
+                std::make_pair(std::hash<std::string>{}(ks), value.as<sol::protected_function>()));
     });
 
     // Keep a copy so variables/functions remain alive
-    m_lua_["localize_" + std::to_string(std::hash<std::string>{}(file_name))] = m_table;
-} catch (const sol::error& m_error) {
-    gui::out << gui::error << "gui::locale : " << m_error.what() << std::endl;
+    lua_["localize_" + std::to_string(std::hash<std::string>{}(file_name))] = table;
+} catch (const sol::error& error) {
+    gui::out << gui::error << "gui::locale : " << error.what() << std::endl;
     return;
 }
 
@@ -790,58 +787,58 @@ localizer::map_type::const_iterator localizer::find_key_(std::string_view key) c
     return map_.find(std::hash<std::string_view>{}(substring));
 }
 
-std::string localizer::format_string(std::string_view message, sol::variadic_args m_v_args) const {
-    fmt::dynamic_format_arg_store<fmt::format_context> m_store;
-    for (auto&& m_arg : m_v_args) {
-        lxgui::utils::variant m_variant;
-        if (!m_arg.is<sol::lua_nil_t>())
-            m_variant = m_arg;
+std::string localizer::format_string(std::string_view message, sol::variadic_args v_args) const {
+    fmt::dynamic_format_arg_store<fmt::format_context> store;
+    for (auto&& arg : v_args) {
+        lxgui::utils::variant variant;
+        if (!arg.is<sol::lua_nil_t>())
+            variant = arg;
 
         std::visit(
-            [&](auto& m_value) {
-                using inner_type = std::decay_t<decltype(m_value)>;
+            [&](auto& value) {
+                using inner_type = std::decay_t<decltype(value)>;
                 if constexpr (std::is_same_v<inner_type, lxgui::utils::empty>)
-                    m_store.push_back(static_cast<const char*>(""));
+                    store.push_back(static_cast<const char*>(""));
                 else
-                    m_store.push_back(m_value);
+                    store.push_back(value);
             },
-            m_variant);
+            variant);
     }
 
-    return fmt::vformat(m_locale_, message, m_store);
+    return fmt::vformat(locale_, message, store);
 }
 
 std::string localizer::localize(std::string_view key, sol::variadic_args mVArgs) const {
     if (!is_key_valid_(key))
         return std::string{key};
 
-    auto m_iter = find_key_(key);
-    if (m_iter == map_.end())
+    auto iter = find_key_(key);
+    if (iter == map_.end())
         return std::string{key};
 
     return std::visit(
-        [&](const auto& m_item) {
-            using inner_type = std::decay_t<decltype(m_item)>;
+        [&](const auto& item) {
+            using inner_type = std::decay_t<decltype(item)>;
             if constexpr (std::is_same_v<inner_type, std::string>) {
-                return format_string(m_item, mVArgs);
+                return format_string(item, mVArgs);
             } else {
-                auto m_result = m_item(mVArgs);
-                if (!m_result.valid()) {
-                    sol::error m_error = m_result;
-                    gui::out << gui::error << "gui::locale : " << m_error.what() << std::endl;
+                auto result = item(mVArgs);
+                if (!result.valid()) {
+                    sol::error error = result;
+                    gui::out << gui::error << "gui::locale : " << error.what() << std::endl;
                     return std::string{key};
                 }
 
-                if (m_result.begin() != m_result.end()) {
-                    auto&& m_first = *m_result.begin();
-                    if (m_first.template is<std::string>())
-                        return m_first.template as<std::string>();
+                if (result.begin() != result.end()) {
+                    auto&& first = *result.begin();
+                    if (first.template is<std::string>())
+                        return first.template as<std::string>();
                 }
 
                 return std::string{key};
             }
         },
-        m_iter->second);
+        iter->second);
 }
 
 } // namespace lxgui::gui

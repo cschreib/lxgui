@@ -40,7 +40,7 @@ struct strata {
     std::map<int, level>           level_list;
     bool                           redraw_flag = true;
     std::shared_ptr<render_target> p_render_target;
-    quad                           m_quad;
+    quad                           target_quad;
 };
 
 } // namespace lxgui::gui

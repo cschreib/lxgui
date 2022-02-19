@@ -44,9 +44,9 @@ class source;
 class dispatcher : public signals {
 public:
     /// Initializes this dispatcher with a chosen input source.
-    /** \param mSource The input source
+    /** \param src The input source
      */
-    explicit dispatcher(source& m_source);
+    explicit dispatcher(source& src);
 
     // Non-copiable, non-movable
     dispatcher(const dispatcher&) = delete;
@@ -60,16 +60,16 @@ public:
     bool any_key_is_down() const;
 
     /// Checks if a key is being pressed.
-    /** \param mKey   The ID code of the key you are interested in
+    /** \param key_id   The ID code of the key you are interested in
      *   \return 'true' if the key is being pressed
      */
-    bool key_is_down(key m_key) const;
+    bool key_is_down(key key_id) const;
 
     /// Returns elapsed time since the key has been pressed.
-    /** \param mKey The ID code of the key you are interested in
+    /** \param key_id The ID code of the key you are interested in
      *   \return Elapsed time since the key has been pressed
      */
-    double get_key_down_duration(key m_key) const;
+    double get_key_down_duration(key key_id) const;
 
     /// Checks if Alt is beeing pressed.
     /** \return 'true' if Alt is beeing pressed
@@ -87,16 +87,16 @@ public:
     bool ctrl_is_pressed() const;
 
     /// Checks if a mouse button is being pressed.
-    /** \param mID The ID code of the mouse button you are interested in
+    /** \param button_id The ID code of the mouse button you are interested in
      *   \return 'true' if the mouse button is being pressed
      */
-    bool mouse_is_down(mouse_button m_id) const;
+    bool mouse_is_down(mouse_button button_id) const;
 
     /// Returns elapsed time since the mouse button has been pressed.
-    /** \param mKey The ID code of the mouse button you are interested in
+    /** \param key_id The ID code of the mouse button you are interested in
      *   \return Elapsed time since the mouse button has been pressed
      */
-    double get_mouse_down_duration(mouse_button m_key) const;
+    double get_mouse_down_duration(mouse_button key_id) const;
 
     /// Returns the position of the mouse in pixels.
     /** \return The position of the mouse in pixels
@@ -153,10 +153,10 @@ private:
 
     double d_double_click_time_ = 0.25;
 
-    bool         is_mouse_dragged_    = false;
-    mouse_button m_mouse_drag_button_ = mouse_button::left;
+    bool         is_mouse_dragged_  = false;
+    mouse_button mouse_drag_button_ = mouse_button::left;
 
-    source& m_source_;
+    source& source_;
 };
 
 } // namespace lxgui::input

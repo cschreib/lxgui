@@ -170,7 +170,7 @@ public:
     void flush_quad_batch();
 
     /// Sets the view matrix to use when rendering (viewport).
-    /** \param mViewMatrix The view matrix
+    /** \param view_matrix The view matrix
      *   \note This function is called by default in begin(), which resets the
      *         view to span the entire render target (or the entire screen). Therefore
      *         it is only necessary to use this function when a custom view is required.
@@ -184,7 +184,7 @@ public:
      *            backends, the view matrix will be simplified to a simpler 2D translate +
      *            rotate + scale transform, or even just translate + scale.
      */
-    void set_view(const matrix4f& m_view_matrix);
+    void set_view(const matrix4f& view_matrix);
 
     /// Returns the current view matrix to use when rendering (viewport).
     /** \return The current view matrix to use when rendering
@@ -195,15 +195,15 @@ public:
     virtual matrix4f get_view() const = 0;
 
     /// Renders a quad.
-    /** \param mQuad The quad to render on the current render target
+    /** \param q The quad to render on the current render target
      *   \note This function is meant to be called between begin() and
      *         end() only.
      */
-    void render_quad(const quad& m_quad);
+    void render_quad(const quad& q);
 
     /// Renders a set of quads.
     /** \param pMaterial The material to use for rendering, or null if none
-     *   \param lQuadList The list of the quads you want to render
+     *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -214,8 +214,8 @@ public:
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
-     *   \param mCache          The vertex cache
-     *   \param mModelTransform The transformation matrix to apply to vertices
+     *   \param cache          The vertex cache
+     *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -230,23 +230,23 @@ public:
      */
     void render_cache(
         const material*     p_material,
-        const vertex_cache& m_cache,
-        const matrix4f&     m_model_transform = matrix4f::identity);
+        const vertex_cache& cache,
+        const matrix4f&     model_transform = matrix4f::identity);
 
     /// Creates a new material from a texture file.
     /** \param file_name The name of the file
-     *   \param mFilter   The filtering to apply to the texture
+     *   \param filt   The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
      *         The gui library is completely unaware of this.
      */
-    std::shared_ptr<material> create_material(
-        const std::string& file_name, material::filter m_filter = material::filter::none);
+    std::shared_ptr<material>
+    create_material(const std::string& file_name, material::filter filt = material::filter::none);
 
     /// Creates a new material from a texture file.
     /** \param atlas_category The category of atlas in which to create the texture
      *   \param file_name      The name of the file
-     *   \param mFilter        The filtering to apply to the texture
+     *   \param filt        The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
      *         The gui library is completely unaware of this.
@@ -267,15 +267,15 @@ public:
     std::shared_ptr<material> create_atlas_material(
         const std::string& atlas_category,
         const std::string& file_name,
-        material::filter   m_filter = material::filter::none);
+        material::filter   filter = material::filter::none);
 
     /// Creates a new material from a portion of a render target.
     /** \param pRenderTarget The render target from which to read the pixels
-     *   \param mLocation     The portion of the render target to use as material
+     *   \param location     The portion of the render target to use as material
      *   \return The new material
      */
     virtual std::shared_ptr<material>
-    create_material(std::shared_ptr<render_target> p_render_target, const bounds2f& m_location) = 0;
+    create_material(std::shared_ptr<render_target> p_render_target, const bounds2f& location) = 0;
 
     /// Creates a new material from an entire render target.
     /** \param pRenderTarget The render target from which to read the pixels
@@ -284,28 +284,28 @@ public:
     std::shared_ptr<material> create_material(std::shared_ptr<render_target> p_render_target);
 
     /// Creates a new material from arbitrary pixel data.
-    /** \param mDimensions The dimensions of the material
+    /** \param dimensions The dimensions of the material
      *   \param pPixelData  The color data for all the pixels in the material
-     *   \param mFilter     The filtering to apply to the texture
+     *   \param filt     The filtering to apply to the texture
      *   \return The new material
      */
     virtual std::shared_ptr<material> create_material(
-        const vector2ui& m_dimensions,
+        const vector2ui& dimensions,
         const ub32color* p_pixel_data,
-        material::filter m_filter = material::filter::none) = 0;
+        material::filter filt = material::filter::none) = 0;
 
     /// Creates a new render target.
-    /** \param mDimensions The dimensions of the render target
-     *   \param mFilter     The filtering to apply to the target texture when displayed
+    /** \param dimensions The dimensions of the render target
+     *   \param filt     The filtering to apply to the target texture when displayed
      */
     virtual std::shared_ptr<render_target> create_render_target(
-        const vector2ui& m_dimensions, material::filter m_filter = material::filter::none) = 0;
+        const vector2ui& dimensions, material::filter filt = material::filter::none) = 0;
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
@@ -326,7 +326,7 @@ public:
      *   \param font_file      The file from which to read the font
      *   \param uiSize         The requested size of the characters (in points)
      *   \param uiOutline      The thickness of the outline (in points)
-     *   \param lCodePoints    The list of Unicode characters to load
+     *   \param code_points    The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
@@ -342,15 +342,15 @@ public:
         char32_t                             ui_default_code_point);
 
     /// Creates a new empty vertex cache.
-    /** \param mType The type of data this cache will hold
+    /** \param type The type of data this cache will hold
      *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
      */
-    virtual std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type m_type) = 0;
+    virtual std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type type) = 0;
 
     /// Notifies the renderer that the render window has been resized.
-    /** \param mDimensions The new window dimensions
+    /** \param dimensions The new window dimensions
      */
-    virtual void notify_window_resized(const vector2ui& m_dimensions);
+    virtual void notify_window_resized(const vector2ui& dimensions);
 
 protected:
     /// Begins rendering on a particular render target.
@@ -362,7 +362,7 @@ protected:
     virtual void end_() = 0;
 
     /// Sets the view matrix to use when rendering (viewport).
-    /** \param mViewMatrix The view matrix
+    /** \param view_matrix The view matrix
      *   \note This function is called by default in begin(), which resets the
      *         view to span the entire render target (or the entire screen). Therefore
      *         it is only necessary to use this function when a custom view is required.
@@ -376,11 +376,11 @@ protected:
      *            backends, the view matrix will be simplified to a simpler 2D translate +
      *            rotate + scale transform, or even just translate + scale.
      */
-    virtual void set_view_(const matrix4f& m_view_matrix) = 0;
+    virtual void set_view_(const matrix4f& view_matrix) = 0;
 
     /// Renders a set of quads.
     /** \param pMaterial The material to use for rendering, or null if none
-     *   \param lQuadList The list of the quads you want to render
+     *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -391,8 +391,8 @@ protected:
 
     /// Renders a vertex cache.
     /** \param pMaterial       The material to use for rendering, or null if none
-     *   \param mCache          The vertex cache
-     *   \param mModelTransform The transformation matrix to apply to vertices
+     *   \param cache          The vertex cache
+     *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
@@ -406,31 +406,29 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     virtual void render_cache_(
-        const material*     p_material,
-        const vertex_cache& m_cache,
-        const matrix4f&     m_model_transform) = 0;
+        const material* p_material, const vertex_cache& cache, const matrix4f& model_transform) = 0;
 
     /// Creates a new material from a texture file.
     /** \param file_name The name of the file
-     *   \param mFilter   The filtering to apply to the texture
+     *   \param filt   The filtering to apply to the texture
      *   \return The new material
      *   \note Supported texture formats are defined by implementation.
      *         The gui library is completely unaware of this.
      */
     virtual std::shared_ptr<material>
-    create_material_(const std::string& file_name, material::filter m_filter) = 0;
+    create_material_(const std::string& file_name, material::filter filt) = 0;
 
     /// Creates a new atlas with a given texture filter mode.
-    /** \param mFilter The filtering to apply to the texture
+    /** \param filt The filtering to apply to the texture
      *   \return The new atlas
      */
-    virtual std::shared_ptr<atlas> create_atlas_(material::filter m_filter) = 0;
+    virtual std::shared_ptr<atlas> create_atlas_(material::filter filt) = 0;
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
-     *   \param lCodePoints The list of Unicode characters to load
+     *   \param code_points The list of Unicode characters to load
      *   \param uiDefaultCodePoint The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
@@ -443,7 +441,7 @@ protected:
         const std::vector<code_point_range>& code_points,
         char32_t                             ui_default_code_point) = 0;
 
-    atlas& get_atlas_(const std::string& atlas_category, material::filter m_filter);
+    atlas& get_atlas_(const std::string& atlas_category, material::filter filt);
 
     std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
     std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  atlas_list_;

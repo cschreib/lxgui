@@ -15,12 +15,12 @@ class region;
 /// Keeps track of virtual UI objects and records their names for lookup.
 class virtual_registry : public registry {
 public:
-    explicit virtual_registry(const registry& m_object_registry);
+    explicit virtual_registry(const registry& object_registry);
 
-    virtual_registry(const virtual_registry& m_mgr) = default;
-    virtual_registry(virtual_registry&& m_mgr)      = default;
-    virtual_registry& operator=(const virtual_registry& m_mgr) = default;
-    virtual_registry& operator=(virtual_registry&& m_mgr) = default;
+    virtual_registry(const virtual_registry& mgr) = default;
+    virtual_registry(virtual_registry&& mgr)      = default;
+    virtual_registry& operator=(const virtual_registry& mgr) = default;
+    virtual_registry& operator=(virtual_registry&& mgr) = default;
 
     /// Return a list of virtual regions matching the provided comma-separated list.
     /** \param names Comma-separated list of object names

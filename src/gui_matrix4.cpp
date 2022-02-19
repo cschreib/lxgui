@@ -6,20 +6,20 @@
 namespace lxgui::gui {
 
 matrix4f build_identity() noexcept {
-    matrix4f m_id;
+    matrix4f id;
     for (std::size_t row = 0u; row < 4u; ++row) {
         for (std::size_t col = 0u; col < 4u; ++col)
-            m_id(row, col) = (row == col ? 1.0f : 0.0f);
+            id(row, col) = (row == col ? 1.0f : 0.0f);
     }
 
-    return m_id;
+    return id;
 }
 
 const matrix4f matrix4f::identity = build_identity();
 
-matrix4f::matrix4f(std::initializer_list<element_type> m_list) noexcept {
-    const std::size_t length = std::min<std::size_t>(m_list.size(), 16u);
-    std::copy(m_list.begin(), m_list.begin() + length, data);
+matrix4f::matrix4f(std::initializer_list<element_type> list) noexcept {
+    const std::size_t length = std::min<std::size_t>(list.size(), 16u);
+    std::copy(list.begin(), list.begin() + length, data);
 }
 
 matrix4f::matrix4f(const element_type* mat) noexcept {

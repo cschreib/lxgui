@@ -18,7 +18,7 @@ namespace lxgui::gui::sdl {
 class font final : public gui::font {
 public:
     /// Constructor.
-    /** \param renderer   The SDL render to create the font for
+    /** \param rdr   The SDL render to create the font for
      *   \param font_file   The name of the font file to read
      *   \param uiSize      The requested size of the characters (in points)
      *   \param uiOutline   The thickness of the outline (in points)
@@ -28,7 +28,7 @@ public:
      * alpha
      */
     font(
-        SDL_Renderer*                        p_renderer,
+        SDL_Renderer*                        rdr,
         const std::string&                   font_file,
         std::size_t                          ui_size,
         std::size_t                          ui_outline,
@@ -91,13 +91,13 @@ public:
 private:
     struct character_info {
         char32_t ui_code_point = 0;
-        bounds2f m_uvs;
-        bounds2f m_rect;
+        bounds2f uvs;
+        bounds2f rect;
         float    advance = 0.0f;
     };
 
     struct range_info {
-        code_point_range            m_range;
+        code_point_range            range;
         std::vector<character_info> data;
     };
 

@@ -32,10 +32,10 @@ public:
 
     /// Default constructor
     /** \param dDuration The time interval between each tick
-     *   \param mType     See TimerType
+     *   \param type     See TimerType
      *   \param ticks_now    The timer ticks immediately
      */
-    periodic_timer(double d_duration, start_type m_type, bool ticks_now);
+    periodic_timer(double d_duration, start_type type, bool ticks_now);
 
     /// Returns the time elapsed since the last tick.
     /** \return The time elapsed since last tick
@@ -80,7 +80,7 @@ private:
     bool   paused_     = true;
     bool   first_tick_ = true;
 
-    start_type m_type_ = start_type::paused;
+    start_type type_ = start_type::paused;
 };
 
 /// A #frame with an editable text box.
@@ -131,12 +131,12 @@ class edit_box : public frame {
 
 public:
     /// Constructor.
-    explicit edit_box(utils::control_block& m_block, manager& m_manager);
+    explicit edit_box(utils::control_block& block, manager& mgr);
 
     /// Copies a region's parameters into this edit_box (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Updates this region's logic.
     /** \param delta Time spent since last update
@@ -148,13 +148,13 @@ public:
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param mData       Stores scripts arguments
+     *   \param data       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Returns 'true' if this edit_box can use a script.
     /** \param script_name The name of the script
@@ -187,9 +187,9 @@ public:
     void unlight_text();
 
     /// Sets the color of the highlight quad.
-    /** \param mColor The color
+    /** \param c The color
      */
-    void set_highlight_color(const color& m_color);
+    void set_highlight_color(const color& c);
 
     /// Inserts some text after the cursor.
     /** \param content The text to insert
@@ -371,15 +371,15 @@ public:
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "EditBox";
 
 protected:
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_all_nodes_before_children_(const layout_node& m_node) override;
-    void parse_font_string_node_(const layout_node& m_node);
-    void parse_text_insets_node_(const layout_node& m_node);
+    void parse_attributes_(const layout_node& node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
+    void parse_font_string_node_(const layout_node& node);
+    void parse_text_insets_node_(const layout_node& node);
 
     void create_font_string_();
     void create_highlight_();
@@ -392,12 +392,12 @@ protected:
 
     bool        add_char_(char32_t c);
     bool        remove_char_();
-    std::size_t get_letter_id_at_(const vector2f& m_position) const;
-    bool        move_carret_at_(const vector2f& m_position);
+    std::size_t get_letter_id_at_(const vector2f& position) const;
+    bool        move_carret_at_(const vector2f& position);
     bool        move_carret_horizontally_(bool forward = true);
     bool        move_carret_vertically_(bool down = true);
 
-    void process_key_(input::key ui_key, bool shift_is_pressed, bool ctrl_is_pressed);
+    void process_key_(input::key key_id, bool shift_is_pressed, bool ctrl_is_pressed);
 
     utils::ustring           unicode_text_;
     utils::ustring           displayed_text_;
@@ -415,14 +415,14 @@ protected:
     bool        are_arrows_ignored_ = false;
 
     utils::observer_ptr<texture> p_highlight_            = nullptr;
-    color                        m_highlight_color_      = color(1.0f, 1.0f, 1.0f, 0.5f);
+    color                        highlight_color_        = color(1.0f, 1.0f, 1.0f, 0.5f);
     std::size_t                  ui_selection_start_pos_ = 0u;
     std::size_t                  ui_selection_end_pos_   = 0u;
     bool                         is_text_selected_       = false;
 
     utils::observer_ptr<texture> p_carret_      = nullptr;
     double                       d_blink_speed_ = 0.5;
-    periodic_timer               m_carret_timer_;
+    periodic_timer               carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;
     std::size_t                 ui_max_history_lines_    = std::numeric_limits<std::size_t>::max();

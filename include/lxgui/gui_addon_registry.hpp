@@ -29,18 +29,14 @@ class virtual_root;
 class addon_registry {
 public:
     /// Constructor.
-    /** \param mLua          The GUI Lua state
-     *   \param mLocalizer    The localizer class, to load new translation into
-     *   \param event_emitter The event emitter, to fire "addon loaded" events
-     *   \param mRoot         The GUI root, to create new frames into
-     *   \param mVirtualRoot  The virtual root, to create new virtual frames into
+    /** \param lua          The GUI Lua state
+     *   \param loc    The localizer class, to load new translation into
+     *   \param emitter The event emitter, to fire "addon loaded" events
+     *   \param r         The GUI root, to create new frames into
+     *   \param vr  The virtual root, to create new virtual frames into
      */
     addon_registry(
-        sol::state&    m_lua,
-        localizer&     m_localizer,
-        event_emitter& m_event_emitter,
-        root&          m_root,
-        virtual_root&  m_virtual_root);
+        sol::state& lua, localizer& loc, event_emitter& emitter, root& r, virtual_root& vr);
 
     addon_registry(const addon_registry&) = delete;
     addon_registry(addon_registry&&)      = delete;
@@ -73,24 +69,24 @@ public:
     void save_variables() const;
 
 private:
-    void load_addon_toc_(const std::string& add_on_name, const std::string& add_on_directory);
-    void load_addon_files_(const addon& m_add_on);
+    void load_addon_toc_(const std::string& addon_name, const std::string& addon_directory);
+    void load_addon_files_(const addon& add_on);
 
-    void save_variables_(const addon& m_add_on) const noexcept;
+    void save_variables_(const addon& add_on) const noexcept;
 
-    void parse_layout_file_(const std::string& file, const addon& m_add_on);
+    void parse_layout_file_(const std::string& file_name, const addon& add_on);
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    sol::state&    m_lua_;
-    localizer&     m_localizer_;
-    event_emitter& m_event_emitter_;
-    root&          m_root_;
-    virtual_root&  m_virtual_root_;
+    sol::state&    lua_;
+    localizer&     localizer_;
+    event_emitter& event_emitter_;
+    root&          root_;
+    virtual_root&  virtual_root_;
 
-    const addon*                  p_current_add_on_ = nullptr;
-    string_map<string_map<addon>> add_on_list_;
+    const addon*                  p_current_addon_ = nullptr;
+    string_map<string_map<addon>> addon_list_;
 };
 
 } // namespace lxgui::gui

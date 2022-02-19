@@ -18,11 +18,11 @@ public:
     gradient() = default;
 
     /// Constructor.
-    /** \param mOrientation This gradient's orientation
-     *   \param mMinColor    This gradient's min color
-     *   \param mMaxColor    This gradient's max color
+    /** \param orientation This gradient's orientation
+     *   \param min_color    This gradient's min color
+     *   \param max_color    This gradient's max color
      */
-    gradient(orientation m_orientation, const color& m_min_color, const color& m_max_color);
+    gradient(orientation orientation, const color& min_color, const color& max_color);
 
     /// Returns the gradient's min colors.
     /** \return The gradient's min colors
@@ -44,8 +44,8 @@ public:
     orientation get_orientation() const;
 
 private:
-    orientation m_orientation_ = orientation::horizontal;
-    color       m_min_color_, m_max_color_;
+    orientation orientation_ = orientation::horizontal;
+    color       min_color_, max_color_;
 };
 
 } // namespace lxgui::gui

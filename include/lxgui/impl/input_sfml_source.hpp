@@ -35,17 +35,17 @@ public:
     utils::ustring get_clipboard_content() override;
     void           set_clipboard_content(const utils::ustring& content) override;
 
-    void on_sfml_event(const sf::Event& m_event);
+    void on_sfml_event(const sf::Event& event);
 
-    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) override;
+    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) override;
     void reset_mouse_cursor() override;
 
 private:
     input::key from_sfml_(int ui_sf_key) const;
 
-    sf::Window& m_window_;
+    sf::Window& window_;
 
-    gui::vector2i m_old_mouse_pos_;
+    gui::vector2i old_mouse_pos_;
     bool          first_mouse_move_ = true;
 
     std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> cursor_map_;

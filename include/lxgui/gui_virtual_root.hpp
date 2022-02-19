@@ -22,10 +22,10 @@ class renderer;
 class virtual_root : public frame_container {
 public:
     /// Constructor.
-    /** \param mManager            The GUI manager
+    /** \param mgr            The GUI manager
      *   \param mNonVirtualRegistry The registry for non-virtual objects (for error messages)
      */
-    explicit virtual_root(manager& m_manager, registry& m_non_virtual_registry);
+    explicit virtual_root(manager& mgr, registry& non_virtual_registry);
 
     /// Destructor.
     ~virtual_root();
@@ -39,33 +39,33 @@ public:
     /** \return The manager instance associated with this root
      */
     manager& get_manager() {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns the manager instance associated with this root.
     /** \return The manager instance associated with this root
      */
     const manager& get_manager() const {
-        return m_manager_;
+        return manager_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     virtual_registry& get_registry() {
-        return m_object_registry_;
+        return object_registry_;
     }
 
     /// Returns the UI object registry, which keeps track of all objects in the UI.
     /** \return The registry object
      */
     const virtual_registry& get_registry() const {
-        return m_object_registry_;
+        return object_registry_;
     }
 
 private:
-    manager&         m_manager_;
-    virtual_registry m_object_registry_;
+    manager&         manager_;
+    virtual_registry object_registry_;
 };
 
 } // namespace lxgui::gui

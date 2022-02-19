@@ -8,8 +8,8 @@
 
 namespace lxgui::gui::sfml {
 
-vertex_cache::vertex_cache(type m_type) :
-    gui::vertex_cache(m_type), m_buffer_(sf::PrimitiveType::Triangles) {}
+vertex_cache::vertex_cache(type type) :
+    gui::vertex_cache(type), buffer_(sf::PrimitiveType::Triangles) {}
 
 void to_sfml(const vertex& v, sf::Vertex& sv) {
     sv.position.x  = v.pos.x;
@@ -23,13 +23,13 @@ void to_sfml(const vertex& v, sf::Vertex& sv) {
 }
 
 void vertex_cache::update(const vertex* vertex_data, std::size_t ui_num_vertex) {
-    if (m_type_ == type::quads) {
+    if (type_ == type::quads) {
         static constexpr std::array<std::size_t, 6> quad_i_ds = {{0, 1, 2, 2, 3, 0}};
 
         std::size_t ui_num_quads           = ui_num_vertex / 4u;
         std::size_t ui_num_vertex_expanded = ui_num_quads * 6u;
-        if (ui_num_vertex_expanded > m_buffer_.getVertexCount())
-            m_buffer_.create(ui_num_vertex_expanded);
+        if (ui_num_vertex_expanded > buffer_.getVertexCount())
+            buffer_.create(ui_num_vertex_expanded);
 
         std::vector<sf::Vertex> vertices(ui_num_vertex_expanded);
         for (std::size_t i = 0; i < ui_num_vertex_expanded; ++i) {
@@ -38,11 +38,11 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t ui_num_vertex) 
             to_sfml(v, sv);
         }
 
-        m_buffer_.update(vertices.data(), ui_num_vertex_expanded, 0);
+        buffer_.update(vertices.data(), ui_num_vertex_expanded, 0);
         ui_num_vertex_ = ui_num_vertex_expanded;
     } else {
-        if (ui_num_vertex > m_buffer_.getVertexCount())
-            m_buffer_.create(ui_num_vertex);
+        if (ui_num_vertex > buffer_.getVertexCount())
+            buffer_.create(ui_num_vertex);
 
         std::vector<sf::Vertex> vertices(ui_num_vertex);
         for (std::size_t i = 0; i < ui_num_vertex; ++i) {
@@ -51,7 +51,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t ui_num_vertex) 
             to_sfml(v, sv);
         }
 
-        m_buffer_.update(vertices.data(), ui_num_vertex, 0);
+        buffer_.update(vertices.data(), ui_num_vertex, 0);
         ui_num_vertex_ = ui_num_vertex;
     }
 }
@@ -61,7 +61,7 @@ std::size_t vertex_cache::get_num_vertex() const {
 }
 
 const sf::VertexBuffer& vertex_cache::get_impl() const {
-    return m_buffer_;
+    return buffer_;
 }
 
 } // namespace lxgui::gui::sfml

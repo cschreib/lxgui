@@ -16,7 +16,7 @@ class check_button : public button {
 
 public:
     /// Constructor.
-    explicit check_button(utils::control_block& m_block, manager& m_manager);
+    explicit check_button(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -25,9 +25,9 @@ public:
     std::string serialize(const std::string& tab) const override;
 
     /// Copies a region's parameters into this check button (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Checks this button.
     virtual void check();
@@ -96,12 +96,12 @@ public:
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "CheckButton";
 
 protected:
-    void parse_all_nodes_before_children_(const layout_node& m_node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
 
     bool is_checked_ = false;
 

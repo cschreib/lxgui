@@ -2,8 +2,8 @@
 
 namespace lxgui::input {
 
-std::string_view get_mouse_button_codename(mouse_button m_id) {
-    switch (m_id) {
+std::string_view get_mouse_button_codename(mouse_button button_id) {
+    switch (button_id) {
     case mouse_button::left: return "LeftButton";
     case mouse_button::right: return "RightButton";
     case mouse_button::middle: return "MiddleButton";
@@ -11,8 +11,8 @@ std::string_view get_mouse_button_codename(mouse_button m_id) {
     }
 }
 
-std::string_view get_localizable_mouse_button_name(mouse_button m_id) {
-    switch (m_id) {
+std::string_view get_localizable_mouse_button_name(mouse_button button_id) {
+    switch (button_id) {
     case mouse_button::left: return "{mouse_left}";
     case mouse_button::right: return "{mouse_right}";
     case mouse_button::middle: return "{mouse_middle}";
@@ -20,8 +20,8 @@ std::string_view get_localizable_mouse_button_name(mouse_button m_id) {
     }
 }
 
-std::string_view get_key_codename(key m_key) {
-    switch (m_key) {
+std::string_view get_key_codename(key key_id) {
+    switch (key_id) {
     case key::k_escape: return "Escape";
     case key::k_1: return "1";
     case key::k_2: return "2";
@@ -166,8 +166,8 @@ key get_key_from_codename(std::string_view key_name) {
     return key::k_unassigned;
 }
 
-std::string_view get_localizable_key_name(key m_key) {
-    switch (m_key) {
+std::string_view get_localizable_key_name(key key_id) {
+    switch (key_id) {
     case key::k_escape: return "{key_escape}";
     case key::k_1: return "{key_1}";
     case key::k_2: return "{key_2}";

@@ -13,9 +13,9 @@ bool file_exists(const std::string& file) {
 
 string_vector get_directory_list(const std::string& rel_path) {
     string_vector dir_list;
-    for (const auto& m_entry : std::filesystem::directory_iterator(rel_path)) {
-        if (m_entry.is_directory())
-            dir_list.push_back(m_entry.path().filename().u8string());
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_directory())
+            dir_list.push_back(entry.path().filename().u8string());
     }
 
     return dir_list;
@@ -23,12 +23,12 @@ string_vector get_directory_list(const std::string& rel_path) {
 
 string_vector get_file_list(const std::string& rel_path, bool with_path) {
     string_vector file_list;
-    for (const auto& m_entry : std::filesystem::directory_iterator(rel_path)) {
-        if (m_entry.is_regular_file()) {
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_regular_file()) {
             if (with_path)
-                file_list.push_back(m_entry.path().relative_path().u8string());
+                file_list.push_back(entry.path().relative_path().u8string());
             else
-                file_list.push_back(m_entry.path().filename().u8string());
+                file_list.push_back(entry.path().filename().u8string());
         }
     }
 
@@ -42,14 +42,14 @@ get_file_list(const std::string& rel_path, bool with_path, const std::string& ex
         extension = utils::trim(extension, ' ');
 
     string_vector file_list;
-    for (const auto& m_entry : std::filesystem::directory_iterator(rel_path)) {
-        if (m_entry.is_regular_file()) {
-            if (utils::find(extension_list, m_entry.path().extension().u8string()) !=
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_regular_file()) {
+            if (utils::find(extension_list, entry.path().extension().u8string()) !=
                 extension_list.end()) {
                 if (with_path)
-                    file_list.push_back(m_entry.path().relative_path().u8string());
+                    file_list.push_back(entry.path().relative_path().u8string());
                 else
-                    file_list.push_back(m_entry.path().filename().u8string());
+                    file_list.push_back(entry.path().filename().u8string());
             }
         }
     }

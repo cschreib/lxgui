@@ -69,7 +69,7 @@ public:
     scoped_connection() = default;
 
     /// Conversion constructor from a raw connection.
-    scoped_connection(connection m_connection) noexcept : connection(std::move(m_connection)) {}
+    scoped_connection(connection c) noexcept : connection(std::move(c)) {}
 
     /// Destructor, disconnects.
     ~scoped_connection() noexcept {
@@ -264,7 +264,7 @@ public:
     }
 
     /// Connect a new slot to this signal.
-    /** \param mFunction The function to store in the slot.
+    /** \param function The function to store in the slot.
      *   \return A connection object, which can be used to disconnect the slot at any time.
      *   \note If the returned connection object is discarded, the slot will remain connected
      *         for the entire lifetime of the signal, or until @ref disconnect_all is called.
@@ -272,8 +272,8 @@ public:
      *         when it should no longer be called. The RAII helper class @ref scoped_connection
      *         can do this safely.
      */
-    connection connect(function_type m_function) {
-        impl_->slots.push_back(utils::make_owned<slot>(std::move(m_function)));
+    connection connect(function_type function) {
+        impl_->slots.push_back(utils::make_owned<slot>(std::move(function)));
         return connection(impl_->slots.back());
     }
 

@@ -20,16 +20,16 @@ void read_data(png_structp p_read_struct, png_bytep p_data, png_size_t ui_length
 }
 
 std::shared_ptr<gui::material>
-renderer::create_material_png_(const std::string& file_name, material::filter m_filter) const {
-    std::ifstream m_file(file_name, std::ios::binary);
-    if (!m_file.is_open()) {
+renderer::create_material_png_(const std::string& file_name, material::filter filt) const {
+    std::ifstream file(file_name, std::ios::binary);
+    if (!file.is_open()) {
         throw gui::exception("gui::gl::manager", "Cannot find file '" + file_name + "'.");
     }
 
     const std::size_t pngsigsize = 8;
     png_byte          signature[pngsigsize];
-    m_file.read(reinterpret_cast<char*>(signature), pngsigsize);
-    if (!m_file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
+    file.read(reinterpret_cast<char*>(signature), pngsigsize);
+    if (!file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
         throw gui::exception(
             "gui::gl::manager", file_name + "' is not a valid PNG image : '" +
                                     std::string(signature, signature + pngsigsize) + "'.");
@@ -48,7 +48,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter m_
         if (!p_info_struct)
             throw gui::exception("gui::gl::manager", "'png_create_info_struct' failed.");
 
-        png_set_read_fn(p_read_struct, static_cast<png_voidp>(&m_file), read_data);
+        png_set_read_fn(p_read_struct, static_cast<png_voidp>(&file), read_data);
 
         png_set_sig_bytes(p_read_struct, pngsigsize);
         png_read_info(p_read_struct, p_info_struct);
@@ -89,7 +89,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter m_
         material::premultiply_alpha(data);
 
         std::shared_ptr<material> p_tex = std::make_shared<gui::gl::material>(
-            vector2ui(ui_width, ui_height), material::wrap::repeat, m_filter);
+            vector2ui(ui_width, ui_height), material::wrap::repeat, filt);
 
         p_tex->update_texture(data.data());
 

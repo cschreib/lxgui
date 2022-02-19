@@ -37,66 +37,64 @@ void sol_lua_check_access(
     // NB: not sure why, but using mTracking here leads to issues later on, so
     // ignore it for now.
 
-    sol::optional<lxgui::utils::observer_ptr<T>&> m_optional =
+    sol::optional<lxgui::utils::observer_ptr<T>&> optional =
         sol::stack::check_get<lxgui::utils::observer_ptr<T>&>(
             p_lua, index, sol::no_panic /*, mTracking*/);
 
-    if (!m_optional.has_value())
+    if (!optional.has_value())
         return;
 
-    if (m_optional->expired())
+    if (optional->expired())
         throw sol::error("object has been deleted");
 }
 
 namespace lxgui::gui {
 
 inline utils::observer_ptr<region>
-get_object(manager& m_manager, const std::variant<std::string, region*>& m_parent) {
+get_object(manager& mgr, const std::variant<std::string, region*>& parent) {
     return std::visit(
-        [&](const auto& m_value) -> utils::observer_ptr<region> {
-            using data_type = std::decay_t<decltype(m_value)>;
+        [&](const auto& value) -> utils::observer_ptr<region> {
+            using data_type = std::decay_t<decltype(value)>;
             if constexpr (std::is_same_v<data_type, std::string>) {
-                if (utils::has_no_content(m_value))
+                if (utils::has_no_content(value))
                     return nullptr;
 
-                auto p_parent = m_manager.get_root().get_registry().get_region_by_name(m_value);
+                auto p_parent = mgr.get_root().get_registry().get_region_by_name(value);
                 if (!p_parent)
-                    throw sol::error("no region with name \"" + m_value + "\"");
+                    throw sol::error("no region with name \"" + value + "\"");
 
                 return p_parent;
             } else {
-                return observer_from(m_value);
+                return observer_from(value);
             }
         },
-        m_parent);
+        parent);
 }
 
 template<typename T>
-utils::observer_ptr<T>
-get_object(manager& m_manager, const std::variant<std::string, T*>& m_parent) {
+utils::observer_ptr<T> get_object(manager& mgr, const std::variant<std::string, T*>& parent) {
     return std::visit(
-        [&](const auto& m_value) -> utils::observer_ptr<T> {
-            using data_type = std::decay_t<decltype(m_value)>;
+        [&](const auto& value) -> utils::observer_ptr<T> {
+            using data_type = std::decay_t<decltype(value)>;
             if constexpr (std::is_same_v<data_type, std::string>) {
-                if (utils::has_no_content(m_value))
+                if (utils::has_no_content(value))
                     return nullptr;
 
-                auto p_parent_object =
-                    m_manager.get_root().get_registry().get_region_by_name(m_value);
+                auto p_parent_object = mgr.get_root().get_registry().get_region_by_name(value);
                 if (!p_parent_object)
-                    throw sol::error("no region with name \"" + m_value + "\"");
+                    throw sol::error("no region with name \"" + value + "\"");
 
                 auto p_parent = down_cast<T>(p_parent_object);
                 if (!p_parent)
                     throw sol::error(
-                        "region \"" + m_value + "\" is not a " + std::string(T::class_name));
+                        "region \"" + value + "\" is not a " + std::string(T::class_name));
 
                 return p_parent;
             } else {
-                return observer_from(m_value);
+                return observer_from(value);
             }
         },
-        m_parent);
+        parent);
 }
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
@@ -109,14 +107,14 @@ struct member_function_holder;
 template<typename R, typename T, typename... Args, R (T::*Function)(Args...)>
 struct member_function_holder<R (T::*)(Args...), Function> {
     static constexpr auto make_free_function() {
-        return [](T& mSelf, Args... args) { return (mSelf.*Function)(std::move(args)...); };
+        return [](T& self, Args... args) { return (self.*Function)(std::move(args)...); };
     }
 };
 
 template<typename R, typename T, typename... Args, R (T::*Function)(Args...) const>
 struct member_function_holder<R (T::*)(Args...) const, Function> {
     static constexpr auto make_free_function() {
-        return [](const T& mSelf, Args... args) { return (mSelf.*Function)(std::move(args)...); };
+        return [](const T& self, Args... args) { return (self.*Function)(std::move(args)...); };
     }
 };
 

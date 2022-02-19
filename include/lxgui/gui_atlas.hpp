@@ -24,7 +24,9 @@ class font;
 class atlas_page {
 public:
     /// Constructor.
-    explicit atlas_page(material::filter m_filter);
+    /** \param filt Use texture filtering or not (see material::set_filter())
+     */
+    explicit atlas_page(material::filter filt);
 
     /// Destructor.
     virtual ~atlas_page() = default;
@@ -49,10 +51,10 @@ public:
 
     /// Creates a new material from a texture file.
     /** \param file_name The name of the file
-     *   \param mMat      The material to add to this page
+     *   \param mat      The material to add to this page
      *   \return The new material (or nullptr if the material could not fit)
      */
-    std::shared_ptr<material> add_material(const std::string& file_name, const material& m_mat);
+    std::shared_ptr<material> add_material(const std::string& file_name, const material& mat);
 
     /// Find a font in this page (nullptr if not found).
     /** \param font_name The name+size of the font
@@ -74,12 +76,12 @@ public:
 
 protected:
     /// Adds a new material to this page, at the provided location
-    /** \param mMat      The material to add
-     *   \param mLocation The position at which to insert this material
+    /** \param mat      The material to add
+     *   \param location The position at which to insert this material
      *   \return A new material pointing to inside this page
      */
     virtual std::shared_ptr<material>
-    add_material_(const material& m_mat, const bounds2f& m_location) = 0;
+    add_material_(const material& mat, const bounds2f& location) = 0;
 
     /// Return the width of this page (in pixels).
     /** \return The width of this page (in pixels)
@@ -91,7 +93,7 @@ protected:
      */
     virtual float get_height_() const = 0;
 
-    material::filter m_filter_ = material::filter::none;
+    material::filter filter_ = material::filter::none;
 
 private:
     /// Try to insert a new texture into this page, and return the best position if any
@@ -112,7 +114,10 @@ private:
 class atlas {
 public:
     /// Constructor.
-    explicit atlas(renderer& m_renderer, material::filter m_filter);
+    /** \param rdr The renderer with witch to create this atlas
+     *   \param filt   Use texture filtering or not (see material::set_filter())
+     */
+    explicit atlas(renderer& rdr, material::filter filt);
 
     /// Destructor.
     virtual ~atlas() = default;
@@ -137,10 +142,10 @@ public:
 
     /// Add a new material to the atlas.
     /** \param file_name The name of the file
-     *   \param mMat      The material to add to this atlas
+     *   \param mat      The material to add to this atlas
      *   \return The new material
      */
-    std::shared_ptr<material> add_material(const std::string& file_name, const material& m_mat);
+    std::shared_ptr<material> add_material(const std::string& file_name, const material& mat);
 
     /// Find a font in this atlas (nullptr if not found).
     /** \param font_name The name of the font+size
@@ -166,8 +171,8 @@ protected:
      */
     virtual std::unique_ptr<atlas_page> create_page_() = 0;
 
-    renderer&        m_renderer_;
-    material::filter m_filter_ = material::filter::none;
+    renderer&        renderer_;
+    material::filter filter_ = material::filter::none;
 
 private:
     /// Create a new page in this atlas.

@@ -13,72 +13,71 @@
 
 namespace lxgui::input {
 
-dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
-    connections_.push_back(m_source.on_key_pressed.connect([&](input::key m_key) {
+dispatcher::dispatcher(source& src) : source_(src) {
+    connections_.push_back(src.on_key_pressed.connect([&](key key_id) {
         // Record press time
-        key_pressed_time_[static_cast<std::size_t>(m_key)] = timer::now();
+        key_pressed_time_[static_cast<std::size_t>(key_id)] = timer::now();
         // Forward
-        on_key_pressed(m_key);
+        on_key_pressed(key_id);
     }));
 
-    connections_.push_back(m_source.on_key_released.connect([&](input::key m_key) {
+    connections_.push_back(src.on_key_released.connect([&](key key_id) {
         // Forward
-        on_key_released(m_key);
+        on_key_released(key_id);
     }));
 
-    connections_.push_back(m_source.on_text_entered.connect([&](std::uint32_t c) {
+    connections_.push_back(src.on_text_entered.connect([&](std::uint32_t c) {
         // Forward
         on_text_entered(c);
     }));
 
-    connections_.push_back(m_source.on_mouse_pressed.connect(
-        [&](input::mouse_button m_button, gui::vector2f m_mouse_pos) {
+    connections_.push_back(
+        src.on_mouse_pressed.connect([&](mouse_button button_id, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= scaling_factor_;
+            mouse_pos /= scaling_factor_;
 
             // Record press time
-            auto m_time_last = mouse_pressed_time_[static_cast<std::size_t>(m_button)];
-            auto m_time_now  = timer::now();
-            mouse_pressed_time_[static_cast<std::size_t>(m_button)] = m_time_now;
-            double d_click_time = std::chrono::duration<double>(m_time_now - m_time_last).count();
+            auto time_last = mouse_pressed_time_[static_cast<std::size_t>(button_id)];
+            auto time_now  = timer::now();
+            mouse_pressed_time_[static_cast<std::size_t>(button_id)] = time_now;
+            double d_click_time = std::chrono::duration<double>(time_now - time_last).count();
 
             // Forward
-            on_mouse_pressed(m_button, m_mouse_pos);
+            on_mouse_pressed(button_id, mouse_pos);
 
             if (d_click_time < d_double_click_time_)
-                on_mouse_double_clicked(m_button, m_mouse_pos);
+                on_mouse_double_clicked(button_id, mouse_pos);
         }));
 
-    connections_.push_back(m_source.on_mouse_released.connect(
-        [&](input::mouse_button m_button, gui::vector2f m_mouse_pos) {
+    connections_.push_back(
+        src.on_mouse_released.connect([&](mouse_button button_id, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= scaling_factor_;
+            mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_released(m_button, m_mouse_pos);
+            on_mouse_released(button_id, mouse_pos);
 
-            if (is_mouse_dragged_ && m_button == m_mouse_drag_button_) {
+            if (is_mouse_dragged_ && button_id == mouse_drag_button_) {
                 is_mouse_dragged_ = false;
-                on_mouse_drag_stop(m_button, m_mouse_pos);
+                on_mouse_drag_stop(button_id, mouse_pos);
             }
         }));
 
-    connections_.push_back(
-        m_source.on_mouse_wheel.connect([&](float wheel, gui::vector2f m_mouse_pos) {
-            // Apply scaling factor to mouse coordinates
-            m_mouse_pos /= scaling_factor_;
-            // Forward
-            on_mouse_wheel(wheel, m_mouse_pos);
-        }));
+    connections_.push_back(src.on_mouse_wheel.connect([&](float wheel, gui::vector2f mouse_pos) {
+        // Apply scaling factor to mouse coordinates
+        mouse_pos /= scaling_factor_;
+        // Forward
+        on_mouse_wheel(wheel, mouse_pos);
+    }));
 
     connections_.push_back(
-        m_source.on_mouse_moved.connect([&](gui::vector2f m_movement, gui::vector2f m_mouse_pos) {
+        src.on_mouse_moved.connect([&](gui::vector2f movement, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            m_movement /= scaling_factor_;
-            m_mouse_pos /= scaling_factor_;
+            movement /= scaling_factor_;
+            mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_moved(m_movement, m_mouse_pos);
+            on_mouse_moved(movement, mouse_pos);
 
             if (!is_mouse_dragged_) {
                 std::size_t ui_mouse_button_pressed = std::numeric_limits<std::size_t>::max();
@@ -90,16 +89,16 @@ dispatcher::dispatcher(source& m_source) : m_source_(m_source) {
                 }
 
                 if (ui_mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
-                    is_mouse_dragged_    = true;
-                    m_mouse_drag_button_ = static_cast<mouse_button>(ui_mouse_button_pressed);
-                    on_mouse_drag_start(m_mouse_drag_button_, m_mouse_pos);
+                    is_mouse_dragged_  = true;
+                    mouse_drag_button_ = static_cast<mouse_button>(ui_mouse_button_pressed);
+                    on_mouse_drag_start(mouse_drag_button_, mouse_pos);
                 }
             }
         }));
 }
 
 bool dispatcher::any_key_is_down() const {
-    const auto& key_state = m_source_.get_key_state().key_state;
+    const auto& key_state = source_.get_key_state().key_state;
     for (std::size_t i = 1; i < key_number; ++i) {
         if (key_state[i])
             return true;
@@ -108,29 +107,29 @@ bool dispatcher::any_key_is_down() const {
     return false;
 }
 
-bool dispatcher::key_is_down(key m_key) const {
-    return m_source_.get_key_state().key_state[static_cast<std::size_t>(m_key)];
+bool dispatcher::key_is_down(key key_id) const {
+    return source_.get_key_state().key_state[static_cast<std::size_t>(key_id)];
 }
 
-double dispatcher::get_key_down_duration(key m_key) const {
-    if (!key_is_down(m_key))
+double dispatcher::get_key_down_duration(key key_id) const {
+    if (!key_is_down(key_id))
         return 0.0;
 
     return std::chrono::duration<double>(
-               timer::now() - key_pressed_time_[static_cast<std::size_t>(m_key)])
+               timer::now() - key_pressed_time_[static_cast<std::size_t>(key_id)])
         .count();
 }
 
-bool dispatcher::mouse_is_down(mouse_button m_id) const {
-    return m_source_.get_mouse_state().button_state[static_cast<std::size_t>(m_id)];
+bool dispatcher::mouse_is_down(mouse_button button_id) const {
+    return source_.get_mouse_state().button_state[static_cast<std::size_t>(button_id)];
 }
 
-double dispatcher::get_mouse_down_duration(mouse_button m_id) const {
-    if (!mouse_is_down(m_id))
+double dispatcher::get_mouse_down_duration(mouse_button button_id) const {
+    if (!mouse_is_down(button_id))
         return 0.0;
 
     return std::chrono::duration<double>(
-               timer::now() - mouse_pressed_time_[static_cast<std::size_t>(m_id)])
+               timer::now() - mouse_pressed_time_[static_cast<std::size_t>(button_id)])
         .count();
 }
 
@@ -155,19 +154,19 @@ bool dispatcher::ctrl_is_pressed() const {
 }
 
 gui::vector2f dispatcher::get_mouse_position() const {
-    return m_source_.get_mouse_state().m_position / scaling_factor_;
+    return source_.get_mouse_state().position / scaling_factor_;
 }
 
 float dispatcher::get_mouse_wheel() const {
-    return m_source_.get_mouse_state().wheel;
+    return source_.get_mouse_state().wheel;
 }
 
 const source& dispatcher::get_source() const {
-    return m_source_;
+    return source_;
 }
 
 source& dispatcher::get_source() {
-    return m_source_;
+    return source_;
 }
 
 void dispatcher::set_interface_scaling_factor(float scaling_factor) {

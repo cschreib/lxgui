@@ -11,8 +11,7 @@
 
 namespace lxgui::gui {
 
-scroll_frame::scroll_frame(utils::control_block& m_block, manager& m_manager) :
-    frame(m_block, m_manager) {
+scroll_frame::scroll_frame(utils::control_block& block, manager& mgr) : frame(block, mgr) {
     type_.push_back(class_name);
 }
 
@@ -37,23 +36,23 @@ bool scroll_frame::can_use_script(const std::string& script_name) const {
         return false;
 }
 
-void scroll_frame::fire_script(const std::string& script_name, const event_data& m_data) {
+void scroll_frame::fire_script(const std::string& script_name, const event_data& data) {
     if (!is_loaded())
         return;
 
-    alive_checker m_checker(*this);
-    base::fire_script(script_name, m_data);
-    if (!m_checker.is_alive())
+    alive_checker checker(*this);
+    base::fire_script(script_name, data);
+    if (!checker.is_alive())
         return;
 
     if (script_name == "OnSizeChanged")
         rebuild_scroll_render_target_flag_ = true;
 }
 
-void scroll_frame::copy_from(const region& m_obj) {
-    base::copy_from(m_obj);
+void scroll_frame::copy_from(const region& obj) {
+    base::copy_from(obj);
 
-    const scroll_frame* p_scroll_frame = down_cast<scroll_frame>(&m_obj);
+    const scroll_frame* p_scroll_frame = down_cast<scroll_frame>(&obj);
     if (!p_scroll_frame)
         return;
 
@@ -61,12 +60,12 @@ void scroll_frame::copy_from(const region& m_obj) {
     this->set_vertical_scroll(p_scroll_frame->get_vertical_scroll());
 
     if (const frame* p_other_child = p_scroll_frame->get_scroll_child().get()) {
-        region_core_attributes m_attr;
-        m_attr.object_type = p_other_child->get_object_type();
-        m_attr.name        = p_other_child->get_raw_name();
-        m_attr.inheritance = {p_scroll_frame->get_scroll_child()};
+        region_core_attributes attr;
+        attr.object_type = p_other_child->get_object_type();
+        attr.name        = p_other_child->get_raw_name();
+        attr.inheritance = {p_scroll_frame->get_scroll_child()};
 
-        utils::observer_ptr<frame> p_scroll_child = create_child(std::move(m_attr));
+        utils::observer_ptr<frame> p_scroll_child = create_child(std::move(attr));
 
         if (p_scroll_child) {
             p_scroll_child->set_special();
@@ -110,7 +109,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> p_frame) {
             p_scroll_child_->set_renderer(observer_from(this));
 
         p_scroll_child_->clear_all_points();
-        p_scroll_child_->set_point(anchor_point::top_left, get_name(), -m_scroll_);
+        p_scroll_child_->set_point(anchor_point::top_left, get_name(), -scroll_);
 
         update_scroll_range_();
         update_scroll_range_flag_ = false;
@@ -120,15 +119,15 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> p_frame) {
 }
 
 void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
-    if (m_scroll_.x != horizontal_scroll) {
-        m_scroll_.x = horizontal_scroll;
+    if (scroll_.x != horizontal_scroll) {
+        scroll_.x = horizontal_scroll;
 
-        alive_checker m_checker(*this);
+        alive_checker checker(*this);
         fire_script("OnHorizontalScroll");
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
 
-        p_scroll_child_->modify_point(anchor_point::top_left).m_offset = -m_scroll_;
+        p_scroll_child_->modify_point(anchor_point::top_left).offset = -scroll_;
         p_scroll_child_->notify_borders_need_update();
 
         redraw_scroll_render_target_flag_ = true;
@@ -136,23 +135,23 @@ void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
 }
 
 float scroll_frame::get_horizontal_scroll() const {
-    return m_scroll_.x;
+    return scroll_.x;
 }
 
 float scroll_frame::get_horizontal_scroll_range() const {
-    return m_scroll_range_.x;
+    return scroll_range_.x;
 }
 
 void scroll_frame::set_vertical_scroll(float vertical_scroll) {
-    if (m_scroll_.y != vertical_scroll) {
-        m_scroll_.y = vertical_scroll;
+    if (scroll_.y != vertical_scroll) {
+        scroll_.y = vertical_scroll;
 
-        alive_checker m_checker(*this);
+        alive_checker checker(*this);
         fire_script("OnVerticalScroll");
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
 
-        p_scroll_child_->modify_point(anchor_point::top_left).m_offset = -m_scroll_;
+        p_scroll_child_->modify_point(anchor_point::top_left).offset = -scroll_;
         p_scroll_child_->notify_borders_need_update();
 
         redraw_scroll_render_target_flag_ = true;
@@ -160,24 +159,24 @@ void scroll_frame::set_vertical_scroll(float vertical_scroll) {
 }
 
 float scroll_frame::get_vertical_scroll() const {
-    return m_scroll_.y;
+    return scroll_.y;
 }
 
 float scroll_frame::get_vertical_scroll_range() const {
-    return m_scroll_range_.y;
+    return scroll_range_.y;
 }
 
 void scroll_frame::update(float delta) {
-    vector2f m_old_child_size;
+    vector2f old_child_size;
     if (p_scroll_child_)
-        m_old_child_size = p_scroll_child_->get_apparent_dimensions();
+        old_child_size = p_scroll_child_->get_apparent_dimensions();
 
-    alive_checker m_checker(*this);
+    alive_checker checker(*this);
     base::update(delta);
-    if (!m_checker.is_alive())
+    if (!checker.is_alive())
         return;
 
-    if (p_scroll_child_ && m_old_child_size != p_scroll_child_->get_apparent_dimensions()) {
+    if (p_scroll_child_ && old_child_size != p_scroll_child_->get_apparent_dimensions()) {
         update_scroll_range_flag_         = true;
         redraw_scroll_render_target_flag_ = true;
     }
@@ -202,20 +201,20 @@ void scroll_frame::update(float delta) {
 }
 
 void scroll_frame::update_scroll_range_() {
-    const vector2f m_apparent_size       = get_apparent_dimensions();
-    const vector2f m_child_apparent_size = p_scroll_child_->get_apparent_dimensions();
+    const vector2f apparent_size       = get_apparent_dimensions();
+    const vector2f child_apparent_size = p_scroll_child_->get_apparent_dimensions();
 
-    m_scroll_range_ = m_child_apparent_size - m_apparent_size;
+    scroll_range_ = child_apparent_size - apparent_size;
 
-    if (m_scroll_range_.x < 0)
-        m_scroll_range_.x = 0;
-    if (m_scroll_range_.y < 0)
-        m_scroll_range_.y = 0;
+    if (scroll_range_.x < 0)
+        scroll_range_.x = 0;
+    if (scroll_range_.y < 0)
+        scroll_range_.y = 0;
 
     if (!is_virtual()) {
-        alive_checker m_checker(*this);
+        alive_checker checker(*this);
         fire_script("OnScrollRangeChanged");
-        if (!m_checker.is_alive())
+        if (!checker.is_alive())
             return;
     }
 }
@@ -227,22 +226,22 @@ void scroll_frame::notify_scaling_factor_updated() {
 }
 
 void scroll_frame::rebuild_scroll_render_target_() {
-    const vector2f m_apparent_size = get_apparent_dimensions();
+    const vector2f apparent_size = get_apparent_dimensions();
 
-    if (m_apparent_size.x <= 0 || m_apparent_size.y <= 0)
+    if (apparent_size.x <= 0 || apparent_size.y <= 0)
         return;
 
     float     factor = get_manager().get_interface_scaling_factor();
-    vector2ui m_scaled_size =
-        vector2ui(std::round(m_apparent_size.x * factor), std::round(m_apparent_size.y * factor));
+    vector2ui scaled_size =
+        vector2ui(std::round(apparent_size.x * factor), std::round(apparent_size.y * factor));
 
     if (p_scroll_render_target_) {
-        p_scroll_render_target_->set_dimensions(m_scaled_size);
+        p_scroll_render_target_->set_dimensions(scaled_size);
         p_scroll_texture_->set_tex_rect(std::array<float, 4>{0.0f, 0.0f, 1.0f, 1.0f});
         update_scroll_range_flag_ = true;
     } else {
-        auto& m_renderer        = get_manager().get_renderer();
-        p_scroll_render_target_ = m_renderer.create_render_target(m_scaled_size);
+        auto& renderer          = get_manager().get_renderer();
+        p_scroll_render_target_ = renderer.create_render_target(scaled_size);
 
         if (p_scroll_render_target_)
             p_scroll_texture_->set_texture(p_scroll_render_target_);
@@ -250,28 +249,28 @@ void scroll_frame::rebuild_scroll_render_target_() {
 }
 
 void scroll_frame::render_scroll_strata_list_() {
-    renderer& m_renderer = get_manager().get_renderer();
+    renderer& renderer = get_manager().get_renderer();
 
-    m_renderer.begin(p_scroll_render_target_);
+    renderer.begin(p_scroll_render_target_);
 
-    vector2f m_view = vector2f(p_scroll_render_target_->get_canvas_dimensions()) /
-                      get_manager().get_interface_scaling_factor();
+    vector2f view = vector2f(p_scroll_render_target_->get_canvas_dimensions()) /
+                    get_manager().get_interface_scaling_factor();
 
-    m_renderer.set_view(matrix4f::translation(-get_borders().top_left()) * matrix4f::view(m_view));
+    renderer.set_view(matrix4f::translation(-get_borders().top_left()) * matrix4f::view(view));
 
     p_scroll_render_target_->clear(color::empty);
 
-    for (const auto& m_strata : strata_list_) {
-        render_strata_(m_strata);
+    for (const auto& s : strata_list_) {
+        render_strata_(s);
     }
 
-    m_renderer.end();
+    renderer.end();
 }
 
 utils::observer_ptr<const frame>
-scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const {
-    if (base::find_topmost_frame(m_predicate)) {
-        if (auto p_hovered_frame = frame_renderer::find_topmost_frame(m_predicate))
+scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& predicate) const {
+    if (base::find_topmost_frame(predicate)) {
+        if (auto p_hovered_frame = frame_renderer::find_topmost_frame(predicate))
             return p_hovered_frame;
 
         return observer_from(this);
@@ -280,8 +279,8 @@ scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& m_pred
     return nullptr;
 }
 
-void scroll_frame::notify_strata_needs_redraw(frame_strata m_strata) {
-    frame_renderer::notify_strata_needs_redraw(m_strata);
+void scroll_frame::notify_strata_needs_redraw(frame_strata strata_id) {
+    frame_renderer::notify_strata_needs_redraw(strata_id);
 
     redraw_scroll_render_target_flag_ = true;
     notify_renderer_need_redraw();

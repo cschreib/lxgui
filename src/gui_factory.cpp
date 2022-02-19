@@ -9,124 +9,122 @@
 
 namespace lxgui::gui {
 
-factory::factory(manager& m_manager) : m_manager_(m_manager) {}
+factory::factory(manager& mgr) : manager_(mgr) {}
 
-utils::owner_ptr<region>
-factory::create_region(registry& m_registry, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.name))
+utils::owner_ptr<region> factory::create_region(registry& reg, const region_core_attributes& attr) {
+    if (!reg.check_region_name(attr.name))
         return nullptr;
 
-    auto m_iter = custom_object_list_.find(m_attr.object_type);
-    if (m_iter == custom_object_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << m_attr.object_type
+    auto iter = custom_object_list_.find(attr.object_type);
+    if (iter == custom_object_list_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << attr.object_type
                  << "\"." << std::endl;
         return nullptr;
     }
 
-    utils::owner_ptr<region> p_new_object = m_iter->second(m_manager_);
+    utils::owner_ptr<region> p_new_object = iter->second(manager_);
     if (!p_new_object)
         return nullptr;
 
-    if (!finalize_object_(m_registry, *p_new_object, m_attr))
+    if (!finalize_object_(reg, *p_new_object, attr))
         return nullptr;
 
-    apply_inheritance_(*p_new_object, m_attr);
+    apply_inheritance_(*p_new_object, attr);
 
     return p_new_object;
 }
 
-utils::owner_ptr<frame> factory::create_frame(
-    registry& m_registry, frame_renderer* p_renderer, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.name))
+utils::owner_ptr<frame>
+factory::create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr) {
+    if (!reg.check_region_name(attr.name))
         return nullptr;
 
-    auto m_iter = custom_frame_list_.find(m_attr.object_type);
-    if (m_iter == custom_frame_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << m_attr.object_type
+    auto iter = custom_frame_list_.find(attr.object_type);
+    if (iter == custom_frame_list_.end()) {
+        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << attr.object_type
                  << "\"." << std::endl;
         return nullptr;
     }
 
-    utils::owner_ptr<frame> p_new_frame = m_iter->second(m_manager_);
+    utils::owner_ptr<frame> p_new_frame = iter->second(manager_);
     if (!p_new_frame)
         return nullptr;
 
-    if (!finalize_object_(m_registry, *p_new_frame, m_attr))
+    if (!finalize_object_(reg, *p_new_frame, attr))
         return nullptr;
 
-    if (p_renderer && !p_new_frame->is_virtual())
-        p_renderer->notify_rendered_frame(p_new_frame, true);
+    if (rdr && !p_new_frame->is_virtual())
+        rdr->notify_rendered_frame(p_new_frame, true);
 
-    apply_inheritance_(*p_new_frame, m_attr);
+    apply_inheritance_(*p_new_frame, attr);
 
     return p_new_frame;
 }
 
 utils::owner_ptr<layered_region>
-factory::create_layered_region(registry& m_registry, const region_core_attributes& m_attr) {
-    if (!m_registry.check_region_name(m_attr.name))
+factory::create_layered_region(registry& reg, const region_core_attributes& attr) {
+    if (!reg.check_region_name(attr.name))
         return nullptr;
 
-    auto m_iter = custom_region_list_.find(m_attr.object_type);
-    if (m_iter == custom_region_list_.end()) {
+    auto iter = custom_region_list_.find(attr.object_type);
+    if (iter == custom_region_list_.end()) {
         gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
-                 << m_attr.object_type << "\"." << std::endl;
+                 << attr.object_type << "\"." << std::endl;
         return nullptr;
     }
 
-    utils::owner_ptr<layered_region> p_new_region = m_iter->second(m_manager_);
+    utils::owner_ptr<layered_region> p_new_region = iter->second(manager_);
     if (!p_new_region)
         return nullptr;
 
-    if (!finalize_object_(m_registry, *p_new_region, m_attr))
+    if (!finalize_object_(reg, *p_new_region, attr))
         return nullptr;
 
-    apply_inheritance_(*p_new_region, m_attr);
+    apply_inheritance_(*p_new_region, attr);
 
     return p_new_region;
 }
 
 sol::state& factory::get_lua() {
-    return m_manager_.get_lua();
+    return manager_.get_lua();
 }
 
 const sol::state& factory::get_lua() const {
-    return m_manager_.get_lua();
+    return manager_.get_lua();
 }
 
-bool factory::finalize_object_(
-    registry& m_registry, region& m_object, const region_core_attributes& m_attr) {
-    if (m_attr.is_virtual)
-        m_object.set_virtual();
+bool factory::finalize_object_(registry& reg, region& object, const region_core_attributes& attr) {
+    if (attr.is_virtual)
+        object.set_virtual();
 
-    if (m_attr.p_parent)
-        m_object.set_name_and_parent_(m_attr.name, m_attr.p_parent);
+    if (attr.p_parent)
+        object.set_name_and_parent_(attr.name, attr.p_parent);
     else
-        m_object.set_name_(m_attr.name);
+        object.set_name_(attr.name);
 
-    if (!m_object.is_virtual() || m_attr.p_parent == nullptr) {
-        if (!m_registry.add_region(observer_from(&m_object)))
+    if (!object.is_virtual() || attr.p_parent == nullptr) {
+        if (!reg.add_region(observer_from(&object)))
             return false;
     }
 
-    if (!m_object.is_virtual())
-        m_object.create_glue();
+    if (!object.is_virtual())
+        object.create_glue();
 
     return true;
 }
 
-void factory::apply_inheritance_(region& m_object, const region_core_attributes& m_attr) {
-    for (const auto& p_base : m_attr.inheritance) {
-        if (!m_object.is_object_type(p_base->get_object_type())) {
+void factory::apply_inheritance_(region& object, const region_core_attributes& attr) {
+    for (const auto& p_base : attr.inheritance) {
+        if (!object.is_object_type(p_base->get_object_type())) {
             gui::out << gui::warning << "gui::factory : "
-                     << "\"" << m_object.get_name() << "\" (" << m_object.get_object_type()
+                     << "\"" << object.get_name() << "\" (" << object.get_object_type()
                      << ") cannot inherit from \"" << p_base->get_name() << "\" ("
                      << p_base->get_object_type() << "). Inheritance skipped." << std::endl;
             continue;
         }
 
         // Inherit from the other object
-        m_object.copy_from(*p_base);
+        object.copy_from(*p_base);
     }
 }
 

@@ -85,7 +85,7 @@ public:
 private:
     char32_t get_character_(char32_t c) const;
 
-    sf::Font    m_font_;
+    sf::Font    font_;
     std::size_t ui_size_               = 0u;
     std::size_t ui_outline_            = 0u;
     char32_t    ui_default_code_point_ = 0u;

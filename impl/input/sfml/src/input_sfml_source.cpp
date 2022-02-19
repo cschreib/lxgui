@@ -14,8 +14,8 @@ using sf::Keyboard;
 using sf::Mouse;
 
 namespace lxgui::input { namespace sfml {
-source::source(sf::Window& m_window) : m_window_(m_window) {
-    m_window_dimensions_ = gui::vector2ui(m_window_.getSize().x, m_window_.getSize().y);
+source::source(sf::Window& window) : window_(window) {
+    window_dimensions_ = gui::vector2ui(window_.getSize().x, window_.getSize().y);
 }
 
 utils::ustring source::get_clipboard_content() {
@@ -27,34 +27,34 @@ void source::set_clipboard_content(const utils::ustring& content) {
     sf::Clipboard::setString(sf::String::fromUtf32(content.begin(), content.end()));
 }
 
-void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) {
-    auto m_iter = cursor_map_.find(file_name);
-    if (m_iter == cursor_map_.end()) {
-        sf::Image m_image;
-        if (!m_image.loadFromFile(file_name)) {
+void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) {
+    auto iter = cursor_map_.find(file_name);
+    if (iter == cursor_map_.end()) {
+        sf::Image image;
+        if (!image.loadFromFile(file_name)) {
             throw gui::exception(
                 "input::sfml::source", "Could not load cursor file '" + file_name + "'.");
         }
 
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromPixels(
-            m_image.getPixelsPtr(), m_image.getSize(), sf::Vector2u(m_hot_spot.x, m_hot_spot.y));
-        m_iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
+            image.getPixelsPtr(), image.getSize(), sf::Vector2u(hot_spot.x, hot_spot.y));
+        iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
     }
 
-    m_window_.setMouseCursor(*m_iter->second);
+    window_.setMouseCursor(*iter->second);
 }
 
 void source::reset_mouse_cursor() {
-    const std::string name   = "system_arrow";
-    auto              m_iter = cursor_map_.find(name);
-    if (m_iter == cursor_map_.end()) {
+    const std::string name = "system_arrow";
+    auto              iter = cursor_map_.find(name);
+    if (iter == cursor_map_.end()) {
         auto p_cursor = std::make_unique<sf::Cursor>();
         p_cursor->loadFromSystem(sf::Cursor::Arrow);
-        m_iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
+        iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
     }
 
-    m_window_.setMouseCursor(*m_iter->second);
+    window_.setMouseCursor(*iter->second);
 }
 
 key source::from_sfml_(int ui_sf_key) const {
@@ -163,54 +163,54 @@ key source::from_sfml_(int ui_sf_key) const {
     }
 }
 
-void source::on_sfml_event(const sf::Event& m_event) {
+void source::on_sfml_event(const sf::Event& event) {
     static const mouse_button mouse_from_sfml[3] = {
         mouse_button::left, mouse_button::right, mouse_button::middle};
 
-    if (m_event.type == sf::Event::TextEntered) {
-        auto c = m_event.text.unicode;
+    if (event.type == sf::Event::TextEntered) {
+        auto c = event.text.unicode;
         // Remove non printable characters (< 32) and Del. (127)
         if (c >= 32 && c != 127)
             on_text_entered(c);
-    } else if (m_event.type == sf::Event::MouseWheelMoved) {
-        m_mouse_.wheel += m_event.mouseWheel.delta;
-        const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
-        on_mouse_wheel(m_event.mouseWheel.delta, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
-    } else if (m_event.type == sf::Event::Resized) {
-        m_window_dimensions_ = gui::vector2ui(m_event.size.width, m_event.size.height);
-        on_window_resized(m_window_dimensions_);
-    } else if (m_event.type == sf::Event::KeyPressed) {
-        key m_key                                              = from_sfml_(m_event.key.code);
-        m_keyboard_.key_state[static_cast<std::size_t>(m_key)] = true;
-        on_key_pressed(m_key);
-    } else if (m_event.type == sf::Event::KeyReleased) {
-        key m_key                                              = from_sfml_(m_event.key.code);
-        m_keyboard_.key_state[static_cast<std::size_t>(m_key)] = false;
-        on_key_released(m_key);
-    } else if (m_event.type == sf::Event::MouseButtonPressed) {
-        mouse_button m_button = mouse_from_sfml[m_event.mouseButton.button];
-        m_mouse_.button_state[static_cast<std::size_t>(m_button)] = true;
+    } else if (event.type == sf::Event::MouseWheelMoved) {
+        mouse_.wheel += event.mouseWheel.delta;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_wheel(event.mouseWheel.delta, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::Resized) {
+        window_dimensions_ = gui::vector2ui(event.size.width, event.size.height);
+        on_window_resized(window_dimensions_);
+    } else if (event.type == sf::Event::KeyPressed) {
+        key key                                            = from_sfml_(event.key.code);
+        keyboard_.key_state[static_cast<std::size_t>(key)] = true;
+        on_key_pressed(key);
+    } else if (event.type == sf::Event::KeyReleased) {
+        key key                                            = from_sfml_(event.key.code);
+        keyboard_.key_state[static_cast<std::size_t>(key)] = false;
+        on_key_released(key);
+    } else if (event.type == sf::Event::MouseButtonPressed) {
+        mouse_button button = mouse_from_sfml[event.mouseButton.button];
+        mouse_.button_state[static_cast<std::size_t>(button)] = true;
 
-        const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
-        on_mouse_pressed(m_button, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
-    } else if (m_event.type == sf::Event::MouseButtonReleased) {
-        mouse_button m_button = mouse_from_sfml[m_event.mouseButton.button];
-        m_mouse_.button_state[static_cast<std::size_t>(m_button)] = false;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_pressed(button, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::MouseButtonReleased) {
+        mouse_button button = mouse_from_sfml[event.mouseButton.button];
+        mouse_.button_state[static_cast<std::size_t>(button)] = false;
 
-        const sf::Vector2i m_mouse_pos = Mouse::getPosition(m_window_);
-        on_mouse_released(m_button, gui::vector2f(m_mouse_pos.x, m_mouse_pos.y));
-    } else if (m_event.type == sf::Event::MouseMoved) {
-        gui::vector2i m_mouse_pos(m_event.mouseMove.x, m_event.mouseMove.y);
-        gui::vector2i m_mouse_delta;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_released(button, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::MouseMoved) {
+        gui::vector2i mouse_pos(event.mouseMove.x, event.mouseMove.y);
+        gui::vector2i mouse_delta;
         if (!first_mouse_move_) {
-            m_mouse_delta    = m_mouse_pos - m_old_mouse_pos_;
-            m_old_mouse_pos_ = m_mouse_pos;
+            mouse_delta    = mouse_pos - old_mouse_pos_;
+            old_mouse_pos_ = mouse_pos;
         }
 
         first_mouse_move_ = false;
 
-        m_mouse_.m_position = gui::vector2f(m_mouse_pos.x, m_mouse_pos.y);
-        on_mouse_moved(gui::vector2f(m_mouse_delta.x, m_mouse_delta.y), m_mouse_.m_position);
+        mouse_.position = gui::vector2f(mouse_pos.x, mouse_pos.y);
+        on_mouse_moved(gui::vector2f(mouse_delta.x, mouse_delta.y), mouse_.position);
     }
 }
 }} // namespace lxgui::input::sfml

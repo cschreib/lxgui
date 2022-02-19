@@ -35,9 +35,9 @@ public:
     backdrop& operator=(backdrop&&) = delete;
 
     /// Copies a backdrop's parameters into this one (inheritance).
-    /** \param mbackdrop The backdrop to copy
+    /** \param other The backdrop to copy
      */
-    void copy_from(const backdrop& mbackdrop);
+    void copy_from(const backdrop& other);
 
     /// Sets the background texture.
     /** \param background_file The background texture
@@ -50,11 +50,11 @@ public:
     const std::string& get_background_file() const;
 
     /// Sets the background color.
-    /** \param mColor The background color
+    /** \param c The background color
      *   \note This color can be used to tint the background texture if any
      *         or simply render a plain color background.
      */
-    void set_background_color(const color& m_color);
+    void set_background_color(const color& c);
 
     /// Returns the background color.
     /** \return The background color
@@ -124,11 +124,11 @@ public:
     const std::string& get_edge_file() const;
 
     /// Sets the edge color.
-    /** \param mColor The edge color
+    /** \param c The edge color
      *   \note This color can be used to tint the edge texture if any
      *         or simply render a plain color edge.
      */
-    void set_edge_color(const color& m_color);
+    void set_edge_color(const color& c);
 
     /// Returns the edge color.
     /** \return The edge color
@@ -147,9 +147,9 @@ public:
     float get_edge_size() const;
 
     /// Sets the color to be multiplied to all drawn vertices.
-    /** \param mColor The new vertex color
+    /** \param c The new vertex color
      */
-    void set_vertex_color(const color& m_color);
+    void set_vertex_color(const color& c);
 
     /// Renders this backdrop on the current render target.
     void render() const;
@@ -159,13 +159,13 @@ public:
 
 private:
     void update_cache_() const;
-    void update_background_(color m_color) const;
-    void update_edge_(color m_color) const;
+    void update_background_(color c) const;
+    void update_edge_(color c) const;
 
-    frame& m_parent_;
+    frame& parent_;
 
     std::string               background_file_;
-    color                     m_background_color_ = color::empty;
+    color                     background_color_ = color::empty;
     std::shared_ptr<material> p_background_texture_;
     bool                      is_background_tilling_ = false;
     float                     tile_size_             = 0.0f;
@@ -173,13 +173,13 @@ private:
     bounds2f                  background_insets_;
 
     std::string               edge_file_;
-    color                     m_edge_color_ = color::empty;
+    color                     edge_color_ = color::empty;
     std::shared_ptr<material> p_edge_texture_;
     bounds2f                  edge_insets_;
     float                     edge_size_          = 0.0f;
     float                     original_edge_size_ = 0.0f;
 
-    color m_vertex_color_ = color::white;
+    color vertex_color_ = color::white;
 
     mutable bool  is_cache_dirty_ = true;
     mutable float cache_alpha_    = std::numeric_limits<float>::quiet_NaN();

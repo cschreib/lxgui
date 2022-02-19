@@ -25,7 +25,7 @@ public:
     enum class blend_mode { none, blend, key, add, mod };
 
     /// Constructor.
-    explicit texture(utils::control_block& m_block, manager& m_manager);
+    explicit texture(utils::control_block& block, manager& mgr);
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
@@ -37,9 +37,9 @@ public:
     void render() const override;
 
     /// Copies a region's parameters into this texture (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Returns this texture's blending mode.
     /** \return This texture's blending mode
@@ -113,9 +113,9 @@ public:
     bool is_desaturated() const;
 
     /// Sets this texture's blending mode.
-    /** \param mBlendMode The new blending mode
+    /** \param mode The new blending mode
      */
-    void set_blend_mode(blend_mode m_blend_mode);
+    void set_blend_mode(blend_mode mode);
 
     /// Sets this texture's blending mode.
     /** \param blend_mode_name The new blending mode
@@ -123,9 +123,9 @@ public:
     void set_blend_mode(const std::string& blend_mode_name);
 
     /// Sets this texture's filtering mode.
-    /** \param mFilter The new filtering mode
+    /** \param filt The new filtering mode
      */
-    void set_filter_mode(material::filter m_filter);
+    void set_filter_mode(material::filter filt);
 
     /// Sets this texture's blending mode.
     /** \param filter_name The new filtering mode
@@ -138,10 +138,10 @@ public:
     void set_desaturated(bool is_desaturated);
 
     /// Adds a gradient effect to this texture.
-    /** \param mGradient The gradient to add
+    /** \param g The gradient to add
      *   \note To remove a gradient, call set_gradient(Gradient::NONE).
      */
-    void set_gradient(const gradient& m_gradient);
+    void set_gradient(const gradient& g);
 
     /// Sets this texture's texture coordinates.
     /** \param texture_rect This texture's texture coordinates
@@ -186,60 +186,60 @@ public:
     void set_texture(std::shared_ptr<render_target> p_render_target);
 
     /// Sets this texture's color.
-    /** \param mColor The color to use
+    /** \param c The color to use
      *   \note This function will replace the texture set by set_texture() with a solid color.
      *         If you need to blend the texture with a color, use set_vertex_color() instead.
      */
-    void set_solid_color(const color& m_color);
+    void set_solid_color(const color& c);
 
     /// Directly sets this texture's underlying quad (vertices and material).
-    /** \param mQuad The new quad to use
+    /** \param q The new quad to use
      *   \note The texture's dimensions will be adjusted to fit those
      *         of the provided quad, and same goes for texture coordinates.
      */
-    void set_quad(const quad& m_quad);
+    void set_quad(const quad& q);
 
     /// Sets this texture's vertex color.
-    /** \param mColor This textures's new vertex color
+    /** \param c This textures's new vertex color
      *   \param uiIndex The vertex index (-1: all vertices)
      *   \note This color is used to filter the texture's colors:
      *         for each pixel, the original color is multiplied
      *         by this vertex color.
      */
     void set_vertex_color(
-        const color& m_color, std::size_t ui_index = std::numeric_limits<std::size_t>::max());
+        const color& c, std::size_t ui_index = std::numeric_limits<std::size_t>::max());
 
     /// Creates the associated Lua glue.
     void create_glue() override;
 
     /// Parses data from a layout_node.
-    /** \param mNode The layout node
+    /** \param node The layout node
      */
-    void parse_layout(const layout_node& m_node) override;
+    void parse_layout(const layout_node& node) override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "Texture";
 
 private:
-    void parse_attributes_(const layout_node& m_node) override;
-    void parse_tex_coords_node_(const layout_node& m_node);
-    void parse_gradient_node_(const layout_node& m_node);
+    void parse_attributes_(const layout_node& node) override;
+    void parse_tex_coords_node_(const layout_node& node);
+    void parse_gradient_node_(const layout_node& node);
 
     void update_dimensions_from_tex_coord_();
     void update_borders_() override;
 
-    using content      = std::variant<color, std::string, gradient>;
-    content m_content_ = color::white;
+    using content    = std::variant<color, std::string, gradient>;
+    content content_ = color::white;
 
-    blend_mode       m_blend_mode_                  = blend_mode::blend;
-    material::filter m_filter_                      = material::filter::none;
+    blend_mode       blend_mode_                    = blend_mode::blend;
+    material::filter filter_                        = material::filter::none;
     bool             is_desaturated_                = false;
     bool             is_texture_stretching_enabled_ = true;
 
-    renderer& m_renderer_;
-    quad      m_quad_;
+    renderer& renderer_;
+    quad      quad_;
 };
 
 } // namespace lxgui::gui

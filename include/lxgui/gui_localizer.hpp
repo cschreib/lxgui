@@ -22,11 +22,11 @@ class localizer {
     using mapped_item = std::variant<std::string, sol::protected_function>;
     using map_type    = std::unordered_map<hash_type, mapped_item>;
 
-    std::locale                   m_locale_;
+    std::locale                   locale_;
     std::vector<std::string>      languages_;
     std::vector<code_point_range> code_points_;
     char32_t                      ui_default_code_point_ = U'\u25a1'; // '□'
-    sol::state                    m_lua_;
+    sol::state                    lua_;
     map_type                      map_;
 
     bool                     is_key_valid_(std::string_view key) const;
@@ -37,25 +37,19 @@ public:
     /// Default constructor.
     localizer();
 
-    /// Non-copiable
+    // Non-copiable, non-movable
     localizer(const localizer&) = delete;
-
-    /// Non-movable
-    localizer(localizer&&) = delete;
-
-    /// Non-copiable
+    localizer(localizer&&)      = delete;
     localizer& operator=(const localizer&) = delete;
-
-    /// Non-movable
     localizer& operator=(localizer&&) = delete;
 
     /// Changes the current locale (used to format numbers).
-    /** \param mLocale The new locale
+    /** \param locale The new locale
      *   \note This function should only be called before the UI is loaded. If you need to change
      *         the locale after the UI has been loaded: close the UI, set the locale, and load the
      *         UI again.
      */
-    void set_locale(const std::locale& m_locale);
+    void set_locale(const std::locale& locale);
 
     /// Changes the current language (used to translate messages and strings).
     /** \param languages A list of languages
@@ -96,10 +90,10 @@ public:
     void clear_allowed_code_points();
 
     /// Adds a new range to the set of allowed code points.
-    /** \param mRange The new range to allow
+    /** \param range The new range to allow
      *   \see get_allowed_code_points()
      */
-    void add_allowed_code_points(const code_point_range& m_range);
+    void add_allowed_code_points(const code_point_range& range);
 
     /// Adds a new range to the set of allowed code points from a Unicode group.
     /** \param unicode_group The name of the Unicode code group to allow
@@ -160,20 +154,18 @@ public:
     /// Loads new translations from a file.
     /** \param file_name The path to the file to load translations from
      *   \note The file must be a Lua script. It will be loaded in a sandboxed Lua state
-     * (independent of the Lua state of the GUI). The script must define a table called "localize",
-     * which will be scanned to add new translations for the current locale (each file must only
-     *         contain translations for one language; separate different languages into different
-     *         files).
-     *         Each item of the table must have a string key identifying the localized content,
-     * e.g., "player_health". This key must be the same for all languages, and serves to uniquely
-     *         identify the translatable sentence / text. The format of this string is arbitrary.
-     *         The value of each element must be either a string, of a function. If the value is a
-     *         string, it must be a fmtlib format string. For example: "{0:L} HP" expects one input
-     *         argument (here a number representing the player's health). If the value of this
-     *         argument is 5000 and the locale is enUS, this will result in "5,000 HP". If the value
-     *         is a Lua function, it must take the same number of input values in all languages, and
-     *         must return a translated string. See localize() for more information on
-     *         translation arguments.
+     * (independent of the Lua state of the GUI). The script must define a table called
+     * "localize", which will be scanned to add new translations for the current locale
+     * (each file must only contain translations for one language; separate different
+     * languages into different files). Each item of the table must have a string key identifying
+     * the localized content, e.g., "player_health". This key must be the same for all languages,
+     * and serves to uniquely identify the translatable sentence / text. The format of this string
+     * is arbitrary. The value of each element must be either a string, of a function. If the value
+     * is a string, it must be a fmtlib format string. For example: "{0:L} HP" expects one input
+     * argument (here a number representing the player's health). If the value of this argument is
+     * 5000 and the locale is enUS, this will result in "5,000 HP". If the value is a Lua function,
+     * it must take the same number of input values in all languages, and must return a translated
+     * string. See localize() for more information on translation arguments.
      */
     void load_translation_file(const std::string& file_name);
 
@@ -186,35 +178,36 @@ public:
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
     /** \param message The string to format (e.g., "Player {0} has {1} HP.").
-     *   \param mVArgs A variadic list of formatting input arguments from a Sol Lua state.
+     *   \param args A variadic list of formatting input arguments from a Sol Lua state.
      *   \return The formatted string.
      *   \details The string to format must follow the rules of libfmt format strings.
      */
-    std::string format_string(std::string_view message, sol::variadic_args m_v_args) const;
+    std::string format_string(std::string_view message, sol::variadic_args args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
-    /** \param sMessage The string to format (e.g., "Player {0} has {1} HP.").
-     *   \param mArgs A variadic list of formatting input arguments.
+    /** \param message The string to format (e.g., "Player {0} has {1} HP.").
+     *   \param args A variadic list of formatting input arguments.
      *   \return The formatted string.
      *   \details The string to format must follow the rules of libfmt format strings.
      */
     template<typename... Args>
-    std::string format_string(std::string_view message, Args&&... m_args) const {
-        return fmt::format(m_locale_, message, std::forward<Args>(m_args)...);
+    std::string format_string(std::string_view message, Args&&... args) const {
+        return fmt::format(locale_, message, std::forward<Args>(args)...);
     }
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
     /** \param key   The key identifying the sentence / text to translate (e.g.,
-     * "{player_health}"). Must start with '{' and end with '}'. \param mVArgs A variadic list of
-     * translation input arguments from a Sol Lua state. \return The translated string, or sKey if
-     * not found or an error occurred. \note See the other overload for more information.
+     * "{player_health}"). Must start with '{' and end with '}'.
+     *   \param args A variadic list of translation input arguments from a Sol Lua state.
+     *   \return The translated string, or sKey if not found or an error occurred.
+     *   \note See the other overload for more information.
      */
-    std::string localize(std::string_view key, sol::variadic_args m_v_args) const;
+    std::string localize(std::string_view key, sol::variadic_args args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param key  The key identifying the sentence / text to translate (e.g., "{player_health}").
      *                Must start with '{' and end with '}'.
-     *   \param mArgs A variadic list of translation input arguments.
+     *   \param args A variadic list of translation input arguments.
      *   \return The translated string, or sKey if not found or an error occurred.
      *   \details This function will search the translation database (created from loading
      *            translations with load_translations() or load_translation_file()) for a
@@ -223,44 +216,44 @@ public:
      *            the proper place for the selected language.
      */
     template<typename... Args>
-    std::string localize(std::string_view key, Args&&... m_args) const {
+    std::string localize(std::string_view key, Args&&... args) const {
         if (!is_key_valid_(key))
             return std::string{key};
 
-        auto m_iter = find_key_(key);
-        if (m_iter == map_.end())
+        auto iter = find_key_(key);
+        if (iter == map_.end())
             return std::string{key};
 
         return std::visit(
-            [&](const auto& m_item) {
+            [&](const auto& item) {
                 constexpr bool is_string =
-                    std::is_same_v<std::decay_t<decltype(m_item)>, std::string>;
+                    std::is_same_v<std::decay_t<decltype(item)>, std::string>;
                 if constexpr (is_string) {
                     if constexpr (sizeof...(Args) == 0)
-                        return m_item;
+                        return item;
                     else
-                        return fmt::format(m_locale_, m_item, std::forward<Args>(m_args)...);
+                        return fmt::format(locale_, item, std::forward<Args>(args)...);
                 } else {
-                    auto m_result = m_item(std::forward<Args>(m_args)...);
-                    if (m_result.valid() && m_result.begin() != m_result.end()) {
-                        auto&& m_first = *m_result.begin();
-                        if (m_first.template is<std::string>())
-                            return m_first.template as<std::string>();
+                    auto result = item(std::forward<Args>(args)...);
+                    if (result.valid() && result.begin() != result.end()) {
+                        auto&& first = *result.begin();
+                        if (first.template is<std::string>())
+                            return first.template as<std::string>();
                         else
                             return std::string{key};
                     } else
                         return std::string{key};
                 }
             },
-            m_iter->second);
+            iter->second);
     }
 
     /// Registers this localizer on a Lua state.
-    /** \param mState The Lua state to register on
+    /** \param lua The Lua lua to register on
      *   \note Only one localizer object can be registered on any Lua state.
      *         Registering enables Lua functions such as "get_locale()".
      */
-    void register_on_lua(sol::state& m_state);
+    void register_on_lua(sol::state& lua);
 };
 
 } // namespace lxgui::gui

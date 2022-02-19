@@ -57,110 +57,109 @@
 
 namespace lxgui::gui {
 
-void edit_box::register_on_lua(sol::state& m_lua) {
-    auto m_class = m_lua.new_usertype<edit_box>(
+void edit_box::register_on_lua(sol::state& lua) {
+    auto type = lua.new_usertype<edit_box>(
         "EditBox", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
         member_function<&edit_box::get_lua_member_>(), sol::meta_function::new_index,
         member_function<&edit_box::set_lua_member_>());
 
     /** @function add_history_line
      */
-    m_class.set_function("add_history_line", [](edit_box& m_self, const std::string& line) {
-        m_self.add_history_line(utils::utf8_to_unicode(line));
+    type.set_function("add_history_line", [](edit_box& self, const std::string& line) {
+        self.add_history_line(utils::utf8_to_unicode(line));
     });
 
     /** @function clear_history
      */
-    m_class.set_function("clear_history", member_function<&edit_box::clear_history>());
+    type.set_function("clear_history", member_function<&edit_box::clear_history>());
 
     /** @function get_blink_speed
      */
-    m_class.set_function("get_blink_speed", member_function<&edit_box::get_blink_speed>());
+    type.set_function("get_blink_speed", member_function<&edit_box::get_blink_speed>());
 
     /** @function get_cursor_position
      */
-    m_class.set_function("get_cursor_position", member_function<&edit_box::get_cursor_position>());
+    type.set_function("get_cursor_position", member_function<&edit_box::get_cursor_position>());
 
     /** @function get_history_lines
      */
-    m_class.set_function("get_history_lines", [](const edit_box& m_self) {
-        return sol::as_table(m_self.get_history_lines());
+    type.set_function("get_history_lines", [](const edit_box& self) {
+        return sol::as_table(self.get_history_lines());
     });
 
     /** @function get_max_letters
      */
-    m_class.set_function("get_max_letters", member_function<&edit_box::get_max_letters>());
+    type.set_function("get_max_letters", member_function<&edit_box::get_max_letters>());
 
     /** @function get_num_letters
      */
-    m_class.set_function("get_num_letters", member_function<&edit_box::get_num_letters>());
+    type.set_function("get_num_letters", member_function<&edit_box::get_num_letters>());
 
     /** @function get_number
      */
-    m_class.set_function("get_number", [](const edit_box& m_self) {
+    type.set_function("get_number", [](const edit_box& self) {
         // TODO: use localizer's locale for that
         // https://github.com/cschreib/lxgui/issues/88
         double d_number = 0.0;
-        utils::from_string(m_self.get_text(), d_number);
+        utils::from_string(self.get_text(), d_number);
         return d_number;
     });
 
     /** @function get_text
      */
-    m_class.set_function("get_text", [](const edit_box& m_self) {
-        return utils::unicode_to_utf8(m_self.get_text());
-    });
+    type.set_function(
+        "get_text", [](const edit_box& self) { return utils::unicode_to_utf8(self.get_text()); });
 
     /** @function get_text_insets
      */
-    m_class.set_function("get_text_insets", [](const edit_box& m_self) {
-        const bounds2f& insets = m_self.get_text_insets();
+    type.set_function("get_text_insets", [](const edit_box& self) {
+        const bounds2f& insets = self.get_text_insets();
         return std::make_tuple(insets.left, insets.right, insets.top, insets.bottom);
     });
 
     /** @function highlight_text
      */
-    m_class.set_function(
-        "highlight_text", [](edit_box& m_self, sol::optional<std::size_t> ui_start,
-                             sol::optional<std::size_t> ui_end) {
-            m_self.highlight_text(
+    type.set_function(
+        "highlight_text",
+        [](edit_box& self, sol::optional<std::size_t> ui_start, sol::optional<std::size_t> ui_end) {
+            self.highlight_text(
                 ui_start.value_or(0u), ui_end.value_or(std::numeric_limits<std::size_t>::max()));
         });
 
     /** @function insert
      */
-    m_class.set_function("insert", [](edit_box& m_self, const std::string& text) {
-        m_self.insert_after_cursor(utils::utf8_to_unicode(text));
+    type.set_function("insert", [](edit_box& self, const std::string& text) {
+        self.insert_after_cursor(utils::utf8_to_unicode(text));
     });
 
     /** @function is_multi_line
      */
-    m_class.set_function("is_multi_line", member_function<&edit_box::is_multi_line>());
+    type.set_function("is_multi_line", member_function<&edit_box::is_multi_line>());
 
     /** @function is_numeric
      */
-    m_class.set_function("is_numeric", member_function<&edit_box::is_numeric_only>());
+    type.set_function("is_numeric", member_function<&edit_box::is_numeric_only>());
 
     /** @function is_password
      */
-    m_class.set_function("is_password", member_function<&edit_box::is_password_mode_enabled>());
+    type.set_function("is_password", member_function<&edit_box::is_password_mode_enabled>());
 
     /** @function set_blink_speed
      */
-    m_class.set_function("set_blink_speed", member_function<&edit_box::set_blink_speed>());
+    type.set_function("set_blink_speed", member_function<&edit_box::set_blink_speed>());
 
     /** @function set_cursor_position
      */
-    m_class.set_function("set_cursor_position", member_function<&edit_box::set_cursor_position>());
+    type.set_function("set_cursor_position", member_function<&edit_box::set_cursor_position>());
 
     /** @function set_font
      */
-    m_class.set_function(
-        "set_font", [](edit_box& m_self, const std::string& file, float height,
+    type.set_function(
+        "set_font", [](edit_box& self, const std::string& file, float height,
                        sol::optional<std::string> flags) {
-            m_self.set_font(file, height);
+            self.set_font(file, height);
 
-            auto* p_font_string = m_self.get_font_string().get();
+            auto* p_font_string = self.get_font_string().get();
             if (!p_font_string)
                 return;
 
@@ -180,50 +179,49 @@ void edit_box::register_on_lua(sol::state& m_lua) {
 
     /** @function set_max_history_lines
      */
-    m_class.set_function(
-        "set_max_history_lines", member_function<&edit_box::set_max_history_lines>());
+    type.set_function("set_max_history_lines", member_function<&edit_box::set_max_history_lines>());
 
     /** @function set_max_letters
      */
-    m_class.set_function("set_max_letters", member_function<&edit_box::set_max_letters>());
+    type.set_function("set_max_letters", member_function<&edit_box::set_max_letters>());
 
     /** @function set_multi_line
      */
-    m_class.set_function("set_multi_line", member_function<&edit_box::set_multi_line>());
+    type.set_function("set_multi_line", member_function<&edit_box::set_multi_line>());
 
     /** @function set_number
      */
-    m_class.set_function(
+    type.set_function(
         "set_number",
         sol::overload(
-            [](edit_box& m_self, int value) {
-                m_self.set_text(utils::utf8_to_unicode(
-                    m_self.get_manager().get_localizer().format_string("{:L}", value)));
+            [](edit_box& self, int value) {
+                self.set_text(utils::utf8_to_unicode(
+                    self.get_manager().get_localizer().format_string("{:L}", value)));
             },
-            [](edit_box& m_self, double d_value) {
-                m_self.set_text(utils::utf8_to_unicode(
-                    m_self.get_manager().get_localizer().format_string("{:L}", d_value)));
+            [](edit_box& self, double d_value) {
+                self.set_text(utils::utf8_to_unicode(
+                    self.get_manager().get_localizer().format_string("{:L}", d_value)));
             }));
 
     /** @function set_numeric
      */
-    m_class.set_function("set_numeric", member_function<&edit_box::set_numeric_only>());
+    type.set_function("set_numeric", member_function<&edit_box::set_numeric_only>());
 
     /** @function set_password
      */
-    m_class.set_function("set_password", member_function<&edit_box::enable_password_mode>());
+    type.set_function("set_password", member_function<&edit_box::enable_password_mode>());
 
     /** @function set_text
      */
-    m_class.set_function("set_text", [](edit_box& m_self, const std::string& text) {
-        m_self.set_text(utils::utf8_to_unicode(text));
+    type.set_function("set_text", [](edit_box& self, const std::string& text) {
+        self.set_text(utils::utf8_to_unicode(text));
     });
 
     /** @function set_text_insets
      */
-    m_class.set_function(
-        "set_text_insets", [](edit_box& m_self, float left, float right, float top, float bottom) {
-            m_self.set_text_insets(bounds2f(left, right, top, bottom));
+    type.set_function(
+        "set_text_insets", [](edit_box& self, float left, float right, float top, float bottom) {
+            self.set_text_insets(bounds2f(left, right, top, bottom));
         });
 }
 

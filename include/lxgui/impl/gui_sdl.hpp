@@ -11,12 +11,12 @@ namespace lxgui::gui::sdl {
 
 /// Create a new gui::manager using a full SDL implementation.
 /** \param window The SDL render window
- *   \param renderer The SDL renderer
+ *   \param rdr The SDL renderer
  *   \param initialise_sdl_image Set to 'false' if SDL Image has already been initialised elsewhere
  *   \return The new gui::manager instance
  */
 utils::owner_ptr<gui::manager>
-create_manager(SDL_Window* p_window, SDL_Renderer* p_renderer, bool initialise_sdl_image = true);
+create_manager(SDL_Window* p_window, SDL_Renderer* rdr, bool initialise_sdl_image = true);
 
 } // namespace lxgui::gui::sdl
 

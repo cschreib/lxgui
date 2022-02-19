@@ -10,8 +10,7 @@
 
 namespace lxgui::gui {
 
-layered_region::layered_region(utils::control_block& m_block, manager& m_manager) :
-    base(m_block, m_manager) {
+layered_region::layered_region(utils::control_block& block, manager& mgr) : base(block, mgr) {
     type_.push_back(class_name);
 }
 
@@ -20,7 +19,7 @@ std::string layered_region::serialize(const std::string& tab) const {
     str << base::serialize(tab);
 
     str << tab << "  # Layer       : ";
-    switch (m_layer_) {
+    switch (layer_) {
     case layer::background: str << "BACKGROUND\n"; break;
     case layer::border: str << "BORDER\n"; break;
     case layer::artwork: str << "ARTWORK\n"; break;
@@ -64,12 +63,12 @@ bool layered_region::is_visible() const {
 }
 
 layer layered_region::get_draw_layer() const {
-    return m_layer_;
+    return layer_;
 }
 
-void layered_region::set_draw_layer(layer m_layer) {
-    if (m_layer_ != m_layer) {
-        m_layer_ = m_layer;
+void layered_region::set_draw_layer(layer layer_id) {
+    if (layer_ != layer_id) {
+        layer_ = layer_id;
         notify_renderer_need_redraw();
         p_parent_->notify_layers_need_update();
     }
@@ -88,26 +87,26 @@ void layered_region::notify_renderer_need_redraw() {
 }
 
 layer parse_layer_type(const std::string& layer_name) {
-    layer m_layer;
+    layer layer_id;
     if (layer_name == "ARTWORK")
-        m_layer = layer::artwork;
+        layer_id = layer::artwork;
     else if (layer_name == "BACKGROUND")
-        m_layer = layer::background;
+        layer_id = layer::background;
     else if (layer_name == "BORDER")
-        m_layer = layer::border;
+        layer_id = layer::border;
     else if (layer_name == "HIGHLIGHT")
-        m_layer = layer::highlight;
+        layer_id = layer::highlight;
     else if (layer_name == "OVERLAY")
-        m_layer = layer::overlay;
+        layer_id = layer::overlay;
     else {
         gui::out << gui::warning << "gui::parse_layer_type : "
                  << "Unknown layer type : \"" << layer_name << "\". Using \"ARTWORK\"."
                  << std::endl;
 
-        m_layer = layer::artwork;
+        layer_id = layer::artwork;
     }
 
-    return m_layer;
+    return layer_id;
 }
 
 } // namespace lxgui::gui

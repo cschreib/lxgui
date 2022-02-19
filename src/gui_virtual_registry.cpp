@@ -6,8 +6,8 @@
 
 namespace lxgui::gui {
 
-virtual_registry::virtual_registry(const registry& m_object_registry) :
-    p_object_registry_(&m_object_registry) {}
+virtual_registry::virtual_registry(const registry& object_registry) :
+    p_object_registry_(&object_registry) {}
 
 std::vector<utils::observer_ptr<const region>>
 virtual_registry::get_virtual_region_list(std::string_view names) const {

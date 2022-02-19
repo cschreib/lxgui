@@ -36,7 +36,7 @@ class scroll_frame : public frame, public frame_renderer {
 
 public:
     /// Constructor.
-    explicit scroll_frame(utils::control_block& m_block, manager& m_manager);
+    explicit scroll_frame(utils::control_block& block, manager& mgr);
 
     /// Destructor.
     ~scroll_frame() override;
@@ -50,9 +50,9 @@ public:
     void update(float delta) override;
 
     /// Copies a region's parameters into this scroll_frame (inheritance).
-    /** \param mObj The region to copy
+    /** \param obj The region to copy
      */
-    void copy_from(const region& m_obj) override;
+    void copy_from(const region& obj) override;
 
     /// Returns 'true' if this scroll_frame can use a script.
     /** \param script_name The name of the script
@@ -62,13 +62,13 @@ public:
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param mData       Stores scripts arguments
+     *   \param data       Stores scripts arguments
      *   \note Triggered callbacks could destroy the frame. If you need
      *         to use the frame again after calling this function, use
      *         the helper class alive_checker.
      */
     void
-    fire_script(const std::string& script_name, const event_data& m_data = event_data{}) override;
+    fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Sets this scroll_frame's scroll child.
     /** \param pFrame The scroll child
@@ -121,7 +121,7 @@ public:
     float get_vertical_scroll_range() const;
 
     /// Find the topmost frame matching the provided predicate
-    /** \param mPredicate A function returning 'true' if the frame can be selected
+    /** \param predicate A function returning 'true' if the frame can be selected
      *   \return The topmost frame, if any, and nullptr otherwise.
      *   \note For most frames, this can either return 'this' or 'nullptr'. For
      *         frames responsible for rendering other frames (such as @ref scroll_frame),
@@ -130,10 +130,10 @@ public:
      *         keyboard/mouse/wheel enabled.
      */
     utils::observer_ptr<const frame>
-    find_topmost_frame(const std::function<bool(const frame&)>& m_predicate) const override;
+    find_topmost_frame(const std::function<bool(const frame&)>& predicate) const override;
 
     /// Tells this renderer that one of its region requires redraw.
-    void notify_strata_needs_redraw(frame_strata m_strata) override;
+    void notify_strata_needs_redraw(frame_strata strata_id) override;
 
     /// Tells this renderer that it should (or not) render another frame.
     /** \param pFrame    The frame to render
@@ -153,20 +153,20 @@ public:
     void create_glue() override;
 
     /// Registers this region class to the provided Lua state
-    static void register_on_lua(sol::state& m_lua);
+    static void register_on_lua(sol::state& lua);
 
     static constexpr const char* class_name = "ScrollFrame";
 
 protected:
-    void         parse_all_nodes_before_children_(const layout_node& m_node) override;
-    virtual void parse_scroll_child_node_(const layout_node& m_node);
+    void         parse_all_nodes_before_children_(const layout_node& node) override;
+    virtual void parse_scroll_child_node_(const layout_node& node);
 
     void update_scroll_range_();
     void rebuild_scroll_render_target_();
     void render_scroll_strata_list_();
 
-    vector2f m_scroll_;
-    vector2f m_scroll_range_;
+    vector2f scroll_;
+    vector2f scroll_range_;
 
     utils::observer_ptr<frame> p_scroll_child_ = nullptr;
 

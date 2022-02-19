@@ -4,43 +4,43 @@
 
 namespace lxgui::input {
 
-window::window(source& m_source) : m_source_(m_source) {
-    m_connection_ = m_source.on_window_resized.connect([&](const gui::vector2ui& m_dimensions) {
+window::window(source& src) : source_(src) {
+    connection_ = src.on_window_resized.connect([&](const gui::vector2ui& dimensions) {
         // Forward
-        on_window_resized(m_dimensions);
+        on_window_resized(dimensions);
     });
 }
 
 utils::ustring window::get_clipboard_content() {
-    return m_source_.get_clipboard_content();
+    return source_.get_clipboard_content();
 }
 
 void window::set_clipboard_content(const utils::ustring& content) {
-    return m_source_.set_clipboard_content(content);
+    return source_.set_clipboard_content(content);
 }
 
-void window::set_mouse_cursor(const std::string& file_name, const gui::vector2i& m_hot_spot) {
-    return m_source_.set_mouse_cursor(file_name, m_hot_spot);
+void window::set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) {
+    return source_.set_mouse_cursor(file_name, hot_spot);
 }
 
 void window::reset_mouse_cursor() {
-    return m_source_.reset_mouse_cursor();
+    return source_.reset_mouse_cursor();
 }
 
 const gui::vector2ui& window::get_dimensions() const {
-    return m_source_.get_window_dimensions();
+    return source_.get_window_dimensions();
 }
 
 float window::get_interface_scaling_factor_hint() const {
-    return m_source_.get_interface_scaling_factor_hint();
+    return source_.get_interface_scaling_factor_hint();
 }
 
 const source& window::get_source() const {
-    return m_source_;
+    return source_;
 }
 
 source& window::get_source() {
-    return m_source_;
+    return source_;
 }
 
 } // namespace lxgui::input

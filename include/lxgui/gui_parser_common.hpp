@@ -13,22 +13,22 @@ class virtual_registry;
 class layout_node;
 
 /// Parse "core" attributes from a layout node, before creating a frame.
-/** \param mRegistry        The UI object registry, for parent lookup
- *   \param mVirtualRegistry The virtual UI object registry, for inheritance lookup
- *   \param mNode            The layout node to parse from
+/** \param reg        The UI object registry, for parent lookup
+ *   \param vreg The virtual UI object registry, for inheritance lookup
+ *   \param node            The layout node to parse from
  *   \param pParent          The current layout parent frame of this node (nullptr if none)
  *   \return Filled-in core attributes structure.
  */
 region_core_attributes parse_core_attributes(
-    registry&                  m_registry,
-    virtual_registry&          m_virtual_registry,
-    const layout_node&         m_node,
+    registry&                  reg,
+    virtual_registry&          vreg,
+    const layout_node&         node,
     utils::observer_ptr<frame> p_parent);
 
 /// Emit a warning if this node (or any of its attributes/children) was not read.
-/** \param mNode The node to check
+/** \param node The node to check
  */
-void warn_for_not_accessed_node(const layout_node& m_node);
+void warn_for_not_accessed_node(const layout_node& node);
 
 } // namespace lxgui::gui
 

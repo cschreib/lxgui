@@ -15,15 +15,15 @@ struct vector2 {
 
     constexpr vector2() = default;
 
-    constexpr vector2(T m_x, T m_y) noexcept : x(m_x), y(m_y) {}
+    constexpr vector2(T x, T y) noexcept : x(x), y(y) {}
 
     template<typename U>
-    explicit constexpr vector2(const vector2<U>& m_v) noexcept :
-        x(static_cast<T>(m_v.x)), y(static_cast<T>(m_v.y)) {}
+    explicit constexpr vector2(const vector2<U>& v) noexcept :
+        x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
-    void set(T m_x, T m_y) noexcept {
-        x = m_x;
-        y = m_y;
+    void set(T x, T y) noexcept {
+        x = x;
+        y = y;
     }
 
     T get_norm_squared() const noexcept {
@@ -35,38 +35,38 @@ struct vector2 {
     }
 
     vector2<float_type> get_unit() const noexcept {
-        vector2<float_type> m_vec(static_cast<float_type>(x), static_cast<float_type>(y));
-        const typename vector2<float_type>::float_type m_norm = get_norm();
-        m_vec.x /= m_norm;
-        m_vec.y /= m_norm;
-        return m_vec;
+        vector2<float_type> vec(static_cast<float_type>(x), static_cast<float_type>(y));
+        const typename vector2<float_type>::float_type norm = get_norm();
+        vec.x /= norm;
+        vec.y /= norm;
+        return vec;
     }
 
     vector2<float_type> get_normal() const noexcept {
-        vector2<float_type> m_vec(static_cast<float_type>(-y), static_cast<float_type>(x));
-        const typename vector2<float_type>::float_type m_norm = get_norm();
-        m_vec.x /= m_norm;
-        m_vec.y /= m_norm;
-        return m_vec;
+        vector2<float_type> vec(static_cast<float_type>(-y), static_cast<float_type>(x));
+        const typename vector2<float_type>::float_type norm = get_norm();
+        vec.x /= norm;
+        vec.y /= norm;
+        return vec;
     }
 
-    vector2 get_rotated(float_type m_angle) const noexcept {
-        vector2<float_type> m_vec(static_cast<float_type>(x), static_cast<float_type>(y));
-        vector2<float_type> m_orig = m_vec;
+    vector2 get_rotated(float_type angle) const noexcept {
+        vector2<float_type> vec(static_cast<float_type>(x), static_cast<float_type>(y));
+        vector2<float_type> orig = vec;
 
-        const float_type ca = std::cos(m_angle);
-        const float_type sa = std::sin(m_angle);
+        const float_type ca = std::cos(angle);
+        const float_type sa = std::sin(angle);
 
-        m_vec.x = static_cast<T>(m_orig.x * ca - m_orig.y * sa);
-        m_vec.y = static_cast<T>(m_orig.x * sa + m_orig.y * ca);
+        vec.x = static_cast<T>(orig.x * ca - orig.y * sa);
+        vec.y = static_cast<T>(orig.x * sa + orig.y * ca);
 
-        return m_vec;
+        return vec;
     }
 
     vector2 get_scaled(const vector2& v) const noexcept {
-        vector2 m_vec = *this;
-        m_vec.scale(v);
-        return m_vec;
+        vector2 vec = *this;
+        vec.scale(v);
+        return vec;
     }
 
     vector2 operator+(const vector2& v) const noexcept {
@@ -101,43 +101,43 @@ struct vector2 {
         return (x != v.x) || (y != v.y);
     }
 
-    vector2 operator*(T m_value) const noexcept {
-        return vector2(x * m_value, y * m_value);
+    vector2 operator*(T value) const noexcept {
+        return vector2(x * value, y * value);
     }
 
-    vector2 operator*(const vector2& m_value) const noexcept {
-        return vector2(x * m_value.x, y * m_value.y);
+    vector2 operator*(const vector2& value) const noexcept {
+        return vector2(x * value.x, y * value.y);
     }
 
-    vector2& operator*=(T m_value) noexcept {
-        x *= m_value;
-        y *= m_value;
+    vector2& operator*=(T value) noexcept {
+        x *= value;
+        y *= value;
         return *this;
     }
 
-    vector2& operator*=(const vector2& m_value) noexcept {
-        x *= m_value.x;
-        y *= m_value.y;
+    vector2& operator*=(const vector2& value) noexcept {
+        x *= value.x;
+        y *= value.y;
         return *this;
     }
 
-    vector2 operator/(T m_value) const noexcept {
-        return vector2(x / m_value, y / m_value);
+    vector2 operator/(T value) const noexcept {
+        return vector2(x / value, y / value);
     }
 
-    vector2 operator/(const vector2& m_value) const noexcept {
-        return vector2(x / m_value.x, y / m_value.y);
+    vector2 operator/(const vector2& value) const noexcept {
+        return vector2(x / value.x, y / value.y);
     }
 
-    vector2& operator/=(T m_value) noexcept {
-        x /= m_value;
-        y /= m_value;
+    vector2& operator/=(T value) noexcept {
+        x /= value;
+        y /= value;
         return *this;
     }
 
-    vector2& operator/=(const vector2& m_value) noexcept {
-        x /= m_value.x;
-        y /= m_value.y;
+    vector2& operator/=(const vector2& value) noexcept {
+        x /= value.x;
+        y /= value.y;
         return *this;
     }
 
@@ -171,13 +171,13 @@ using vector2i  = vector2<std::ptrdiff_t>;
 using vector2ui = vector2<std::size_t>;
 
 template<typename T>
-vector2<T> operator*(T m_value, const vector2<T>& m_v) noexcept {
-    return vector2<T>(m_v.x * m_value, m_v.y * m_value);
+vector2<T> operator*(T value, const vector2<T>& v) noexcept {
+    return vector2<T>(v.x * value, v.y * value);
 }
 
 template<typename O, typename T>
-O& operator<<(O& m_stream, const vector2<T>& m_v) {
-    return m_stream << m_v.x << ", " << m_v.y;
+O& operator<<(O& stream, const vector2<T>& v) {
+    return stream << v.x << ", " << v.y;
 }
 
 } // namespace lxgui::gui
