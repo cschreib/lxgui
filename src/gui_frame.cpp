@@ -914,12 +914,12 @@ utils::connection frame::define_script_(
     auto result = lua.do_string(str, info.file_name);
 
     if (!result.valid()) {
-        std::string error =
-            hijack_sol_error_message(sol::error{result}.what(), info.file_name, info.line_nbr);
+        std::string err =
+            hijack_sol_error_message(sol::error(result).what(), info.file_name, info.line_nbr);
 
-        gui::out << gui::error << error << std::endl;
+        gui::out << gui::error << err << std::endl;
 
-        get_manager().get_event_emitter().fire_event("LUA_ERROR", {error});
+        get_manager().get_event_emitter().fire_event("LUA_ERROR", {err});
         return {};
     }
 
@@ -962,10 +962,8 @@ utils::connection frame::define_script_(
 
         // Handle errors
         if (!result.valid()) {
-            std::string error =
-                hijack_sol_error_message(sol::error{result}.what(), info.file_name, info.line_nbr);
-
-            throw gui::exception(error);
+            throw gui::exception(
+                hijack_sol_error_message(sol::error(result).what(), info.file_name, info.line_nbr));
         }
     };
 
@@ -1059,10 +1057,10 @@ void frame::fire_script(const std::string& script_name, const event_data& data) 
     try {
         // Call the handlers
         iter_h->second(*this, data);
-    } catch (const std::exception& exception) {
-        std::string error = exception.what();
-        gui::out << gui::error << error << std::endl;
-        event_emitter.fire_event("LUA_ERROR", {error});
+    } catch (const std::exception& e) {
+        std::string err = e.what();
+        gui::out << gui::error << err << std::endl;
+        event_emitter.fire_event("LUA_ERROR", {er});
     }
 
     addon_registry.set_current_addon(p_old_addon);

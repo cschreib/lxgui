@@ -152,7 +152,7 @@ void set_node(
     if (yaml_node.has_key())
         node.set_name(normalize_node_name(to_string(yaml_node.key()), true));
 
-    for (const auto& elem_node : yaml_node.children()) {
+    for (auto elem_node : yaml_node.children()) {
         switch (elem_node.type()) {
         case ryml::KEYVAL: {
             std::string name = normalize_node_name(to_string(elem_node.key()), false);

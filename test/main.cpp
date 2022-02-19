@@ -278,7 +278,7 @@ int main(int argc, char* argv[]) {
         }
 
         std::uint32_t flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (fullScreen)
+        if (full_screen)
             flags |= SDL_WINDOW_FULLSCREEN;
 
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window(

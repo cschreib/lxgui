@@ -28,7 +28,7 @@ public:
     explicit virtual_root(manager& mgr, registry& non_virtual_registry);
 
     /// Destructor.
-    ~virtual_root();
+    ~virtual_root() override;
 
     virtual_root(const virtual_root&) = delete;
     virtual_root(virtual_root&&)      = delete;

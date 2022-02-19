@@ -1,3 +1,4 @@
+
 #include "lxgui/gui_keybinder.hpp"
 
 #include "lxgui/gui_event.hpp"
@@ -19,7 +20,7 @@ keybinder::register_key_binding(std::string_view name, sol::protected_function l
 
         // Handle errors
         if (!result.valid()) {
-            throw gui::exception(sol::error{result}.what());
+            throw gui::exception(sol::error(result).what());
         }
     };
 
