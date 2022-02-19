@@ -31,14 +31,14 @@ public:
             return;
 
         std::string line;
-        std::size_t ui_prev_pos = 0u;
+        std::size_t prev_pos = 0u;
         while (std::getline(stream, line)) {
             file_content_ += '\n' + line;
-            line_offsets_.push_back(ui_prev_pos);
-            ui_prev_pos += line.size() + 1u;
+            line_offsets_.push_back(prev_pos);
+            prev_pos += line.size() + 1u;
         }
 
-        line_offsets_.push_back(ui_prev_pos);
+        line_offsets_.push_back(prev_pos);
 
         is_open_ = true;
     }
@@ -51,19 +51,19 @@ public:
         return file_content_;
     }
 
-    std::pair<std::size_t, std::size_t> get_line_info(std::size_t ui_offset) const {
-        auto iter = std::lower_bound(line_offsets_.begin(), line_offsets_.end(), ui_offset);
+    std::pair<std::size_t, std::size_t> get_line_info(std::size_t offset) const {
+        auto iter = std::lower_bound(line_offsets_.begin(), line_offsets_.end(), offset);
         if (iter == line_offsets_.end())
             return std::make_pair(0, 0);
 
-        std::size_t ui_line_nbr = iter - line_offsets_.begin();
-        std::size_t char_offset = ui_offset - *iter + 1u;
+        std::size_t line_nbr    = iter - line_offsets_.begin();
+        std::size_t char_offset = offset - *iter + 1u;
 
-        return std::make_pair(ui_line_nbr, char_offset);
+        return std::make_pair(line_nbr, char_offset);
     }
 
-    std::string get_location(std::size_t ui_offset) const {
-        auto location = get_line_info(ui_offset);
+    std::string get_location(std::size_t offset) const {
+        auto location = get_line_info(offset);
         if (location.first == 0)
             return file_name_ + ":?";
         else
@@ -208,11 +208,11 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
     if (extension == ".xml") {
-        const unsigned int ui_options = pugi::parse_ws_pcdata_single;
+        const unsigned int options = pugi::parse_ws_pcdata_single;
 
         pugi::xml_document     doc;
         pugi::xml_parse_result result =
-            doc.load_buffer(file.get_content().c_str(), file.get_content().size(), ui_options);
+            doc.load_buffer(file.get_content().c_str(), file.get_content().size(), options);
 
         if (!result) {
             gui::out << gui::error << file.get_location(result.offset) << ": "
@@ -247,11 +247,9 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
             try {
                 lua_.do_file(script_file);
             } catch (const sol::error& e) {
-                std::string error = e.what();
-
-                gui::out << gui::error << error << std::endl;
-
-                event_emitter_.fire_event("LUA_ERROR", {error});
+                std::string err = e.what();
+                gui::out << gui::error << err << std::endl;
+                event_emitter_.fire_event("LUA_ERROR", {err});
             }
         } else if (node.get_name() == "Include") {
             parse_layout_file_(

@@ -61,7 +61,7 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                     format format;
                     format.action = color_action::set;
 
-                    auto read_two = [&](float& out) {
+                    auto read_two = [&](float& out_value) {
                         ++iter_char;
                         if (iter_char == caption.end())
                             return false;
@@ -71,7 +71,7 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                         if (iter_char == caption.end())
                             return false;
                         color_part[1] = *iter_char;
-                        out = utils::hex_to_uint(utils::unicode_to_utf8(color_part)) / 255.0f;
+                        out_value = utils::hex_to_uint(utils::unicode_to_utf8(color_part)) / 255.0f;
                         return true;
                     };
 
@@ -88,13 +88,13 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                 } else if (*iter_char == U'T') {
                     ++iter_char;
 
-                    const auto ui_begin = iter_char - caption.begin();
-                    const auto ui_pos   = caption.find(U"|t", ui_begin);
-                    if (ui_pos == caption.npos)
+                    const auto begin = iter_char - caption.begin();
+                    const auto pos   = caption.find(U"|t", begin);
+                    if (pos == caption.npos)
                         break;
 
                     const std::string extracted =
-                        utils::unicode_to_utf8(caption.substr(ui_begin, ui_pos - ui_begin));
+                        utils::unicode_to_utf8(caption.substr(begin, pos - begin));
 
                     const auto words = utils::cut(extracted, ":");
                     if (!words.empty()) {
@@ -183,7 +183,7 @@ float get_width(const text& text, const item& i) {
         i);
 }
 
-float get_kerning(const text& mText, const item& i1, const item& i2) {
+float get_kerning(const text& txt, const item& i1, const item& i2) {
     return std::visit(
         [&](const auto& value1) {
             using type1 = std::decay_t<decltype(value1)>;
@@ -192,7 +192,7 @@ float get_kerning(const text& mText, const item& i1, const item& i2) {
                     [&](const auto& value2) {
                         using type2 = std::decay_t<decltype(value2)>;
                         if constexpr (std::is_same_v<type2, char32_t>) {
-                            return mText.get_character_kerning(value1, value2);
+                            return txt.get_character_kerning(value1, value2);
                         } else {
                             return 0.0f;
                         }
@@ -205,13 +205,13 @@ float get_kerning(const text& mText, const item& i1, const item& i2) {
         i1);
 }
 
-float get_tracking(const text& text, const item& i) {
+float get_tracking(const text& txt, const item& i) {
     return std::visit(
         [&](const auto& value) {
             using type = std::decay_t<decltype(value)>;
             if constexpr (std::is_same_v<type, char32_t>) {
                 if (value != U'\n')
-                    return text.get_tracking();
+                    return txt.get_tracking();
                 else
                     return 0.0f;
             } else {
@@ -222,10 +222,10 @@ float get_tracking(const text& text, const item& i) {
 }
 
 std::pair<float, float> get_advance(
-    const text&                       text,
+    const text&                       txt,
     std::vector<item>::const_iterator iter_char,
     std::vector<item>::const_iterator iter_begin) {
-    float advance = parser::get_width(text, *iter_char);
+    float advance = parser::get_width(txt, *iter_char);
     float kerning = 0.0f;
 
     auto iter_prev = iter_char;
@@ -234,10 +234,10 @@ std::pair<float, float> get_advance(
         if (parser::is_format(*iter_prev))
             continue;
 
-        kerning = parser::get_tracking(text, *iter_char);
+        kerning = parser::get_tracking(txt, *iter_char);
 
         if (!parser::is_whitespace(*iter_char) && !parser::is_whitespace(*iter_prev))
-            kerning += parser::get_kerning(text, *iter_prev, *iter_char);
+            kerning += parser::get_kerning(txt, *iter_prev, *iter_char);
 
         break;
     }
@@ -246,14 +246,14 @@ std::pair<float, float> get_advance(
 }
 
 float get_full_advance(
-    const text&                       text,
+    const text&                       txt,
     std::vector<item>::const_iterator iter_char,
     std::vector<item>::const_iterator iter_begin) {
-    const auto advance = get_advance(text, iter_char, iter_begin);
+    const auto advance = get_advance(txt, iter_char, iter_begin);
     return advance.first + advance.second;
 }
 
-float get_string_width(const text& text, const std::vector<item>& content) {
+float get_string_width(const text& txt, const std::vector<item>& content) {
     float width     = 0.0f;
     float max_width = 0.0f;
 
@@ -264,7 +264,7 @@ float get_string_width(const text& text, const std::vector<item>& content) {
 
             width = 0.0f;
         } else {
-            width += parser::get_full_advance(text, iter_char, content.begin());
+            width += parser::get_full_advance(txt, iter_char, content.begin());
         }
     }
 
@@ -406,7 +406,7 @@ float text::get_text_height() const {
 
 std::size_t text::get_num_lines() const {
     update_();
-    return ui_num_lines_;
+    return num_lines_;
 }
 
 float text::get_string_width(const std::string& content) const {
@@ -591,19 +591,19 @@ void text::update_() const {
     std::vector<parser::line> line_list;
 
     DEBUG_LOG("     Get max line nbr");
-    std::size_t ui_max_line_nbr = 0;
+    std::size_t max_line_nbr = 0;
     if (box_height_ != 0.0f && !std::isinf(box_height_)) {
         if (box_height_ < get_line_height()) {
-            ui_max_line_nbr = 0;
+            max_line_nbr = 0;
         } else {
             float remaining = box_height_ - get_line_height();
-            ui_max_line_nbr = 1 + static_cast<std::size_t>(
-                                      std::floor(remaining / (get_line_height() * line_spacing_)));
+            max_line_nbr    = 1 + static_cast<std::size_t>(
+                                   std::floor(remaining / (get_line_height() * line_spacing_)));
         }
     } else
-        ui_max_line_nbr = std::numeric_limits<std::size_t>::max();
+        max_line_nbr = std::numeric_limits<std::size_t>::max();
 
-    if (ui_max_line_nbr != 0) {
+    if (max_line_nbr != 0) {
         auto manual_line_list = utils::cut_each(unicode_text_, U"\n");
         for (auto iter_manual : utils::range::iterator(manual_line_list)) {
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
@@ -628,8 +628,8 @@ void text::update_() const {
 
                 if (round_to_pixel_(line.width - box_width_) > 0) {
                     DEBUG_LOG(
-                        "      Box break " + utils::to_string(mLine.width) + " > " +
-                        utils::to_string(fBoxW_));
+                        "      Box break " + utils::to_string(line.width) + " > " +
+                        utils::to_string(box_width_));
 
                     // Whoops, the line is too long...
                     auto iter_space = std::find_if(
@@ -707,8 +707,8 @@ void text::update_() const {
                             }
 
                             DEBUG_LOG(
-                                "       Char to erase : " + utils::to_string(cToErase) + " / " +
-                                utils::to_string(mLine.lContent.size()));
+                                "       Char to erase : " + utils::to_string(chars_to_erase) +
+                                " / " + utils::to_string(line.content.size()));
 
                             line.content.erase(
                                 line.content.end() - chars_to_erase, line.content.end());
@@ -787,12 +787,12 @@ void text::update_() const {
             lines.push_back(line);
 
             // Add the maximum number of line to this text
-            for (auto& line : lines) {
-                line_list.push_back(std::move(line));
-                if (line_list.size() == ui_max_line_nbr) {
+            for (auto& l : lines) {
+                if (line_list.size() == max_line_nbr) {
                     done = true;
                     break;
                 }
+                line_list.push_back(std::move(l));
             }
 
             if (done)
@@ -801,7 +801,7 @@ void text::update_() const {
         }
     }
 
-    ui_num_lines_ = line_list.size();
+    num_lines_ = line_list.size();
 
     quad_list_.clear();
     outline_quad_list_.clear();
@@ -818,7 +818,7 @@ void text::update_() const {
         height_ =
             (1.0f + static_cast<float>(line_list.size() - 1) * line_spacing_) * get_line_height();
 
-        float fY = 0.0f;
+        float y  = 0.0f;
         float x0 = 0.0f;
 
         if (box_width_ != 0.0f && !std::isinf(box_width_)) {
@@ -832,37 +832,37 @@ void text::update_() const {
 
         if (!std::isinf(box_height_)) {
             switch (align_y_) {
-            case alignment_y::top: fY = 0.0f; break;
-            case alignment_y::middle: fY = (box_height_ - height_) * 0.5f; break;
-            case alignment_y::bottom: fY = (box_height_ - height_); break;
+            case alignment_y::top: y = 0.0f; break;
+            case alignment_y::middle: y = (box_height_ - height_) * 0.5f; break;
+            case alignment_y::bottom: y = (box_height_ - height_); break;
             }
         } else {
             switch (align_y_) {
-            case alignment_y::top: fY = 0.0f; break;
-            case alignment_y::middle: fY = -height_ * 0.5f; break;
-            case alignment_y::bottom: fY = -height_; break;
+            case alignment_y::top: y = 0.0f; break;
+            case alignment_y::middle: y = -height_ * 0.5f; break;
+            case alignment_y::bottom: y = -height_; break;
             }
         }
 
         x0 = round_to_pixel_(x0);
-        fY = round_to_pixel_(fY);
+        y  = round_to_pixel_(y);
 
         std::vector<color> color_stack;
 
         for (const auto& line : line_list) {
-            float fX = 0.0f;
+            float x = 0.0f;
             switch (align_x_) {
-            case alignment_x::left: fX = 0.0f; break;
-            case alignment_x::center: fX = -line.width * 0.5f; break;
-            case alignment_x::right: fX = -line.width; break;
+            case alignment_x::left: x = 0.0f; break;
+            case alignment_x::center: x = -line.width * 0.5f; break;
+            case alignment_x::right: x = -line.width; break;
             }
 
-            fX = round_to_pixel_(fX) + x0;
+            x = round_to_pixel_(x) + x0;
 
             for (auto iter_char : utils::range::iterator(line.content)) {
                 const auto advance = parser::get_advance(*this, iter_char, line.content.begin());
 
-                fX += advance.first;
+                x += advance.first;
 
                 std::visit(
                     [&](const auto& value) {
@@ -900,7 +900,7 @@ void text::update_() const {
                             }
 
                             for (std::size_t i = 0; i < 4; ++i) {
-                                icon.v[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                                icon.v[i].pos += vector2f(round_to_pixel_(x), round_to_pixel_(y));
                             }
 
                             icons_list_.push_back(icon);
@@ -910,7 +910,7 @@ void text::update_() const {
                                     create_outline_letter_quad_(value);
                                 for (std::size_t i = 0; i < 4; ++i) {
                                     vertex_list[i].pos +=
-                                        vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                                        vector2f(round_to_pixel_(x), round_to_pixel_(y));
                                     vertex_list[i].col = color::black;
                                 }
 
@@ -920,7 +920,7 @@ void text::update_() const {
                             std::array<vertex, 4> vertex_list = create_letter_quad_(value);
                             for (std::size_t i = 0; i < 4; ++i) {
                                 vertex_list[i].pos +=
-                                    vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                                    vector2f(round_to_pixel_(x), round_to_pixel_(y));
                                 vertex_list[i].col =
                                     color_stack.empty() ? color::empty : color_stack.back();
                             }
@@ -930,10 +930,10 @@ void text::update_() const {
                     },
                     *iter_char);
 
-                fX += advance.second;
+                x += advance.second;
             }
 
-            fY += get_line_height() * line_spacing_;
+            y += get_line_height() * line_spacing_;
         }
     } else {
         width_  = 0.0f;
@@ -1005,13 +1005,13 @@ std::size_t text::get_num_letters() const {
     return quad_list_.size();
 }
 
-const std::array<vertex, 4>& text::get_letter_quad(std::size_t ui_index) const {
+const std::array<vertex, 4>& text::get_letter_quad(std::size_t index) const {
     update_();
 
-    if (ui_index >= quad_list_.size())
+    if (index >= quad_list_.size())
         throw gui::exception("text", "Trying to access letter at invalid index.");
 
-    return quad_list_[ui_index];
+    return quad_list_[index];
 }
 
 } // namespace lxgui::gui

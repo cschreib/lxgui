@@ -34,41 +34,41 @@ public:
     }
 
     /// Returns a parameter of this event.
-    /** \param uiIndex The index of the parameter (see get_num_param())
+    /** \param index The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
-    const utils::variant& get(std::size_t ui_index) const {
-        if (ui_index >= arg_list_.size())
+    const utils::variant& get(std::size_t index) const {
+        if (index >= arg_list_.size())
             throw gui::exception("event_data", "index past size of data");
-        return arg_list_[ui_index];
+        return arg_list_[index];
     }
 
     /// Returns a parameter of this event.
-    /** \param uiIndex The index of the parameter (see get_num_param())
+    /** \param index The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
-    utils::variant& get(std::size_t ui_index) {
-        if (ui_index >= arg_list_.size())
+    utils::variant& get(std::size_t index) {
+        if (index >= arg_list_.size())
             throw gui::exception("event_data", "index past size of data");
-        return arg_list_[ui_index];
+        return arg_list_[index];
     }
 
     /// Returns a parameter of this event.
-    /** \param uiIndex The index of the parameter (see get_num_param())
+    /** \param index The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
     template<typename T>
-    const T& get(std::size_t ui_index) const {
-        return utils::get<T>(this->get(ui_index));
+    const T& get(std::size_t index) const {
+        return utils::get<T>(this->get(index));
     }
 
     /// Returns a parameter of this event.
-    /** \param uiIndex The index of the parameter (see get_num_param())
+    /** \param index The index of the parameter (see get_num_param())
      *   \return A parameter of this event
      */
     template<typename T>
-    T& get(std::size_t ui_index) {
-        return utils::get<T>(this->get(ui_index));
+    T& get(std::size_t index) {
+        return utils::get<T>(this->get(index));
     }
 
     /// Returns the number of parameters.

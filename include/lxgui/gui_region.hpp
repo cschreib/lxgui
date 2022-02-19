@@ -478,7 +478,7 @@ public:
 
     /// Round an absolute position on screen to the nearest physical pixel.
     /** \param value The input absolute position (can be fractional)
-     *   \param mMethod   The rounding method
+     *   \param method   The rounding method
      *   \return The position of the nearest physical pixel
      */
     float round_to_pixel(
@@ -708,7 +708,7 @@ protected:
     std::string name_;
     std::string raw_name_;
     std::string lua_name_;
-    std::size_t ui_id_ = std::numeric_limits<std::size_t>::max();
+    std::size_t id_ = std::numeric_limits<std::size_t>::max();
 
     utils::observer_ptr<frame> p_parent_ = nullptr;
 

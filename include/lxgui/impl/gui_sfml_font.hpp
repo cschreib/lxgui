@@ -18,17 +18,17 @@ class font final : public gui::font {
 public:
     /// Constructor.
     /** \param font_file   The name of the font file to read
-     *   \param uiSize      The requested size of the characters (in points)
-     *   \param uiOutline   The thickness of the outline (in points)
+     *   \param size      The requested size of the characters (in points)
+     *   \param outline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      */
     font(
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point);
+        char32_t                             default_code_point);
 
     /// Get the size of the font in pixels.
     /** \return The size of the font in pixels
@@ -86,9 +86,9 @@ private:
     char32_t get_character_(char32_t c) const;
 
     sf::Font    font_;
-    std::size_t ui_size_               = 0u;
-    std::size_t ui_outline_            = 0u;
-    char32_t    ui_default_code_point_ = 0u;
+    std::size_t size_               = 0u;
+    std::size_t outline_            = 0u;
+    char32_t    default_code_point_ = 0u;
 
     std::shared_ptr<sfml::material> p_texture_;
     std::vector<code_point_range>   code_points_;

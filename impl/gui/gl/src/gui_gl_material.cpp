@@ -35,8 +35,8 @@ namespace lxgui::gui::gl {
 bool        material::only_power_of_two = true;
 std::size_t material::maximum_size      = 128;
 
-std::size_t next_pot(std::size_t ui_size) {
-    return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(ui_size))));
+std::size_t next_pot(std::size_t size) {
+    return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(size))));
 }
 
 material::material(const vector2ui& dimensions, wrap wrp, filter filt) :
@@ -56,9 +56,9 @@ material::material(const vector2ui& dimensions, wrap wrp, filter filt) :
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
-    glGenTextures(1, &ui_texture_handle_);
+    glGenTextures(1, &texture_handle_);
 
-    glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+    glBindTexture(GL_TEXTURE_2D, texture_handle_);
     glTexImage2D(
         GL_TEXTURE_2D, 0, GL_RGBA8, canvas_dimensions_.x, canvas_dimensions_.y, 0, GL_RGBA,
         GL_UNSIGNED_BYTE, nullptr);
@@ -93,20 +93,20 @@ material::material(const vector2ui& dimensions, wrap wrp, filter filt) :
 }
 
 material::material(
-    std::uint32_t    ui_texture_handle,
+    std::uint32_t    texture_handle,
     const vector2ui& canvas_dimensions,
     const bounds2f   rect,
     filter           filt) :
     gui::material(true),
     canvas_dimensions_(canvas_dimensions),
     filter_(filt),
-    ui_texture_handle_(ui_texture_handle),
+    texture_handle_(texture_handle),
     rect_(rect),
     is_owner_(false) {}
 
 material::~material() {
     if (is_owner_)
-        glDeleteTextures(1, &ui_texture_handle_);
+        glDeleteTextures(1, &texture_handle_);
 }
 
 void material::set_wrap(wrap wrp) {
@@ -117,7 +117,7 @@ void material::set_wrap(wrap wrp) {
 
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
-    glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+    glBindTexture(GL_TEXTURE_2D, texture_handle_);
 
     switch (wrp) {
     case wrap::clamp:
@@ -142,7 +142,7 @@ void material::set_filter(filter filt) {
 
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
-    glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+    glBindTexture(GL_TEXTURE_2D, texture_handle_);
 
     switch (filt) {
     case filter::linear:
@@ -164,7 +164,7 @@ material::filter material::get_filter() const {
 }
 
 void material::bind() const {
-    glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+    glBindTexture(GL_TEXTURE_2D, texture_handle_);
 }
 
 void material::premultiply_alpha(std::vector<ub32color>& data) {
@@ -185,7 +185,7 @@ vector2ui material::get_canvas_dimensions() const {
 }
 
 bool material::uses_same_texture(const gui::material& other) const {
-    return ui_texture_handle_ == static_cast<const gl::material&>(other).ui_texture_handle_;
+    return texture_handle_ == static_cast<const gl::material&>(other).texture_handle_;
 }
 
 bool material::set_dimensions(const vector2ui& dimensions) {
@@ -208,7 +208,7 @@ bool material::set_dimensions(const vector2ui& dimensions) {
         GLint previous_id;
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
-        glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+        glBindTexture(GL_TEXTURE_2D, texture_handle_);
         glTexImage2D(
             GL_TEXTURE_2D, 0, GL_RGBA8, canvas_dimensions.x, canvas_dimensions.y, 0, GL_RGBA,
             GL_UNSIGNED_BYTE, nullptr);
@@ -250,7 +250,7 @@ void material::update_texture(const ub32color* p_data) {
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
-    glBindTexture(GL_TEXTURE_2D, ui_texture_handle_);
+    glBindTexture(GL_TEXTURE_2D, texture_handle_);
     glTexSubImage2D(
         GL_TEXTURE_2D, 0, rect_.left, rect_.top, rect_.width(), rect_.height(), GL_RGBA,
         GL_UNSIGNED_BYTE, p_data);
@@ -259,7 +259,7 @@ void material::update_texture(const ub32color* p_data) {
 }
 
 std::uint32_t material::get_handle() const {
-    return ui_texture_handle_;
+    return texture_handle_;
 }
 
 void material::check_availability() {

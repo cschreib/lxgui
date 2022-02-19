@@ -9,70 +9,70 @@
 namespace lxgui::utils {
 
 string_view trim(string_view s, char c_pattern) {
-    std::size_t ui_start = s.find_first_not_of(c_pattern);
-    if (ui_start == s.npos)
+    std::size_t start = s.find_first_not_of(c_pattern);
+    if (start == s.npos)
         return {};
 
-    s = s.substr(ui_start);
+    s = s.substr(start);
 
-    std::size_t ui_end = s.find_last_not_of(c_pattern);
-    if (ui_end != s.npos)
-        s = s.substr(0, ui_end + 1);
+    std::size_t end = s.find_last_not_of(c_pattern);
+    if (end != s.npos)
+        s = s.substr(0, end + 1);
 
     return s;
 }
 
 string_view trim(string_view s, string_view patterns) {
-    std::size_t ui_start = s.find_first_not_of(patterns);
-    if (ui_start == s.npos)
+    std::size_t start = s.find_first_not_of(patterns);
+    if (start == s.npos)
         return {};
 
-    s = s.substr(ui_start);
+    s = s.substr(start);
 
-    std::size_t ui_end = s.find_last_not_of(patterns);
-    if (ui_end != s.npos)
-        s = s.substr(0, ui_end + 1);
+    std::size_t end = s.find_last_not_of(patterns);
+    if (end != s.npos)
+        s = s.substr(0, end + 1);
 
     return s;
 }
 
 void replace(string& s, string_view pattern, string_view replacement) {
-    std::size_t ui_pos = s.find(pattern);
+    std::size_t pos = s.find(pattern);
 
-    while (ui_pos != s.npos) {
-        s.replace(ui_pos, pattern.length(), replacement);
-        ui_pos = s.find(pattern, ui_pos + replacement.length());
+    while (pos != s.npos) {
+        s.replace(pos, pattern.length(), replacement);
+        pos = s.find(pattern, pos + replacement.length());
     }
 }
 
 std::size_t count_occurrences(string_view s, string_view pattern) {
-    std::size_t ui_count = 0;
-    std::size_t ui_pos   = s.find(pattern);
-    while (ui_pos != s.npos) {
-        ++ui_count;
-        ui_pos = s.find(pattern, ui_pos + 1);
+    std::size_t count = 0;
+    std::size_t pos   = s.find(pattern);
+    while (pos != s.npos) {
+        ++count;
+        pos = s.find(pattern, pos + 1);
     }
 
-    return ui_count;
+    return count;
 }
 
 template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_template(std::basic_string_view<T> s, std::basic_string_view<T> delim) {
     std::vector<std::basic_string_view<T>> pieces;
-    std::size_t                            ui_pos      = s.find(delim);
-    std::size_t                            ui_last_pos = 0u;
-    std::size_t                            ui_cur_size = 0u;
+    std::size_t                            pos      = s.find(delim);
+    std::size_t                            last_pos = 0u;
+    std::size_t                            cur_size = 0u;
 
-    while (ui_pos != std::basic_string_view<T>::npos) {
-        ui_cur_size = ui_pos - ui_last_pos;
-        if (ui_cur_size != 0)
-            pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
-        ui_last_pos = ui_pos + delim.size();
-        ui_pos      = s.find(delim, ui_last_pos);
+    while (pos != std::basic_string_view<T>::npos) {
+        cur_size = pos - last_pos;
+        if (cur_size != 0)
+            pieces.push_back(s.substr(last_pos, cur_size));
+        last_pos = pos + delim.size();
+        pos      = s.find(delim, last_pos);
     }
 
-    pieces.push_back(s.substr(ui_last_pos));
+    pieces.push_back(s.substr(last_pos));
 
     return pieces;
 }
@@ -89,18 +89,18 @@ template<typename T>
 std::vector<std::basic_string_view<T>>
 cut_each_template(std::basic_string_view<T> s, std::basic_string_view<T> delim) {
     std::vector<std::basic_string_view<T>> pieces;
-    std::size_t                            ui_pos      = s.find(delim);
-    std::size_t                            ui_last_pos = 0u;
-    std::size_t                            ui_cur_size = 0u;
+    std::size_t                            pos      = s.find(delim);
+    std::size_t                            last_pos = 0u;
+    std::size_t                            cur_size = 0u;
 
-    while (ui_pos != std::basic_string_view<T>::npos) {
-        ui_cur_size = ui_pos - ui_last_pos;
-        pieces.push_back(s.substr(ui_last_pos, ui_cur_size));
-        ui_last_pos = ui_pos + delim.size();
-        ui_pos      = s.find(delim, ui_last_pos);
+    while (pos != std::basic_string_view<T>::npos) {
+        cur_size = pos - last_pos;
+        pieces.push_back(s.substr(last_pos, cur_size));
+        last_pos = pos + delim.size();
+        pos      = s.find(delim, last_pos);
     }
 
-    pieces.push_back(s.substr(ui_last_pos));
+    pieces.push_back(s.substr(last_pos));
 
     return pieces;
 }
@@ -116,11 +116,11 @@ std::vector<ustring_view> cut_each(ustring_view s, ustring_view delim) {
 template<typename T>
 std::pair<std::basic_string_view<T>, std::basic_string_view<T>>
 cut_first_template(std::basic_string_view<T> s, std::basic_string_view<T> delim) {
-    std::size_t ui_pos = s.find(delim);
-    if (ui_pos == std::basic_string_view<T>::npos)
+    std::size_t pos = s.find(delim);
+    if (pos == std::basic_string_view<T>::npos)
         return {};
 
-    return {s.substr(0, ui_pos), s.substr(ui_pos + 1u)};
+    return {s.substr(0, pos), s.substr(pos + 1u)};
 }
 
 std::pair<string_view, string_view> cut_first(string_view s, string_view delim) {

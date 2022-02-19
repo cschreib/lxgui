@@ -14,9 +14,9 @@ namespace lxgui::gui::gl {
     throw gui::exception("gui::gl::manager", message);
 }
 
-void read_data(png_structp p_read_struct, png_bytep p_data, png_size_t ui_length) {
+void read_data(png_structp p_read_struct, png_bytep p_data, png_size_t length) {
     png_voidp p = png_get_io_ptr(p_read_struct);
-    static_cast<std::ifstream*>(p)->read(reinterpret_cast<char*>(p_data), ui_length);
+    static_cast<std::ifstream*>(p)->read(reinterpret_cast<char*>(p_data), length);
 }
 
 std::shared_ptr<gui::material>
@@ -53,34 +53,34 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
         png_set_sig_bytes(p_read_struct, pngsigsize);
         png_read_info(p_read_struct, p_info_struct);
 
-        png_uint_32 ui_depth = png_get_bit_depth(p_read_struct, p_info_struct);
+        png_uint_32 depth = png_get_bit_depth(p_read_struct, p_info_struct);
 
-        if (ui_depth != 8)
+        if (depth != 8)
             throw gui::exception(
                 "gui::gl::manager", "only 8 bit color chanels are supported for PNG images.");
 
-        png_uint_32 ui_channels = png_get_channels(p_read_struct, p_info_struct);
+        png_uint_32 channels = png_get_channels(p_read_struct, p_info_struct);
 
-        if (ui_channels != 4 && ui_channels != 3)
+        if (channels != 4 && channels != 3)
             throw gui::exception(
                 "gui::gl::manager", "only RGB or RGBA is supported for PNG images.");
 
-        png_uint_32 ui_color_type = png_get_color_type(p_read_struct, p_info_struct);
+        png_uint_32 color_type = png_get_color_type(p_read_struct, p_info_struct);
 
-        if (ui_color_type == PNG_COLOR_TYPE_RGB) {
+        if (color_type == PNG_COLOR_TYPE_RGB) {
             png_set_filler(p_read_struct, 0xff, PNG_FILLER_AFTER);
-        } else if (ui_color_type != PNG_COLOR_TYPE_RGBA)
+        } else if (color_type != PNG_COLOR_TYPE_RGBA)
             throw gui::exception(
                 "gui::gl::manager", "only RGB or RGBA is supported for PNG images.");
 
-        std::size_t ui_width  = png_get_image_width(p_read_struct, p_info_struct);
-        std::size_t ui_height = png_get_image_height(p_read_struct, p_info_struct);
+        std::size_t width  = png_get_image_width(p_read_struct, p_info_struct);
+        std::size_t height = png_get_image_height(p_read_struct, p_info_struct);
 
-        std::vector<ub32color> data(ui_width * ui_height);
-        std::vector<png_bytep> rows(ui_height);
+        std::vector<ub32color> data(width * height);
+        std::vector<png_bytep> rows(height);
 
-        for (std::size_t i = 0; i < ui_height; ++i)
-            rows[i] = reinterpret_cast<png_bytep>(data.data() + i * ui_width);
+        for (std::size_t i = 0; i < height; ++i)
+            rows[i] = reinterpret_cast<png_bytep>(data.data() + i * width);
 
         png_read_image(p_read_struct, rows.data());
 
@@ -89,7 +89,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
         material::premultiply_alpha(data);
 
         std::shared_ptr<material> p_tex = std::make_shared<gui::gl::material>(
-            vector2ui(ui_width, ui_height), material::wrap::repeat, filt);
+            vector2ui(width, height), material::wrap::repeat, filt);
 
         p_tex->update_texture(data.data());
 

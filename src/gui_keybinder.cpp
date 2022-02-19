@@ -19,8 +19,7 @@ keybinder::register_key_binding(std::string_view name, sol::protected_function l
 
         // Handle errors
         if (!result.valid()) {
-            sol::error error = result;
-            throw gui::exception(error.what());
+            throw gui::exception(sol::error{result}.what());
         }
     };
 
@@ -101,10 +100,11 @@ void keybinder::remove_key_binding(std::string_view name) {
 }
 
 keybinder::key_binding* keybinder::find_binding_(
-    input::key key_id, bool shift_is_pressed, bool bCtrlIsPressed, bool bAltIsPressed) {
+    input::key key_id, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed) {
     auto iter = utils::find_if(key_bindings_, [&](const auto& binding) {
         return binding.key_id == key_id && binding.shift_is_pressed == shift_is_pressed &&
-               binding.ctrl_is_pressed == bCtrlIsPressed && binding.alt_is_pressed == bAltIsPressed;
+               binding.ctrl_is_pressed == ctrl_is_pressed &&
+               binding.alt_is_pressed == alt_is_pressed;
     });
 
     if (iter == key_bindings_.end())

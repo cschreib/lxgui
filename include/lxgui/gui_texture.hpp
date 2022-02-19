@@ -97,13 +97,13 @@ public:
     const std::string& get_texture_file() const;
 
     /// Returns this textures's vertex color.
-    /** \param uiIndex The vertex index (0 to 3 included)
+    /** \param index The vertex index (0 to 3 included)
      *   \return This textures's vertex color
      *   \note This color is used to filter the texture's colors :
      *         for each pixel, the original color is multiplied
      *         by this vertex color.
      */
-    color get_vertex_color(std::size_t ui_index) const;
+    color get_vertex_color(std::size_t index) const;
 
     /// Checks if this texture is desaturated.
     /** \return 'true' if the texture is desaturated
@@ -201,13 +201,13 @@ public:
 
     /// Sets this texture's vertex color.
     /** \param c This textures's new vertex color
-     *   \param uiIndex The vertex index (-1: all vertices)
+     *   \param index The vertex index (-1: all vertices)
      *   \note This color is used to filter the texture's colors:
      *         for each pixel, the original color is multiplied
      *         by this vertex color.
      */
-    void set_vertex_color(
-        const color& c, std::size_t ui_index = std::numeric_limits<std::size_t>::max());
+    void
+    set_vertex_color(const color& c, std::size_t index = std::numeric_limits<std::size_t>::max());
 
     /// Creates the associated Lua glue.
     void create_glue() override;

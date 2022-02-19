@@ -116,19 +116,19 @@ protected:
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
-     *   \param uiSize      The requested size of the characters (in points)
-     *   \param uiOutline   The thickness of the outline (in points)
+     *   \param size      The requested size of the characters (in points)
+     *   \param outline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      *   \note This implementation uses FreeType to load vector fonts and rasterize them.
      *         Bitmap fonts are not yet supported.
      */
     std::shared_ptr<gui::font> create_font_(
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point) override;
+        char32_t                             default_code_point) override;
 
     /// Begins rendering on a particular render target.
     /** \param pTarget The render target (main screen if nullptr)

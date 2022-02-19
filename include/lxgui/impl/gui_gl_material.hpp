@@ -26,13 +26,13 @@ public:
     material(const vector2ui& dimensions, wrap wrp = wrap::repeat, filter filt = filter::none);
 
     /// Constructor for atlas textures.
-    /** \param uiTextureHandle   The handle to the texture object of the atlas
+    /** \param texture_handle   The handle to the texture object of the atlas
      *   \param canvas_dimensions The dimensions of the texture atlas
      *   \param rect             The position of this texture inside the atlas
      *   \param filt           Use texture filtering or not (see set_filter())
      */
     material(
-        std::uint32_t    ui_texture_handle,
+        std::uint32_t    texture_handle,
         const vector2ui& canvas_dimensions,
         const bounds2f   rect,
         filter           filter = filter::none);
@@ -125,9 +125,9 @@ public:
 
 private:
     vector2ui     canvas_dimensions_;
-    wrap          wrap_              = wrap::repeat;
-    filter        filter_            = filter::none;
-    std::uint32_t ui_texture_handle_ = 0u;
+    wrap          wrap_           = wrap::repeat;
+    filter        filter_         = filter::none;
+    std::uint32_t texture_handle_ = 0u;
     bounds2f      rect_;
     bool          is_owner_ = false;
 

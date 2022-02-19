@@ -170,20 +170,20 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
         update_font_string_();
         update_carret_position_();
     } else if (script_name == "OnDragStart") {
-        ui_selection_end_pos_ = ui_selection_start_pos_ =
+        selection_end_pos_ = selection_start_pos_ =
             get_letter_id_at_(vector2f(data.get<float>(1), data.get<float>(2)));
     } else if (script_name == "OnDragMove") {
-        std::size_t ui_pos = get_letter_id_at_(vector2f(data.get<float>(0), data.get<float>(1)));
-        if (ui_pos != ui_selection_end_pos_) {
-            if (ui_pos != std::numeric_limits<std::size_t>::max()) {
-                highlight_text(ui_selection_start_pos_, ui_pos);
-                iter_carret_pos_ = unicode_text_.begin() + ui_pos;
+        std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(0), data.get<float>(1)));
+        if (pos != selection_end_pos_) {
+            if (pos != std::numeric_limits<std::size_t>::max()) {
+                highlight_text(selection_start_pos_, pos);
+                iter_carret_pos_ = unicode_text_.begin() + pos;
                 update_carret_position_();
             } else {
-                std::size_t ui_temp = ui_selection_start_pos_;
+                std::size_t temp = selection_start_pos_;
                 unlight_text();
-                ui_selection_start_pos_ = ui_temp;
-                iter_carret_pos_        = unicode_text_.begin() + ui_selection_start_pos_;
+                selection_start_pos_ = temp;
+                iter_carret_pos_     = unicode_text_.begin() + selection_start_pos_;
                 update_carret_position_();
             }
         }
@@ -230,50 +230,50 @@ const utils::ustring& edit_box::get_text() const {
 }
 
 void edit_box::unlight_text() {
-    ui_selection_start_pos_ = 0u;
-    ui_selection_end_pos_   = 0u;
-    is_text_selected_       = false;
+    selection_start_pos_ = 0u;
+    selection_end_pos_   = 0u;
+    is_text_selected_    = false;
 
     if (p_highlight_)
         p_highlight_->hide();
 }
 
-void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool force_update) {
+void edit_box::highlight_text(std::size_t start, std::size_t end, bool force_update) {
     if (!p_highlight_)
         create_highlight_();
 
     if (!p_highlight_)
         return;
 
-    std::size_t ui_left  = std::min(ui_start, ui_end);
-    std::size_t ui_right = std::max(ui_start, ui_end);
+    std::size_t left  = std::min(start, end);
+    std::size_t right = std::max(start, end);
 
-    if (ui_selection_start_pos_ != ui_start || ui_selection_end_pos_ != ui_end || force_update) {
-        if (ui_left != ui_right) {
+    if (selection_start_pos_ != start || selection_end_pos_ != end || force_update) {
+        if (left != right) {
             is_text_selected_ = true;
 
-            if (ui_right >= ui_display_pos_ && ui_left < ui_display_pos_ + displayed_text_.size() &&
+            if (right >= display_pos_ && left < display_pos_ + displayed_text_.size() &&
                 p_font_string_ && p_font_string_->get_text_object()) {
                 text* p_text = p_font_string_->get_text_object();
 
-                if (ui_left < ui_display_pos_)
-                    ui_left = 0;
+                if (left < display_pos_)
+                    left = 0;
                 else
-                    ui_left = ui_left - ui_display_pos_;
+                    left = left - display_pos_;
 
                 float left_pos = text_insets_.left;
-                if (ui_left < p_text->get_num_letters())
-                    left_pos += p_text->get_letter_quad(ui_left)[0].pos.x;
+                if (left < p_text->get_num_letters())
+                    left_pos += p_text->get_letter_quad(left)[0].pos.x;
 
-                ui_right        = ui_right - ui_display_pos_;
+                right           = right - display_pos_;
                 float right_pos = text_insets_.left;
-                if (ui_right < displayed_text_.size()) {
-                    if (ui_right < p_text->get_num_letters())
-                        right_pos += p_text->get_letter_quad(ui_right)[0].pos.x;
+                if (right < displayed_text_.size()) {
+                    if (right < p_text->get_num_letters())
+                        right_pos += p_text->get_letter_quad(right)[0].pos.x;
                 } else {
-                    ui_right = displayed_text_.size() - 1;
-                    if (ui_right < p_text->get_num_letters())
-                        right_pos += p_text->get_letter_quad(ui_right)[2].pos.x;
+                    right = displayed_text_.size() - 1;
+                    if (right < p_text->get_num_letters())
+                        right_pos += p_text->get_letter_quad(right)[2].pos.x;
                 }
 
                 p_highlight_->set_point(anchor_point::left, name_, vector2f(left_pos, 0));
@@ -289,8 +289,8 @@ void edit_box::highlight_text(std::size_t ui_start, std::size_t ui_end, bool for
         }
     }
 
-    ui_selection_start_pos_ = ui_start;
-    ui_selection_end_pos_   = ui_end;
+    selection_start_pos_ = start;
+    selection_end_pos_   = end;
 }
 
 void edit_box::set_highlight_color(const color& c) {
@@ -315,7 +315,7 @@ void edit_box::insert_after_cursor(const utils::ustring& content) {
     if (is_numeric_only_ && !utils::is_number(content))
         return;
 
-    if (unicode_text_.size() + content.size() <= ui_max_letters_) {
+    if (unicode_text_.size() + content.size() <= max_letters_) {
         unlight_text();
         unicode_text_.insert(iter_carret_pos_, content.begin(), content.end());
         iter_carret_pos_ += content.size();
@@ -330,39 +330,39 @@ std::size_t edit_box::get_cursor_position() const {
     return iter_carret_pos_ - unicode_text_.begin();
 }
 
-void edit_box::set_cursor_position(std::size_t ui_pos) {
-    if (ui_pos == get_cursor_position())
+void edit_box::set_cursor_position(std::size_t pos) {
+    if (pos == get_cursor_position())
         return;
 
-    iter_carret_pos_ = unicode_text_.begin() + ui_pos;
+    iter_carret_pos_ = unicode_text_.begin() + pos;
     update_carret_position_();
 }
 
-void edit_box::set_max_letters(std::size_t ui_max_letters) {
-    if (ui_max_letters == 0) {
-        ui_max_letters_ = std::numeric_limits<std::size_t>::max();
+void edit_box::set_max_letters(std::size_t max_letters) {
+    if (max_letters == 0) {
+        max_letters_ = std::numeric_limits<std::size_t>::max();
         return;
     }
 
-    if (ui_max_letters_ != ui_max_letters) {
-        ui_max_letters_ = ui_max_letters;
+    if (max_letters_ != max_letters) {
+        max_letters_ = max_letters;
 
-        std::size_t ui_carret_pos = iter_carret_pos_ - unicode_text_.begin();
+        std::size_t carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
         check_text_();
 
-        if (ui_carret_pos > ui_max_letters_) {
+        if (carret_pos > max_letters_) {
             iter_carret_pos_ = unicode_text_.end();
             update_displayed_text_();
             update_font_string_();
             update_carret_position_();
         } else
-            iter_carret_pos_ = unicode_text_.begin() + ui_carret_pos;
+            iter_carret_pos_ = unicode_text_.begin() + carret_pos;
     }
 }
 
 std::size_t edit_box::get_max_letters() const {
-    return ui_max_letters_;
+    return max_letters_;
 }
 
 std::size_t edit_box::get_num_letters() const {
@@ -470,27 +470,27 @@ bool edit_box::is_multi_line() const {
     return is_multi_line_;
 }
 
-void edit_box::set_max_history_lines(std::size_t ui_max_history_lines) {
-    if (ui_max_history_lines == 0) {
-        ui_max_history_lines_ = std::numeric_limits<std::size_t>::max();
+void edit_box::set_max_history_lines(std::size_t max_history_lines) {
+    if (max_history_lines == 0) {
+        max_history_lines_ = std::numeric_limits<std::size_t>::max();
         return;
     }
 
-    if (ui_max_history_lines_ != ui_max_history_lines) {
-        ui_max_history_lines_ = ui_max_history_lines;
+    if (max_history_lines_ != max_history_lines) {
+        max_history_lines_ = max_history_lines;
 
-        if (history_line_list_.size() > ui_max_history_lines_) {
+        if (history_line_list_.size() > max_history_lines_) {
             history_line_list_.erase(
                 history_line_list_.begin(),
-                history_line_list_.begin() + (history_line_list_.size() - ui_max_history_lines_));
+                history_line_list_.begin() + (history_line_list_.size() - max_history_lines_));
 
-            ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
+            current_history_line_ = std::numeric_limits<std::size_t>::max();
         }
     }
 }
 
 std::size_t edit_box::get_max_history_lines() const {
-    return ui_max_history_lines_;
+    return max_history_lines_;
 }
 
 void edit_box::add_history_line(const utils::ustring& history_line) {
@@ -499,13 +499,13 @@ void edit_box::add_history_line(const utils::ustring& history_line) {
 
     history_line_list_.push_back(history_line);
 
-    if (history_line_list_.size() > ui_max_history_lines_) {
+    if (history_line_list_.size() > max_history_lines_) {
         history_line_list_.erase(
             history_line_list_.begin(),
-            history_line_list_.begin() + (history_line_list_.size() - ui_max_history_lines_));
+            history_line_list_.begin() + (history_line_list_.size() - max_history_lines_));
     }
 
-    ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
+    current_history_line_ = std::numeric_limits<std::size_t>::max();
 }
 
 const std::vector<utils::ustring>& edit_box::get_history_lines() const {
@@ -514,7 +514,7 @@ const std::vector<utils::ustring>& edit_box::get_history_lines() const {
 
 void edit_box::clear_history() {
     history_line_list_.clear();
-    ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
+    current_history_line_ = std::numeric_limits<std::size_t>::max();
 }
 
 void edit_box::set_arrows_ignored(bool arrows_ignored) {
@@ -656,8 +656,8 @@ void edit_box::create_carret_() {
 }
 
 void edit_box::check_text_() {
-    if (unicode_text_.size() > ui_max_letters_)
-        unicode_text_.resize(ui_max_letters_);
+    if (unicode_text_.size() > max_letters_)
+        unicode_text_.resize(max_letters_);
 
     // TODO: use localizer's locale for these checks
     // https://github.com/cschreib/lxgui/issues/88
@@ -693,7 +693,7 @@ void edit_box::update_displayed_text_() {
         text* p_text_object = p_font_string_->get_text_object();
 
         if (!std::isinf(p_text_object->get_box_width())) {
-            displayed_text_.erase(0, ui_display_pos_);
+            displayed_text_.erase(0, display_pos_);
 
             while (!displayed_text_.empty() && p_text_object->get_string_width(displayed_text_) >
                                                    p_text_object->get_box_width()) {
@@ -713,7 +713,7 @@ void edit_box::update_font_string_() {
     p_font_string_->set_text(displayed_text_);
 
     if (is_text_selected_)
-        highlight_text(ui_selection_start_pos_, ui_selection_end_pos_, true);
+        highlight_text(selection_start_pos_, selection_end_pos_, true);
 }
 
 void edit_box::update_carret_position_() {
@@ -742,9 +742,9 @@ void edit_box::update_carret_position_() {
         utils::ustring::iterator iter_display_carret;
 
         if (!is_multi_line_) {
-            std::size_t ui_global_pos = iter_carret_pos_ - unicode_text_.begin();
+            std::size_t global_pos = iter_carret_pos_ - unicode_text_.begin();
 
-            if (ui_display_pos_ > ui_global_pos) {
+            if (display_pos_ > global_pos) {
                 // The carret has been positioned before the start of the displayed string
                 float          box_width            = p_text->get_box_width();
                 float          left_string_max_size = box_width * 0.25f;
@@ -759,13 +759,13 @@ void edit_box::update_carret_position_() {
                     left_string_size = p_text->get_string_width(left_string);
                 }
 
-                ui_display_pos_ = iter - unicode_text_.begin();
+                display_pos_ = iter - unicode_text_.begin();
                 update_displayed_text_();
                 update_font_string_();
             }
 
-            std::size_t ui_carret_pos = ui_global_pos - ui_display_pos_;
-            if (ui_carret_pos > displayed_text_.size()) {
+            std::size_t carret_pos = global_pos - display_pos_;
+            if (carret_pos > displayed_text_.size()) {
                 // The carret has been positioned after the end of the displayed string
                 float          box_width            = p_text->get_box_width();
                 float          left_string_max_size = box_width * 0.75f;
@@ -780,32 +780,32 @@ void edit_box::update_carret_position_() {
                     left_string_size = p_text->get_string_width(left_string);
                 }
 
-                ui_display_pos_ = iter - unicode_text_.begin();
+                display_pos_ = iter - unicode_text_.begin();
                 update_displayed_text_();
                 update_font_string_();
 
-                ui_carret_pos = ui_global_pos - ui_display_pos_;
+                carret_pos = global_pos - display_pos_;
             }
 
-            iter_display_carret = displayed_text_.begin() + ui_carret_pos;
+            iter_display_carret = displayed_text_.begin() + carret_pos;
         } else {
-            iter_display_carret = displayed_text_.begin() +
-                                  (iter_carret_pos_ - unicode_text_.begin()) - ui_display_pos_;
+            iter_display_carret =
+                displayed_text_.begin() + (iter_carret_pos_ - unicode_text_.begin()) - display_pos_;
         }
 
         float y_offset = static_cast<float>((p_text->get_num_lines() - 1)) *
                          (p_text->get_line_height() * p_text->get_line_spacing());
 
-        std::size_t ui_index = iter_display_carret - displayed_text_.begin();
+        std::size_t index = iter_display_carret - displayed_text_.begin();
 
         float x_offset = text_insets_.left;
-        if (ui_index < displayed_text_.size()) {
-            if (ui_index < p_text->get_num_letters())
-                x_offset += p_text->get_letter_quad(ui_index)[0].pos.x;
+        if (index < displayed_text_.size()) {
+            if (index < p_text->get_num_letters())
+                x_offset += p_text->get_letter_quad(index)[0].pos.x;
         } else {
-            ui_index = displayed_text_.size() - 1;
-            if (ui_index < p_text->get_num_letters())
-                x_offset += p_text->get_letter_quad(ui_index)[2].pos.x;
+            index = displayed_text_.size() - 1;
+            if (index < p_text->get_num_letters())
+                x_offset += p_text->get_letter_quad(index)[2].pos.x;
         }
 
         p_carret_->set_point(
@@ -823,7 +823,7 @@ bool edit_box::add_char_(char32_t c) {
     if (is_text_selected_)
         remove_char_();
 
-    if (get_num_letters() >= ui_max_letters_)
+    if (get_num_letters() >= max_letters_)
         return false;
 
     // TODO: use localizer for these checks, if possible
@@ -863,13 +863,13 @@ bool edit_box::add_char_(char32_t c) {
 
 bool edit_box::remove_char_() {
     if (is_text_selected_) {
-        if (ui_selection_start_pos_ != ui_selection_end_pos_) {
-            std::size_t ui_left  = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
-            std::size_t ui_right = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
+        if (selection_start_pos_ != selection_end_pos_) {
+            std::size_t left  = std::min(selection_start_pos_, selection_end_pos_);
+            std::size_t right = std::max(selection_start_pos_, selection_end_pos_);
 
-            unicode_text_.erase(ui_left, ui_right - ui_left);
+            unicode_text_.erase(left, right - left);
 
-            iter_carret_pos_ = unicode_text_.begin() + ui_left;
+            iter_carret_pos_ = unicode_text_.begin() + left;
         }
 
         unlight_text();
@@ -897,7 +897,7 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& position) const {
         return std::numeric_limits<std::size_t>::max();
 
     if (displayed_text_.empty())
-        return ui_display_pos_;
+        return display_pos_;
 
     const text* p_text = p_font_string_->get_text_object();
 
@@ -906,31 +906,31 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& position) const {
 
     if (!is_multi_line_) {
         if (position.x < border_list_.left + text_insets_.left)
-            return ui_display_pos_;
+            return display_pos_;
         else if (position.x > border_list_.right - text_insets_.right)
-            return displayed_text_.size() + ui_display_pos_;
+            return displayed_text_.size() + display_pos_;
 
-        std::size_t ui_num_letters =
+        std::size_t num_letters =
             std::min<std::size_t>(p_text->get_num_letters(), displayed_text_.size());
 
-        for (std::size_t ui_index = 0u; ui_index < ui_num_letters; ++ui_index) {
-            const auto& quad = p_text->get_letter_quad(ui_index);
+        for (std::size_t index = 0u; index < num_letters; ++index) {
+            const auto& quad = p_text->get_letter_quad(index);
             if (local_x < 0.5f * (quad[0].pos.x + quad[2].pos.x))
-                return ui_index + ui_display_pos_;
+                return index + display_pos_;
         }
 
-        return displayed_text_.size() + ui_display_pos_;
+        return displayed_text_.size() + display_pos_;
     } else {
         // TODO: Implement for multi line edit_box
         // https://github.com/cschreib/lxgui/issues/39
-        return ui_display_pos_;
+        return display_pos_;
     }
 }
 
 bool edit_box::move_carret_at_(const vector2f& position) {
-    std::size_t ui_pos = get_letter_id_at_(position);
-    if (ui_pos != std::numeric_limits<std::size_t>::max()) {
-        iter_carret_pos_ = unicode_text_.begin() + ui_pos;
+    std::size_t pos = get_letter_id_at_(position);
+    if (pos != std::numeric_limits<std::size_t>::max()) {
+        iter_carret_pos_ = unicode_text_.begin() + pos;
         update_carret_position_();
         return true;
     } else
@@ -1015,27 +1015,27 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
             }
         }
     } else if (key_id == key::k_end) {
-        std::size_t ui_previous_carret_pos = get_cursor_position();
+        std::size_t previous_carret_pos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
         if (shift_is_pressed) {
             if (is_text_selected_)
-                highlight_text(ui_selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
+                highlight_text(selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
             else
-                highlight_text(ui_previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
+                highlight_text(previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
         } else
             unlight_text();
 
         return;
     } else if (key_id == key::k_home) {
-        std::size_t ui_previous_carret_pos = get_cursor_position();
+        std::size_t previous_carret_pos = get_cursor_position();
         set_cursor_position(0u);
 
         if (shift_is_pressed) {
             if (is_text_selected_)
-                highlight_text(ui_selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
+                highlight_text(selection_start_pos_, iter_carret_pos_ - unicode_text_.begin());
             else
-                highlight_text(ui_previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
+                highlight_text(previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
         } else
             unlight_text();
 
@@ -1051,17 +1051,17 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
         key_id == key::k_left || key_id == key::k_right ||
         (is_multi_line_ && (key_id == key::k_up || key_id == key::k_down))) {
         if (!are_arrows_ignored_) {
-            std::size_t ui_previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
+            std::size_t previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
             if (key_id == key::k_left || key_id == key::k_right) {
                 if (is_text_selected_ && !shift_is_pressed) {
-                    std::size_t ui_offset = 0;
+                    std::size_t offset = 0;
                     if (key_id == key::k_left)
-                        ui_offset = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
+                        offset = std::min(selection_start_pos_, selection_end_pos_);
                     else
-                        ui_offset = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
+                        offset = std::max(selection_start_pos_, selection_end_pos_);
 
-                    iter_carret_pos_ = unicode_text_.begin() + ui_offset;
+                    iter_carret_pos_ = unicode_text_.begin() + offset;
                     update_carret_position_();
                 } else
                     move_carret_horizontally_(key_id == key::k_right);
@@ -1072,14 +1072,13 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
 
             if (shift_is_pressed) {
                 if (is_text_selected_) {
-                    std::size_t ui_new_end_pos = iter_carret_pos_ - unicode_text_.begin();
-                    if (ui_new_end_pos != ui_selection_start_pos_)
-                        highlight_text(ui_selection_start_pos_, ui_new_end_pos);
+                    std::size_t new_end_pos = iter_carret_pos_ - unicode_text_.begin();
+                    if (new_end_pos != selection_start_pos_)
+                        highlight_text(selection_start_pos_, new_end_pos);
                     else
                         unlight_text();
                 } else
-                    highlight_text(
-                        ui_previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
+                    highlight_text(previous_carret_pos, iter_carret_pos_ - unicode_text_.begin());
             } else
                 unlight_text();
         }
@@ -1087,36 +1086,36 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
         !is_multi_line_ && (key_id == key::k_up || key_id == key::k_down) &&
         !history_line_list_.empty()) {
         if (key_id == key::k_up) {
-            if (ui_current_history_line_ != 0u) {
-                if (ui_current_history_line_ == std::numeric_limits<std::size_t>::max())
-                    ui_current_history_line_ = history_line_list_.size() - 1;
+            if (current_history_line_ != 0u) {
+                if (current_history_line_ == std::numeric_limits<std::size_t>::max())
+                    current_history_line_ = history_line_list_.size() - 1;
                 else
-                    --ui_current_history_line_;
+                    --current_history_line_;
 
-                set_text(history_line_list_[ui_current_history_line_]);
+                set_text(history_line_list_[current_history_line_]);
                 if (!checker.is_alive())
                     return;
             }
         } else {
-            if (ui_current_history_line_ != std::numeric_limits<std::size_t>::max()) {
-                if (ui_current_history_line_ + 1 == history_line_list_.size()) {
-                    ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
+            if (current_history_line_ != std::numeric_limits<std::size_t>::max()) {
+                if (current_history_line_ + 1 == history_line_list_.size()) {
+                    current_history_line_ = std::numeric_limits<std::size_t>::max();
                     set_text(U"");
                     if (!checker.is_alive())
                         return;
                 } else {
-                    ++ui_current_history_line_;
-                    set_text(history_line_list_[ui_current_history_line_]);
+                    ++current_history_line_;
+                    set_text(history_line_list_[current_history_line_]);
                     if (!checker.is_alive())
                         return;
                 }
             }
         }
     } else if (key_id == key::k_c && ctrl_is_pressed) {
-        if (ui_selection_end_pos_ != ui_selection_start_pos_) {
-            std::size_t    ui_min_pos = std::min(ui_selection_start_pos_, ui_selection_end_pos_);
-            std::size_t    ui_max_pos = std::max(ui_selection_start_pos_, ui_selection_end_pos_);
-            utils::ustring selected   = unicode_text_.substr(ui_min_pos, ui_max_pos - ui_min_pos);
+        if (selection_end_pos_ != selection_start_pos_) {
+            std::size_t    min_pos  = std::min(selection_start_pos_, selection_end_pos_);
+            std::size_t    max_pos  = std::max(selection_start_pos_, selection_end_pos_);
+            utils::ustring selected = unicode_text_.substr(min_pos, max_pos - min_pos);
             get_manager().get_window().set_clipboard_content(selected);
         }
     } else if (key_id == key::k_v && ctrl_is_pressed) {

@@ -34,7 +34,7 @@ struct layer_container {
 /// Holds file/line information for a script.
 struct script_info {
     std::string file_name;
-    std::size_t ui_line_nbr = 0;
+    std::size_t line_nbr = 0;
 };
 
 /// Signature of frame scripts.
@@ -387,7 +387,7 @@ public:
 
     /// Creates a new region as child of this frame.
     /** \param layer_id The layer on which to create the region
-     *   \param attr  The core attributes of the reguion (pParent will be ignored)
+     *   \param attr  The core attributes of the region (parent will be ignored)
      *   \return The created region.
      *   \note You don't have the reponsibility to delete this region.
      *         It will be done automatically when its parent is deleted.
@@ -399,7 +399,7 @@ public:
 
     /// Creates a new region as child of this frame.
     /** \param layer_id The layer on which to create the region
-     *   \param attr  The core attributes of the reguion (sObjectType and pParent will be ignored)
+     *   \param attr  The core attributes of the region (object_type and parent will be ignored)
      *   \return The created region.
      *   \note You don't have the reponsibility to delete this region.
      *         It will be done automatically when its parent is deleted.
@@ -441,7 +441,7 @@ public:
     }
 
     /// Creates a new frame as child of this frame.
-    /** \param attr The core attributes of the frame (pParent will be ignored)
+    /** \param attr The core attributes of the frame (parent will be ignored)
      *   \return The created frame.
      *   \note You don't have the reponsibility to delete this frame.
      *         It will be done automatically when its parent is deleted.
@@ -454,7 +454,7 @@ public:
     utils::observer_ptr<frame> create_child(region_core_attributes attr);
 
     /// Creates a new frame as child of this frame.
-    /** \param attr The core attributes of the frame (sObjectType and pParent will be ignored)
+    /** \param attr The core attributes of the frame (object_type and parent will be ignored)
      *   \return The created frame.
      *   \note You don't have the reponsibility to delete this frame.
      *         It will be done automatically when its parent is deleted.
@@ -860,7 +860,7 @@ public:
      *   \param handler    The handler of the script, as a Lua function
      *   \param info       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
-     *   \note This defines a Lua function to be called for the event specified in sScriptName.
+     *   \note This defines a Lua function to be called for the event specified in script_name.
      *         This provides more flexibility compared to using C++ function, but also has a
      *         larger overhead. If performance is a concern, prefer the other overload taking a
      *         C++ function instead.
@@ -877,7 +877,7 @@ public:
      *   \param handler    The handler of the script, as a C++ function
      *   \param info       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
-     *   \note This defines a C++ function to be called for the event specified in sScriptName.
+     *   \note This defines a C++ function to be called for the event specified in script_name.
      *         This provides the best performance, but lacks direct access to the Lua
      *         environment. If this is required, prefer the other overload taking a Lua function
      *         instead.
@@ -906,7 +906,7 @@ public:
      *   \param handler    The handler of the script, as a Lua function
      *   \param info       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
-     *   \note This defines a Lua function to be called for the event specified in sScriptName.
+     *   \note This defines a Lua function to be called for the event specified in script_name.
      *         This provides more flexibility compared to using C++ function, but also has a
      *         larger overhead. If performance is a concern, prefer the other overload taking a
      *         C++ function instead.
@@ -923,7 +923,7 @@ public:
      *   \param handler    The handler of the script, as a C++ function
      *   \param info       The location where this script has been defined
      *   \return A connection object, to disable the script if needed.
-     *   \note This defines a C++ function to be called for the event specified in sScriptName.
+     *   \note This defines a C++ function to be called for the event specified in script_name.
      *         This provides the best performance, but lacks direct access to the Lua
      *         environment. If this is required, prefer the other overload taking a Lua function
      *         instead.

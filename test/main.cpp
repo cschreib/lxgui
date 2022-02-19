@@ -383,7 +383,7 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
         std::size_t num_code_points = 0u;
         for (const auto& range : manager->get_localizer().get_allowed_code_points())
-            num_code_points += static_cast<std::size_t>(range.ui_last - range.ui_first) + 1;
+            num_code_points += static_cast<std::size_t>(range.last - range.first) + 1;
         std::cout << " Required Unicode code points: " << num_code_points << std::endl;
         std::cout << " Renderer settings:" << std::endl;
         std::cout << "  Renderer: " << gui_renderer.get_name() << std::endl;

@@ -18,17 +18,17 @@ atlas_page::atlas_page(renderer& rdr, material::filter filt) :
         throw gui::exception("gui::sdl::atlas_page", "Could not set filtering hint");
     }
 
-    ui_size_ = renderer_.get_texture_atlas_page_size();
+    size_ = renderer_.get_texture_atlas_page_size();
 
     p_texture_ = SDL_CreateTexture(
-        renderer_.get_sdl_renderer(), SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
-        ui_size_, ui_size_);
+        renderer_.get_sdl_renderer(), SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, size_,
+        size_);
 
     if (p_texture_ == nullptr) {
         throw gui::exception(
             "gui::sdl::material", "Could not create texture with dimensions " +
-                                      utils::to_string(ui_size_) + " x " +
-                                      utils::to_string(ui_size_) + ".");
+                                      utils::to_string(size_) + " x " + utils::to_string(size_) +
+                                      ".");
     }
 }
 
@@ -41,11 +41,11 @@ std::shared_ptr<gui::material>
 atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
     const sdl::material& sdl_mat = static_cast<const sdl::material&>(mat);
 
-    std::size_t      ui_texture_pitch = 0;
+    std::size_t      texture_pitch    = 0;
     const ub32color* p_texture_pixels = nullptr;
 
     try {
-        p_texture_pixels = sdl_mat.lock_pointer(&ui_texture_pitch);
+        p_texture_pixels = sdl_mat.lock_pointer(&texture_pitch);
 
         SDL_Rect update_rect;
         update_rect.x = location.left;
@@ -53,8 +53,7 @@ atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
         update_rect.w = location.width();
         update_rect.h = location.height();
 
-        if (SDL_UpdateTexture(p_texture_, &update_rect, p_texture_pixels, ui_texture_pitch * 4) !=
-            0) {
+        if (SDL_UpdateTexture(p_texture_, &update_rect, p_texture_pixels, texture_pitch * 4) != 0) {
             throw gui::exception("sdl::atlas_page", "Failed to upload texture to atlas.");
         }
 
@@ -71,11 +70,11 @@ atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
 }
 
 float atlas_page::get_width_() const {
-    return ui_size_;
+    return size_;
 }
 
 float atlas_page::get_height_() const {
-    return ui_size_;
+    return size_;
 }
 
 atlas::atlas(renderer& rdr, material::filter filt) : gui::atlas(rdr, filt), sdl_renderer_(rdr) {}

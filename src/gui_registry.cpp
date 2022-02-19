@@ -20,8 +20,8 @@ bool registry::check_region_name(std::string_view name) const {
         return false;
     }
 
-    std::size_t ui_pos = name.find("$");
-    if (ui_pos != name.npos && ui_pos != 0) {
+    std::size_t pos = name.find("$");
+    if (pos != name.npos && pos != 0) {
         gui::out << gui::error << "gui::registry : "
                  << "A region's name cannot contain the character '$' except at the begining : \""
                  << name << "\" is forbidden." << std::endl;

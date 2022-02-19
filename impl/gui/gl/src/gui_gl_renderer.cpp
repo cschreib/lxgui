@@ -93,8 +93,8 @@ void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
 
 #if defined(LXGUI_OPENGL3)
     glActiveTexture(GL_TEXTURE0);
-    glUseProgram(p_shader_cache_->ui_program);
-    ui_previous_texture_ = static_cast<std::uint32_t>(-1);
+    glUseProgram(p_shader_cache_->program);
+    previous_texture_ = static_cast<std::uint32_t>(-1);
 #else
     glDisable(GL_LIGHTING);
     glDisable(GL_ALPHA_TEST);
@@ -124,7 +124,7 @@ void renderer::set_view_(const matrix4f& view_matrix) {
     glUniformMatrix4fv(p_shader_cache_->proj_location, 1, GL_FALSE, corrected_view.data);
 #else
     glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(mCorrectedView.data);
+    glLoadMatrixf(corrected_view.data);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 #endif
@@ -177,8 +177,8 @@ void renderer::render_quads_(
     // previous draw call using this cache to finish before updating.
     // If we rotate, it is more likely that the draw call is done, and
     // that we don't have to wait.
-    const auto& p_cache   = p_array_cache_[ui_array_cycle_cache_];
-    ui_array_cycle_cache_ = (ui_array_cycle_cache_ + 1) % cache_cycle_size;
+    const auto& p_cache = p_array_cache_[array_cycle_cache_];
+    array_cycle_cache_  = (array_cycle_cache_ + 1) % cache_cycle_size;
 
     // Update vertex data
     p_cache->update(quad_list[0].data(), quad_list.size() * 4);
@@ -202,9 +202,9 @@ void renderer::render_cache_(
     int type = 0;
     if (p_mat) {
         type = 0;
-        if (ui_previous_texture_ != p_mat->get_handle()) {
+        if (previous_texture_ != p_mat->get_handle()) {
             p_mat->bind();
-            ui_previous_texture_ = p_mat->get_handle();
+            previous_texture_ = p_mat->get_handle();
         }
     } else {
         type = 1;
@@ -264,12 +264,11 @@ renderer::create_render_target(const vector2ui& dimensions, material::filter fil
 
 std::shared_ptr<gui::font> renderer::create_font_(
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) {
-    return std::make_shared<gl::font>(
-        font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+    char32_t                             default_code_point) {
+    return std::make_shared<gl::font>(font_file, size, outline, code_points, default_code_point);
 }
 
 bool renderer::is_texture_atlas_supported() const {
@@ -321,67 +320,67 @@ bool renderer::is_gl_extension_supported(const std::string& extension) {
 #if defined(LXGUI_OPENGL3)
 GLuint create_shader(GLenum type, const char* shader_source) {
     // Create the shader
-    GLuint ui_shader = glCreateShader(type);
-    if (ui_shader == 0) {
+    GLuint shader = glCreateShader(type);
+    if (shader == 0) {
         throw gui::exception(
             "gl::renderer", "Could not create " +
                                 std::string(type == GL_VERTEX_SHADER ? "vertex" : "fragment") +
                                 " shader.");
     }
 
-    glShaderSource(ui_shader, 1, &shader_source, nullptr);
-    glCompileShader(ui_shader);
+    glShaderSource(shader, 1, &shader_source, nullptr);
+    glCompileShader(shader);
 
     // Check sucess
     GLint compiled = 0;
-    glGetShaderiv(ui_shader, GL_COMPILE_STATUS, &compiled);
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
     if (compiled == 0) {
         GLint info_length = 0;
-        glGetProgramiv(ui_shader, GL_INFO_LOG_LENGTH, &info_length);
+        glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &info_length);
 
         std::vector<char> error_message(std::max(1, info_length), '\0');
         if (info_length > 1) {
-            glGetProgramInfoLog(ui_shader, info_length, NULL, error_message.data());
+            glGetProgramInfoLog(shader, info_length, NULL, error_message.data());
         }
 
-        glDeleteShader(ui_shader);
+        glDeleteShader(shader);
         throw gui::exception(
             "gl::renderer", "Could not compile shader: " + std::string(error_message.data()));
     }
 
-    return ui_shader;
+    return shader;
 }
 
 GLuint create_program(const char* vertex_shader_source, const char* fragment_shader_source) {
-    GLuint ui_vertex_shader   = 0;
-    GLuint ui_fragment_shader = 0;
-    GLuint ui_program_object  = 0;
+    GLuint vertex_shader   = 0;
+    GLuint fragment_shader = 0;
+    GLuint program_object  = 0;
 
     try {
         // Create shaders
-        ui_vertex_shader   = create_shader(GL_VERTEX_SHADER, vertex_shader_source);
-        ui_fragment_shader = create_shader(GL_FRAGMENT_SHADER, fragment_shader_source);
+        vertex_shader   = create_shader(GL_VERTEX_SHADER, vertex_shader_source);
+        fragment_shader = create_shader(GL_FRAGMENT_SHADER, fragment_shader_source);
 
         // Create program
-        ui_program_object = glCreateProgram();
-        if (ui_program_object == 0) {
+        program_object = glCreateProgram();
+        if (program_object == 0) {
             throw gui::exception("gl::renderer", "Could not create shader program.");
         }
 
-        glAttachShader(ui_program_object, ui_vertex_shader);
-        glAttachShader(ui_program_object, ui_fragment_shader);
-        glLinkProgram(ui_program_object);
+        glAttachShader(program_object, vertex_shader);
+        glAttachShader(program_object, fragment_shader);
+        glLinkProgram(program_object);
 
         // Check success
         GLint linked = 0;
-        glGetProgramiv(ui_program_object, GL_LINK_STATUS, &linked);
+        glGetProgramiv(program_object, GL_LINK_STATUS, &linked);
         if (linked == 0) {
             GLint info_length = 0;
-            glGetProgramiv(ui_program_object, GL_INFO_LOG_LENGTH, &info_length);
+            glGetProgramiv(program_object, GL_INFO_LOG_LENGTH, &info_length);
 
             std::vector<char> error_message(std::max(1, info_length), '\0');
             if (info_length > 1) {
-                glGetProgramInfoLog(ui_program_object, info_length, NULL, error_message.data());
+                glGetProgramInfoLog(program_object, info_length, NULL, error_message.data());
             }
 
             throw gui::exception(
@@ -389,19 +388,19 @@ GLuint create_program(const char* vertex_shader_source, const char* fragment_sha
                 "Could not link shader program: " + std::string(error_message.data()));
         }
     } catch (...) {
-        if (ui_vertex_shader != 0)
-            glDeleteShader(ui_vertex_shader);
-        if (ui_fragment_shader != 0)
-            glDeleteShader(ui_fragment_shader);
-        if (ui_program_object != 0)
-            glDeleteProgram(ui_program_object);
+        if (vertex_shader != 0)
+            glDeleteShader(vertex_shader);
+        if (fragment_shader != 0)
+            glDeleteShader(fragment_shader);
+        if (program_object != 0)
+            glDeleteProgram(program_object);
         throw;
     }
 
-    glDeleteShader(ui_vertex_shader);
-    glDeleteShader(ui_fragment_shader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
 
-    return ui_program_object;
+    return program_object;
 }
 
 void renderer::compile_programs_() {
@@ -443,20 +442,17 @@ void renderer::compile_programs_() {
         p_shader_cache_ = std::make_shared<shader_cache>();
 
         try {
-            p_shader_cache_->ui_program = create_program(vertex_shader, fragment_shader);
+            p_shader_cache_->program = create_program(vertex_shader, fragment_shader);
         } catch (...) {
             p_shader_cache_ = nullptr;
             throw;
         }
 
         p_shader_cache_->sampler_location =
-            glGetUniformLocation(p_shader_cache_->ui_program, "s_texture");
-        p_shader_cache_->proj_location =
-            glGetUniformLocation(p_shader_cache_->ui_program, "m_proj");
-        p_shader_cache_->model_location =
-            glGetUniformLocation(p_shader_cache_->ui_program, "m_model");
-        p_shader_cache_->type_location =
-            glGetUniformLocation(p_shader_cache_->ui_program, "i_type");
+            glGetUniformLocation(p_shader_cache_->program, "s_texture");
+        p_shader_cache_->proj_location  = glGetUniformLocation(p_shader_cache_->program, "m_proj");
+        p_shader_cache_->model_location = glGetUniformLocation(p_shader_cache_->program, "m_model");
+        p_shader_cache_->type_location  = glGetUniformLocation(p_shader_cache_->program, "i_type");
 
         p_static_shader_cache = p_shader_cache_;
         shader_cached         = true;
@@ -468,9 +464,9 @@ void renderer::compile_programs_() {
 void renderer::setup_buffers_() {
     static constexpr std::array<std::uint32_t, 6> quad_i_ds = {{0, 1, 2, 2, 3, 0}};
 
-    constexpr std::uint32_t    ui_num_array_indices = 768u;
-    std::vector<std::uint32_t> repeated_ids(ui_num_array_indices);
-    for (std::uint32_t i = 0; i < ui_num_array_indices; ++i) {
+    constexpr std::uint32_t    num_array_indices = 768u;
+    std::vector<std::uint32_t> repeated_ids(num_array_indices);
+    for (std::uint32_t i = 0; i < num_array_indices; ++i) {
         repeated_ids[i] = (i / 6) * 4 + quad_i_ds[i % 6];
     }
 

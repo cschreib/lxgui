@@ -21,14 +21,14 @@ public:
 
     /// Simple message exception.
     /** \param message The message to throw
-     *   \note Reports : "<sMessage>"
+     *   \note Reports : "<message>"
      */
     explicit exception(const std::string& message);
 
     /// Class name + message exception.
     /** \param class_name The name of the class which throws the exception
      *   \param message   The message to throw
-     *   \note Reports : "<sClassName> : <sMessage>"
+     *   \note Reports : "<class_name> : <message>"
      */
     exception(const std::string& class_name, const std::string& message);
 

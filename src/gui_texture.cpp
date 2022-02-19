@@ -18,44 +18,44 @@ texture::texture(utils::control_block& block, manager& mgr) :
     type_.push_back(class_name);
 }
 
-std::string texture::serialize(const std::string& sTab) const {
+std::string texture::serialize(const std::string& tab) const {
     std::ostringstream str;
-    str << base::serialize(sTab);
+    str << base::serialize(tab);
 
     std::visit(
         [&](const auto& data) {
             using content_type = std::decay_t<decltype(data)>;
 
             if constexpr (std::is_same_v<content_type, std::string>) {
-                str << sTab << "  # File        : " << data << "\n";
+                str << tab << "  # File        : " << data << "\n";
             } else if constexpr (std::is_same_v<content_type, gradient>) {
-                str << sTab << "  # Gradient    :\n";
-                str << sTab << "  #-###\n";
-                str << sTab << "  |   # min color   : " << data.get_min_color() << "\n";
-                str << sTab << "  |   # max color   : " << data.get_max_color() << "\n";
-                str << sTab << "  |   # orientation : ";
+                str << tab << "  # Gradient    :\n";
+                str << tab << "  #-###\n";
+                str << tab << "  |   # min color   : " << data.get_min_color() << "\n";
+                str << tab << "  |   # max color   : " << data.get_max_color() << "\n";
+                str << tab << "  |   # orientation : ";
                 switch (data.get_orientation()) {
                 case gradient::orientation::horizontal: str << "HORIZONTAL\n"; break;
                 case gradient::orientation::vertical: str << "VERTICAL\n"; break;
                 default: str << "<error>\n"; break;
                 }
-                str << sTab << "  #-###\n";
+                str << tab << "  #-###\n";
             } else if constexpr (std::is_same_v<content_type, color>) {
-                str << sTab << "  # Color       : " << data << "\n";
+                str << tab << "  # Color       : " << data << "\n";
             }
         },
         content_);
 
-    str << sTab << "  # Tex. coord. :\n";
-    str << sTab << "  #-###\n";
-    str << sTab << "  |   # top-left     : (" << quad_.v[0].uvs << ")\n";
-    str << sTab << "  |   # top-right    : (" << quad_.v[1].uvs << ")\n";
-    str << sTab << "  |   # bottom-right : (" << quad_.v[2].uvs << ")\n";
-    str << sTab << "  |   # bottom-left  : (" << quad_.v[3].uvs << ")\n";
-    str << sTab << "  #-###\n";
-    str << sTab << "  # Stretching : " << is_texture_stretching_enabled_ << "\n";
+    str << tab << "  # Tex. coord. :\n";
+    str << tab << "  #-###\n";
+    str << tab << "  |   # top-left     : (" << quad_.v[0].uvs << ")\n";
+    str << tab << "  |   # top-right    : (" << quad_.v[1].uvs << ")\n";
+    str << tab << "  |   # bottom-right : (" << quad_.v[2].uvs << ")\n";
+    str << tab << "  |   # bottom-left  : (" << quad_.v[3].uvs << ")\n";
+    str << tab << "  #-###\n";
+    str << tab << "  # Stretching : " << is_texture_stretching_enabled_ << "\n";
 
-    str << sTab << "  # Blend mode  : ";
+    str << tab << "  # Blend mode  : ";
     switch (blend_mode_) {
     case blend_mode::none: str << "NONE\n"; break;
     case blend_mode::blend: str << "BLEND\n"; break;
@@ -65,14 +65,14 @@ std::string texture::serialize(const std::string& sTab) const {
     default: str << "<error>\n"; break;
     }
 
-    str << sTab << "  # Filter      : ";
+    str << tab << "  # Filter      : ";
     switch (filter_) {
     case material::filter::none: str << "NONE\n"; break;
     case material::filter::linear: str << "LINEAR\n"; break;
     default: str << "<error>\n"; break;
     }
 
-    str << sTab << "  # Desaturated : " << is_desaturated_ << "\n";
+    str << tab << "  # Desaturated : " << is_desaturated_ << "\n";
 
     return str.str();
 }
@@ -173,14 +173,14 @@ const std::string& texture::get_texture_file() const {
     return std::get<std::string>(content_);
 }
 
-color texture::get_vertex_color(std::size_t ui_index) const {
-    if (ui_index >= 4) {
+color texture::get_vertex_color(std::size_t index) const {
+    if (index >= 4) {
         gui::out << gui::error << "gui::" << type_.back() << " : "
-                 << "Vertex index out of bound (" << ui_index << ")." << std::endl;
+                 << "Vertex index out of bound (" << index << ")." << std::endl;
         return color::white;
     }
 
-    return quad_.v[ui_index].col;
+    return quad_.v[index].col;
 }
 
 bool texture::is_desaturated() const {
@@ -432,8 +432,8 @@ void texture::set_quad(const quad& q) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_vertex_color(const color& c, std::size_t ui_index) {
-    if (ui_index == std::numeric_limits<std::size_t>::max()) {
+void texture::set_vertex_color(const color& c, std::size_t index) {
+    if (index == std::numeric_limits<std::size_t>::max()) {
         for (std::size_t i = 0; i < 4; ++i)
             quad_.v[i].col = c;
 
@@ -441,13 +441,13 @@ void texture::set_vertex_color(const color& c, std::size_t ui_index) {
         return;
     }
 
-    if (ui_index >= 4) {
+    if (index >= 4) {
         gui::out << gui::error << "gui::" << type_.back() << " : "
-                 << "Vertex index out of bound (" << ui_index << ")." << std::endl;
+                 << "Vertex index out of bound (" << index << ")." << std::endl;
         return;
     }
 
-    quad_.v[ui_index].col = c;
+    quad_.v[index].col = c;
 
     notify_renderer_need_redraw();
 }

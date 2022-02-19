@@ -488,13 +488,13 @@ bool region::depends_on(const region& obj) const {
 }
 
 std::size_t region::get_num_point() const {
-    std::size_t ui_num_anchors = 0u;
+    std::size_t num_anchors = 0u;
     for (const auto& anchor : anchor_list_) {
         if (anchor)
-            ++ui_num_anchors;
+            ++num_anchors;
     }
 
-    return ui_num_anchors;
+    return num_anchors;
 }
 
 anchor& region::modify_point(anchor_point point) {
@@ -638,7 +638,7 @@ void region::update_borders_() {
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-    DEBUG_LOG("  Update anchors for " + sLuaName_);
+    DEBUG_LOG("  Update anchors for " + lua_name_);
 
     const bool old_is_ready    = is_ready_;
     const auto old_border_list = border_list_;
@@ -656,12 +656,12 @@ void region::update_borders_() {
 
         DEBUG_LOG("  Read anchors");
         read_anchors_(left, right, top, bottom, x_center, y_center);
-        DEBUG_LOG("    left=" + utils::to_string(fLeft));
-        DEBUG_LOG("    right=" + utils::to_string(fRight));
-        DEBUG_LOG("    top=" + utils::to_string(fTop));
-        DEBUG_LOG("    bottom=" + utils::to_string(fBottom));
-        DEBUG_LOG("    x_center=" + utils::to_string(fXCenter));
-        DEBUG_LOG("    y_center=" + utils::to_string(fYCenter));
+        DEBUG_LOG("    left=" + utils::to_string(left));
+        DEBUG_LOG("    right=" + utils::to_string(right));
+        DEBUG_LOG("    top=" + utils::to_string(top));
+        DEBUG_LOG("    bottom=" + utils::to_string(bottom));
+        DEBUG_LOG("    x_center=" + utils::to_string(x_center));
+        DEBUG_LOG("    y_center=" + utils::to_string(y_center));
 
         DEBUG_LOG("  Make borders");
         if (!make_borders_(top, bottom, y_center, rounded_height))
@@ -689,10 +689,10 @@ void region::update_borders_() {
     border_list_.top    = round_to_pixel(border_list_.top);
     border_list_.bottom = round_to_pixel(border_list_.bottom);
 
-    DEBUG_LOG("    left=" + utils::to_string(lBorderList_.left));
-    DEBUG_LOG("    right=" + utils::to_string(lBorderList_.right));
-    DEBUG_LOG("    top=" + utils::to_string(lBorderList_.top));
-    DEBUG_LOG("    bottom=" + utils::to_string(lBorderList_.bottom));
+    DEBUG_LOG("    left=" + utils::to_string(border_list_.left));
+    DEBUG_LOG("    right=" + utils::to_string(border_list_.right));
+    DEBUG_LOG("    top=" + utils::to_string(border_list_.top));
+    DEBUG_LOG("    bottom=" + utils::to_string(border_list_.bottom));
 
     if (border_list_ != old_border_list || is_ready_ != old_is_ready) {
         DEBUG_LOG("  Fire redraw");

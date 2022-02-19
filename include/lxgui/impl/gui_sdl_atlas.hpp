@@ -52,7 +52,7 @@ protected:
 private:
     renderer&    renderer_;
     SDL_Texture* p_texture_ = nullptr;
-    std::size_t  ui_size_   = 0u;
+    std::size_t  size_      = 0u;
 };
 
 /// A class that holds rendering data

@@ -8,14 +8,14 @@ namespace lxgui::gui {
 
 // For debugging only
 std::size_t count_frames(const std::array<strata, 8>& strata_list) {
-    std::size_t ui_count = 0;
+    std::size_t count = 0;
     for (std::size_t strata_id = 0; strata_id < strata_list.size(); ++strata_id) {
         for (const auto& level_obj : utils::range::value(strata_list[strata_id].level_list)) {
-            ui_count += level_obj.frame_list.size();
+            count += level_obj.frame_list.size();
         }
     }
 
-    return ui_count;
+    return count;
 }
 
 // For debugging only

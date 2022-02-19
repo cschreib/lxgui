@@ -51,7 +51,7 @@ private:
 class atlas final : public gui::atlas {
 public:
     /// Constructor for textures.
-    /** \param mRenderer The renderer with witch to create this atlas
+    /** \param rdr The renderer with witch to create this atlas
      *   \param filt   Use texture filtering or not (see set_filter())
      */
     explicit atlas(renderer& rdr, material::filter filt);

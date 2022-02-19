@@ -842,54 +842,54 @@ std::string frame::get_adjusted_script_name(const std::string& script_name) {
     return adjusted_name;
 }
 
-std::string hijack_sol_error_line(
-    std::string original_message, const std::string& file, std::size_t ui_line_nbr) {
-    auto ui_pos1 = original_message.find("[string \"" + file);
-    if (ui_pos1 == std::string::npos)
+std::string
+hijack_sol_error_line(std::string original_message, const std::string& file, std::size_t line_nbr) {
+    auto pos1 = original_message.find("[string \"" + file);
+    if (pos1 == std::string::npos)
         return original_message;
 
-    auto ui_pos2 = original_message.find_first_of('"', ui_pos1 + 9);
-    if (ui_pos2 == std::string::npos)
+    auto pos2 = original_message.find_first_of('"', pos1 + 9);
+    if (pos2 == std::string::npos)
         return original_message;
 
-    original_message.erase(ui_pos1, ui_pos2 - ui_pos1 + 2);
-    original_message.insert(ui_pos1, file);
+    original_message.erase(pos1, pos2 - pos1 + 2);
+    original_message.insert(pos1, file);
 
-    auto ui_pos3 = original_message.find_first_of(':', ui_pos1 + file.size());
-    if (ui_pos3 == std::string::npos)
+    auto pos3 = original_message.find_first_of(':', pos1 + file.size());
+    if (pos3 == std::string::npos)
         return original_message;
 
-    auto ui_pos4 = original_message.find_first_of(":>", ui_pos3 + 1);
-    if (ui_pos4 == std::string::npos)
+    auto pos4 = original_message.find_first_of(":>", pos3 + 1);
+    if (pos4 == std::string::npos)
         return original_message;
 
-    std::size_t ui_offset = 0;
-    if (!utils::from_string(original_message.substr(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1), ui_offset))
+    std::size_t offset = 0;
+    if (!utils::from_string(original_message.substr(pos3 + 1, pos4 - pos3 - 1), offset))
         return original_message;
 
-    original_message.erase(ui_pos3 + 1, ui_pos4 - ui_pos3 - 1);
-    original_message.insert(ui_pos3 + 1, utils::to_string(ui_line_nbr + ui_offset - 1));
-    ui_pos4 = original_message.find_first_of(':', ui_pos3 + 1);
+    original_message.erase(pos3 + 1, pos4 - pos3 - 1);
+    original_message.insert(pos3 + 1, utils::to_string(line_nbr + offset - 1));
+    pos4 = original_message.find_first_of(':', pos3 + 1);
 
-    auto ui_pos5 = original_message.find("[string \"" + file, ui_pos4);
-    if (ui_pos5 == std::string::npos)
+    auto pos5 = original_message.find("[string \"" + file, pos4);
+    if (pos5 == std::string::npos)
         return original_message;
 
-    std::string message = original_message.substr(ui_pos4 + 1);
-    original_message.erase(ui_pos4 + 1);
-    original_message += hijack_sol_error_line(message, file, ui_line_nbr);
+    std::string message = original_message.substr(pos4 + 1);
+    original_message.erase(pos4 + 1);
+    original_message += hijack_sol_error_line(message, file, line_nbr);
 
     return original_message;
 }
 
 std::string hijack_sol_error_message(
-    std::string_view original_message, const std::string& file, std::size_t ui_line_nbr) {
+    std::string_view original_message, const std::string& file, std::size_t line_nbr) {
     std::string new_error;
     for (auto line : utils::cut(original_message, "\n")) {
         if (!new_error.empty())
             new_error += '\n';
 
-        new_error += hijack_sol_error_line(std::string{line}, file, ui_line_nbr);
+        new_error += hijack_sol_error_line(std::string{line}, file, line_nbr);
     }
 
     return new_error;
@@ -905,8 +905,8 @@ utils::connection frame::define_script_(
 
     std::string str = "return function(self";
 
-    constexpr std::size_t ui_max_args = 9;
-    for (std::size_t i = 0; i < ui_max_args; ++i)
+    constexpr std::size_t max_args = 9;
+    for (std::size_t i = 0; i < max_args; ++i)
         str += ", arg" + utils::to_string(i + 1);
 
     str += ") " + content + " end";
@@ -915,7 +915,7 @@ utils::connection frame::define_script_(
 
     if (!result.valid()) {
         std::string error =
-            hijack_sol_error_message(sol::error{result}.what(), info.file_name, info.ui_line_nbr);
+            hijack_sol_error_message(sol::error{result}.what(), info.file_name, info.line_nbr);
 
         gui::out << gui::error << error << std::endl;
 
@@ -957,13 +957,13 @@ utils::connection frame::define_script_(
 
         // Call the function
         auto result = handler(self_lua, sol::as_args(lua_args));
-        // WARNING: after this point, the frame (mSelf) may be deleted.
+        // WARNING: after this point, the frame (self_lua) may be deleted.
         // Do not use any member variable or member function directly.
 
         // Handle errors
         if (!result.valid()) {
-            std::string error = hijack_sol_error_message(
-                sol::error{result}.what(), info.file_name, info.ui_line_nbr);
+            std::string error =
+                hijack_sol_error_message(sol::error{result}.what(), info.file_name, info.line_nbr);
 
             throw gui::exception(error);
         }
@@ -976,7 +976,7 @@ utils::connection frame::define_script_(
     const std::string& script_name,
     script_function    handler,
     bool               append,
-    const script_info& /*mInfo*/) {
+    const script_info& /*info*/) {
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
         std::string adjusted_name = get_adjusted_script_name(script_name);

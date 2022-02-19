@@ -50,7 +50,7 @@ public:
     float get_line_height() const;
 
     /// Set the scaling factor to use when rendering glyphs.
-    /** \param fScalingFactor The scaling factor
+    /** \param scaling_factor The scaling factor
      *   \note This defines the conversion factor between pixels (from the texture of the
      *         font object) and interface units. By default this is set to 1, but needs to
      *         be changed on high DPI systems.
@@ -285,7 +285,7 @@ public:
     std::size_t get_num_letters() const;
 
     /// Returns the quad for the letter at the provided index (position, texture coords, color).
-    /** \param uiIndex The index of the letter (0: first letter);
+    /** \param index The index of the letter (0: first letter);
      *                  must be less than get_num_letters().
      *   \return The quad of the specified letter
      *   \note The vertex positions in the quad do not account for the rendering position
@@ -293,7 +293,7 @@ public:
      *         the position (0,0) (if left-aligned). This function may update the quad cache as
      *         needed.
      */
-    const std::array<vertex, 4>& get_letter_quad(std::size_t ui_index) const;
+    const std::array<vertex, 4>& get_letter_quad(std::size_t index) const;
 
     /// Creates a quad that contains the provided character.
     /** \param c The character to draw
@@ -351,7 +351,7 @@ private:
     mutable bool        update_cache_flag_ = false;
     mutable float       width_             = 0.0f;
     mutable float       height_            = 0.0f;
-    mutable std::size_t ui_num_lines_      = 0u;
+    mutable std::size_t num_lines_         = 0u;
 
     mutable std::vector<std::array<vertex, 4>> quad_list_;
     mutable std::shared_ptr<vertex_cache>      p_vertex_cache_;

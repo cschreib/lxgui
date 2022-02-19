@@ -57,11 +57,11 @@ public:
 
     /// Update the data stored in the cache to form new triangles.
     /** \param vertex_data The vertices to cache
-     *   \param uiNumVertex The number of vertices to cache
-     *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
-     *         If the type if QUADS, uiNumVertex must be a multiple of 4.
+     *   \param num_vertex The number of vertices to cache
+     *   \note If the type if TRIANGLES, num_vertex must be a multiple of 3.
+     *         If the type if QUADS, num_vertex must be a multiple of 4.
      */
-    virtual void update(const vertex* vertex_data, std::size_t ui_num_vertex) = 0;
+    virtual void update(const vertex* vertex_data, std::size_t num_vertex) = 0;
 
 protected:
     type type_ = type::triangles;

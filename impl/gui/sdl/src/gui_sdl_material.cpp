@@ -60,8 +60,8 @@ material::material(
     }
 
     int    canvas_width = 0, canvas_height = 0, access = 0;
-    Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
+    Uint32 texture_format = 0;
+    SDL_QueryTexture(p_texture_, &texture_format, &access, &canvas_width, &canvas_height);
 
     dimensions_        = dimensions;
     canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
@@ -98,8 +98,8 @@ material::material(
     if (pre_multiplied_alpha_supported)
         premultiply_alpha(p_converted_surface);
 
-    const std::size_t ui_width  = p_converted_surface->w;
-    const std::size_t ui_height = p_converted_surface->h;
+    const std::size_t width  = p_converted_surface->w;
+    const std::size_t height = p_converted_surface->h;
 
     // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, filter == filter::none ? "0" : "1") ==
@@ -109,30 +109,30 @@ material::material(
 
     // Create streamable texture
     p_texture_ = SDL_CreateTexture(
-        p_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
-        static_cast<int>(ui_width), static_cast<int>(ui_height));
+        p_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, static_cast<int>(width),
+        static_cast<int>(height));
     if (p_texture_ == nullptr) {
         SDL_FreeSurface(p_converted_surface);
         throw gui::exception(
             "gui::sdl::material", "Could not create texture with dimensions " +
-                                      utils::to_string(ui_width) + " x " +
-                                      utils::to_string(ui_height) + ".");
+                                      utils::to_string(width) + " x " + utils::to_string(height) +
+                                      ".");
     }
 
     // Copy data into the texture
-    std::size_t      ui_pitch         = 0;
-    ub32color*       p_texture_pixels = lock_pointer(&ui_pitch);
+    std::size_t      pitch            = 0;
+    ub32color*       p_texture_pixels = lock_pointer(&pitch);
     const ub32color* p_surface_pixels_start =
         reinterpret_cast<const ub32color*>(p_converted_surface->pixels);
-    const ub32color* p_surface_pixels_end = p_surface_pixels_start + ui_pitch * ui_height;
+    const ub32color* p_surface_pixels_end = p_surface_pixels_start + pitch * height;
     std::copy(p_surface_pixels_start, p_surface_pixels_end, p_texture_pixels);
     unlock_pointer();
 
     int    canvas_width = 0, canvas_height = 0, access = 0;
-    Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
+    Uint32 texture_format = 0;
+    SDL_QueryTexture(p_texture_, &texture_format, &access, &canvas_width, &canvas_height);
 
-    dimensions_        = vector2ui(ui_width, ui_height);
+    dimensions_        = vector2ui(width, height);
     canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
     wrap_              = wrap;
     filter_            = filter;
@@ -150,8 +150,8 @@ material::material(
     p_texture_(p_texture),
     is_owner_(false) {
     int    canvas_width = 0, canvas_height = 0, access = 0;
-    Uint32 ui_texture_format = 0;
-    SDL_QueryTexture(p_texture_, &ui_texture_format, &access, &canvas_width, &canvas_height);
+    Uint32 texture_format = 0;
+    SDL_QueryTexture(p_texture_, &texture_format, &access, &canvas_width, &canvas_height);
 
     dimensions_        = vector2ui(rect_.dimensions());
     canvas_dimensions_ = vector2ui(canvas_width, canvas_height);
@@ -191,8 +191,8 @@ material::filter material::get_filter() const {
 void material::premultiply_alpha(SDL_Surface* p_surface) {
     ub32color* p_pixel_data = reinterpret_cast<ub32color*>(p_surface->pixels);
 
-    const std::size_t ui_area = p_surface->w * p_surface->h;
-    for (std::size_t i = 0; i < ui_area; ++i) {
+    const std::size_t area = p_surface->w * p_surface->h;
+    for (std::size_t i = 0; i < area; ++i) {
         float a = p_pixel_data[i].a / 255.0f;
         p_pixel_data[i].r *= a;
         p_pixel_data[i].g *= a;

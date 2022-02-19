@@ -56,7 +56,7 @@ public:
     /// Binds an action to a key.
     /** \param name The action to bind
      *   \param key_name  The key to bind it to (e.g., "Shift-T")
-     *   \note The format of the `sKey` parameter is any key name as returned from @ref
+     *   \note The format of the `key_name` parameter is any key name as returned from @ref
      *         input::get_key_codename(), preceded by optional modifiers (any
      *         combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
      *         to frames in the "OnKeyDown" and "OnKeyUp" scripts.

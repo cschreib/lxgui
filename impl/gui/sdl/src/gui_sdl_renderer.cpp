@@ -37,9 +37,9 @@ renderer::renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image) : p_rend
         throw gui::exception("gui::sdl::renderer", "Could not get renderer information.");
     }
 
-    ui_texture_max_size_ = std::min(info.max_texture_width, info.max_texture_height);
-    if (ui_texture_max_size_ == 0)
-        ui_texture_max_size_ = 1024u;
+    texture_max_size_ = std::min(info.max_texture_width, info.max_texture_height);
+    if (texture_max_size_ == 0)
+        texture_max_size_ = 1024u;
 
     // Check if we can do pre-multiplied alpha
     SDL_Texture* p_texture = SDL_CreateTexture(
@@ -464,7 +464,7 @@ std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter filt) {
 }
 
 std::size_t renderer::get_texture_max_size() const {
-    return ui_texture_max_size_;
+    return texture_max_size_;
 }
 
 bool renderer::is_texture_atlas_supported() const {
@@ -484,12 +484,12 @@ std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<sdl::material> p_tex = std::make_shared<sdl::material>(
         p_renderer_, dimensions, false, material::wrap::repeat, filt);
 
-    std::size_t ui_pitch   = 0u;
-    ub32color*  p_tex_data = p_tex->lock_pointer(&ui_pitch);
+    std::size_t pitch      = 0u;
+    ub32color*  p_tex_data = p_tex->lock_pointer(&pitch);
 
-    for (std::size_t ui_y = 0u; ui_y < dimensions.y; ++ui_y) {
-        const ub32color* p_pixel_data_row = p_pixel_data + ui_y * dimensions.x;
-        ub32color*       p_tex_data_row   = p_tex_data + ui_y * ui_pitch;
+    for (std::size_t y = 0u; y < dimensions.y; ++y) {
+        const ub32color* p_pixel_data_row = p_pixel_data + y * dimensions.x;
+        ub32color*       p_tex_data_row   = p_tex_data + y * pitch;
         std::copy(p_pixel_data_row, p_pixel_data_row + dimensions.x, p_tex_data_row);
     }
 
@@ -517,12 +517,12 @@ renderer::create_render_target(const vector2ui& dimensions, material::filter fil
 
 std::shared_ptr<gui::font> renderer::create_font_(
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) {
+    char32_t                             default_code_point) {
     return std::make_shared<sdl::font>(
-        p_renderer_, font_file, ui_size, ui_outline, code_points, ui_default_code_point,
+        p_renderer_, font_file, size, outline, code_points, default_code_point,
         pre_multiplied_alpha_supported_);
 }
 

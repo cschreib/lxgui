@@ -56,7 +56,7 @@ public:
     frame_container& operator=(frame_container&&) = delete;
 
     /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param attr The core attributes of the frame (pParent will be ignored)
+    /** \param attr The core attributes of the frame (parent will be ignored)
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the
      *         frame is directly usable. However, you still need to call
@@ -71,7 +71,7 @@ public:
     }
 
     /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param attr The core attributes of the frame (sObjectType and pParent will be ignored)
+    /** \param attr The core attributes of the frame (object_type and parent will be ignored)
      *   \return The new frame
      *   \note This function takes care of the basic initializing: the
      *         frame is directly usable. However, you still need to call

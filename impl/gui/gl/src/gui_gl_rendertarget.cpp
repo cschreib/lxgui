@@ -28,8 +28,8 @@ namespace lxgui::gui::gl {
 render_target::render_target(const vector2ui& dimensions, material::filter filt) {
     p_texture_ = std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
 
-    glGenFramebuffers(1, &ui_fbo_handle_);
-    glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
+    glGenFramebuffers(1, &fbo_handle_);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
     glFramebufferTexture2D(
         GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
 
@@ -42,15 +42,15 @@ render_target::render_target(const vector2ui& dimensions, material::filter filt)
 }
 
 render_target::~render_target() {
-    if (ui_fbo_handle_ != 0)
-        glDeleteFramebuffers(1, &ui_fbo_handle_);
+    if (fbo_handle_ != 0)
+        glDeleteFramebuffers(1, &fbo_handle_);
 }
 
 void render_target::begin() {
     vector2f view = vector2f(p_texture_->get_canvas_dimensions());
     view_matrix_  = matrix4f::view(view);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
 
     glViewport(0.0f, 0.0f, view.x, view.y);
 }
@@ -74,7 +74,7 @@ vector2ui render_target::get_canvas_dimensions() const {
 
 bool render_target::set_dimensions(const vector2ui& dimensions) {
     if (p_texture_->set_dimensions(dimensions)) {
-        glBindFramebuffer(GL_FRAMEBUFFER, ui_fbo_handle_);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
         glFramebufferTexture2D(
             GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
 

@@ -168,8 +168,8 @@ int main(int argc, char* argv[]) {
         // Register a callback on Escape to terminate the program.
         // Doing it this way, we only react to keyboard input that is not captured by the GUI.
         input::world_dispatcher& world_input_dispatcher = manager->get_world_input_dispatcher();
-        world_input_dispatcher.on_key_pressed.connect([&](input::key mKey) {
-            if (mKey == input::key::k_escape)
+        world_input_dispatcher.on_key_pressed.connect([&](input::key key_id) {
+            if (key_id == input::key::k_escape)
                 emscripten_cancel_main_loop();
         });
 

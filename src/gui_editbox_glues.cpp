@@ -121,9 +121,9 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function(
         "highlight_text",
-        [](edit_box& self, sol::optional<std::size_t> ui_start, sol::optional<std::size_t> ui_end) {
+        [](edit_box& self, sol::optional<std::size_t> start, sol::optional<std::size_t> end) {
             self.highlight_text(
-                ui_start.value_or(0u), ui_end.value_or(std::numeric_limits<std::size_t>::max()));
+                start.value_or(0u), end.value_or(std::numeric_limits<std::size_t>::max()));
         });
 
     /** @function insert

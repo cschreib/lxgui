@@ -47,8 +47,8 @@ protected:
     float get_height_() const override;
 
 private:
-    std::uint32_t ui_texture_handle_ = 0u;
-    std::size_t   ui_size_           = 0u;
+    std::uint32_t texture_handle_ = 0u;
+    std::size_t   size_           = 0u;
 };
 
 /// A class that holds rendering data

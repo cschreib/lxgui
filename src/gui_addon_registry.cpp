@@ -107,11 +107,9 @@ void addon_registry::load_addon_files_(const addon& add_on) {
             try {
                 lua_.do_file(file);
             } catch (const sol::error& e) {
-                std::string error = e.what();
-
-                gui::out << gui::error << error << std::endl;
-
-                event_emitter_.fire_event("LUA_ERROR", {error});
+                std::string err = e.what();
+                gui::out << gui::error << err << std::endl;
+                event_emitter_.fire_event("LUA_ERROR", {err});
             }
         } else {
             this->parse_layout_file_(file, add_on);
@@ -124,11 +122,9 @@ void addon_registry::load_addon_files_(const addon& add_on) {
         try {
             lua_.do_file(saved_variables_file);
         } catch (const sol::error& e) {
-            std::string error = e.what();
-
-            gui::out << gui::error << error << std::endl;
-
-            event_emitter_.fire_event("LUA_ERROR", {error});
+            std::string err = e.what();
+            gui::out << gui::error << err << std::endl;
+            event_emitter_.fire_event("LUA_ERROR", {err});
         }
     }
 

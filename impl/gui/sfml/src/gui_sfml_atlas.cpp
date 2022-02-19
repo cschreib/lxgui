@@ -8,13 +8,13 @@
 namespace lxgui::gui::sfml {
 
 atlas_page::atlas_page(gui::renderer& rdr, material::filter filt) : gui::atlas_page(filt) {
-    const std::size_t ui_size = rdr.get_texture_atlas_page_size();
+    const std::size_t size = rdr.get_texture_atlas_page_size();
 
-    if (!texture_.create(ui_size, ui_size)) {
+    if (!texture_.create(size, size)) {
         throw gui::exception(
             "gui::sfml::atlas_page", "Could not create texture with dimensions " +
-                                         utils::to_string(ui_size) + " x " +
-                                         utils::to_string(ui_size) + ".");
+                                         utils::to_string(size) + " x " + utils::to_string(size) +
+                                         ".");
     }
 
     texture_.setSmooth(filt == material::filter::linear);

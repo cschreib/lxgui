@@ -23,7 +23,7 @@ class virtual_root : public frame_container {
 public:
     /// Constructor.
     /** \param mgr            The GUI manager
-     *   \param mNonVirtualRegistry The registry for non-virtual objects (for error messages)
+     *   \param non_virtual_registry The registry for non-virtual objects (for error messages)
      */
     explicit virtual_root(manager& mgr, registry& non_virtual_registry);
 

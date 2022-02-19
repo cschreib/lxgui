@@ -20,20 +20,20 @@ public:
     /// Constructor.
     /** \param rdr   The SDL render to create the font for
      *   \param font_file   The name of the font file to read
-     *   \param uiSize      The requested size of the characters (in points)
-     *   \param uiOutline   The thickness of the outline (in points)
+     *   \param size      The requested size of the characters (in points)
+     *   \param outline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      *   \param pre_multiplied_alpha_supported Set to 'true' if the renderer supports pre-multipled
      * alpha
      */
     font(
         SDL_Renderer*                        rdr,
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point,
+        char32_t                             default_code_point,
         bool                                 pre_multiplied_alpha_supported);
 
     /// Get the size of the font in pixels.
@@ -90,7 +90,7 @@ public:
 
 private:
     struct character_info {
-        char32_t ui_code_point = 0;
+        char32_t code_point = 0;
         bounds2f uvs;
         bounds2f rect;
         float    advance = 0.0f;
@@ -103,8 +103,8 @@ private:
 
     const character_info* get_character_(char32_t c) const;
 
-    std::size_t ui_size_               = 0u;
-    char32_t    ui_default_code_point_ = 0u;
+    std::size_t size_               = 0u;
+    char32_t    default_code_point_ = 0u;
 
     std::shared_ptr<sdl::material> p_texture_;
     std::vector<range_info>        range_list_;

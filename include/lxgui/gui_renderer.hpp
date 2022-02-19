@@ -105,7 +105,7 @@ public:
     std::size_t get_texture_atlas_page_size() const;
 
     /// Set the width/height of a texture atlas page (in pixels).
-    /** \param uiPageSize The texture width/height in pixels
+    /** \param page_size The texture width/height in pixels
      *   \note Changing this value will only impact newly created atlas pages.
      *         Existing pages will not be affected.
      *   \note Increase this value to allow more materials to fit on a single atlas
@@ -113,7 +113,7 @@ public:
      *         memory usage from atlas textures is too large. Set it to zero
      *         to fall back to the implementation-defined default value.
      */
-    void set_texture_atlas_page_size(std::size_t ui_page_size);
+    void set_texture_atlas_page_size(std::size_t page_size);
 
     /// Count the total number of texture atlas pages curently in use.
     /** \return The total number of texture atlas pages curently in use
@@ -303,10 +303,10 @@ public:
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
-     *   \param uiSize      The requested size of the characters (in points)
-     *   \param uiOutline   The thickness of the outline (in points)
+     *   \param size      The requested size of the characters (in points)
+     *   \param outline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
      *         from using any other font type, including bitmap fonts.
@@ -316,18 +316,18 @@ public:
      */
     std::shared_ptr<font> create_font(
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point);
+        char32_t                             default_code_point);
 
     /// Creates a new font.
     /** \param atlas_category The category of atlas in which to create the font texture
      *   \param font_file      The file from which to read the font
-     *   \param uiSize         The requested size of the characters (in points)
-     *   \param uiOutline      The thickness of the outline (in points)
+     *   \param size         The requested size of the characters (in points)
+     *   \param outline      The thickness of the outline (in points)
      *   \param code_points    The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
      *         from using any other font type, including bitmap fonts.
@@ -336,10 +336,10 @@ public:
     std::shared_ptr<font> create_atlas_font(
         const std::string&                   atlas_category,
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point);
+        char32_t                             default_code_point);
 
     /// Creates a new empty vertex cache.
     /** \param type The type of data this cache will hold
@@ -426,20 +426,20 @@ protected:
 
     /// Creates a new font.
     /** \param font_file   The file from which to read the font
-     *   \param uiSize      The requested size of the characters (in points)
-     *   \param uiOutline   The thickness of the outline (in points)
+     *   \param size      The requested size of the characters (in points)
+     *   \param outline   The thickness of the outline (in points)
      *   \param code_points The list of Unicode characters to load
-     *   \param uiDefaultCodePoint The character to display as fallback
+     *   \param default_code_point The character to display as fallback
      *   \note Even though the gui has been designed to use vector fonts files
      *         (such as .ttf or .otf font formats), nothing prevents the implementation
      *         from using any other font type, including bitmap fonts.
      */
     virtual std::shared_ptr<font> create_font_(
         const std::string&                   font_file,
-        std::size_t                          ui_size,
-        std::size_t                          ui_outline,
+        std::size_t                          size,
+        std::size_t                          outline,
         const std::vector<code_point_range>& code_points,
-        char32_t                             ui_default_code_point) = 0;
+        char32_t                             default_code_point) = 0;
 
     atlas& get_atlas_(const std::string& atlas_category, material::filter filt);
 
@@ -450,10 +450,10 @@ protected:
 private:
     bool uses_same_texture_(const material* p_mat1, const material* p_mat2) const;
 
-    bool        texture_atlas_enabled_      = true;
-    bool        vertex_cache_enabled_       = true;
-    bool        quad_batching_enabled_      = true;
-    std::size_t ui_texture_atlas_page_size_ = 0u;
+    bool        texture_atlas_enabled_   = true;
+    bool        vertex_cache_enabled_    = true;
+    bool        quad_batching_enabled_   = true;
+    std::size_t texture_atlas_page_size_ = 0u;
 
     struct quad_batcher {
         std::vector<std::array<vertex, 4>> data;
@@ -463,10 +463,10 @@ private:
     static constexpr std::size_t                        batching_cache_cycle_size = 16u;
     std::array<quad_batcher, batching_cache_cycle_size> quad_cache_;
 
-    const gui::material* p_current_material_        = nullptr;
-    std::size_t          ui_current_quad_cache_     = 0u;
-    std::size_t          ui_batch_count_            = 0u;
-    std::size_t          ui_last_frame_batch_count_ = 0u;
+    const gui::material* p_current_material_     = nullptr;
+    std::size_t          current_quad_cache_     = 0u;
+    std::size_t          batch_count_            = 0u;
+    std::size_t          last_frame_batch_count_ = 0u;
 };
 
 } // namespace lxgui::gui

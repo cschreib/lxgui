@@ -44,31 +44,30 @@ public:
     /** \return The file from in which this node is located
      */
     std::string_view get_filename() const noexcept {
-        auto ui_pos = location_.find(':');
-        return std::string_view(
-            location_.c_str(), ui_pos == location_.npos ? location_.size() : ui_pos);
+        auto pos = location_.find(':');
+        return std::string_view(location_.c_str(), pos == location_.npos ? location_.size() : pos);
     }
 
     /// Returns the line number on which this node is located.
     /** \return The line number on which this node is located
      */
     std::size_t get_line_number() const noexcept {
-        std::size_t ui_line = std::numeric_limits<std::size_t>::max();
-        auto        ui_pos  = location_.find(':');
-        if (ui_pos != location_.npos && ui_pos < location_.size() - 1)
-            utils::from_string(location_.substr(ui_pos + 1), ui_line);
-        return ui_line;
+        std::size_t line = std::numeric_limits<std::size_t>::max();
+        auto        pos  = location_.find(':');
+        if (pos != location_.npos && pos < location_.size() - 1)
+            utils::from_string(location_.substr(pos + 1), line);
+        return line;
     }
 
     /// Returns the line number on which this node's value is located.
     /** \return The line number on which this node's value is located
      */
     std::size_t get_value_line_number() const noexcept {
-        std::size_t ui_line = std::numeric_limits<std::size_t>::max();
-        auto        ui_pos  = value_location_.find(':');
-        if (ui_pos != value_location_.npos && ui_pos < value_location_.size() - 1)
-            utils::from_string(value_location_.substr(ui_pos + 1), ui_line);
-        return ui_line;
+        std::size_t line = std::numeric_limits<std::size_t>::max();
+        auto        pos  = value_location_.find(':');
+        if (pos != value_location_.npos && pos < value_location_.size() - 1)
+            utils::from_string(value_location_.substr(pos + 1), line);
+        return line;
     }
 
     /// Returns this node's name.
@@ -218,12 +217,12 @@ public:
     }
 
     /// Returns a specific child of this node, by index
-    /** \param uiIndex The index (starting from 0) of this child
+    /** \param index The index (starting from 0) of this child
      *   \return The child at the specified index
      */
-    const layout_node& get_child(std::size_t ui_index) const noexcept {
+    const layout_node& get_child(std::size_t index) const noexcept {
         accessed_ = true;
-        return child_list_[ui_index];
+        return child_list_[index];
     }
 
     /// Returns a view to the list of children.
@@ -413,7 +412,7 @@ public:
 
     /// Returns the value of the attribute with the provided name, or set it if none.
     /** \param name  The name to look for
-     *   \param sValue The value to set if the attribute is missing
+     *   \param value The value to set if the attribute is missing
      *   \return The value of the attribute with the provided name.
      *   \note This will modify the layout node object if the value is missing. If you need
      *         a non-modifying alternative, use get_attribute_value_or().

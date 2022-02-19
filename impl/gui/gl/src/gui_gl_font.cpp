@@ -47,23 +47,23 @@ namespace lxgui::gui::gl {
 namespace {
 
 // Global state for the Freetype library (one per thread)
-thread_local std::size_t ui_ft_count = 0u;
-thread_local FT_Library  shared_ft   = nullptr;
+thread_local std::size_t ft_count  = 0u;
+thread_local FT_Library  shared_ft = nullptr;
 
 FT_Library get_freetype() {
-    if (ui_ft_count == 0u) {
+    if (ft_count == 0u) {
         if (FT_Init_FreeType(&shared_ft))
             throw lxgui::gui::exception("gui::gl::font", "Error initializing FreeType !");
     }
 
-    ++ui_ft_count;
+    ++ft_count;
     return shared_ft;
 }
 
 void release_freetype() {
-    if (ui_ft_count != 0u) {
-        --ui_ft_count;
-        if (ui_ft_count == 0u)
+    if (ft_count != 0u) {
+        --ft_count;
+        if (ft_count == 0u)
             FT_Done_FreeType(shared_ft);
     }
 }
@@ -72,11 +72,11 @@ void release_freetype() {
 
 font::font(
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) :
-    ui_size_(ui_size), ui_default_code_point_(ui_default_code_point) {
+    char32_t                             default_code_point) :
+    size_(size), default_code_point_(default_code_point) {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org
     // ... and SFML
@@ -97,14 +97,14 @@ font::font(
 
     try {
         // Add some space between letters to prevent artifacts
-        const std::size_t ui_spacing = 1;
+        const std::size_t spacing = 1;
 
         if (FT_New_Face(ft, font_file.c_str(), 0, &face_) != 0) {
             throw gui::exception(
                 "gui::gl::font", "Error loading font : \"" + font_file + "\" : cannot load face.");
         }
 
-        if (ui_outline > 0) {
+        if (outline > 0) {
             if (FT_Stroker_New(ft, &stroker) != 0) {
                 throw gui::exception(
                     "gui::gl::font",
@@ -118,31 +118,30 @@ font::font(
                                      "\" : cannot select Unicode character map.");
         }
 
-        if (FT_Set_Pixel_Sizes(face_, 0, ui_size) != 0) {
+        if (FT_Set_Pixel_Sizes(face_, 0, size) != 0) {
             throw gui::exception(
                 "gui::gl::font",
                 "Error loading font : \"" + font_file + "\" : cannot set font size.");
         }
 
         FT_Int32 load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
-        if (ui_outline != 0)
+        if (outline != 0)
             load_flags |= FT_LOAD_NO_BITMAP;
 
         // Calculate maximum width, height and bearing
-        std::size_t ui_max_height = 0, ui_max_width = 0;
-        std::size_t ui_num_char = 0;
+        std::size_t max_height = 0, max_width = 0;
+        std::size_t num_char = 0;
         for (const code_point_range& range : code_points) {
-            for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
-                 ++ui_code_point) {
-                if (FT_Load_Char(face_, ui_code_point, load_flags) != 0)
+            for (char32_t code_point = range.first; code_point <= range.last; ++code_point) {
+                if (FT_Load_Char(face_, code_point, load_flags) != 0)
                     continue;
 
                 if (FT_Get_Glyph(face_->glyph, &glyph) != 0)
                     continue;
 
-                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
+                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && outline > 0) {
                     FT_Stroker_Set(
-                        stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
+                        stroker, ft_fixed<6>(outline), FT_STROKER_LINECAP_ROUND,
                         FT_STROKER_LINEJOIN_ROUND, 0);
                     FT_Glyph_StrokeBorder(&glyph, stroker, false, true);
                 }
@@ -150,49 +149,47 @@ font::font(
                 FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
                 const FT_Bitmap& bitmap = reinterpret_cast<FT_BitmapGlyph>(glyph)->bitmap;
 
-                if (bitmap.rows > ui_max_height)
-                    ui_max_height = bitmap.rows;
+                if (bitmap.rows > max_height)
+                    max_height = bitmap.rows;
 
-                if (bitmap.width > ui_max_width)
-                    ui_max_width = bitmap.width;
+                if (bitmap.width > max_width)
+                    max_width = bitmap.width;
 
-                ++ui_num_char;
+                ++num_char;
 
                 FT_Done_Glyph(glyph);
                 glyph = nullptr;
             }
         }
 
-        ui_max_height = ui_max_height + 2 * ui_outline;
-        ui_max_width  = ui_max_width + 2 * ui_outline;
+        max_height = max_height + 2 * outline;
+        max_width  = max_width + 2 * outline;
 
         // Calculate the size of the texture
-        std::size_t ui_tex_size =
-            (ui_max_width + ui_spacing) * (ui_max_height + ui_spacing) * ui_num_char;
-        std::size_t ui_tex_side =
-            static_cast<std::size_t>(std::sqrt(static_cast<float>(ui_tex_size)));
+        std::size_t tex_size = (max_width + spacing) * (max_height + spacing) * num_char;
+        std::size_t tex_side = static_cast<std::size_t>(std::sqrt(static_cast<float>(tex_size)));
 
         // Add a bit of overhead since we won't be able to tile this area perfectly
-        ui_tex_side += std::max(ui_max_width, ui_max_height);
-        ui_tex_size = ui_tex_side * ui_tex_side;
+        tex_side += std::max(max_width, max_height);
+        tex_size = tex_side * tex_side;
 
         // Round up to nearest power of two
         {
             std::size_t i = 1;
-            while (ui_tex_side > i)
+            while (tex_side > i)
                 i *= 2;
-            ui_tex_side = i;
+            tex_side = i;
         }
 
         // Set up area as square
-        std::size_t ui_final_width  = ui_tex_side;
-        std::size_t ui_final_height = ui_tex_side;
+        std::size_t final_width  = tex_side;
+        std::size_t final_height = tex_side;
 
         // Reduce height if we don't actually need a square
-        if (ui_final_width * ui_final_height / 2 >= ui_tex_size)
-            ui_final_height = ui_final_height / 2;
+        if (final_width * final_height / 2 >= tex_size)
+            final_height = final_height / 2;
 
-        std::vector<ub32color> data(ui_final_width * ui_final_height);
+        std::vector<ub32color> data(final_width * final_height);
         std::fill(data.begin(), data.end(), ub32color(0, 0, 0, 0));
 
         std::size_t x = 0, y = 0;
@@ -213,41 +210,40 @@ font::font(
         for (const code_point_range& range : code_points) {
             range_info info;
             info.range = range;
-            info.data.resize(range.ui_last - range.ui_first + 1);
+            info.data.resize(range.last - range.first + 1);
 
-            for (char32_t ui_code_point = range.ui_first; ui_code_point <= range.ui_last;
-                 ++ui_code_point) {
-                character_info& ci = info.data[ui_code_point - range.ui_first];
-                ci.ui_code_point   = ui_code_point;
+            for (char32_t code_point = range.first; code_point <= range.last; ++code_point) {
+                character_info& ci = info.data[code_point - range.first];
+                ci.code_point      = code_point;
 
-                if (FT_Load_Char(face_, ui_code_point, load_flags) != 0) {
+                if (FT_Load_Char(face_, code_point, load_flags) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot load character "
-                             << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
+                             << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
                 if (FT_Get_Glyph(face_->glyph, &glyph) != 0) {
                     gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character "
-                             << ui_code_point << " in font \"" << font_file << "\"." << std::endl;
+                             << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
-                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && ui_outline > 0) {
+                if (glyph->format == FT_GLYPH_FORMAT_OUTLINE && outline > 0) {
                     FT_Stroker_Set(
-                        stroker, ft_fixed<6>(ui_outline), FT_STROKER_LINECAP_ROUND,
+                        stroker, ft_fixed<6>(outline), FT_STROKER_LINECAP_ROUND,
                         FT_STROKER_LINEJOIN_ROUND, 0);
                     FT_Glyph_Stroke(&glyph, stroker, true);
                 }
 
-                // Warning: after this line, do not use mGlyph! Use mBitmapGlyph.root
+                // Warning: after this line, do not use glyph! Use bitmap_glyph.root
                 FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
                 FT_BitmapGlyph bitmap_glyph = reinterpret_cast<FT_BitmapGlyph>(glyph);
 
                 const FT_Bitmap& bitmap = bitmap_glyph->bitmap;
 
                 // If at end of row, jump to next line
-                if (x + bitmap.width > ui_final_width - 1) {
-                    y += ui_max_height + ui_spacing;
+                if (x + bitmap.width > final_width - 1) {
+                    y += max_height + spacing;
                     x = 0;
                 }
 
@@ -256,16 +252,16 @@ font::font(
                 const ub32color::chanel* buffer = bitmap.buffer;
                 if (buffer) {
                     for (std::size_t j = 0; j < bitmap.rows; ++j) {
-                        std::size_t ui_row_offset = (y + j) * ui_final_width + x;
+                        std::size_t row_offset = (y + j) * final_width + x;
                         for (std::size_t i = 0; i < bitmap.width; ++i, ++buffer)
-                            data[i + ui_row_offset] = ub32color(255, 255, 255, *buffer);
+                            data[i + row_offset] = ub32color(255, 255, 255, *buffer);
                     }
                 }
 
-                ci.uvs.left   = x / float(ui_final_width);
-                ci.uvs.top    = y / float(ui_final_height);
-                ci.uvs.right  = (x + bitmap.width) / float(ui_final_width);
-                ci.uvs.bottom = (y + bitmap.rows) / float(ui_final_height);
+                ci.uvs.left   = x / float(final_width);
+                ci.uvs.top    = y / float(final_height);
+                ci.uvs.right  = (x + bitmap.width) / float(final_width);
+                ci.uvs.bottom = (y + bitmap.rows) / float(final_height);
 
                 ci.rect.left   = bitmap_glyph->left;
                 ci.rect.right  = ci.rect.left + bitmap.width;
@@ -275,7 +271,7 @@ font::font(
                 ci.advance = ft_round<16>(bitmap_glyph->root.advance.x);
 
                 // Advance a column
-                x += bitmap.width + ui_spacing;
+                x += bitmap.width + spacing;
 
                 FT_Done_Glyph(glyph);
                 glyph = nullptr;
@@ -288,7 +284,7 @@ font::font(
 
         gl::material::premultiply_alpha(data);
 
-        p_texture_ = std::make_shared<gl::material>(vector2ui(ui_final_width, ui_final_height));
+        p_texture_ = std::make_shared<gl::material>(vector2ui(final_width, final_height));
         p_texture_->update_texture(data.data());
     } catch (...) {
         if (glyph)
@@ -309,19 +305,19 @@ font::~font() {
 }
 
 std::size_t font::get_size() const {
-    return ui_size_;
+    return size_;
 }
 
 const font::character_info* font::get_character_(char32_t c) const {
     for (const auto& info : range_list_) {
-        if (c < info.range.ui_first || c > info.range.ui_last)
+        if (c < info.range.first || c > info.range.last)
             continue;
 
-        return &info.data[c - info.range.ui_first];
+        return &info.data[c - info.range.first];
     }
 
-    if (c != ui_default_code_point_)
-        return get_character_(ui_default_code_point_);
+    if (c != default_code_point_)
+        return get_character_(default_code_point_);
     else
         return nullptr;
 }
@@ -363,9 +359,9 @@ float font::get_character_height(char32_t c) const {
 float font::get_character_kerning(char32_t c1, char32_t c2) const {
     if (kerning_) {
         FT_Vector kerning;
-        FT_UInt   ui_prev = FT_Get_Char_Index(face_, c1);
-        FT_UInt   ui_next = FT_Get_Char_Index(face_, c2);
-        if (FT_Get_Kerning(face_, ui_prev, ui_next, FT_KERNING_UNFITTED, &kerning) != 0)
+        FT_UInt   prev = FT_Get_Char_Index(face_, c1);
+        FT_UInt   next = FT_Get_Char_Index(face_, c2);
+        if (FT_Get_Kerning(face_, prev, next, FT_KERNING_UNFITTED, &kerning) != 0)
             return ft_round<6>(kerning.x);
         else
             return 0.0f;

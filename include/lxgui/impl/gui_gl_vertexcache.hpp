@@ -38,33 +38,33 @@ public:
 
     /// Update the data stored in the cache, reusing existing indices.
     /** \param vertex_data The vertices to cache
-     *   \param uiNumVertex The number of vertices to cache
+     *   \param num_vertex The number of vertices to cache
      */
-    void update_data(const vertex* vertex_data, std::size_t ui_num_vertex);
+    void update_data(const vertex* vertex_data, std::size_t num_vertex);
 
     /// Update the indices stored in the cache, reusing existing data.
     /** \param vertex_indices The indices to use for drawing triangles
-     *   \param uiNumIndices The number of indices to cache
+     *   \param num_indices The number of indices to cache
      */
-    void update_indices(const std::uint32_t* vertex_indices, std::size_t ui_num_indices);
+    void update_indices(const std::uint32_t* vertex_indices, std::size_t num_indices);
 
     /// Update the indices stored in the cache, but only if the current index cache is smaller.
     /** \param vertex_indices The indices to use for drawing triangles
-     *   \param uiNumIndices The number of indices to cache
+     *   \param num_indices The number of indices to cache
      *   \note This function assumes that the index buffer is always initialised with
      *         valid indices, and that only the *number* of indices changes. Indices that
      *         were set in previous calls of update_indices() are assumed to not change
      *         value.
      */
-    void update_indices_if_grow(const std::uint32_t* vertex_indices, std::size_t ui_num_indices);
+    void update_indices_if_grow(const std::uint32_t* vertex_indices, std::size_t num_indices);
 
     /// Update the data stored in the cache to form new triangles.
     /** \param vertex_data The vertices to cache
-     *   \param uiNumVertex The number of vertices to cache
-     *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
-     *         If the type if QUADS, uiNumVertex must be a multiple of 4.
+     *   \param num_vertex The number of vertices to cache
+     *   \note If the type if TRIANGLES, num_vertex must be a multiple of 3.
+     *         If the type if QUADS, num_vertex must be a multiple of 4.
      */
-    void update(const vertex* vertex_data, std::size_t ui_num_vertex) override;
+    void update(const vertex* vertex_data, std::size_t num_vertex) override;
 
     /// Renders the cache.
     /** \note This does not bind the material, just binds the cache and renders it
@@ -73,13 +73,13 @@ public:
     void render() const;
 
 private:
-    std::size_t   ui_current_size_vertex_     = 0u;
-    std::size_t   ui_current_size_index_      = 0u;
-    std::size_t   ui_current_capacity_vertex_ = 0u;
-    std::size_t   ui_current_capacity_index_  = 0u;
-    std::uint32_t ui_vertex_array_            = std::numeric_limits<std::uint32_t>::max();
-    std::uint32_t ui_vertex_buffer_           = std::numeric_limits<std::uint32_t>::max();
-    std::uint32_t ui_index_buffer_            = std::numeric_limits<std::uint32_t>::max();
+    std::size_t   current_size_vertex_     = 0u;
+    std::size_t   current_size_index_      = 0u;
+    std::size_t   current_capacity_vertex_ = 0u;
+    std::size_t   current_capacity_index_  = 0u;
+    std::uint32_t vertex_array_            = std::numeric_limits<std::uint32_t>::max();
+    std::uint32_t vertex_buffer_           = std::numeric_limits<std::uint32_t>::max();
+    std::uint32_t index_buffer_            = std::numeric_limits<std::uint32_t>::max();
 };
 
 } // namespace lxgui::gui::gl

@@ -14,8 +14,8 @@
 namespace lxgui::gui {
 
 void step_value(float& value, float step) {
-    // Makes the value a multiple of the step :
-    // fValue = N*fStep, where N is an integer.
+    // Makes the value a multiple of the step,
+    // value = N*step, where N is an integer.
     if (step != 0.0f)
         value = std::round(value / step) * step;
 }

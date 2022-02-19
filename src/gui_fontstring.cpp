@@ -191,25 +191,25 @@ void font_string::create_text_object_() {
     if (font_name_.empty())
         return;
 
-    std::size_t ui_pixel_height = static_cast<std::size_t>(
+    std::size_t pixel_height = static_cast<std::size_t>(
         std::round(get_manager().get_interface_scaling_factor() * height_));
 
     auto&       renderer  = get_manager().get_renderer();
     const auto& localizer = get_manager().get_localizer();
 
-    const auto&    code_points           = localizer.get_allowed_code_points();
-    const char32_t ui_default_code_point = localizer.get_fallback_code_point();
+    const auto&    code_points        = localizer.get_allowed_code_points();
+    const char32_t default_code_point = localizer.get_fallback_code_point();
 
     std::shared_ptr<gui::font> p_outline_font;
     if (is_outlined_) {
         p_outline_font = renderer.create_atlas_font(
-            "GUI", font_name_, ui_pixel_height,
-            std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * ui_pixel_height))),
-            code_points, ui_default_code_point);
+            "GUI", font_name_, pixel_height,
+            std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * pixel_height))),
+            code_points, default_code_point);
     }
 
     auto p_font = renderer.create_atlas_font(
-        "GUI", font_name_, ui_pixel_height, 0u, code_points, ui_default_code_point);
+        "GUI", font_name_, pixel_height, 0u, code_points, default_code_point);
 
     p_text_ = std::unique_ptr<text>(new text(renderer, p_font, p_outline_font));
 

@@ -69,7 +69,7 @@ public:
     static void check_availability();
 
 private:
-    std::uint32_t                 ui_fbo_handle_ = 0;
+    std::uint32_t                 fbo_handle_ = 0;
     std::shared_ptr<gl::material> p_texture_;
 
     matrix4f view_matrix_;

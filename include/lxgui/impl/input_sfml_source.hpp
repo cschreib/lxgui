@@ -41,7 +41,7 @@ public:
     void reset_mouse_cursor() override;
 
 private:
-    input::key from_sfml_(int ui_sf_key) const;
+    input::key from_sfml_(int sf_key) const;
 
     sf::Window& window_;
 

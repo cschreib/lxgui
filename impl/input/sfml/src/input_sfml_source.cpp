@@ -57,8 +57,8 @@ void source::reset_mouse_cursor() {
     window_.setMouseCursor(*iter->second);
 }
 
-key source::from_sfml_(int ui_sf_key) const {
-    switch ((sf::Keyboard::Key)ui_sf_key) {
+key source::from_sfml_(int sf_key) const {
+    switch ((sf::Keyboard::Key)sf_key) {
     case Keyboard::Escape: return key::k_escape;
     case Keyboard::Num0: return key::k_0;
     case Keyboard::Num1: return key::k_1;

@@ -262,8 +262,8 @@ void localizer::register_on_lua(sol::state& lua) {
      *   @tparam integer last The last code point in the range
      *   @function add_allowed_code_points
      */
-    lua.set_function("add_allowed_code_points", [&](char32_t ui_first, char32_t ui_last) {
-        add_allowed_code_points(code_point_range{ui_first, ui_last});
+    lua.set_function("add_allowed_code_points", [&](char32_t first, char32_t last) {
+        add_allowed_code_points(code_point_range{first, last});
     });
 
     /** Adds a new range to the set of allowed code points from a Unicode group.
@@ -304,8 +304,8 @@ void localizer::register_on_lua(sol::state& lua) {
      *   @tparam integer character The Unicode UTF-32 code point of the character to display
      *   @function set_fallback_code_point
      */
-    lua.set_function("set_fallback_code_point", [&](char32_t ui_code_point) {
-        set_fallback_code_point(ui_code_point);
+    lua.set_function("set_fallback_code_point", [&](char32_t code_point) {
+        set_fallback_code_point(code_point);
     });
 
     /** Loads translations from a folder.

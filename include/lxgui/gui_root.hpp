@@ -135,8 +135,8 @@ public:
     /// Start manually moving a region with the mouse.
     /** \param pObj        The object to move
      *   \param pAnchor     The reference anchor
-     *   \param mConstraint The constraint axis if any
-     *   \param mApplyConstraintFunc Optional function to implement further constraints
+     *   \param constraint The constraint axis if any
+     *   \param apply_constraint_func Optional function to implement further constraints
      *   \note Movement is handled by the root, you don't need to do anything except
      *         calling stop_moving() when you are done.
      */
@@ -188,7 +188,7 @@ public:
     void request_focus(utils::observer_ptr<frame> p_receiver);
 
     /// Give up focus of keyboard input.
-    /** \param mReceiver The event receiver that releases focus
+    /** \param receiver The event receiver that releases focus
      */
     void release_focus(const frame& receiver);
 

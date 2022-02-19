@@ -9,7 +9,7 @@
 namespace lxgui::gui {
 
 void renderer::begin(std::shared_ptr<render_target> p_target) {
-    ui_batch_count_ = 0;
+    batch_count_ = 0;
 
     if (is_quad_batching_enabled()) {
         p_current_material_ = nullptr;
@@ -17,10 +17,8 @@ void renderer::begin(std::shared_ptr<render_target> p_target) {
         if (is_vertex_cache_enabled()) {
             try {
                 if (quad_cache_[0].p_cache == nullptr) {
-                    for (std::size_t ui_index = 0u; ui_index < batching_cache_cycle_size;
-                         ++ui_index) {
-                        quad_cache_[ui_index].p_cache =
-                            create_vertex_cache(vertex_cache::type::quads);
+                    for (std::size_t index = 0u; index < batching_cache_cycle_size; ++index) {
+                        quad_cache_[index].p_cache = create_vertex_cache(vertex_cache::type::quads);
                     }
                 }
             } catch (const std::exception& e) {
@@ -41,7 +39,7 @@ void renderer::begin(std::shared_ptr<render_target> p_target) {
 void renderer::end() {
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
-        ui_last_frame_batch_count_ = ui_batch_count_;
+        last_frame_batch_count_ = batch_count_;
     }
 
     end_();
@@ -93,7 +91,7 @@ void renderer::render_quads(
         p_current_material_ = p_material;
     }
 
-    if (quad_cache_[ui_current_quad_cache_].data.empty()) {
+    if (quad_cache_[current_quad_cache_].data.empty()) {
         // Start a new batch
         p_current_material_ = p_material;
     }
@@ -104,7 +102,7 @@ void renderer::render_quads(
     }
 
     // Add to the cache
-    auto& cache = quad_cache_[ui_current_quad_cache_];
+    auto& cache = quad_cache_[current_quad_cache_];
 
     if (!p_material && is_texture_atlas_enabled() && is_texture_vertex_color_supported()) {
         // To allow quads with no texture to enter the batch
@@ -122,7 +120,7 @@ void renderer::render_quads(
 }
 
 void renderer::flush_quad_batch() {
-    auto& cache = quad_cache_[ui_current_quad_cache_];
+    auto& cache = quad_cache_[current_quad_cache_];
     if (cache.data.empty())
         return;
 
@@ -136,11 +134,11 @@ void renderer::flush_quad_batch() {
     cache.data.clear();
     p_current_material_ = nullptr;
 
-    ++ui_current_quad_cache_;
-    if (ui_current_quad_cache_ == batching_cache_cycle_size)
-        ui_current_quad_cache_ = 0u;
+    ++current_quad_cache_;
+    if (current_quad_cache_ == batching_cache_cycle_size)
+        current_quad_cache_ = 0u;
 
-    ++ui_batch_count_;
+    ++batch_count_;
 }
 
 void renderer::render_cache(
@@ -184,19 +182,18 @@ renderer::create_material(const std::string& file_name, material::filter filt) {
 namespace {
 std::string hash_font_parameters(
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) {
-    std::string font_name = font_file + "|s" + utils::to_string(ui_size);
-    if (ui_outline > 0u)
-        font_name += "|o" + utils::to_string(ui_outline);
+    char32_t                             default_code_point) {
+    std::string font_name = font_file + "|s" + utils::to_string(size);
+    if (outline > 0u)
+        font_name += "|o" + utils::to_string(outline);
 
     for (const code_point_range& range : code_points)
-        font_name +=
-            "|c" + utils::to_string(range.ui_first) + "-" + utils::to_string(range.ui_last);
+        font_name += "|c" + utils::to_string(range.first) + "-" + utils::to_string(range.last);
 
-    font_name += "|d" + utils::to_string(ui_default_code_point);
+    font_name += "|d" + utils::to_string(default_code_point);
 
     return font_name;
 }
@@ -204,12 +201,12 @@ std::string hash_font_parameters(
 
 std::shared_ptr<gui::font> renderer::create_font(
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) {
+    char32_t                             default_code_point) {
     const std::string font_name =
-        hash_font_parameters(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        hash_font_parameters(font_file, size, outline, code_points, default_code_point);
 
     auto iter = font_list_.find(font_name);
     if (iter != font_list_.end()) {
@@ -220,7 +217,7 @@ std::shared_ptr<gui::font> renderer::create_font(
     }
 
     std::shared_ptr<gui::font> p_font =
-        create_font_(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        create_font_(font_file, size, outline, code_points, default_code_point);
 
     font_list_[font_name] = p_font;
     return p_font;
@@ -235,24 +232,24 @@ void renderer::set_texture_atlas_enabled(bool enabled) {
 }
 
 std::size_t renderer::get_texture_atlas_page_size() const {
-    if (ui_texture_atlas_page_size_ == 0u)
+    if (texture_atlas_page_size_ == 0u)
         return std::min<std::size_t>(4096u, get_texture_max_size());
     else
-        return ui_texture_atlas_page_size_;
+        return texture_atlas_page_size_;
 }
 
-void renderer::set_texture_atlas_page_size(std::size_t ui_page_size) {
-    ui_texture_atlas_page_size_ = ui_page_size;
+void renderer::set_texture_atlas_page_size(std::size_t page_size) {
+    texture_atlas_page_size_ = page_size;
 }
 
 std::size_t renderer::get_num_texture_atlas_pages() const {
-    std::size_t ui_count = 0;
+    std::size_t count = 0;
 
     for (const auto& page : atlas_list_) {
-        ui_count += page.second->get_num_pages();
+        count += page.second->get_num_pages();
     }
 
-    return ui_count;
+    return count;
 }
 
 bool renderer::is_vertex_cache_enabled() const {
@@ -312,23 +309,23 @@ std::shared_ptr<material> renderer::create_atlas_material(
 std::shared_ptr<font> renderer::create_atlas_font(
     const std::string&                   atlas_category,
     const std::string&                   font_file,
-    std::size_t                          ui_size,
-    std::size_t                          ui_outline,
+    std::size_t                          size,
+    std::size_t                          outline,
     const std::vector<code_point_range>& code_points,
-    char32_t                             ui_default_code_point) {
+    char32_t                             default_code_point) {
     if (!is_texture_atlas_enabled())
-        return create_font(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        return create_font(font_file, size, outline, code_points, default_code_point);
 
     auto& atlas = get_atlas_(atlas_category, material::filter::none);
 
     const std::string font_name =
-        hash_font_parameters(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+        hash_font_parameters(font_file, size, outline, code_points, default_code_point);
 
     auto p_font = atlas.fetch_font(font_name);
     if (p_font)
         return p_font;
 
-    p_font = create_font(font_file, ui_size, ui_outline, code_points, ui_default_code_point);
+    p_font = create_font(font_file, size, outline, code_points, default_code_point);
     if (!p_font)
         return nullptr;
 

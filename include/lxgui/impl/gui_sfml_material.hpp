@@ -49,7 +49,7 @@ public:
         const std::string& file_name, wrap wrp = wrap::repeat, filter filt = filter::none);
 
     /// Constructor for atlas textures.
-    /** \param mTexture  The atlas texture holding this material's texture
+    /** \param texture  The atlas texture holding this material's texture
      *   \param location The location of the texture inside the atlas texture (in pixels)
      *   \param filt   Use texture filtering or not (see set_filter())
      */

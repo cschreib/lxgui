@@ -80,17 +80,17 @@ dispatcher::dispatcher(source& src) : source_(src) {
             on_mouse_moved(movement, mouse_pos);
 
             if (!is_mouse_dragged_) {
-                std::size_t ui_mouse_button_pressed = std::numeric_limits<std::size_t>::max();
+                std::size_t mouse_button_pressed = std::numeric_limits<std::size_t>::max();
                 for (std::size_t i = 0; i < mouse_button_number; ++i) {
                     if (mouse_is_down(static_cast<mouse_button>(i))) {
-                        ui_mouse_button_pressed = i;
+                        mouse_button_pressed = i;
                         break;
                     }
                 }
 
-                if (ui_mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
+                if (mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
                     is_mouse_dragged_  = true;
-                    mouse_drag_button_ = static_cast<mouse_button>(ui_mouse_button_pressed);
+                    mouse_drag_button_ = static_cast<mouse_button>(mouse_button_pressed);
                     on_mouse_drag_start(mouse_drag_button_, mouse_pos);
                 }
             }

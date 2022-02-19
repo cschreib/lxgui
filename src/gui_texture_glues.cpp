@@ -90,8 +90,8 @@ void texture::register_on_lua(sol::state& lua) {
 
     /** @function get_vertex_color
      */
-    type.set_function("get_vertex_color", [](const texture& self, std::size_t ui_index) {
-        color color = self.get_vertex_color(ui_index);
+    type.set_function("get_vertex_color", [](const texture& self, std::size_t index) {
+        color color = self.get_vertex_color(index);
         return std::make_tuple(color.r, color.g, color.b, color.a);
     });
 
@@ -246,12 +246,12 @@ void texture::register_on_lua(sol::state& lua) {
                 self.set_vertex_color(
                     color(r, g, b, a.value_or(1.0f)), std::numeric_limits<std::size_t>::max());
             },
-            [](texture& self, std::size_t ui_index, const std::string& s) {
-                self.set_vertex_color(color(s), ui_index);
+            [](texture& self, std::size_t index, const std::string& s) {
+                self.set_vertex_color(color(s), index);
             },
-            [](texture& self, std::size_t ui_index, float r, float g, float b,
+            [](texture& self, std::size_t index, float r, float g, float b,
                sol::optional<float> a) {
-                self.set_vertex_color(color(r, g, b, a.value_or(1.0f)), ui_index);
+                self.set_vertex_color(color(r, g, b, a.value_or(1.0f)), index);
             }));
 }
 

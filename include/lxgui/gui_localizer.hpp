@@ -25,7 +25,7 @@ class localizer {
     std::locale                   locale_;
     std::vector<std::string>      languages_;
     std::vector<code_point_range> code_points_;
-    char32_t                      ui_default_code_point_ = U'\u25a1'; // '□'
+    char32_t                      default_code_point_ = U'\u25a1'; // '□'
     sol::state                    lua_;
     map_type                      map_;
 
@@ -132,9 +132,9 @@ public:
     const std::vector<code_point_range>& get_allowed_code_points() const;
 
     /// Sets the default character to display if a character is missing from a font.
-    /** \param uiCodePoint The Unicode UTF-32 code point of the character to display
+    /** \param code_point The Unicode UTF-32 code point of the character to display
      */
-    void set_fallback_code_point(char32_t ui_code_point);
+    void set_fallback_code_point(char32_t code_point);
 
     /// Returns the default character to display if a character is missing from a font.
     /** \return The default character to display if a character is missing from a font
@@ -199,7 +199,7 @@ public:
     /** \param key   The key identifying the sentence / text to translate (e.g.,
      * "{player_health}"). Must start with '{' and end with '}'.
      *   \param args A variadic list of translation input arguments from a Sol Lua state.
-     *   \return The translated string, or sKey if not found or an error occurred.
+     *   \return The translated string, or key if not found or an error occurred.
      *   \note See the other overload for more information.
      */
     std::string localize(std::string_view key, sol::variadic_args args) const;
@@ -208,10 +208,10 @@ public:
     /** \param key  The key identifying the sentence / text to translate (e.g., "{player_health}").
      *                Must start with '{' and end with '}'.
      *   \param args A variadic list of translation input arguments.
-     *   \return The translated string, or sKey if not found or an error occurred.
+     *   \return The translated string, or key if not found or an error occurred.
      *   \details This function will search the translation database (created from loading
      *            translations with load_translations() or load_translation_file()) for a
-     *            string matching sKey. If one is found, it will forward the supplied arguments
+     *            string matching key. If one is found, it will forward the supplied arguments
      *            to the translated formatting function, which will insert the arguments at
      *            the proper place for the selected language.
      */

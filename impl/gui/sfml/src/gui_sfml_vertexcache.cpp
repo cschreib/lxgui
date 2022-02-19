@@ -22,42 +22,42 @@ void to_sfml(const vertex& v, sf::Vertex& sv) {
     sv.texCoords.y = v.uvs.y;
 }
 
-void vertex_cache::update(const vertex* vertex_data, std::size_t ui_num_vertex) {
+void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     if (type_ == type::quads) {
         static constexpr std::array<std::size_t, 6> quad_i_ds = {{0, 1, 2, 2, 3, 0}};
 
-        std::size_t ui_num_quads           = ui_num_vertex / 4u;
-        std::size_t ui_num_vertex_expanded = ui_num_quads * 6u;
-        if (ui_num_vertex_expanded > buffer_.getVertexCount())
-            buffer_.create(ui_num_vertex_expanded);
+        std::size_t num_quads           = num_vertex / 4u;
+        std::size_t num_vertex_expanded = num_quads * 6u;
+        if (num_vertex_expanded > buffer_.getVertexCount())
+            buffer_.create(num_vertex_expanded);
 
-        std::vector<sf::Vertex> vertices(ui_num_vertex_expanded);
-        for (std::size_t i = 0; i < ui_num_vertex_expanded; ++i) {
+        std::vector<sf::Vertex> vertices(num_vertex_expanded);
+        for (std::size_t i = 0; i < num_vertex_expanded; ++i) {
             auto&       sv = vertices[i];
             const auto& v  = vertex_data[(i / 6u) * 4u + quad_i_ds[i % 6u]];
             to_sfml(v, sv);
         }
 
-        buffer_.update(vertices.data(), ui_num_vertex_expanded, 0);
-        ui_num_vertex_ = ui_num_vertex_expanded;
+        buffer_.update(vertices.data(), num_vertex_expanded, 0);
+        num_vertex_ = num_vertex_expanded;
     } else {
-        if (ui_num_vertex > buffer_.getVertexCount())
-            buffer_.create(ui_num_vertex);
+        if (num_vertex > buffer_.getVertexCount())
+            buffer_.create(num_vertex);
 
-        std::vector<sf::Vertex> vertices(ui_num_vertex);
-        for (std::size_t i = 0; i < ui_num_vertex; ++i) {
+        std::vector<sf::Vertex> vertices(num_vertex);
+        for (std::size_t i = 0; i < num_vertex; ++i) {
             auto&       sv = vertices[i];
             const auto& v  = vertex_data[i];
             to_sfml(v, sv);
         }
 
-        buffer_.update(vertices.data(), ui_num_vertex, 0);
-        ui_num_vertex_ = ui_num_vertex;
+        buffer_.update(vertices.data(), num_vertex, 0);
+        num_vertex_ = num_vertex;
     }
 }
 
 std::size_t vertex_cache::get_num_vertex() const {
-    return ui_num_vertex_;
+    return num_vertex_;
 }
 
 const sf::VertexBuffer& vertex_cache::get_impl() const {

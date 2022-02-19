@@ -173,14 +173,14 @@ public:
     const utils::ustring& get_text() const;
 
     /// Selects a portion of the content.
-    /** \param uiStart      The first character to select
-     *   \param uiEnd        The last character to select
+    /** \param start      The first character to select
+     *   \param end        The last character to select
      *   \param force_update 'true' to bypass all redundancy checks
-     *   \note Will select (uiEnd - uiStart) characters
+     *   \note Will select (end - start) characters
      */
     void highlight_text(
-        std::size_t ui_start     = 0u,
-        std::size_t ui_end       = std::numeric_limits<std::size_t>::max(),
+        std::size_t start        = 0u,
+        std::size_t end          = std::numeric_limits<std::size_t>::max(),
         bool        force_update = false);
 
     /// Deselects the selected text, if any.
@@ -203,15 +203,15 @@ public:
     std::size_t get_cursor_position() const;
 
     /// Moves the cursor to a chosen position.
-    /** \param uiPos The new cursor position (0: before first character,
+    /** \param pos The new cursor position (0: before first character,
                      get_num-letters(): after last character).
     */
-    void set_cursor_position(std::size_t ui_pos);
+    void set_cursor_position(std::size_t pos);
 
     /// Sets the maximum number of letters to allow in this edit_box.
-    /** \param uiMaxLetters The max number of letters
+    /** \param max_letters The max number of letters
      */
-    void set_max_letters(std::size_t ui_max_letters);
+    void set_max_letters(std::size_t max_letters);
 
     /// Returns the maximum number of letters to allow in this edit_box.
     /** \return the maximum number of letters to allow in this edit_box
@@ -293,9 +293,9 @@ public:
     bool is_multi_line() const;
 
     /// Sets the maximum number of history lines this edit_box can keep.
-    /** \param uiMaxHistoryLines The max number of history lines
+    /** \param max_history_lines The max number of history lines
      */
-    void set_max_history_lines(std::size_t ui_max_history_lines);
+    void set_max_history_lines(std::size_t max_history_lines);
 
     /// Returns the maximum number of history lines this edit_box can keep.
     /** \return The maximum number of history lines this edit_box can keep
@@ -404,9 +404,9 @@ protected:
     utils::ustring::iterator iter_carret_pos_;
     utils::ustring::iterator iter_carret_pos_old_;
 
-    std::size_t ui_display_pos_     = 0;
-    std::size_t ui_num_letters_     = 0;
-    std::size_t ui_max_letters_     = std::numeric_limits<std::size_t>::max();
+    std::size_t display_pos_        = 0;
+    std::size_t num_letters_        = 0;
+    std::size_t max_letters_        = std::numeric_limits<std::size_t>::max();
     bool        is_numeric_only_    = false;
     bool        is_positive_only_   = false;
     bool        is_integer_only_    = false;
@@ -414,19 +414,19 @@ protected:
     bool        is_multi_line_      = false;
     bool        are_arrows_ignored_ = false;
 
-    utils::observer_ptr<texture> p_highlight_            = nullptr;
-    color                        highlight_color_        = color(1.0f, 1.0f, 1.0f, 0.5f);
-    std::size_t                  ui_selection_start_pos_ = 0u;
-    std::size_t                  ui_selection_end_pos_   = 0u;
-    bool                         is_text_selected_       = false;
+    utils::observer_ptr<texture> p_highlight_         = nullptr;
+    color                        highlight_color_     = color(1.0f, 1.0f, 1.0f, 0.5f);
+    std::size_t                  selection_start_pos_ = 0u;
+    std::size_t                  selection_end_pos_   = 0u;
+    bool                         is_text_selected_    = false;
 
     utils::observer_ptr<texture> p_carret_      = nullptr;
     double                       d_blink_speed_ = 0.5;
     periodic_timer               carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;
-    std::size_t                 ui_max_history_lines_    = std::numeric_limits<std::size_t>::max();
-    std::size_t                 ui_current_history_line_ = std::numeric_limits<std::size_t>::max();
+    std::size_t                 max_history_lines_    = std::numeric_limits<std::size_t>::max();
+    std::size_t                 current_history_line_ = std::numeric_limits<std::size_t>::max();
 
     utils::observer_ptr<font_string> p_font_string_ = nullptr;
 

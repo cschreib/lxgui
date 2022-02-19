@@ -703,10 +703,10 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
                     key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {
                 return;
             }
-        } catch (const std::exception& exception) {
-            std::string error = exception.what();
-            gui::out << gui::error << error << std::endl;
-            get_manager().get_event_emitter().fire_event("LUA_ERROR", {error});
+        } catch (const std::exception& e) {
+            std::string err = e.what();
+            gui::out << gui::error << err << std::endl;
+            get_manager().get_event_emitter().fire_event("LUA_ERROR", {err});
             return;
         }
     }
