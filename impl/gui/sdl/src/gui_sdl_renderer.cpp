@@ -125,60 +125,59 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
     sdl_render_data data;
 
     // First, re-order vertices as top-left, top-right, bottom-right, bottom-left
-    std::array<std::size_t, 4> i_ds = {0u, 1u, 2u, 3u};
+    std::array<std::size_t, 4> ids = {0u, 1u, 2u, 3u};
     if (vertex_list[0].pos.x < vertex_list[1].pos.x) {
         if (vertex_list[1].pos.y < vertex_list[2].pos.y) {
             // No rotation and no flip
         } else {
             // No rotation and flip Y
-            i_ds = {3u, 2u, 1u, 0u};
+            ids = {3u, 2u, 1u, 0u};
         }
     } else if (vertex_list[0].pos.y < vertex_list[1].pos.y) {
         if (vertex_list[1].pos.x > vertex_list[2].pos.x) {
             // Rotated 90 degrees clockwise
-            i_ds = {3u, 0u, 1u, 2u};
+            ids = {3u, 0u, 1u, 2u};
         } else {
             // Rotated 90 degrees clockwise and flip X
-            i_ds = {0u, 3u, 2u, 1u};
+            ids = {0u, 3u, 2u, 1u};
         }
     } else if (vertex_list[0].pos.x > vertex_list[1].pos.x) {
         if (vertex_list[1].pos.y > vertex_list[2].pos.y) {
             // Rotated 180 degrees
-            i_ds = {2u, 3u, 0u, 1u};
+            ids = {2u, 3u, 0u, 1u};
         } else {
             // No rotation and flip X
-            i_ds = {1u, 0u, 3u, 2u};
+            ids = {1u, 0u, 3u, 2u};
         }
     } else if (vertex_list[0].pos.y > vertex_list[1].pos.y) {
         if (vertex_list[1].pos.x < vertex_list[2].pos.x) {
             // Rotated 90 degrees counter-clockwise
-            i_ds = {1u, 2u, 3u, 0u};
+            ids = {1u, 2u, 3u, 0u};
         } else {
             // Rotated 90 degrees counter-clockwise and flip X
-            i_ds = {2u, 1u, 0u, 3u};
+            ids = {2u, 1u, 0u, 3u};
         }
     }
 
     // Now, re-order UV coordinates as top-left, top-right, bottom-right, bottom-left
     // and figure out the required rotation and flipping to render as requested.
-    int width =
-        static_cast<int>(std::round(vertex_list[i_ds[2]].pos.x - vertex_list[i_ds[0]].pos.x));
+    int width = static_cast<int>(std::round(vertex_list[ids[2]].pos.x - vertex_list[ids[0]].pos.x));
     int height =
-        static_cast<int>(std::round(vertex_list[i_ds[2]].pos.y - vertex_list[i_ds[0]].pos.y));
+        static_cast<int>(std::round(vertex_list[ids[2]].pos.y - vertex_list[ids[0]].pos.y));
     int uv_index1 = 0;
     int uv_index2 = 2;
 
-    data.dest_display_quad.x = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.x));
-    data.dest_display_quad.y = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.y));
+    data.dest_display_quad.x = static_cast<int>(std::round(vertex_list[ids[0]].pos.x));
+    data.dest_display_quad.y = static_cast<int>(std::round(vertex_list[ids[0]].pos.y));
     data.dest_display_quad.w = width;
     data.dest_display_quad.h = height;
 
-    data.dest_quad.x = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.x));
-    data.dest_quad.y = static_cast<int>(std::round(vertex_list[i_ds[0]].pos.y));
+    data.dest_quad.x = static_cast<int>(std::round(vertex_list[ids[0]].pos.x));
+    data.dest_quad.y = static_cast<int>(std::round(vertex_list[ids[0]].pos.y));
 
     bool axis_swapped = false;
-    if (vertex_list[i_ds[0]].uvs.x < vertex_list[i_ds[1]].uvs.x) {
-        if (vertex_list[i_ds[1]].uvs.y < vertex_list[i_ds[2]].uvs.y) {
+    if (vertex_list[ids[0]].uvs.x < vertex_list[ids[1]].uvs.x) {
+        if (vertex_list[ids[1]].uvs.y < vertex_list[ids[2]].uvs.y) {
             // No rotation and no flip
         } else {
             // No rotation and flip Y
@@ -186,10 +185,10 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
             uv_index1 = 3;
             uv_index2 = 1;
         }
-    } else if (vertex_list[i_ds[0]].uvs.y < vertex_list[i_ds[1]].uvs.y) {
+    } else if (vertex_list[ids[0]].uvs.y < vertex_list[ids[1]].uvs.y) {
         axis_swapped = true;
 
-        if (vertex_list[i_ds[1]].uvs.x > vertex_list[i_ds[2]].uvs.x) {
+        if (vertex_list[ids[1]].uvs.x > vertex_list[ids[2]].uvs.x) {
             // Rotated 90 degrees clockwise
             data.angle = -90;
             uv_index1  = 3;
@@ -203,8 +202,8 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
             uv_index2  = 2;
             data.dest_quad.y += height;
         }
-    } else if (vertex_list[i_ds[0]].uvs.x > vertex_list[i_ds[1]].uvs.x) {
-        if (vertex_list[i_ds[1]].uvs.y > vertex_list[i_ds[2]].uvs.y) {
+    } else if (vertex_list[ids[0]].uvs.x > vertex_list[ids[1]].uvs.x) {
+        if (vertex_list[ids[1]].uvs.y > vertex_list[ids[2]].uvs.y) {
             // Rotated 180 degrees
             data.angle = 180;
             uv_index1  = 2;
@@ -217,10 +216,10 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
             uv_index1 = 1;
             uv_index2 = 3;
         }
-    } else if (vertex_list[i_ds[0]].uvs.y > vertex_list[i_ds[1]].uvs.y) {
+    } else if (vertex_list[ids[0]].uvs.y > vertex_list[ids[1]].uvs.y) {
         axis_swapped = true;
 
-        if (vertex_list[i_ds[1]].uvs.x < vertex_list[i_ds[2]].uvs.x) {
+        if (vertex_list[ids[1]].uvs.x < vertex_list[ids[2]].uvs.x) {
             // Rotated 90 degrees counter-clockwise
             data.angle = 90;
             uv_index1  = 1;
@@ -240,13 +239,12 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
         std::swap(width, height);
 
     data.src_quad = SDL_Rect{
-        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.x * tex_width),
-        (int)std::round(vertex_list[i_ds[uv_index1]].uvs.y * tex_height),
+        (int)std::round(vertex_list[ids[uv_index1]].uvs.x * tex_width),
+        (int)std::round(vertex_list[ids[uv_index1]].uvs.y * tex_height),
         (int)std::round(
-            (vertex_list[i_ds[uv_index2]].uvs.x - vertex_list[i_ds[uv_index1]].uvs.x) * tex_width),
+            (vertex_list[ids[uv_index2]].uvs.x - vertex_list[ids[uv_index1]].uvs.x) * tex_width),
         (int)std::round(
-            (vertex_list[i_ds[uv_index2]].uvs.y - vertex_list[i_ds[uv_index1]].uvs.y) *
-            tex_height)};
+            (vertex_list[ids[uv_index2]].uvs.y - vertex_list[ids[uv_index1]].uvs.y) * tex_height)};
 
     data.dest_quad.w = width;
     data.dest_quad.h = height;

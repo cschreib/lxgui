@@ -68,6 +68,7 @@ void renderer::set_view_(const matrix4f& view_matrix) {
 matrix4f renderer::get_view() const {
     matrix4f current_view_matrix =
         matrix4f(p_current_sfml_target_->getView().getTransform().getMatrix());
+
     if (!p_current_target_) {
         // Rendering to main screen, flip Y
         for (std::size_t i = 0; i < 4; ++i)
@@ -79,8 +80,8 @@ matrix4f renderer::get_view() const {
 
 void renderer::render_quads_(
     const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
-    static const std::array<std::size_t, 6> i_ds            = {{0, 1, 2, 2, 3, 0}};
-    static const std::size_t                ui_num_vertices = i_ds.size();
+    static const std::array<std::size_t, 6> ids             = {{0, 1, 2, 2, 3, 0}};
+    static const std::size_t                ui_num_vertices = ids.size();
 
     const sfml::material* p_mat = static_cast<const sfml::material*>(p_material);
 
@@ -88,29 +89,31 @@ void renderer::render_quads_(
     if (p_mat)
         tex_dims = vector2f(p_mat->get_canvas_dimensions());
 
-    sf::VertexArray array(sf::PrimitiveType::Triangles, i_ds.size() * quad_list.size());
+    sf::VertexArray array(sf::PrimitiveType::Triangles, ids.size() * quad_list.size());
     for (std::size_t k = 0; k < quad_list.size(); ++k) {
         const std::array<vertex, 4>& vertices = quad_list[k];
         for (std::size_t i = 0; i < ui_num_vertices; ++i) {
-            const std::size_t j         = i_ds[i];
-            sf::Vertex&       sf_vertex = array[k * ui_num_vertices + i];
-            const vertex&     vertex    = vertices[j];
-            const float       a         = vertex.col.a;
+            const std::size_t j = ids[i];
+
+            sf::Vertex&   sf_vertex = array[k * ui_num_vertices + i];
+            const vertex& vertex    = vertices[j];
+            const float   a         = vertex.col.a;
 
             sf_vertex.position.x  = vertex.pos.x;
             sf_vertex.position.y  = vertex.pos.y;
             sf_vertex.texCoords.x = vertex.uvs.x * tex_dims.x;
             sf_vertex.texCoords.y = vertex.uvs.y * tex_dims.y;
-            sf_vertex.color.r     = vertex.col.r * a * 255; // Premultipled alpha
-            sf_vertex.color.g     = vertex.col.g * a * 255; // Premultipled alpha
-            sf_vertex.color.b     = vertex.col.b * a * 255; // Premultipled alpha
-            sf_vertex.color.a     = a * 255;
+            // Premultipled alpha
+            sf_vertex.color.r = vertex.col.r * a * 255;
+            sf_vertex.color.g = vertex.col.g * a * 255;
+            sf_vertex.color.b = vertex.col.b * a * 255;
+            sf_vertex.color.a = a * 255;
         }
     }
 
     sf::RenderStates state;
-    state.blendMode =
-        sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
+    // Premultiplied alpha
+    state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
     if (p_mat)
         state.texture = p_mat->get_texture();
     p_current_sfml_target_->draw(array, state);
