@@ -1060,7 +1060,7 @@ void frame::fire_script(const std::string& script_name, const event_data& data) 
     } catch (const std::exception& e) {
         std::string err = e.what();
         gui::out << gui::error << err << std::endl;
-        event_emitter.fire_event("LUA_ERROR", {er});
+        event_emitter.fire_event("LUA_ERROR", {err});
     }
 
     addon_registry.set_current_addon(p_old_addon);
