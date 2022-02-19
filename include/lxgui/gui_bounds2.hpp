@@ -10,8 +10,7 @@ template<typename T>
 struct bounds2 {
     constexpr bounds2() = default;
 
-    constexpr bounds2(T left, T right, T top, T bottom) noexcept :
-        left(left), right(right), top(top), bottom(bottom) {}
+    constexpr bounds2(T l, T r, T t, T b) noexcept : left(l), right(r), top(t), bottom(b) {}
 
     constexpr bounds2(const vector2<T>& center, const vector2<T>& size) noexcept :
         left(center.x - size.x / 2),
@@ -19,11 +18,11 @@ struct bounds2 {
         top(center.y - size.y / 2),
         bottom(top + size.y) {}
 
-    void set(T left, T right, T top, T bottom) noexcept {
-        left   = left;
-        right  = right;
-        top    = top;
-        bottom = bottom;
+    void set(T l, T r, T t, T b) noexcept {
+        left   = l;
+        right  = r;
+        top    = t;
+        bottom = b;
     }
 
     vector2<T> top_left() const noexcept {

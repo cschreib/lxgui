@@ -15,15 +15,15 @@ struct vector2 {
 
     constexpr vector2() = default;
 
-    constexpr vector2(T x, T y) noexcept : x(x), y(y) {}
+    constexpr vector2(T nx, T ny) noexcept : x(nx), y(ny) {}
 
     template<typename U>
     explicit constexpr vector2(const vector2<U>& v) noexcept :
         x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
-    void set(T x, T y) noexcept {
-        x = x;
-        y = y;
+    void set(T nx, T ny) noexcept {
+        x = nx;
+        y = ny;
     }
 
     T get_norm_squared() const noexcept {

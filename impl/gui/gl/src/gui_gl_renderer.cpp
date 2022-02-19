@@ -56,19 +56,19 @@ std::string renderer::get_name() const {
     std::string full_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
 #    if defined(LXGUI_COMPILER_EMSCRIPTEN)
-    return "WebGL (" + sFullVersion + ")";
+    return "WebGL (" + full_version + ")";
 #    else
     return "OpenGL (" + full_version + ")";
 #    endif
 #else
-    return "OpenGL fixed pipeline (" + sFullVersion + ")";
+    return "OpenGL fixed pipeline (" + full_version + ")";
 #endif
 }
 
 #if defined(LXGUI_OPENGL3)
 renderer::shader_cache::~shader_cache() {
-    if (ui_program != 0)
-        glDeleteProgram(ui_program);
+    if (program != 0)
+        glDeleteProgram(program);
 }
 #endif
 

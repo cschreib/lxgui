@@ -98,9 +98,9 @@ dispatcher::dispatcher(source& src) : source_(src) {
 }
 
 bool dispatcher::any_key_is_down() const {
-    const auto& key_state = source_.get_key_state().key_state;
+    const auto& is_key_down = source_.get_key_state().is_key_down;
     for (std::size_t i = 1; i < key_number; ++i) {
-        if (key_state[i])
+        if (is_key_down[i])
             return true;
     }
 
@@ -108,7 +108,7 @@ bool dispatcher::any_key_is_down() const {
 }
 
 bool dispatcher::key_is_down(key key_id) const {
-    return source_.get_key_state().key_state[static_cast<std::size_t>(key_id)];
+    return source_.get_key_state().is_key_down[static_cast<std::size_t>(key_id)];
 }
 
 double dispatcher::get_key_down_duration(key key_id) const {
@@ -121,7 +121,7 @@ double dispatcher::get_key_down_duration(key key_id) const {
 }
 
 bool dispatcher::mouse_is_down(mouse_button button_id) const {
-    return source_.get_mouse_state().button_state[static_cast<std::size_t>(button_id)];
+    return source_.get_mouse_state().is_button_down[static_cast<std::size_t>(button_id)];
 }
 
 double dispatcher::get_mouse_down_duration(mouse_button button_id) const {

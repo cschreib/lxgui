@@ -210,15 +210,15 @@ void source::on_sdl_event(const SDL_Event& event) {
 
     switch (event.type) {
     case SDL_KEYDOWN: {
-        key key                                            = from_sdl_(event.key.keysym.sym);
-        keyboard_.key_state[static_cast<std::size_t>(key)] = true;
+        key key                                              = from_sdl_(event.key.keysym.sym);
+        keyboard_.is_key_down[static_cast<std::size_t>(key)] = true;
 
         on_key_pressed(key);
         break;
     }
     case SDL_KEYUP: {
-        key key                                            = from_sdl_(event.key.keysym.sym);
-        keyboard_.key_state[static_cast<std::size_t>(key)] = false;
+        key key                                              = from_sdl_(event.key.keysym.sym);
+        keyboard_.is_key_down[static_cast<std::size_t>(key)] = false;
 
         on_key_released(key);
         break;
@@ -237,7 +237,8 @@ void source::on_sdl_event(const SDL_Event& event) {
         mouse_button button = event.type == SDL_MOUSEBUTTONDOWN
                                   ? mouse_from_sdl[event.button.button - 1]
                                   : mouse_button::left;
-        mouse_.button_state[static_cast<std::size_t>(button)] = true;
+
+        mouse_.is_button_down[static_cast<std::size_t>(button)] = true;
 
         gui::vector2f mouse_pos;
         if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -269,7 +270,7 @@ void source::on_sdl_event(const SDL_Event& event) {
                                   ? mouse_from_sdl[event.button.button - 1]
                                   : mouse_button::left;
 
-        mouse_.button_state[static_cast<std::size_t>(button)] = false;
+        mouse_.is_button_down[static_cast<std::size_t>(button)] = false;
 
         gui::vector2f mouse_pos;
         if (event.type == SDL_MOUSEBUTTONUP) {

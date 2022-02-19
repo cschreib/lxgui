@@ -37,11 +37,11 @@ namespace lxgui::input {
 class source {
 public:
     struct key_state {
-        std::array<bool, key_number> key_state = {};
+        std::array<bool, key_number> is_key_down = {};
     };
 
     struct mouse_state {
-        std::array<bool, mouse_button_number> button_state = {};
+        std::array<bool, mouse_button_number> is_button_down = {};
         gui::vector2f                         position;
         float                                 wheel = 0.0f;
     };
