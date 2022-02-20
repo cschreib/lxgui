@@ -246,14 +246,14 @@ bool material::set_dimensions(const vector2ui& dimensions) {
     return canvas_updated;
 }
 
-void material::update_texture(const ub32color* p_data) {
+void material::update_texture(const ub32color* data) {
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 
     glBindTexture(GL_TEXTURE_2D, texture_handle_);
     glTexSubImage2D(
         GL_TEXTURE_2D, 0, rect_.left, rect_.top, rect_.width(), rect_.height(), GL_RGBA,
-        GL_UNSIGNED_BYTE, p_data);
+        GL_UNSIGNED_BYTE, data);
 
     glBindTexture(GL_TEXTURE_2D, previous_id);
 }

@@ -362,28 +362,27 @@ public:
     bool has_script(const std::string& script_name) const;
 
     /// Adds a layered_region to this frame's children.
-    /** \param pRegion The layered_region to add
+    /** \param reg The layered_region to add
      */
-    utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> p_region);
+    utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> reg);
 
     /// Adds a layered_region to this frame's children.
-    /** \param pRegion The layered_region to add
+    /** \param reg The layered_region to add
      */
     template<
         typename RegionType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, RegionType>::value>::type>
-    utils::observer_ptr<RegionType> add_region(utils::owner_ptr<RegionType> p_region) {
+    utils::observer_ptr<RegionType> add_region(utils::owner_ptr<RegionType> reg) {
         return utils::static_pointer_cast<RegionType>(
-            add_region(utils::static_pointer_cast<layered_region>(std::move(p_region))));
+            add_region(utils::static_pointer_cast<layered_region>(std::move(reg))));
     }
 
     /// Removes a layered_region from this frame's children.
-    /** \param pRegion The layered_region to remove
+    /** \param reg The layered_region to remove
      *   \return A unique_ptr to the region, ignore it to destroy the region.
      */
-    utils::owner_ptr<layered_region>
-    remove_region(const utils::observer_ptr<layered_region>& p_region);
+    utils::owner_ptr<layered_region> remove_region(const utils::observer_ptr<layered_region>& reg);
 
     /// Creates a new region as child of this frame.
     /** \param layer_id The layer on which to create the region
@@ -498,27 +497,27 @@ public:
     }
 
     /// Adds a frame to this frame's children.
-    /** \param pChild The frame to add
+    /** \param child The frame to add
      */
-    utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> p_child);
+    utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> child);
 
     /// Adds a frame to this frame's children.
-    /** \param pChild The frame to add
+    /** \param child The frame to add
      */
     template<
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<FrameType> add_child(utils::owner_ptr<FrameType> p_child) {
+    utils::observer_ptr<FrameType> add_child(utils::owner_ptr<FrameType> child) {
         return utils::static_pointer_cast<FrameType>(
-            add_child(utils::static_pointer_cast<frame>(std::move(p_child))));
+            add_child(utils::static_pointer_cast<frame>(std::move(child))));
     }
 
     /// Removes a frame from this frame's children.
-    /** \param pChild The frame to remove
+    /** \param child The frame to remove
         \return A unique_ptr to the child, ignore it to destroy the child.
     */
-    utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& p_child);
+    utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& child);
 
     /// Returns the child list.
     /** \return The child list
@@ -745,12 +744,12 @@ public:
 
     /// Returns this frame's title region.
     utils::observer_ptr<const region> get_title_region() const {
-        return p_title_region_;
+        return title_region_;
     }
 
     /// Returns this frame's title region.
     utils::observer_ptr<region> get_title_region() {
-        return p_title_region_;
+        return title_region_;
     }
 
     /// Checks if this frame is clamped to screen.
@@ -987,9 +986,9 @@ public:
     void set_frame_strata(const std::string& strata_name);
 
     /// Sets this frames' backdrop.
-    /** \param pBackdrop The new backdrop
+    /** \param bdrop The new backdrop
      */
-    void set_backdrop(std::unique_ptr<backdrop> p_backdrop);
+    void set_backdrop(std::unique_ptr<backdrop> bdrop);
 
     /// Sets this frame's absolute hit rect insets.
     /** \param insets Offsets
@@ -1141,7 +1140,7 @@ public:
      *   \note For more informations, see set_renderer().
      */
     utils::observer_ptr<const frame_renderer> get_renderer() const {
-        return p_renderer_;
+        return renderer_;
     }
 
     /// Returns the renderer of this object, nullptr if none.
@@ -1149,7 +1148,7 @@ public:
      *   \note For more informations, see set_renderer().
      */
     const utils::observer_ptr<frame_renderer>& get_renderer() {
-        return p_renderer_;
+        return renderer_;
     }
 
     /// Returns the renderer of this object or its parents, nullptr if none.
@@ -1303,9 +1302,9 @@ protected:
     frame_strata strata_       = frame_strata::medium;
     bool         is_top_level_ = false;
 
-    utils::observer_ptr<frame_renderer> p_renderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> renderer_ = nullptr;
 
-    std::unique_ptr<backdrop> p_backdrop_;
+    std::unique_ptr<backdrop> backdrop_;
 
     bool is_mouse_click_enabled_ = false;
     bool is_mouse_move_enabled_  = false;
@@ -1331,7 +1330,7 @@ protected:
 
     bool is_mouse_in_frame_ = false;
 
-    utils::owner_ptr<region> p_title_region_ = nullptr;
+    utils::owner_ptr<region> title_region_ = nullptr;
 
     bool is_focused_    = false;
     bool is_auto_focus_ = false;

@@ -33,28 +33,28 @@ public:
     virtual void notify_strata_needs_redraw(frame_strata strata_id);
 
     /// Tells this renderer that it should (or not) render another frame.
-    /** \param pFrame    The frame to render
+    /** \param obj    The frame to render
      *   \param rendered 'true' if this renderer needs to render that new object
      */
-    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool rendered);
+    virtual void notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered);
 
     /// Tells this renderer that a frame has changed strata.
-    /** \param pFrame The frame which has changed
+    /** \param obj The frame which has changed
      *   \param old_strata_id The old frame strata
      *   \param new_strata_id The new frame strata
      */
     virtual void notify_frame_strata_changed(
-        const utils::observer_ptr<frame>& p_frame,
+        const utils::observer_ptr<frame>& obj,
         frame_strata                      old_strata_id,
         frame_strata                      new_strata_id);
 
     /// Tells this renderer that a frame has changed level.
-    /** \param pFrame The frame which has changed
+    /** \param obj The frame which has changed
      *   \param old_level The old frame level
      *   \param new_level The new frame level
      */
-    virtual void notify_frame_level_changed(
-        const utils::observer_ptr<frame>& p_frame, int old_level, int new_level);
+    virtual void
+    notify_frame_level_changed(const utils::observer_ptr<frame>& obj, int old_level, int new_level);
 
     /// Returns the width and height of of this renderer's main render target (e.g., screen).
     /** \return The render target dimensions
@@ -85,10 +85,10 @@ public:
     int get_highest_level(frame_strata strata_id) const;
 
 protected:
-    void add_to_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& p_frame);
-    void remove_from_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& p_frame);
-    void add_to_level_list_(level& level_obj, const utils::observer_ptr<frame>& p_frame);
-    void remove_from_level_list_(level& level_obj, const utils::observer_ptr<frame>& p_frame);
+    void add_to_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& obj);
+    void remove_from_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& obj);
+    void add_to_level_list_(level& level_obj, const utils::observer_ptr<frame>& obj);
+    void remove_from_level_list_(level& level_obj, const utils::observer_ptr<frame>& obj);
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();

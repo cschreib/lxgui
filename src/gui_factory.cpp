@@ -22,16 +22,16 @@ utils::owner_ptr<region> factory::create_region(registry& reg, const region_core
         return nullptr;
     }
 
-    utils::owner_ptr<region> p_new_object = iter->second(manager_);
-    if (!p_new_object)
+    utils::owner_ptr<region> new_object = iter->second(manager_);
+    if (!new_object)
         return nullptr;
 
-    if (!finalize_object_(reg, *p_new_object, attr))
+    if (!finalize_object_(reg, *new_object, attr))
         return nullptr;
 
-    apply_inheritance_(*p_new_object, attr);
+    apply_inheritance_(*new_object, attr);
 
-    return p_new_object;
+    return new_object;
 }
 
 utils::owner_ptr<frame>
@@ -46,19 +46,19 @@ factory::create_frame(registry& reg, frame_renderer* rdr, const region_core_attr
         return nullptr;
     }
 
-    utils::owner_ptr<frame> p_new_frame = iter->second(manager_);
-    if (!p_new_frame)
+    utils::owner_ptr<frame> new_frame = iter->second(manager_);
+    if (!new_frame)
         return nullptr;
 
-    if (!finalize_object_(reg, *p_new_frame, attr))
+    if (!finalize_object_(reg, *new_frame, attr))
         return nullptr;
 
-    if (rdr && !p_new_frame->is_virtual())
-        rdr->notify_rendered_frame(p_new_frame, true);
+    if (rdr && !new_frame->is_virtual())
+        rdr->notify_rendered_frame(new_frame, true);
 
-    apply_inheritance_(*p_new_frame, attr);
+    apply_inheritance_(*new_frame, attr);
 
-    return p_new_frame;
+    return new_frame;
 }
 
 utils::owner_ptr<layered_region>
@@ -73,16 +73,16 @@ factory::create_layered_region(registry& reg, const region_core_attributes& attr
         return nullptr;
     }
 
-    utils::owner_ptr<layered_region> p_new_region = iter->second(manager_);
-    if (!p_new_region)
+    utils::owner_ptr<layered_region> new_region = iter->second(manager_);
+    if (!new_region)
         return nullptr;
 
-    if (!finalize_object_(reg, *p_new_region, attr))
+    if (!finalize_object_(reg, *new_region, attr))
         return nullptr;
 
-    apply_inheritance_(*p_new_region, attr);
+    apply_inheritance_(*new_region, attr);
 
-    return p_new_region;
+    return new_region;
 }
 
 sol::state& factory::get_lua() {
@@ -97,12 +97,12 @@ bool factory::finalize_object_(registry& reg, region& object, const region_core_
     if (attr.is_virtual)
         object.set_virtual();
 
-    if (attr.p_parent)
-        object.set_name_and_parent_(attr.name, attr.p_parent);
+    if (attr.parent)
+        object.set_name_and_parent_(attr.name, attr.parent);
     else
         object.set_name_(attr.name);
 
-    if (!object.is_virtual() || attr.p_parent == nullptr) {
+    if (!object.is_virtual() || attr.parent == nullptr) {
         if (!reg.add_region(observer_from(&object)))
             return false;
     }
@@ -114,17 +114,17 @@ bool factory::finalize_object_(registry& reg, region& object, const region_core_
 }
 
 void factory::apply_inheritance_(region& object, const region_core_attributes& attr) {
-    for (const auto& p_base : attr.inheritance) {
-        if (!object.is_object_type(p_base->get_object_type())) {
+    for (const auto& base : attr.inheritance) {
+        if (!object.is_object_type(base->get_object_type())) {
             gui::out << gui::warning << "gui::factory : "
                      << "\"" << object.get_name() << "\" (" << object.get_object_type()
-                     << ") cannot inherit from \"" << p_base->get_name() << "\" ("
-                     << p_base->get_object_type() << "). Inheritance skipped." << std::endl;
+                     << ") cannot inherit from \"" << base->get_name() << "\" ("
+                     << base->get_object_type() << "). Inheritance skipped." << std::endl;
             continue;
         }
 
         // Inherit from the other object
-        object.copy_from(*p_base);
+        object.copy_from(*base);
     }
 }
 

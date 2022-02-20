@@ -26,12 +26,12 @@
 namespace lxgui::gui::gl {
 
 render_target::render_target(const vector2ui& dimensions, material::filter filt) {
-    p_texture_ = std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
+    texture_ = std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
 
     glGenFramebuffers(1, &fbo_handle_);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
     glFramebufferTexture2D(
-        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
+        GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_->get_handle(), 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -47,7 +47,7 @@ render_target::~render_target() {
 }
 
 void render_target::begin() {
-    vector2f view = vector2f(p_texture_->get_canvas_dimensions());
+    vector2f view = vector2f(texture_->get_canvas_dimensions());
     view_matrix_  = matrix4f::view(view);
 
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
@@ -65,18 +65,18 @@ void render_target::clear(const color& c) {
 }
 
 bounds2f render_target::get_rect() const {
-    return p_texture_->get_rect();
+    return texture_->get_rect();
 }
 
 vector2ui render_target::get_canvas_dimensions() const {
-    return p_texture_->get_canvas_dimensions();
+    return texture_->get_canvas_dimensions();
 }
 
 bool render_target::set_dimensions(const vector2ui& dimensions) {
-    if (p_texture_->set_dimensions(dimensions)) {
+    if (texture_->set_dimensions(dimensions)) {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
         glFramebufferTexture2D(
-            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, p_texture_->get_handle(), 0);
+            GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_->get_handle(), 0);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -92,7 +92,7 @@ bool render_target::set_dimensions(const vector2ui& dimensions) {
 }
 
 std::weak_ptr<gl::material> render_target::get_material() {
-    return p_texture_;
+    return texture_;
 }
 
 const matrix4f& render_target::get_view_matrix() const {

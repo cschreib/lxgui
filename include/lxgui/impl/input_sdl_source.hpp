@@ -19,11 +19,11 @@ namespace lxgui::input { namespace sdl {
 class source final : public input::source {
 public:
     /// Initializes this input source.
-    /** \param window The window from which to receive input
+    /** \param win The window from which to receive input
      *   \param rdr The SDL renderer, or null if using raw OpenGL
      *   \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */
-    explicit source(SDL_Window* p_window, SDL_Renderer* rdr, bool initialise_sdl_image);
+    explicit source(SDL_Window* win, SDL_Renderer* rdr, bool initialise_sdl_image);
 
     source(const source&) = delete;
     source& operator=(const source&) = delete;
@@ -43,8 +43,8 @@ private:
     void           update_pixel_per_unit_();
     input::key     from_sdl_(int sdl_key) const;
 
-    SDL_Window*   p_window_   = nullptr;
-    SDL_Renderer* p_renderer_ = nullptr;
+    SDL_Window*   window_   = nullptr;
+    SDL_Renderer* renderer_ = nullptr;
 
     float pixels_per_unit_ = 1.0f;
 

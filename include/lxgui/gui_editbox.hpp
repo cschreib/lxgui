@@ -338,20 +338,20 @@ public:
     /** \return The font_string used to render the content
      */
     const utils::observer_ptr<font_string>& get_font_string() {
-        return p_font_string_;
+        return font_string_;
     }
 
     /// Returns the font_string used to render the content.
     /** \return The font_string used to render the content
      */
     utils::observer_ptr<const font_string> get_font_string() const {
-        return p_font_string_;
+        return font_string_;
     }
 
     /// Sets the font_string to use to render the content.
-    /** \param pFont The font_string to use to render the content
+    /** \param fstr The font_string to use to render the content
      */
-    void set_font_string(utils::observer_ptr<font_string> p_font);
+    void set_font_string(utils::observer_ptr<font_string> fstr);
 
     /// Sets the font (file and size) to render the content.
     /** \param font_name The file path to the .ttf file
@@ -414,13 +414,13 @@ protected:
     bool        is_multi_line_      = false;
     bool        are_arrows_ignored_ = false;
 
-    utils::observer_ptr<texture> p_highlight_         = nullptr;
+    utils::observer_ptr<texture> highlight_           = nullptr;
     color                        highlight_color_     = color(1.0f, 1.0f, 1.0f, 0.5f);
     std::size_t                  selection_start_pos_ = 0u;
     std::size_t                  selection_end_pos_   = 0u;
     bool                         is_text_selected_    = false;
 
-    utils::observer_ptr<texture> p_carret_      = nullptr;
+    utils::observer_ptr<texture> carret_        = nullptr;
     double                       d_blink_speed_ = 0.5;
     periodic_timer               carret_timer_;
 
@@ -428,7 +428,7 @@ protected:
     std::size_t                 max_history_lines_    = std::numeric_limits<std::size_t>::max();
     std::size_t                 current_history_line_ = std::numeric_limits<std::size_t>::max();
 
-    utils::observer_ptr<font_string> p_font_string_ = nullptr;
+    utils::observer_ptr<font_string> font_string_ = nullptr;
 
     bounds2f text_insets_ = bounds2f::zero;
 };

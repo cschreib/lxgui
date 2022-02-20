@@ -742,7 +742,7 @@ void localizer::load_translations(const std::string& folder_path) {
 void localizer::load_translation_file(const std::string& file_name) try {
     auto result = lua_.safe_script_file(file_name);
     if (!result.valid()) {
-        gui::out << gui::error << "gui::locale : " << sol::error(result).what() << std::endl;
+        gui::out << gui::error << "gui::locale : " << result.get<sol::error>().what() << std::endl;
         return;
     }
 

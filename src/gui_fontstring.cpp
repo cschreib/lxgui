@@ -16,12 +16,12 @@ font_string::font_string(utils::control_block& block, manager& mgr) : layered_re
 }
 
 void font_string::render() const {
-    if (!p_text_ || !is_ready_ || !is_visible())
+    if (!text_ || !is_ready_ || !is_visible())
         return;
 
     float x = 0.0f, y = 0.0f;
 
-    if (std::isinf(p_text_->get_box_width())) {
+    if (std::isinf(text_->get_box_width())) {
         switch (align_x_) {
         case alignment_x::left: x = border_list_.left; break;
         case alignment_x::center: x = (border_list_.left + border_list_.right) / 2; break;
@@ -31,7 +31,7 @@ void font_string::render() const {
         x = border_list_.left;
     }
 
-    if (std::isinf(p_text_->get_box_height())) {
+    if (std::isinf(text_->get_box_height())) {
         switch (align_y_) {
         case alignment_y::top: y = border_list_.top; break;
         case alignment_y::middle: y = (border_list_.top + border_list_.bottom) / 2; break;
@@ -44,15 +44,15 @@ void font_string::render() const {
     x += offset_.x;
     y += offset_.y;
 
-    p_text_->set_alpha(get_effective_alpha());
+    text_->set_alpha(get_effective_alpha());
 
     if (has_shadow_) {
-        p_text_->set_color(shadow_color_, true);
-        p_text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y) + shadow_offset_)));
+        text_->set_color(shadow_color_, true);
+        text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y) + shadow_offset_)));
     }
 
-    p_text_->set_color(text_color_);
-    p_text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y))));
+    text_->set_color(text_color_);
+    text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y))));
 }
 
 std::string font_string::serialize(const std::string& tab) const {
@@ -62,7 +62,7 @@ std::string font_string::serialize(const std::string& tab) const {
 
     str << tab << "  # Font name   : " << font_name_ << "\n";
     str << tab << "  # Font height : " << height_ << "\n";
-    str << tab << "  # Text ready  : " << (p_text_ != nullptr) << "\n";
+    str << tab << "  # Text ready  : " << (text_ != nullptr) << "\n";
     str << tab << "  # Text        : \"" << utils::unicode_to_utf8(content_) << "\"\n";
     str << tab << "  # Outlined    : " << is_outlined_ << "\n";
     str << tab << "  # Text color  : " << text_color_ << "\n";
@@ -101,28 +101,28 @@ void font_string::create_glue() {
 void font_string::copy_from(const region& obj) {
     base::copy_from(obj);
 
-    const font_string* p_font_string = down_cast<font_string>(&obj);
-    if (!p_font_string)
+    const font_string* fstr_obj = down_cast<font_string>(&obj);
+    if (!fstr_obj)
         return;
 
-    std::string font_name = p_font_string->get_font_name();
-    float       height    = p_font_string->get_font_height();
+    std::string font_name = fstr_obj->get_font_name();
+    float       height    = fstr_obj->get_font_height();
     if (!font_name.empty() && height != 0)
         this->set_font(font_name, height);
 
-    this->set_alignment_x(p_font_string->get_alignment_x());
-    this->set_alignment_y(p_font_string->get_alignment_y());
-    this->set_spacing(p_font_string->get_spacing());
-    this->set_line_spacing(p_font_string->get_line_spacing());
-    this->set_text(p_font_string->get_text());
-    this->set_outlined(p_font_string->is_outlined());
-    if (p_font_string->has_shadow()) {
+    this->set_alignment_x(fstr_obj->get_alignment_x());
+    this->set_alignment_y(fstr_obj->get_alignment_y());
+    this->set_spacing(fstr_obj->get_spacing());
+    this->set_line_spacing(fstr_obj->get_line_spacing());
+    this->set_text(fstr_obj->get_text());
+    this->set_outlined(fstr_obj->is_outlined());
+    if (fstr_obj->has_shadow()) {
         this->set_shadow(true);
-        this->set_shadow_color(p_font_string->get_shadow_color());
-        this->set_shadow_offset(p_font_string->get_shadow_offset());
+        this->set_shadow_color(fstr_obj->get_shadow_color());
+        this->set_shadow_offset(fstr_obj->get_shadow_offset());
     }
-    this->set_text_color(p_font_string->get_text_color());
-    this->set_non_space_wrap(p_font_string->can_non_space_wrap());
+    this->set_text_color(fstr_obj->get_text_color());
+    this->set_non_space_wrap(fstr_obj->can_non_space_wrap());
 }
 
 const std::string& font_string::get_font_name() const {
@@ -183,7 +183,7 @@ const color& font_string::get_text_color() const {
 void font_string::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
-    if (p_text_)
+    if (text_)
         set_font(font_name_, height_);
 }
 
@@ -200,27 +200,27 @@ void font_string::create_text_object_() {
     const auto&    code_points        = localizer.get_allowed_code_points();
     const char32_t default_code_point = localizer.get_fallback_code_point();
 
-    std::shared_ptr<gui::font> p_outline_font;
+    std::shared_ptr<gui::font> outline_font;
     if (is_outlined_) {
-        p_outline_font = renderer.create_atlas_font(
+        outline_font = renderer.create_atlas_font(
             "GUI", font_name_, pixel_height,
             std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2 * pixel_height))),
             code_points, default_code_point);
     }
 
-    auto p_font = renderer.create_atlas_font(
+    auto fnt = renderer.create_atlas_font(
         "GUI", font_name_, pixel_height, 0u, code_points, default_code_point);
 
-    p_text_ = std::unique_ptr<text>(new text(renderer, p_font, p_outline_font));
+    text_ = std::unique_ptr<text>(new text(renderer, fnt, outline_font));
 
-    p_text_->set_scaling_factor(1.0f / get_manager().get_interface_scaling_factor());
-    p_text_->set_remove_starting_spaces(true);
-    p_text_->set_text(content_);
-    p_text_->set_alignment_x(align_x_);
-    p_text_->set_alignment_y(align_y_);
-    p_text_->set_tracking(spacing_);
-    p_text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
-    p_text_->enable_formatting(formatting_enabled_);
+    text_->set_scaling_factor(1.0f / get_manager().get_interface_scaling_factor());
+    text_->set_remove_starting_spaces(true);
+    text_->set_text(content_);
+    text_->set_alignment_x(align_x_);
+    text_->set_alignment_y(align_y_);
+    text_->set_tracking(spacing_);
+    text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
+    text_->enable_formatting(formatting_enabled_);
 }
 
 void font_string::set_font(const std::string& font_name, float height) {
@@ -240,8 +240,8 @@ void font_string::set_alignment_x(alignment_x justify_h) {
         return;
 
     align_x_ = justify_h;
-    if (p_text_) {
-        p_text_->set_alignment_x(align_x_);
+    if (text_) {
+        text_->set_alignment_x(align_x_);
 
         if (!is_virtual_)
             notify_renderer_need_redraw();
@@ -253,8 +253,8 @@ void font_string::set_alignment_y(alignment_y justify_v) {
         return;
 
     align_y_ = justify_v;
-    if (p_text_) {
-        p_text_->set_alignment_y(align_y_);
+    if (text_) {
+        text_->set_alignment_y(align_y_);
 
         if (!is_virtual_)
             notify_renderer_need_redraw();
@@ -293,8 +293,8 @@ void font_string::set_spacing(float spacing) {
         return;
 
     spacing_ = spacing;
-    if (p_text_) {
-        p_text_->set_tracking(spacing_);
+    if (text_) {
+        text_->set_tracking(spacing_);
         if (!is_virtual_)
             notify_renderer_need_redraw();
     }
@@ -305,8 +305,8 @@ void font_string::set_line_spacing(float line_spacing) {
         return;
 
     line_spacing_ = line_spacing;
-    if (p_text_) {
-        p_text_->set_line_spacing(line_spacing_);
+    if (text_) {
+        text_->set_line_spacing(line_spacing_);
         if (!is_virtual_)
             notify_renderer_need_redraw();
     }
@@ -326,22 +326,22 @@ bool font_string::can_non_space_wrap() const {
 }
 
 float font_string::get_string_height() const {
-    if (p_text_)
-        return p_text_->get_text_height();
+    if (text_)
+        return text_->get_text_height();
     else
         return 0.0f;
 }
 
 float font_string::get_string_width() const {
-    if (p_text_)
-        return p_text_->get_text_width();
+    if (text_)
+        return text_->get_text_width();
     else
         return 0.0f;
 }
 
 float font_string::get_string_width(const utils::ustring& content) const {
-    if (p_text_)
-        return p_text_->get_string_width(content);
+    if (text_)
+        return text_->get_string_width(content);
     else
         return 0.0f;
 }
@@ -375,8 +375,8 @@ void font_string::set_shadow(bool has_shadow) {
 void font_string::set_word_wrap(bool can_word_wrap, bool add_ellipsis) {
     word_wrap_enabled_ = can_word_wrap;
     ellipsis_enabled_  = add_ellipsis;
-    if (p_text_)
-        p_text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
+    if (text_)
+        text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
 }
 
 bool font_string::can_word_wrap() const {
@@ -385,8 +385,8 @@ bool font_string::can_word_wrap() const {
 
 void font_string::enable_formatting(bool formatting) {
     formatting_enabled_ = formatting;
-    if (p_text_)
-        p_text_->enable_formatting(formatting_enabled_);
+    if (text_)
+        text_->enable_formatting(formatting_enabled_);
 }
 
 bool font_string::is_formatting_enabled() const {
@@ -398,23 +398,23 @@ void font_string::set_text(const utils::ustring& content) {
         return;
 
     content_ = content;
-    if (p_text_) {
-        p_text_->set_text(content_);
+    if (text_) {
+        text_->set_text(content_);
         if (!is_virtual_)
             notify_borders_need_update();
     }
 }
 
 text* font_string::get_text_object() {
-    return p_text_.get();
+    return text_.get();
 }
 
 const text* font_string::get_text_object() const {
-    return p_text_.get();
+    return text_.get();
 }
 
 void font_string::update_borders_() {
-    if (!p_text_)
+    if (!text_)
         return base::update_borders_();
 
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
@@ -446,13 +446,13 @@ void font_string::update_borders_() {
         box_width  = round_to_pixel(box_width, utils::rounding_method::nearest_not_zero);
         box_height = round_to_pixel(box_height, utils::rounding_method::nearest_not_zero);
 
-        p_text_->set_box_dimensions(box_width, box_height);
+        text_->set_box_dimensions(box_width, box_height);
 
         DEBUG_LOG("  Make borders");
         if (std::isinf(box_height))
-            box_height = p_text_->get_height();
+            box_height = text_->get_height();
         if (std::isinf(box_width))
-            box_width = p_text_->get_width();
+            box_width = text_->get_width();
 
         if (!make_borders_(top, bottom, y_center, box_height))
             is_ready_ = false;
@@ -474,11 +474,11 @@ void font_string::update_borders_() {
     } else {
         float box_width = get_dimensions().x;
         if (box_width == 0.0)
-            box_width = p_text_->get_width();
+            box_width = text_->get_width();
 
         float box_height = get_dimensions().y;
         if (box_height == 0.0)
-            box_height = p_text_->get_height();
+            box_height = text_->get_height();
 
         border_list_ = bounds2f(0.0, 0.0, box_width, box_height);
         is_ready_    = false;

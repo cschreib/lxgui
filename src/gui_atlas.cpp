@@ -14,8 +14,8 @@ atlas_page::atlas_page(material::filter filt) : filter_(filt) {}
 std::shared_ptr<material> atlas_page::fetch_material(const std::string& file_name) const {
     auto iter = texture_list_.find(file_name);
     if (iter != texture_list_.end()) {
-        if (std::shared_ptr<gui::material> p_lock = iter->second.lock())
-            return p_lock;
+        if (std::shared_ptr<gui::material> lock = iter->second.lock())
+            return lock;
     }
 
     return nullptr;
@@ -29,9 +29,9 @@ atlas_page::add_material(const std::string& file_name, const material& mat) {
         if (!location.has_value())
             return nullptr;
 
-        std::shared_ptr<gui::material> p_tex = add_material_(mat, location.value());
-        texture_list_[file_name]             = p_tex;
-        return p_tex;
+        std::shared_ptr<gui::material> tex = add_material_(mat, location.value());
+        texture_list_[file_name]           = tex;
+        return tex;
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
@@ -41,25 +41,25 @@ atlas_page::add_material(const std::string& file_name, const material& mat) {
 std::shared_ptr<font> atlas_page::fetch_font(const std::string& font_name) const {
     auto iter = font_list_.find(font_name);
     if (iter != font_list_.end()) {
-        if (std::shared_ptr<gui::font> p_lock = iter->second.lock())
-            return p_lock;
+        if (std::shared_ptr<gui::font> lock = iter->second.lock())
+            return lock;
     }
 
     return nullptr;
 }
 
-bool atlas_page::add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font) {
+bool atlas_page::add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt) {
     try {
-        if (const auto p_mat = p_font->get_texture().lock()) {
-            const auto rect     = p_mat->get_rect();
+        if (const auto mat = fnt->get_texture().lock()) {
+            const auto rect     = mat->get_rect();
             const auto location = find_location_(rect.width(), rect.height());
             if (!location.has_value())
                 return false;
 
-            std::shared_ptr<gui::material> p_tex = add_material_(*p_mat, location.value());
-            p_font->update_texture(p_tex);
+            std::shared_ptr<gui::material> tex = add_material_(*mat, location.value());
+            fnt->update_texture(tex);
 
-            font_list_[font_name] = std::move(p_font);
+            font_list_[font_name] = std::move(fnt);
             return true;
         } else
             return false;
@@ -70,13 +70,13 @@ bool atlas_page::add_font(const std::string& font_name, std::shared_ptr<gui::fon
 }
 
 bool atlas_page::empty() const {
-    for (const auto& p_mat : texture_list_) {
-        if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock())
+    for (const auto& mat : texture_list_) {
+        if (std::shared_ptr<gui::material> lock = mat.second.lock())
             return false;
     }
 
-    for (const auto& p_font : font_list_) {
-        if (std::shared_ptr<gui::font> p_lock = p_font.second.lock())
+    for (const auto& fnt : font_list_) {
+        if (std::shared_ptr<gui::font> lock = fnt.second.lock())
             return false;
     }
 
@@ -105,17 +105,17 @@ std::optional<bounds2f> atlas_page::find_location_(float width, float height) co
         return rect;
     };
 
-    for (const auto& p_mat : texture_list_) {
-        if (std::shared_ptr<gui::material> p_lock = p_mat.second.lock()) {
-            occupied_space.push_back(apply_padding(p_lock->get_rect()));
+    for (const auto& mat : texture_list_) {
+        if (std::shared_ptr<gui::material> lock = mat.second.lock()) {
+            occupied_space.push_back(apply_padding(lock->get_rect()));
             max_width  = std::max(max_width, occupied_space.back().right);
             max_height = std::max(max_height, occupied_space.back().bottom);
         }
     }
 
-    for (const auto& p_font : font_list_) {
-        if (std::shared_ptr<gui::font> p_lock = p_font.second.lock()) {
-            occupied_space.push_back(apply_padding(p_lock->get_texture().lock()->get_rect()));
+    for (const auto& fnt : font_list_) {
+        if (std::shared_ptr<gui::font> lock = fnt.second.lock()) {
+            occupied_space.push_back(apply_padding(lock->get_texture().lock()->get_rect()));
             max_width  = std::max(max_width, occupied_space.back().right);
             max_height = std::max(max_height, occupied_space.back().bottom);
         }
@@ -160,9 +160,9 @@ atlas::atlas(renderer& rdr, material::filter filt) : renderer_(rdr), filter_(fil
 
 std::shared_ptr<gui::material> atlas::fetch_material(const std::string& file_name) const {
     for (const auto& page_item : page_list_) {
-        auto p_tex = page_item.p_page->fetch_material(file_name);
-        if (p_tex)
-            return p_tex;
+        auto tex = page_item.page->fetch_material(file_name);
+        if (tex)
+            return tex;
     }
 
     return nullptr;
@@ -172,11 +172,11 @@ std::shared_ptr<gui::material>
 atlas::add_material(const std::string& file_name, const material& mat) {
     try {
         for (const auto& page_item : page_list_) {
-            auto p_tex = page_item.p_page->add_material(file_name, mat);
-            if (p_tex)
-                return p_tex;
+            auto tex = page_item.page->add_material(file_name, mat);
+            if (tex)
+                return tex;
 
-            if (page_item.p_page->empty()) {
+            if (page_item.page->empty()) {
                 gui::out << gui::warning << "Could not fit texture '" << file_name
                          << "' on any atlas page." << std::endl;
                 return nullptr;
@@ -184,9 +184,9 @@ atlas::add_material(const std::string& file_name, const material& mat) {
         }
 
         add_page_();
-        auto p_tex = page_list_.back().p_page->add_material(file_name, mat);
-        if (p_tex)
-            return p_tex;
+        auto tex = page_list_.back().page->add_material(file_name, mat);
+        if (tex)
+            return tex;
 
         return nullptr;
     } catch (const std::exception& e) {
@@ -197,21 +197,21 @@ atlas::add_material(const std::string& file_name, const material& mat) {
 
 std::shared_ptr<gui::font> atlas::fetch_font(const std::string& font_name) const {
     for (const auto& page_item : page_list_) {
-        auto p_font = page_item.p_page->fetch_font(font_name);
-        if (p_font)
-            return p_font;
+        auto fnt = page_item.page->fetch_font(font_name);
+        if (fnt)
+            return fnt;
     }
 
     return nullptr;
 }
 
-bool atlas::add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font) {
+bool atlas::add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt) {
     try {
         for (const auto& page_item : page_list_) {
-            if (page_item.p_page->add_font(font_name, p_font))
+            if (page_item.page->add_font(font_name, fnt))
                 return true;
 
-            if (page_item.p_page->empty()) {
+            if (page_item.page->empty()) {
                 gui::out << gui::warning << "Could not fit font '" << font_name
                          << "' on any atlas page." << std::endl;
                 return false;
@@ -220,7 +220,7 @@ bool atlas::add_font(const std::string& font_name, std::shared_ptr<gui::font> p_
 
         add_page_();
 
-        return page_list_.back().p_page->add_font(font_name, std::move(p_font));
+        return page_list_.back().page->add_font(font_name, std::move(fnt));
     } catch (const std::exception& e) {
         gui::out << gui::warning << e.what() << std::endl;
         return false;
@@ -233,14 +233,14 @@ std::size_t atlas::get_num_pages() const {
 
 void atlas::add_page_() {
     page_item page;
-    page.p_page = create_page_();
+    page.page = create_page_();
 
     // Add a white pixel as the first material in the atlas.
     // This can be used for optimizing quad batching, to render
     // quads with no texture.
     ub32color pixel(255, 255, 255, 255);
-    auto      p_tex       = renderer_.create_material(vector2ui(1u, 1u), &pixel);
-    page.p_no_texture_mat = page.p_page->add_material("", *p_tex);
+    auto      tex       = renderer_.create_material(vector2ui(1u, 1u), &pixel);
+    page.no_texture_mat = page.page->add_material("", *tex);
 
     page_list_.push_back(std::move(page));
 }

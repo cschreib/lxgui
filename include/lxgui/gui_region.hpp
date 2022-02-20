@@ -219,14 +219,14 @@ public:
     /** \return This region's parent
      */
     utils::observer_ptr<const frame> get_parent() const {
-        return p_parent_;
+        return parent_;
     }
 
     /// Returns this region's parent.
     /** \return This region's parent
      */
     const utils::observer_ptr<frame>& get_parent() {
-        return p_parent_;
+        return parent_;
     }
 
     /// Removes this region from its parent and return an owning pointer.
@@ -422,10 +422,10 @@ public:
     void clear_all_points();
 
     /// Adjusts this regions anchors to fit the provided region.
-    /** \param pObj A pointer to the object you want to wrap
+    /** \param obj A pointer to the object you want to wrap
      *   \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const utils::observer_ptr<region>& p_obj);
+    void set_all_points(const utils::observer_ptr<region>& obj);
 
     /// Adjusts this regions anchors to fit the provided region.
     /** \param obj_name The name of the object to fit to
@@ -586,9 +586,9 @@ public:
     virtual void notify_invisible();
 
     /// Sets the addon this frame belongs to.
-    /** \param pAddOn The addon this frame belongs to
+    /** \param a The addon this frame belongs to
      */
-    void set_addon(const addon* p_add_on);
+    void set_addon(const addon* a);
 
     /// Returns this frame's addon.
     /** \return This frame's addon
@@ -648,10 +648,10 @@ public:
     static void register_on_lua(sol::state& lua);
 
     template<typename ObjectType>
-    friend const ObjectType* down_cast(const region* p_self);
+    friend const ObjectType* down_cast(const region* self);
 
     template<typename ObjectType>
-    friend ObjectType* down_cast(region* p_self);
+    friend ObjectType* down_cast(region* self);
 
     static constexpr const char* class_name = "Region";
 
@@ -675,7 +675,7 @@ protected:
     sol::state& get_lua_();
 
     template<typename T>
-    void create_glue_(T* p_self);
+    void create_glue_(T* self);
 
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
@@ -688,29 +688,29 @@ protected:
     void set_name_(const std::string& name);
 
     /// Changes this region's parent.
-    /** \param pParent The new parent
+    /** \param parent The new parent
      *   \note Default is nullptr.
      */
-    void set_parent_(utils::observer_ptr<frame> p_parent);
+    void set_parent_(utils::observer_ptr<frame> parent);
 
     /// Sets this region's name and parent at once.
     /** \param name This region's name
-     *   \param pParent The new parent
+     *   \param parent The new parent
      *   \note The name can only be set once. If you need to just change the
      *         parent, call set_parent_().
      */
-    void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> p_parent);
+    void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
 
     manager& manager_;
 
-    const addon* p_addon_ = nullptr;
+    const addon* addon_ = nullptr;
 
     std::string name_;
     std::string raw_name_;
     std::string lua_name_;
     std::size_t id_ = std::numeric_limits<std::size_t>::max();
 
-    utils::observer_ptr<frame> p_parent_ = nullptr;
+    utils::observer_ptr<frame> parent_ = nullptr;
 
     bool is_special_ = false;
     bool is_virtual_ = false;
@@ -736,7 +736,7 @@ protected:
 };
 
 /// Obtain a pointer to a derived class.
-/** \param pSelf The pointer to down cast
+/** \param self The pointer to down cast
  *   \return A pointer to a derived class
  *   \note Like dynamic_cast(), this will return nullptr if this region
  *         is not of the requested type. However, it will throw if the cast
@@ -744,19 +744,18 @@ protected:
  *         called. This indicates a programming error.
  */
 template<typename ObjectType>
-const ObjectType* down_cast(const region* p_self) {
-    const ObjectType* p_object = dynamic_cast<const ObjectType*>(p_self);
-    if (p_self && !p_object && p_self->is_object_type(ObjectType::class_name)) {
+const ObjectType* down_cast(const region* self) {
+    const ObjectType* object = dynamic_cast<const ObjectType*>(self);
+    if (self && !object && self->is_object_type(ObjectType::class_name)) {
         throw gui::exception(
-            p_self->type_.back(), "cannot use down_cast() to " +
-                                      std::string(ObjectType::class_name) +
-                                      " as object is being destroyed");
+            self->type_.back(), "cannot use down_cast() to " + std::string(ObjectType::class_name) +
+                                    " as object is being destroyed");
     }
-    return p_object;
+    return object;
 }
 
 /// Obtain a pointer to a derived class.
-/** \param pSelf The pointer to down cast
+/** \param self The pointer to down cast
  *   \return A pointer to a derived class
  *   \note Like dynamic_cast(), this will return nullptr if this region
  *         is not of the requested type. However, it will throw if the cast
@@ -764,52 +763,51 @@ const ObjectType* down_cast(const region* p_self) {
  *         called. This indicates a programming error.
  */
 template<typename ObjectType>
-ObjectType* down_cast(region* p_self) {
-    return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(p_self)));
+ObjectType* down_cast(region* self) {
+    return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(self)));
 }
 
 /// Perform a down cast on an owning pointer.
-/** \param pObject The owning pointer to down cast
+/** \param object The owning pointer to down cast
  *   \return The down casted pointer.
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& p_object) {
-    return utils::owner_ptr<ObjectType>(std::move(p_object), down_cast<ObjectType>(p_object.get()));
+utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& object) {
+    return utils::owner_ptr<ObjectType>(std::move(object), down_cast<ObjectType>(object.get()));
 }
 
 /// Perform a down cast on an observer pointer.
-/** \param pObject The observer pointer to down cast
+/** \param object The observer pointer to down cast
  *   \return The down casted pointer.
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& p_object) {
-    return utils::observer_ptr<ObjectType>(p_object, down_cast<ObjectType>(p_object.get()));
+utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& object) {
+    return utils::observer_ptr<ObjectType>(object, down_cast<ObjectType>(object.get()));
 }
 
 /// Perform a down cast on an observer pointer.
-/** \param pObject The observer pointer to down cast
+/** \param object The observer pointer to down cast
  *   \return The down casted pointer.
  *   \note See down_cast(const region*) for more information.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& p_object) {
-    return utils::observer_ptr<ObjectType>(
-        std::move(p_object), down_cast<ObjectType>(p_object.get()));
+utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& object) {
+    return utils::observer_ptr<ObjectType>(std::move(object), down_cast<ObjectType>(object.get()));
 }
 
 /// Obtain an observer pointer from a raw pointer (typically 'this')
-/** \param pSelf The raw pointer to get an observer from
+/** \param self The raw pointer to get an observer from
  *   \return The observer pointer.
- *   \note This returns the same things as pSelf->observer_from_this(),
+ *   \note This returns the same things as self->observer_from_this(),
  *         but returning a pointer to the most-derived type known form the
  *         input pointer.
  */
 template<typename ObjectType>
-utils::observer_ptr<ObjectType> observer_from(ObjectType* p_self) {
-    if (p_self)
-        return utils::static_pointer_cast<ObjectType>(p_self->region::observer_from_this());
+utils::observer_ptr<ObjectType> observer_from(ObjectType* self) {
+    if (self)
+        return utils::static_pointer_cast<ObjectType>(self->region::observer_from_this());
     else
         return nullptr;
 }

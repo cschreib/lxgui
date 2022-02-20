@@ -16,14 +16,14 @@ class layout_node;
 /** \param reg        The UI object registry, for parent lookup
  *   \param vreg The virtual UI object registry, for inheritance lookup
  *   \param node            The layout node to parse from
- *   \param pParent          The current layout parent frame of this node (nullptr if none)
+ *   \param parent          The current layout parent frame of this node (nullptr if none)
  *   \return Filled-in core attributes structure.
  */
 region_core_attributes parse_core_attributes(
     registry&                  reg,
     virtual_registry&          vreg,
     const layout_node&         node,
-    utils::observer_ptr<frame> p_parent);
+    utils::observer_ptr<frame> parent);
 
 /// Emit a warning if this node (or any of its attributes/children) was not read.
 /** \param node The node to check

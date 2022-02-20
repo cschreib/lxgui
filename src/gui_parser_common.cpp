@@ -14,13 +14,13 @@ region_core_attributes parse_core_attributes(
     registry&                  reg,
     virtual_registry&          vreg,
     const layout_node&         node,
-    utils::observer_ptr<frame> p_parent) {
+    utils::observer_ptr<frame> parent) {
     region_core_attributes attr;
     attr.object_type = node.get_name();
     attr.name        = node.get_attribute_value<std::string>("name");
 
-    if (p_parent) {
-        attr.p_parent = std::move(p_parent);
+    if (parent) {
+        attr.parent = std::move(parent);
 
         if (node.has_attribute("virtual")) {
             gui::out << gui::warning << node.get_location() << " : "
@@ -39,21 +39,21 @@ region_core_attributes parse_core_attributes(
     } else {
         attr.is_virtual = node.get_attribute_value_or<bool>("virtual", false);
 
-        if (const layout_attribute* p_attr = node.try_get_attribute("parent")) {
-            std::string parent       = p_attr->get_value<std::string>();
-            auto        p_parent_obj = reg.get_region_by_name(parent);
-            if (!parent.empty() && !p_parent_obj) {
+        if (const layout_attribute* parent_attr = node.try_get_attribute("parent")) {
+            std::string parent_name = parent_attr->get_value<std::string>();
+            auto        parent_obj  = reg.get_region_by_name(parent_name);
+            if (!parent_name.empty() && !parent_obj) {
                 gui::out << gui::warning << node.get_location() << " : "
-                         << "Cannot find \"" << attr.name << "\"'s parent : \"" << parent
+                         << "Cannot find \"" << attr.name << "\"'s parent : \"" << parent_name
                          << "\". "
                             "No parent given to this region."
                          << std::endl;
             }
 
-            attr.p_parent = down_cast<frame>(p_parent_obj);
-            if (p_parent_obj != nullptr && attr.p_parent == nullptr) {
+            attr.parent = down_cast<frame>(parent_obj);
+            if (parent_obj != nullptr && attr.parent == nullptr) {
                 gui::out << gui::warning << node.get_location() << " : "
-                         << "Cannot set  \"" << attr.name << "\"'s parent : \"" << parent
+                         << "Cannot set  \"" << attr.name << "\"'s parent : \"" << parent_name
                          << "\". "
                             "This is not a frame."
                          << std::endl;
@@ -61,8 +61,8 @@ region_core_attributes parse_core_attributes(
         }
     }
 
-    if (const layout_attribute* p_attr = node.try_get_attribute("inherits")) {
-        attr.inheritance = vreg.get_virtual_region_list(p_attr->get_value<std::string>());
+    if (const layout_attribute* inh_attr = node.try_get_attribute("inherits")) {
+        attr.inheritance = vreg.get_virtual_region_list(inh_attr->get_value<std::string>());
     }
 
     return attr;

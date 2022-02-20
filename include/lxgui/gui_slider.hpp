@@ -62,22 +62,22 @@ public:
     void copy_from(const region& obj) override;
 
     /// Sets the texture to use for the thumb.
-    /** \param pTexture The new texture
+    /** \param tex The new texture
      */
-    void set_thumb_texture(utils::observer_ptr<texture> p_texture);
+    void set_thumb_texture(utils::observer_ptr<texture> tex);
 
     /// Returns the texture used for the thumb.
     /** \return The texture used for the thumb
      */
     const utils::observer_ptr<texture>& get_thumb_texture() {
-        return p_thumb_texture_;
+        return thumb_texture_;
     }
 
     /// Returns the texture used for the thumb.
     /** \return The texture used for the thumb
      */
     utils::observer_ptr<const texture> get_thumb_texture() const {
-        return p_thumb_texture_;
+        return thumb_texture_;
     }
 
     /// Sets the orientation of this slider.
@@ -204,8 +204,8 @@ protected:
 
     bool allow_clicks_outside_thumb_ = true;
 
-    layer                        thumb_layer_     = layer::overlay;
-    utils::observer_ptr<texture> p_thumb_texture_ = nullptr;
+    layer                        thumb_layer_   = layer::overlay;
+    utils::observer_ptr<texture> thumb_texture_ = nullptr;
 
     bool is_thumb_dragged_ = false;
 };

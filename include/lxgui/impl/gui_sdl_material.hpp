@@ -33,34 +33,30 @@ public:
         SDL_Renderer*    rdr,
         const vector2ui& dimensions,
         bool             is_render_target = false,
-        wrap             wrap             = wrap::repeat,
-        filter           filter           = filter::none);
+        wrap             wrp              = wrap::repeat,
+        filter           filt             = filter::none);
 
     /// Constructor for textures.
     /** \param rdr     The SDL render to create the material for
      *   \param file_name     The file from which the texture data is loaded
-     *   \param pre_multiplied_alpha_supported 'true' if the renderer supports pre-multipled alpha
-     *   \param wrp         How to adjust texture coordinates that are outside the [0,1] range
+     * \param is_pre_multiplied_alpha_supported 'true' if the renderer supports pre-multipled alpha
+     * \param wrp         How to adjust texture coordinates that are outside the [0,1] range
      *   \param filt       Use texture filtering or not (see set_filter())
      */
     material(
         SDL_Renderer*      rdr,
         const std::string& file_name,
-        bool               pre_multiplied_alpha_supported,
-        wrap               wrap   = wrap::repeat,
-        filter             filter = filter::none);
+        bool               is_pre_multiplied_alpha_supported,
+        wrap               wrp  = wrap::repeat,
+        filter             filt = filter::none);
 
     /// Constructor for atlas textures.
     /** \param rdr The SDL render to create the material for
-     *   \param pTexture  The texture object of the atlas
+     *   \param tex  The texture object of the atlas
      *   \param rect     The position of this texture inside the atlas
      *   \param filt   Use texture filtering or not (see set_filter())
      */
-    material(
-        SDL_Renderer*   rdr,
-        SDL_Texture*    p_texture,
-        const bounds2f& rect,
-        filter          filter = filter::none);
+    material(SDL_Renderer* rdr, SDL_Texture* tex, const bounds2f& rect, filter filt = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
@@ -103,7 +99,7 @@ public:
     /** \note Premultiplied alpha is a rendering technique that allows perfect
      *         alpha blending when using render targets.
      */
-    static void premultiply_alpha(SDL_Surface* p_data);
+    static void premultiply_alpha(SDL_Surface* data);
 
     /// Returns the SDL blend mode corresponding to pre-multiplied alpha.
     /** \returns the SDL blend mode corresponding to pre-multiplied alpha
@@ -148,21 +144,21 @@ public:
     SDL_Renderer* get_renderer();
 
     /// Returns a pointer to the texture data, which can be modified.
-    /** \param pPitch An output pointer to the size (in bytes) of a row (ignored if nullptr)
+    /** \param pitch An output pointer to the size (in bytes) of a row (ignored if nullptr)
      *   \return A pointer to the texture data, which can be modified
      *   \note The pointer is owned by this class, you must not delete it.
      *         Make sure you call unlock_pointer() when you are done.
      */
-    ub32color* lock_pointer(std::size_t* p_pitch = nullptr);
+    ub32color* lock_pointer(std::size_t* pitch = nullptr);
 
     /// \copydoc lock_pointer
-    const ub32color* lock_pointer(std::size_t* p_pitch = nullptr) const;
+    const ub32color* lock_pointer(std::size_t* pitch = nullptr) const;
 
     /// Stops modifying the texture data and update the texture in GPU memory.
     void unlock_pointer() const;
 
 private:
-    SDL_Renderer* p_renderer_ = nullptr;
+    SDL_Renderer* renderer_ = nullptr;
 
     vector2ui dimensions_;
     vector2ui canvas_dimensions_;
@@ -171,8 +167,8 @@ private:
     filter    filter_           = filter::none;
     bool      is_render_target_ = false;
 
-    SDL_Texture* p_texture_ = nullptr;
-    bool         is_owner_  = false;
+    SDL_Texture* texture_  = nullptr;
+    bool         is_owner_ = false;
 };
 
 } // namespace lxgui::gui::sdl

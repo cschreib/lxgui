@@ -83,8 +83,8 @@ void button::register_on_lua(sol::state& lua) {
     type.set_function(
         "get_disabled_text_color",
         [](const button& self) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (auto p_font_string = self.get_disabled_text()) {
-                const color& color = p_font_string->get_text_color();
+            if (auto font_string = self.get_disabled_text()) {
+                const color& color = font_string->get_text_color();
                 return std::make_tuple(color.r, color.g, color.b, color.a);
             }
 
@@ -111,8 +111,8 @@ void button::register_on_lua(sol::state& lua) {
     type.set_function(
         "get_highlight_text_color",
         [](const button& self) -> sol::optional<std::tuple<float, float, float, float>> {
-            if (auto p_font_string = self.get_highlight_text()) {
-                const color& color = p_font_string->get_text_color();
+            if (auto font_string = self.get_highlight_text()) {
+                const color& color = font_string->get_text_color();
                 return std::make_tuple(color.r, color.g, color.b, color.a);
             }
 
@@ -163,8 +163,8 @@ void button::register_on_lua(sol::state& lua) {
     /** @function get_text_height
      */
     type.set_function("get_text_height", [](const button& self) -> sol::optional<float> {
-        if (auto p_current_font = self.get_current_font_string())
-            return p_current_font->get_string_height();
+        if (auto current_font = self.get_current_font_string())
+            return current_font->get_string_height();
 
         return sol::nullopt;
     });
@@ -172,8 +172,8 @@ void button::register_on_lua(sol::state& lua) {
     /** @function get_text_width
      */
     type.set_function("get_text_width", [](const button& self) -> sol::optional<float> {
-        if (auto p_current_font = self.get_current_font_string())
-            return p_current_font->get_string_width();
+        if (auto current_font = self.get_current_font_string())
+            return current_font->get_string_width();
 
         return sol::nullopt;
     });
@@ -214,12 +214,12 @@ void button::register_on_lua(sol::state& lua) {
         "set_disabled_text_color",
         sol::overload(
             [](button& self, float r, float g, float b, sol::optional<float> a) {
-                if (auto p_font_string = self.get_disabled_text())
-                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
+                if (auto font_string = self.get_disabled_text())
+                    font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& self, const std::string& s) {
-                if (auto p_font_string = self.get_disabled_text())
-                    p_font_string->set_text_color(color(s));
+                if (auto font_string = self.get_disabled_text())
+                    font_string->set_text_color(color(s));
             }));
 
     /** @function set_disabled_texture
@@ -236,12 +236,12 @@ void button::register_on_lua(sol::state& lua) {
         "set_highlight_text_color",
         sol::overload(
             [](button& self, float r, float g, float b, sol::optional<float> a) {
-                if (auto p_font_string = self.get_highlight_text())
-                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
+                if (auto font_string = self.get_highlight_text())
+                    font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& self, const std::string& s) {
-                if (auto p_font_string = self.get_highlight_text())
-                    p_font_string->set_text_color(color(s));
+                if (auto font_string = self.get_highlight_text())
+                    font_string->set_text_color(color(s));
             }));
 
     /** @function set_highlight_texture
@@ -258,12 +258,12 @@ void button::register_on_lua(sol::state& lua) {
         "set_normal_text_color",
         sol::overload(
             [](button& self, float r, float g, float b, sol::optional<float> a) {
-                if (auto p_font_string = self.get_normal_text())
-                    p_font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
+                if (auto font_string = self.get_normal_text())
+                    font_string->set_text_color(color(r, g, b, a.value_or(1.0f)));
             },
             [](button& self, const std::string& s) {
-                if (auto p_font_string = self.get_normal_text())
-                    p_font_string->set_text_color(color(s));
+                if (auto font_string = self.get_normal_text())
+                    font_string->set_text_color(color(s));
             }));
 
     /** @function set_normal_texture

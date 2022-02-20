@@ -102,9 +102,9 @@ public:
     void bind() const;
 
     /// Updates the texture that is in GPU memory.
-    /** \param pData The new pixel data
+    /** \param data The new pixel data
      */
-    void update_texture(const ub32color* p_data);
+    void update_texture(const ub32color* data);
 
     /// Returns the OpenGL texture handle.
     /** \note For internal use.

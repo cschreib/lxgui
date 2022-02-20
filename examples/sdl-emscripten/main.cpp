@@ -26,8 +26,8 @@ struct main_loop_context {
     SDL_Renderer* renderer = nullptr;
 };
 
-void main_loop(void* pTypeErasedData) try {
-    main_loop_context& context          = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
+void main_loop(void* type_erased_data) try {
+    main_loop_context& context          = *reinterpret_cast<main_loop_context*>(type_erased_data);
     input::dispatcher& input_dispatcher = context.manager->get_input_dispatcher();
 
     // Get events from SDL

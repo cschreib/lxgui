@@ -83,9 +83,9 @@ public:
     std::weak_ptr<gui::material> get_texture() const override;
 
     /// Update the material to use for rendering.
-    /** \param pMat The material to use for rendering
+    /** \param mat The material to use for rendering
      */
-    void update_texture(std::shared_ptr<gui::material> p_mat) override;
+    void update_texture(std::shared_ptr<gui::material> mat) override;
 
 private:
     struct character_info {
@@ -107,7 +107,7 @@ private:
     bool        kerning_            = false;
     char32_t    default_code_point_ = 0u;
 
-    std::shared_ptr<gl::material> p_texture_;
+    std::shared_ptr<gl::material> texture_;
     std::vector<range_info>       range_list_;
 };
 

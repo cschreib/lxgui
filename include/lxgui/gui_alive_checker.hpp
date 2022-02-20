@@ -23,7 +23,7 @@ public:
     /// Contructor.
     /** \param object The object to monitor
      */
-    explicit alive_checker(region& object) : p_object_(object.observer_from_this()) {}
+    explicit alive_checker(region& object) : object_(object.observer_from_this()) {}
 
     // Non-copiable, non-movable
     alive_checker(const alive_checker&) = delete;
@@ -35,11 +35,11 @@ public:
     /** \return 'true' if the region is alive, 'false' otherwise
      */
     bool is_alive() const {
-        return !p_object_.expired();
+        return !object_.expired();
     }
 
 private:
-    utils::observer_ptr<region> p_object_;
+    utils::observer_ptr<region> object_;
 };
 
 } // namespace lxgui::gui

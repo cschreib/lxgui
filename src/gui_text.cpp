@@ -32,7 +32,7 @@ struct texture {
     std::string               file_name;
     float                     width  = 0.0f;
     float                     height = 0.0f;
-    std::shared_ptr<material> p_material;
+    std::shared_ptr<material> mat;
 };
 
 using item = std::variant<char32_t, format, texture>;
@@ -99,7 +99,7 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                     const auto words = utils::cut(extracted, ":");
                     if (!words.empty()) {
                         texture texture;
-                        texture.p_material = renderer.create_material(std::string{words[0]});
+                        texture.mat   = renderer.create_material(std::string{words[0]});
                         texture.width = texture.height = std::numeric_limits<float>::quiet_NaN();
 
                         if (words.size() == 2) {
@@ -277,18 +277,18 @@ float get_string_width(const text& txt, const std::vector<item>& content) {
 /** \endcond
  */
 
-text::text(renderer& rdr, std::shared_ptr<font> p_font, std::shared_ptr<font> p_outline_font) :
-    renderer_(rdr), p_font_(std::move(p_font)), p_outline_font_(std::move(p_outline_font)) {
+text::text(renderer& rdr, std::shared_ptr<font> fnt, std::shared_ptr<font> outline_font) :
+    renderer_(rdr), font_(std::move(fnt)), outline_font_(std::move(outline_font)) {
 
-    if (!p_font_)
+    if (!font_)
         return;
 
     is_ready_ = true;
 }
 
 float text::get_line_height() const {
-    if (p_font_)
-        return p_font_->get_size() * scaling_factor_;
+    if (font_)
+        return font_->get_size() * scaling_factor_;
     else
         return 0.0;
 }
@@ -425,13 +425,13 @@ float text::get_character_width(char32_t c) const {
     if (!is_ready_)
         return 0.0f;
     else if (c == U'\t')
-        return 4.0f * p_font_->get_character_width(U' ') * scaling_factor_;
+        return 4.0f * font_->get_character_width(U' ') * scaling_factor_;
     else
-        return p_font_->get_character_width(c) * scaling_factor_;
+        return font_->get_character_width(c) * scaling_factor_;
 }
 
 float text::get_character_kerning(char32_t c1, char32_t c2) const {
-    return p_font_->get_character_kerning(c1, c2) * scaling_factor_;
+    return font_->get_character_kerning(c1, c2) * scaling_factor_;
 }
 
 void text::set_alignment_x(alignment_x align_x) {
@@ -523,15 +523,15 @@ void text::render(const matrix4f& transform) const {
     bool use_vertex_cache =
         renderer_.is_vertex_cache_enabled() && !renderer_.is_quad_batching_enabled();
 
-    if ((use_vertex_cache && !p_vertex_cache_) || (use_vertex_cache && quad_list_.empty()))
+    if ((use_vertex_cache && !vertex_cache_) || (use_vertex_cache && quad_list_.empty()))
         update_cache_flag_ = true;
 
     update_();
 
-    if (p_outline_font_) {
-        if (const auto p_mat = p_outline_font_->get_texture().lock()) {
-            if (use_vertex_cache && p_outline_vertex_cache_) {
-                renderer_.render_cache(p_mat.get(), *p_outline_vertex_cache_, transform);
+    if (outline_font_) {
+        if (const auto mat = outline_font_->get_texture().lock()) {
+            if (use_vertex_cache && outline_vertex_cache_) {
+                renderer_.render_cache(mat.get(), *outline_vertex_cache_, transform);
             } else {
                 std::vector<std::array<vertex, 4>> quads_copy = outline_quad_list_;
                 for (auto& quad : quads_copy)
@@ -540,14 +540,14 @@ void text::render(const matrix4f& transform) const {
                         quad[i].col.a *= alpha_;
                     }
 
-                renderer_.render_quads(p_mat.get(), quads_copy);
+                renderer_.render_quads(mat.get(), quads_copy);
             }
         }
     }
 
-    if (const auto p_mat = p_font_->get_texture().lock()) {
-        if (use_vertex_cache && p_vertex_cache_) {
-            renderer_.render_cache(p_mat.get(), *p_vertex_cache_, transform);
+    if (const auto mat = font_->get_texture().lock()) {
+        if (use_vertex_cache && vertex_cache_) {
+            renderer_.render_cache(mat.get(), *vertex_cache_, transform);
         } else {
             std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
             for (auto& quad : quads_copy)
@@ -561,7 +561,7 @@ void text::render(const matrix4f& transform) const {
                     quad[i].col.a *= alpha_;
                 }
 
-            renderer_.render_quads(p_mat.get(), quads_copy);
+            renderer_.render_quads(mat.get(), quads_copy);
         }
 
         for (auto quad : icons_list_) {
@@ -887,7 +887,7 @@ void text::update_() const {
                             tex_height = round_to_pixel_(tex_height);
 
                             quad icon;
-                            icon.mat      = value.p_material;
+                            icon.mat      = value.mat;
                             icon.v[0].pos = vector2f(0.0f, 0.0f);
                             icon.v[1].pos = vector2f(tex_width, 0.0f);
                             icon.v[2].pos = vector2f(tex_width, tex_height);
@@ -905,7 +905,7 @@ void text::update_() const {
 
                             icons_list_.push_back(icon);
                         } else if constexpr (std::is_same_v<type, char32_t>) {
-                            if (p_outline_font_) {
+                            if (outline_font_) {
                                 std::array<vertex, 4> vertex_list =
                                     create_outline_letter_quad_(value);
                                 for (std::size_t i = 0; i < 4; ++i) {
@@ -941,14 +941,13 @@ void text::update_() const {
     }
 
     if (renderer_.is_vertex_cache_enabled() && !renderer_.is_quad_batching_enabled()) {
-        if (!p_outline_vertex_cache_)
-            p_outline_vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
+        if (!outline_vertex_cache_)
+            outline_vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
 
-        p_outline_vertex_cache_->update(
-            outline_quad_list_[0].data(), outline_quad_list_.size() * 4);
+        outline_vertex_cache_->update(outline_quad_list_[0].data(), outline_quad_list_.size() * 4);
 
-        if (!p_vertex_cache_)
-            p_vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
+        if (!vertex_cache_)
+            vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
 
         std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
         for (auto& quad : quads_copy)
@@ -960,7 +959,7 @@ void text::update_() const {
                 quad[i].col.a *= alpha_;
             }
 
-        p_vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
+        vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
     }
 
     update_cache_flag_ = false;
@@ -985,16 +984,16 @@ std::array<vertex, 4> text::create_letter_quad_(gui::font& font, char32_t c) con
 }
 
 std::array<vertex, 4> text::create_letter_quad_(char32_t c) const {
-    return create_letter_quad_(*p_font_, c);
+    return create_letter_quad_(*font_, c);
 }
 
 std::array<vertex, 4> text::create_outline_letter_quad_(char32_t c) const {
-    return create_letter_quad_(*p_outline_font_, c);
+    return create_letter_quad_(*outline_font_, c);
 }
 
 quad text::create_letter_quad(char32_t c) const {
     quad output;
-    output.mat = p_font_->get_texture().lock();
+    output.mat = font_->get_texture().lock();
     output.v   = create_letter_quad_(c);
 
     return output;

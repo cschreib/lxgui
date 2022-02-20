@@ -78,9 +78,9 @@ public:
     std::weak_ptr<gui::material> get_texture() const override;
 
     /// Update the material to use for rendering.
-    /** \param pMat The material to use for rendering
+    /** \param mat The material to use for rendering
      */
-    void update_texture(std::shared_ptr<gui::material> p_mat) override;
+    void update_texture(std::shared_ptr<gui::material> mat) override;
 
 private:
     char32_t get_character_(char32_t c) const;
@@ -90,7 +90,7 @@ private:
     std::size_t outline_            = 0u;
     char32_t    default_code_point_ = 0u;
 
-    std::shared_ptr<sfml::material> p_texture_;
+    std::shared_ptr<sfml::material> texture_;
     std::vector<code_point_range>   code_points_;
 };
 

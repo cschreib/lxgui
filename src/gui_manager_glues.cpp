@@ -26,20 +26,20 @@
 
 namespace lxgui::gui {
 
-void manager::register_lua_glues(std::function<void(gui::manager&)> p_lua_regs) {
-    p_lua_regs_ = std::move(p_lua_regs);
+void manager::register_lua_glues(std::function<void(gui::manager&)> lua_regs) {
+    lua_regs_ = std::move(lua_regs);
 }
 
 void manager::create_lua_() {
-    if (p_lua_)
+    if (lua_)
         return;
 
-    p_lua_ = std::unique_ptr<sol::state>(new sol::state());
-    p_lua_->open_libraries(
+    lua_ = std::unique_ptr<sol::state>(new sol::state());
+    lua_->open_libraries(
         sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os,
         sol::lib::string, sol::lib::debug);
 
-    auto& lua = *p_lua_;
+    auto& lua = *lua_;
 
     /** @function log
      */
@@ -49,7 +49,7 @@ void manager::create_lua_() {
      */
     lua.set_function(
         "create_frame",
-        [&](const std::string& type, const std::string& name, sol::optional<frame&> p_parent,
+        [&](const std::string& type, const std::string& name, sol::optional<frame&> parent,
             sol::optional<std::string> inheritance) -> sol::object {
             region_core_attributes attr;
             attr.name        = name;
@@ -59,16 +59,16 @@ void manager::create_lua_() {
                     get_virtual_root().get_registry().get_virtual_region_list(inheritance.value());
             }
 
-            utils::observer_ptr<frame> p_new_frame;
-            if (p_parent.has_value())
-                p_new_frame = p_parent.value().create_child(std::move(attr));
+            utils::observer_ptr<frame> new_frame;
+            if (parent.has_value())
+                new_frame = parent.value().create_child(std::move(attr));
             else
-                p_new_frame = p_root_->create_root_frame(std::move(attr));
+                new_frame = root_->create_root_frame(std::move(attr));
 
-            if (p_new_frame) {
-                p_new_frame->set_addon(get_addon_registry()->get_current_addon());
-                p_new_frame->notify_loaded();
-                return get_lua()[p_new_frame->get_lua_name()];
+            if (new_frame) {
+                new_frame->set_addon(get_addon_registry()->get_current_addon());
+                new_frame->notify_loaded();
+                return get_lua()[new_frame->get_lua_name()];
             } else
                 return sol::lua_nil;
         });
@@ -116,15 +116,15 @@ void manager::create_lua_() {
     lua.set_function(
         "get_interface_scaling_factor", [&]() { return get_interface_scaling_factor(); });
 
-    p_localizer_->register_on_lua(lua);
+    localizer_->register_on_lua(lua);
 
     // Base types
-    p_factory_->register_region_type<region>();
-    p_factory_->register_region_type<frame>();
-    p_factory_->register_region_type<layered_region>();
+    factory_->register_region_type<region>();
+    factory_->register_region_type<frame>();
+    factory_->register_region_type<layered_region>();
 
-    if (p_lua_regs_)
-        p_lua_regs_(*this);
+    if (lua_regs_)
+        lua_regs_(*this);
 }
 
 } // namespace lxgui::gui

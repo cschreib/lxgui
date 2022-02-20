@@ -14,7 +14,7 @@ using sf::Keyboard;
 using sf::Mouse;
 
 namespace lxgui::input { namespace sfml {
-source::source(sf::Window& window) : window_(window) {
+source::source(sf::Window& win) : window_(win) {
     window_dimensions_ = gui::vector2ui(window_.getSize().x, window_.getSize().y);
 }
 
@@ -36,10 +36,10 @@ void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i&
                 "input::sfml::source", "Could not load cursor file '" + file_name + "'.");
         }
 
-        auto p_cursor = std::make_unique<sf::Cursor>();
-        p_cursor->loadFromPixels(
+        auto cursor = std::make_unique<sf::Cursor>();
+        cursor->loadFromPixels(
             image.getPixelsPtr(), image.getSize(), sf::Vector2u(hot_spot.x, hot_spot.y));
-        iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
+        iter = cursor_map_.insert(std::make_pair(file_name, std::move(cursor))).first;
     }
 
     window_.setMouseCursor(*iter->second);
@@ -49,9 +49,9 @@ void source::reset_mouse_cursor() {
     const std::string name = "system_arrow";
     auto              iter = cursor_map_.find(name);
     if (iter == cursor_map_.end()) {
-        auto p_cursor = std::make_unique<sf::Cursor>();
-        p_cursor->loadFromSystem(sf::Cursor::Arrow);
-        iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
+        auto cursor = std::make_unique<sf::Cursor>();
+        cursor->loadFromSystem(sf::Cursor::Arrow);
+        iter = cursor_map_.insert(std::make_pair(name, std::move(cursor))).first;
     }
 
     window_.setMouseCursor(*iter->second);

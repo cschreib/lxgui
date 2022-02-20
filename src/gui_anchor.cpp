@@ -22,16 +22,16 @@ anchor::anchor(region& object, const anchor_data& data) : anchor_data(data) {
 }
 
 void anchor::update_parent_(region& object) {
-    p_parent_ = nullptr;
+    parent_ = nullptr;
 
     if (parent_name.empty())
         return;
 
-    utils::observer_ptr<frame> p_obj_parent = object.get_parent();
+    utils::observer_ptr<frame> obj_parent = object.get_parent();
 
     std::string parent_full_name = parent_name;
-    if (p_obj_parent) {
-        utils::replace(parent_full_name, "$parent", p_obj_parent->get_lua_name());
+    if (obj_parent) {
+        utils::replace(parent_full_name, "$parent", obj_parent->get_lua_name());
     } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
         gui::out << gui::error << "gui::" << object.get_object_type() << " : "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
@@ -39,25 +39,25 @@ void anchor::update_parent_(region& object) {
         return;
     }
 
-    utils::observer_ptr<region> p_new_parent =
+    utils::observer_ptr<region> new_parent =
         object.get_registry().get_region_by_name(parent_full_name);
 
-    if (!p_new_parent) {
+    if (!new_parent) {
         gui::out << gui::error << "gui::" << object.get_object_type() << " : "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
         return;
     }
 
-    p_parent_ = p_new_parent;
+    parent_ = new_parent;
 }
 
 vector2f anchor::get_point(const region& object) const {
     vector2f parent_pos;
     vector2f parent_size;
-    if (const region* p_raw_parent = p_parent_.get()) {
-        parent_pos  = p_raw_parent->get_borders().top_left();
-        parent_size = p_raw_parent->get_apparent_dimensions();
+    if (const region* raw_parent = parent_.get()) {
+        parent_pos  = raw_parent->get_borders().top_left();
+        parent_size = raw_parent->get_apparent_dimensions();
     } else {
         parent_size = object.get_top_level_renderer()->get_target_dimensions();
     }
@@ -114,8 +114,8 @@ std::string anchor::serialize(const std::string& tab) const {
     std::stringstream str;
 
     str << tab << "  |   # Point      : " << get_anchor_point_name(point) << "\n";
-    if (p_parent_)
-        str << tab << "  |   # Parent     : " << p_parent_->get_name();
+    if (parent_)
+        str << tab << "  |   # Parent     : " << parent_->get_name();
     else
         str << tab << "  |   # Parent     : none";
     if (!parent_name.empty())

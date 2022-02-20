@@ -15,12 +15,12 @@
 
 namespace lxgui::gui::sdl {
 
-renderer::renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image) : p_renderer_(p_renderer) {
+renderer::renderer(SDL_Renderer* renderer, bool initialise_sdl_image) : renderer_(renderer) {
     int window_width, window_height;
-    SDL_GetRendererOutputSize(p_renderer_, &window_width, &window_height);
+    SDL_GetRendererOutputSize(renderer_, &window_width, &window_height);
     window_dimensions_ = vector2ui(window_width, window_height);
 
-    render_target::check_availability(p_renderer);
+    render_target::check_availability(renderer);
 
     if (initialise_sdl_image) {
         int img_flags = IMG_INIT_PNG;
@@ -33,7 +33,7 @@ renderer::renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image) : p_rend
 
     // Get maximum texture size
     SDL_RendererInfo info;
-    if (SDL_GetRendererInfo(p_renderer, &info) != 0) {
+    if (SDL_GetRendererInfo(renderer, &info) != 0) {
         throw gui::exception("gui::sdl::renderer", "Could not get renderer information.");
     }
 
@@ -42,31 +42,31 @@ renderer::renderer(SDL_Renderer* p_renderer, bool initialise_sdl_image) : p_rend
         texture_max_size_ = 1024u;
 
     // Check if we can do pre-multiplied alpha
-    SDL_Texture* p_texture = SDL_CreateTexture(
-        p_renderer_, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, 4u, 4u);
+    SDL_Texture* tex =
+        SDL_CreateTexture(renderer_, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, 4u, 4u);
 
     pre_multiplied_alpha_supported_ =
         (SDL_SetTextureBlendMode(
-             p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) == 0);
+             tex, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) == 0);
 
-    SDL_DestroyTexture(p_texture);
+    SDL_DestroyTexture(tex);
 }
 
 std::string renderer::get_name() const {
     SDL_RendererInfo renderer_info;
-    SDL_GetRendererInfo(p_renderer_, &renderer_info);
+    SDL_GetRendererInfo(renderer_, &renderer_info);
     return std::string("SDL (") + renderer_info.name + ")";
 }
 
-void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
-    if (p_current_target_)
+void renderer::begin_(std::shared_ptr<gui::render_target> target) {
+    if (current_target_)
         throw gui::exception("gui::sdl::renderer", "Missing call to end()");
 
-    if (p_target) {
-        p_current_target_ = std::static_pointer_cast<sdl::render_target>(p_target);
-        p_current_target_->begin();
+    if (target) {
+        current_target_ = std::static_pointer_cast<sdl::render_target>(target);
+        current_target_->begin();
 
-        target_view_matrix_ = p_current_target_->get_view_matrix();
+        target_view_matrix_ = current_target_->get_view_matrix();
     } else {
         target_view_matrix_ = matrix4f::view(vector2f(window_dimensions_));
     }
@@ -75,10 +75,10 @@ void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
 }
 
 void renderer::end_() {
-    if (p_current_target_)
-        p_current_target_->end();
+    if (current_target_)
+        current_target_->end();
 
-    p_current_target_ = nullptr;
+    current_target_ = nullptr;
 }
 
 void renderer::set_view_(const matrix4f& view_matrix) {
@@ -254,15 +254,15 @@ make_rects(const std::array<vertex, 4>& vertex_list, float tex_width, float tex_
     return data;
 }
 
-void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& vertex_list) {
+void renderer::render_quad_(const sdl::material* mat, const std::array<vertex, 4>& vertex_list) {
     auto view_list = vertex_list;
     for (auto& v : view_list) {
         v.pos = v.pos * view_matrix_;
     }
 
-    if (p_mat) {
-        SDL_Texture*    p_texture  = p_mat->get_texture();
-        const vector2ui tex_dims   = p_mat->get_canvas_dimensions();
+    if (mat) {
+        SDL_Texture*    tex        = mat->get_texture();
+        const vector2ui tex_dims   = mat->get_canvas_dimensions();
         const int       tex_width  = static_cast<int>(tex_dims.x);
         const int       tex_height = static_cast<int>(tex_dims.y);
 
@@ -274,12 +274,11 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
 
         if (pre_multiplied_alpha_supported_) {
             if (SDL_SetTextureBlendMode(
-                    p_texture, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) !=
-                0) {
+                    tex, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) != 0) {
                 throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
             }
         } else {
-            if (SDL_SetTextureBlendMode(p_texture, SDL_BLENDMODE_BLEND) != 0) {
+            if (SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND) != 0) {
                 throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
             }
         }
@@ -290,13 +289,12 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
 
             if (pre_multiplied_alpha_supported_) {
                 SDL_SetTextureColorMod(
-                    p_texture, color.r * color.a * 255, color.g * color.a * 255,
-                    color.b * color.a * 255);
+                    tex, color.r * color.a * 255, color.g * color.a * 255, color.b * color.a * 255);
             } else {
-                SDL_SetTextureColorMod(p_texture, color.r * 255, color.g * 255, color.b * 255);
+                SDL_SetTextureColorMod(tex, color.r * 255, color.g * 255, color.b * 255);
             }
 
-            SDL_SetTextureAlphaMod(p_texture, color.a * 255);
+            SDL_SetTextureAlphaMod(tex, color.a * 255);
 
             bool coords_all_in_texture = data.src_quad.x >= 0 && data.src_quad.y >= 0 &&
                                          data.src_quad.x + data.src_quad.w <= tex_width &&
@@ -305,11 +303,11 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             bool one_pixel = (tex_height == 1 || data.dest_quad.h == 1) &&
                              (tex_width == 1 || data.dest_quad.w == 1);
 
-            if (p_mat->get_wrap() == material::wrap::clamp || coords_all_in_texture || one_pixel) {
+            if (mat->get_wrap() == material::wrap::clamp || coords_all_in_texture || one_pixel) {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(
-                    p_renderer_, p_texture, &data.src_quad, &data.dest_quad, data.angle,
-                    &data.center, data.flip);
+                    renderer_, tex, &data.src_quad, &data.dest_quad, data.angle, &data.center,
+                    data.flip);
             } else {
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
@@ -366,7 +364,7 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                         const SDL_Rect dest_quad{dx, dy, temp_d_width, temp_d_height};
 
                         SDL_RenderCopyEx(
-                            p_renderer_, p_texture, &src_quad, &dest_quad, data.angle, &data.center,
+                            renderer_, tex, &src_quad, &dest_quad, data.angle, &data.center,
                             data.flip);
 
                         sx += temp_s_width;
@@ -395,17 +393,17 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
             const auto& color = view_list[0].col;
             if (pre_multiplied_alpha_supported_) {
                 SDL_SetRenderDrawBlendMode(
-                    p_renderer_, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
+                    renderer_, (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
                 SDL_SetRenderDrawColor(
-                    p_renderer_, color.r * color.a * 255, color.g * color.a * 255,
+                    renderer_, color.r * color.a * 255, color.g * color.a * 255,
                     color.b * color.a * 255, color.a * 255);
             } else {
-                SDL_SetRenderDrawBlendMode(p_renderer_, SDL_BLENDMODE_BLEND);
+                SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
                 SDL_SetRenderDrawColor(
-                    p_renderer_, color.r * 255, color.g * 255, color.b * 255, color.a * 255);
+                    renderer_, color.r * 255, color.g * 255, color.b * 255, color.a * 255);
             }
 
-            SDL_RenderFillRect(p_renderer_, &dest_quad);
+            SDL_RenderFillRect(renderer_, &dest_quad);
         } else {
             // Different colors for each vertex; SDL does not support this natively.
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
@@ -416,32 +414,33 @@ void renderer::render_quad_(const sdl::material* p_mat, const std::array<vertex,
                 premultiply_alpha(view_list[2].col, pre_multiplied_alpha_supported_),
                 premultiply_alpha(view_list[3].col, pre_multiplied_alpha_supported_)};
 
-            sdl::material temp_mat(p_renderer_, vector2ui(dest_quad.w, dest_quad.h), false);
-            ub32color*    p_pixel_data = temp_mat.lock_pointer();
+            sdl::material temp_mat(renderer_, vector2ui(dest_quad.w, dest_quad.h), false);
+            ub32color*    pixel_data = temp_mat.lock_pointer();
             for (int y = 0; y < dest_quad.h; ++y)
                 for (int x = 0; x < dest_quad.w; ++x) {
                     const color col_y1 =
                         interpolate_color(color_quad[0], color_quad[3], y / float(dest_quad.h - 1));
                     const color col_y2 =
                         interpolate_color(color_quad[1], color_quad[2], y / float(dest_quad.h - 1));
-                    p_pixel_data[y * dest_quad.w + x] =
+                    pixel_data[y * dest_quad.w + x] =
                         to_ub32color(interpolate_color(col_y1, col_y2, x / float(dest_quad.w - 1)));
                 }
             temp_mat.unlock_pointer();
 
             const SDL_Rect src_quad = {0, 0, dest_quad.w, dest_quad.h};
 
-            SDL_RenderCopy(p_renderer_, temp_mat.get_texture(), &src_quad, &dest_quad);
+            SDL_RenderCopy(renderer_, temp_mat.get_texture(), &src_quad, &dest_quad);
         }
     }
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
-    const sdl::material* p_mat = static_cast<const sdl::material*>(p_material);
+    const gui::material* mat, const std::vector<std::array<vertex, 4>>& quad_list) {
+
+    const sdl::material* sdl_mat = static_cast<const sdl::material*>(mat);
 
     for (std::size_t k = 0; k < quad_list.size(); ++k) {
-        render_quad_(p_mat, quad_list[k]);
+        render_quad_(sdl_mat, quad_list[k]);
     }
 }
 
@@ -450,13 +449,13 @@ void renderer::render_cache_(const gui::material*, const gui::vertex_cache&, con
 }
 
 SDL_Renderer* renderer::get_sdl_renderer() const {
-    return p_renderer_;
+    return renderer_;
 }
 
 std::shared_ptr<gui::material>
 renderer::create_material_(const std::string& file_name, material::filter filt) {
     return std::make_shared<sdl::material>(
-        p_renderer_, file_name, pre_multiplied_alpha_supported_, material::wrap::repeat, filt);
+        renderer_, file_name, pre_multiplied_alpha_supported_, material::wrap::repeat, filt);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter filt) {
@@ -480,39 +479,38 @@ bool renderer::is_vertex_cache_supported() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* p_pixel_data, material::filter filt) {
-    std::shared_ptr<sdl::material> p_tex = std::make_shared<sdl::material>(
-        p_renderer_, dimensions, false, material::wrap::repeat, filt);
+    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    std::shared_ptr<sdl::material> tex =
+        std::make_shared<sdl::material>(renderer_, dimensions, false, material::wrap::repeat, filt);
 
-    std::size_t pitch      = 0u;
-    ub32color*  p_tex_data = p_tex->lock_pointer(&pitch);
+    std::size_t pitch    = 0u;
+    ub32color*  tex_data = tex->lock_pointer(&pitch);
 
     for (std::size_t y = 0u; y < dimensions.y; ++y) {
-        const ub32color* p_pixel_data_row = p_pixel_data + y * dimensions.x;
-        ub32color*       p_tex_data_row   = p_tex_data + y * pitch;
-        std::copy(p_pixel_data_row, p_pixel_data_row + dimensions.x, p_tex_data_row);
+        const ub32color* pixel_data_row = pixel_data + y * dimensions.x;
+        ub32color*       tex_data_row   = tex_data + y * pitch;
+        std::copy(pixel_data_row, pixel_data_row + dimensions.x, tex_data_row);
     }
 
-    p_tex->unlock_pointer();
+    tex->unlock_pointer();
 
-    return std::move(p_tex);
+    return std::move(tex);
 }
 
-std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) {
-    auto p_tex =
-        std::static_pointer_cast<sdl::render_target>(p_render_target)->get_material().lock();
-    if (location == p_render_target->get_rect()) {
-        return std::move(p_tex);
+std::shared_ptr<gui::material>
+renderer::create_material(std::shared_ptr<gui::render_target> target, const bounds2f& location) {
+    auto tex = std::static_pointer_cast<sdl::render_target>(target)->get_material().lock();
+    if (location == target->get_rect()) {
+        return std::move(tex);
     } else {
         return std::make_shared<sdl::material>(
-            p_renderer_, p_tex->get_render_texture(), location, p_tex->get_filter());
+            renderer_, tex->get_render_texture(), location, tex->get_filter());
     }
 }
 
 std::shared_ptr<gui::render_target>
 renderer::create_render_target(const vector2ui& dimensions, material::filter filt) {
-    return std::make_shared<sdl::render_target>(p_renderer_, dimensions, filt);
+    return std::make_shared<sdl::render_target>(renderer_, dimensions, filt);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(
@@ -522,7 +520,7 @@ std::shared_ptr<gui::font> renderer::create_font_(
     const std::vector<code_point_range>& code_points,
     char32_t                             default_code_point) {
     return std::make_shared<sdl::font>(
-        p_renderer_, font_file, size, outline, code_points, default_code_point,
+        renderer_, font_file, size, outline, code_points, default_code_point,
         pre_multiplied_alpha_supported_);
 }
 

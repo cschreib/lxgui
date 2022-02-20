@@ -28,8 +28,8 @@ struct main_loop_context {
     SDL_GLContext gl_context = nullptr;
 };
 
-void main_loop(void* pTypeErasedData) try {
-    main_loop_context& context          = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
+void main_loop(void* type_erased_data) try {
+    main_loop_context& context          = *reinterpret_cast<main_loop_context*>(type_erased_data);
     input::dispatcher& input_dispatcher = context.manager->get_input_dispatcher();
 
     // Get events from SDL
@@ -87,15 +87,15 @@ void main_loop(void* pTypeErasedData) try {
 
 // Helper class to manage the OpenGL context from SDL
 struct GLContext {
-    SDL_GLContext pContext = nullptr;
+    SDL_GLContext context = nullptr;
 
-    explicit GLContext(SDL_Window* window) : pContext(SDL_GL_CreateContext(window)) {
-        if (pContext == nullptr)
+    explicit GLContext(SDL_Window* window) : context(SDL_GL_CreateContext(window)) {
+        if (context == nullptr)
             throw gui::exception("SDL_GL_CreateContext", "Coult not create OpenGL context.");
     }
 
     ~GLContext() noexcept {
-        SDL_GL_DeleteContext(pContext);
+        SDL_GL_DeleteContext(context);
     }
 };
 
@@ -163,7 +163,7 @@ int main(int argc, char* argv[]) {
         context.prev_time  = timing_clock::now();
         context.manager    = manager.get();
         context.window     = window.get();
-        context.gl_context = gl_context.pContext;
+        context.gl_context = gl_context.context;
 
         // Register a callback on Escape to terminate the program.
         // Doing it this way, we only react to keyboard input that is not captured by the GUI.

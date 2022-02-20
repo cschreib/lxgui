@@ -275,7 +275,7 @@ private:
 
     void update_borders_() override;
 
-    std::unique_ptr<text> p_text_;
+    std::unique_ptr<text> text_;
 
     utils::ustring content_;
     std::string    font_name_;

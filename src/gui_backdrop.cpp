@@ -39,14 +39,14 @@ void backdrop::set_background(const std::string& background_file) {
     background_color_ = color::empty;
 
     if (background_file.empty()) {
-        p_background_texture_ = nullptr;
-        background_file_      = "";
+        background_texture_ = nullptr;
+        background_file_    = "";
         return;
     }
 
     if (!utils::file_exists(background_file)) {
-        p_background_texture_ = nullptr;
-        background_file_      = "";
+        background_texture_ = nullptr;
+        background_file_    = "";
 
         gui::out << gui::warning << "backdrop : "
                  << "Cannot find file : \"" << background_file << "\" for " << parent_.get_name()
@@ -56,12 +56,11 @@ void backdrop::set_background(const std::string& background_file) {
         return;
     }
 
-    auto& renderer        = parent_.get_manager().get_renderer();
-    p_background_texture_ = renderer.create_atlas_material("GUI", background_file);
+    auto& renderer      = parent_.get_manager().get_renderer();
+    background_texture_ = renderer.create_atlas_material("GUI", background_file);
 
-    tile_size_ = original_tile_size_ =
-        static_cast<float>(p_background_texture_->get_rect().width());
-    background_file_ = background_file;
+    tile_size_ = original_tile_size_ = static_cast<float>(background_texture_->get_rect().width());
+    background_file_                 = background_file;
 }
 
 const std::string& backdrop::get_background_file() const {
@@ -74,9 +73,9 @@ void backdrop::set_background_color(const color& c) {
 
     is_cache_dirty_ = true;
 
-    p_background_texture_ = nullptr;
-    background_color_     = c;
-    background_file_      = "";
+    background_texture_ = nullptr;
+    background_color_   = c;
+    background_file_    = "";
 
     tile_size_ = original_tile_size_ = 256.0f;
 }
@@ -141,14 +140,14 @@ void backdrop::set_edge(const std::string& edge_file) {
     edge_color_     = color::empty;
 
     if (edge_file.empty()) {
-        p_edge_texture_ = nullptr;
-        edge_file_      = "";
+        edge_texture_ = nullptr;
+        edge_file_    = "";
         return;
     }
 
     if (!utils::file_exists(edge_file)) {
-        p_edge_texture_ = nullptr;
-        edge_file_      = "";
+        edge_texture_ = nullptr;
+        edge_file_    = "";
 
         gui::out << gui::warning << "backdrop : "
                  << "Cannot find file : \"" << edge_file << "\" for " << parent_.get_name()
@@ -157,12 +156,12 @@ void backdrop::set_edge(const std::string& edge_file) {
         return;
     }
 
-    auto& renderer  = parent_.get_manager().get_renderer();
-    p_edge_texture_ = renderer.create_atlas_material("GUI", edge_file);
+    auto& renderer = parent_.get_manager().get_renderer();
+    edge_texture_  = renderer.create_atlas_material("GUI", edge_file);
 
-    if (p_edge_texture_->get_rect().width() / p_edge_texture_->get_rect().height() != 8.0f) {
-        p_edge_texture_ = nullptr;
-        edge_file_      = "";
+    if (edge_texture_->get_rect().width() / edge_texture_->get_rect().height() != 8.0f) {
+        edge_texture_ = nullptr;
+        edge_file_    = "";
 
         gui::out << gui::error << "backdrop : "
                  << "An edge texture width must be exactly 8 times greater than its height "
@@ -172,7 +171,7 @@ void backdrop::set_edge(const std::string& edge_file) {
         return;
     }
 
-    edge_size_ = original_edge_size_ = p_edge_texture_->get_rect().height();
+    edge_size_ = original_edge_size_ = edge_texture_->get_rect().height();
     edge_file_                       = edge_file;
 }
 
@@ -185,7 +184,7 @@ void backdrop::set_edge_color(const color& c) {
         return;
 
     is_cache_dirty_ = true;
-    p_edge_texture_ = nullptr;
+    edge_texture_   = nullptr;
     edge_color_     = c;
     edge_file_      = "";
 
@@ -228,34 +227,34 @@ void backdrop::render() const {
     bool  use_vertex_cache =
         renderer.is_vertex_cache_enabled() && !renderer.is_quad_batching_enabled();
 
-    bool has_background = p_background_texture_ || background_color_ != color::empty;
-    bool has_edge       = p_edge_texture_ || edge_color_ != color::empty;
+    bool has_background = background_texture_ || background_color_ != color::empty;
+    bool has_edge       = edge_texture_ || edge_color_ != color::empty;
 
     if (has_background) {
-        if ((use_vertex_cache && !p_background_cache_) ||
+        if ((use_vertex_cache && !background_cache_) ||
             (!use_vertex_cache && background_quads_.empty()))
             is_cache_dirty_ = true;
     }
 
     if (has_edge) {
-        if ((use_vertex_cache && !p_edge_cache_) || (!use_vertex_cache && edge_quads_.empty()))
+        if ((use_vertex_cache && !edge_cache_) || (!use_vertex_cache && edge_quads_.empty()))
             is_cache_dirty_ = true;
     }
 
     update_cache_();
 
     if (has_background) {
-        if (use_vertex_cache && p_background_cache_)
-            renderer.render_cache(p_background_texture_.get(), *p_background_cache_);
+        if (use_vertex_cache && background_cache_)
+            renderer.render_cache(background_texture_.get(), *background_cache_);
         else
-            renderer.render_quads(p_background_texture_.get(), background_quads_);
+            renderer.render_quads(background_texture_.get(), background_quads_);
     }
 
     if (has_edge) {
-        if (use_vertex_cache && p_edge_cache_)
-            renderer.render_cache(p_edge_texture_.get(), *p_edge_cache_);
+        if (use_vertex_cache && edge_cache_)
+            renderer.render_cache(edge_texture_.get(), *edge_cache_);
         else
-            renderer.render_quads(p_edge_texture_.get(), edge_quads_);
+            renderer.render_quads(edge_texture_.get(), edge_quads_);
     }
 }
 
@@ -343,10 +342,10 @@ void repeat_wrap(
 }
 
 void backdrop::update_background_(color c) const {
-    if (!p_background_texture_ && background_color_ == color::empty)
+    if (!background_texture_ && background_color_ == color::empty)
         return;
 
-    if (!p_background_texture_)
+    if (!background_texture_)
         c *= background_color_;
 
     auto borders = parent_.get_borders();
@@ -357,15 +356,15 @@ void backdrop::update_background_(color c) const {
 
     auto& renderer = parent_.get_manager().get_renderer();
 
-    if (p_background_texture_) {
-        const vector2f canvas_tl = p_background_texture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
-        const vector2f canvas_br = p_background_texture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+    if (background_texture_) {
+        const vector2f canvas_tl  = background_texture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+        const vector2f canvas_br  = background_texture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
         const bounds2f canvas_uvs = bounds2f(canvas_tl.x, canvas_br.x, canvas_tl.y, canvas_br.y);
 
         float rounded_tile_size =
             parent_.round_to_pixel(tile_size_, utils::rounding_method::nearest_not_zero);
 
-        if (p_background_texture_->is_in_atlas() && is_background_tilling_ &&
+        if (background_texture_->is_in_atlas() && is_background_tilling_ &&
             rounded_tile_size > 1.0f) {
             repeat_wrap(
                 parent_, background_quads_, canvas_uvs, rounded_tile_size, false, c, borders);
@@ -400,19 +399,19 @@ void backdrop::update_background_(color c) const {
     }
 
     if (renderer.is_vertex_cache_enabled() && !renderer.is_quad_batching_enabled()) {
-        if (!p_background_cache_)
-            p_background_cache_ = renderer.create_vertex_cache(vertex_cache::type::quads);
+        if (!background_cache_)
+            background_cache_ = renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        p_background_cache_->update(background_quads_[0].data(), background_quads_.size() * 4);
+        background_cache_->update(background_quads_[0].data(), background_quads_.size() * 4);
         background_quads_.clear();
     }
 }
 
 void backdrop::update_edge_(color c) const {
-    if (!p_edge_texture_ && edge_color_ == color::empty)
+    if (!edge_texture_ && edge_color_ == color::empty)
         return;
 
-    if (!p_edge_texture_)
+    if (!edge_texture_)
         c *= edge_color_;
 
     constexpr float uv_step = 1.0f / 8.0f;
@@ -428,14 +427,14 @@ void backdrop::update_edge_(color c) const {
 
     auto repeat_wrap_edge = [&](const bounds2f& source_uvs, bool is_rotated,
                                 const bounds2f& destination) {
-        if (p_edge_texture_) {
-            const vector2f canvas_tl = p_edge_texture_->get_canvas_uv(source_uvs.top_left(), true);
+        if (edge_texture_) {
+            const vector2f canvas_tl = edge_texture_->get_canvas_uv(source_uvs.top_left(), true);
             const vector2f canvas_br =
-                p_edge_texture_->get_canvas_uv(source_uvs.bottom_right(), true);
+                edge_texture_->get_canvas_uv(source_uvs.bottom_right(), true);
             const bounds2f canvas_uvs =
                 bounds2f(canvas_tl.x, canvas_br.x, canvas_tl.y, canvas_br.y);
 
-            if (p_edge_texture_->is_in_atlas() && rounded_edge_size > 1.0f) {
+            if (edge_texture_->is_in_atlas() && rounded_edge_size > 1.0f) {
                 repeat_wrap(
                     parent_, edge_quads_, canvas_uvs, rounded_edge_size, is_rotated, c,
                     destination);
@@ -548,10 +547,10 @@ void backdrop::update_edge_(color c) const {
             borders.bottom));
 
     if (renderer.is_vertex_cache_enabled() && !renderer.is_quad_batching_enabled()) {
-        if (!p_edge_cache_)
-            p_edge_cache_ = renderer.create_vertex_cache(vertex_cache::type::quads);
+        if (!edge_cache_)
+            edge_cache_ = renderer.create_vertex_cache(vertex_cache::type::quads);
 
-        p_edge_cache_->update(edge_quads_[0].data(), edge_quads_.size() * 4);
+        edge_cache_->update(edge_quads_[0].data(), edge_quads_.size() * 4);
         edge_quads_.clear();
     }
 }

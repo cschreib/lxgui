@@ -81,13 +81,13 @@ material::material(const std::string& file_name, wrap wrp, filter filt) : gui::m
 
 material::material(const sf::Texture& texture, const bounds2f& location, filter filt) :
     gui::material(true) {
-    rect_            = location;
-    filter_          = filt;
-    p_atlas_texture_ = &texture;
+    rect_          = location;
+    filter_        = filt;
+    atlas_texture_ = &texture;
 }
 
 void material::set_wrap(wrap wrp) {
-    if (p_atlas_texture_) {
+    if (atlas_texture_) {
         throw gui::exception(
             "gui::sfml::material", "A material in an atlas cannot change its wrapping mode.");
     }
@@ -101,7 +101,7 @@ void material::set_wrap(wrap wrp) {
 }
 
 void material::set_filter(filter filt) {
-    if (p_atlas_texture_) {
+    if (atlas_texture_) {
         throw gui::exception(
             "gui::sfml::material", "A material in an atlas cannot change its filtering.");
     }
@@ -118,15 +118,15 @@ material::filter material::get_filter() const {
     return filter_;
 }
 
-void material::update_texture(const ub32color* p_data) {
+void material::update_texture(const ub32color* data) {
     if (is_render_target_)
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
 
-    if (p_atlas_texture_)
+    if (atlas_texture_)
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be updated.");
 
     texture_.update(
-        reinterpret_cast<const sf::Uint8*>(p_data), rect_.width(), rect_.height(), rect_.left,
+        reinterpret_cast<const sf::Uint8*>(data), rect_.width(), rect_.height(), rect_.left,
         rect_.top);
 }
 
@@ -149,19 +149,19 @@ bounds2f material::get_rect() const {
 }
 
 vector2ui material::get_canvas_dimensions() const {
-    if (p_atlas_texture_)
-        return vector2ui(p_atlas_texture_->getSize().x, p_atlas_texture_->getSize().y);
+    if (atlas_texture_)
+        return vector2ui(atlas_texture_->getSize().x, atlas_texture_->getSize().y);
     else
         return canvas_dimensions_;
 }
 
 bool material::uses_same_texture(const gui::material& other) const {
-    return p_atlas_texture_ &&
-           p_atlas_texture_ == static_cast<const sfml::material&>(other).p_atlas_texture_;
+    return atlas_texture_ &&
+           atlas_texture_ == static_cast<const sfml::material&>(other).atlas_texture_;
 }
 
 bool material::set_dimensions(const vector2ui& dimensions) {
-    if (p_atlas_texture_) {
+    if (atlas_texture_) {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
     }
 
@@ -209,8 +209,8 @@ sf::RenderTexture* material::get_render_texture() {
 const sf::Texture* material::get_texture() const {
     if (is_render_target_)
         return &render_texture_.getTexture();
-    else if (p_atlas_texture_)
-        return p_atlas_texture_;
+    else if (atlas_texture_)
+        return atlas_texture_;
     else
         return &texture_;
 }

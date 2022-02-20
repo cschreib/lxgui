@@ -28,8 +28,8 @@ region::~region() {
         // Tell this region's anchor parents that it is no longer anchored to them
         for (auto& anchor : anchor_list_) {
             if (anchor) {
-                if (auto* p_anchor_parent = anchor->get_parent().get())
-                    p_anchor_parent->remove_anchored_object(*this);
+                if (auto* anchor_parent = anchor->get_parent().get())
+                    anchor_parent->remove_anchored_object(*this);
             }
 
             anchor.reset();
@@ -40,18 +40,18 @@ region::~region() {
         // modify it when un-anchored, which would invalidate our iteration)
         std::vector<utils::observer_ptr<region>> temp_anchored_object_list =
             std::move(anchored_object_list_);
-        for (const auto& p_obj : temp_anchored_object_list) {
-            if (!p_obj)
+        for (const auto& obj : temp_anchored_object_list) {
+            if (!obj)
                 continue;
 
             std::vector<anchor_point> anchored_point_list;
-            for (const auto& anchor : p_obj->get_point_list()) {
+            for (const auto& anchor : obj->get_point_list()) {
                 if (anchor && anchor->get_parent().get() == this)
                     anchored_point_list.push_back(anchor->point);
             }
 
             for (const auto& point : anchored_point_list) {
-                const anchor& anchor     = p_obj->get_point(point);
+                const anchor& anchor     = obj->get_point(point);
                 anchor_data   new_anchor = anchor_data(point, "", anchor_point::top_left);
                 new_anchor.offset        = anchor.offset;
 
@@ -71,17 +71,17 @@ region::~region() {
                 case anchor_point::center: new_anchor.offset += border_list_.center(); break;
                 }
 
-                p_obj->set_point(new_anchor);
+                obj->set_point(new_anchor);
             }
 
-            p_obj->update_anchors_();
+            obj->update_anchors_();
         }
 
         remove_glue();
     }
 
     // Unregister this object from the GUI manager
-    if (!is_virtual() || p_parent_ == nullptr)
+    if (!is_virtual() || parent_ == nullptr)
         get_registry().remove_region(*this);
 }
 
@@ -94,8 +94,8 @@ std::string region::serialize(const std::string& tab) const {
     str << tab << "  # Raw name    : " << raw_name_ << "\n";
     str << tab << "  # Lua name    : " << lua_name_ << "\n";
     str << tab << "  # Type        : " << type_.back() << "\n";
-    if (p_parent_)
-        str << tab << "  # Parent      : " << p_parent_->get_name() << "\n";
+    if (parent_)
+        str << tab << "  # Parent      : " << parent_->get_name() << "\n";
     else
         str << tab << "  # Parent      : none\n";
     str << tab << "  # Num anchors : " << get_num_point() << "\n";
@@ -166,8 +166,8 @@ float region::get_alpha() const {
 }
 
 float region::get_effective_alpha() const {
-    if (p_parent_) {
-        return p_parent_->get_effective_alpha() * get_alpha();
+    if (parent_) {
+        return parent_->get_effective_alpha() * get_alpha();
     } else {
         return get_alpha();
     }
@@ -186,7 +186,7 @@ void region::show() {
 
     is_shown_ = true;
 
-    if (!is_visible_ && (!p_parent_ || p_parent_->is_visible()))
+    if (!is_visible_ && (!parent_ || parent_->is_visible()))
         notify_visible();
 }
 
@@ -252,22 +252,22 @@ void region::set_height(float abs_height) {
 }
 
 void region::set_relative_dimensions(const vector2f& dimensions) {
-    if (p_parent_)
-        set_dimensions(dimensions * p_parent_->get_apparent_dimensions());
+    if (parent_)
+        set_dimensions(dimensions * parent_->get_apparent_dimensions());
     else
         set_dimensions(dimensions * get_top_level_renderer()->get_target_dimensions());
 }
 
 void region::set_relative_width(float rel_width) {
-    if (p_parent_)
-        set_width(rel_width * p_parent_->get_apparent_dimensions().x);
+    if (parent_)
+        set_width(rel_width * parent_->get_apparent_dimensions().x);
     else
         set_width(rel_width * get_top_level_renderer()->get_target_dimensions().x);
 }
 
 void region::set_relative_height(float rel_height) {
-    if (p_parent_)
-        set_height(rel_height * p_parent_->get_apparent_dimensions().y);
+    if (parent_)
+        set_height(rel_height * parent_->get_apparent_dimensions().y);
     else
         set_height(rel_height * get_top_level_renderer()->get_target_dimensions().y);
 }
@@ -298,8 +298,8 @@ void region::set_name_(const std::string& name) {
     if (name_.empty()) {
         name_ = lua_name_ = raw_name_ = name;
         if (utils::starts_with(name_, "$parent")) {
-            if (p_parent_)
-                utils::replace(lua_name_, "$parent", p_parent_->get_lua_name());
+            if (parent_)
+                utils::replace(lua_name_, "$parent", parent_->get_lua_name());
             else {
                 gui::out << gui::warning << "gui::" << type_.back() << " : \"" << name_
                          << "\" has no parent" << std::endl;
@@ -315,32 +315,32 @@ void region::set_name_(const std::string& name) {
     }
 }
 
-void region::set_parent_(utils::observer_ptr<frame> p_parent) {
-    if (p_parent == observer_from_this()) {
+void region::set_parent_(utils::observer_ptr<frame> parent) {
+    if (parent == observer_from_this()) {
         gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
 
-    if (p_parent_ != p_parent) {
-        p_parent_ = std::move(p_parent);
+    if (parent_ != parent) {
+        parent_ = std::move(parent);
 
         if (!is_virtual_)
             notify_borders_need_update();
     }
 }
 
-void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> p_parent) {
-    if (p_parent == observer_from_this()) {
+void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent) {
+    if (parent == observer_from_this()) {
         gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
 
-    if (p_parent_ == p_parent && name == name_)
+    if (parent_ == parent && name == name_)
         return;
 
-    p_parent_ = std::move(p_parent);
+    parent_ = std::move(parent);
     set_name_(name);
 
     if (!is_virtual_)
@@ -427,14 +427,14 @@ void region::set_all_points(const std::string& obj_name) {
     }
 }
 
-void region::set_all_points(const utils::observer_ptr<region>& p_obj) {
-    if (p_obj == observer_from_this()) {
+void region::set_all_points(const utils::observer_ptr<region>& obj) {
+    if (obj == observer_from_this()) {
         gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_all_points(this)."
                  << std::endl;
         return;
     }
 
-    set_all_points(p_obj ? p_obj->get_name() : "");
+    set_all_points(obj ? obj->get_name() : "");
 }
 
 void region::set_point(const anchor_data& anchor) {
@@ -476,12 +476,12 @@ bool region::depends_on(const region& obj) const {
         if (!anchor)
             continue;
 
-        const region* p_parent = anchor->get_parent().get();
-        if (p_parent == &obj)
+        const region* parent = anchor->get_parent().get();
+        if (parent == &obj)
             return true;
 
-        if (p_parent)
-            return p_parent->depends_on(obj);
+        if (parent)
+            return parent->depends_on(obj);
     }
 
     return false;
@@ -534,8 +534,8 @@ void region::add_anchored_object(region& obj) {
 }
 
 void region::remove_anchored_object(region& obj) {
-    auto iter = utils::find_if(
-        anchored_object_list_, [&](const auto& p_ptr) { return p_ptr.get() == &obj; });
+    auto iter =
+        utils::find_if(anchored_object_list_, [&](const auto& ptr) { return ptr.get() == &obj; });
 
     if (iter != anchored_object_list_.end())
         anchored_object_list_.erase(iter);
@@ -709,12 +709,12 @@ void region::update_anchors_() {
         if (!anchor)
             continue;
 
-        utils::observer_ptr<region> p_obj = anchor->get_parent();
-        if (p_obj) {
-            if (p_obj->depends_on(*this)) {
+        utils::observer_ptr<region> obj = anchor->get_parent();
+        if (obj) {
+            if (obj->depends_on(*this)) {
                 gui::out << gui::error << "gui::" << type_.back()
                          << " : Cyclic anchor dependency ! "
-                         << "\"" << name_ << "\" and \"" << p_obj->get_name()
+                         << "\"" << name_ << "\" and \"" << obj->get_name()
                          << "\" depend on "
                             "eachothers (directly or indirectly).\n\""
                          << anchor::get_anchor_point_name(anchor->point) << "\" anchor removed."
@@ -724,20 +724,19 @@ void region::update_anchors_() {
                 continue;
             }
 
-            if (utils::find(anchor_parent_list, p_obj) == anchor_parent_list.end())
-                anchor_parent_list.push_back(p_obj);
+            if (utils::find(anchor_parent_list, obj) == anchor_parent_list.end())
+                anchor_parent_list.push_back(obj);
         }
     }
 
-    for (const auto& p_parent : previous_anchor_parent_list_) {
-        if (utils::find(anchor_parent_list, p_parent) == anchor_parent_list.end())
-            p_parent->remove_anchored_object(*this);
+    for (const auto& parent : previous_anchor_parent_list_) {
+        if (utils::find(anchor_parent_list, parent) == anchor_parent_list.end())
+            parent->remove_anchored_object(*this);
     }
 
-    for (const auto& p_parent : anchor_parent_list) {
-        if (utils::find(previous_anchor_parent_list_, p_parent) ==
-            previous_anchor_parent_list_.end())
-            p_parent->add_anchored_object(*this);
+    for (const auto& parent : anchor_parent_list) {
+        if (utils::find(previous_anchor_parent_list_, parent) == previous_anchor_parent_list_.end())
+            parent->add_anchored_object(*this);
     }
 
     previous_anchor_parent_list_ = std::move(anchor_parent_list);
@@ -749,8 +748,8 @@ void region::notify_borders_need_update() {
 
     update_borders_();
 
-    for (const auto& p_object : anchored_object_list_)
-        p_object->notify_borders_need_update();
+    for (const auto& object : anchored_object_list_)
+        object->notify_borders_need_update();
 }
 
 void region::notify_scaling_factor_updated() {
@@ -796,9 +795,9 @@ bool region::is_loaded() const {
 }
 
 utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const {
-    if (!p_parent_)
+    if (!parent_)
         return get_manager().get_root().observer_from_this();
-    return p_parent_->get_top_level_renderer();
+    return parent_->get_top_level_renderer();
 }
 
 void region::notify_visible() {
@@ -815,30 +814,30 @@ std::string region::parse_file_name(const std::string& file_name) const {
 
     std::string new_file = file_name;
 
-    const addon* p_addon = get_addon();
-    if (new_file[0] == '|' && p_addon) {
+    const addon* addon = get_addon();
+    if (new_file[0] == '|' && addon) {
         new_file[0] = '/';
-        new_file    = p_addon->directory + new_file;
+        new_file    = addon->directory + new_file;
     }
 
     return new_file;
 }
 
-void region::set_addon(const addon* p_add_on) {
-    if (p_addon_) {
+void region::set_addon(const addon* a) {
+    if (addon_) {
         gui::out << gui::warning << "gui::" << type_.back()
                  << " : set_addon() can only be called once." << std::endl;
         return;
     }
 
-    p_addon_ = p_add_on;
+    addon_ = a;
 }
 
 const addon* region::get_addon() const {
-    if (!p_addon_ && p_parent_)
-        return p_parent_->get_addon();
+    if (!addon_ && parent_)
+        return parent_->get_addon();
     else
-        return p_addon_;
+        return addon_;
 }
 
 registry& region::get_registry() {

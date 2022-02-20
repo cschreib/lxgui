@@ -80,7 +80,7 @@ public:
     SDL_Texture* get_render_texture();
 
 private:
-    std::shared_ptr<sdl::material> p_texture_;
+    std::shared_ptr<sdl::material> texture_;
     matrix4f                       view_matrix_;
 };
 

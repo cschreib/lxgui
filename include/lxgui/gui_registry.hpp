@@ -30,10 +30,10 @@ public:
     bool check_region_name(std::string_view name) const;
 
     /// Adds a region to be handled by this registry.
-    /** \param pObj The object to add
+    /** \param obj The object to add
      *   \return 'false' if the name of the region was already taken
      */
-    bool add_region(utils::observer_ptr<region> p_obj);
+    bool add_region(utils::observer_ptr<region> obj);
 
     /// Removes a region from this registry.
     /** \param obj The object to remove

@@ -37,18 +37,18 @@ class manager;
 class factory {
 private:
     template<typename T>
-    static utils::owner_ptr<region> create_new_object(manager& p_mgr) {
-        return utils::make_owned<T>(p_mgr);
+    static utils::owner_ptr<region> create_new_object(manager& mgr) {
+        return utils::make_owned<T>(mgr);
     }
 
     template<typename T>
-    static utils::owner_ptr<frame> create_new_frame(manager& p_mgr) {
-        return utils::make_owned<T>(p_mgr);
+    static utils::owner_ptr<frame> create_new_frame(manager& mgr) {
+        return utils::make_owned<T>(mgr);
     }
 
     template<typename T>
-    static utils::owner_ptr<layered_region> create_new_layered_region(manager& p_mgr) {
-        return utils::make_owned<T>(p_mgr);
+    static utils::owner_ptr<layered_region> create_new_layered_region(manager& mgr) {
+        return utils::make_owned<T>(mgr);
     }
 
 public:

@@ -71,23 +71,23 @@ public:
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Sets this scroll_frame's scroll child.
-    /** \param pFrame The scroll child
+    /** \param obj The scroll child
      *   \note Creates the render target.
      */
-    void set_scroll_child(utils::owner_ptr<frame> p_frame);
+    void set_scroll_child(utils::owner_ptr<frame> obj);
 
     /// Returns this scroll_frame's scroll child.
     /** \return This scroll_frame's scroll child
      */
     const utils::observer_ptr<frame>& get_scroll_child() {
-        return p_scroll_child_;
+        return scroll_child_;
     }
 
     /// Returns this scroll_frame's scroll child.
     /** \return This scroll_frame's scroll child
      */
     utils::observer_ptr<const frame> get_scroll_child() const {
-        return p_scroll_child_;
+        return scroll_child_;
     }
 
     /// Sets the horizontal offset of the scroll child.
@@ -136,10 +136,10 @@ public:
     void notify_strata_needs_redraw(frame_strata strata_id) override;
 
     /// Tells this renderer that it should (or not) render another frame.
-    /** \param pFrame    The frame to render
+    /** \param obj    The frame to render
      *   \param rendered 'true' if this renderer needs to render that new object
      */
-    void notify_rendered_frame(const utils::observer_ptr<frame>& p_frame, bool rendered) override;
+    void notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) override;
 
     /// Returns the width and height of of this renderer's main render target (e.g., screen).
     /** \return The render target dimensions
@@ -168,14 +168,14 @@ protected:
     vector2f scroll_;
     vector2f scroll_range_;
 
-    utils::observer_ptr<frame> p_scroll_child_ = nullptr;
+    utils::observer_ptr<frame> scroll_child_ = nullptr;
 
     bool                           rebuild_scroll_render_target_flag_ = false;
     bool                           redraw_scroll_render_target_flag_  = false;
     bool                           update_scroll_range_flag_          = false;
-    std::shared_ptr<render_target> p_scroll_render_target_;
+    std::shared_ptr<render_target> scroll_render_target_;
 
-    utils::observer_ptr<texture> p_scroll_texture_ = nullptr;
+    utils::observer_ptr<texture> scroll_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui

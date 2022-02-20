@@ -30,7 +30,7 @@ public:
     get_virtual_region_list(std::string_view names) const;
 
 private:
-    const registry* p_object_registry_ = nullptr;
+    const registry* object_registry_ = nullptr;
 };
 
 } // namespace lxgui::gui

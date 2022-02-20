@@ -25,27 +25,27 @@ std::string renderer::get_name() const {
     return "SFML";
 }
 
-void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
-    if (p_current_target_ || p_current_sfml_target_)
+void renderer::begin_(std::shared_ptr<gui::render_target> target) {
+    if (current_target_ || current_sfml_target_)
         throw gui::exception("gui::sfml::renderer", "Missing call to end()");
 
-    if (p_target) {
-        p_current_target_ = std::static_pointer_cast<sfml::render_target>(p_target);
-        p_current_target_->begin();
-        p_current_sfml_target_ = p_current_target_->get_render_texture();
+    if (target) {
+        current_target_ = std::static_pointer_cast<sfml::render_target>(target);
+        current_target_->begin();
+        current_sfml_target_ = current_target_->get_render_texture();
     } else {
         sf::FloatRect visible_area(0, 0, window_dimensions_.x, window_dimensions_.y);
         window_.setView(sf::View(visible_area));
-        p_current_sfml_target_ = &window_;
+        current_sfml_target_ = &window_;
     }
 }
 
 void renderer::end_() {
-    if (p_current_target_)
-        p_current_target_->end();
+    if (current_target_)
+        current_target_->end();
 
-    p_current_target_      = nullptr;
-    p_current_sfml_target_ = nullptr;
+    current_target_      = nullptr;
+    current_sfml_target_ = nullptr;
 }
 
 void renderer::set_view_(const matrix4f& view_matrix) {
@@ -62,14 +62,14 @@ void renderer::set_view_(const matrix4f& view_matrix) {
     view.rotate(angle);
     view.setSize(sf::Vector2f(2.0f / scale_x, 2.0 / scale_y));
 
-    p_current_sfml_target_->setView(view);
+    current_sfml_target_->setView(view);
 }
 
 matrix4f renderer::get_view() const {
     matrix4f current_view_matrix =
-        matrix4f(p_current_sfml_target_->getView().getTransform().getMatrix());
+        matrix4f(current_sfml_target_->getView().getTransform().getMatrix());
 
-    if (!p_current_target_) {
+    if (!current_target_) {
         // Rendering to main screen, flip Y
         for (std::size_t i = 0; i < 4; ++i)
             current_view_matrix(i, 1) *= -1.0f;
@@ -79,15 +79,15 @@ matrix4f renderer::get_view() const {
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
+    const gui::material* mat, const std::vector<std::array<vertex, 4>>& quad_list) {
     static const std::array<std::size_t, 6> ids          = {{0, 1, 2, 2, 3, 0}};
     static const std::size_t                num_vertices = ids.size();
 
-    const sfml::material* p_mat = static_cast<const sfml::material*>(p_material);
+    const sfml::material* sf_mat = static_cast<const sfml::material*>(mat);
 
     vector2f tex_dims(1.0f, 1.0f);
-    if (p_mat)
-        tex_dims = vector2f(p_mat->get_canvas_dimensions());
+    if (sf_mat)
+        tex_dims = vector2f(sf_mat->get_canvas_dimensions());
 
     sf::VertexArray array(sf::PrimitiveType::Triangles, ids.size() * quad_list.size());
     for (std::size_t k = 0; k < quad_list.size(); ++k) {
@@ -114,9 +114,9 @@ void renderer::render_quads_(
     sf::RenderStates state;
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
-    if (p_mat)
-        state.texture = p_mat->get_texture();
-    p_current_sfml_target_->draw(array, state);
+    if (sf_mat)
+        state.texture = sf_mat->get_texture();
+    current_sfml_target_->draw(array, state);
 }
 
 sf::Transform to_sfml(const matrix4f& matrix) {
@@ -126,25 +126,25 @@ sf::Transform to_sfml(const matrix4f& matrix) {
 }
 
 void renderer::render_cache_(
-    const gui::material*     p_material,
-    const gui::vertex_cache& cache,
-    const matrix4f&          model_transform) {
-    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
-
-#if 0
-    const sfml::material* sf_mat = static_cast<const sfml::material*>(mat);
+    const gui::material*     mat [[maybe_unused]],
+    const gui::vertex_cache& cache [[maybe_unused]],
+    const matrix4f&          model_transform [[maybe_unused]]) {
+#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+    const sfml::material*     sf_mat   = static_cast<const sfml::material*>(mat);
     const sfml::vertex_cache& sf_cache = static_cast<const sfml::vertex_cache&>(cache);
 
     // Note: the following will not work correctly, as vertex_cache has texture coordinates
     // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
-    // https://github.com/SFML/SFML/issues/1773
+    // Requires https://github.com/SFML/SFML/pull/1807
     sf::RenderStates state;
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
     if (sf_mat)
         state.texture = sf_mat->get_texture();
     state.transform = to_sfml(model_transform);
-    pCurrentSFMLTarget_->draw(sf_cache.get_impl(), 0, sf_cache.get_num_vertex(), state);
+    current_sfml_target_->draw(sf_cache.get_impl(), 0, sf_cache.get_num_vertex(), state);
+#else
+    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 #endif
 }
 
@@ -170,24 +170,23 @@ bool renderer::is_texture_vertex_color_supported() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* p_pixel_data, material::filter filt) {
-    std::shared_ptr<sfml::material> p_tex =
+    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    std::shared_ptr<sfml::material> tex =
         std::make_shared<sfml::material>(dimensions, false, material::wrap::repeat, filt);
 
-    p_tex->update_texture(p_pixel_data);
+    tex->update_texture(pixel_data);
 
-    return std::move(p_tex);
+    return std::move(tex);
 }
 
-std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) {
-    auto p_tex =
-        std::static_pointer_cast<sfml::render_target>(p_render_target)->get_material().lock();
-    if (location == p_render_target->get_rect()) {
-        return std::move(p_tex);
+std::shared_ptr<gui::material>
+renderer::create_material(std::shared_ptr<gui::render_target> target, const bounds2f& location) {
+    auto tex = std::static_pointer_cast<sfml::render_target>(target)->get_material().lock();
+    if (location == target->get_rect()) {
+        return std::move(tex);
     } else {
         return std::make_shared<sfml::material>(
-            p_tex->get_render_texture()->getTexture(), location, p_tex->get_filter());
+            tex->get_render_texture()->getTexture(), location, tex->get_filter());
     }
 }
 
@@ -214,7 +213,8 @@ bool renderer::is_vertex_cache_supported() const {
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type) {
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type
+                                                                 [[maybe_unused]]) {
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
     // Requires https://github.com/SFML/SFML/pull/1807
     return std::make_shared<sfml::vertex_cache>(type);

@@ -179,11 +179,11 @@ public:
     void set_texture(const std::string& file_name);
 
     /// Reads texture data from a render_target.
-    /** \param pRenderTarget The render_target from which to read the data
+    /** \param target The render_target from which to read the data
      *   \note This function will replace the solid color set by set_solid_color(). If you need
      *         to blend the texture with a color, use set_vertex_color() instead.
      */
-    void set_texture(std::shared_ptr<render_target> p_render_target);
+    void set_texture(std::shared_ptr<render_target> target);
 
     /// Sets this texture's color.
     /** \param c The color to use

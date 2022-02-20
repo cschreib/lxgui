@@ -32,11 +32,11 @@ class text {
 public:
     /// Constructor.
     /** \param rdr    The renderer instance to use
-     *   \param pFont        The font to use for rendering
-     *   \param pOutlineFont The font to use for outlines
+     *   \param fnt        The font to use for rendering
+     *   \param outline_fnt The font to use for outlines
      */
     explicit text(
-        renderer& rdr, std::shared_ptr<font> p_font, std::shared_ptr<font> p_outline_font);
+        renderer& rdr, std::shared_ptr<font> fnt, std::shared_ptr<font> outline_fnt = nullptr);
 
     // Non-copiable, non-movable
     text(const text&) = delete;
@@ -344,8 +344,8 @@ private:
     alignment_x align_x_                = alignment_x::left;
     alignment_y align_y_                = alignment_y::middle;
 
-    std::shared_ptr<font> p_font_;
-    std::shared_ptr<font> p_outline_font_;
+    std::shared_ptr<font> font_;
+    std::shared_ptr<font> outline_font_;
     utils::ustring        unicode_text_;
 
     mutable bool        update_cache_flag_ = false;
@@ -354,9 +354,9 @@ private:
     mutable std::size_t num_lines_         = 0u;
 
     mutable std::vector<std::array<vertex, 4>> quad_list_;
-    mutable std::shared_ptr<vertex_cache>      p_vertex_cache_;
+    mutable std::shared_ptr<vertex_cache>      vertex_cache_;
     mutable std::vector<std::array<vertex, 4>> outline_quad_list_;
-    mutable std::shared_ptr<vertex_cache>      p_outline_vertex_cache_;
+    mutable std::shared_ptr<vertex_cache>      outline_vertex_cache_;
     mutable std::vector<quad>                  icons_list_;
 };
 

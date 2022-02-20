@@ -8,8 +8,8 @@
 namespace lxgui::gui {
 
 color region::parse_color_node_(const layout_node& node) {
-    if (const layout_attribute* p_attr = node.try_get_attribute("c")) {
-        std::string s = p_attr->get_value<std::string>();
+    if (const layout_attribute* attr = node.try_get_attribute("c")) {
+        std::string s = attr->get_value<std::string>();
         if (!s.empty() && s[0] == '#')
             return color(s);
     }
@@ -23,40 +23,40 @@ color region::parse_color_node_(const layout_node& node) {
 
 std::pair<anchor_type, vector2<std::optional<float>>>
 region::parse_dimension_(const layout_node& node) {
-    const layout_node* p_abs_dim_node = node.try_get_child("AbsDimension");
-    const layout_node* p_rel_dim_node = node.try_get_child("RelDimension");
+    const layout_node* abs_dim_node = node.try_get_child("AbsDimension");
+    const layout_node* rel_dim_node = node.try_get_child("RelDimension");
 
-    if (p_abs_dim_node && p_rel_dim_node) {
+    if (abs_dim_node && rel_dim_node) {
         gui::out << gui::warning << node.get_location() << " : " << node.get_name()
                  << " node can only contain one of AbsDimension or RelDimension, "
                     "but not both. RelDimension ignored."
                  << std::endl;
     }
 
-    if (!p_abs_dim_node && !p_rel_dim_node) {
+    if (!abs_dim_node && !rel_dim_node) {
         gui::out << gui::warning << node.get_location() << " : " << node.get_name()
                  << " node must contain one of AbsDimension or RelDimension." << std::endl;
         return {};
     }
 
-    anchor_type        type   = anchor_type::abs;
-    const layout_node* p_node = nullptr;
-    if (p_abs_dim_node) {
-        type   = anchor_type::abs;
-        p_node = p_abs_dim_node;
+    anchor_type        type        = anchor_type::abs;
+    const layout_node* chosen_node = nullptr;
+    if (abs_dim_node) {
+        type        = anchor_type::abs;
+        chosen_node = abs_dim_node;
     } else {
-        type   = anchor_type::rel;
-        p_node = p_rel_dim_node;
+        type        = anchor_type::rel;
+        chosen_node = rel_dim_node;
     }
 
     vector2<std::optional<float>> vec;
-    if (const layout_attribute* p_attr = p_node->try_get_attribute("x"))
-        vec.x = p_attr->get_value<float>();
+    if (const layout_attribute* attr = chosen_node->try_get_attribute("x"))
+        vec.x = attr->get_value<float>();
     else
         vec.x = std::nullopt;
 
-    if (const layout_attribute* p_attr = p_node->try_get_attribute("y"))
-        vec.y = p_attr->get_value<float>();
+    if (const layout_attribute* attr = chosen_node->try_get_attribute("y"))
+        vec.y = attr->get_value<float>();
     else
         vec.y = std::nullopt;
 
@@ -64,8 +64,8 @@ region::parse_dimension_(const layout_node& node) {
 }
 
 void region::parse_size_node_(const layout_node& node) {
-    if (const layout_node* p_size_block = node.try_get_child("Size")) {
-        auto dimensions = parse_dimension_(*p_size_block);
+    if (const layout_node* size_block = node.try_get_child("Size")) {
+        auto dimensions = parse_dimension_(*size_block);
         bool has_x      = dimensions.second.x.has_value();
         bool has_y      = dimensions.second.y.has_value();
         if (dimensions.first == anchor_type::abs) {
@@ -88,9 +88,9 @@ void region::parse_size_node_(const layout_node& node) {
 }
 
 void region::parse_anchor_node_(const layout_node& node) {
-    if (const layout_node* p_anchors_node = node.try_get_child("Anchors")) {
+    if (const layout_node* anchors_node = node.try_get_child("Anchors")) {
         std::vector<std::string> found_points;
-        for (const auto& anchor_node : p_anchors_node->get_children()) {
+        for (const auto& anchor_node : anchors_node->get_children()) {
             if (anchor_node.get_name() != "Anchor" && anchor_node.get_name() != "") {
                 gui::out << gui::warning << anchor_node.get_location() << " : "
                          << "unexpected node '" << anchor_node.get_name() << "'; ignored."
@@ -101,7 +101,7 @@ void region::parse_anchor_node_(const layout_node& node) {
             std::string point =
                 anchor_node.get_attribute_value_or<std::string>("point", "TOP_LEFT");
             std::string parent = anchor_node.get_attribute_value_or<std::string>(
-                "relativeTo", p_parent_ || is_virtual() ? "$parent" : "");
+                "relativeTo", parent_ || is_virtual() ? "$parent" : "");
             std::string relative_point =
                 anchor_node.get_attribute_value_or<std::string>("relativePoint", point);
 
@@ -117,8 +117,8 @@ void region::parse_anchor_node_(const layout_node& node) {
             anchor_data anchor(
                 anchor::get_anchor_point(point), parent, anchor::get_anchor_point(relative_point));
 
-            if (const layout_node* p_offset_node = anchor_node.try_get_child("Offset")) {
-                auto dimensions = parse_dimension_(*p_offset_node);
+            if (const layout_node* offset_node = anchor_node.try_get_child("Offset")) {
+                auto dimensions = parse_dimension_(*offset_node);
                 anchor.type     = dimensions.first;
                 anchor.offset   = vector2f(
                     dimensions.second.x.value_or(0.0f), dimensions.second.y.value_or(0.0f));

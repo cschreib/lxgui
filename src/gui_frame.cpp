@@ -39,7 +39,7 @@ frame::~frame() {
     if (!is_virtual_) {
         // Tell the renderer to no longer render this region
         get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
-        p_renderer_ = nullptr;
+        renderer_ = nullptr;
     }
 
     get_manager().get_root().notify_hovered_frame_dirty();
@@ -51,17 +51,17 @@ void frame::render() const {
     if (!is_visible_ || !is_ready_)
         return;
 
-    if (p_backdrop_)
-        p_backdrop_->render();
+    if (backdrop_)
+        backdrop_->render();
 
     // Render child regions
     for (const auto& layer : layer_list_) {
         if (layer.is_disabled)
             continue;
 
-        for (const auto& p_region : layer.region_list) {
-            if (p_region->is_shown())
-                p_region->render();
+        for (const auto& reg : layer.region_list) {
+            if (reg->is_shown())
+                reg->render();
         }
     }
 }
@@ -74,8 +74,8 @@ std::string frame::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    if (auto p_frame_renderer = utils::dynamic_pointer_cast<frame>(p_renderer_))
-        str << tab << "  # Man. render : " << p_frame_renderer->get_name() << "\n";
+    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(renderer_))
+        str << tab << "  # Man. render : " << frame_renderer->get_name() << "\n";
     str << tab << "  # Strata      : ";
     switch (strata_) {
     case frame_strata::parent: str << "PARENT\n"; break;
@@ -122,21 +122,21 @@ std::string frame::serialize(const std::string& tab) const {
     str << tab << "  # Min height  : " << min_height_ << "\n";
     str << tab << "  # Max height  : " << max_height_ << "\n";
     str << tab << "  # Scale       : " << scale_ << "\n";
-    if (p_title_region_) {
+    if (title_region_) {
         str << tab << "  # Title reg.  :\n";
         str << tab << "  |-###\n";
-        str << p_title_region_->serialize(tab + "  | ");
+        str << title_region_->serialize(tab + "  | ");
         str << tab << "  |-###\n";
     }
-    if (p_backdrop_) {
-        const bounds2f& insets = p_backdrop_->get_background_insets();
+    if (backdrop_) {
+        const bounds2f& insets = backdrop_->get_background_insets();
 
         str << tab << "  # Backdrop    :\n";
         str << tab << "  |-###\n";
-        str << tab << "  |   # Background : " << p_backdrop_->get_background_file() << "\n";
-        str << tab << "  |   # Tilling    : " << p_backdrop_->is_background_tilling() << "\n";
-        if (p_backdrop_->is_background_tilling())
-            str << tab << "  |   # Tile size  : " << p_backdrop_->get_tile_size() << "\n";
+        str << tab << "  |   # Background : " << backdrop_->get_background_file() << "\n";
+        str << tab << "  |   # Tilling    : " << backdrop_->is_background_tilling() << "\n";
+        if (backdrop_->is_background_tilling())
+            str << tab << "  |   # Tile size  : " << backdrop_->get_tile_size() << "\n";
         str << tab << "  |   # BG Insets  :\n";
         str << tab << "  |   |-###\n";
         str << tab << "  |   |   # left   : " << insets.left << "\n";
@@ -144,8 +144,8 @@ std::string frame::serialize(const std::string& tab) const {
         str << tab << "  |   |   # top    : " << insets.top << "\n";
         str << tab << "  |   |   # bottom : " << insets.bottom << "\n";
         str << tab << "  |   |-###\n";
-        str << tab << "  |   # Edge       : " << p_backdrop_->get_edge_file() << "\n";
-        str << tab << "  |   # Edge size  : " << p_backdrop_->get_edge_size() << "\n";
+        str << tab << "  |   # Edge       : " << backdrop_->get_edge_file() << "\n";
+        str << tab << "  |   # Edge size  : " << backdrop_->get_edge_size() << "\n";
         str << tab << "  |-###\n";
     }
 
@@ -194,95 +194,95 @@ bool frame::can_use_script(const std::string& script_name) const {
 void frame::copy_from(const region& obj) {
     base::copy_from(obj);
 
-    const frame* p_frame = down_cast<frame>(&obj);
-    if (!p_frame)
+    const frame* frame_obj = down_cast<frame>(&obj);
+    if (!frame_obj)
         return;
 
-    for (const auto& item : p_frame->signal_list_) {
-        for (const auto& function : p_frame->get_script(item.first)) {
+    for (const auto& item : frame_obj->signal_list_) {
+        for (const auto& function : frame_obj->get_script(item.first)) {
             this->add_script(item.first, function);
         }
     }
 
-    this->set_frame_strata(p_frame->get_frame_strata());
+    this->set_frame_strata(frame_obj->get_frame_strata());
 
-    utils::observer_ptr<const frame> p_high_parent = observer_from(this);
+    utils::observer_ptr<const frame> high_parent = observer_from(this);
 
-    for (int i = 0; i < p_frame->get_level(); ++i) {
-        if (!p_high_parent->get_parent())
+    for (int i = 0; i < frame_obj->get_level(); ++i) {
+        if (!high_parent->get_parent())
             break;
 
-        p_high_parent = p_high_parent->get_parent();
+        high_parent = high_parent->get_parent();
     }
 
-    this->set_level(p_high_parent->get_level() + p_frame->get_level());
+    this->set_level(high_parent->get_level() + frame_obj->get_level());
 
-    this->set_top_level(p_frame->is_top_level());
+    this->set_top_level(frame_obj->is_top_level());
 
-    this->enable_mouse_click(p_frame->is_mouse_click_enabled());
-    this->enable_mouse_move(p_frame->is_mouse_move_enabled());
-    this->enable_mouse_wheel(p_frame->is_mouse_wheel_enabled());
+    this->enable_mouse_click(frame_obj->is_mouse_click_enabled());
+    this->enable_mouse_move(frame_obj->is_mouse_move_enabled());
+    this->enable_mouse_wheel(frame_obj->is_mouse_wheel_enabled());
 
-    this->set_movable(p_frame->is_movable());
-    this->set_clamped_to_screen(p_frame->is_clamped_to_screen());
-    this->set_resizable(p_frame->is_resizable());
+    this->set_movable(frame_obj->is_movable());
+    this->set_clamped_to_screen(frame_obj->is_clamped_to_screen());
+    this->set_resizable(frame_obj->is_resizable());
 
-    this->set_abs_hit_rect_insets(p_frame->get_abs_hit_rect_insets());
-    this->set_rel_hit_rect_insets(p_frame->get_rel_hit_rect_insets());
+    this->set_abs_hit_rect_insets(frame_obj->get_abs_hit_rect_insets());
+    this->set_rel_hit_rect_insets(frame_obj->get_rel_hit_rect_insets());
 
-    this->set_max_dimensions(p_frame->get_max_dimensions());
-    this->set_min_dimensions(p_frame->get_min_dimensions());
+    this->set_max_dimensions(frame_obj->get_max_dimensions());
+    this->set_min_dimensions(frame_obj->get_min_dimensions());
 
-    this->set_scale(p_frame->get_scale());
+    this->set_scale(frame_obj->get_scale());
 
-    for (const auto& p_art : p_frame->region_list_) {
-        if (!p_art || p_art->is_special())
+    for (const auto& art : frame_obj->region_list_) {
+        if (!art || art->is_special())
             continue;
 
         region_core_attributes attr;
-        attr.object_type = p_art->get_object_type();
-        attr.name        = p_art->get_raw_name();
-        attr.inheritance = {p_art};
+        attr.object_type = art->get_object_type();
+        attr.name        = art->get_raw_name();
+        attr.inheritance = {art};
 
-        auto p_new_art = create_layered_region(p_art->get_draw_layer(), std::move(attr));
-        if (!p_new_art)
+        auto new_art = create_layered_region(art->get_draw_layer(), std::move(attr));
+        if (!new_art)
             continue;
 
-        p_new_art->notify_loaded();
+        new_art->notify_loaded();
     }
 
     build_layer_list_flag_ = true;
 
-    if (p_frame->p_backdrop_) {
-        p_backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
-        p_backdrop_->copy_from(*p_frame->p_backdrop_);
+    if (frame_obj->backdrop_) {
+        backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+        backdrop_->copy_from(*frame_obj->backdrop_);
     }
 
-    if (p_frame->p_title_region_) {
+    if (frame_obj->title_region_) {
         this->create_title_region();
-        if (p_title_region_)
-            p_title_region_->copy_from(*p_frame->p_title_region_);
+        if (title_region_)
+            title_region_->copy_from(*frame_obj->title_region_);
     }
 
-    for (const auto& p_child : p_frame->child_list_) {
-        if (!p_child || p_child->is_special())
+    for (const auto& child : frame_obj->child_list_) {
+        if (!child || child->is_special())
             continue;
 
         region_core_attributes attr;
-        attr.object_type = p_child->get_object_type();
-        attr.name        = p_child->get_raw_name();
-        attr.inheritance = {p_child};
+        attr.object_type = child->get_object_type();
+        attr.name        = child->get_raw_name();
+        attr.inheritance = {child};
 
-        auto p_new_child = create_child(std::move(attr));
-        if (!p_new_child)
+        auto new_child = create_child(std::move(attr));
+        if (!new_child)
             continue;
 
-        p_new_child->notify_loaded();
+        new_child->notify_loaded();
     }
 }
 
 void frame::create_title_region() {
-    if (p_title_region_) {
+    if (title_region_) {
         gui::out << gui::warning << "gui::" << type_.back()
                  << " : \"" + name_ + "\" already has a title region." << std::endl;
         return;
@@ -292,36 +292,36 @@ void frame::create_title_region() {
     attr.object_type = "Region";
     attr.is_virtual  = is_virtual();
     attr.name        = "$parentTitleRegion";
-    attr.p_parent    = observer_from(this);
+    attr.parent      = observer_from(this);
 
-    auto p_title_region = get_manager().get_factory().create_region(get_registry(), attr);
+    auto title_region = get_manager().get_factory().create_region(get_registry(), attr);
 
-    if (!p_title_region)
+    if (!title_region)
         return;
 
-    p_title_region->set_special();
+    title_region->set_special();
 
-    if (!p_title_region->is_virtual()) {
+    if (!title_region->is_virtual()) {
         // Add shortcut to region as entry in Lua table
         auto& lua                          = get_lua_();
-        lua[get_lua_name()]["TitleRegion"] = lua[p_title_region->get_lua_name()];
+        lua[get_lua_name()]["TitleRegion"] = lua[title_region->get_lua_name()];
     }
 
-    p_title_region_ = std::move(p_title_region);
-    p_title_region_->notify_loaded();
+    title_region_ = std::move(title_region);
+    title_region_->notify_loaded();
 }
 
 utils::observer_ptr<const frame> frame::get_child(const std::string& name) const {
-    for (const auto& p_child : child_list_) {
-        if (!p_child)
+    for (const auto& child : child_list_) {
+        if (!child)
             continue;
 
-        if (p_child->get_name() == name)
-            return p_child;
+        if (child->get_name() == name)
+            return child;
 
-        const std::string& raw_name = p_child->get_raw_name();
+        const std::string& raw_name = child->get_raw_name();
         if (utils::starts_with(raw_name, "$parent") && raw_name.substr(7) == name)
-            return p_child;
+            return child;
     }
 
     return nullptr;
@@ -336,16 +336,16 @@ frame::const_region_list_view frame::get_regions() const {
 }
 
 utils::observer_ptr<const layered_region> frame::get_region(const std::string& name) const {
-    for (const auto& p_region : region_list_) {
-        if (!p_region)
+    for (const auto& reg : region_list_) {
+        if (!reg)
             continue;
 
-        if (p_region->get_name() == name)
-            return p_region;
+        if (reg->get_name() == name)
+            return reg;
 
-        const std::string& raw_name = p_region->get_raw_name();
+        const std::string& raw_name = reg->get_raw_name();
         if (utils::starts_with(raw_name, "$parent") && raw_name.substr(7) == name)
-            return p_region;
+            return reg;
     }
 
     return nullptr;
@@ -490,44 +490,43 @@ bool frame::has_script(const std::string& script_name) const {
     return !iter->second.empty();
 }
 
-utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_region> p_region) {
-    if (!p_region)
+utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_region> reg) {
+    if (!reg)
         return nullptr;
 
-    p_region->set_parent_(observer_from(this));
+    reg->set_parent_(observer_from(this));
 
-    utils::observer_ptr<layered_region> p_added_region = p_region;
-    region_list_.push_back(std::move(p_region));
+    utils::observer_ptr<layered_region> added_region = reg;
+    region_list_.push_back(std::move(reg));
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
 
     if (!is_virtual_) {
         // Add shortcut to region as entry in Lua table
-        std::string raw_name = p_added_region->get_raw_name();
+        std::string raw_name = added_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
             auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[p_added_region->get_lua_name()];
+            lua[get_lua_name()][raw_name] = lua[added_region->get_lua_name()];
         }
     }
 
-    return p_added_region;
+    return added_region;
 }
 
 utils::owner_ptr<layered_region>
-frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
-    if (!p_region)
+frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
+    if (!reg)
         return nullptr;
 
-    layered_region* p_raw_pointer = p_region.get();
+    layered_region* raw_pointer = reg.get();
 
-    auto iter =
-        utils::find_if(region_list_, [&](auto& p_obj) { return p_obj.get() == p_raw_pointer; });
+    auto iter = utils::find_if(region_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == region_list_.end()) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Trying to remove \"" << p_region->get_name() << "\" from \"" << name_
+                 << "Trying to remove \"" << reg->get_name() << "\" from \"" << name_
                  << "\"'s children, "
                     "but it was not one of this frame's children."
                  << std::endl;
@@ -535,15 +534,15 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    auto p_removed_region = std::move(*iter);
+    auto removed_region = std::move(*iter);
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
-    p_removed_region->set_parent_(nullptr);
+    removed_region->set_parent_(nullptr);
 
     if (!is_virtual_) {
         // Remove shortcut to region
-        std::string raw_name = p_removed_region->get_raw_name();
+        std::string raw_name = removed_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
             sol::state& lua               = get_lua_();
@@ -551,113 +550,112 @@ frame::remove_region(const utils::observer_ptr<layered_region>& p_region) {
         }
     }
 
-    return p_removed_region;
+    return removed_region;
 }
 
 utils::observer_ptr<layered_region>
 frame::create_layered_region(layer layer_id, region_core_attributes attr) {
     attr.is_virtual = is_virtual();
-    attr.p_parent   = observer_from(this);
+    attr.parent     = observer_from(this);
 
-    auto p_region = get_manager().get_factory().create_layered_region(get_registry(), attr);
+    auto reg = get_manager().get_factory().create_layered_region(get_registry(), attr);
 
-    if (!p_region)
+    if (!reg)
         return nullptr;
 
-    p_region->set_draw_layer(layer_id);
+    reg->set_draw_layer(layer_id);
 
-    return add_region(std::move(p_region));
+    return add_region(std::move(reg));
 }
 
 utils::observer_ptr<frame> frame::create_child(region_core_attributes attr) {
     attr.is_virtual = is_virtual();
-    attr.p_parent   = observer_from(this);
+    attr.parent     = observer_from(this);
 
-    auto p_new_frame = get_manager().get_factory().create_frame(
+    auto new_frame = get_manager().get_factory().create_frame(
         get_registry(), get_top_level_renderer().get(), attr);
 
-    if (!p_new_frame)
+    if (!new_frame)
         return nullptr;
 
-    p_new_frame->set_level(get_level() + 1);
+    new_frame->set_level(get_level() + 1);
 
-    return add_child(std::move(p_new_frame));
+    return add_child(std::move(new_frame));
 }
 
-utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> p_child) {
-    if (!p_child)
+utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
+    if (!child)
         return nullptr;
 
-    p_child->set_parent_(observer_from(this));
+    child->set_parent_(observer_from(this));
 
-    if (is_visible() && p_child->is_shown())
-        p_child->notify_visible();
+    if (is_visible() && child->is_shown())
+        child->notify_visible();
     else
-        p_child->notify_invisible();
+        child->notify_invisible();
 
-    utils::observer_ptr<frame> p_added_child = p_child;
-    child_list_.push_back(std::move(p_child));
+    utils::observer_ptr<frame> added_child = child;
+    child_list_.push_back(std::move(child));
 
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> p_old_top_level_renderer =
-            p_added_child->get_top_level_renderer();
-        utils::observer_ptr<frame_renderer> p_new_top_level_renderer = get_top_level_renderer();
-        if (p_old_top_level_renderer != p_new_top_level_renderer) {
-            p_old_top_level_renderer->notify_rendered_frame(p_added_child, false);
-            p_new_top_level_renderer->notify_rendered_frame(p_added_child, true);
+        utils::observer_ptr<frame_renderer> old_top_level_renderer =
+            added_child->get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> new_top_level_renderer = get_top_level_renderer();
+        if (old_top_level_renderer != new_top_level_renderer) {
+            old_top_level_renderer->notify_rendered_frame(added_child, false);
+            new_top_level_renderer->notify_rendered_frame(added_child, true);
         }
 
         // Add shortcut to child as entry in Lua table
-        std::string raw_name = p_added_child->get_raw_name();
+        std::string raw_name = added_child->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
             auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[p_added_child->get_lua_name()];
+            lua[get_lua_name()][raw_name] = lua[added_child->get_lua_name()];
         }
     }
 
-    return p_added_child;
+    return added_child;
 }
 
-utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_child) {
-    if (!p_child)
+utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& child) {
+    if (!child)
         return nullptr;
 
-    frame* p_raw_pointer = p_child.get();
-    auto   iter =
-        utils::find_if(child_list_, [&](auto& p_obj) { return p_obj.get() == p_raw_pointer; });
+    frame* raw_pointer = child.get();
+    auto   iter = utils::find_if(child_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == child_list_.end()) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Trying to remove \"" << p_child->get_name() << "\" from \"" << name_
+                 << "Trying to remove \"" << child->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    auto p_removed_child = std::move(*iter);
+    auto removed_child = std::move(*iter);
 
     bool notify_renderer = false;
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> p_top_level_renderer = get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_renderer();
         notify_renderer =
-            !p_child->get_renderer() && p_top_level_renderer.get() != &get_manager().get_root();
+            !child->get_renderer() && top_level_renderer.get() != &get_manager().get_root();
         if (notify_renderer) {
-            p_top_level_renderer->notify_rendered_frame(p_child, false);
-            p_child->propagate_renderer_(false);
+            top_level_renderer->notify_rendered_frame(child, false);
+            child->propagate_renderer_(false);
         }
     }
 
-    p_removed_child->set_parent_(nullptr);
+    removed_child->set_parent_(nullptr);
 
     if (!is_virtual_) {
         if (notify_renderer) {
-            get_manager().get_root().notify_rendered_frame(p_child, true);
-            p_child->propagate_renderer_(true);
+            get_manager().get_root().notify_rendered_frame(child, true);
+            child->propagate_renderer_(true);
         }
 
         // Remove shortcut to child
-        std::string raw_name = p_removed_child->get_raw_name();
+        std::string raw_name = removed_child->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
             sol::state& lua               = get_lua_();
@@ -665,7 +663,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& p_
         }
     }
 
-    return p_removed_child;
+    return removed_child;
 }
 
 frame::child_list_view frame::get_children() {
@@ -677,15 +675,15 @@ frame::const_child_list_view frame::get_children() const {
 }
 
 float frame::get_effective_alpha() const {
-    if (p_parent_)
-        return alpha_ * p_parent_->get_effective_alpha();
+    if (parent_)
+        return alpha_ * parent_->get_effective_alpha();
     else
         return alpha_;
 }
 
 float frame::get_effective_scale() const {
-    if (p_parent_)
-        return scale_ * p_parent_->get_effective_scale();
+    if (parent_)
+        return scale_ * parent_->get_effective_scale();
     else
         return scale_;
 }
@@ -699,30 +697,30 @@ frame_strata frame::get_frame_strata() const {
 }
 
 utils::observer_ptr<const frame> frame::get_top_level_parent() const {
-    auto p_frame = observer_from(this);
+    auto obj = observer_from(this);
     do {
-        if (p_frame->is_top_level())
-            return p_frame;
+        if (obj->is_top_level())
+            return obj;
 
-        p_frame = p_frame->get_parent();
-    } while (p_frame);
+        obj = obj->get_parent();
+    } while (obj);
 
     return nullptr;
 }
 
 const backdrop* frame::get_backdrop() const {
-    return p_backdrop_.get();
+    return backdrop_.get();
 }
 
 backdrop* frame::get_backdrop() {
-    return p_backdrop_.get();
+    return backdrop_.get();
 }
 
 backdrop& frame::get_or_create_backdrop() {
-    if (!p_backdrop_)
-        p_backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+    if (!backdrop_)
+        backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
 
-    return *p_backdrop_;
+    return *backdrop_;
 }
 
 const std::string& frame::get_frame_type() const {
@@ -746,9 +744,8 @@ vector2f frame::get_min_dimensions() const {
 }
 
 std::size_t frame::get_num_children() const {
-    return std::count_if(child_list_.begin(), child_list_.end(), [](const auto& p_child) {
-        return p_child != nullptr;
-    });
+    return std::count_if(
+        child_list_.begin(), child_list_.end(), [](const auto& child) { return child != nullptr; });
 }
 
 std::size_t frame::get_rough_num_children() const {
@@ -756,9 +753,8 @@ std::size_t frame::get_rough_num_children() const {
 }
 
 std::size_t frame::get_num_regions() const {
-    return std::count_if(region_list_.begin(), region_list_.end(), [](const auto& p_region) {
-        return p_region != nullptr;
-    });
+    return std::count_if(
+        region_list_.begin(), region_list_.end(), [](const auto& reg) { return reg != nullptr; });
 }
 
 std::size_t frame::get_rough_num_regions() const {
@@ -774,7 +770,7 @@ bool frame::is_clamped_to_screen() const {
 }
 
 bool frame::is_in_region(const vector2f& position) const {
-    if (p_title_region_ && p_title_region_->is_in_region(position))
+    if (title_region_ && title_region_->is_in_region(position))
         return true;
 
     bool is_in_x_range = border_list_.left + abs_hit_rect_inset_list_.left <= position.x &&
@@ -914,8 +910,8 @@ utils::connection frame::define_script_(
     auto result = lua.do_string(str, info.file_name);
 
     if (!result.valid()) {
-        std::string err =
-            hijack_sol_error_message(sol::error(result).what(), info.file_name, info.line_nbr);
+        std::string err = hijack_sol_error_message(
+            result.get<sol::error>().what(), info.file_name, info.line_nbr);
 
         gui::out << gui::error << err << std::endl;
 
@@ -934,10 +930,11 @@ utils::connection frame::define_script_(
     sol::protected_function handler,
     bool                    append,
     const script_info&      info) {
+
     auto wrapped_handler = [handler = std::move(handler),
                             info](frame& self, const event_data& args) {
-        sol::state& lua   = self.get_manager().get_lua();
-        lua_State*  p_lua = lua.lua_state();
+        sol::state& lua     = self.get_manager().get_lua();
+        lua_State*  lua_raw = lua.lua_state();
 
         std::vector<sol::object> lua_args;
 
@@ -947,7 +944,7 @@ utils::connection frame::define_script_(
             if (std::holds_alternative<utils::empty>(arg))
                 lua_args.emplace_back(sol::lua_nil);
             else
-                lua_args.emplace_back(p_lua, sol::in_place, arg);
+                lua_args.emplace_back(lua_raw, sol::in_place, arg);
         }
 
         // Get a reference to self
@@ -962,8 +959,8 @@ utils::connection frame::define_script_(
 
         // Handle errors
         if (!result.valid()) {
-            throw gui::exception(
-                hijack_sol_error_message(sol::error(result).what(), info.file_name, info.line_nbr));
+            throw gui::exception(hijack_sol_error_message(
+                result.get<sol::error>().what(), info.file_name, info.line_nbr));
         }
     };
 
@@ -1051,7 +1048,7 @@ void frame::fire_script(const std::string& script_name, const event_data& data) 
     // Make a copy of useful pointers: in case the frame is deleted, we will need this
     auto&       event_emitter  = get_manager().get_event_emitter();
     auto&       addon_registry = *get_manager().get_addon_registry();
-    const auto* p_old_addon    = addon_registry.get_current_addon();
+    const auto* old_addon      = addon_registry.get_current_addon();
     addon_registry.set_current_addon(get_addon());
 
     try {
@@ -1063,7 +1060,7 @@ void frame::fire_script(const std::string& script_name, const event_data& data) 
         event_emitter.fire_event("LUA_ERROR", {err});
     }
 
-    addon_registry.set_current_addon(p_old_addon);
+    addon_registry.set_current_addon(old_addon);
 }
 
 void frame::register_event(const std::string& event_name) {
@@ -1094,8 +1091,8 @@ void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
 void frame::set_frame_strata(frame_strata strata_id) {
     if (strata_id == frame_strata::parent) {
         if (!is_virtual_) {
-            if (p_parent_)
-                strata_id = p_parent_->get_frame_strata();
+            if (parent_)
+                strata_id = parent_->get_frame_strata();
             else
                 strata_id = frame_strata::medium;
         }
@@ -1132,8 +1129,8 @@ void frame::set_frame_strata(const std::string& strata_name) {
         if (is_virtual_) {
             strata_id = frame_strata::parent;
         } else {
-            if (p_parent_)
-                strata_id = p_parent_->get_frame_strata();
+            if (parent_)
+                strata_id = parent_->get_frame_strata();
             else
                 strata_id = frame_strata::medium;
         }
@@ -1146,8 +1143,8 @@ void frame::set_frame_strata(const std::string& strata_name) {
     set_frame_strata(strata_id);
 }
 
-void frame::set_backdrop(std::unique_ptr<backdrop> p_backdrop) {
-    p_backdrop_ = std::move(p_backdrop);
+void frame::set_backdrop(std::unique_ptr<backdrop> bdrop) {
+    backdrop_ = std::move(bdrop);
     notify_renderer_need_redraw();
 }
 
@@ -1223,11 +1220,11 @@ void frame::set_movable(bool is_movable) {
 }
 
 utils::owner_ptr<region> frame::release_from_parent() {
-    utils::observer_ptr<frame> p_self = observer_from(this);
-    if (p_parent_)
-        return p_parent_->remove_child(p_self);
+    utils::observer_ptr<frame> self = observer_from(this);
+    if (parent_)
+        return parent_->remove_child(self);
     else
-        return get_manager().get_root().remove_root_frame(p_self);
+        return get_manager().get_root().remove_root_frame(self);
 }
 
 void frame::set_resizable(bool is_resizable) {
@@ -1248,14 +1245,13 @@ void frame::raise() {
     if (!is_top_level_)
         return;
 
-    int  old_level            = level_;
-    auto p_top_level_renderer = get_top_level_renderer();
-    level_                    = p_top_level_renderer->get_highest_level(strata_) + 1;
+    int  old_level          = level_;
+    auto top_level_renderer = get_top_level_renderer();
+    level_                  = top_level_renderer->get_highest_level(strata_) + 1;
 
     if (level_ > old_level) {
         if (!is_virtual()) {
-            p_top_level_renderer->notify_frame_level_changed(
-                observer_from(this), old_level, level_);
+            top_level_renderer->notify_frame_level_changed(observer_from(this), old_level, level_);
         }
 
         int amount = level_ - old_level;
@@ -1342,27 +1338,27 @@ void frame::stop_sizing() {
 }
 
 void frame::propagate_renderer_(bool rendered) {
-    auto p_top_level_renderer = get_top_level_renderer();
-    for (const auto& p_child : child_list_) {
-        if (!p_child)
+    auto top_level_renderer = get_top_level_renderer();
+    for (const auto& child : child_list_) {
+        if (!child)
             continue;
 
-        if (!p_child->get_renderer())
-            p_top_level_renderer->notify_rendered_frame(p_child, rendered);
+        if (!child->get_renderer())
+            top_level_renderer->notify_rendered_frame(child, rendered);
 
-        p_child->propagate_renderer_(rendered);
+        child->propagate_renderer_(rendered);
     }
 }
 
 void frame::set_renderer(utils::observer_ptr<frame_renderer> rdr) {
-    if (rdr == p_renderer_)
+    if (rdr == renderer_)
         return;
 
     get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
 
     propagate_renderer_(false);
 
-    p_renderer_ = std::move(rdr);
+    renderer_ = std::move(rdr);
 
     get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
 
@@ -1370,10 +1366,10 @@ void frame::set_renderer(utils::observer_ptr<frame_renderer> rdr) {
 }
 
 utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const {
-    if (p_renderer_)
-        return p_renderer_;
-    else if (p_parent_)
-        return p_parent_->get_top_level_renderer();
+    if (renderer_)
+        return renderer_;
+    else if (parent_)
+        return parent_->get_top_level_renderer();
     else
         return get_manager().get_root().observer_from_this();
 }
@@ -1446,8 +1442,8 @@ void frame::notify_renderer_need_redraw() {
 void frame::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
-    if (p_title_region_)
-        p_title_region_->notify_scaling_factor_updated();
+    if (title_region_)
+        title_region_->notify_scaling_factor_updated();
 
     for (auto& child : get_children())
         child.notify_scaling_factor_updated();
@@ -1510,8 +1506,8 @@ void frame::update_borders_() {
 
     if (border_list_ != old_border_list || is_ready_ != old_ready) {
         get_manager().get_root().notify_hovered_frame_dirty();
-        if (p_backdrop_)
-            p_backdrop_->notify_borders_updated();
+        if (backdrop_)
+            backdrop_->notify_borders_updated();
     }
 }
 
@@ -1532,16 +1528,16 @@ void frame::update(float delta) {
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
-        for (const auto& p_region : region_list_) {
-            if (p_region && p_region->get_object_type() != "font_string")
-                layer_list_[static_cast<std::size_t>(p_region->get_draw_layer())]
-                    .region_list.push_back(p_region);
+        for (const auto& reg : region_list_) {
+            if (reg && reg->get_object_type() != "font_string")
+                layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
+                    reg);
         }
 
-        for (const auto& p_region : region_list_) {
-            if (p_region && p_region->get_object_type() == "font_string")
-                layer_list_[static_cast<std::size_t>(p_region->get_draw_layer())]
-                    .region_list.push_back(p_region);
+        for (const auto& reg : region_list_) {
+            if (reg && reg->get_object_type() == "font_string")
+                layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
+                    reg);
         }
 
         build_layer_list_flag_ = false;
@@ -1556,8 +1552,8 @@ void frame::update(float delta) {
             return;
     }
 
-    if (p_title_region_)
-        p_title_region_->update(delta);
+    if (title_region_)
+        title_region_->update(delta);
 
     // Update regions
     DEBUG_LOG("   Update regions");
@@ -1567,7 +1563,7 @@ void frame::update(float delta) {
     // Remove deleted regions
     {
         auto iter_remove = std::remove_if(
-            region_list_.begin(), region_list_.end(), [](auto& p_obj) { return p_obj == nullptr; });
+            region_list_.begin(), region_list_.end(), [](auto& obj) { return obj == nullptr; });
 
         region_list_.erase(iter_remove, region_list_.end());
     }
@@ -1583,7 +1579,7 @@ void frame::update(float delta) {
     // Remove deleted children
     {
         auto iter_remove = std::remove_if(
-            child_list_.begin(), child_list_.end(), [](auto& p_obj) { return p_obj == nullptr; });
+            child_list_.begin(), child_list_.end(), [](auto& obj) { return obj == nullptr; });
 
         child_list_.erase(iter_remove, child_list_.end());
     }

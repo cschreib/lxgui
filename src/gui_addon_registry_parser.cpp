@@ -103,10 +103,10 @@ void set_node(const file_line_mappings& file, layout_node& node, const pugi::xml
 
     for (const auto& attr : xml_node.attributes()) {
         std::string name = normalize_node_name(attr.name(), false);
-        if (const auto* p_node = node.try_get_attribute(name)) {
+        if (const auto* node_attr = node.try_get_attribute(name)) {
             gui::out << gui::warning << location << " : attribute '" << name
                      << "' duplicated; only first value will be used." << std::endl;
-            p_node->mark_as_not_accessed();
+            node_attr->mark_as_not_accessed();
             continue;
         }
 
@@ -158,14 +158,14 @@ void set_node(
             std::string name = normalize_node_name(to_string(elem_node.key()), false);
             std::string attr_location =
                 file.get_location(elem_node.key().data() - tree.arena().data());
-            if (const auto* p_node = node.try_get_attribute(name)) {
+            if (const auto* node_attr = node.try_get_attribute(name)) {
                 gui::out << gui::warning << attr_location << " : attribute '" << name
                          << "' duplicated; only first value will be used." << std::endl;
                 gui::out << gui::warning << std::string(attr_location.size(), ' ')
                          << "   first occurence at: '" << std::endl;
                 gui::out << gui::warning << std::string(attr_location.size(), ' ') << "   "
-                         << p_node->get_location() << std::endl;
-                p_node->mark_as_not_accessed();
+                         << node_attr->get_location() << std::endl;
+                node_attr->mark_as_not_accessed();
                 continue;
             }
 
@@ -259,23 +259,23 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
                 auto attr = parse_core_attributes(
                     root_.get_registry(), virtual_root_.get_registry(), node, nullptr);
 
-                utils::observer_ptr<frame> p_frame;
-                auto p_parent = attr.p_parent; // copy here to prevent use-after-move
-                if (p_parent) {
-                    p_frame = p_parent->create_child(std::move(attr));
+                utils::observer_ptr<frame> obj;
+                auto parent = attr.parent; // copy here to prevent use-after-move
+                if (parent) {
+                    obj = parent->create_child(std::move(attr));
                 } else {
                     if (attr.is_virtual)
-                        p_frame = virtual_root_.create_root_frame(std::move(attr));
+                        obj = virtual_root_.create_root_frame(std::move(attr));
                     else
-                        p_frame = root_.create_root_frame(std::move(attr));
+                        obj = root_.create_root_frame(std::move(attr));
                 }
 
-                if (!p_frame)
+                if (!obj)
                     continue;
 
-                p_frame->set_addon(&add_on);
-                p_frame->parse_layout(node);
-                p_frame->notify_loaded();
+                obj->set_addon(&add_on);
+                obj->parse_layout(node);
+                obj->notify_loaded();
             } catch (const utils::exception& e) {
                 gui::out << gui::error << e.get_description() << std::endl;
             }

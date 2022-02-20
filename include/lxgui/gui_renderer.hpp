@@ -147,9 +147,9 @@ public:
     std::size_t get_batch_count() const;
 
     /// Begins rendering on a particular render target.
-    /** \param pTarget The render target (main screen if nullptr)
+    /** \param target The render target (main screen if nullptr)
      */
-    void begin(std::shared_ptr<render_target> p_target = nullptr);
+    void begin(std::shared_ptr<render_target> target = nullptr);
 
     /// Ends rendering.
     void end();
@@ -202,18 +202,17 @@ public:
     void render_quad(const quad& q);
 
     /// Renders a set of quads.
-    /** \param pMaterial The material to use for rendering, or null if none
+    /** \param mat The material to use for rendering, or null if none
      *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
      *         repeatedly, as it allows to reduce the number of draw calls.
      */
-    void
-    render_quads(const material* p_material, const std::vector<std::array<vertex, 4>>& quad_list);
+    void render_quads(const material* mat, const std::vector<std::array<vertex, 4>>& quad_list);
 
     /// Renders a vertex cache.
-    /** \param pMaterial       The material to use for rendering, or null if none
+    /** \param mat       The material to use for rendering, or null if none
      *   \param cache          The vertex cache
      *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
@@ -229,7 +228,7 @@ public:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     void render_cache(
-        const material*     p_material,
+        const material*     mat,
         const vertex_cache& cache,
         const matrix4f&     model_transform = matrix4f::identity);
 
@@ -270,28 +269,28 @@ public:
         material::filter   filter = material::filter::none);
 
     /// Creates a new material from a portion of a render target.
-    /** \param pRenderTarget The render target from which to read the pixels
+    /** \param target The render target from which to read the pixels
      *   \param location     The portion of the render target to use as material
      *   \return The new material
      */
     virtual std::shared_ptr<material>
-    create_material(std::shared_ptr<render_target> p_render_target, const bounds2f& location) = 0;
+    create_material(std::shared_ptr<render_target> target, const bounds2f& location) = 0;
 
     /// Creates a new material from an entire render target.
-    /** \param pRenderTarget The render target from which to read the pixels
+    /** \param target The render target from which to read the pixels
      *   \return The new material
      */
-    std::shared_ptr<material> create_material(std::shared_ptr<render_target> p_render_target);
+    std::shared_ptr<material> create_material(std::shared_ptr<render_target> target);
 
     /// Creates a new material from arbitrary pixel data.
     /** \param dimensions The dimensions of the material
-     *   \param pPixelData  The color data for all the pixels in the material
+     *   \param pixel_data  The color data for all the pixels in the material
      *   \param filt     The filtering to apply to the texture
      *   \return The new material
      */
     virtual std::shared_ptr<material> create_material(
         const vector2ui& dimensions,
-        const ub32color* p_pixel_data,
+        const ub32color* pixel_data,
         material::filter filt = material::filter::none) = 0;
 
     /// Creates a new render target.
@@ -354,9 +353,9 @@ public:
 
 protected:
     /// Begins rendering on a particular render target.
-    /** \param pTarget The render target (main screen if nullptr)
+    /** \param target The render target (main screen if nullptr)
      */
-    virtual void begin_(std::shared_ptr<render_target> p_target) = 0;
+    virtual void begin_(std::shared_ptr<render_target> target) = 0;
 
     /// Ends rendering.
     virtual void end_() = 0;
@@ -379,18 +378,18 @@ protected:
     virtual void set_view_(const matrix4f& view_matrix) = 0;
 
     /// Renders a set of quads.
-    /** \param pMaterial The material to use for rendering, or null if none
+    /** \param mat The material to use for rendering, or null if none
      *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
      *         always more efficient to call this method than calling render_quad
      *         repeatedly, as it allows to reduce the number of draw calls.
      */
-    virtual void render_quads_(
-        const material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) = 0;
+    virtual void
+    render_quads_(const material* mat, const std::vector<std::array<vertex, 4>>& quad_list) = 0;
 
     /// Renders a vertex cache.
-    /** \param pMaterial       The material to use for rendering, or null if none
+    /** \param mat       The material to use for rendering, or null if none
      *   \param cache          The vertex cache
      *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
@@ -406,7 +405,7 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     virtual void render_cache_(
-        const material* p_material, const vertex_cache& cache, const matrix4f& model_transform) = 0;
+        const material* mat, const vertex_cache& cache, const matrix4f& model_transform) = 0;
 
     /// Creates a new material from a texture file.
     /** \param file_name The name of the file
@@ -448,7 +447,7 @@ protected:
     std::unordered_map<std::string, std::weak_ptr<gui::font>>     font_list_;
 
 private:
-    bool uses_same_texture_(const material* p_mat1, const material* p_mat2) const;
+    bool uses_same_texture_(const material* mat1, const material* mat2) const;
 
     bool        texture_atlas_enabled_   = true;
     bool        vertex_cache_enabled_    = true;
@@ -457,13 +456,13 @@ private:
 
     struct quad_batcher {
         std::vector<std::array<vertex, 4>> data;
-        std::shared_ptr<vertex_cache>      p_cache;
+        std::shared_ptr<vertex_cache>      cache;
     };
 
     static constexpr std::size_t                        batching_cache_cycle_size = 16u;
     std::array<quad_batcher, batching_cache_cycle_size> quad_cache_;
 
-    const gui::material* p_current_material_     = nullptr;
+    const gui::material* current_material_       = nullptr;
     std::size_t          current_quad_cache_     = 0u;
     std::size_t          batch_count_            = 0u;
     std::size_t          last_frame_batch_count_ = 0u;

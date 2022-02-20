@@ -201,8 +201,8 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_parent", [](region& self) {
         sol::object parent;
-        if (auto* p_parent = self.get_parent().get())
-            parent = self.get_manager().get_lua()[p_parent->get_lua_name()];
+        if (auto* self_parent = self.get_parent().get())
+            parent = self.get_manager().get_lua()[self_parent->get_lua_name()];
         return parent;
     });
 
@@ -266,13 +266,14 @@ void region::register_on_lua(sol::state& lua) {
     /** @function set_parent
      */
     type.set_function("set_parent", [](region& self, std::variant<std::string, frame*> parent) {
-        utils::observer_ptr<frame> p_parent = get_object<frame>(self.get_manager(), parent);
+        utils::observer_ptr<frame> parent_obj = get_object<frame>(self.get_manager(), parent);
 
-        if (p_parent) {
+        if (parent_obj) {
             if (self.is_object_type<frame>())
-                p_parent->add_child(utils::static_pointer_cast<frame>(self.release_from_parent()));
+                parent_obj->add_child(
+                    utils::static_pointer_cast<frame>(self.release_from_parent()));
             else
-                p_parent->add_region(
+                parent_obj->add_region(
                     utils::static_pointer_cast<layered_region>(self.release_from_parent()));
         } else {
             if (self.is_object_type<frame>()) {
@@ -294,16 +295,16 @@ void region::register_on_lua(sol::state& lua) {
             anchor_point point = anchor::get_anchor_point(point_name);
 
             // parent
-            utils::observer_ptr<region> p_parent;
+            utils::observer_ptr<region> parent_obj;
             if (parent.has_value()) {
-                p_parent = get_object(self.get_manager(), parent.value());
+                parent_obj = get_object(self.get_manager(), parent.value());
             } else
-                p_parent = self.get_parent();
+                parent_obj = self.get_parent();
 
-            if (p_parent && p_parent->depends_on(self)) {
+            if (parent_obj && parent_obj->depends_on(self)) {
                 throw sol::error(
                     "cyclic anchor dependency detected! \"" + self.get_name() + "\" and \"" +
-                    p_parent->get_name() + "\" depend on eachothers (directly or indirectly)");
+                    parent_obj->get_name() + "\" depend on eachothers (directly or indirectly)");
             }
 
             // relativePoint
@@ -316,7 +317,8 @@ void region::register_on_lua(sol::state& lua) {
             float abs_y = y_offset.value_or(0.0f);
 
             self.set_point(
-                point, p_parent ? p_parent->get_name() : "", parent_point, vector2f(abs_x, abs_y));
+                point, parent_obj ? parent_obj->get_name() : "", parent_point,
+                vector2f(abs_x, abs_y));
         });
 
     /** @function set_rel_point
@@ -330,16 +332,16 @@ void region::register_on_lua(sol::state& lua) {
             anchor_point point = anchor::get_anchor_point(point_name);
 
             // parent
-            utils::observer_ptr<region> p_parent;
+            utils::observer_ptr<region> parent_obj;
             if (parent.has_value()) {
-                p_parent = get_object(self.get_manager(), parent.value());
+                parent_obj = get_object(self.get_manager(), parent.value());
             } else
-                p_parent = self.get_parent();
+                parent_obj = self.get_parent();
 
-            if (p_parent && p_parent->depends_on(self)) {
+            if (parent_obj && parent_obj->depends_on(self)) {
                 throw sol::error(
                     "cyclic anchor dependency detected! \"" + self.get_name() + "\" and \"" +
-                    p_parent->get_name() + "\" depend on eachothers (directly or indirectly)");
+                    parent_obj->get_name() + "\" depend on eachothers (directly or indirectly)");
             }
 
             // relativePoint
@@ -352,8 +354,8 @@ void region::register_on_lua(sol::state& lua) {
             float rel_y = y_offset.value_or(0.0f);
 
             self.set_point(
-                point, p_parent ? p_parent->get_name() : "", parent_point, vector2f(rel_x, rel_y),
-                anchor_type::rel);
+                point, parent_obj ? parent_obj->get_name() : "", parent_point,
+                vector2f(rel_x, rel_y), anchor_type::rel);
         });
 
     /** @function set_width

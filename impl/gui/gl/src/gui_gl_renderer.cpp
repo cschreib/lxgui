@@ -33,7 +33,7 @@
 namespace lxgui::gui::gl {
 
 #if defined(LXGUI_OPENGL3)
-thread_local std::weak_ptr<renderer::shader_cache> renderer::p_static_shader_cache;
+thread_local std::weak_ptr<renderer::shader_cache> renderer::static_shader_cache;
 #endif
 
 renderer::renderer(const vector2ui& window_dimensions, bool init_glew [[maybe_unused]]) :
@@ -72,14 +72,14 @@ renderer::shader_cache::~shader_cache() {
 }
 #endif
 
-void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
+void renderer::begin_(std::shared_ptr<gui::render_target> target) {
     matrix4f current_view_matrix;
 
-    if (p_target) {
-        p_current_target_ = std::static_pointer_cast<gl::render_target>(p_target);
-        p_current_target_->begin();
+    if (target) {
+        current_target_ = std::static_pointer_cast<gl::render_target>(target);
+        current_target_->begin();
 
-        current_view_matrix = p_current_target_->get_view_matrix();
+        current_view_matrix = current_target_->get_view_matrix();
     } else {
         glViewport(0.0f, 0.0f, window_dimensions_.x, window_dimensions_.y);
 
@@ -93,7 +93,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
 
 #if defined(LXGUI_OPENGL3)
     glActiveTexture(GL_TEXTURE0);
-    glUseProgram(p_shader_cache_->program);
+    glUseProgram(shader_cache_->program);
     previous_texture_ = static_cast<std::uint32_t>(-1);
 #else
     glDisable(GL_LIGHTING);
@@ -104,9 +104,9 @@ void renderer::begin_(std::shared_ptr<gui::render_target> p_target) {
 }
 
 void renderer::end_() {
-    if (p_current_target_) {
-        p_current_target_->end();
-        p_current_target_ = nullptr;
+    if (current_target_) {
+        current_target_->end();
+        current_target_ = nullptr;
     }
 }
 
@@ -114,14 +114,14 @@ void renderer::set_view_(const matrix4f& view_matrix) {
     current_view_matrix_ = view_matrix;
 
     matrix4f corrected_view = view_matrix;
-    if (!p_current_target_) {
+    if (!current_target_) {
         // Rendering to main screen, flip Y
         for (std::size_t i = 0; i < 4; ++i)
             corrected_view(i, 1) *= -1.0f;
     }
 
 #if defined(LXGUI_OPENGL3)
-    glUniformMatrix4fv(p_shader_cache_->proj_location, 1, GL_FALSE, corrected_view.data);
+    glUniformMatrix4fv(shader_cache_->proj_location, 1, GL_FALSE, corrected_view.data);
 #else
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(corrected_view.data);
@@ -135,15 +135,15 @@ matrix4f renderer::get_view() const {
 }
 
 void renderer::render_quads_(
-    const gui::material* p_material, const std::vector<std::array<vertex, 4>>& quad_list) {
+    const gui::material* mat, const std::vector<std::array<vertex, 4>>& quad_list) {
 
 #if !defined(LXGUI_OPENGL3)
     static constexpr std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
-    if (pMat) {
-        pMat->bind();
+    const gl::material* mat = static_cast<const gl::material*>(mat);
+    if (mat) {
+        mat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -177,41 +177,39 @@ void renderer::render_quads_(
     // previous draw call using this cache to finish before updating.
     // If we rotate, it is more likely that the draw call is done, and
     // that we don't have to wait.
-    const auto& p_cache = p_array_cache_[array_cycle_cache_];
-    array_cycle_cache_  = (array_cycle_cache_ + 1) % cache_cycle_size;
+    const auto& cache  = array_cache_[array_cycle_cache_];
+    array_cycle_cache_ = (array_cycle_cache_ + 1) % cache_cycle_size;
 
     // Update vertex data
-    p_cache->update(quad_list[0].data(), quad_list.size() * 4);
+    cache->update(quad_list[0].data(), quad_list.size() * 4);
 
     // Render
-    render_cache_(p_material, *p_cache, matrix4f::identity);
+    render_cache_(mat, *cache, matrix4f::identity);
 #endif
 }
 
 void renderer::render_cache_(
-    const gui::material*     p_material,
-    const gui::vertex_cache& cache,
-    const matrix4f&          model_transform) {
+    const gui::material* mat, const gui::vertex_cache& cache, const matrix4f& model_transform) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    const gl::material*     p_mat    = static_cast<const gl::material*>(p_material);
+    const gl::material*     gl_mat   = static_cast<const gl::material*>(mat);
     const gl::vertex_cache& gl_cache = static_cast<const gl::vertex_cache&>(cache);
 
     // Setup uniforms
     int type = 0;
-    if (p_mat) {
+    if (gl_mat) {
         type = 0;
-        if (previous_texture_ != p_mat->get_handle()) {
-            p_mat->bind();
-            previous_texture_ = p_mat->get_handle();
+        if (previous_texture_ != gl_mat->get_handle()) {
+            gl_mat->bind();
+            previous_texture_ = gl_mat->get_handle();
         }
     } else {
         type = 1;
     }
 
-    glUniform1i(p_shader_cache_->type_location, type);
-    glUniformMatrix4fv(p_shader_cache_->model_location, 1, GL_FALSE, model_transform.data);
+    glUniform1i(shader_cache_->type_location, type);
+    glUniformMatrix4fv(shader_cache_->model_location, 1, GL_FALSE, model_transform.data);
 
     // Render
     gl_cache.render();
@@ -236,24 +234,23 @@ std::size_t renderer::get_texture_max_size() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* p_pixel_data, material::filter filt) {
-    std::shared_ptr<gl::material> p_tex =
+    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    std::shared_ptr<gl::material> tex =
         std::make_shared<gl::material>(dimensions, material::wrap::repeat, filt);
 
-    p_tex->update_texture(p_pixel_data);
+    tex->update_texture(pixel_data);
 
-    return std::move(p_tex);
+    return std::move(tex);
 }
 
-std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) {
-    auto p_tex =
-        std::static_pointer_cast<gl::render_target>(p_render_target)->get_material().lock();
-    if (location == p_render_target->get_rect()) {
-        return std::move(p_tex);
+std::shared_ptr<gui::material>
+renderer::create_material(std::shared_ptr<gui::render_target> target, const bounds2f& location) {
+    auto tex = std::static_pointer_cast<gl::render_target>(target)->get_material().lock();
+    if (location == target->get_rect()) {
+        return std::move(tex);
     } else {
         return std::make_shared<gl::material>(
-            p_tex->get_handle(), p_tex->get_canvas_dimensions(), location, p_tex->get_filter());
+            tex->get_handle(), tex->get_canvas_dimensions(), location, tex->get_filter());
     }
 }
 
@@ -439,25 +436,24 @@ void renderer::compile_programs_() {
                                  "        o_color = v_color;                                \n"
                                  "}                                                         \n";
 
-        p_shader_cache_ = std::make_shared<shader_cache>();
+        shader_cache_ = std::make_shared<shader_cache>();
 
         try {
-            p_shader_cache_->program = create_program(vertex_shader, fragment_shader);
+            shader_cache_->program = create_program(vertex_shader, fragment_shader);
         } catch (...) {
-            p_shader_cache_ = nullptr;
+            shader_cache_ = nullptr;
             throw;
         }
 
-        p_shader_cache_->sampler_location =
-            glGetUniformLocation(p_shader_cache_->program, "s_texture");
-        p_shader_cache_->proj_location  = glGetUniformLocation(p_shader_cache_->program, "m_proj");
-        p_shader_cache_->model_location = glGetUniformLocation(p_shader_cache_->program, "m_model");
-        p_shader_cache_->type_location  = glGetUniformLocation(p_shader_cache_->program, "i_type");
+        shader_cache_->sampler_location = glGetUniformLocation(shader_cache_->program, "s_texture");
+        shader_cache_->proj_location    = glGetUniformLocation(shader_cache_->program, "m_proj");
+        shader_cache_->model_location   = glGetUniformLocation(shader_cache_->program, "m_model");
+        shader_cache_->type_location    = glGetUniformLocation(shader_cache_->program, "i_type");
 
-        p_static_shader_cache = p_shader_cache_;
-        shader_cached         = true;
+        static_shader_cache = shader_cache_;
+        shader_cached       = true;
     } else {
-        p_shader_cache_ = p_static_shader_cache.lock();
+        shader_cache_ = static_shader_cache.lock();
     }
 }
 
@@ -471,13 +467,13 @@ void renderer::setup_buffers_() {
     }
 
     for (std::size_t i = 0; i < cache_cycle_size; ++i) {
-        p_quad_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
+        quad_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
             create_vertex_cache(vertex_cache::type::quads));
-        p_quad_cache_[i]->update_indices(quad_i_ds.data(), quad_i_ds.size());
+        quad_cache_[i]->update_indices(quad_i_ds.data(), quad_i_ds.size());
 
-        p_array_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
+        array_cache_[i] = std::static_pointer_cast<gl::vertex_cache>(
             create_vertex_cache(vertex_cache::type::quads));
-        p_array_cache_[i]->update_indices(repeated_ids.data(), repeated_ids.size());
+        array_cache_[i]->update_indices(repeated_ids.data(), repeated_ids.size());
     }
 }
 #endif

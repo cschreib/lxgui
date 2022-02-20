@@ -110,16 +110,10 @@ public:
      */
     anchor(region& object, const anchor_data& data);
 
-    /// Non-copiable
+    // Non-copiable, non-movable
     anchor(const anchor&) = delete;
-
-    /// Non-movable
-    anchor(anchor&&) = delete;
-
-    /// Non-assignable
+    anchor(anchor&&)      = delete;
     anchor& operator=(const anchor&) = delete;
-
-    /// Non-assignable
     anchor& operator=(anchor&&) = delete;
 
     /// Returns this anchor's absolute coordinates (in pixels).
@@ -132,14 +126,14 @@ public:
     /** \return This anchor's parent region
      */
     const utils::observer_ptr<region>& get_parent() {
-        return p_parent_;
+        return parent_;
     }
 
     /// Returns this anchor's parent region.
     /** \return This anchor's parent region
      */
     utils::observer_ptr<const region> get_parent() const {
-        return p_parent_;
+        return parent_;
     }
 
     /// Prints all relevant information about this anchor in a string.
@@ -171,7 +165,7 @@ private:
      */
     void update_parent_(region& object);
 
-    utils::observer_ptr<region> p_parent_ = nullptr;
+    utils::observer_ptr<region> parent_ = nullptr;
 };
 
 } // namespace lxgui::gui

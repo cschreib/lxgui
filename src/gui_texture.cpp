@@ -101,21 +101,21 @@ void texture::create_glue() {
 void texture::copy_from(const region& obj) {
     base::copy_from(obj);
 
-    const texture* p_texture = down_cast<texture>(&obj);
-    if (!p_texture)
+    const texture* tex_obj = down_cast<texture>(&obj);
+    if (!tex_obj)
         return;
 
-    if (p_texture->has_texture_file())
-        this->set_texture(p_texture->get_texture_file());
-    else if (p_texture->has_gradient())
-        this->set_gradient(p_texture->get_gradient());
-    else if (p_texture->has_solid_color())
-        this->set_solid_color(p_texture->get_solid_color());
+    if (tex_obj->has_texture_file())
+        this->set_texture(tex_obj->get_texture_file());
+    else if (tex_obj->has_gradient())
+        this->set_gradient(tex_obj->get_gradient());
+    else if (tex_obj->has_solid_color())
+        this->set_solid_color(tex_obj->get_solid_color());
 
-    this->set_blend_mode(p_texture->get_blend_mode());
-    this->set_tex_coord(p_texture->get_tex_coord());
-    this->set_texture_stretching(p_texture->get_texture_stretching());
-    this->set_desaturated(p_texture->is_desaturated());
+    this->set_blend_mode(tex_obj->get_blend_mode());
+    this->set_tex_coord(tex_obj->get_tex_coord());
+    this->set_texture_stretching(tex_obj->get_texture_stretching());
+    this->set_desaturated(tex_obj->is_desaturated());
 }
 
 texture::blend_mode texture::get_blend_mode() const {
@@ -352,13 +352,13 @@ void texture::set_texture(const std::string& file_name) {
 
     auto& renderer = get_manager().get_renderer();
 
-    std::shared_ptr<gui::material> p_mat;
+    std::shared_ptr<gui::material> mat;
     if (utils::file_exists(parsed_file))
-        p_mat = renderer.create_atlas_material("GUI", parsed_file, filter_);
+        mat = renderer.create_atlas_material("GUI", parsed_file, filter_);
 
-    quad_.mat = p_mat;
+    quad_.mat = mat;
 
-    if (p_mat) {
+    if (mat) {
         quad_.v[0].uvs = quad_.mat->get_canvas_uv(vector2f(0, 0), true);
         quad_.v[1].uvs = quad_.mat->get_canvas_uv(vector2f(1, 0), true);
         quad_.v[2].uvs = quad_.mat->get_canvas_uv(vector2f(1, 1), true);
@@ -378,18 +378,18 @@ void texture::set_texture(const std::string& file_name) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_texture(std::shared_ptr<render_target> p_render_target) {
+void texture::set_texture(std::shared_ptr<render_target> target) {
     content_ = std::string{};
 
     auto& renderer = get_manager().get_renderer();
 
-    std::shared_ptr<gui::material> p_mat;
-    if (p_render_target)
-        p_mat = renderer.create_material(std::move(p_render_target));
+    std::shared_ptr<gui::material> mat;
+    if (target)
+        mat = renderer.create_material(std::move(target));
 
-    quad_.mat = p_mat;
+    quad_.mat = mat;
 
-    if (p_mat) {
+    if (mat) {
         quad_.v[0].uvs = quad_.mat->get_canvas_uv(vector2f(0, 0), true);
         quad_.v[1].uvs = quad_.mat->get_canvas_uv(vector2f(1, 0), true);
         quad_.v[2].uvs = quad_.mat->get_canvas_uv(vector2f(1, 1), true);

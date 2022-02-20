@@ -275,8 +275,8 @@ public:
      */
     const layout_node& get_child(std::string_view name) const {
         accessed_ = true;
-        if (const layout_node* p_child = try_get_child(name))
-            return *p_child;
+        if (const layout_node* child = try_get_child(name))
+            return *child;
         else
             throw utils::exception(
                 std::string(get_location()) + ": no child found with name '" + std::string(name) +
@@ -316,8 +316,8 @@ public:
      */
     const layout_attribute& get_attribute(std::string_view name) const {
         accessed_ = true;
-        if (const layout_attribute* p_attr = try_get_attribute(name))
-            return *p_attr;
+        if (const layout_attribute* attr = try_get_attribute(name))
+            return *attr;
         else
             throw utils::exception(
                 std::string(get_location()) + ": no attribute found with name '" +
@@ -364,8 +364,8 @@ public:
     std::string_view
     get_attribute_value_or(std::string_view name, std::string_view fallback) const noexcept {
         accessed_ = true;
-        if (const auto* p_attr = try_get_attribute(name))
-            return p_attr->get_value_or(fallback);
+        if (const auto* attr = try_get_attribute(name))
+            return attr->get_value_or(fallback);
         else
             return fallback;
     }
@@ -378,8 +378,8 @@ public:
     template<typename T>
     T get_attribute_value_or(std::string_view name, T fallback) const noexcept {
         accessed_ = true;
-        if (const auto* p_attr = try_get_attribute(name))
-            return p_attr->get_value_or<T>(fallback);
+        if (const auto* attr = try_get_attribute(name))
+            return attr->get_value_or<T>(fallback);
         else
             return fallback;
     }
@@ -419,14 +419,13 @@ public:
      */
     std::string_view get_or_set_attribute_value(std::string_view name, std::string_view value) {
         accessed_ = true;
-        if (const auto* p_attr = try_get_attribute(name))
-            return p_attr->get_value();
-        else {
-            auto& attr = add_attribute();
-            attr.set_name(std::string(name));
-            attr.set_value(std::string(value));
-            return value;
-        }
+        if (const auto* attr = try_get_attribute(name))
+            return attr->get_value();
+
+        auto& attr = add_attribute();
+        attr.set_name(std::string(name));
+        attr.set_value(std::string(value));
+        return value;
     }
 
 private:

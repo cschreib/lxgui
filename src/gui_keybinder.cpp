@@ -20,7 +20,7 @@ keybinder::register_key_binding(std::string_view name, sol::protected_function l
 
         // Handle errors
         if (!result.valid()) {
-            throw gui::exception(sol::error(result).what());
+            throw gui::exception(result.get<sol::error>().what());
         }
     };
 
@@ -116,15 +116,15 @@ keybinder::key_binding* keybinder::find_binding_(
 
 bool keybinder::on_key_down(
     input::key key_id, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed) {
-    auto* p_key_binding = find_binding_(key_id, shift_is_pressed, ctrl_is_pressed, alt_is_pressed);
-    if (!p_key_binding)
+    auto* key_binding = find_binding_(key_id, shift_is_pressed, ctrl_is_pressed, alt_is_pressed);
+    if (!key_binding)
         return false;
 
     try {
-        p_key_binding->signal();
+        key_binding->signal();
     } catch (const std::exception& e) {
         throw std::runtime_error(
-            "Bound action: " + p_key_binding->name + ": " + std::string(e.what()));
+            "Bound action: " + key_binding->name + ": " + std::string(e.what()));
     }
 
     return true;

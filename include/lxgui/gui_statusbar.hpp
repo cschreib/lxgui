@@ -85,9 +85,9 @@ public:
     void set_bar_draw_layer(const std::string& bar_layer_name);
 
     /// Sets this status_bar's bar texture.
-    /** \param pBarTexture The bar texture
+    /** \param bar_texture The bar texture
      */
-    void set_bar_texture(utils::observer_ptr<texture> p_bar_texture);
+    void set_bar_texture(utils::observer_ptr<texture> bar_texture);
 
     /// Sets this status_bar's bar color.
     /** \param bar_color The bar color
@@ -137,14 +137,14 @@ public:
     /** \return This status_bar's bar texture
      */
     const utils::observer_ptr<texture>& get_bar_texture() {
-        return p_bar_texture_;
+        return bar_texture_;
     }
 
     /// Returns this status_bar's bar texture.
     /** \return This status_bar's bar texture
      */
     utils::observer_ptr<const texture> get_bar_texture() const {
-        return p_bar_texture_;
+        return bar_texture_;
     }
 
     /// Returns this status_bar's bar color.
@@ -196,7 +196,7 @@ protected:
 
     color                        bar_color_           = color::white;
     layer                        bar_layer_           = layer::artwork;
-    utils::observer_ptr<texture> p_bar_texture_       = nullptr;
+    utils::observer_ptr<texture> bar_texture_         = nullptr;
     std::array<float, 4>         initial_text_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 };
 

@@ -7,7 +7,7 @@
 namespace lxgui::gui {
 
 virtual_registry::virtual_registry(const registry& object_registry) :
-    p_object_registry_(&object_registry) {}
+    object_registry_(&object_registry) {}
 
 std::vector<utils::observer_ptr<const region>>
 virtual_registry::get_virtual_region_list(std::string_view names) const {
@@ -15,10 +15,10 @@ virtual_registry::get_virtual_region_list(std::string_view names) const {
     for (auto parent : utils::cut(names, ",")) {
         parent = utils::trim(parent, ' ');
 
-        utils::observer_ptr<const region> p_obj = get_region_by_name(parent);
+        utils::observer_ptr<const region> obj = get_region_by_name(parent);
 
-        if (!p_obj) {
-            bool exists_non_virtual = p_object_registry_->get_region_by_name(parent) != nullptr;
+        if (!obj) {
+            bool exists_non_virtual = object_registry_->get_region_by_name(parent) != nullptr;
 
             gui::out << gui::warning << "gui::manager : "
                      << "Cannot find inherited object \"" << parent << "\""
@@ -28,7 +28,7 @@ virtual_registry::get_virtual_region_list(std::string_view names) const {
             continue;
         }
 
-        inheritance.push_back(std::move(p_obj));
+        inheritance.push_back(std::move(obj));
     }
 
     return inheritance;

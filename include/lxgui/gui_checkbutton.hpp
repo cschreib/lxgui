@@ -58,39 +58,39 @@ public:
     /** \return This button's checked texture
      */
     const utils::observer_ptr<texture>& get_checked_texture() {
-        return p_checked_texture_;
+        return checked_texture_;
     }
 
     /// Returns this button's checked texture.
     /** \return This button's checked texture
      */
     utils::observer_ptr<const texture> get_checked_texture() const {
-        return p_checked_texture_;
+        return checked_texture_;
     }
 
     /// Returns this button's disabled checked texture.
     /** \return This button's disabled checked texture
      */
     const utils::observer_ptr<texture>& get_disabled_checked_texture() {
-        return p_disabled_checked_texture_;
+        return disabled_checked_texture_;
     }
 
     /// Returns this button's disabled checked texture.
     /** \return This button's disabled checked texture
      */
     utils::observer_ptr<const texture> get_disabled_checked_texture() const {
-        return p_disabled_checked_texture_;
+        return disabled_checked_texture_;
     }
 
     /// Sets this button's checked texture.
-    /** \param pTexture The new texture
+    /** \param tex The new texture
      */
-    void set_checked_texture(utils::observer_ptr<texture> p_texture);
+    void set_checked_texture(utils::observer_ptr<texture> tex);
 
     /// Sets this button's disabled checked texture.
-    /** \param pTexture The new texture
+    /** \param tex The new texture
      */
-    void set_disabled_checked_texture(utils::observer_ptr<texture> p_texture);
+    void set_disabled_checked_texture(utils::observer_ptr<texture> tex);
 
     /// Returns this region's Lua glue.
     void create_glue() override;
@@ -105,8 +105,8 @@ protected:
 
     bool is_checked_ = false;
 
-    utils::observer_ptr<texture> p_checked_texture_          = nullptr;
-    utils::observer_ptr<texture> p_disabled_checked_texture_ = nullptr;
+    utils::observer_ptr<texture> checked_texture_          = nullptr;
+    utils::observer_ptr<texture> disabled_checked_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui

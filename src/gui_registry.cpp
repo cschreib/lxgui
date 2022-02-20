@@ -40,27 +40,27 @@ bool registry::check_region_name(std::string_view name) const {
     return true;
 }
 
-bool registry::add_region(utils::observer_ptr<region> p_obj) {
-    if (!p_obj) {
+bool registry::add_region(utils::observer_ptr<region> obj) {
+    if (!obj) {
         gui::out << gui::error << "gui::registry : Adding a null region." << std::endl;
         return false;
     }
 
-    auto iter_named_obj = named_object_list_.find(p_obj->get_name());
+    auto iter_named_obj = named_object_list_.find(obj->get_name());
     if (iter_named_obj != named_object_list_.end()) {
         gui::out << gui::warning << "gui::registry : "
-                 << "A region with the name \"" << p_obj->get_name() << "\" already exists."
+                 << "A region with the name \"" << obj->get_name() << "\" already exists."
                  << std::endl;
         return false;
     }
 
-    named_object_list_[p_obj->get_name()] = std::move(p_obj);
+    named_object_list_[obj->get_name()] = std::move(obj);
 
     return true;
 }
 
-void registry::remove_region(const region& p_obj) {
-    named_object_list_.erase(p_obj.get_name());
+void registry::remove_region(const region& obj) {
+    named_object_list_.erase(obj.get_name());
 }
 
 utils::observer_ptr<const region> registry::get_region_by_name(std::string_view name) const {

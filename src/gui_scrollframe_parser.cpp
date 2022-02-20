@@ -11,31 +11,31 @@ void scroll_frame::parse_all_nodes_before_children_(const layout_node& node) {
 }
 
 void scroll_frame::parse_scroll_child_node_(const layout_node& node) {
-    if (const layout_node* p_scroll_child_node = node.try_get_child("ScrollChild")) {
-        if (p_scroll_child_node->get_children_count() == 0) {
-            gui::out << gui::warning << p_scroll_child_node->get_location()
+    if (const layout_node* scroll_child_node = node.try_get_child("ScrollChild")) {
+        if (scroll_child_node->get_children_count() == 0) {
+            gui::out << gui::warning << scroll_child_node->get_location()
                      << " : "
                         "ScrollChild node needs a child node."
                      << std::endl;
             return;
         }
 
-        if (p_scroll_child_node->get_children_count() > 1) {
-            gui::out << gui::warning << p_scroll_child_node->get_location()
+        if (scroll_child_node->get_children_count() > 1) {
+            gui::out << gui::warning << scroll_child_node->get_location()
                      << " : "
                         "ScrollChild node needs only one child node; other nodes will be ignored."
                      << std::endl;
             return;
         }
 
-        const layout_node& child_node     = p_scroll_child_node->get_child(0);
-        auto               p_scroll_child = parse_child_(child_node, "");
-        if (!p_scroll_child)
+        const layout_node& child_node   = scroll_child_node->get_child(0);
+        auto               scroll_child = parse_child_(child_node, "");
+        if (!scroll_child)
             return;
 
-        const layout_node* p_anchors = child_node.try_get_child("Anchors");
-        if (p_anchors) {
-            gui::out << gui::warning << p_anchors->get_location() << " : "
+        const layout_node* anchors = child_node.try_get_child("Anchors");
+        if (anchors) {
+            gui::out << gui::warning << anchors->get_location() << " : "
                      << "Scroll child's anchors are ignored." << std::endl;
         }
 
@@ -46,7 +46,7 @@ void scroll_frame::parse_scroll_child_node_(const layout_node& node) {
                      << std::endl;
         }
 
-        this->set_scroll_child(remove_child(p_scroll_child));
+        this->set_scroll_child(remove_child(scroll_child));
     }
 }
 

@@ -49,29 +49,29 @@ bool status_bar::can_use_script(const std::string& script_name) const {
 void status_bar::copy_from(const region& obj) {
     base::copy_from(obj);
 
-    const status_bar* p_status_bar = down_cast<status_bar>(&obj);
-    if (!p_status_bar)
+    const status_bar* bar_obj = down_cast<status_bar>(&obj);
+    if (!bar_obj)
         return;
 
-    this->set_min_value(p_status_bar->get_min_value());
-    this->set_max_value(p_status_bar->get_max_value());
-    this->set_value(p_status_bar->get_value());
-    this->set_bar_draw_layer(p_status_bar->get_bar_draw_layer());
-    this->set_orientation(p_status_bar->get_orientation());
-    this->set_reversed(p_status_bar->is_reversed());
+    this->set_min_value(bar_obj->get_min_value());
+    this->set_max_value(bar_obj->get_max_value());
+    this->set_value(bar_obj->get_value());
+    this->set_bar_draw_layer(bar_obj->get_bar_draw_layer());
+    this->set_orientation(bar_obj->get_orientation());
+    this->set_reversed(bar_obj->is_reversed());
 
-    if (const texture* p_bar = p_status_bar->get_bar_texture().get()) {
+    if (const texture* bar = bar_obj->get_bar_texture().get()) {
         region_core_attributes attr;
-        attr.name        = p_bar->get_name();
-        attr.inheritance = {p_status_bar->get_bar_texture()};
+        attr.name        = bar->get_name();
+        attr.inheritance = {bar_obj->get_bar_texture()};
 
-        auto p_bar_texture =
-            this->create_layered_region<texture>(p_bar->get_draw_layer(), std::move(attr));
+        auto bar_texture =
+            this->create_layered_region<texture>(bar->get_draw_layer(), std::move(attr));
 
-        if (p_bar_texture) {
-            p_bar_texture->set_special();
-            p_bar_texture->notify_loaded();
-            this->set_bar_texture(p_bar_texture);
+        if (bar_texture) {
+            bar_texture->set_special();
+            bar_texture->notify_loaded();
+            this->set_bar_texture(bar_texture);
         }
     }
 }
@@ -115,8 +115,8 @@ void status_bar::set_value(float value) {
 
 void status_bar::set_bar_draw_layer(layer bar_layer) {
     bar_layer_ = bar_layer;
-    if (p_bar_texture_)
-        p_bar_texture_->set_draw_layer(bar_layer_);
+    if (bar_texture_)
+        bar_texture_->set_draw_layer(bar_layer_);
 }
 
 void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
@@ -140,22 +140,22 @@ void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
     set_bar_draw_layer(bar_layer);
 }
 
-void status_bar::set_bar_texture(utils::observer_ptr<texture> p_bar_texture) {
-    p_bar_texture_ = std::move(p_bar_texture);
-    if (!p_bar_texture_)
+void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
+    bar_texture_ = std::move(bar_texture);
+    if (!bar_texture_)
         return;
 
-    p_bar_texture_->set_draw_layer(bar_layer_);
-    p_bar_texture_->clear_all_points();
+    bar_texture_->set_draw_layer(bar_layer_);
+    bar_texture_->clear_all_points();
 
-    std::string parent = p_bar_texture_->get_parent().get() == this ? "$parent" : name_;
+    std::string parent = bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
     if (is_reversed_)
-        p_bar_texture_->set_point(anchor_point::top_right, parent);
+        bar_texture_->set_point(anchor_point::top_right, parent);
     else
-        p_bar_texture_->set_point(anchor_point::bottom_left, parent);
+        bar_texture_->set_point(anchor_point::bottom_left, parent);
 
-    initial_text_coords_ = select_uvs(p_bar_texture_->get_tex_coord());
+    initial_text_coords_ = select_uvs(bar_texture_->get_tex_coord());
     notify_bar_texture_needs_update_();
 }
 
@@ -163,7 +163,7 @@ void status_bar::set_bar_color(const color& bar_color) {
     create_bar_texture_();
 
     bar_color_ = bar_color;
-    p_bar_texture_->set_solid_color(bar_color_);
+    bar_texture_->set_solid_color(bar_color_);
 }
 
 void status_bar::set_orientation(orientation orient) {
@@ -194,14 +194,14 @@ void status_bar::set_reversed(bool reversed) {
 
     is_reversed_ = reversed;
 
-    if (p_bar_texture_) {
+    if (bar_texture_) {
         if (is_reversed_)
-            p_bar_texture_->set_point(anchor_point::top_right);
+            bar_texture_->set_point(anchor_point::top_right);
         else
-            p_bar_texture_->set_point(anchor_point::bottom_left);
+            bar_texture_->set_point(anchor_point::bottom_left);
 
         if (!is_virtual_)
-            p_bar_texture_->notify_borders_need_update();
+            bar_texture_->notify_borders_need_update();
     }
 }
 
@@ -234,16 +234,16 @@ bool status_bar::is_reversed() const {
 }
 
 void status_bar::create_bar_texture_() {
-    if (p_bar_texture_)
+    if (bar_texture_)
         return;
 
-    auto p_bar_texture = create_layered_region<texture>(bar_layer_, "$parentBarTexture");
-    if (!p_bar_texture)
+    auto bar_texture = create_layered_region<texture>(bar_layer_, "$parentBarTexture");
+    if (!bar_texture)
         return;
 
-    p_bar_texture->set_special();
-    p_bar_texture->notify_loaded();
-    set_bar_texture(p_bar_texture);
+    bar_texture->set_special();
+    bar_texture->notify_loaded();
+    set_bar_texture(bar_texture);
 }
 
 void status_bar::create_glue() {
@@ -251,13 +251,13 @@ void status_bar::create_glue() {
 }
 
 void status_bar::update(float delta) {
-    if (update_bar_texture_flag_ && p_bar_texture_) {
+    if (update_bar_texture_flag_ && bar_texture_) {
         float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
         if (orientation_ == orientation::horizontal)
-            p_bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
+            bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
         else
-            p_bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
+            bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
 
         std::array<float, 4> uvs = initial_text_coords_;
         if (orientation_ == orientation::horizontal) {
@@ -272,7 +272,7 @@ void status_bar::update(float delta) {
                 uvs[1] = (uvs[1] - uvs[3]) * coef + uvs[3];
         }
 
-        p_bar_texture_->set_tex_rect(uvs);
+        bar_texture_->set_tex_rect(uvs);
 
         update_bar_texture_flag_ = false;
     }

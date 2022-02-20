@@ -25,9 +25,9 @@ namespace lxgui::input { namespace sfml {
 class source final : public input::source {
 public:
     /// Initializes this input source.
-    /** \param window The window from which to receive input
+    /** \param win The window from which to receive input
      */
-    explicit source(sf::Window& p_window);
+    explicit source(sf::Window& win);
 
     source(const source&) = delete;
     source& operator=(const source&) = delete;

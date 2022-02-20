@@ -18,7 +18,7 @@ struct region_core_attributes {
     std::string name;
     bool        is_virtual = false;
 
-    utils::observer_ptr<frame> p_parent = nullptr;
+    utils::observer_ptr<frame> parent = nullptr;
 
     std::vector<utils::observer_ptr<const region>> inheritance;
 };

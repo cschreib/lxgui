@@ -77,13 +77,13 @@ void scroll_frame::register_on_lua(sol::state& lua) {
      */
     type.set_function(
         "set_scroll_child", [](scroll_frame& self, std::variant<std::string, frame*> child) {
-            utils::observer_ptr<frame> p_child = get_object<frame>(self.get_manager(), child);
+            utils::observer_ptr<frame> child_obj = get_object<frame>(self.get_manager(), child);
 
-            utils::owner_ptr<frame> p_scroll_child;
-            if (p_child)
-                p_scroll_child = utils::static_pointer_cast<frame>(p_child->release_from_parent());
+            utils::owner_ptr<frame> scroll_child;
+            if (child_obj)
+                scroll_child = utils::static_pointer_cast<frame>(child_obj->release_from_parent());
 
-            self.set_scroll_child(std::move(p_scroll_child));
+            self.set_scroll_child(std::move(scroll_child));
         });
 
     /** @function set_vertical_scroll

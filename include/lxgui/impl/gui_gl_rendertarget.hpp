@@ -70,7 +70,7 @@ public:
 
 private:
     std::uint32_t                 fbo_handle_ = 0;
-    std::shared_ptr<gl::material> p_texture_;
+    std::shared_ptr<gl::material> texture_;
 
     matrix4f view_matrix_;
 };

@@ -18,9 +18,9 @@ class frame;
 class backdrop {
 public:
     /// Constructor.
-    /** \param pParent The frame it is linked to
+    /** \param parent The frame it is linked to
      */
-    explicit backdrop(frame& p_parent);
+    explicit backdrop(frame& parent);
 
     /// Non-copiable
     backdrop(const backdrop&) = delete;
@@ -166,7 +166,7 @@ private:
 
     std::string               background_file_;
     color                     background_color_ = color::empty;
-    std::shared_ptr<material> p_background_texture_;
+    std::shared_ptr<material> background_texture_;
     bool                      is_background_tilling_ = false;
     float                     tile_size_             = 0.0f;
     float                     original_tile_size_    = 0.0f;
@@ -174,7 +174,7 @@ private:
 
     std::string               edge_file_;
     color                     edge_color_ = color::empty;
-    std::shared_ptr<material> p_edge_texture_;
+    std::shared_ptr<material> edge_texture_;
     bounds2f                  edge_insets_;
     float                     edge_size_          = 0.0f;
     float                     original_edge_size_ = 0.0f;
@@ -184,9 +184,9 @@ private:
     mutable bool  is_cache_dirty_ = true;
     mutable float cache_alpha_    = std::numeric_limits<float>::quiet_NaN();
     mutable std::vector<std::array<vertex, 4>> background_quads_;
-    mutable std::shared_ptr<vertex_cache>      p_background_cache_;
+    mutable std::shared_ptr<vertex_cache>      background_cache_;
     mutable std::vector<std::array<vertex, 4>> edge_quads_;
-    mutable std::shared_ptr<vertex_cache>      p_edge_cache_;
+    mutable std::shared_ptr<vertex_cache>      edge_cache_;
 };
 
 } // namespace lxgui::gui

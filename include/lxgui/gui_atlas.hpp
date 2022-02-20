@@ -64,10 +64,10 @@ public:
 
     /// Creates a new font from a texture file.
     /** \param font_name The name of the file
-     *   \param pFont     The font to add to this page
+     *   \param fnt     The font to add to this page
      *   \return The new font (or nullptr if the font could not fit)
      */
-    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font);
+    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt);
 
     /// Checks if this page is empty (contains no materials).
     /** \return 'true' if the page is empty, 'false' otherwise
@@ -155,10 +155,10 @@ public:
 
     /// Add a new font to the atlas.
     /** \param font_name The name of the font+size
-     *   \param pFont     The font to add to this atlas
+     *   \param fnt     The font to add to this atlas
      *   \return 'true' if the font was added to this atlas, 'false' otherwise
      */
-    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> p_font);
+    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt);
 
     /// Return the number of pages in this atlas.
     /** \return The number of pages in this atlas
@@ -181,8 +181,8 @@ private:
     void add_page_();
 
     struct page_item {
-        std::unique_ptr<atlas_page> p_page;
-        std::shared_ptr<material>   p_no_texture_mat;
+        std::unique_ptr<atlas_page> page;
+        std::shared_ptr<material>   no_texture_mat;
     };
 
     std::vector<page_item> page_list_;

@@ -20,11 +20,11 @@ atlas_page::atlas_page(renderer& rdr, material::filter filt) :
 
     size_ = renderer_.get_texture_atlas_page_size();
 
-    p_texture_ = SDL_CreateTexture(
+    texture_ = SDL_CreateTexture(
         renderer_.get_sdl_renderer(), SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, size_,
         size_);
 
-    if (p_texture_ == nullptr) {
+    if (texture_ == nullptr) {
         throw gui::exception(
             "gui::sdl::material", "Could not create texture with dimensions " +
                                       utils::to_string(size_) + " x " + utils::to_string(size_) +
@@ -33,19 +33,19 @@ atlas_page::atlas_page(renderer& rdr, material::filter filt) :
 }
 
 atlas_page::~atlas_page() {
-    if (p_texture_)
-        SDL_DestroyTexture(p_texture_);
+    if (texture_)
+        SDL_DestroyTexture(texture_);
 }
 
 std::shared_ptr<gui::material>
 atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
     const sdl::material& sdl_mat = static_cast<const sdl::material&>(mat);
 
-    std::size_t      texture_pitch    = 0;
-    const ub32color* p_texture_pixels = nullptr;
+    std::size_t      texture_pitch  = 0;
+    const ub32color* texture_pixels = nullptr;
 
     try {
-        p_texture_pixels = sdl_mat.lock_pointer(&texture_pitch);
+        texture_pixels = sdl_mat.lock_pointer(&texture_pitch);
 
         SDL_Rect update_rect;
         update_rect.x = location.left;
@@ -53,20 +53,20 @@ atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
         update_rect.w = location.width();
         update_rect.h = location.height();
 
-        if (SDL_UpdateTexture(p_texture_, &update_rect, p_texture_pixels, texture_pitch * 4) != 0) {
+        if (SDL_UpdateTexture(texture_, &update_rect, texture_pixels, texture_pitch * 4) != 0) {
             throw gui::exception("sdl::atlas_page", "Failed to upload texture to atlas.");
         }
 
         sdl_mat.unlock_pointer();
-        p_texture_pixels = nullptr;
+        texture_pixels = nullptr;
     } catch (...) {
-        if (p_texture_pixels)
+        if (texture_pixels)
             sdl_mat.unlock_pointer();
         throw;
     }
 
     return std::make_shared<sdl::material>(
-        renderer_.get_sdl_renderer(), p_texture_, location, filter_);
+        renderer_.get_sdl_renderer(), texture_, location, filter_);
 }
 
 float atlas_page::get_width_() const {

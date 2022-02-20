@@ -44,12 +44,12 @@ class manager : utils::enable_observer_from_this<manager> {
 public:
     /// Constructor.
     /** \param block       The owner pointer control block
-     *   \param input_source The input source to use
+     *   \param src The input source to use
      *   \param rdr    The renderer implementation
      */
     manager(
         utils::control_block&          block,
-        std::unique_ptr<input::source> p_input_source,
+        std::unique_ptr<input::source> src,
         std::unique_ptr<renderer>      rdr);
 
     /// Destructor.
@@ -120,8 +120,7 @@ public:
     void clear_addon_directory_list();
 
     /// Set the code to be executed on each fresh Lua state.
-    /** \param pLuaRegs Some code that will get executed immediately after the Lua
-     *                   state is created
+    /** \param lua_regs Code that will get executed immediately after the Lua state is created
      *   \note This function is usefull if you need to create additionnal
      *         resources on the Lua state before the GUI files are loaded.
      *         The argument to this function will be stored and reused, each time
@@ -129,7 +128,7 @@ public:
      *         If the UI is already loaded, this change will only take effect after
      *         the UI is reloaded.
      */
-    void register_lua_glues(std::function<void(gui::manager&)> p_lua_regs);
+    void register_lua_glues(std::function<void(gui::manager&)> lua_regs);
 
     /// Prints debug informations in the log file.
     /** \note Calls region::serialize().
@@ -198,140 +197,140 @@ public:
     /** \return The renderer implementation
      */
     const renderer& get_renderer() const {
-        return *p_renderer_;
+        return *renderer_;
     }
 
     /// Returns the renderer implementation.
     /** \return The renderer implementation
      */
     renderer& get_renderer() {
-        return *p_renderer_;
+        return *renderer_;
     }
 
     /// Returns the window in which this gui is being displayed.
     /** \return The window in which this gui is being displayed
      */
     const input::window& get_window() const {
-        return *p_window_;
+        return *window_;
     }
 
     /// Returns the window in which this gui is being displayed.
     /** \return The window in which this gui is being displayed
      */
     input::window& get_window() {
-        return *p_window_;
+        return *window_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     const input::dispatcher& get_input_dispatcher() const {
-        return *p_input_dispatcher_;
+        return *input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     input::dispatcher& get_input_dispatcher() {
-        return *p_input_dispatcher_;
+        return *input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     const input::world_dispatcher& get_world_input_dispatcher() const {
-        return *p_world_input_dispatcher_;
+        return *world_input_dispatcher_;
     }
 
     /// Returns the input manager associated to this gui.
     /** \return The input manager associated to this gui
      */
     input::world_dispatcher& get_world_input_dispatcher() {
-        return *p_world_input_dispatcher_;
+        return *world_input_dispatcher_;
     }
 
     /// Returns the gui event emitter.
     /** \return The gui event emitter
      */
     const event_emitter& get_event_emitter() const {
-        return *p_event_emitter_;
+        return *event_emitter_;
     }
 
     /// Returns the gui event emitter.
     /** \return The gui event emitter
      */
     event_emitter& get_event_emitter() {
-        return *p_event_emitter_;
+        return *event_emitter_;
     }
 
     /// Returns the object used for localizing strings.
     /** \return The current localizer
      */
     localizer& get_localizer() {
-        return *p_localizer_;
+        return *localizer_;
     }
 
     /// Returns the object used for localizing strings.
     /** \return The current localizer
      */
     const localizer& get_localizer() const {
-        return *p_localizer_;
+        return *localizer_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     root& get_root() {
-        return *p_root_;
+        return *root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     const root& get_root() const {
-        return *p_root_;
+        return *root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     virtual_root& get_virtual_root() {
-        return *p_virtual_root_;
+        return *virtual_root_;
     }
 
     /// Returns the UI root object, which contains root frames.
     /** \return The root object
      */
     const virtual_root& get_virtual_root() const {
-        return *p_virtual_root_;
+        return *virtual_root_;
     }
 
     /// Returns the UI object factory, which is used to create new objects.
     /** \return The factory object
      */
     factory& get_factory() {
-        return *p_factory_;
+        return *factory_;
     }
 
     /// Returns the UI object factory, which is used to create new objects.
     /** \return The factory object
      */
     const factory& get_factory() const {
-        return *p_factory_;
+        return *factory_;
     }
 
     /// Returns the addon registry, which keeps track of loaded addons.
     /** \return The registry object
      */
     addon_registry* get_addon_registry() {
-        return p_addon_registry_.get();
+        return addon_registry_.get();
     }
 
     /// Returns the addon registry, which keeps track of loaded addons.
     /** \return The registry object
      */
     const addon_registry* get_addon_registry() const {
-        return p_addon_registry_.get();
+        return addon_registry_.get();
     }
 
 private:
@@ -355,26 +354,26 @@ private:
     float                              scaling_factor_      = 1.0f;
     float                              base_scaling_factor_ = 1.0f;
     bool                               enable_caching_      = false;
-    std::function<void(gui::manager&)> p_lua_regs_;
+    std::function<void(gui::manager&)> lua_regs_;
     std::vector<std::string>           gui_directory_list_;
 
     // Implementations
-    std::unique_ptr<input::source> p_input_source_;
-    std::unique_ptr<renderer>      p_renderer_;
+    std::unique_ptr<input::source> input_source_;
+    std::unique_ptr<renderer>      renderer_;
 
     // IO
-    std::unique_ptr<input::window>           p_window_;
-    std::unique_ptr<input::dispatcher>       p_input_dispatcher_;
-    std::unique_ptr<input::world_dispatcher> p_world_input_dispatcher_;
-    std::unique_ptr<event_emitter>           p_event_emitter_;
+    std::unique_ptr<input::window>           window_;
+    std::unique_ptr<input::dispatcher>       input_dispatcher_;
+    std::unique_ptr<input::world_dispatcher> world_input_dispatcher_;
+    std::unique_ptr<event_emitter>           event_emitter_;
 
     // UI state
-    std::unique_ptr<factory>        p_factory_;
-    std::unique_ptr<localizer>      p_localizer_;
-    std::unique_ptr<sol::state>     p_lua_;
-    utils::owner_ptr<root>          p_root_;
-    utils::owner_ptr<virtual_root>  p_virtual_root_;
-    std::unique_ptr<addon_registry> p_addon_registry_;
+    std::unique_ptr<factory>        factory_;
+    std::unique_ptr<localizer>      localizer_;
+    std::unique_ptr<sol::state>     lua_;
+    utils::owner_ptr<root>          root_;
+    utils::owner_ptr<virtual_root>  virtual_root_;
+    std::unique_ptr<addon_registry> addon_registry_;
 
     bool is_loaded_          = false;
     bool reload_ui_flag_     = false;

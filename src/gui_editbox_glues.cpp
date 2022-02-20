@@ -159,22 +159,22 @@ void edit_box::register_on_lua(sol::state& lua) {
                        sol::optional<std::string> flags) {
             self.set_font(file, height);
 
-            auto* p_font_string = self.get_font_string().get();
-            if (!p_font_string)
+            auto* font_string = self.get_font_string().get();
+            if (!font_string)
                 return;
 
             if (flags.has_value()) {
                 if (flags.value().find("OUTLINE") != std::string::npos ||
                     flags.value().find("THICKOUTLINE") != std::string::npos)
-                    p_font_string->set_outlined(true);
+                    font_string->set_outlined(true);
                 else if (flags.value().empty())
-                    p_font_string->set_outlined(false);
+                    font_string->set_outlined(false);
                 else {
                     gui::out << gui::warning << "EditBox:set_font : "
                              << "Unknown flags : \"" << flags.value() << "\"." << std::endl;
                 }
             } else
-                p_font_string->set_outlined(false);
+                font_string->set_outlined(false);
         });
 
     /** @function set_max_history_lines

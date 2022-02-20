@@ -65,7 +65,7 @@ public:
      *         callback will not fire.
      */
     utils::observer_ptr<frame> create_root_frame(region_core_attributes attr) {
-        attr.p_parent = nullptr;
+        attr.parent = nullptr;
 
         return create_root_frame_(attr);
     }
@@ -85,7 +85,7 @@ public:
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<frame> create_root_frame(region_core_attributes attr) {
         attr.object_type = FrameType::CLASS_NAME;
-        attr.p_parent    = nullptr;
+        attr.parent      = nullptr;
 
         return utils::static_pointer_cast<FrameType>(create_root_frame_(attr));
     }
@@ -112,16 +112,16 @@ public:
     }
 
     /// Make a frame owned by this frame_container.
-    /** \param pFrame The frame to add to the root frame list
+    /** \param obj The frame to add to the root frame list
      *   \return Raw pointer to the frame
      */
-    utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> p_frame);
+    utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> obj);
 
     /// Remove a frame from the list of frames owned by this frame_container.
-    /** \param pFrame The frame to be released
+    /** \param obj The frame to be released
      *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
      */
-    utils::owner_ptr<frame> remove_root_frame(const utils::observer_ptr<frame>& p_frame);
+    utils::owner_ptr<frame> remove_root_frame(const utils::observer_ptr<frame>& obj);
 
     /// Returns the root frame list.
     /** \return The root frame list
@@ -176,7 +176,7 @@ protected:
 private:
     factory&        factory_;
     registry&       registry_;
-    frame_renderer* p_renderer_;
+    frame_renderer* renderer_;
 
     root_frame_list root_frames_;
 };

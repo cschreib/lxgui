@@ -94,55 +94,55 @@ public:
     /** \return The currently hovered frame, if any.
      */
     const utils::observer_ptr<frame>& get_hovered_frame() {
-        return p_hovered_frame_;
+        return hovered_frame_;
     }
 
     /// Returns the currently hovered frame, if any.
     /** \return The currently hovered frame, if any.
      */
     utils::observer_ptr<const frame> get_hovered_frame() const {
-        return p_hovered_frame_;
+        return hovered_frame_;
     }
 
     /// Check if a given frame is being hovered.
     /** \return 'true' if hovered, 'false' otherwise
      */
     bool is_hovered(const frame& obj) const {
-        return p_hovered_frame_.get() == &obj;
+        return hovered_frame_.get() == &obj;
     }
 
     /// Returns the currently dragged frame, if any.
     /** \return The currently dragged frame, if any.
      */
     const utils::observer_ptr<frame>& get_dragged_frame() {
-        return p_dragged_frame_;
+        return dragged_frame_;
     }
 
     /// Returns the currently dragged frame, if any.
     /** \return The currently dragged frame, if any.
      */
     utils::observer_ptr<const frame> get_dragged_frame() const {
-        return p_dragged_frame_;
+        return dragged_frame_;
     }
 
     /// Check if a given frame is being dragged.
     /** \return 'true' if dragged, 'false' otherwise
      */
     bool is_dragged(const frame& obj) const {
-        return p_dragged_frame_.get() == &obj;
+        return dragged_frame_.get() == &obj;
     }
 
     /// Start manually moving a region with the mouse.
-    /** \param pObj        The object to move
-     *   \param pAnchor     The reference anchor
+    /** \param obj        The object to move
+     *   \param a     The reference anchor
      *   \param constraint The constraint axis if any
      *   \param apply_constraint_func Optional function to implement further constraints
      *   \note Movement is handled by the root, you don't need to do anything except
      *         calling stop_moving() when you are done.
      */
     void start_moving(
-        utils::observer_ptr<region> p_obj,
-        anchor*                     p_anchor              = nullptr,
+        utils::observer_ptr<region> obj,
+        anchor*                     a                     = nullptr,
         constraint                  constraint            = constraint::none,
         std::function<void()>       apply_constraint_func = nullptr);
 
@@ -158,12 +158,12 @@ public:
     bool is_moving(const region& obj) const;
 
     /// Starts manually resizing a region with the mouse.
-    /** \param pObj   The object to resize
+    /** \param obj   The object to resize
      *   \param point The sizing point
      *   \note Resizing is handled by the root, you don't need to do anything except
      *         calling stop_sizing() when you are done.
      */
-    void start_sizing(utils::observer_ptr<region> p_obj, anchor_point point);
+    void start_sizing(utils::observer_ptr<region> obj, anchor_point point);
 
     /// Stops sizing for the current object.
     /** \note Does nothing if no object is being resized
@@ -177,7 +177,7 @@ public:
     bool is_sizing(const region& obj) const;
 
     /// Sets whether keyboard input should be focussed.
-    /** \param pReceiver The frame that requires focus
+    /** \param receiver The frame that requires focus
      *   \note This function will forward all keyboard events to the new receiver.
      *         This is usefull to implement an edit box: the user can type letters using keys
      *         that can be bound to special actions in the game, and these should be prevented
@@ -185,7 +185,7 @@ public:
      *         edit box as second argument, which will ensure that input events are only sent
      *         to the edit box exclusively.
      */
-    void request_focus(utils::observer_ptr<frame> p_receiver);
+    void request_focus(utils::observer_ptr<frame> receiver);
 
     /// Give up focus of keyboard input.
     /** \param receiver The event receiver that releases focus
@@ -262,8 +262,8 @@ private:
 
     void clear_hovered_frame_();
     void update_hovered_frame_();
-    void set_hovered_frame_(
-        utils::observer_ptr<frame> p_frame, const vector2f& mouse_pos = vector2f::zero);
+    void
+    set_hovered_frame_(utils::observer_ptr<frame> obj, const vector2f& mouse_pos = vector2f::zero);
 
     void on_window_resized_(const vector2ui& dimensions);
     void on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos);
@@ -286,21 +286,21 @@ private:
 
     bool caching_enabled_ = false;
 
-    std::shared_ptr<render_target> p_render_target_;
+    std::shared_ptr<render_target> target_;
     quad                           screen_quad_;
 
     // IO
     std::vector<utils::scoped_connection> connections_;
 
     // Mouse IO
-    utils::observer_ptr<frame> p_hovered_frame_ = nullptr;
-    utils::observer_ptr<frame> p_dragged_frame_ = nullptr;
+    utils::observer_ptr<frame> hovered_frame_ = nullptr;
+    utils::observer_ptr<frame> dragged_frame_ = nullptr;
 
-    utils::observer_ptr<region> p_moved_object_ = nullptr;
-    utils::observer_ptr<region> p_sized_object_ = nullptr;
+    utils::observer_ptr<region> moved_object_ = nullptr;
+    utils::observer_ptr<region> sized_object_ = nullptr;
     vector2f                    mouse_movement_;
 
-    anchor*               p_moved_anchor_ = nullptr;
+    anchor*               moved_anchor_ = nullptr;
     vector2f              movement_start_position_;
     constraint            constraint_ = constraint::none;
     std::function<void()> apply_constraint_func_;

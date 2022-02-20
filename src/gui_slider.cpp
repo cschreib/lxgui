@@ -61,20 +61,20 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
         return;
 
     if (script_name == "OnDragStart") {
-        if (p_thumb_texture_ &&
-            p_thumb_texture_->is_in_region({data.get<float>(1), data.get<float>(2)})) {
-            anchor& anchor = p_thumb_texture_->modify_point(anchor_point::center);
+        if (thumb_texture_ &&
+            thumb_texture_->is_in_region({data.get<float>(1), data.get<float>(2)})) {
+            anchor& anchor = thumb_texture_->modify_point(anchor_point::center);
 
             get_manager().get_root().start_moving(
-                p_thumb_texture_, &anchor,
+                thumb_texture_, &anchor,
                 orientation_ == orientation::horizontal ? constraint::x : constraint::y,
                 [&]() { constrain_thumb_(); });
 
             is_thumb_dragged_ = true;
         }
     } else if (script_name == "OnDragStop") {
-        if (p_thumb_texture_) {
-            if (get_manager().get_root().is_moving(*p_thumb_texture_))
+        if (thumb_texture_) {
+            if (get_manager().get_root().is_moving(*thumb_texture_))
                 get_manager().get_root().stop_moving();
 
             is_thumb_dragged_ = false;
@@ -100,30 +100,29 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 void slider::copy_from(const region& obj) {
     base::copy_from(obj);
 
-    const slider* p_slider = down_cast<slider>(&obj);
-    if (!p_slider)
+    const slider* slider_obj = down_cast<slider>(&obj);
+    if (!slider_obj)
         return;
 
-    this->set_value_step(p_slider->get_value_step());
-    this->set_min_value(p_slider->get_min_value());
-    this->set_max_value(p_slider->get_max_value());
-    this->set_value(p_slider->get_value());
-    this->set_thumb_draw_layer(p_slider->get_thumb_draw_layer());
-    this->set_orientation(p_slider->get_orientation());
-    this->set_allow_clicks_outside_thumb(p_slider->are_clicks_outside_thumb_allowed());
+    this->set_value_step(slider_obj->get_value_step());
+    this->set_min_value(slider_obj->get_min_value());
+    this->set_max_value(slider_obj->get_max_value());
+    this->set_value(slider_obj->get_value());
+    this->set_thumb_draw_layer(slider_obj->get_thumb_draw_layer());
+    this->set_orientation(slider_obj->get_orientation());
+    this->set_allow_clicks_outside_thumb(slider_obj->are_clicks_outside_thumb_allowed());
 
-    if (const texture* p_thumb = p_slider->get_thumb_texture().get()) {
+    if (const texture* thumb = slider_obj->get_thumb_texture().get()) {
         region_core_attributes attr;
-        attr.name        = p_thumb->get_name();
-        attr.inheritance = {p_slider->get_thumb_texture()};
+        attr.name        = thumb->get_name();
+        attr.inheritance = {slider_obj->get_thumb_texture()};
 
-        auto p_texture =
-            this->create_layered_region<texture>(p_thumb->get_draw_layer(), std::move(attr));
+        auto tex = this->create_layered_region<texture>(thumb->get_draw_layer(), std::move(attr));
 
-        if (p_texture) {
-            p_texture->set_special();
-            p_texture->notify_loaded();
-            this->set_thumb_texture(p_texture);
+        if (tex) {
+            tex->set_special();
+            tex->notify_loaded();
+            this->set_thumb_texture(tex);
         }
     }
 }
@@ -142,9 +141,9 @@ void slider::constrain_thumb_() {
 
     if (is_thumb_dragged_) {
         if (orientation_ == orientation::horizontal)
-            value_ = p_thumb_texture_->get_point(anchor_point::center).offset.x / apparent_size.x;
+            value_ = thumb_texture_->get_point(anchor_point::center).offset.x / apparent_size.x;
         else
-            value_ = p_thumb_texture_->get_point(anchor_point::center).offset.y / apparent_size.y;
+            value_ = thumb_texture_->get_point(anchor_point::center).offset.y / apparent_size.y;
 
         value_ = value_ * (max_value_ - min_value_) + min_value_;
         value_ = std::clamp(value_, min_value_, max_value_);
@@ -153,7 +152,7 @@ void slider::constrain_thumb_() {
 
     float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
-    anchor& anchor = p_thumb_texture_->modify_point(anchor_point::center);
+    anchor& anchor = thumb_texture_->modify_point(anchor_point::center);
 
     vector2f new_offset;
     if (orientation_ == orientation::horizontal)
@@ -163,7 +162,7 @@ void slider::constrain_thumb_() {
 
     if (new_offset != anchor.offset) {
         anchor.offset = new_offset;
-        p_thumb_texture_->notify_borders_need_update();
+        thumb_texture_->notify_borders_need_update();
     }
 
     if (value_ != old_value)
@@ -252,15 +251,15 @@ void slider::set_value_step(float value_step) {
     }
 }
 
-void slider::set_thumb_texture(utils::observer_ptr<texture> p_texture) {
-    p_thumb_texture_ = std::move(p_texture);
-    if (!p_thumb_texture_)
+void slider::set_thumb_texture(utils::observer_ptr<texture> tex) {
+    thumb_texture_ = std::move(tex);
+    if (!thumb_texture_)
         return;
 
-    p_thumb_texture_->set_draw_layer(thumb_layer_);
-    p_thumb_texture_->clear_all_points();
-    p_thumb_texture_->set_point(
-        anchor_point::center, p_thumb_texture_->get_parent().get() == this ? "$parent" : name_,
+    thumb_texture_->set_draw_layer(thumb_layer_);
+    thumb_texture_->clear_all_points();
+    thumb_texture_->set_point(
+        anchor_point::center, thumb_texture_->get_parent().get() == this ? "$parent" : name_,
         orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
 
     notify_thumb_texture_needs_update_();
@@ -272,8 +271,8 @@ void slider::set_orientation(orientation orient) {
 
     orientation_ = orient;
 
-    if (p_thumb_texture_) {
-        p_thumb_texture_->set_point(
+    if (thumb_texture_) {
+        thumb_texture_->set_point(
             anchor_point::center, name_,
             orientation_ == orientation::horizontal ? anchor_point::left : anchor_point::top);
     }
@@ -298,8 +297,8 @@ void slider::set_orientation(const std::string& orientation_name) {
 void slider::set_thumb_draw_layer(layer thumb_layer) {
     thumb_layer_ = thumb_layer;
 
-    if (p_thumb_texture_)
-        p_thumb_texture_->set_draw_layer(thumb_layer_);
+    if (thumb_texture_)
+        thumb_texture_->set_draw_layer(thumb_layer_);
 }
 
 void slider::set_thumb_draw_layer(const std::string& thumb_layer_name) {
@@ -361,18 +360,18 @@ bool slider::is_in_region(const vector2f& position) const {
             return true;
     }
 
-    return p_thumb_texture_ && p_thumb_texture_->is_in_region(position);
+    return thumb_texture_ && thumb_texture_->is_in_region(position);
 }
 
 void slider::update_thumb_texture_() {
-    if (!p_thumb_texture_)
+    if (!thumb_texture_)
         return;
 
     if (max_value_ == min_value_) {
-        p_thumb_texture_->hide();
+        thumb_texture_->hide();
         return;
     } else
-        p_thumb_texture_->show();
+        thumb_texture_->show();
 
     constrain_thumb_();
 }

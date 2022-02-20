@@ -31,7 +31,7 @@ font::font(
 
     sf::Image data = font_.getTexture(size_).copyToImage();
     sfml::material::premultiply_alpha(data);
-    p_texture_ = std::make_shared<sfml::material>(data);
+    texture_ = std::make_shared<sfml::material>(data);
 }
 
 std::size_t font::get_size() const {
@@ -58,7 +58,7 @@ bounds2f font::get_character_uvs(char32_t c) const {
         return bounds2f{};
 
     const sf::IntRect& sf_rect  = font_.getGlyph(c, size_, false, outline_).textureRect;
-    const bounds2f&    tex_rect = p_texture_->get_rect();
+    const bounds2f&    tex_rect = texture_->get_rect();
 
     bounds2f rect;
     rect.left   = sf_rect.left / tex_rect.width();
@@ -66,8 +66,8 @@ bounds2f font::get_character_uvs(char32_t c) const {
     rect.top    = sf_rect.top / tex_rect.height();
     rect.bottom = (sf_rect.top + sf_rect.height) / tex_rect.height();
 
-    vector2f top_left     = p_texture_->get_canvas_uv(rect.top_left(), true);
-    vector2f bottom_right = p_texture_->get_canvas_uv(rect.bottom_right(), true);
+    vector2f top_left     = texture_->get_canvas_uv(rect.top_left(), true);
+    vector2f bottom_right = texture_->get_canvas_uv(rect.bottom_right(), true);
     return bounds2f(top_left.x, bottom_right.x, top_left.y, bottom_right.y);
 }
 
@@ -82,17 +82,17 @@ bounds2f font::get_character_bounds(char32_t c) const {
 
     const sf::FloatRect& sf_rect = font_.getGlyph(c, size_, false, outline_).bounds;
 
+    bounds2f rect;
+
 #if defined(SFML_HAS_OUTLINE_GLYPH_FIX)
     // This code requires https://github.com/SFML/SFML/pull/1827
-    bounds2f mRect;
-    mRect.left   = sf_rect.left;
-    mRect.right  = sf_rect.left + sf_rect.width;
-    mRect.top    = sf_rect.top + y_offset;
-    mRect.bottom = sf_rect.top + y_offset + sf_rect.height;
+    rect.left   = sf_rect.left;
+    rect.right  = sf_rect.left + sf_rect.width;
+    rect.top    = sf_rect.top + y_offset;
+    rect.bottom = sf_rect.top + y_offset + sf_rect.height;
 #else
     const float offset = static_cast<float>(outline_);
 
-    bounds2f rect;
     rect.left   = sf_rect.left - offset;
     rect.right  = sf_rect.left - offset + sf_rect.width;
     rect.top    = sf_rect.top - offset + y_offset;
@@ -128,11 +128,11 @@ float font::get_character_kerning(char32_t c1, char32_t c2) const {
 }
 
 std::weak_ptr<gui::material> font::get_texture() const {
-    return p_texture_;
+    return texture_;
 }
 
-void font::update_texture(std::shared_ptr<gui::material> p_mat) {
-    p_texture_ = std::static_pointer_cast<sfml::material>(p_mat);
+void font::update_texture(std::shared_ptr<gui::material> mat) {
+    texture_ = std::static_pointer_cast<sfml::material>(mat);
 }
 
 } // namespace lxgui::gui::sfml

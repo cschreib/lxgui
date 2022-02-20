@@ -318,20 +318,20 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function(
         "get_backdrop", [](sol::this_state lua, const frame& self) -> sol::optional<sol::table> {
-            const backdrop* p_backdrop = self.get_backdrop();
-            if (!p_backdrop)
+            const backdrop* backdrop = self.get_backdrop();
+            if (!backdrop)
                 return sol::nullopt;
 
             sol::table backdrop_table = sol::state_view(lua).create_table();
 
-            backdrop_table["bgFile"]   = p_backdrop->get_background_file();
-            backdrop_table["edgeFile"] = p_backdrop->get_edge_file();
-            backdrop_table["tile"]     = p_backdrop->is_background_tilling();
+            backdrop_table["bgFile"]   = backdrop->get_background_file();
+            backdrop_table["edgeFile"] = backdrop->get_edge_file();
+            backdrop_table["tile"]     = backdrop->is_background_tilling();
 
-            backdrop_table["tileSize"] = p_backdrop->get_tile_size();
-            backdrop_table["edgeSize"] = p_backdrop->get_edge_size();
+            backdrop_table["tileSize"] = backdrop->get_tile_size();
+            backdrop_table["edgeSize"] = backdrop->get_edge_size();
 
-            const auto& insets                 = p_backdrop->get_background_insets();
+            const auto& insets                 = backdrop->get_background_insets();
             backdrop_table["insets"]["left"]   = insets.left;
             backdrop_table["insets"]["right"]  = insets.right;
             backdrop_table["insets"]["top"]    = insets.top;
@@ -556,30 +556,30 @@ void frame::register_on_lua(sol::state& lua) {
             return;
         }
 
-        std::unique_ptr<backdrop> p_backdrop(new backdrop(self));
+        std::unique_ptr<backdrop> bdrop(new backdrop(self));
 
         sol::table& table = table_opt.value();
 
-        p_backdrop->set_background(self.parse_file_name(table["bgFile"].get_or<std::string>("")));
-        p_backdrop->set_edge(self.parse_file_name(table["edgeFile"].get_or<std::string>("")));
-        p_backdrop->set_background_tilling(table["tile"].get_or(false));
+        bdrop->set_background(self.parse_file_name(table["bgFile"].get_or<std::string>("")));
+        bdrop->set_edge(self.parse_file_name(table["edgeFile"].get_or<std::string>("")));
+        bdrop->set_background_tilling(table["tile"].get_or(false));
 
         float tile_size = table["tileSize"].get_or<float>(0.0);
         if (tile_size != 0)
-            p_backdrop->set_tile_size(tile_size);
+            bdrop->set_tile_size(tile_size);
 
         float edge_size = table["edgeSize"].get_or<float>(0.0);
         if (edge_size != 0)
-            p_backdrop->set_edge_size(edge_size);
+            bdrop->set_edge_size(edge_size);
 
         if (table["insets"] != sol::lua_nil) {
-            p_backdrop->set_background_insets(bounds2f(
+            bdrop->set_background_insets(bounds2f(
                 table["insets"]["left"].get_or<float>(0), table["insets"]["right"].get_or<float>(0),
                 table["insets"]["top"].get_or<float>(0),
                 table["insets"]["bottom"].get_or<float>(0)));
         }
 
-        self.set_backdrop(std::move(p_backdrop));
+        self.set_backdrop(std::move(bdrop));
     });
 
     /** @function set_backdrop_border_color

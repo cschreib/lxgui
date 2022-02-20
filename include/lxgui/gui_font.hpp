@@ -74,9 +74,9 @@ public:
     virtual std::weak_ptr<material> get_texture() const = 0;
 
     /// Update the material to use for rendering.
-    /** \param pMat The material to use for rendering
+    /** \param mat The material to use for rendering
      */
-    virtual void update_texture(std::shared_ptr<material> p_mat) = 0;
+    virtual void update_texture(std::shared_ptr<material> mat) = 0;
 };
 
 } // namespace lxgui::gui

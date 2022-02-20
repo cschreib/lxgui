@@ -37,11 +37,10 @@ void layered_region::create_glue() {
 }
 
 utils::owner_ptr<region> layered_region::release_from_parent() {
-    if (!p_parent_)
+    if (!parent_)
         return nullptr;
 
-    return p_parent_->remove_region(
-        utils::static_pointer_cast<layered_region>(observer_from_this()));
+    return parent_->remove_region(utils::static_pointer_cast<layered_region>(observer_from_this()));
 }
 
 void layered_region::show() {
@@ -59,7 +58,7 @@ void layered_region::hide() {
 }
 
 bool layered_region::is_visible() const {
-    return p_parent_->is_visible() && is_shown_;
+    return parent_->is_visible() && is_shown_;
 }
 
 layer layered_region::get_draw_layer() const {
@@ -70,7 +69,7 @@ void layered_region::set_draw_layer(layer layer_id) {
     if (layer_ != layer_id) {
         layer_ = layer_id;
         notify_renderer_need_redraw();
-        p_parent_->notify_layers_need_update();
+        parent_->notify_layers_need_update();
     }
 }
 
@@ -82,8 +81,8 @@ void layered_region::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
-    if (p_parent_)
-        p_parent_->notify_renderer_need_redraw();
+    if (parent_)
+        parent_->notify_renderer_need_redraw();
 }
 
 layer parse_layer_type(const std::string& layer_name) {

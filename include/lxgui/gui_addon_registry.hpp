@@ -57,24 +57,24 @@ public:
     const addon* get_current_addon();
 
     /// Sets the current addon.
-    /** \param pAddOn The current addon
+    /** \param a The current addon
      *   \note The current addon is used to set the addon of each new region.
      *         This is normally set by the parser, while loading each addon.
      *         For regions created manually, after the loading stage, this is
      *         also set by @ref frame, before each call to a handler function.
      */
-    void set_current_addon(const addon* p_add_on);
+    void set_current_addon(const addon* a);
 
     /// Save Lua variables registred for saving for all addons.
     void save_variables() const;
 
 private:
     void load_addon_toc_(const std::string& addon_name, const std::string& addon_directory);
-    void load_addon_files_(const addon& add_on);
+    void load_addon_files_(const addon& a);
 
-    void save_variables_(const addon& add_on) const noexcept;
+    void save_variables_(const addon& a) const noexcept;
 
-    void parse_layout_file_(const std::string& file_name, const addon& add_on);
+    void parse_layout_file_(const std::string& file_name, const addon& a);
 
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
@@ -85,7 +85,7 @@ private:
     root&          root_;
     virtual_root&  virtual_root_;
 
-    const addon*                  p_current_addon_ = nullptr;
+    const addon*                  current_addon_ = nullptr;
     string_map<string_map<addon>> addon_list_;
 };
 

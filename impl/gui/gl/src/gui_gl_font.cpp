@@ -284,8 +284,8 @@ font::font(
 
         gl::material::premultiply_alpha(data);
 
-        p_texture_ = std::make_shared<gl::material>(vector2ui(final_width, final_height));
-        p_texture_->update_texture(data.data());
+        texture_ = std::make_shared<gl::material>(vector2ui(final_width, final_height));
+        texture_->update_texture(data.data());
     } catch (...) {
         if (glyph)
             FT_Done_Glyph(glyph);
@@ -323,37 +323,37 @@ const font::character_info* font::get_character_(char32_t c) const {
 }
 
 bounds2f font::get_character_uvs(char32_t c) const {
-    const character_info* p_char = get_character_(c);
-    if (!p_char)
+    const character_info* info = get_character_(c);
+    if (!info)
         return bounds2f{};
 
-    vector2f top_left     = p_texture_->get_canvas_uv(p_char->uvs.top_left(), true);
-    vector2f bottom_right = p_texture_->get_canvas_uv(p_char->uvs.bottom_right(), true);
+    vector2f top_left     = texture_->get_canvas_uv(info->uvs.top_left(), true);
+    vector2f bottom_right = texture_->get_canvas_uv(info->uvs.bottom_right(), true);
     return bounds2f(top_left.x, bottom_right.x, top_left.y, bottom_right.y);
 }
 
 bounds2f font::get_character_bounds(char32_t c) const {
-    const character_info* p_char = get_character_(c);
-    if (!p_char)
+    const character_info* info = get_character_(c);
+    if (!info)
         return bounds2f{};
 
-    return p_char->rect;
+    return info->rect;
 }
 
 float font::get_character_width(char32_t c) const {
-    const character_info* p_char = get_character_(c);
-    if (!p_char)
+    const character_info* info = get_character_(c);
+    if (!info)
         return 0.0f;
 
-    return p_char->advance;
+    return info->advance;
 }
 
 float font::get_character_height(char32_t c) const {
-    const character_info* p_char = get_character_(c);
-    if (!p_char)
+    const character_info* info = get_character_(c);
+    if (!info)
         return 0.0f;
 
-    return p_char->rect.height();
+    return info->rect.height();
 }
 
 float font::get_character_kerning(char32_t c1, char32_t c2) const {
@@ -370,11 +370,11 @@ float font::get_character_kerning(char32_t c1, char32_t c2) const {
 }
 
 std::weak_ptr<gui::material> font::get_texture() const {
-    return p_texture_;
+    return texture_;
 }
 
-void font::update_texture(std::shared_ptr<gui::material> p_mat) {
-    p_texture_ = std::static_pointer_cast<gl::material>(p_mat);
+void font::update_texture(std::shared_ptr<gui::material> mat) {
+    texture_ = std::static_pointer_cast<gl::material>(mat);
 }
 
 } // namespace lxgui::gui::gl

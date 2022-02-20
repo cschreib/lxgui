@@ -12,8 +12,8 @@
 
 namespace lxgui::input { namespace sdl {
 
-source::source(SDL_Window* p_window, SDL_Renderer* p_renderer, bool initialise_sdl_image) :
-    p_window_(p_window), p_renderer_(p_renderer) {
+source::source(SDL_Window* win, SDL_Renderer* rdr, bool initialise_sdl_image) :
+    window_(win), renderer_(rdr) {
     window_dimensions_ = get_window_pixel_size_();
 
     update_pixel_per_unit_();
@@ -47,16 +47,16 @@ void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i&
     auto iter = cursor_map_.find(file_name);
     if (iter == cursor_map_.end()) {
         // Load file
-        SDL_Surface* p_surface = IMG_Load(file_name.c_str());
-        if (p_surface == nullptr) {
+        SDL_Surface* surface = IMG_Load(file_name.c_str());
+        if (surface == nullptr) {
             throw gui::exception(
                 "input::sdl::source", "Could not load image file " + file_name + ".");
         }
 
-        auto p_cursor = wrapped_cursor(
-            SDL_CreateColorCursor(p_surface, hot_spot.x, hot_spot.y), &SDL_FreeCursor);
-        iter = cursor_map_.insert(std::make_pair(file_name, std::move(p_cursor))).first;
-        SDL_FreeSurface(p_surface);
+        auto cursor =
+            wrapped_cursor(SDL_CreateColorCursor(surface, hot_spot.x, hot_spot.y), &SDL_FreeCursor);
+        iter = cursor_map_.insert(std::make_pair(file_name, std::move(cursor))).first;
+        SDL_FreeSurface(surface);
     }
 
     SDL_SetCursor(iter->second.get());
@@ -66,9 +66,9 @@ void source::reset_mouse_cursor() {
     const std::string name = "system_arrow";
     auto              iter = cursor_map_.find(name);
     if (iter == cursor_map_.end()) {
-        auto p_cursor =
+        auto cursor =
             wrapped_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW), &SDL_FreeCursor);
-        iter = cursor_map_.insert(std::make_pair(name, std::move(p_cursor))).first;
+        iter = cursor_map_.insert(std::make_pair(name, std::move(cursor))).first;
     }
 
     SDL_SetCursor(iter->second.get());
@@ -186,10 +186,10 @@ key source::from_sdl_(int sdl_key) const {
 
 gui::vector2ui source::get_window_pixel_size_() const {
     int pixel_width, pixel_height;
-    if (p_renderer_)
-        SDL_GetRendererOutputSize(p_renderer_, &pixel_width, &pixel_height);
+    if (renderer_)
+        SDL_GetRendererOutputSize(renderer_, &pixel_width, &pixel_height);
     else
-        SDL_GL_GetDrawableSize(p_window_, &pixel_width, &pixel_height);
+        SDL_GL_GetDrawableSize(window_, &pixel_width, &pixel_height);
 
     return gui::vector2ui(pixel_width, pixel_height);
 }
@@ -198,7 +198,7 @@ void source::update_pixel_per_unit_() {
     gui::vector2ui pixel_size = get_window_pixel_size_();
 
     int unit_width, unit_height;
-    SDL_GetWindowSize(p_window_, &unit_width, &unit_height);
+    SDL_GetWindowSize(window_, &unit_width, &unit_height);
 
     pixels_per_unit_ =
         std::min(pixel_size.x / float(unit_width), pixel_size.y / float(unit_height));
@@ -307,7 +307,7 @@ void source::on_sdl_event(const SDL_Event& event) {
     }
     case SDL_WINDOWEVENT: {
         if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED &&
-            event.window.windowID == SDL_GetWindowID(p_window_)) {
+            event.window.windowID == SDL_GetWindowID(window_)) {
             window_dimensions_ = get_window_pixel_size_();
             update_pixel_per_unit_();
             on_window_resized(window_dimensions_);

@@ -114,9 +114,9 @@ public:
     filter get_filter() const;
 
     /// Updates the texture that is in GPU memory.
-    /** \param pData The new pixel data
+    /** \param data The new pixel data
      */
-    void update_texture(const ub32color* p_data);
+    void update_texture(const ub32color* data);
 
     /// Returns the underlying SFML render texture object.
     /** return The underlying SFML render texture object
@@ -138,7 +138,7 @@ private:
     bool               is_render_target_ = false;
     sf::RenderTexture  render_texture_;
     sf::Texture        texture_;
-    const sf::Texture* p_atlas_texture_ = nullptr;
+    const sf::Texture* atlas_texture_ = nullptr;
 
     static const std::size_t maximum_size;
 };

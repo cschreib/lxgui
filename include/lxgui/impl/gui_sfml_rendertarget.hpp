@@ -73,8 +73,8 @@ public:
 private:
     void update_view_matrix_() const;
 
-    std::shared_ptr<sfml::material> p_texture_;
-    sf::RenderTexture*              p_render_texture_ = nullptr;
+    std::shared_ptr<sfml::material> texture_;
+    sf::RenderTexture*              render_texture_ = nullptr;
 };
 
 } // namespace lxgui::gui::sfml

@@ -55,22 +55,22 @@ public:
 
     /// Creates a new material from arbitrary pixel data.
     /** \param dimensions The dimensions of the material
-     *   \param pPixelData  The color data for all the pixels in the material
+     *   \param pixel_data  The color data for all the pixels in the material
      *   \param filt     The filtering to apply to the texture
      *   \return The new material
      */
     std::shared_ptr<gui::material> create_material(
         const vector2ui& dimensions,
-        const ub32color* p_pixel_data,
+        const ub32color* pixel_data,
         material::filter filt = material::filter::none) override;
 
     /// Creates a new material from a portion of a render target.
-    /** \param pRenderTarget The render target from which to read the pixels
+    /** \param target The render target from which to read the pixels
      *   \param location     The portion of the render target to use as material
      *   \return The new material
      */
-    std::shared_ptr<gui::material> create_material(
-        std::shared_ptr<gui::render_target> p_render_target, const bounds2f& location) override;
+    std::shared_ptr<gui::material>
+    create_material(std::shared_ptr<gui::render_target> target, const bounds2f& location) override;
 
     /// Creates a new render target.
     /** \param dimensions The dimensions of the render target
@@ -133,9 +133,9 @@ protected:
         char32_t                             default_code_point) override;
 
     /// Begins rendering on a particular render target.
-    /** \param pTarget The render target (main screen if nullptr)
+    /** \param target The render target (main screen if nullptr)
      */
-    void begin_(std::shared_ptr<gui::render_target> p_target) override;
+    void begin_(std::shared_ptr<gui::render_target> target) override;
 
     /// Ends rendering.
     void end_() override;
@@ -158,15 +158,15 @@ protected:
     void set_view_(const matrix4f& view_matrix) override;
 
     /// Renders a quad from a material and array of vertices.
-    /** \param pMat         The material to use to to render the quad, or null if none
+    /** \param mat         The material to use to to render the quad, or null if none
      *   \param vertex_list The list of 4 vertices making up the quad
      *   \note This function is meant to be called between begin() and
      *         end() only.
      */
-    void render_quad_(const sdl::material* p_mat, const std::array<vertex, 4>& vertex_list);
+    void render_quad_(const sdl::material* mat, const std::array<vertex, 4>& vertex_list);
 
     /// Renders a set of quads.
-    /** \param pMaterial The material to use for rendering, or null if none
+    /** \param mat The material to use for rendering, or null if none
      *   \param quad_list The list of the quads you want to render
      *   \note This function is meant to be called between begin() and
      *         end() only. When multiple quads share the same material, it is
@@ -181,11 +181,10 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     void render_quads_(
-        const gui::material*                      p_material,
-        const std::vector<std::array<vertex, 4>>& quad_list) override;
+        const gui::material* mat, const std::vector<std::array<vertex, 4>>& quad_list) override;
 
     /// Renders a vertex cache.
-    /** \param pMaterial       The material to use for rendering, or null if none
+    /** \param mat       The material to use for rendering, or null if none
      *   \param cache          The vertex cache
      *   \param model_transform The transformation matrix to apply to vertices
      *   \note This function is meant to be called between begin() and
@@ -201,12 +200,12 @@ protected:
      *         and not for just a handful of quads. Benchmark when in doubt.
      */
     void render_cache_(
-        const gui::material*     p_material,
+        const gui::material*     mat,
         const gui::vertex_cache& cache,
         const matrix4f&          model_transform) override;
 
 private:
-    SDL_Renderer* p_renderer_                     = nullptr;
+    SDL_Renderer* renderer_                       = nullptr;
     bool          pre_multiplied_alpha_supported_ = false;
     std::size_t   texture_max_size_               = 0u;
 
@@ -215,7 +214,7 @@ private:
     matrix4f  raw_view_matrix_;
     matrix4f  target_view_matrix_;
 
-    std::shared_ptr<gui::sdl::render_target> p_current_target_;
+    std::shared_ptr<gui::sdl::render_target> current_target_;
 };
 
 } // namespace lxgui::gui::sdl
