@@ -349,6 +349,8 @@ file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/extern*.hpp)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 
 set(LXGUI_INSTALL_TARGETS lxgui)
