@@ -184,7 +184,7 @@ void renderer::render_quads_(
     cache->update(quad_list[0].data(), quad_list.size() * 4);
 
     // Render
-    render_cache_(gl_mat, *cache, matrix4f::identity);
+    render_cache_(mat, *cache, matrix4f::identity);
 #endif
 }
 
