@@ -39,29 +39,29 @@ using variant = std::variant<
     std::string>;
 
 /// Retreive the value stored in an utils::variant
-/** \param vValue The variant
+/** \param value The variant
  *   \return The stored value, or throws std::bad_variant_access if the type was incorrect
  *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
-T& get(variant& v_value) {
+T& get(variant& value) {
     if constexpr (std::is_enum_v<T>)
-        return reinterpret_cast<T&>(std::get<std::underlying_type_t<T>>(v_value));
+        return reinterpret_cast<T&>(std::get<std::underlying_type_t<T>>(value));
     else
-        return std::get<T>(v_value);
+        return std::get<T>(value);
 }
 
 /// Retreive the value stored in an utils::variant
-/** \param vValue The variant
+/** \param value The variant
  *   \return The stored value, or throws std::bad_variant_access if the type was incorrect
  *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
-const T& get(const variant& v_value) {
+const T& get(const variant& value) {
     if constexpr (std::is_enum_v<T>)
-        return reinterpret_cast<const T&>(std::get<std::underlying_type_t<T>>(v_value));
+        return reinterpret_cast<const T&>(std::get<std::underlying_type_t<T>>(value));
     else
-        return std::get<T>(v_value);
+        return std::get<T>(value);
 }
 
 } // namespace lxgui::utils

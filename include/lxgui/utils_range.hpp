@@ -36,7 +36,7 @@ struct reverse_range {
  */
 
 /// Reverse traversal
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::vector<int> v = { ... };
@@ -99,7 +99,7 @@ struct iterator_range {
  */
 
 /// Expose the iterator rather than the element
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::vector<int> v = { ... };
@@ -143,7 +143,7 @@ struct reverse_iterator_range {
  */
 
 /// Expose the iterator rather than the element, with reverse traversal
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::vector<int> v = { ... };
@@ -210,7 +210,7 @@ struct value_range {
  */
 
 /// Expose the value rather than the (key,value) pair
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::map<int,std::string> v = { ... };
@@ -258,7 +258,7 @@ struct reverse_value_range {
  */
 
 /// Expose the value rather than the (key,value) pair, with reverse traversal
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::map<int,std::string> v = { ... };
@@ -322,7 +322,7 @@ struct key_range {
  */
 
 /// Expose the key rather than the (key,value) pair
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::map<int,std::string> v = { ... };
@@ -367,7 +367,7 @@ struct reverse_key_range {
  */
 
 /// Expose the key rather than the (key,value) pair, with reverse traversal
-/** \param lContainer The container to traverse
+/** \param container The container to traverse
  *   \note Example usage:
  *         \code{.cpp}
  *         std::map<int,std::string> v = { ... };

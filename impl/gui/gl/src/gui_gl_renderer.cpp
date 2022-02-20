@@ -138,7 +138,7 @@ void renderer::render_quads_(
     const gui::material* mat, const std::vector<std::array<vertex, 4>>& quad_list) {
 
 #if !defined(LXGUI_OPENGL3)
-    static constexpr std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<std::size_t, 6> ids = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* mat = static_cast<const gl::material*>(mat);
@@ -149,7 +149,7 @@ void renderer::render_quads_(
         glBegin(GL_TRIANGLES);
         for (const auto& v : quad_list) {
             for (std::size_t i = 0; i < 6; ++i) {
-                std::size_t j = lIDs[i];
+                std::size_t j = ids[i];
                 float       a = v[j].col.a;
                 glColor4f(v[j].col.r * a, v[j].col.g * a, v[j].col.b * a, a); // Premultipled alpha
                 glTexCoord2f(v[j].uvs.x, v[j].uvs.y);
@@ -162,7 +162,7 @@ void renderer::render_quads_(
         glBegin(GL_TRIANGLES);
         for (const auto& v : quad_list) {
             for (std::size_t i = 0; i < 6; ++i) {
-                std::size_t j = lIDs[i];
+                std::size_t j = ids[i];
                 float       a = v[j].col.a;
                 glColor4f(v[j].col.r * a, v[j].col.g * a, v[j].col.b * a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);

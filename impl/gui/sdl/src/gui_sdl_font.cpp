@@ -169,7 +169,7 @@ font::font(
             ci.uvs.right  = (x + glyph_width) / canvas_dimensions_float.x;
             ci.uvs.bottom = (y + glyph_height) / canvas_dimensions_float.y;
 
-            // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
+            // NB: do not use min_x etc here; SDL_ttf has already applied them to the rendered glyph
             ci.rect.left   = -static_cast<float>(outline);
             ci.rect.right  = ci.rect.left + glyph_width;
             ci.rect.top    = y_offset - static_cast<float>(outline);
