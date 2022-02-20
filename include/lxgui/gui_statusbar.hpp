@@ -95,7 +95,7 @@ public:
     void set_bar_color(const color& bar_color);
 
     /// Sets this status_bar's orientation.
-    /** \param orientation The orientation
+    /** \param orient The orientation
      */
     void set_orientation(orientation orient);
 

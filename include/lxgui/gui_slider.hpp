@@ -102,7 +102,7 @@ public:
     void set_min_max_values(float min_value, float max_value);
 
     /// Sets this slider's minimum value.
-    /** \param min The minimum value
+    /** \param min_value The minimum value
      */
     void set_min_value(float min_value);
 

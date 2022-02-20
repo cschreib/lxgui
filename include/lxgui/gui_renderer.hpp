@@ -266,7 +266,7 @@ public:
     std::shared_ptr<material> create_atlas_material(
         const std::string& atlas_category,
         const std::string& file_name,
-        material::filter   filter = material::filter::none);
+        material::filter   filt = material::filter::none);
 
     /// Creates a new material from a portion of a render target.
     /** \param target The render target from which to read the pixels

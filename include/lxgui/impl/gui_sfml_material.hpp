@@ -30,8 +30,8 @@ public:
     material(
         const vector2ui& dimensions,
         bool             is_render_target,
-        wrap             wrap   = wrap::repeat,
-        filter           filter = filter::none);
+        wrap             wrp  = wrap::repeat,
+        filter           filt = filter::none);
 
     /// Constructor for textures.
     /** \param data         The image data to use as texture

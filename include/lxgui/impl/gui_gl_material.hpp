@@ -35,7 +35,7 @@ public:
         std::uint32_t    texture_handle,
         const vector2ui& canvas_dimensions,
         const bounds2f   rect,
-        filter           filter = filter::none);
+        filter           filt = filter::none);
 
     material(const material& tex) = delete;
     material(material&& tex)      = delete;
