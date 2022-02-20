@@ -94,6 +94,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1exception.html">exception</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class.  <a href="classlxgui_1_1utils_1_1exception.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1periodic__timer.html">periodic_timer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A repeating timer.  <a href="classlxgui_1_1utils_1_1periodic__timer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html">scoped_connection</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a> that automatically disconnects when going out of scope.  <a href="classlxgui_1_1utils_1_1scoped__connection.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,8 +109,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a078f3233bf1a849602a707d85acbaa6c"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a></td></tr>
-<tr class="separator:a078f3233bf1a849602a707d85acbaa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa48fba030a2374e71546d365c7c0f821"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a> = std::vector&lt; std::string &gt;</td></tr>
+<tr class="separator:aa48fba030a2374e71546d365c7c0f821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a> = oup::observable_sealed_ptr&lt; T &gt;</td></tr>
 <tr class="separator:a9b701a0588e6924943ea55e0620732b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,32 +123,32 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> { <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a">rounding_method::NEAREST</a>, 
-<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceadf3396fde20f1e3d796f285f33539216">rounding_method::NEAREST_NOT_ZERO</a>, 
-<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceafbaedde498cdead4f2780217646e9ba1">rounding_method::UP</a>, 
-<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceac4e0e4e3118472beeb2ae75827450f1f">rounding_method::DOWN</a>
+<tr class="memitem:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> { <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5cead879c351426770bc0b13c3628db1e636">rounding_method::nearest</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaef6008279cdb1ee1570475700049cff2">rounding_method::nearest_not_zero</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5cea46c48bec0d282018b9d167eef7711b2c">rounding_method::up</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5cea74e8333ad11685ff3bdae589c8f6e34d">rounding_method::down</a>
  }</td></tr>
 <tr class="memdesc:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounding method for points to pixels conversions.  <a href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">More...</a><br /></td></tr>
 <tr class="separator:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a05939b9f42c273e2b7fd5d81848d9b95"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a05939b9f42c273e2b7fd5d81848d9b95">file_exists</a> (const std::string &amp;sFile)</td></tr>
-<tr class="separator:a05939b9f42c273e2b7fd5d81848d9b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2f154a1f851282eb126934690fa64c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aed2f154a1f851282eb126934690fa64c">get_directory_list</a> (const std::string &amp;sRelPath)</td></tr>
-<tr class="separator:aed2f154a1f851282eb126934690fa64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8311d8f006cb68487b3484675f3e71bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a8311d8f006cb68487b3484675f3e71bf">get_file_list</a> (const std::string &amp;sRelPath, bool bWithPath)</td></tr>
-<tr class="separator:a8311d8f006cb68487b3484675f3e71bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a77cd117aa0e72eb8cb3e6069e93f1079">get_file_list</a> (const std::string &amp;sRelPath, bool bWithPath, const std::string &amp;sExtensions)</td></tr>
-<tr class="separator:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee2ae6b72cee11741449155f6e105f1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aee2ae6b72cee11741449155f6e105f1c">make_directory</a> (const std::string &amp;sPath)</td></tr>
-<tr class="separator:aee2ae6b72cee11741449155f6e105f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c8438944ca0411face4a8fede61bd06"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a3c8438944ca0411face4a8fede61bd06">get_file_extension</a> (const std::string &amp;sFile)</td></tr>
-<tr class="separator:a3c8438944ca0411face4a8fede61bd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4c505cea5306e6723e05a645da29e53"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">round</a> (float fValue, float fUnit, <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> mMethod)</td></tr>
-<tr class="memdesc:aa4c505cea5306e6723e05a645da29e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Round a floating point value to a specific unit and using a specific rounding method.  <a href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">More...</a><br /></td></tr>
-<tr class="separator:aa4c505cea5306e6723e05a645da29e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... Args&gt; </td></tr>
+<tr class="memitem:a9bf9eee4148e6f9e09861171ddb32fa7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a9bf9eee4148e6f9e09861171ddb32fa7">file_exists</a> (const std::string &amp;file)</td></tr>
+<tr class="separator:a9bf9eee4148e6f9e09861171ddb32fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e044abcc82607ce419f71ac65e85140"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a7e044abcc82607ce419f71ac65e85140">get_directory_list</a> (const std::string &amp;rel_path)</td></tr>
+<tr class="separator:a7e044abcc82607ce419f71ac65e85140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67122e1f7ca9867848ebcb2ef9faf8cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a67122e1f7ca9867848ebcb2ef9faf8cf">get_file_list</a> (const std::string &amp;rel_path, bool with_path)</td></tr>
+<tr class="separator:a67122e1f7ca9867848ebcb2ef9faf8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17e6f14cb1d9c3adf24d2f3305b56089"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a17e6f14cb1d9c3adf24d2f3305b56089">get_file_list</a> (const std::string &amp;rel_path, bool with_path, const std::string &amp;extensions)</td></tr>
+<tr class="separator:a17e6f14cb1d9c3adf24d2f3305b56089"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d591e0355eb6fe5cd18aaa4db5d9457"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a4d591e0355eb6fe5cd18aaa4db5d9457">make_directory</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a4d591e0355eb6fe5cd18aaa4db5d9457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8819b6294de30465806a2ae6bcead591"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a8819b6294de30465806a2ae6bcead591">get_file_extension</a> (const std::string &amp;file)</td></tr>
+<tr class="separator:a8819b6294de30465806a2ae6bcead591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7706538b845db8addc06bc4ef55558ed"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a7706538b845db8addc06bc4ef55558ed">round</a> (float value, float unit, <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> method)</td></tr>
+<tr class="memdesc:a7706538b845db8addc06bc4ef55558ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Round a floating point value to a specific unit and using a specific rounding method.  <a href="namespacelxgui_1_1utils.html#a7706538b845db8addc06bc4ef55558ed">More...</a><br /></td></tr>
+<tr class="separator:a7706538b845db8addc06bc4ef55558ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
 <tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a060cc74b0acd85df1db801d14442b2d8">make_owned</a> (Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a060cc74b0acd85df1db801d14442b2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34d7b0c6f96dd8c7324c22c415458127"><td class="memTemplParams" colspan="2">template&lt;typename C , typename T &gt; </td></tr>
@@ -154,14 +157,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><td class="memTemplParams" colspan="2">template&lt;typename C , typename T &gt; </td></tr>
 <tr class="memitem:a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a86e5a9f30c68e6ff7bd20ce1c3e88cb1">find_if</a> (C &amp;v, T &amp;&amp;f)</td></tr>
 <tr class="separator:a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aede977919f7d5d8de41e3254fa113343"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aede977919f7d5d8de41e3254fa113343"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343">get</a> (<a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;vValue)</td></tr>
-<tr class="memdesc:aede977919f7d5d8de41e3254fa113343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>.  <a href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343">More...</a><br /></td></tr>
-<tr class="separator:aede977919f7d5d8de41e3254fa113343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa76a50ac52c97ec765126f59a5f426bc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa76a50ac52c97ec765126f59a5f426bc"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc">get</a> (const <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;vValue)</td></tr>
-<tr class="memdesc:aa76a50ac52c97ec765126f59a5f426bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>.  <a href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc">More...</a><br /></td></tr>
-<tr class="separator:aa76a50ac52c97ec765126f59a5f426bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3346748d1c162d678332d57121f4142"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa3346748d1c162d678332d57121f4142"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa3346748d1c162d678332d57121f4142">get</a> (<a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;value)</td></tr>
+<tr class="memdesc:aa3346748d1c162d678332d57121f4142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>.  <a href="namespacelxgui_1_1utils.html#aa3346748d1c162d678332d57121f4142">More...</a><br /></td></tr>
+<tr class="separator:aa3346748d1c162d678332d57121f4142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41de27dede312ff4a220b3138b3ac621"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a41de27dede312ff4a220b3138b3ac621"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a41de27dede312ff4a220b3138b3ac621">get</a> (const <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;value)</td></tr>
+<tr class="memdesc:a41de27dede312ff4a220b3138b3ac621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>.  <a href="namespacelxgui_1_1utils.html#a41de27dede312ff4a220b3138b3ac621">More...</a><br /></td></tr>
+<tr class="separator:a41de27dede312ff4a220b3138b3ac621"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a47ca6d3d7288251ae253cbb51e564a93"></a>
@@ -200,19 +203,19 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a078f3233bf1a849602a707d85acbaa6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a078f3233bf1a849602a707d85acbaa6c">&#9670;&nbsp;</a></span>string_vector</h2>
+<a id="aa48fba030a2374e71546d365c7c0f821"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa48fba030a2374e71546d365c7c0f821">&#9670;&nbsp;</a></span>string_vector</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;std::string&gt; <a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">lxgui::utils::string_vector</a></td>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">lxgui::utils::string_vector</a> = typedef std::vector&lt;std::string&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8hpp_source.html#l00013">13</a> of file <a class="el" href="utils__filesystem_8hpp_source.html">utils_filesystem.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8hpp_source.html#l00012">12</a> of file <a class="el" href="utils__filesystem_8hpp_source.html">utils_filesystem.hpp</a>.</p>
 
 </div>
 </div>
@@ -229,11 +232,11 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Type-erased value for passing arguments to events. </p>
-<dl class="section note"><dt>Note</dt><dd>This contains all the basic numerical types up to 64bit precision. Any other scalar types (such as charXX_t, or strongly typed enums) can be represented as one of these. Use <a class="el" href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343" title="Retreive the value stored in an utils::variant.">utils::get()</a> to enable automatic support for strongly typed enums. </dd>
+<dl class="section note"><dt>Note</dt><dd>This contains all the basic numerical types up to 64bit precision. Any other scalar types (such as charXX_t, or strongly typed enums) can be represented as one of these. Use <a class="el" href="namespacelxgui_1_1utils.html#aa3346748d1c162d678332d57121f4142" title="Retreive the value stored in an utils::variant.">utils::get()</a> to enable automatic support for strongly typed enums. </dd>
 <dd>
 The <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant.">utils::empty</a> type is used to indicate an un-specified value. This is also the state of a default constructed <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>. When transferred to Lua, <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant.">utils::empty</a> is translated as nil. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00040">40</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00039">39</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
@@ -260,23 +263,23 @@ The <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, u
 
 <p>Rounding method for points to pixels conversions. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a"></a>NEAREST&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5cead879c351426770bc0b13c3628db1e636"></a>nearest&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#a7706538b845db8addc06bc4ef55558ed" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceadf3396fde20f1e3d796f285f33539216"></a>NEAREST_NOT_ZERO&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> but only returns 0 if input is exactly 0. </p>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceaef6008279cdb1ee1570475700049cff2"></a>nearest_not_zero&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#a7706538b845db8addc06bc4ef55558ed" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> but only returns 0 if input is exactly 0. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceafbaedde498cdead4f2780217646e9ba1"></a>UP&#160;</td><td class="fielddoc"><p>Equivalent to ceil() </p>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5cea46c48bec0d282018b9d167eef7711b2c"></a>up&#160;</td><td class="fielddoc"><p>Equivalent to ceil() </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceac4e0e4e3118472beeb2ae75827450f1f"></a>DOWN&#160;</td><td class="fielddoc"><p>Equivalent to floor() </p>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5cea74e8333ad11685ff3bdae589c8f6e34d"></a>down&#160;</td><td class="fielddoc"><p>Equivalent to floor() </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="utils__maths_8hpp_source.html#l00011">11</a> of file <a class="el" href="utils__maths_8hpp_source.html">utils_maths.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__maths_8hpp_source.html#l00010">10</a> of file <a class="el" href="utils__maths_8hpp_source.html">utils_maths.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a05939b9f42c273e2b7fd5d81848d9b95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05939b9f42c273e2b7fd5d81848d9b95">&#9670;&nbsp;</a></span>file_exists()</h2>
+<a id="a9bf9eee4148e6f9e09861171ddb32fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf9eee4148e6f9e09861171ddb32fa7">&#9670;&nbsp;</a></span>file_exists()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,13 +288,13 @@ The <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, u
           <td class="memname">bool lxgui::utils::file_exists </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sFile</em></td><td>)</td>
+          <td class="paramname"><em>file</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00011">11</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00010">10</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
@@ -323,7 +326,7 @@ template&lt;typename C , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__std_8hpp_source.html#l00015">15</a> of file <a class="el" href="utils__std_8hpp_source.html">utils_std.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__std_8hpp_source.html#l00014">14</a> of file <a class="el" href="utils__std_8hpp_source.html">utils_std.hpp</a>.</p>
 
 </div>
 </div>
@@ -355,12 +358,12 @@ template&lt;typename C , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__std_8hpp_source.html#l00021">21</a> of file <a class="el" href="utils__std_8hpp_source.html">utils_std.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__std_8hpp_source.html#l00019">19</a> of file <a class="el" href="utils__std_8hpp_source.html">utils_std.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa76a50ac52c97ec765126f59a5f426bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa76a50ac52c97ec765126f59a5f426bc">&#9670;&nbsp;</a></span>get() <span class="overload">[1/2]</span></h2>
+<a id="a41de27dede312ff4a220b3138b3ac621"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41de27dede312ff4a220b3138b3ac621">&#9670;&nbsp;</a></span>get() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -371,7 +374,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">const T&amp; lxgui::utils::get </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;&#160;</td>
-          <td class="paramname"><em>vValue</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -380,19 +383,19 @@ template&lt;typename T &gt; </div>
 <p>Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vValue</td><td>The variant </td></tr>
+    <tr><td class="paramname">value</td><td>The variant </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The stored value, or throws std::bad_variant_access if the type was incorrect </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This wrapper around std::get() enables automatic support for strongly typed enums. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00062">62</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00060">60</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aede977919f7d5d8de41e3254fa113343"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aede977919f7d5d8de41e3254fa113343">&#9670;&nbsp;</a></span>get() <span class="overload">[2/2]</span></h2>
+<a id="aa3346748d1c162d678332d57121f4142"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3346748d1c162d678332d57121f4142">&#9670;&nbsp;</a></span>get() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -403,7 +406,7 @@ template&lt;typename T &gt; </div>
           <td class="memname">T&amp; lxgui::utils::get </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> &amp;&#160;</td>
-          <td class="paramname"><em>vValue</em></td><td>)</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -412,39 +415,39 @@ template&lt;typename T &gt; </div>
 <p>Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vValue</td><td>The variant </td></tr>
+    <tr><td class="paramname">value</td><td>The variant </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The stored value, or throws std::bad_variant_access if the type was incorrect </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This wrapper around std::get() enables automatic support for strongly typed enums. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00048">48</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00047">47</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aed2f154a1f851282eb126934690fa64c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed2f154a1f851282eb126934690fa64c">&#9670;&nbsp;</a></span>get_directory_list()</h2>
+<a id="a7e044abcc82607ce419f71ac65e85140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e044abcc82607ce419f71ac65e85140">&#9670;&nbsp;</a></span>get_directory_list()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a> lxgui::utils::get_directory_list </td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a> lxgui::utils::get_directory_list </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sRelPath</em></td><td>)</td>
+          <td class="paramname"><em>rel_path</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00016">16</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00014">14</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a3c8438944ca0411face4a8fede61bd06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c8438944ca0411face4a8fede61bd06">&#9670;&nbsp;</a></span>get_file_extension()</h2>
+<a id="a8819b6294de30465806a2ae6bcead591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8819b6294de30465806a2ae6bcead591">&#9670;&nbsp;</a></span>get_file_extension()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -453,33 +456,33 @@ template&lt;typename T &gt; </div>
           <td class="memname">std::string lxgui::utils::get_file_extension </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sFile</em></td><td>)</td>
+          <td class="paramname"><em>file</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00075">75</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00065">65</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8311d8f006cb68487b3484675f3e71bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8311d8f006cb68487b3484675f3e71bf">&#9670;&nbsp;</a></span>get_file_list() <span class="overload">[1/2]</span></h2>
+<a id="a67122e1f7ca9867848ebcb2ef9faf8cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67122e1f7ca9867848ebcb2ef9faf8cf">&#9670;&nbsp;</a></span>get_file_list() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a> lxgui::utils::get_file_list </td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a> lxgui::utils::get_file_list </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sRelPath</em>, </td>
+          <td class="paramname"><em>rel_path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bWithPath</em>&#160;</td>
+          <td class="paramname"><em>with_path</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -489,33 +492,33 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00028">28</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00024">24</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a77cd117aa0e72eb8cb3e6069e93f1079"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77cd117aa0e72eb8cb3e6069e93f1079">&#9670;&nbsp;</a></span>get_file_list() <span class="overload">[2/2]</span></h2>
+<a id="a17e6f14cb1d9c3adf24d2f3305b56089"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17e6f14cb1d9c3adf24d2f3305b56089">&#9670;&nbsp;</a></span>get_file_list() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a> lxgui::utils::get_file_list </td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a> lxgui::utils::get_file_list </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sRelPath</em>, </td>
+          <td class="paramname"><em>rel_path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bWithPath</em>, </td>
+          <td class="paramname"><em>with_path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sExtensions</em>&#160;</td>
+          <td class="paramname"><em>extensions</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -525,12 +528,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00045">45</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00039">39</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aee2ae6b72cee11741449155f6e105f1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee2ae6b72cee11741449155f6e105f1c">&#9670;&nbsp;</a></span>make_directory()</h2>
+<a id="a4d591e0355eb6fe5cd18aaa4db5d9457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d591e0355eb6fe5cd18aaa4db5d9457">&#9670;&nbsp;</a></span>make_directory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -539,13 +542,13 @@ template&lt;typename T &gt; </div>
           <td class="memname">bool lxgui::utils::make_directory </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sPath</em></td><td>)</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00069">69</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__filesystem_8cpp_source.html#l00060">60</a> of file <a class="el" href="utils__filesystem_8cpp_source.html">utils_filesystem.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,7 +558,7 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ... Args&gt; </div>
+template&lt;typename T , typename... Args&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a>&lt;T&gt; lxgui::utils::make_owned </td>
@@ -571,8 +574,8 @@ template&lt;typename T , typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="aa4c505cea5306e6723e05a645da29e53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4c505cea5306e6723e05a645da29e53">&#9670;&nbsp;</a></span>round()</h2>
+<a id="a7706538b845db8addc06bc4ef55558ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7706538b845db8addc06bc4ef55558ed">&#9670;&nbsp;</a></span>round()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -581,19 +584,19 @@ template&lt;typename T , typename ... Args&gt; </div>
           <td class="memname">float lxgui::utils::round </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fValue</em>, </td>
+          <td class="paramname"><em>value</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fUnit</em>, </td>
+          <td class="paramname"><em>unit</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a>&#160;</td>
-          <td class="paramname"><em>mMethod</em>&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -606,22 +609,22 @@ template&lt;typename T , typename ... Args&gt; </div>
 <p>Round a floating point value to a specific unit and using a specific rounding method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fValue</td><td>The value to round </td></tr>
-    <tr><td class="paramname">fUnit</td><td>The rounding unit (e.g., if set to 2, the output must be a multiple of 2) </td></tr>
-    <tr><td class="paramname">mMethod</td><td>The rounding method </td></tr>
+    <tr><td class="paramname">value</td><td>The value to round </td></tr>
+    <tr><td class="paramname">unit</td><td>The rounding unit (e.g., if set to 2, the output must be a multiple of 2) </td></tr>
+    <tr><td class="paramname">method</td><td>The rounding method </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The rounded value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__maths_8cpp_source.html#l00010">10</a> of file <a class="el" href="utils__maths_8cpp_source.html">utils_maths.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__maths_8cpp_source.html#l00008">8</a> of file <a class="el" href="utils__maths_8cpp_source.html">utils_maths.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:48 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -72,91 +72,86 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_GUI_SDL_RENDERTARGET_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_SDL_RENDERTARGET_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;lxgui/gui_rendertarget.hpp&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;lxgui/impl/gui_sdl_material.hpp&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;lxgui/utils.hpp&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;lxgui/gui_matrix4.hpp&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">struct </span>SDL_Renderer;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">struct </span>SDL_Texture;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>gui {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>sdl</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">   20</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">render_target</a> final : <span class="keyword">public</span> <a class="code" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    public :</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">render_target</a>(SDL_Renderer* pRenderer, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; mDimensions,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>);</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_matrix4.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_rendertarget.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;lxgui/impl/gui_sdl_material.hpp&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;lxgui/utils.hpp&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">struct </span>SDL_Renderer;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">struct </span>SDL_Texture;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui_1_1gui_1_1sdl.html">lxgui::gui::sdl</a> {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">render_target</a> final : <span class="keyword">public</span> <a class="code" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">render_target</a>(</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        SDL_Renderer*    rdr,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; dimensions,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filt = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9055b64c0e5e07b88877ce8d5f947aca">begin</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9055b64c0e5e07b88877ce8d5f947aca">begin</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acc218b3ebdee44945d03f8b39ca2b6a7">end</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acc218b3ebdee44945d03f8b39ca2b6a7">end</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a8170f6dbb8890f45df075377cdcd1444">clear</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; c) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7f749d1920ee3d9d92f9fe964c389a7d">clear</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mColor) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1bounds2.html">bounds2f</a> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acf99d92ba95a304b7e1c81361c502fa3">get_rect</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1bounds2.html">bounds2f</a> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acf99d92ba95a304b7e1c81361c502fa3">get_rect</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9f62d6c24a8af97a9eb7d63f4488ffc9">set_dimensions</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; mDimensions) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a3f2313fb59da0b09f424b8eaf96210b3">get_canvas_dimensions</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a739798b030adb1eefdba2024e1180364">set_dimensions</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; dimensions) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a3f2313fb59da0b09f424b8eaf96210b3">get_canvas_dimensions</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::weak_ptr&lt;sdl::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">get_material</a>();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        std::weak_ptr&lt;sdl::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">get_material</a>();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aecebda11c417a14518d19c8e05a76d96">get_view_matrix</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aecebda11c417a14518d19c8e05a76d96">get_view_matrix</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa2dc0b872792bfb5d97e05b3c6caa02f">check_availability</a>(SDL_Renderer* pRenderer);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7a3fbe967899ce441269cdcfb8f6ddfe">check_availability</a>(SDL_Renderer* rdr);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    SDL_Texture* <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a612237f6ad7a6b9f83d6b5b19805db0a">get_render_texture</a>();</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        SDL_Texture* <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a612237f6ad7a6b9f83d6b5b19805db0a">get_render_texture</a>();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    private :</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::shared_ptr&lt;sdl::material&gt; texture_;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>                       view_matrix_;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        std::shared_ptr&lt;sdl::material&gt; pTexture_;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> mViewMatrix_;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    };</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace lxgui::gui::sdl</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a3f2313fb59da0b09f424b8eaf96210b3"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a3f2313fb59da0b09f424b8eaf96210b3">lxgui::gui::sdl::render_target::get_canvas_dimensions</a></div><div class="ttdeci">vector2ui get_canvas_dimensions() const override</div><div class="ttdoc">Returns this render target's canvas dimension.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00035">gui_material.hpp:35</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00027">gui_material.hpp:27</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a7a3fbe967899ce441269cdcfb8f6ddfe"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7a3fbe967899ce441269cdcfb8f6ddfe">lxgui::gui::sdl::render_target::check_availability</a></div><div class="ttdeci">static void check_availability(SDL_Renderer *rdr)</div><div class="ttdoc">Checks if the machine is capable of using render targets.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00012">gui_color.hpp:12</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a28ac483054fe010a22c4dfab3ec847f9"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">lxgui::gui::sdl::render_target::get_material</a></div><div class="ttdeci">std::weak_ptr&lt; sdl::material &gt; get_material()</div><div class="ttdoc">Returns the associated texture for rendering.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_aecebda11c417a14518d19c8e05a76d96"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aecebda11c417a14518d19c8e05a76d96">lxgui::gui::sdl::render_target::get_view_matrix</a></div><div class="ttdeci">const matrix4f &amp; get_view_matrix() const</div><div class="ttdoc">Returns the view matrix of this render target.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html">lxgui::gui::render_target</a></div><div class="ttdoc">A place to render things (the screen, a texture, ...)</div><div class="ttdef"><b>Definition:</b> <a href="gui__rendertarget_8hpp_source.html#l00016">gui_rendertarget.hpp:16</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_1_1sdl_html"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1sdl.html">lxgui::gui::sdl</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__sdl_8hpp_source.html#l00010">gui_sdl.hpp:10</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html">lxgui::gui::render_target</a></div><div class="ttdoc">A place to render things (the screen, a texture, ...)</div><div class="ttdef"><b>Definition:</b> <a href="gui__rendertarget_8hpp_source.html#l00015">gui_rendertarget.hpp:15</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; std::size_t &gt;</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_aa2dc0b872792bfb5d97e05b3c6caa02f"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa2dc0b872792bfb5d97e05b3c6caa02f">lxgui::gui::sdl::render_target::check_availability</a></div><div class="ttdeci">static void check_availability(SDL_Renderer *pRenderer)</div><div class="ttdoc">Checks if the machine is capable of using render targets.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">lxgui::gui::material::filter::NONE</a></div><div class="ttdeci">@ NONE</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a8170f6dbb8890f45df075377cdcd1444"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a8170f6dbb8890f45df075377cdcd1444">lxgui::gui::sdl::render_target::clear</a></div><div class="ttdeci">void clear(const color &amp;c) override</div><div class="ttdoc">Clears the content of this render_target.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a9055b64c0e5e07b88877ce8d5f947aca"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9055b64c0e5e07b88877ce8d5f947aca">lxgui::gui::sdl::render_target::begin</a></div><div class="ttdeci">void begin() override</div><div class="ttdoc">Begins rendering on this target.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">lxgui::gui::sdl::render_target</a></div><div class="ttdoc">A place to render things (the screen, a texture, ...)</div><div class="ttdef"><b>Definition:</b> <a href="gui__sdl__rendertarget_8hpp_source.html#l00020">gui_sdl_rendertarget.hpp:20</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a9f62d6c24a8af97a9eb7d63f4488ffc9"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9f62d6c24a8af97a9eb7d63f4488ffc9">lxgui::gui::sdl::render_target::set_dimensions</a></div><div class="ttdeci">bool set_dimensions(const vector2ui &amp;mDimensions) override</div><div class="ttdoc">Sets this render target's dimensions.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html">lxgui::gui::sdl::render_target</a></div><div class="ttdoc">A place to render things (the screen, a texture, ...)</div><div class="ttdef"><b>Definition:</b> <a href="gui__sdl__rendertarget_8hpp_source.html#l00017">gui_sdl_rendertarget.hpp:17</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a739798b030adb1eefdba2024e1180364"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a739798b030adb1eefdba2024e1180364">lxgui::gui::sdl::render_target::set_dimensions</a></div><div class="ttdeci">bool set_dimensions(const vector2ui &amp;dimensions) override</div><div class="ttdoc">Sets this render target's dimensions.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a9c157fba4d2376633d3a018c79d70412"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">lxgui::gui::render_target::render_target</a></div><div class="ttdeci">render_target()=default</div><div class="ttdoc">Constructor.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a7f749d1920ee3d9d92f9fe964c389a7d"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7f749d1920ee3d9d92f9fe964c389a7d">lxgui::gui::sdl::render_target::clear</a></div><div class="ttdeci">void clear(const color &amp;mColor) override</div><div class="ttdoc">Clears the content of this render_target.</div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1matrix4f_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1matrix4f.html">lxgui::gui::matrix4f</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__matrix4_8hpp_source.html#l00012">gui_matrix4.hpp:12</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_a612237f6ad7a6b9f83d6b5b19805db0a"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a612237f6ad7a6b9f83d6b5b19805db0a">lxgui::gui::sdl::render_target::get_render_texture</a></div><div class="ttdeci">SDL_Texture * get_render_texture()</div><div class="ttdoc">Returns the underlying SDL render texture object.</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_acf99d92ba95a304b7e1c81361c502fa3"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acf99d92ba95a304b7e1c81361c502fa3">lxgui::gui::sdl::render_target::get_rect</a></div><div class="ttdeci">bounds2f get_rect() const override</div><div class="ttdoc">Returns this render target's pixel rect.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">lxgui::gui::material::filter::none</a></div><div class="ttdeci">@ none</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1render__target_html_acc218b3ebdee44945d03f8b39ca2b6a7"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acc218b3ebdee44945d03f8b39ca2b6a7">lxgui::gui::sdl::render_target::end</a></div><div class="ttdeci">void end() override</div><div class="ttdoc">Ends rendering on this target.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

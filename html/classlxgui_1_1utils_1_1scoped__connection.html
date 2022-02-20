@@ -93,9 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae65e171843c6824f55ef283fb77bc327"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#ae65e171843c6824f55ef283fb77bc327">scoped_connection</a> ()=default</td></tr>
 <tr class="memdesc:ae65e171843c6824f55ef283fb77bc327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor, no connection.  <a href="classlxgui_1_1utils_1_1scoped__connection.html#ae65e171843c6824f55ef283fb77bc327">More...</a><br /></td></tr>
 <tr class="separator:ae65e171843c6824f55ef283fb77bc327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85b7548485007f2db7a87044aa75df21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#a85b7548485007f2db7a87044aa75df21">scoped_connection</a> (<a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a> mConnection) noexcept</td></tr>
-<tr class="memdesc:a85b7548485007f2db7a87044aa75df21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion constructor from a raw connection.  <a href="classlxgui_1_1utils_1_1scoped__connection.html#a85b7548485007f2db7a87044aa75df21">More...</a><br /></td></tr>
-<tr class="separator:a85b7548485007f2db7a87044aa75df21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6249024dc191d9fbd3b49cebd921499b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#a6249024dc191d9fbd3b49cebd921499b">scoped_connection</a> (<a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a> c) noexcept</td></tr>
+<tr class="memdesc:a6249024dc191d9fbd3b49cebd921499b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion constructor from a raw connection.  <a href="classlxgui_1_1utils_1_1scoped__connection.html#a6249024dc191d9fbd3b49cebd921499b">More...</a><br /></td></tr>
+<tr class="separator:a6249024dc191d9fbd3b49cebd921499b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a353f8ef960e60b53d81953b076d6eb1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#a353f8ef960e60b53d81953b076d6eb1e">~scoped_connection</a> () noexcept</td></tr>
 <tr class="memdesc:a353f8ef960e60b53d81953b076d6eb1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor, disconnects.  <a href="classlxgui_1_1utils_1_1scoped__connection.html#a353f8ef960e60b53d81953b076d6eb1e">More...</a><br /></td></tr>
 <tr class="separator:a353f8ef960e60b53d81953b076d6eb1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,7 +123,7 @@ Private Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A <a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a> that automatically disconnects when going out of scope. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00071">71</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00066">66</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae65e171843c6824f55ef283fb77bc327"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae65e171843c6824f55ef283fb77bc327">&#9670;&nbsp;</a></span>scoped_connection() <span class="overload">[1/4]</span></h2>
@@ -152,8 +152,8 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a85b7548485007f2db7a87044aa75df21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85b7548485007f2db7a87044aa75df21">&#9670;&nbsp;</a></span>scoped_connection() <span class="overload">[2/4]</span></h2>
+<a id="a6249024dc191d9fbd3b49cebd921499b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6249024dc191d9fbd3b49cebd921499b">&#9670;&nbsp;</a></span>scoped_connection() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +165,7 @@ Private Member Functions</h2></td></tr>
           <td class="memname">lxgui::utils::scoped_connection::scoped_connection </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a>&#160;</td>
-          <td class="paramname"><em>mConnection</em></td><td>)</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -178,7 +178,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Conversion constructor from a raw connection. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00078">78</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00072">72</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Destructor, disconnects. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00081">81</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00075">75</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Check if this slot is still connected. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00058">58</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00054">54</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -312,7 +312,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Disconnect the slot. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00048">48</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00046">46</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -374,7 +374,7 @@ Private Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:48 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

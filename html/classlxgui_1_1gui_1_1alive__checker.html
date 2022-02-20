@@ -80,9 +80,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab9a3f194a7ab18231a987c9be271844a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1alive__checker.html#ab9a3f194a7ab18231a987c9be271844a">alive_checker</a> (<a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;mObject)</td></tr>
-<tr class="memdesc:ab9a3f194a7ab18231a987c9be271844a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructor.  <a href="classlxgui_1_1gui_1_1alive__checker.html#ab9a3f194a7ab18231a987c9be271844a">More...</a><br /></td></tr>
-<tr class="separator:ab9a3f194a7ab18231a987c9be271844a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c0130da321be3798cc0af7f5a98b8e2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1alive__checker.html#a8c0130da321be3798cc0af7f5a98b8e2">alive_checker</a> (<a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;object)</td></tr>
+<tr class="memdesc:a8c0130da321be3798cc0af7f5a98b8e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contructor.  <a href="classlxgui_1_1gui_1_1alive__checker.html#a8c0130da321be3798cc0af7f5a98b8e2">More...</a><br /></td></tr>
+<tr class="separator:a8c0130da321be3798cc0af7f5a98b8e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14052a78f85ddd350774bd61ec16b671"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1alive__checker.html#a14052a78f85ddd350774bd61ec16b671">alive_checker</a> (const <a class="el" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a> &amp;)=delete</td></tr>
 <tr class="separator:a14052a78f85ddd350774bd61ec16b671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a3b9dd937ac492685c25cfa3d808106"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1alive__checker.html#a5a3b9dd937ac492685c25cfa3d808106">alive_checker</a> (<a class="el" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a> &amp;&amp;)=delete</td></tr>
@@ -99,10 +99,10 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Utility class for safe checking of region validity. </p>
 <p>To use this class, construct an instance of <a class="el" href="classlxgui_1_1gui_1_1alive__checker.html" title="Utility class for safe checking of region validity.">alive_checker</a> with any object you wish to monitor. Then use the object. Then use <a class="el" href="classlxgui_1_1gui_1_1alive__checker.html#a041f72f8be0f1a2dac4cfa43df906ded" title="Check if the wrapped region is still alive.">alive_checker::is_alive()</a> to check if the object is still alive. </p><dl class="section note"><dt>Note</dt><dd>This class will not be able to notice that an object is not alive if the object was already destroyed before the <a class="el" href="classlxgui_1_1gui_1_1alive__checker.html" title="Utility class for safe checking of region validity.">alive_checker</a> instance is created. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab9a3f194a7ab18231a987c9be271844a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9a3f194a7ab18231a987c9be271844a">&#9670;&nbsp;</a></span>alive_checker() <span class="overload">[1/3]</span></h2>
+<a id="a8c0130da321be3798cc0af7f5a98b8e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c0130da321be3798cc0af7f5a98b8e2">&#9670;&nbsp;</a></span>alive_checker() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">lxgui::gui::alive_checker::alive_checker </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;&#160;</td>
-          <td class="paramname"><em>mObject</em></td><td>)</td>
+          <td class="paramname"><em>object</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -126,8 +126,14 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Contructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>The object to monitor </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00028">28</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00026">26</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
 
 </div>
 </div>
@@ -210,7 +216,7 @@ Public Member Functions</h2></td></tr>
 <p>Check if the wrapped region is still alive. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the region is alive, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00039">39</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__alive__checker_8hpp_source.html#l00037">37</a> of file <a class="el" href="gui__alive__checker_8hpp_source.html">gui_alive_checker.hpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +278,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

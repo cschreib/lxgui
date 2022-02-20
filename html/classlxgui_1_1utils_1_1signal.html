@@ -114,10 +114,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a16cee31ac11d51d9d79379c34fc80e9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1signal.html#a1f982d43c9f4a1f5a725daa635dd24bb">slot_list_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#a16cee31ac11d51d9d79379c34fc80e9c">slots</a> () const noexcept</td></tr>
 <tr class="memdesc:a16cee31ac11d51d9d79379c34fc80e9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a constant view onto the connected slots.  <a href="classlxgui_1_1utils_1_1signal.html#a16cee31ac11d51d9d79379c34fc80e9c">More...</a><br /></td></tr>
 <tr class="separator:a16cee31ac11d51d9d79379c34fc80e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75143c2d716852faef8fa616da13f98a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#a75143c2d716852faef8fa616da13f98a">connect</a> (<a class="el" href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">function_type</a> mFunction)</td></tr>
-<tr class="memdesc:a75143c2d716852faef8fa616da13f98a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect a new slot to this signal.  <a href="classlxgui_1_1utils_1_1signal.html#a75143c2d716852faef8fa616da13f98a">More...</a><br /></td></tr>
-<tr class="separator:a75143c2d716852faef8fa616da13f98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1b2133ac89bd6c9e7edbd2a7fc7d350"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a7077fbc37010148a10cb8525a3a98125"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#a7077fbc37010148a10cb8525a3a98125">connect</a> (<a class="el" href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">function_type</a> function)</td></tr>
+<tr class="memdesc:a7077fbc37010148a10cb8525a3a98125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect a new slot to this signal.  <a href="classlxgui_1_1utils_1_1signal.html#a7077fbc37010148a10cb8525a3a98125">More...</a><br /></td></tr>
+<tr class="separator:a7077fbc37010148a10cb8525a3a98125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b2133ac89bd6c9e7edbd2a7fc7d350"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:ae1b2133ac89bd6c9e7edbd2a7fc7d350"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#ae1b2133ac89bd6c9e7edbd2a7fc7d350">operator()</a> (Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:ae1b2133ac89bd6c9e7edbd2a7fc7d350"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger the signal.  <a href="classlxgui_1_1utils_1_1signal.html#ae1b2133ac89bd6c9e7edbd2a7fc7d350">More...</a><br /></td></tr>
 <tr class="separator:ae1b2133ac89bd6c9e7edbd2a7fc7d350"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,7 +170,7 @@ class lxgui::utils::signal&lt; T &gt;</h3>
 <div class="line"><span class="comment">// The last slot is automatically disconnected when out of scope.</span></div>
 <div class="line">sig(43); <span class="comment">// prints 43, then 86; val is not changed</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00148">148</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00141">141</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeb7a0c23def33fb845500f0dcb2d92c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb7a0c23def33fb845500f0dcb2d92c3">&#9670;&nbsp;</a></span>function_type</h2>
@@ -189,7 +189,7 @@ template&lt;typename T &gt; </div>
 <p>Type of the callable function stored in a slot. </p>
 <p>Can use any function/delegate type here, as long as it has a matching call operator. The function type does not need to be owning; in this case, the slot must be manually disconnected whenever the pointed function is destroyed. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00157">157</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00149">149</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -209,7 +209,7 @@ template&lt;typename T &gt; </div>
 
 <p>Type of the view returned by <a class="el" href="classlxgui_1_1utils_1_1signal.html#a16cee31ac11d51d9d79379c34fc80e9c" title="Return a constant view onto the connected slots.">slots()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00229">229</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00214">214</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +241,7 @@ template&lt;typename T &gt; </div>
 
 <p>Default constructor (no slot). </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00232">232</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00217">217</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +272,7 @@ template&lt;typename T &gt; </div>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00237">237</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00220">220</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -333,8 +333,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a75143c2d716852faef8fa616da13f98a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75143c2d716852faef8fa616da13f98a">&#9670;&nbsp;</a></span>connect()</h2>
+<a id="a7077fbc37010148a10cb8525a3a98125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7077fbc37010148a10cb8525a3a98125">&#9670;&nbsp;</a></span>connect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +348,7 @@ template&lt;typename T &gt; </div>
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1connection.html">connection</a> <a class="el" href="classlxgui_1_1utils_1_1signal.html">lxgui::utils::signal</a>&lt; T &gt;::connect </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">function_type</a>&#160;</td>
-          <td class="paramname"><em>mFunction</em></td><td>)</td>
+          <td class="paramname"><em>function</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -362,14 +362,14 @@ template&lt;typename T &gt; </div>
 <p>Connect a new slot to this signal. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mFunction</td><td>The function to store in the slot. </td></tr>
+    <tr><td class="paramname">function</td><td>The function to store in the slot. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A connection object, which can be used to disconnect the slot at any time. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If the returned connection object is discarded, the slot will remain connected for the entire lifetime of the signal, or until <a class="el" href="classlxgui_1_1utils_1_1signal.html#a3ca75cf09a5ea411494879b57c317350">disconnect_all</a> is called. If this is not desirable, store the returned connection, and disconnect the slot when it should no longer be called. The RAII helper class <a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html">scoped_connection</a> can do this safely. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00297">297</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00275">275</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +400,7 @@ template&lt;typename T &gt; </div>
 
 <p>Disconnects all slots. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00251">251</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00233">233</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ template&lt;typename T &gt; </div>
 <p>Check if this signal contains any slot. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if at least one slot is connected. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00272">272</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00252">252</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +444,7 @@ template&lt;typename T &gt; </div>
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
 <div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
+template&lt;typename... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -472,7 +472,7 @@ template&lt;typename ... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00307">307</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00284">284</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -561,7 +561,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A constant view onto the connected slots </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not attempt to connect or disconnect slots while iterating over this view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00283">283</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00262">262</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -571,7 +571,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:48 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

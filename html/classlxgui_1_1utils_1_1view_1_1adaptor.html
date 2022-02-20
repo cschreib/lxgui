@@ -87,29 +87,29 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a78868fb414a11db60966d43b34c9f97b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a> = std::conditional_t&lt; std::is_const_v&lt; ContainerType &gt;, typename ContainerType::const_iterator, typename ContainerType::iterator &gt;</td></tr>
-<tr class="separator:a78868fb414a11db60966d43b34c9f97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2525cbf7a90acc30126ceedc3e7902a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> = Dereferencer&lt; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a> &gt;</td></tr>
+<tr class="memitem:ad3d06d48b9b47636813b7bce0021a049"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a> = std::conditional_t&lt; std::is_const_v&lt; ContainerType &gt;, typename ContainerType::const_iterator, typename ContainerType::iterator &gt;</td></tr>
+<tr class="separator:ad3d06d48b9b47636813b7bce0021a049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2525cbf7a90acc30126ceedc3e7902a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> = Dereferencer&lt; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a> &gt;</td></tr>
 <tr class="separator:ac2525cbf7a90acc30126ceedc3e7902a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeff0640f5db7978e093168d244917893"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> = Filter&lt; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a> &gt;</td></tr>
+<tr class="memitem:aeff0640f5db7978e093168d244917893"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> = Filter&lt; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a> &gt;</td></tr>
 <tr class="separator:aeff0640f5db7978e093168d244917893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae874448a0869d50397ace0f88d135a2f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ae874448a0869d50397ace0f88d135a2f">data_type</a> = typename dereferencer::data_type</td></tr>
 <tr class="separator:ae874448a0869d50397ace0f88d135a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a57b5b0db3dd52dcb9dc8f0f004b04ee5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a57b5b0db3dd52dcb9dc8f0f004b04ee5">adaptor</a> (ContainerType &amp;mCollection)</td></tr>
-<tr class="separator:a57b5b0db3dd52dcb9dc8f0f004b04ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8ec26ec04e81ea02859f294bf50a1ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad8ec26ec04e81ea02859f294bf50a1ab">adaptor</a> (ContainerType &amp;mCollection, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> &amp;&amp;mDeref, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> &amp;&amp;mFilter)</td></tr>
-<tr class="separator:ad8ec26ec04e81ea02859f294bf50a1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea67f9733647f63a30dfb78af9028c11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aea67f9733647f63a30dfb78af9028c11">adaptor</a> (const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;mOther)</td></tr>
-<tr class="separator:aea67f9733647f63a30dfb78af9028c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5a23e571e2e7a3c68ff6367047d6d8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac5a23e571e2e7a3c68ff6367047d6d8c">adaptor</a> (<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&amp;mOther)</td></tr>
-<tr class="separator:ac5a23e571e2e7a3c68ff6367047d6d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0dbe0eeb57b9d975791b6393ef433a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ab0dbe0eeb57b9d975791b6393ef433a0">operator=</a> (const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;mOther)</td></tr>
-<tr class="separator:ab0dbe0eeb57b9d975791b6393ef433a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41611db3332270fa3e62fc71ff69fafa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a41611db3332270fa3e62fc71ff69fafa">operator=</a> (<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&amp;mOther)</td></tr>
-<tr class="separator:a41611db3332270fa3e62fc71ff69fafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5573921a1ce3e8775405e59516c501a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#af5573921a1ce3e8775405e59516c501a">adaptor</a> (ContainerType &amp;collection)</td></tr>
+<tr class="separator:af5573921a1ce3e8775405e59516c501a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa601f9fd944a08e37d4f8519116a7e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aaa601f9fd944a08e37d4f8519116a7e1">adaptor</a> (ContainerType &amp;collection, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> &amp;&amp;deref, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> &amp;&amp;filt)</td></tr>
+<tr class="separator:aaa601f9fd944a08e37d4f8519116a7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0475ded2174fbba70ba5d8e6b96716"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a1a0475ded2174fbba70ba5d8e6b96716">adaptor</a> (const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;other)</td></tr>
+<tr class="separator:a1a0475ded2174fbba70ba5d8e6b96716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4426ef901739e263c56b4c9c623d163"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aa4426ef901739e263c56b4c9c623d163">adaptor</a> (<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&amp;other)</td></tr>
+<tr class="separator:aa4426ef901739e263c56b4c9c623d163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5376406f69474e468e8b7fb7d54b02a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a5376406f69474e468e8b7fb7d54b02a2">operator=</a> (const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;other)</td></tr>
+<tr class="separator:a5376406f69474e468e8b7fb7d54b02a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97c81818a898634ab06a718c098f241e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a97c81818a898634ab06a718c098f241e">operator=</a> (<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> &amp;&amp;other)</td></tr>
+<tr class="separator:a97c81818a898634ab06a718c098f241e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48d2cbad8f503e2c3375a804a4e7d915"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a48d2cbad8f503e2c3375a804a4e7d915">begin</a> () const</td></tr>
 <tr class="separator:a48d2cbad8f503e2c3375a804a4e7d915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fbacbdc2b811e551131b2e1e4286d5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">end</a> () const</td></tr>
@@ -121,10 +121,10 @@ class lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</
 
 <p>Allow iterating over a container without access to the container itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00052">52</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00060">60</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a78868fb414a11db60966d43b34c9f97b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78868fb414a11db60966d43b34c9f97b">&#9670;&nbsp;</a></span>base_iterator</h2>
+<a id="ad3d06d48b9b47636813b7bce0021a049"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3d06d48b9b47636813b7bce0021a049">&#9670;&nbsp;</a></span>base_iterator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,12 +132,12 @@ class lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</
 template&lt;typename ContainerType , template&lt; typename &gt; class Dereferencer, template&lt; typename &gt; class Filter&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a> =  std::conditional_t&lt;std::is_const_v&lt;ContainerType&gt;, typename ContainerType::const_iterator, typename ContainerType::iterator&gt;</td>
+          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a> =  std::conditional_t&lt; std::is_const_v&lt;ContainerType&gt;, typename ContainerType::const_iterator, typename ContainerType::iterator&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00058">58</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00065">65</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -155,7 +155,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00061">61</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00068">68</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -168,12 +168,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 template&lt;typename ContainerType , template&lt; typename &gt; class Dereferencer, template&lt; typename &gt; class Filter&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> =  Dereferencer&lt;<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> =  Dereferencer&lt;<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00059">59</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00066">66</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,18 +186,18 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 template&lt;typename ContainerType , template&lt; typename &gt; class Dereferencer, template&lt; typename &gt; class Filter&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> =  Filter&lt;<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b">base_iterator</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> =  Filter&lt;<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ad3d06d48b9b47636813b7bce0021a049">base_iterator</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00060">60</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00067">67</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a57b5b0db3dd52dcb9dc8f0f004b04ee5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57b5b0db3dd52dcb9dc8f0f004b04ee5">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[1/4]</span></h2>
+<a id="af5573921a1ce3e8775405e59516c501a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5573921a1ce3e8775405e59516c501a">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,7 +211,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> </td>
           <td>(</td>
           <td class="paramtype">ContainerType &amp;&#160;</td>
-          <td class="paramname"><em>mCollection</em></td><td>)</td>
+          <td class="paramname"><em>collection</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -222,12 +222,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00063">63</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00070">70</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ad8ec26ec04e81ea02859f294bf50a1ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8ec26ec04e81ea02859f294bf50a1ab">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[2/4]</span></h2>
+<a id="aaa601f9fd944a08e37d4f8519116a7e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa601f9fd944a08e37d4f8519116a7e1">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,19 +241,19 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> </td>
           <td>(</td>
           <td class="paramtype">ContainerType &amp;&#160;</td>
-          <td class="paramname"><em>mCollection</em>, </td>
+          <td class="paramname"><em>collection</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">dereferencer</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>mDeref</em>, </td>
+          <td class="paramname"><em>deref</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">filter</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>mFilter</em>&#160;</td>
+          <td class="paramname"><em>filt</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -268,12 +268,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00064">64</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00071">71</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aea67f9733647f63a30dfb78af9028c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea67f9733647f63a30dfb78af9028c11">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[3/4]</span></h2>
+<a id="a1a0475ded2174fbba70ba5d8e6b96716"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0475ded2174fbba70ba5d8e6b96716">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,7 +287,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt; &amp;&#160;</td>
-          <td class="paramname"><em>mOther</em></td><td>)</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -298,12 +298,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00067">67</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00074">74</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac5a23e571e2e7a3c68ff6367047d6d8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5a23e571e2e7a3c68ff6367047d6d8c">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[4/4]</span></h2>
+<a id="aa4426ef901739e263c56b4c9c623d163"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4426ef901739e263c56b4c9c623d163">&#9670;&nbsp;</a></span>adaptor() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,7 +317,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::<a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>mOther</em></td><td>)</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -328,7 +328,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00068">68</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00075">75</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -358,7 +358,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00107">107</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00123">123</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -387,12 +387,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00118">118</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00131">131</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a41611db3332270fa3e62fc71ff69fafa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41611db3332270fa3e62fc71ff69fafa">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a97c81818a898634ab06a718c098f241e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97c81818a898634ab06a718c098f241e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +406,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&amp; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::operator= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>mOther</em></td><td>)</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -417,12 +417,12 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00070">70</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00080">80</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ab0dbe0eeb57b9d975791b6393ef433a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0dbe0eeb57b9d975791b6393ef433a0">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="a5376406f69474e468e8b7fb7d54b02a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5376406f69474e468e8b7fb7d54b02a2">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -436,7 +436,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
           <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&amp; <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt;::operator= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">adaptor</a>&lt; ContainerType, Dereferencer, Filter &gt; &amp;&#160;</td>
-          <td class="paramname"><em>mOther</em></td><td>)</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -447,7 +447,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00069">69</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__view_8hpp_source.html#l00076">76</a> of file <a class="el" href="utils__view_8hpp_source.html">utils_view.hpp</a>.</p>
 
 </div>
 </div>
@@ -457,7 +457,7 @@ template&lt;typename ContainerType , template&lt; typename &gt; class Dereferenc
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:48 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

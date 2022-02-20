@@ -70,35 +70,30 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_eventemitter.hpp&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_event.hpp&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__emitter.html#a49883464ec5a8cc28a878cebc9557d84">    8</a></span>&#160;<a class="code" href="classlxgui_1_1utils_1_1connection.html">utils::connection</a> <a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a49883464ec5a8cc28a878cebc9557d84">event_emitter::register_event</a>(<span class="keyword">const</span> std::string&amp; sEventName,</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a68ac633c5866a87a410b4a91552514b9">event_handler_function</a> mCallback)</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordflow">return</span> lRegisteredEventList_[sEventName].connect(std::move(mCallback));</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;}</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__emitter.html#a8ce549aad4f74d262c6e35e280c84624">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a8ce549aad4f74d262c6e35e280c84624">event_emitter::fire_event</a>(<span class="keyword">const</span> std::string&amp; sEventName, <a class="code" href="classlxgui_1_1gui_1_1event__data.html">event_data</a> mData)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    lRegisteredEventList_[sEventName](std::move(mData));</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_event.hpp&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui_1_1gui.html">lxgui::gui</a> {</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;utils::connection</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__emitter.html#a74abd39291ff050120f8c681a583654c">    8</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a74abd39291ff050120f8c681a583654c">event_emitter::register_event</a>(<span class="keyword">const</span> std::string&amp; event_name, <a class="code" href="namespacelxgui_1_1gui.html#a68ac633c5866a87a410b4a91552514b9">event_handler_function</a> callback) {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keywordflow">return</span> registered_event_list_[event_name].connect(std::move(callback));</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">   12</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">event_emitter::fire_event</a>(<span class="keyword">const</span> std::string&amp; event_name, <a class="code" href="classlxgui_1_1gui_1_1event__data.html">event_data</a> data) {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    registered_event_list_[event_name](std::move(data));</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1utils_1_1connection_html"><div class="ttname"><a href="classlxgui_1_1utils_1_1connection.html">lxgui::utils::connection</a></div><div class="ttdoc">Object representing the connection between a slot and a signal.</div><div class="ttdef"><b>Definition:</b> <a href="utils__signal_8hpp_source.html#l00029">utils_signal.hpp:29</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a68ac633c5866a87a410b4a91552514b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a68ac633c5866a87a410b4a91552514b9">lxgui::gui::event_handler_function</a></div><div class="ttdeci">event_signal::function_type event_handler_function</div><div class="ttdoc">C++ function type for UI script handlers.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8hpp_source.html#l00023">gui_eventemitter.hpp:23</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__emitter_html_a8ce549aad4f74d262c6e35e280c84624"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__emitter.html#a8ce549aad4f74d262c6e35e280c84624">lxgui::gui::event_emitter::fire_event</a></div><div class="ttdeci">void fire_event(const std::string &amp;sEventName, event_data mData=event_data{})</div><div class="ttdoc">Emmit a new event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8cpp_source.html#l00014">gui_eventemitter.cpp:14</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__emitter_html_a49883464ec5a8cc28a878cebc9557d84"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__emitter.html#a49883464ec5a8cc28a878cebc9557d84">lxgui::gui::event_emitter::register_event</a></div><div class="ttdeci">utils::connection register_event(const std::string &amp;sEventName, event_handler_function mCallback)</div><div class="ttdoc">Registers a callback to an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8cpp_source.html#l00008">gui_eventemitter.cpp:8</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__data_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__data.html">lxgui::gui::event_data</a></div><div class="ttdoc">Stores a variable number of arguments for an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8hpp_source.html#l00015">gui_event.hpp:15</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a68ac633c5866a87a410b4a91552514b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a68ac633c5866a87a410b4a91552514b9">lxgui::gui::event_handler_function</a></div><div class="ttdeci">event_signal::function_type event_handler_function</div><div class="ttdoc">C++ function type for UI script handlers.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8hpp_source.html#l00022">gui_eventemitter.hpp:22</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__emitter_html_a74abd39291ff050120f8c681a583654c"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__emitter.html#a74abd39291ff050120f8c681a583654c">lxgui::gui::event_emitter::register_event</a></div><div class="ttdeci">utils::connection register_event(const std::string &amp;event_name, event_handler_function callback)</div><div class="ttdoc">Registers a callback to an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8cpp_source.html#l00008">gui_eventemitter.cpp:8</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html"><div class="ttname"><a href="namespacelxgui_1_1gui.html">lxgui::gui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00021">gui_addon_registry.cpp:21</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__emitter_html_a16a7f9f9893d488c5060c69dde851e0f"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">lxgui::gui::event_emitter::fire_event</a></div><div class="ttdeci">void fire_event(const std::string &amp;event_name, event_data data=event_data{})</div><div class="ttdoc">Emmit a new event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventemitter_8cpp_source.html#l00012">gui_eventemitter.cpp:12</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__data_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__data.html">lxgui::gui::event_data</a></div><div class="ttdoc">Stores a variable number of arguments for an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8hpp_source.html#l00014">gui_event.hpp:14</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

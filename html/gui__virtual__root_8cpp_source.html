@@ -70,38 +70,34 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_virtual_root.hpp&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_frame.hpp&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1virtual__root.html#a4bcb661c963af6b0d58885915057ac2d">    9</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1virtual__root.html#a4bcb661c963af6b0d58885915057ac2d">virtual_root::virtual_root</a>(<a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mManager, <a class="code" href="classlxgui_1_1gui_1_1registry.html">registry</a>&amp; mNonVirtualRegistry) :</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__container.html">frame_container</a>(mManager.get_factory(), mObjectRegistry_, nullptr),</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    mManager_(mManager), mObjectRegistry_(mNonVirtualRegistry)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1virtual__root.html#a30d6cef06b5f3c4fee172ddf25a760ae">   15</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1virtual__root.html#a30d6cef06b5f3c4fee172ddf25a760ae">virtual_root::~virtual_root</a>()</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="comment">// Must be done before we destroy the registry</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__container.html#a56e240634efa271e9310d80861e609ed">clear_frames_</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui_1_1gui.html">lxgui::gui</a> {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1virtual__root.html#abf46b2dee92f7fe27763d27ab84843e1">    8</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1virtual__root.html#abf46b2dee92f7fe27763d27ab84843e1">virtual_root::virtual_root</a>(<a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mgr, <a class="code" href="classlxgui_1_1gui_1_1registry.html">registry</a>&amp; non_virtual_registry) :</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__container.html">frame_container</a>(mgr.get_factory(), object_registry_, nullptr),</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    manager_(mgr),</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    object_registry_(non_virtual_registry) {}</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1virtual__root.html#af5f563132de2e8f806d7407c7ce5f345">   13</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1virtual__root.html#af5f563132de2e8f806d7407c7ce5f345">virtual_root::~virtual_root</a>() {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">// Must be done before we destroy the registry</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame__container.html#a56e240634efa271e9310d80861e609ed">clear_frames_</a>();</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1registry_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1registry.html">lxgui::gui::registry</a></div><div class="ttdoc">Keeps track of created UI objects and records their names for lookup.</div><div class="ttdef"><b>Definition:</b> <a href="gui__registry_8hpp_source.html#l00018">gui_registry.hpp:18</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__root_html_a4bcb661c963af6b0d58885915057ac2d"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__root.html#a4bcb661c963af6b0d58885915057ac2d">lxgui::gui::virtual_root::virtual_root</a></div><div class="ttdeci">virtual_root(manager &amp;mManager, registry &amp;mNonVirtualRegistry)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__root_8cpp_source.html#l00009">gui_virtual_root.cpp:9</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00023">gui_addon_registry.cpp:23</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00042">gui_manager.hpp:42</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__root_html_a30d6cef06b5f3c4fee172ddf25a760ae"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__root.html#a30d6cef06b5f3c4fee172ddf25a760ae">lxgui::gui::virtual_root::~virtual_root</a></div><div class="ttdeci">~virtual_root()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__root_8cpp_source.html#l00015">gui_virtual_root.cpp:15</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__container_html_a56e240634efa271e9310d80861e609ed"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__container.html#a56e240634efa271e9310d80861e609ed">lxgui::gui::frame_container::clear_frames_</a></div><div class="ttdeci">void clear_frames_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__container_8cpp_source.html#l00072">gui_frame_container.cpp:72</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__container_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__container.html">lxgui::gui::frame_container</a></div><div class="ttdoc">Container of frames.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__container_8hpp_source.html#l00028">gui_frame_container.hpp:28</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1registry_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1registry.html">lxgui::gui::registry</a></div><div class="ttdoc">Keeps track of created UI objects and records their names for lookup.</div><div class="ttdef"><b>Definition:</b> <a href="gui__registry_8hpp_source.html#l00016">gui_registry.hpp:16</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__root_html_abf46b2dee92f7fe27763d27ab84843e1"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__root.html#abf46b2dee92f7fe27763d27ab84843e1">lxgui::gui::virtual_root::virtual_root</a></div><div class="ttdeci">virtual_root(manager &amp;mgr, registry &amp;non_virtual_registry)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__root_8cpp_source.html#l00008">gui_virtual_root.cpp:8</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html"><div class="ttname"><a href="namespacelxgui_1_1gui.html">lxgui::gui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00021">gui_addon_registry.cpp:21</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00043">gui_manager.hpp:43</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1virtual__root_html_af5f563132de2e8f806d7407c7ce5f345"><div class="ttname"><a href="classlxgui_1_1gui_1_1virtual__root.html#af5f563132de2e8f806d7407c7ce5f345">lxgui::gui::virtual_root::~virtual_root</a></div><div class="ttdeci">~virtual_root() override</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__virtual__root_8cpp_source.html#l00013">gui_virtual_root.cpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__container_html_a56e240634efa271e9310d80861e609ed"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__container.html#a56e240634efa271e9310d80861e609ed">lxgui::gui::frame_container::clear_frames_</a></div><div class="ttdeci">void clear_frames_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__container_8cpp_source.html#l00059">gui_frame_container.cpp:59</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__container_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__container.html">lxgui::gui::frame_container</a></div><div class="ttdoc">Container of frames.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__container_8hpp_source.html#l00025">gui_frame_container.hpp:25</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 7 2022 09:05:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

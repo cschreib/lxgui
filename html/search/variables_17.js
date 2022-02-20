@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zero_2494',['ZERO',['../structlxgui_1_1gui_1_1bounds2.html#a9734e18e66b6ccb7c84b63a9635e3e5e',1,'lxgui::gui::bounds2::ZERO()'],['../structlxgui_1_1gui_1_1vector2.html#aa1d53c6d148f91a7ac7dcc2d8d8461cc',1,'lxgui::gui::vector2::ZERO()']]]
+  ['zero_2481',['zero',['../structlxgui_1_1gui_1_1bounds2.html#a4b2a8ad311a15c8c0e3c96ca06b58acd',1,'lxgui::gui::bounds2::zero()'],['../structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb',1,'lxgui::gui::vector2::zero()']]]
 ];

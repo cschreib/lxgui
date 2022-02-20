@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zero_1319',['ZERO',['../structlxgui_1_1gui_1_1bounds2.html#a9734e18e66b6ccb7c84b63a9635e3e5e',1,'lxgui::gui::bounds2::ZERO()'],['../structlxgui_1_1gui_1_1vector2.html#aa1d53c6d148f91a7ac7dcc2d8d8461cc',1,'lxgui::gui::vector2::ZERO()'],['../classlxgui_1_1gui_1_1periodic__timer.html#abbf5072290626d8811a8227429693bf3',1,'lxgui::gui::periodic_timer::zero()']]]
+  ['zero_1308',['zero',['../structlxgui_1_1gui_1_1bounds2.html#a4b2a8ad311a15c8c0e3c96ca06b58acd',1,'lxgui::gui::bounds2::zero()'],['../structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb',1,'lxgui::gui::vector2::zero()'],['../classlxgui_1_1utils_1_1periodic__timer.html#a7f482a4055feb49c5ca356857496d53b',1,'lxgui::utils::periodic_timer::zero()']]]
 ];
