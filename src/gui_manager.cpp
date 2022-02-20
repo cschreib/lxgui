@@ -73,8 +73,10 @@ void manager::set_interface_scaling_factor(float scaling_factor) {
 
     input_dispatcher_->set_interface_scaling_factor(scaling_factor_);
 
-    root_->notify_scaling_factor_updated();
-    root_->notify_hovered_frame_dirty();
+    if (root_) {
+        root_->notify_scaling_factor_updated();
+        root_->notify_hovered_frame_dirty();
+    }
 }
 
 float manager::get_interface_scaling_factor() const {
