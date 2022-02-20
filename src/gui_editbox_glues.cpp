@@ -100,9 +100,9 @@ void edit_box::register_on_lua(sol::state& lua) {
     type.set_function("get_number", [](const edit_box& self) {
         // TODO: use localizer's locale for that
         // https://github.com/cschreib/lxgui/issues/88
-        double d_number = 0.0;
-        utils::from_string(self.get_text(), d_number);
-        return d_number;
+        double number = 0.0;
+        utils::from_string(self.get_text(), number);
+        return number;
     });
 
     /** @function get_text
@@ -192,16 +192,15 @@ void edit_box::register_on_lua(sol::state& lua) {
     /** @function set_number
      */
     type.set_function(
-        "set_number",
-        sol::overload(
-            [](edit_box& self, int value) {
-                self.set_text(utils::utf8_to_unicode(
-                    self.get_manager().get_localizer().format_string("{:L}", value)));
-            },
-            [](edit_box& self, double d_value) {
-                self.set_text(utils::utf8_to_unicode(
-                    self.get_manager().get_localizer().format_string("{:L}", d_value)));
-            }));
+        "set_number", sol::overload(
+                          [](edit_box& self, int value) {
+                              self.set_text(utils::utf8_to_unicode(
+                                  self.get_manager().get_localizer().format_string("{:L}", value)));
+                          },
+                          [](edit_box& self, double value) {
+                              self.set_text(utils::utf8_to_unicode(
+                                  self.get_manager().get_localizer().format_string("{:L}", value)));
+                          }));
 
     /** @function set_numeric
      */

@@ -40,12 +40,12 @@ dispatcher::dispatcher(source& src) : source_(src) {
             auto time_last = mouse_pressed_time_[static_cast<std::size_t>(button_id)];
             auto time_now  = timer::now();
             mouse_pressed_time_[static_cast<std::size_t>(button_id)] = time_now;
-            double d_click_time = std::chrono::duration<double>(time_now - time_last).count();
+            double click_time = std::chrono::duration<double>(time_now - time_last).count();
 
             // Forward
             on_mouse_pressed(button_id, mouse_pos);
 
-            if (d_click_time < d_double_click_time_)
+            if (click_time < double_click_time_)
                 on_mouse_double_clicked(button_id, mouse_pos);
         }));
 
@@ -133,12 +133,12 @@ double dispatcher::get_mouse_down_duration(mouse_button button_id) const {
         .count();
 }
 
-void dispatcher::set_doubleclick_time(double d_double_click_time) {
-    d_double_click_time_ = d_double_click_time;
+void dispatcher::set_doubleclick_time(double double_click_time) {
+    double_click_time_ = double_click_time;
 }
 
 double dispatcher::get_doubleclick_time() const {
-    return d_double_click_time_;
+    return double_click_time_;
 }
 
 bool dispatcher::alt_is_pressed() const {

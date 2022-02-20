@@ -279,9 +279,9 @@ void font_string::register_on_lua(sol::state& lua) {
                 self.set_text(utils::utf8_to_unicode(
                     self.get_manager().get_localizer().format_string("{:L}", value)));
             },
-            [](font_string& self, double d_value) {
+            [](font_string& self, double value) {
                 self.set_text(utils::utf8_to_unicode(
-                    self.get_manager().get_localizer().format_string("{:L}", d_value)));
+                    self.get_manager().get_localizer().format_string("{:L}", value)));
             },
             [](font_string& self, const std::string& text) {
                 self.set_text(utils::utf8_to_unicode(text));

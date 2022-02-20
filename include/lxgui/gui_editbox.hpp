@@ -31,11 +31,11 @@ public:
     };
 
     /// Default constructor
-    /** \param dDuration The time interval between each tick
+    /** \param duration The time interval between each tick
      *   \param type     See TimerType
      *   \param ticks_now    The timer ticks immediately
      */
-    periodic_timer(double d_duration, start_type type, bool ticks_now);
+    periodic_timer(double duration, start_type type, bool ticks_now);
 
     /// Returns the time elapsed since the last tick.
     /** \return The time elapsed since last tick
@@ -70,13 +70,13 @@ public:
     void zero();
 
     /// Updates this timer (adds time).
-    /** \param dDelta The time elapsed since last update
+    /** \param delta The time elapsed since last update
      */
-    void update(double d_delta);
+    void update(double delta);
 
 private:
-    double d_elapsed_  = 0.0;
-    double d_duration_ = 0.0;
+    double elapsed_    = 0.0;
+    double duration_   = 0.0;
     bool   paused_     = true;
     bool   first_tick_ = true;
 
@@ -226,7 +226,7 @@ public:
     /// Sets the carret's blink speed.
     /** \param dBlinkSpeed The number of seconds to wait between each blink
      */
-    void set_blink_speed(double d_blink_speed);
+    void set_blink_speed(double blink_speed);
 
     /// Returns the carret's blink speed.
     /** \return the carret's blink speed (time in seconds between each blink)
@@ -420,8 +420,8 @@ protected:
     std::size_t                  selection_end_pos_   = 0u;
     bool                         is_text_selected_    = false;
 
-    utils::observer_ptr<texture> carret_        = nullptr;
-    double                       d_blink_speed_ = 0.5;
+    utils::observer_ptr<texture> carret_      = nullptr;
+    double                       blink_speed_ = 0.5;
     periodic_timer               carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;

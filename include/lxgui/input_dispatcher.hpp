@@ -109,9 +109,9 @@ public:
     float get_mouse_wheel() const;
 
     /// Sets the double click maximum time.
-    /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
+    /** \param double_click_time Maximum amount of time between two clicks in a double click
      */
-    void set_doubleclick_time(double d_double_click_time);
+    void set_doubleclick_time(double double_click_time);
 
     /// Returns the double click maximum time.
     /** \return The double click maximum time
@@ -151,7 +151,7 @@ private:
 
     float scaling_factor_ = 1.0f;
 
-    double d_double_click_time_ = 0.25;
+    double double_click_time_ = 0.25;
 
     bool         is_mouse_dragged_  = false;
     mouse_button mouse_drag_button_ = mouse_button::left;

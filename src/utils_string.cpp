@@ -293,8 +293,8 @@ bool is_number(string_view s) {
     std::istringstream temp{std::string(s)};
     temp.imbue(std::locale::classic());
 
-    double d_value = 0;
-    temp >> d_value;
+    double value = 0;
+    temp >> value;
 
     return !temp.fail();
 }
