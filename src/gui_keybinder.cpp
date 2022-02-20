@@ -8,7 +8,7 @@
 #include "lxgui/utils_std.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 namespace lxgui::gui {
 
@@ -116,15 +116,14 @@ keybinder::key_binding* keybinder::find_binding_(
 
 bool keybinder::on_key_down(
     input::key key_id, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed) {
-    auto* key_binding = find_binding_(key_id, shift_is_pressed, ctrl_is_pressed, alt_is_pressed);
-    if (!key_binding)
+    auto* binding = find_binding_(key_id, shift_is_pressed, ctrl_is_pressed, alt_is_pressed);
+    if (!binding)
         return false;
 
     try {
-        key_binding->signal();
+        binding->signal();
     } catch (const std::exception& e) {
-        throw std::runtime_error(
-            "Bound action: " + key_binding->name + ": " + std::string(e.what()));
+        throw std::runtime_error("Bound action: " + binding->name + ": " + std::string(e.what()));
     }
 
     return true;

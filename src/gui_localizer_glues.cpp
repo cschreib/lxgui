@@ -1,7 +1,7 @@
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** Global functions for localization / translation of text.
 *   The functions listed on this page are registered in the

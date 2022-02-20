@@ -8,8 +8,7 @@
 
 namespace lxgui::gui::sfml {
 
-vertex_cache::vertex_cache(type type) :
-    gui::vertex_cache(type), buffer_(sf::PrimitiveType::Triangles) {}
+vertex_cache::vertex_cache(type t) : gui::vertex_cache(t), buffer_(sf::PrimitiveType::Triangles) {}
 
 void to_sfml(const vertex& v, sf::Vertex& sv) {
     sv.position.x  = v.pos.x;

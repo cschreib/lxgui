@@ -68,8 +68,8 @@ public:
     using data_type    = typename dereferencer::data_type;
 
     explicit adaptor(ContainerType& collection) : collection_(collection) {}
-    explicit adaptor(ContainerType& collection, dereferencer&& deref, filter&& filter) :
-        collection_(collection), deref_(std::move(deref)), filter_(std::move(filter)) {}
+    explicit adaptor(ContainerType& collection, dereferencer&& deref, filter&& filt) :
+        collection_(collection), deref_(std::move(deref)), filter_(std::move(filt)) {}
 
     adaptor(const adaptor& other) : collection_(other.collection_) {}
     adaptor(adaptor&& other) : collection_(other.collection_) {}

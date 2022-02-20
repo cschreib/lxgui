@@ -31,10 +31,10 @@ std::string texture::serialize(const std::string& tab) const {
             } else if constexpr (std::is_same_v<content_type, gradient>) {
                 str << tab << "  # Gradient    :\n";
                 str << tab << "  #-###\n";
-                str << tab << "  |   # min color   : " << data.get_min_color() << "\n";
-                str << tab << "  |   # max color   : " << data.get_max_color() << "\n";
+                str << tab << "  |   # min color   : " << data.min_color << "\n";
+                str << tab << "  |   # max color   : " << data.max_color << "\n";
                 str << tab << "  |   # orientation : ";
-                switch (data.get_orientation()) {
+                switch (data.orient) {
                 case gradient::orientation::horizontal: str << "HORIZONTAL\n"; break;
                 case gradient::orientation::vertical: str << "VERTICAL\n"; break;
                 default: str << "<error>\n"; break;
@@ -272,16 +272,16 @@ void texture::set_gradient(const gradient& g) {
 
     quad_.mat = nullptr;
 
-    if (g.get_orientation() == gradient::orientation::horizontal) {
-        quad_.v[0].col = g.get_min_color();
-        quad_.v[1].col = g.get_max_color();
-        quad_.v[2].col = g.get_max_color();
-        quad_.v[3].col = g.get_min_color();
+    if (g.orient == gradient::orientation::horizontal) {
+        quad_.v[0].col = g.min_color;
+        quad_.v[1].col = g.max_color;
+        quad_.v[2].col = g.max_color;
+        quad_.v[3].col = g.min_color;
     } else {
-        quad_.v[0].col = g.get_min_color();
-        quad_.v[1].col = g.get_min_color();
-        quad_.v[2].col = g.get_max_color();
-        quad_.v[3].col = g.get_max_color();
+        quad_.v[0].col = g.min_color;
+        quad_.v[1].col = g.min_color;
+        quad_.v[2].col = g.max_color;
+        quad_.v[3].col = g.max_color;
     }
 
     notify_renderer_need_redraw();

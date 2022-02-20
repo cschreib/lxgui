@@ -5,7 +5,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw text on the screen.
  *   This class holds a string and a reference to a font, which

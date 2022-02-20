@@ -15,8 +15,8 @@
 #include <functional>
 #include <limits>
 #include <list>
+#include <lxgui/extern_sol2_protected_function.hpp>
 #include <set>
-#include <sol/protected_function.hpp>
 #include <unordered_map>
 #include <vector>
 

@@ -2,7 +2,7 @@
 #include "lxgui/gui_slider.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with a movable texture.
  *   This frame contains a special texture, the "slider thumb".

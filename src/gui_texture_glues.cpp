@@ -4,7 +4,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw images and colored rectangles.
  *   This object contains either a texture taken from a file,
@@ -155,8 +155,8 @@ void texture::register_on_lua(sol::state& lua) {
                 if (!orientation.has_value())
                     return;
 
-                self.set_gradient(gradient(
-                    orientation.value(), color(min_r, min_g, min_b), color(max_r, max_g, max_b)));
+                self.set_gradient(gradient{
+                    orientation.value(), color(min_r, min_g, min_b), color(max_r, max_g, max_b)});
             },
             [](texture& self, const std::string& orientation_name, const std::string& min_color,
                const std::string& max_color) {
@@ -166,7 +166,7 @@ void texture::register_on_lua(sol::state& lua) {
                     return;
 
                 self.set_gradient(
-                    gradient(orientation.value(), color(min_color), color(max_color)));
+                    gradient{orientation.value(), color(min_color), color(max_color)});
             }));
 
     /** @function set_gradient_alpha
@@ -181,9 +181,9 @@ void texture::register_on_lua(sol::state& lua) {
                 if (!orientation.has_value())
                     return;
 
-                self.set_gradient(gradient(
+                self.set_gradient(gradient{
                     orientation.value(), color(min_r, min_g, min_b, min_a),
-                    color(max_r, max_g, max_b, max_a)));
+                    color(max_r, max_g, max_b, max_a)});
             },
             [](texture& self, const std::string& orientation_name, const std::string& min_color,
                const std::string& max_color) {
@@ -193,7 +193,7 @@ void texture::register_on_lua(sol::state& lua) {
                     return;
 
                 self.set_gradient(
-                    gradient(orientation.value(), color(min_color), color(max_color)));
+                    gradient{orientation.value(), color(min_color), color(max_color)});
             }));
 
     /** @function set_tex_coord

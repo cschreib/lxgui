@@ -27,66 +27,66 @@ color::hls color::to_hls() const noexcept {
     float ma = std::max(std::max(r, g), b);
     float mi = std::min(std::min(r, g), b);
 
-    color::hls hls{};
-    hls.a = a;
+    color::hls output{};
+    output.a = a;
 
     if (ma == mi) {
-        hls.l = ma;
-        hls.s = 0.0f;
+        output.l = ma;
+        output.s = 0.0f;
     } else {
         float delta = ma - mi;
         float sum   = ma + mi;
 
-        hls.l = 0.5f * sum;
-        if (hls.l < 0.5f)
-            hls.s = delta / sum;
+        output.l = 0.5f * sum;
+        if (output.l < 0.5f)
+            output.s = delta / sum;
         else
-            hls.s = delta / (2.0f - sum);
+            output.s = delta / (2.0f - sum);
 
         if (ma == r)
-            hls.h = 60.0f * (g - b) / delta + 0.0f;
+            output.h = 60.0f * (g - b) / delta + 0.0f;
         else if (ma == g)
-            hls.h = 60.0f * (b - r) / delta + 120.0f;
+            output.h = 60.0f * (b - r) / delta + 120.0f;
         else
-            hls.h = 60.0f * (r - g) / delta + 240.0f;
+            output.h = 60.0f * (r - g) / delta + 240.0f;
 
-        if (hls.h < 0.0f)
-            hls.h = hls.h + 360.0f;
-        else if (hls.h > 360.0f)
-            hls.h = hls.h - 360.0f;
+        if (output.h < 0.0f)
+            output.h = output.h + 360.0f;
+        else if (output.h > 360.0f)
+            output.h = output.h - 360.0f;
     }
 
-    return hls;
+    return output;
 }
 
 color::hsv color::to_hsv() const noexcept {
-    color::hsv hsv{};
+    color::hsv output{};
 
     float cmax;
     float cmin;
     if (r > g && r > b) {
-        cmax  = r;
-        cmin  = g > b ? g : b;
-        hsv.h = 60.0f * std::fmod((g - b) / (cmax - cmin), 6.0f);
+        cmax     = r;
+        cmin     = g > b ? g : b;
+        output.h = 60.0f * std::fmod((g - b) / (cmax - cmin), 6.0f);
     } else if (g > r && g > b) {
-        cmax  = g;
-        cmin  = r > b ? r : b;
-        hsv.h = 60.0f * ((b - r) / (cmax - cmin) + 2.0f);
+        cmax     = g;
+        cmin     = r > b ? r : b;
+        output.h = 60.0f * ((b - r) / (cmax - cmin) + 2.0f);
     } else if (b > r && b > g) {
-        cmax  = b;
-        cmin  = r > g ? r : g;
-        hsv.h = 60.0f * ((r - g) / (cmax - cmin) + 4.0f);
+        cmax     = b;
+        cmin     = r > g ? r : g;
+        output.h = 60.0f * ((r - g) / (cmax - cmin) + 4.0f);
     } else {
-        hsv.h = 0.0f;
-        hsv.s = 0.0f;
-        hsv.v = r;
-        return hsv;
+        output.h = 0.0f;
+        output.s = 0.0f;
+        output.v = r;
+        return output;
     }
 
-    hsv.s = (cmax - cmin) / cmax;
-    hsv.v = cmax;
+    output.s = (cmax - cmin) / cmax;
+    output.v = cmax;
 
-    return hsv;
+    return output;
 }
 
 float h2_to_rgb(float v1, float v2, float h) noexcept {

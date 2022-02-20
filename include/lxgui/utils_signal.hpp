@@ -214,7 +214,7 @@ public:
         utils::view::adaptor<slot_list, slot_dereferencer, non_disconnected_filter>;
 
     /// Default constructor (no slot).
-    signal() : impl_(std::make_shared<impl>()) {}
+    signal() : impl_(std::make_shared<implementation>()) {}
 
     /// Destructor.
     ~signal() {
@@ -242,8 +242,8 @@ public:
         // iterators while iterating over the slot list, if one of the
         // slot happens to disconnect itself. The memory will be cleared
         // up when the signal is no longer being iterated on.
-        for (auto& slot : impl_->slots)
-            slot->disconnected = true;
+        for (auto& slt : impl_->slots)
+            slt->disconnected = true;
     }
 
     /// Check if this signal contains any slot.
@@ -252,7 +252,7 @@ public:
     [[nodiscard]] bool empty() const noexcept {
         const auto& slots = impl_->slots;
         return std::none_of(
-            slots.begin(), slots.end(), [](const auto& slot) { return !slot->disconnected; });
+            slots.begin(), slots.end(), [](const auto& slt) { return !slt->disconnected; });
     }
 
     /// Return a constant view onto the connected slots.
@@ -298,9 +298,9 @@ public:
         // NB: Use integer-based iteration since iterators may be invalidated on insertion
         const std::size_t num_slots = slots.size();
         for (std::size_t i = 0; i < num_slots; ++i) {
-            auto& slot = *slots[i];
-            if (!slot.disconnected)
-                slot.callback(args...);
+            auto& slt = *slots[i];
+            if (!slt.disconnected)
+                slt.callback(args...);
         }
 
         --recursion;
@@ -310,19 +310,19 @@ public:
     }
 
 private:
-    struct impl {
+    struct implementation {
         slot_list   slots;
         std::size_t recursion = 0u;
 
         void garbage_collect() noexcept {
             auto iter = std::remove_if(
-                slots.begin(), slots.end(), [](const auto& slot) { return slot->disconnected; });
+                slots.begin(), slots.end(), [](const auto& slt) { return slt->disconnected; });
 
             slots.erase(iter, slots.end());
         }
     };
 
-    std::shared_ptr<impl> impl_;
+    std::shared_ptr<implementation> impl_;
 };
 
 } // namespace lxgui::utils

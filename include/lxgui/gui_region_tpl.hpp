@@ -10,7 +10,7 @@
 #include "lxgui/utils_observer.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
@@ -59,11 +59,11 @@ get_object(manager& mgr, const std::variant<std::string, region*>& parent) {
                 if (utils::has_no_content(value))
                     return nullptr;
 
-                auto parent = mgr.get_root().get_registry().get_region_by_name(value);
-                if (!parent)
+                auto parent_obj = mgr.get_root().get_registry().get_region_by_name(value);
+                if (!parent_obj)
                     throw sol::error("no region with name \"" + value + "\"");
 
-                return parent;
+                return parent_obj;
             } else {
                 return observer_from(value);
             }
@@ -84,12 +84,12 @@ utils::observer_ptr<T> get_object(manager& mgr, const std::variant<std::string, 
                 if (!parent_object)
                     throw sol::error("no region with name \"" + value + "\"");
 
-                auto parent = down_cast<T>(parent_object);
-                if (!parent)
+                auto parent_obj = down_cast<T>(parent_object);
+                if (!parent_obj)
                     throw sol::error(
                         "region \"" + value + "\" is not a " + std::string(T::class_name));
 
-                return parent;
+                return parent_obj;
             } else {
                 return observer_from(value);
             }

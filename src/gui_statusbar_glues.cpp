@@ -3,7 +3,7 @@
 #include "lxgui/gui_statusbar.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} representing a variable-length bar.
  *   This frame has three main properties: a minimum value, a

@@ -13,7 +13,7 @@
 #include "lxgui/utils_std.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 #include <sstream>
 
 namespace lxgui::gui {

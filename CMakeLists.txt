@@ -48,6 +48,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
     # -g -fsanitize=address -s INITIAL_MEMORY=200MB
     set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
+    set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
                     OUTPUT_VARIABLE GCC_VERSION)
@@ -60,10 +61,14 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(GCC_VERSION VERSION_LESS 8.0)
         message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with gcc 8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
     endif()
+
+    set(LXGUI_COMPILER_GCC TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(MSVC_VERSION VERSION_LESS 1910)
         message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with MSVC 2017 or higher (version 1910, your version: ${MSVC_VERSION}). Please upgrade your compiler.")
     endif()
+
+    set(LXGUI_COMPILER_MSVC TRUE)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11)
@@ -74,6 +79,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
             message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with clang 7 or higher (your version: ${CMAKE_CXX_COMPILER_VERSION}). Please upgrade your compiler.")
         endif()
     endif()
+
+    set(LXGUI_COMPILER_CLANG TRUE)
 else()
     message(WARNING "Warning: your compiler has not been setup by the CMake script, do not expect it to work")
 endif()
@@ -82,6 +89,13 @@ endif()
 macro(lxgui_set_warning_level target)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${target} PRIVATE -Wall)
+        target_compile_options(${target} PRIVATE -Wshadow)
+        target_compile_options(${target} PRIVATE -Wunused-parameter)
+        target_compile_options(${target} PRIVATE -Wuninitialized)
+        target_compile_options(${target} PRIVATE -Winit-self)
+        target_compile_options(${target} PRIVATE -Wignored-qualifiers)
+        target_compile_options(${target} PRIVATE -Wmisleading-indentation)
+        target_compile_options(${target} PRIVATE -Wreturn-type)
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_compile_options(${target} PRIVATE /W4)
         target_compile_options(${target} PRIVATE /GR)
@@ -89,13 +103,11 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE /wd4267) # narrowing implicit conversion from size_t
         target_compile_options(${target} PRIVATE /wd4245) # signed/unsigned mismatch
         target_compile_options(${target} PRIVATE /wd4244) # narrowing implicit conversion
-        target_compile_options(${target} PRIVATE /wd4100) # unused parameter
         target_compile_options(${target} PRIVATE /wd4121) # alignment sensitive to padding
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         target_compile_options(${target} PRIVATE -Weverything)
         target_compile_options(${target} PRIVATE -Wno-c++98-compat-pedantic)
         target_compile_options(${target} PRIVATE -Wno-c++98-compat)
-        target_compile_options(${target} PRIVATE -Wno-unused-parameter)
         target_compile_options(${target} PRIVATE -Wno-sign-conversion)
         target_compile_options(${target} PRIVATE -Wno-signed-enum-bitfield)
         target_compile_options(${target} PRIVATE -Wno-conversion)
@@ -103,7 +115,6 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE -Wno-missing-prototypes)
         target_compile_options(${target} PRIVATE -Wno-padded)
         target_compile_options(${target} PRIVATE -Wno-float-equal)
-        target_compile_options(${target} PRIVATE -Wno-unused-variable)
         target_compile_options(${target} PRIVATE -Wno-global-constructors)
         target_compile_options(${target} PRIVATE -Wno-exit-time-destructors)
         target_compile_options(${target} PRIVATE -Wno-weak-vtables)
@@ -121,17 +132,12 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE -Wno-used-but-marked-unused)
         target_compile_options(${target} PRIVATE -Wno-shadow-field-in-constructor)
         target_compile_options(${target} PRIVATE -Wno-disabled-macro-expansion)
-        target_compile_options(${target} PRIVATE -Wno-extra-semi)
         target_compile_options(${target} PRIVATE -Wno-documentation)
         target_compile_options(${target} PRIVATE -Wno-undef)
-        target_compile_options(${target} PRIVATE -Wno-newline-eof)
         target_compile_options(${target} PRIVATE -Wno-redundant-parens)
-        target_compile_options(${target} PRIVATE -Wno-comma)
         target_compile_options(${target} PRIVATE -Wno-c++2a-compat)
         target_compile_options(${target} PRIVATE -Wno-missing-noreturn)
         target_compile_options(${target} PRIVATE -Wno-shadow-uncaptured-local)
-        target_compile_options(${target} PRIVATE -Wno-shadow)
-        target_compile_options(${target} PRIVATE -Wno-undefined-reinterpret-cast)
         target_compile_options(${target} PRIVATE -Wno-undefined-func-template)
         target_compile_options(${target} PRIVATE -Wno-shift-sign-overflow)
         target_compile_options(${target} PRIVATE -fno-limit-debug-info)
@@ -145,7 +151,6 @@ endmacro()
 # set OS preprocessor defines
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     set(LXGUI_PLATFORM_WASM TRUE)
-    set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
     if(NOT ${LXGUI_OPENGL3})
         message(WARNING "Warning: WebAssembly build does not support OpenGL version prior to 3")
         set(LXGUI_OPENGL3 TRUE)
@@ -157,13 +162,6 @@ elseif (UNIX)
     set(LXGUI_PLATFORM_LINUX TRUE)
 elseif (WIN32)
     set(LXGUI_PLATFORM_WINDOWS TRUE)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(LXGUI_COMPILER_MSVC TRUE)
-    endif()
-endif()
-
-if (NOT LXGUI_COMPILER_EMSCRIPTEN)
-    set(LXGUI_COMPILER_EMSCRIPTEN FALSE)
 endif()
 
 ##############################################################################
@@ -270,7 +268,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_frame_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_framerenderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_container.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_gradient.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_keybinder.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_glues.cpp

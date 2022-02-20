@@ -31,8 +31,8 @@ utils::owner_ptr<frame> frame_container::remove_root_frame(const utils::observer
     if (!frame_raw)
         return nullptr;
 
-    auto iter =
-        utils::find_if(root_frames_, [&](const auto& obj) { return obj.get() == frame_raw; });
+    auto iter = utils::find_if(
+        root_frames_, [&](const auto& root_frame) { return root_frame.get() == frame_raw; });
 
     if (iter == root_frames_.end())
         return nullptr;

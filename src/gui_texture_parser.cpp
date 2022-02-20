@@ -75,8 +75,8 @@ void texture::parse_gradient_node_(const layout_node& node) {
             return;
         }
 
-        set_gradient(gradient(
-            orient, parse_color_node_(*min_color_node), parse_color_node_(*max_color_node)));
+        set_gradient(gradient{
+            orient, parse_color_node_(*min_color_node), parse_color_node_(*max_color_node)});
     }
 }
 

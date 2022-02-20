@@ -11,7 +11,7 @@
 #include <cstring>
 #include <fmt/args.h>
 #include <functional>
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 namespace lxgui::gui {
 
@@ -822,8 +822,9 @@ std::string localizer::localize(std::string_view key, sol::variadic_args args) c
             } else {
                 auto result = item(args);
                 if (!result.valid()) {
-                    sol::error error = result;
-                    gui::out << gui::error << "gui::locale : " << error.what() << std::endl;
+                    gui::out << gui::error
+                             << "gui::locale : " << result.template get<sol::error>().what()
+                             << std::endl;
                     return std::string{key};
                 }
 

@@ -9,8 +9,8 @@
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_virtual_root.hpp"
 
-#include <sol/state.hpp>
-#include <sol/variadic_args.hpp>
+#include <lxgui/extern_sol2_state.hpp>
+#include <lxgui/extern_sol2_variadic_args.hpp>
 
 /** A @{Region} that can contain other regions and react to events.
  *   This class, which is at the core of the UI design, can contain
@@ -317,12 +317,13 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function get_backdrop
      */
     type.set_function(
-        "get_backdrop", [](sol::this_state lua, const frame& self) -> sol::optional<sol::table> {
+        "get_backdrop",
+        [](sol::this_state this_lua, const frame& self) -> sol::optional<sol::table> {
             const backdrop* backdrop = self.get_backdrop();
             if (!backdrop)
                 return sol::nullopt;
 
-            sol::table backdrop_table = sol::state_view(lua).create_table();
+            sol::table backdrop_table = sol::state_view(this_lua).create_table();
 
             backdrop_table["bgFile"]   = backdrop->get_background_file();
             backdrop_table["edgeFile"] = backdrop->get_edge_file();
@@ -366,13 +367,13 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function get_children
      */
-    type.set_function("get_children", [](const frame& self) {
+    type.set_function("get_children", [](sol::this_state this_lua, const frame& self) {
         std::vector<sol::object> children;
         children.reserve(self.get_rough_num_children());
 
-        const auto& lua = self.get_manager().get_lua();
+        auto lua_state = sol::state_view(this_lua);
         for (const auto& child : self.get_children()) {
-            children.push_back(lua[child.get_lua_name()]);
+            children.push_back(lua_state[child.get_lua_name()]);
         }
 
         return sol::as_table(std::move(children));
@@ -483,8 +484,8 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function is_frame_type
      */
-    type.set_function("is_frame_type", [](const frame& self, const std::string& type) {
-        return self.get_frame_type() == type;
+    type.set_function("is_frame_type", [](const frame& self, const std::string& type_name) {
+        return self.is_object_type(type_name);
     });
 
     /** @function is_mouse_click_enabled

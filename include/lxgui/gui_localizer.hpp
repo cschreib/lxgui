@@ -6,8 +6,8 @@
 
 #include <fmt/format.h>
 #include <locale>
-#include <sol/state.hpp>
-#include <sol/variadic_args.hpp>
+#include <lxgui/extern_sol2_state.hpp>
+#include <lxgui/extern_sol2_variadic_args.hpp>
 #include <string>
 #include <string_view>
 #include <unordered_map>

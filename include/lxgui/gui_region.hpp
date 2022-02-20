@@ -13,8 +13,8 @@
 #include "lxgui/utils_observer.hpp"
 
 #include <array>
+#include <lxgui/extern_sol2_object.hpp>
 #include <optional>
-#include <sol/object.hpp>
 #include <unordered_map>
 #include <vector>
 

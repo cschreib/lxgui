@@ -12,7 +12,7 @@
 #include "lxgui/gui_virtual_root.hpp"
 #include "lxgui/input_keys.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** Global functions for interacting with the GUI.
  *   The functions listed on this page are registered in the

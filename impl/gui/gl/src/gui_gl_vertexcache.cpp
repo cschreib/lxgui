@@ -27,7 +27,7 @@
 
 namespace lxgui::gui::gl {
 
-vertex_cache::vertex_cache(type type) : gui::vertex_cache(type) {
+vertex_cache::vertex_cache(type t) : gui::vertex_cache(t) {
     glGenVertexArrays(1, &vertex_array_);
 
     std::array<std::uint32_t, 2> buffers;

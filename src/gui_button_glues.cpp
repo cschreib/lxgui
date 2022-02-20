@@ -5,7 +5,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with a button that can be clicked.
  *   This class can handle three different states: "normal", "pushed"

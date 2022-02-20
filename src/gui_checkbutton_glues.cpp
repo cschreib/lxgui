@@ -3,7 +3,7 @@
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Button} with two additional states: checked and unchecked.
  *   This region works exactly like a classic @{Button}, but is has two

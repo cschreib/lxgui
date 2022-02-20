@@ -10,13 +10,12 @@
 #include "lxgui/utils_filesystem.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 #if defined(LXGUI_ENABLE_XML_PARSER)
-#    include <pugixml.hpp>
+#    include <lxgui/extern_pugixml.hpp>
 #endif
 #if defined(LXGUI_ENABLE_YAML_PARSER)
-#    include <ryml.hpp>
-#    include <ryml_std.hpp>
+#    include <lxgui/extern_ryml.hpp>
 #endif
 
 #include <fstream>

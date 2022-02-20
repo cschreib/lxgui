@@ -26,12 +26,12 @@ namespace lxgui::gui::gl {
 class vertex_cache final : public gui::vertex_cache {
 public:
     /// Constructor.
-    /** \param type The type of data this cache will hold
+    /** \param t The type of data this cache will hold
      *   \details A default constructed vertex cache holds no data. Use update()
      *            to store vertices to be rendered. The size hint can enable the cache to be
      *            pre-allocated, which will avoid a reallocation when update() is called.
      */
-    explicit vertex_cache(type type);
+    explicit vertex_cache(type t);
 
     /// Destructor.
     ~vertex_cache() override;

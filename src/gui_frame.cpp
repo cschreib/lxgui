@@ -16,9 +16,9 @@
 #include "lxgui/utils_string.hpp"
 
 #include <functional>
-#include <sol/as_args.hpp>
-#include <sol/state.hpp>
-#include <sol/variadic_args.hpp>
+#include <lxgui/extern_sol2_as_args.hpp>
+#include <lxgui/extern_sol2_state.hpp>
+#include <lxgui/extern_sol2_variadic_args.hpp>
 #include <sstream>
 
 namespace lxgui::gui {
@@ -156,8 +156,8 @@ std::string frame::serialize(const std::string& tab) const {
             str << tab << "  # Regions     : " << region_list_.size() << "\n";
         str << tab << "  |-###\n";
 
-        for (auto& region : get_regions()) {
-            str << region.serialize(tab + "  | ");
+        for (auto& obj : get_regions()) {
+            str << obj.serialize(tab + "  | ");
             str << tab << "  |-###\n";
         }
     }
@@ -1385,9 +1385,9 @@ void frame::notify_visible() {
 
     base::notify_visible();
 
-    for (auto& region : get_regions()) {
-        if (region.is_shown()) {
-            region.notify_visible();
+    for (auto& obj : get_regions()) {
+        if (obj.is_shown()) {
+            obj.notify_visible();
             if (!checker.is_alive())
                 return;
         }
@@ -1448,8 +1448,8 @@ void frame::notify_scaling_factor_updated() {
     for (auto& child : get_children())
         child.notify_scaling_factor_updated();
 
-    for (auto& region : get_regions())
-        region.notify_scaling_factor_updated();
+    for (auto& obj : get_regions())
+        obj.notify_scaling_factor_updated();
 }
 
 void frame::show() {
@@ -1557,8 +1557,8 @@ void frame::update(float delta) {
 
     // Update regions
     DEBUG_LOG("   Update regions");
-    for (auto& region : get_regions())
-        region.update(delta);
+    for (auto& obj : get_regions())
+        obj.update(delta);
 
     // Remove deleted regions
     {

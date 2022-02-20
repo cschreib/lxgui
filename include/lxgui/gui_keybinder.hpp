@@ -5,7 +5,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_signal.hpp"
 
-#include <sol/protected_function.hpp>
+#include <lxgui/extern_sol2_protected_function.hpp>
 #include <string>
 #include <vector>
 

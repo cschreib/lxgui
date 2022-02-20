@@ -16,7 +16,7 @@
 #include "lxgui/utils_filesystem.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 //#define GLSFML_GUI
 //#define GLSDL_GUI
@@ -216,7 +216,7 @@ void main_loop(void* type_erased_data) {
 #endif
 }
 
-int main(int argc, char* argv[]) {
+int main(int /*argc*/, char* /*argv*/[]) {
     auto* old_cout_buffer = std::cout.rdbuf();
 
     try {
@@ -508,8 +508,8 @@ int main(int argc, char* argv[]) {
                 if (timer > 0.5f) {
                     float frame_time = 1e6 * context.accumulated_time / context.frame_count;
 
-                    if (auto fps_text = self.get_region<gui::font_string>("Text")) {
-                        fps_text->set_text(
+                    if (auto txt = self.get_region<gui::font_string>("Text")) {
+                        txt->set_text(
                             U"(created in C++)\nFrame time (us) : " +
                             utils::to_ustring(std::round(frame_time)));
                     }
@@ -569,7 +569,7 @@ int main(int argc, char* argv[]) {
         });
 
         world_input_dispatcher.on_mouse_pressed.connect(
-            [&](input::mouse_button button_code, const gui::vector2f& mouse_pos) {
+            [&](input::mouse_button /*button_code*/, const gui::vector2f& /*mouse_pos*/) {
                 // Process mouse inputs for the game...
             });
 

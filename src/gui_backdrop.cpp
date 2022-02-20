@@ -12,23 +12,23 @@ namespace lxgui::gui {
 
 backdrop::backdrop(frame& parent) : parent_(parent) {}
 
-void backdrop::copy_from(const backdrop& backdrop) {
-    this->set_background(backdrop.get_background_file());
-    this->set_edge(backdrop.get_edge_file());
+void backdrop::copy_from(const backdrop& other) {
+    this->set_background(other.get_background_file());
+    this->set_edge(other.get_edge_file());
 
-    this->set_background_tilling(backdrop.is_background_tilling());
-    this->set_tile_size(backdrop.get_tile_size());
+    this->set_background_tilling(other.is_background_tilling());
+    this->set_tile_size(other.get_tile_size());
 
-    if (backdrop.background_file_.empty())
-        this->set_background_color(backdrop.get_background_color());
+    if (other.background_file_.empty())
+        this->set_background_color(other.get_background_color());
 
-    this->set_background_insets(backdrop.get_background_insets());
+    this->set_background_insets(other.get_background_insets());
 
-    if (backdrop.edge_file_.empty())
-        this->set_edge_color(backdrop.get_edge_color());
+    if (other.edge_file_.empty())
+        this->set_edge_color(other.get_edge_color());
 
-    this->set_edge_size(backdrop.get_edge_size());
-    this->set_edge_insets(backdrop.get_edge_insets());
+    this->set_edge_size(other.get_edge_size());
+    this->set_edge_insets(other.get_edge_insets());
 }
 
 void backdrop::set_background(const std::string& background_file) {

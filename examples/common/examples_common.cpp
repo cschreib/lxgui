@@ -1,6 +1,7 @@
 #include "examples_common.hpp"
 
 #include <iostream>
+#include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/gui_button.hpp>
 #include <lxgui/gui_editbox.hpp>
 #include <lxgui/gui_event.hpp>
@@ -17,7 +18,6 @@
 #include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils_filesystem.hpp>
-#include <sol/state.hpp>
 
 using namespace lxgui;
 
@@ -146,8 +146,8 @@ void examples_setup_gui(gui::manager& manager) {
         ++num_frames;
 
         if (timer > update_time) {
-            if (auto fps_text = self.get_region<gui::font_string>("Text")) {
-                fps_text->set_text(
+            if (auto txt = self.get_region<gui::font_string>("Text")) {
+                txt->set_text(
                     U"(created in C++)\nFPS : " +
                     utils::to_ustring(std::floor(num_frames / timer)));
             }

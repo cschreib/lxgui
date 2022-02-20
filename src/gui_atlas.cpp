@@ -159,8 +159,8 @@ std::optional<bounds2f> atlas_page::find_location_(float width, float height) co
 atlas::atlas(renderer& rdr, material::filter filt) : renderer_(rdr), filter_(filt) {}
 
 std::shared_ptr<gui::material> atlas::fetch_material(const std::string& file_name) const {
-    for (const auto& page_item : page_list_) {
-        auto tex = page_item.page->fetch_material(file_name);
+    for (const auto& item : page_list_) {
+        auto tex = item.page->fetch_material(file_name);
         if (tex)
             return tex;
     }
@@ -171,12 +171,12 @@ std::shared_ptr<gui::material> atlas::fetch_material(const std::string& file_nam
 std::shared_ptr<gui::material>
 atlas::add_material(const std::string& file_name, const material& mat) {
     try {
-        for (const auto& page_item : page_list_) {
-            auto tex = page_item.page->add_material(file_name, mat);
+        for (const auto& item : page_list_) {
+            auto tex = item.page->add_material(file_name, mat);
             if (tex)
                 return tex;
 
-            if (page_item.page->empty()) {
+            if (item.page->empty()) {
                 gui::out << gui::warning << "Could not fit texture '" << file_name
                          << "' on any atlas page." << std::endl;
                 return nullptr;
@@ -196,8 +196,8 @@ atlas::add_material(const std::string& file_name, const material& mat) {
 }
 
 std::shared_ptr<gui::font> atlas::fetch_font(const std::string& font_name) const {
-    for (const auto& page_item : page_list_) {
-        auto fnt = page_item.page->fetch_font(font_name);
+    for (const auto& item : page_list_) {
+        auto fnt = item.page->fetch_font(font_name);
         if (fnt)
             return fnt;
     }
@@ -207,11 +207,11 @@ std::shared_ptr<gui::font> atlas::fetch_font(const std::string& font_name) const
 
 bool atlas::add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt) {
     try {
-        for (const auto& page_item : page_list_) {
-            if (page_item.page->add_font(font_name, fnt))
+        for (const auto& item : page_list_) {
+            if (item.page->add_font(font_name, fnt))
                 return true;
 
-            if (page_item.page->empty()) {
+            if (item.page->empty()) {
                 gui::out << gui::warning << "Could not fit font '" << font_name
                          << "' on any atlas page." << std::endl;
                 return false;
@@ -232,17 +232,17 @@ std::size_t atlas::get_num_pages() const {
 }
 
 void atlas::add_page_() {
-    page_item page;
-    page.page = create_page_();
+    page_item item;
+    item.page = create_page_();
 
     // Add a white pixel as the first material in the atlas.
     // This can be used for optimizing quad batching, to render
     // quads with no texture.
     ub32color pixel(255, 255, 255, 255);
     auto      tex       = renderer_.create_material(vector2ui(1u, 1u), &pixel);
-    page.no_texture_mat = page.page->add_material("", *tex);
+    item.no_texture_mat = item.page->add_material("", *tex);
 
-    page_list_.push_back(std::move(page));
+    page_list_.push_back(std::move(item));
 }
 
 } // namespace lxgui::gui

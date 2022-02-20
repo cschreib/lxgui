@@ -10,7 +10,7 @@
 #include "lxgui/utils_string.hpp"
 
 #include <fstream>
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 namespace {
 // This should be incremented for each non-backward compatible change

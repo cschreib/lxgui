@@ -2,7 +2,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Region} that can be rendered in a layer.
  *   LayeredRegions can display content on the screen (texture,

@@ -11,7 +11,7 @@
 #include "lxgui/input_window.hpp"
 #include "lxgui/utils_range.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 using namespace lxgui::input;
 

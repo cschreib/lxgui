@@ -8,7 +8,7 @@
 #include "lxgui/gui_root.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** The base class of all elements in the GUI.
  *   Objects of this class offers core functionalities needed by every element

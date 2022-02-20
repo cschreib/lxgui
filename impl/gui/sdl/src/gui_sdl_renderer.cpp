@@ -15,12 +15,12 @@
 
 namespace lxgui::gui::sdl {
 
-renderer::renderer(SDL_Renderer* renderer, bool initialise_sdl_image) : renderer_(renderer) {
+renderer::renderer(SDL_Renderer* rdr, bool initialise_sdl_image) : renderer_(rdr) {
     int window_width, window_height;
     SDL_GetRendererOutputSize(renderer_, &window_width, &window_height);
     window_dimensions_ = vector2ui(window_width, window_height);
 
-    render_target::check_availability(renderer);
+    render_target::check_availability(rdr);
 
     if (initialise_sdl_image) {
         int img_flags = IMG_INIT_PNG;
@@ -33,7 +33,7 @@ renderer::renderer(SDL_Renderer* renderer, bool initialise_sdl_image) : renderer
 
     // Get maximum texture size
     SDL_RendererInfo info;
-    if (SDL_GetRendererInfo(renderer, &info) != 0) {
+    if (SDL_GetRendererInfo(rdr, &info) != 0) {
         throw gui::exception("gui::sdl::renderer", "Could not get renderer information.");
     }
 

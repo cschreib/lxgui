@@ -4,7 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with an editable text box.
  *   This frame lets the user input arbitrary text into a box,
