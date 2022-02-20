@@ -141,9 +141,9 @@ void renderer::render_quads_(
     static constexpr std::array<std::size_t, 6> ids = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material* mat = static_cast<const gl::material*>(mat);
-    if (mat) {
-        mat->bind();
+    const gl::material* gl_mat = static_cast<const gl::material*>(mat);
+    if (gl_mat) {
+        gl_mat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -184,12 +184,14 @@ void renderer::render_quads_(
     cache->update(quad_list[0].data(), quad_list.size() * 4);
 
     // Render
-    render_cache_(mat, *cache, matrix4f::identity);
+    render_cache_(gl_mat, *cache, matrix4f::identity);
 #endif
 }
 
 void renderer::render_cache_(
-    const gui::material* mat, const gui::vertex_cache& cache, const matrix4f& model_transform) {
+    const gui::material*     mat [[maybe_unused]],
+    const gui::vertex_cache& cache [[maybe_unused]],
+    const matrix4f&          model_transform [[maybe_unused]]) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
@@ -284,7 +286,8 @@ bool renderer::is_vertex_cache_supported() const {
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type) {
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type
+                                                                 [[maybe_unused]]) {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
@@ -305,7 +308,7 @@ bool renderer::is_gl_extension_supported(const std::string& extension) {
     GLint num_extensions = 0;
     glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
 
-    for (GLuint index = 0; index < static_cast<GLUint>(num_extensions); ++index) {
+    for (GLuint index = 0; index < static_cast<GLuint>(num_extensions); ++index) {
         if (extension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, index)))
             return true;
     }

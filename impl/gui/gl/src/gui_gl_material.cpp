@@ -264,7 +264,7 @@ std::uint32_t material::get_handle() const {
 
 void material::check_availability() {
 #if !defined(LXGUI_OPENGL3)
-    ONLY_POWER_OF_TWO = !renderer::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
+    only_power_of_two = !renderer::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
 #else
     // Non-power-of-two textures are always supported in OpenGL 3 / OpenGL ES 3
     only_power_of_two = false;
