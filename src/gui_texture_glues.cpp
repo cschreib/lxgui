@@ -1,271 +1,258 @@
+#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include "lxgui/gui_region_tpl.hpp"
-#include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_out.hpp"
-#include "lxgui/gui_manager.hpp"
-
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw images and colored rectangles.
-*   This object contains either a texture taken from a file,
-*   or a plain color (possibly with a different color on each corner).
-*
-*   Inherits all methods from: @{Region}, @{LayeredRegion}.
-*
-*   Child classes: none.
-*   @classmod Texture
-*/
+ *   This object contains either a texture taken from a file,
+ *   or a plain color (possibly with a different color on each corner).
+ *
+ *   Inherits all methods from: @{Region}, @{LayeredRegion}.
+ *
+ *   Child classes: none.
+ *   @classmod Texture
+ */
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui::gui {
 
-sol::optional<gradient::orientation> get_gradient_orientation(const std::string& sOrientation)
-{
-    sol::optional<gradient::orientation> mOrientation;
-    if (sOrientation == "HORIZONTAL")
-        mOrientation = gradient::orientation::HORIZONTAL;
-    else if (sOrientation == "VERTICAL")
-        mOrientation = gradient::orientation::VERTICAL;
-    else
-    {
-        gui::out << gui::warning << "Texture:set_gradient : "
-            "Unknown gradient orientation : \""+sOrientation+"\"." << std::endl;
+sol::optional<gradient::orientation> get_gradient_orientation(const std::string& orientation_name) {
+    sol::optional<gradient::orientation> orientation;
+    if (orientation_name == "HORIZONTAL")
+        orientation = gradient::orientation::horizontal;
+    else if (orientation_name == "VERTICAL")
+        orientation = gradient::orientation::vertical;
+    else {
+        gui::out << gui::warning
+                 << "Texture:set_gradient : "
+                    "Unknown gradient orientation : \"" +
+                        orientation_name + "\"."
+                 << std::endl;
     }
 
-    return mOrientation;
+    return orientation;
 }
 
-void texture::register_on_lua(sol::state& mLua)
-{
-    auto mClass = mLua.new_usertype<texture>("Texture",
-        sol::base_classes, sol::bases<region, layered_region>(),
-        sol::meta_function::index,
-        member_function<&texture::get_lua_member_>(),
-        sol::meta_function::new_index,
-        member_function<&texture::set_lua_member_>());
+void texture::register_on_lua(sol::state& lua) {
+    auto type = lua.new_usertype<texture>(
+        "Texture", sol::base_classes, sol::bases<region, layered_region>(),
+        sol::meta_function::index, member_function<&texture::get_lua_member_>(),
+        sol::meta_function::new_index, member_function<&texture::set_lua_member_>());
 
     /** @function get_blend_mode
-    */
-    mClass.set_function("get_blend_mode", [](const texture& mSelf)
-    {
-        texture::blend_mode mBlend = mSelf.get_blend_mode();
-        switch (mBlend)
-        {
-            case texture::blend_mode::NONE  : return "NONE";
-            case texture::blend_mode::BLEND : return "BLEND";
-            case texture::blend_mode::KEY   : return "KEY";
-            case texture::blend_mode::ADD   : return "ADD";
-            case texture::blend_mode::MOD   : return "MOD";
-            default:                          return "UNKNOWN";
+     */
+    type.set_function("get_blend_mode", [](const texture& self) {
+        texture::blend_mode blend = self.get_blend_mode();
+        switch (blend) {
+        case texture::blend_mode::none: return "NONE";
+        case texture::blend_mode::blend: return "BLEND";
+        case texture::blend_mode::key: return "KEY";
+        case texture::blend_mode::add: return "ADD";
+        case texture::blend_mode::mod: return "MOD";
+        default: return "UNKNOWN";
         }
     });
 
     /** @function get_filter_mode
-    */
-    mClass.set_function("get_filter_mode", [](const texture& mSelf)
-    {
-        material::filter mFilter = mSelf.get_filter_mode();
-        switch (mFilter)
-        {
-            case material::filter::NONE   : return "NONE";
-            case material::filter::LINEAR : return "LINEAR";
-            default:                        return "UNKNOWN";
+     */
+    type.set_function("get_filter_mode", [](const texture& self) {
+        material::filter filt = self.get_filter_mode();
+        switch (filt) {
+        case material::filter::none: return "NONE";
+        case material::filter::linear: return "LINEAR";
+        default: return "UNKNOWN";
         }
     });
 
     /** @function get_tex_coord
-    */
-    mClass.set_function("get_tex_coord", [](const texture& mSelf)
-    {
-        const auto& lCoords = mSelf.get_tex_coord();
+     */
+    type.set_function("get_tex_coord", [](const texture& self) {
+        const auto& coords = self.get_tex_coord();
         return std::make_tuple(
-            lCoords[0], lCoords[1], lCoords[2], lCoords[3],
-            lCoords[4], lCoords[5], lCoords[6], lCoords[7]);
+            coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], coords[6], coords[7]);
     });
 
-    /** @function get_tex_coord_modifies_rect
-    */
-    mClass.set_function("get_tex_coord_modifies_rect", member_function<&texture::get_tex_coord_modifies_rect>());
+    /** @function get_texture_stretching
+     */
+    type.set_function(
+        "get_texture_stretching", member_function<&texture::get_texture_stretching>());
 
     /** @function get_texture
-    */
-    mClass.set_function("get_texture", [](const texture& mSelf)
-    {
-        sol::optional<std::string> mReturn;
-        if (mSelf.has_texture_file())
-            mReturn = mSelf.get_texture_file();
+     */
+    type.set_function("get_texture", [](const texture& self) -> sol::optional<std::string> {
+        if (self.has_texture_file())
+            return self.get_texture_file();
+        else
+            return {};
     });
 
     /** @function get_vertex_color
-    */
-    mClass.set_function("get_vertex_color", [](const texture& mSelf, std::size_t uiIndex)
-    {
-        color mColor = mSelf.get_vertex_color(uiIndex);
-        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+     */
+    type.set_function("get_vertex_color", [](const texture& self, std::size_t index) {
+        color color = self.get_vertex_color(index);
+        return std::make_tuple(color.r, color.g, color.b, color.a);
     });
 
     /** @function is_desaturated
-    */
-    mClass.set_function("is_desaturated", member_function<&texture::is_desaturated>());
+     */
+    type.set_function("is_desaturated", member_function<&texture::is_desaturated>());
 
     /** @function set_blend_mode
-    */
-    mClass.set_function("set_blend_mode", [](texture& mSelf, const std::string& sBlend)
-    {
-        texture::blend_mode mBlend;
-        if (sBlend == "NONE")
-            mBlend = texture::blend_mode::NONE;
-        else if (sBlend == "BLEND")
-            mBlend = texture::blend_mode::BLEND;
-        else if (sBlend == "KEY")
-            mBlend = texture::blend_mode::KEY;
-        else if (sBlend == "ADD")
-            mBlend = texture::blend_mode::ADD;
-        else if (sBlend == "MOD")
-            mBlend = texture::blend_mode::MOD;
-        else
-        {
+     */
+    type.set_function("set_blend_mode", [](texture& self, const std::string& blend_mode_name) {
+        texture::blend_mode blend;
+        if (blend_mode_name == "NONE")
+            blend = texture::blend_mode::none;
+        else if (blend_mode_name == "BLEND")
+            blend = texture::blend_mode::blend;
+        else if (blend_mode_name == "KEY")
+            blend = texture::blend_mode::key;
+        else if (blend_mode_name == "ADD")
+            blend = texture::blend_mode::add;
+        else if (blend_mode_name == "MOD")
+            blend = texture::blend_mode::mod;
+        else {
             gui::out << gui::warning << "Texture:set_blend_mode : "
-                << "Unknown blending mode : \""+sBlend+"\"." << std::endl;
+                     << "Unknown blending mode : \"" + blend_mode_name + "\"." << std::endl;
             return;
         }
 
-        mSelf.set_blend_mode(mBlend);
+        self.set_blend_mode(blend);
     });
 
     /** @function set_filter_mode
-    */
-    mClass.set_function("set_filter_mode", [](texture& mSelf, const std::string& sFilter)
-    {
-        material::filter mFilter;
-        if (sFilter == "NONE")
-            mFilter = material::filter::NONE;
-        else if (sFilter == "LINEAR")
-            mFilter = material::filter::LINEAR;
-        else
-        {
+     */
+    type.set_function("set_filter_mode", [](texture& self, const std::string& filter_name) {
+        material::filter filt;
+        if (filter_name == "NONE")
+            filt = material::filter::none;
+        else if (filter_name == "LINEAR")
+            filt = material::filter::linear;
+        else {
             gui::out << gui::warning << "Texture:set_filter_mode : "
-                << "Unknown filtering mode : \""+sFilter+"\"." << std::endl;
+                     << "Unknown filtering mode : \"" + filter_name + "\"." << std::endl;
             return;
         }
 
-        mSelf.set_filter_mode(mFilter);
+        self.set_filter_mode(filt);
     });
 
     /** @function set_desaturated
-    */
-    mClass.set_function("set_desaturated", member_function<&texture::set_desaturated>());
+     */
+    type.set_function("set_desaturated", member_function<&texture::set_desaturated>());
 
     /** @function set_gradient
-    */
-    mClass.set_function("set_gradient", sol::overload(
-    [](texture& mSelf, const std::string& sOrientation,
-        float fMinR, float fMinG, float fMinB,
-        float fMaxR, float fMaxG, float fMaxB)
-    {
-        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
-        if (!mOrientation.has_value())
-            return;
+     */
+    type.set_function(
+        "set_gradient",
+        sol::overload(
+            [](texture& self, const std::string& orientation_name, float min_r, float min_g,
+               float min_b, float max_r, float max_g, float max_b) {
+                sol::optional<gradient::orientation> orientation =
+                    get_gradient_orientation(orientation_name);
+                if (!orientation.has_value())
+                    return;
 
-        mSelf.set_gradient(gradient(mOrientation.value(),
-            color(fMinR, fMinG, fMinB), color(fMaxR, fMaxG, fMaxB)));
-    },
-    [](texture& mSelf, const std::string& sOrientation,
-        const std::string& sMinColor, const std::string& sMaxColor)
-    {
-        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
-        if (!mOrientation.has_value())
-            return;
+                self.set_gradient(gradient{
+                    orientation.value(), color(min_r, min_g, min_b), color(max_r, max_g, max_b)});
+            },
+            [](texture& self, const std::string& orientation_name, const std::string& min_color,
+               const std::string& max_color) {
+                sol::optional<gradient::orientation> orientation =
+                    get_gradient_orientation(orientation_name);
+                if (!orientation.has_value())
+                    return;
 
-        mSelf.set_gradient(gradient(mOrientation.value(), color(sMinColor), color(sMaxColor)));
-    }));
+                self.set_gradient(
+                    gradient{orientation.value(), color(min_color), color(max_color)});
+            }));
 
     /** @function set_gradient_alpha
-    */
-    mClass.set_function("set_gradient_alpha", sol::overload(
-    [](texture& mSelf, const std::string& sOrientation,
-        float fMinR, float fMinG, float fMinB, float fMinA,
-        float fMaxR, float fMaxG, float fMaxB, float fMaxA)
-    {
-        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
-        if (!mOrientation.has_value())
-            return;
+     */
+    type.set_function(
+        "set_gradient_alpha",
+        sol::overload(
+            [](texture& self, const std::string& orientation_name, float min_r, float min_g,
+               float min_b, float min_a, float max_r, float max_g, float max_b, float max_a) {
+                sol::optional<gradient::orientation> orientation =
+                    get_gradient_orientation(orientation_name);
+                if (!orientation.has_value())
+                    return;
 
-        mSelf.set_gradient(gradient(mOrientation.value(),
-            color(fMinR, fMinG, fMinB, fMinA), color(fMaxR, fMaxG, fMaxB, fMaxA)));
-    },
-    [](texture& mSelf, const std::string& sOrientation,
-        const std::string& sMinColor, const std::string& sMaxColor)
-    {
-        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
-        if (!mOrientation.has_value())
-            return;
+                self.set_gradient(gradient{
+                    orientation.value(), color(min_r, min_g, min_b, min_a),
+                    color(max_r, max_g, max_b, max_a)});
+            },
+            [](texture& self, const std::string& orientation_name, const std::string& min_color,
+               const std::string& max_color) {
+                sol::optional<gradient::orientation> orientation =
+                    get_gradient_orientation(orientation_name);
+                if (!orientation.has_value())
+                    return;
 
-        mSelf.set_gradient(gradient(mOrientation.value(), color(sMinColor), color(sMaxColor)));
-    }));
+                self.set_gradient(
+                    gradient{orientation.value(), color(min_color), color(max_color)});
+            }));
 
     /** @function set_tex_coord
-    */
-    mClass.set_function("set_tex_coord", sol::overload(
-    [](texture& mSelf, float fLeft, float fTop, float fRight, float fBottom)
-    {
-        mSelf.set_tex_rect({fLeft, fTop, fRight, fBottom});
-    },
-    [](texture& mSelf, float fTopLeftX, float fTopLeftY, float fTopRightX, float fTopRightY,
-        float fBottomRightX, float fBottomRightY, float fBottomLeftX, float fBottomLeftY)
-    {
-        mSelf.set_tex_coord({fTopLeftX, fTopLeftY, fTopRightX, fTopRightY,
-            fBottomRightX, fBottomRightY, fBottomLeftX, fBottomLeftY});
-    }));
+     */
+    type.set_function(
+        "set_tex_coord",
+        sol::overload(
+            [](texture& self, float left, float top, float right, float bottom) {
+                self.set_tex_rect({left, top, right, bottom});
+            },
+            [](texture& self, float top_left_x, float top_left_y, float top_right_x,
+               float top_right_y, float bottom_right_x, float bottom_right_y, float bottom_left_x,
+               float bottom_left_y) {
+                self.set_tex_coord(
+                    {top_left_x, top_left_y, top_right_x, top_right_y, bottom_right_x,
+                     bottom_right_y, bottom_left_x, bottom_left_y});
+            }));
 
-    /** @function set_tex_coord_modifies_rect
-    */
-    mClass.set_function("set_tex_coord_modifies_rect", member_function<&texture::set_tex_coord_modifies_rect>());
+    /** @function set_texture_stretching
+     */
+    type.set_function(
+        "set_texture_stretching", member_function<&texture::set_texture_stretching>());
 
     /** @function set_texture
-    */
-    mClass.set_function("set_texture", sol::overload(
-    [](texture& mSelf, const std::string& sTexture)
-    {
-        if (!sTexture.empty() && sTexture[0] == '#')
-        {
-            // This is actually a color hash
-            mSelf.set_solid_color(color(sTexture));
-        }
-        else
-        {
-            // Normal texture file
-            mSelf.set_texture(sTexture);
-        }
-    },
-    [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
-    {
-        mSelf.set_solid_color(color(fR, fG, fB, fA.value_or(1.0f)));
-    }));
+     */
+    type.set_function(
+        "set_texture", sol::overload(
+                           [](texture& self, const std::string& texture) {
+                               if (!texture.empty() && texture[0] == '#') {
+                                   // This is actually a color hash
+                                   self.set_solid_color(color(texture));
+                               } else {
+                                   // Normal texture file
+                                   self.set_texture(texture);
+                               }
+                           },
+                           [](texture& self, float r, float g, float b, sol::optional<float> a) {
+                               self.set_solid_color(color(r, g, b, a.value_or(1.0f)));
+                           }));
 
     /** @function set_vertex_color
-    */
-    mClass.set_function("set_vertex_color", sol::overload(
-    [](texture& mSelf, const std::string& sColor)
-    {
-        mSelf.set_vertex_color(color(sColor), std::numeric_limits<std::size_t>::max());
-    },
-    [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
-    {
-        mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)),
-            std::numeric_limits<std::size_t>::max());
-    },
-    [](texture& mSelf, std::size_t uiIndex, const std::string& sColor)
-    {
-        mSelf.set_vertex_color(color(sColor), uiIndex);
-    },
-    [](texture& mSelf, std::size_t uiIndex, float fR, float fG, float fB, sol::optional<float> fA)
-    {
-        mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)), uiIndex);
-    }));
+     */
+    type.set_function(
+        "set_vertex_color",
+        sol::overload(
+            [](texture& self, const std::string& s) {
+                self.set_vertex_color(color(s), std::numeric_limits<std::size_t>::max());
+            },
+            [](texture& self, float r, float g, float b, sol::optional<float> a) {
+                self.set_vertex_color(
+                    color(r, g, b, a.value_or(1.0f)), std::numeric_limits<std::size_t>::max());
+            },
+            [](texture& self, std::size_t index, const std::string& s) {
+                self.set_vertex_color(color(s), index);
+            },
+            [](texture& self, std::size_t index, float r, float g, float b,
+               sol::optional<float> a) {
+                self.set_vertex_color(color(r, g, b, a.value_or(1.0f)), index);
+            }));
 }
 
-}
-}
+} // namespace lxgui::gui

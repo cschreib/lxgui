@@ -1,514 +1,446 @@
 #include "lxgui/gui_button.hpp"
+
+#include "lxgui/gui_alive_checker.hpp"
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_fontstring.hpp"
-#include "lxgui/gui_texture.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
-#include "lxgui/gui_alive_checker.hpp"
+#include "lxgui/gui_texture.hpp"
 
-namespace lxgui {
-namespace gui
-{
-button::button(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
-{
-    lType_.push_back(CLASS_NAME);
+namespace lxgui::gui {
+
+button::button(utils::control_block& block, manager& mgr) : frame(block, mgr) {
+    type_.push_back(class_name);
     enable_mouse(true);
 }
 
-std::string button::serialize(const std::string& sTab) const
-{
-    return base::serialize(sTab);
+std::string button::serialize(const std::string& tab) const {
+    return base::serialize(tab);
 }
 
-void button::create_glue()
-{
+void button::create_glue() {
     create_glue_(this);
 }
 
-bool button::can_use_script(const std::string& sScriptName) const
-{
-    if (base::can_use_script(sScriptName))
+bool button::can_use_script(const std::string& script_name) const {
+    if (base::can_use_script(script_name))
         return true;
-    else if ((sScriptName == "OnClick") ||
-        (sScriptName == "OnEnable") ||
-        (sScriptName == "OnDisable"))
+    else if (
+        (script_name == "OnClick") || (script_name == "OnEnable") || (script_name == "OnDisable"))
         return true;
     else
         return false;
 }
 
-void button::fire_script(const std::string& sScriptName, const event_data& mData)
-{
-    alive_checker mChecker(*this);
-    base::fire_script(sScriptName, mData);
-    if (!mChecker.is_alive())
+void button::fire_script(const std::string& script_name, const event_data& data) {
+    alive_checker checker(*this);
+    base::fire_script(script_name, data);
+    if (!checker.is_alive())
         return;
 
-    if (is_enabled())
-    {
-        if (sScriptName == "OnEnter")
+    if (is_enabled()) {
+        if (script_name == "OnEnter")
             highlight();
 
-        if (sScriptName == "OnLeave")
-        {
+        if (script_name == "OnLeave") {
             unlight();
 
-            if (mState_ == state::DOWN)
+            if (state_ == state::down)
                 release();
         }
 
-        if (sScriptName == "OnMouseDown")
-        {
+        if (script_name == "OnMouseDown") {
             push();
             fire_script("OnClick");
-            if (!mChecker.is_alive())
+            if (!checker.is_alive())
                 return;
         }
 
-        if (sScriptName == "OnMouseUp")
+        if (script_name == "OnMouseUp")
             release();
     }
 }
 
-void button::copy_from(const region& mObj)
-{
-    base::copy_from(mObj);
+void button::copy_from(const region& obj) {
+    base::copy_from(obj);
 
-    const button* pButton = down_cast<button>(&mObj);
-    if (!pButton)
+    const button* button_obj = down_cast<button>(&obj);
+    if (!button_obj)
         return;
 
-    this->set_text(pButton->get_text());
+    this->set_text(button_obj->get_text());
 
-    if (const texture* pOtherTexture = pButton->get_normal_texture().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherTexture->get_name();
-        mAttr.lInheritance = {pButton->get_normal_texture()};
+    if (const texture* other_texture = button_obj->get_normal_texture().get()) {
+        region_core_attributes attr;
+        attr.name        = other_texture->get_name();
+        attr.inheritance = {button_obj->get_normal_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pOtherTexture->get_draw_layer(), std::move(mAttr));
+        auto tex =
+            this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
-        if (pTexture)
-        {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_normal_texture(pTexture);
+        if (tex) {
+            tex->set_special();
+            tex->notify_loaded();
+            this->set_normal_texture(tex);
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherTexture->get_name();
-        mAttr.lInheritance = {pButton->get_pushed_texture()};
+    if (const texture* other_texture = button_obj->get_pushed_texture().get()) {
+        region_core_attributes attr;
+        attr.name        = other_texture->get_name();
+        attr.inheritance = {button_obj->get_pushed_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pOtherTexture->get_draw_layer(), std::move(mAttr));
+        auto tex =
+            this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
-        if (pTexture)
-        {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_pushed_texture(pTexture);
+        if (tex) {
+            tex->set_special();
+            tex->notify_loaded();
+            this->set_pushed_texture(tex);
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherTexture->get_name();
-        mAttr.lInheritance = {pButton->get_highlight_texture()};
+    if (const texture* other_texture = button_obj->get_highlight_texture().get()) {
+        region_core_attributes attr;
+        attr.name        = other_texture->get_name();
+        attr.inheritance = {button_obj->get_highlight_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pOtherTexture->get_draw_layer(), std::move(mAttr));
+        auto tex =
+            this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
-        if (pTexture)
-        {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_highlight_texture(pTexture);
+        if (tex) {
+            tex->set_special();
+            tex->notify_loaded();
+            this->set_highlight_texture(tex);
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherTexture->get_name();
-        mAttr.lInheritance = {pButton->get_disabled_texture()};
+    if (const texture* other_texture = button_obj->get_disabled_texture().get()) {
+        region_core_attributes attr;
+        attr.name        = other_texture->get_name();
+        attr.inheritance = {button_obj->get_disabled_texture()};
 
-        auto pTexture = this->create_layered_region<texture>(
-            pOtherTexture->get_draw_layer(), std::move(mAttr));
+        auto tex =
+            this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
-        if (pTexture)
-        {
-            pTexture->set_special();
-            pTexture->notify_loaded();
-            this->set_disabled_texture(pTexture);
+        if (tex) {
+            tex->set_special();
+            tex->notify_loaded();
+            this->set_disabled_texture(tex);
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_normal_text().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherText->get_name();
-        mAttr.lInheritance = {pButton->get_normal_text()};
+    if (const font_string* other_text = button_obj->get_normal_text().get()) {
+        region_core_attributes attr;
+        attr.name        = other_text->get_name();
+        attr.inheritance = {button_obj->get_normal_text()};
 
-        auto pFont = this->create_layered_region<font_string>(
-            pOtherText->get_draw_layer(), std::move(mAttr));
+        auto fstr =
+            this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
-        if (pFont)
-        {
-            pFont->set_special();
-            pFont->notify_loaded();
-            this->set_normal_text(pFont);
+        if (fstr) {
+            fstr->set_special();
+            fstr->notify_loaded();
+            this->set_normal_text(fstr);
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_highlight_text().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherText->get_name();
-        mAttr.lInheritance = {pButton->get_highlight_text()};
+    if (const font_string* other_text = button_obj->get_highlight_text().get()) {
+        region_core_attributes attr;
+        attr.name        = other_text->get_name();
+        attr.inheritance = {button_obj->get_highlight_text()};
 
-        auto pFont = this->create_layered_region<font_string>(
-            pOtherText->get_draw_layer(), std::move(mAttr));
+        auto fstr =
+            this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
-        if (pFont)
-        {
-            pFont->set_special();
-            pFont->notify_loaded();
-            this->set_highlight_text(pFont);
+        if (fstr) {
+            fstr->set_special();
+            fstr->notify_loaded();
+            this->set_highlight_text(fstr);
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_disabled_text().get())
-    {
-        region_core_attributes mAttr;
-        mAttr.sName = pOtherText->get_name();
-        mAttr.lInheritance = {pButton->get_disabled_text()};
+    if (const font_string* other_text = button_obj->get_disabled_text().get()) {
+        region_core_attributes attr;
+        attr.name        = other_text->get_name();
+        attr.inheritance = {button_obj->get_disabled_text()};
 
-        auto pFont = this->create_layered_region<font_string>(
-            pOtherText->get_draw_layer(), std::move(mAttr));
+        auto fstr =
+            this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
-        if (pFont)
-        {
-            pFont->set_special();
-            pFont->notify_loaded();
-            this->set_disabled_text(pFont);
+        if (fstr) {
+            fstr->set_special();
+            fstr->notify_loaded();
+            this->set_disabled_text(fstr);
         }
     }
 
-    this->set_pushed_text_offset(pButton->get_pushed_text_offset());
+    this->set_pushed_text_offset(button_obj->get_pushed_text_offset());
 
-    if (!pButton->is_enabled())
+    if (!button_obj->is_enabled())
         this->disable();
 }
 
-void button::set_text(const utils::ustring& sText)
-{
-    sText_ = sText;
+void button::set_text(const utils::ustring& content) {
+    content_ = content;
 
-    if (pNormalText_)
-        pNormalText_->set_text(sText);
+    if (normal_text_)
+        normal_text_->set_text(content);
 
-    if (pHighlightText_)
-        pHighlightText_->set_text(sText);
+    if (highlight_text_)
+        highlight_text_->set_text(content);
 
-    if (pDisabledText_)
-        pDisabledText_->set_text(sText);
+    if (disabled_text_)
+        disabled_text_->set_text(content);
 }
 
-const utils::ustring& button::get_text() const
-{
-    return sText_;
+const utils::ustring& button::get_text() const {
+    return content_;
 }
 
-void button::set_normal_texture(utils::observer_ptr<texture> pTexture)
-{
-    pNormalTexture_ = std::move(pTexture);
-    if (!pNormalTexture_)
+void button::set_normal_texture(utils::observer_ptr<texture> tex) {
+    normal_texture_ = std::move(tex);
+    if (!normal_texture_)
         return;
 
-    pNormalTexture_->set_shown(mState_ == state::UP);
+    normal_texture_->set_shown(state_ == state::up);
 }
 
-void button::set_pushed_texture(utils::observer_ptr<texture> pTexture)
-{
-    pPushedTexture_ = std::move(pTexture);
-    if (!pPushedTexture_)
+void button::set_pushed_texture(utils::observer_ptr<texture> tex) {
+    pushed_texture_ = std::move(tex);
+    if (!pushed_texture_)
         return;
 
-    pPushedTexture_->set_shown(mState_ == state::DOWN);
+    pushed_texture_->set_shown(state_ == state::down);
 }
 
-void button::set_disabled_texture(utils::observer_ptr<texture> pTexture)
-{
-    pDisabledTexture_ = std::move(pTexture);
-    if (!pDisabledTexture_)
+void button::set_disabled_texture(utils::observer_ptr<texture> tex) {
+    disabled_texture_ = std::move(tex);
+    if (!disabled_texture_)
         return;
 
-    pDisabledTexture_->set_shown(mState_ == state::DISABLED);
+    disabled_texture_->set_shown(state_ == state::disabled);
 }
 
-void button::set_highlight_texture(utils::observer_ptr<texture> pTexture)
-{
-    pHighlightTexture_ = std::move(pTexture);
-    if (!pHighlightTexture_)
+void button::set_highlight_texture(utils::observer_ptr<texture> tex) {
+    highlight_texture_ = std::move(tex);
+    if (!highlight_texture_)
         return;
 
-    pHighlightTexture_->set_shown(bHighlighted_);
+    highlight_texture_->set_shown(is_highlighted_);
 }
 
-void button::set_normal_text(utils::observer_ptr<font_string> pFont)
-{
-    if (pNormalText_ == pCurrentFontString_)
-        pCurrentFontString_ = pFont;
+void button::set_normal_text(utils::observer_ptr<font_string> fstr) {
+    if (normal_text_ == current_font_string_)
+        current_font_string_ = fstr;
 
-    pNormalText_ = std::move(pFont);
-    if (!pNormalText_)
+    normal_text_ = std::move(fstr);
+    if (!normal_text_)
         return;
 
-    pNormalText_->set_shown(mState_ == state::UP);
-    pNormalText_->set_text(sText_);
+    normal_text_->set_shown(state_ == state::up);
+    normal_text_->set_text(content_);
 }
 
-void button::set_highlight_text(utils::observer_ptr<font_string> pFont)
-{
-    if (pHighlightText_ == pCurrentFontString_)
-        pCurrentFontString_ = pFont;
+void button::set_highlight_text(utils::observer_ptr<font_string> fstr) {
+    if (highlight_text_ == current_font_string_)
+        current_font_string_ = fstr;
 
-    pHighlightText_ = std::move(pFont);
-    if (!pHighlightText_)
+    highlight_text_ = std::move(fstr);
+    if (!highlight_text_)
         return;
 
-    pHighlightText_->set_shown(bHighlighted_);
-    pHighlightText_->set_text(sText_);
+    highlight_text_->set_shown(is_highlighted_);
+    highlight_text_->set_text(content_);
 }
 
-void button::set_disabled_text(utils::observer_ptr<font_string> pFont)
-{
-    if (pDisabledText_ == pCurrentFontString_)
-        pCurrentFontString_ = pFont;
+void button::set_disabled_text(utils::observer_ptr<font_string> fstr) {
+    if (disabled_text_ == current_font_string_)
+        current_font_string_ = fstr;
 
-    pDisabledText_ = std::move(pFont);
-    if (!pDisabledText_)
+    disabled_text_ = std::move(fstr);
+    if (!disabled_text_)
         return;
 
-    pDisabledText_->set_shown(mState_ == state::DISABLED);
-    pDisabledText_->set_text(sText_);
+    disabled_text_->set_shown(state_ == state::disabled);
+    disabled_text_->set_text(content_);
 }
 
-void button::disable()
-{
-    if (is_enabled())
-    {
-        mState_ = state::DISABLED;
-        if (pDisabledTexture_)
-        {
-            if (pNormalTexture_)
-                pNormalTexture_->hide();
-            if (pPushedTexture_)
-                pPushedTexture_->hide();
+void button::disable() {
+    if (is_enabled()) {
+        state_ = state::disabled;
+        if (disabled_texture_) {
+            if (normal_texture_)
+                normal_texture_->hide();
+            if (pushed_texture_)
+                pushed_texture_->hide();
 
-            pDisabledTexture_->show();
-        }
-        else
-        {
-            if (pNormalTexture_)
-                pNormalTexture_->show();
-            if (pPushedTexture_)
-                pPushedTexture_->hide();
+            disabled_texture_->show();
+        } else {
+            if (normal_texture_)
+                normal_texture_->show();
+            if (pushed_texture_)
+                pushed_texture_->hide();
         }
 
-        if (pDisabledText_)
-        {
-            if (pNormalText_)
-                pNormalText_->hide();
+        if (disabled_text_) {
+            if (normal_text_)
+                normal_text_->hide();
 
-            pDisabledText_->show();
-            pCurrentFontString_ = pDisabledText_;
-        }
-        else
-        {
-            if (pNormalText_)
-                pNormalText_->show();
+            disabled_text_->show();
+            current_font_string_ = disabled_text_;
+        } else {
+            if (normal_text_)
+                normal_text_->show();
 
-            pCurrentFontString_ = pNormalText_;
+            current_font_string_ = normal_text_;
         }
 
         unlight();
 
-        alive_checker mChecker(*this);
+        alive_checker checker(*this);
         fire_script("OnDisable");
-        if (!mChecker.is_alive())
+        if (!checker.is_alive())
             return;
     }
 }
 
-void button::enable()
-{
-    if (!is_enabled())
-    {
-        mState_ = state::UP;
-        if (pDisabledTexture_)
-        {
-            if (pNormalTexture_)
-                pNormalTexture_->show();
-            if (pPushedTexture_)
-                pPushedTexture_->hide();
+void button::enable() {
+    if (!is_enabled()) {
+        state_ = state::up;
+        if (disabled_texture_) {
+            if (normal_texture_)
+                normal_texture_->show();
+            if (pushed_texture_)
+                pushed_texture_->hide();
 
-            pDisabledTexture_->hide();
-        }
-        else
-        {
-            if (pNormalTexture_)
-                pNormalTexture_->show();
-            if (pPushedTexture_)
-                pPushedTexture_->hide();
+            disabled_texture_->hide();
+        } else {
+            if (normal_texture_)
+                normal_texture_->show();
+            if (pushed_texture_)
+                pushed_texture_->hide();
         }
 
-        if (pNormalText_)
-            pNormalText_->show();
+        if (normal_text_)
+            normal_text_->show();
 
-        pCurrentFontString_ = pNormalText_;
+        current_font_string_ = normal_text_;
 
-        if (pDisabledText_)
-            pDisabledText_->hide();
+        if (disabled_text_)
+            disabled_text_->hide();
 
-        alive_checker mChecker(*this);
+        alive_checker checker(*this);
         fire_script("OnEnable");
-        if (!mChecker.is_alive())
+        if (!checker.is_alive())
             return;
     }
 }
 
-bool button::is_enabled() const
-{
-    return (mState_ != state::DISABLED);
+bool button::is_enabled() const {
+    return (state_ != state::disabled);
 }
 
-void button::push()
-{
-    if (is_enabled())
-    {
-        if (pPushedTexture_)
-        {
-            pPushedTexture_->show();
-            if (pNormalTexture_)
-                pNormalTexture_->hide();
+void button::push() {
+    if (is_enabled()) {
+        if (pushed_texture_) {
+            pushed_texture_->show();
+            if (normal_texture_)
+                normal_texture_->hide();
         }
 
-        if (pHighlightText_)
-            pHighlightText_->set_offset(mPushedTextOffset_);
-        if (pNormalText_)
-            pNormalText_->set_offset(mPushedTextOffset_);
+        if (highlight_text_)
+            highlight_text_->set_offset(pushed_text_offset_);
+        if (normal_text_)
+            normal_text_->set_offset(pushed_text_offset_);
 
-        mState_ = state::DOWN;
+        state_ = state::down;
     }
 }
 
-void button::release()
-{
-    if (is_enabled())
-    {
-        if (pPushedTexture_)
-        {
-            pPushedTexture_->hide();
-            if (pNormalTexture_)
-                pNormalTexture_->show();
+void button::release() {
+    if (is_enabled()) {
+        if (pushed_texture_) {
+            pushed_texture_->hide();
+            if (normal_texture_)
+                normal_texture_->show();
         }
 
-        if (pHighlightText_)
-            pHighlightText_->set_offset(vector2f(0, 0));
-        if (pNormalText_)
-            pNormalText_->set_offset(vector2f(0, 0));
+        if (highlight_text_)
+            highlight_text_->set_offset(vector2f(0, 0));
+        if (normal_text_)
+            normal_text_->set_offset(vector2f(0, 0));
 
-        mState_ = state::UP;
+        state_ = state::up;
     }
 }
 
-void button::highlight()
-{
-    if (!bHighlighted_)
-    {
-        if (pHighlightTexture_)
-        {
-            pHighlightTexture_->show();
+void button::highlight() {
+    if (!is_highlighted_) {
+        if (highlight_texture_) {
+            highlight_texture_->show();
         }
 
-        if (pHighlightText_)
-        {
-            if (pCurrentFontString_)
-                pCurrentFontString_->hide();
-            pCurrentFontString_ = pHighlightText_;
-            pCurrentFontString_->show();
+        if (highlight_text_) {
+            if (current_font_string_)
+                current_font_string_->hide();
+            current_font_string_ = highlight_text_;
+            current_font_string_->show();
         }
 
-        bHighlighted_ = true;
+        is_highlighted_ = true;
     }
 }
 
-void button::unlight()
-{
-    if (!bLockHighlight_ && bHighlighted_)
-    {
-        if (pHighlightTexture_)
-        {
-            pHighlightTexture_->hide();
+void button::unlight() {
+    if (!is_highlight_locked_ && is_highlighted_) {
+        if (highlight_texture_) {
+            highlight_texture_->hide();
         }
 
-        if (pHighlightText_)
-        {
-            if (pCurrentFontString_)
-                pCurrentFontString_->hide();
+        if (highlight_text_) {
+            if (current_font_string_)
+                current_font_string_->hide();
 
-            switch (mState_)
-            {
-                case state::UP       : pCurrentFontString_ = pNormalText_; break;
-                case state::DOWN     : pCurrentFontString_ = pNormalText_; break;
-                case state::DISABLED : pCurrentFontString_ = pDisabledText_; break;
+            switch (state_) {
+            case state::up: current_font_string_ = normal_text_; break;
+            case state::down: current_font_string_ = normal_text_; break;
+            case state::disabled: current_font_string_ = disabled_text_; break;
             }
 
-            if (pCurrentFontString_)
-                pCurrentFontString_->show();
+            if (current_font_string_)
+                current_font_string_->show();
         }
 
-
-        bHighlighted_ = false;
+        is_highlighted_ = false;
     }
 }
 
-button::state button::get_button_state() const
-{
-    return mState_;
+button::state button::get_button_state() const {
+    return state_;
 }
 
-void button::lock_highlight()
-{
+void button::lock_highlight() {
     highlight();
-    bLockHighlight_ = true;
+    is_highlight_locked_ = true;
 }
 
-void button::unlock_highlight()
-{
-    if (!bMouseInFrame_)
+void button::unlock_highlight() {
+    if (!is_mouse_in_frame_)
         unlight();
 
-    bLockHighlight_ = false;
+    is_highlight_locked_ = false;
 }
 
-void button::set_pushed_text_offset(const vector2f& mOffset)
-{
-    mPushedTextOffset_ = mOffset;
+void button::set_pushed_text_offset(const vector2f& offset) {
+    pushed_text_offset_ = offset;
     notify_renderer_need_redraw();
 }
 
-const vector2f& button::get_pushed_text_offset() const
-{
-    return mPushedTextOffset_;
+const vector2f& button::get_pushed_text_offset() const {
+    return pushed_text_offset_;
 }
-}
-}
+
+} // namespace lxgui::gui

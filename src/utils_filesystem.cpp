@@ -1,81 +1,69 @@
 #include "lxgui/utils_filesystem.hpp"
+
+#include "lxgui/utils_std.hpp"
 #include "lxgui/utils_string.hpp"
 
-#include <lxgui/utils_std.hpp>
 #include <filesystem>
 
-namespace lxgui {
-namespace utils
-{
+namespace lxgui::utils {
 
-bool file_exists(const std::string& sFile)
-{
-    return std::filesystem::exists(sFile) && std::filesystem::is_regular_file(sFile);
+bool file_exists(const std::string& file) {
+    return std::filesystem::exists(file) && std::filesystem::is_regular_file(file);
 }
 
-string_vector get_directory_list(const std::string& sRelPath)
-{
-    string_vector lDirList;
-    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
-    {
-        if (mEntry.is_directory())
-            lDirList.push_back(mEntry.path().filename().u8string());
+string_vector get_directory_list(const std::string& rel_path) {
+    string_vector dir_list;
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_directory())
+            dir_list.push_back(entry.path().filename().u8string());
     }
 
-    return lDirList;
+    return dir_list;
 }
 
-string_vector get_file_list(const std::string& sRelPath, bool bWithPath)
-{
-    string_vector lFileList;
-    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
-    {
-        if (mEntry.is_regular_file())
-        {
-            if (bWithPath)
-                lFileList.push_back(mEntry.path().relative_path().u8string());
+string_vector get_file_list(const std::string& rel_path, bool with_path) {
+    string_vector file_list;
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_regular_file()) {
+            if (with_path)
+                file_list.push_back(entry.path().relative_path().u8string());
             else
-                lFileList.push_back(mEntry.path().filename().u8string());
+                file_list.push_back(entry.path().filename().u8string());
         }
     }
 
-    return lFileList;
+    return file_list;
 }
 
-string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const std::string& sExtensions)
-{
-    auto lExtensions = utils::cut(sExtensions, ",");
-    for (auto& sExtension : lExtensions)
-        sExtension = utils::trim(sExtension, ' ');
+string_vector
+get_file_list(const std::string& rel_path, bool with_path, const std::string& extensions) {
+    auto extension_list = utils::cut(extensions, ",");
+    for (auto& extension : extension_list)
+        extension = utils::trim(extension, ' ');
 
-    string_vector lFileList;
-    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
-    {
-        if (mEntry.is_regular_file())
-        {
-            if (utils::find(lExtensions, mEntry.path().extension().u8string()) != lExtensions.end())
-            {
-                if (bWithPath)
-                    lFileList.push_back(mEntry.path().relative_path().u8string());
+    string_vector file_list;
+    for (const auto& entry : std::filesystem::directory_iterator(rel_path)) {
+        if (entry.is_regular_file()) {
+            if (utils::find(extension_list, entry.path().extension().u8string()) !=
+                extension_list.end()) {
+                if (with_path)
+                    file_list.push_back(entry.path().relative_path().u8string());
                 else
-                    lFileList.push_back(mEntry.path().filename().u8string());
+                    file_list.push_back(entry.path().filename().u8string());
             }
         }
     }
 
-    return lFileList;
+    return file_list;
 }
 
-bool make_directory(const std::string& sPath)
-{
-    std::filesystem::create_directories(sPath);
-    return std::filesystem::exists(sPath) && std::filesystem::is_directory(sPath);
+bool make_directory(const std::string& path) {
+    std::filesystem::create_directories(path);
+    return std::filesystem::exists(path) && std::filesystem::is_directory(path);
 }
 
-std::string get_file_extension(const std::string& sFile)
-{
-    return std::filesystem::path(sFile).extension().u8string();
+std::string get_file_extension(const std::string& file) {
+    return std::filesystem::path(file).extension().u8string();
 }
 
-}
-}
+} // namespace lxgui::utils

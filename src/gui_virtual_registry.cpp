@@ -1,45 +1,37 @@
 #include "lxgui/gui_virtual_registry.hpp"
+
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"
+#include "lxgui/utils_string.hpp"
 
-#include <lxgui/utils_string.hpp>
+namespace lxgui::gui {
 
-namespace lxgui {
-namespace gui
-{
+virtual_registry::virtual_registry(const registry& object_registry) :
+    object_registry_(&object_registry) {}
 
-virtual_registry::virtual_registry(const registry& mObjectRegistry) :
-    pObjectRegistry_(&mObjectRegistry)
-{
-}
+std::vector<utils::observer_ptr<const region>>
+virtual_registry::get_virtual_region_list(std::string_view names) const {
+    std::vector<utils::observer_ptr<const region>> inheritance;
+    for (auto parent : utils::cut(names, ",")) {
+        parent = utils::trim(parent, ' ');
 
-std::vector<utils::observer_ptr<const region>> virtual_registry::get_virtual_region_list(
-    std::string_view sNames) const
-{
-    std::vector<utils::observer_ptr<const region>> lInheritance;
-    for (auto sParent : utils::cut(sNames, ","))
-    {
-        sParent = utils::trim(sParent, ' ');
+        utils::observer_ptr<const region> obj = get_region_by_name(parent);
 
-        utils::observer_ptr<const region> pObj = get_region_by_name(sParent);
-
-        if (!pObj)
-        {
-            bool bExistsNonVirtual = pObjectRegistry_->get_region_by_name(sParent) != nullptr;
+        if (!obj) {
+            bool exists_non_virtual = object_registry_->get_region_by_name(parent) != nullptr;
 
             gui::out << gui::warning << "gui::manager : "
-                << "Cannot find inherited object \"" << sParent << "\""
-                << std::string(bExistsNonVirtual ? " (object is not virtual)" : "")
-                << ". Inheritance skipped." << std::endl;
+                     << "Cannot find inherited object \"" << parent << "\""
+                     << std::string(exists_non_virtual ? " (object is not virtual)" : "")
+                     << ". Inheritance skipped." << std::endl;
 
             continue;
         }
 
-        lInheritance.push_back(std::move(pObj));
+        inheritance.push_back(std::move(obj));
     }
 
-    return lInheritance;
+    return inheritance;
 }
 
-}
-}
+} // namespace lxgui::gui

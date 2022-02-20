@@ -1,268 +1,245 @@
 #include "lxgui/gui_manager.hpp"
 
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_region.hpp"
-#include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_keybinder.hpp"
+#include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/gui_region.hpp"
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_root.hpp"
 #include "lxgui/gui_virtual_root.hpp"
-#include "lxgui/gui_factory.hpp"
-#include "lxgui/gui_addon_registry.hpp"
-#include "lxgui/gui_keybinder.hpp"
-#include "lxgui/input_source.hpp"
 #include "lxgui/input_dispatcher.hpp"
-#include "lxgui/input_world_dispatcher.hpp"
+#include "lxgui/input_source.hpp"
 #include "lxgui/input_window.hpp"
-
-#include <lxgui/utils_std.hpp>
+#include "lxgui/input_world_dispatcher.hpp"
+#include "lxgui/utils_std.hpp"
 
 #include <sstream>
 
 /** \mainpage lxgui documentation
-*
-* This page allows you to browse the documentation for the C++ API of lxgui.
-*
-* For the Lua and layout file API, please go to the
-* <a href="../lua/index.html">Lua documentation</a>.
-*/
+ *
+ * This page allows you to browse the documentation for the C++ API of lxgui.
+ *
+ * For the Lua and layout file API, please go to the
+ * <a href="../lua/index.html">Lua documentation</a>.
+ */
 
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui::gui {
 
-manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pInputSource,
-    std::unique_ptr<renderer> pRenderer) :
-    utils::enable_observer_from_this<manager>(mBlock),
-    pInputSource_(std::move(pInputSource)),
-    pRenderer_(std::move(pRenderer)),
-    pWindow_(std::make_unique<input::window>(*pInputSource_)),
-    pInputDispatcher_(std::make_unique<input::dispatcher>(*pInputSource_)),
-    pWorldInputDispatcher_(std::make_unique<input::world_dispatcher>()),
-    pEventEmitter_(std::make_unique<gui::event_emitter>()),
-    pLocalizer_(std::make_unique<localizer>())
-{
+manager::manager(
+    utils::control_block&          block,
+    std::unique_ptr<input::source> src,
+    std::unique_ptr<renderer>      rdr) :
+    utils::enable_observer_from_this<manager>(block),
+    input_source_(std::move(src)),
+    renderer_(std::move(rdr)),
+    window_(std::make_unique<input::window>(*input_source_)),
+    input_dispatcher_(std::make_unique<input::dispatcher>(*input_source_)),
+    world_input_dispatcher_(std::make_unique<input::world_dispatcher>()),
+    event_emitter_(std::make_unique<gui::event_emitter>()),
+    localizer_(std::make_unique<localizer>()) {
     set_interface_scaling_factor(1.0f);
 
-    pWindow_->on_window_resized.connect([&](const vector2ui& mDimensions)
-    {
+    window_->on_window_resized.connect([&](const vector2ui& dimensions) {
         // Update the scaling factor; on mobile platforms, rotating the screen will
         // trigger a change of window size and resolution, which the scaling factor "hint"
         // will pick up.
-        set_interface_scaling_factor(fBaseScalingFactor_);
+        set_interface_scaling_factor(base_scaling_factor_);
 
-        pRenderer_->notify_window_resized(mDimensions);
+        renderer_->notify_window_resized(dimensions);
     });
 }
 
-manager::~manager()
-{
+manager::~manager() {
     close_ui_now();
 }
 
-void manager::set_interface_scaling_factor(float fScalingFactor)
-{
-    float fFullScalingFactor = fScalingFactor*pWindow_->get_interface_scaling_factor_hint();
+void manager::set_interface_scaling_factor(float scaling_factor) {
+    float full_scaling_factor = scaling_factor * window_->get_interface_scaling_factor_hint();
 
-    if (fFullScalingFactor == fScalingFactor_) return;
+    if (full_scaling_factor == scaling_factor_)
+        return;
 
-    fBaseScalingFactor_ = fScalingFactor;
-    fScalingFactor_ = fFullScalingFactor;
+    base_scaling_factor_ = scaling_factor;
+    scaling_factor_      = full_scaling_factor;
 
-    pInputDispatcher_->set_interface_scaling_factor(fScalingFactor_);
+    input_dispatcher_->set_interface_scaling_factor(scaling_factor_);
 
-    if (pRoot_)
-    {
-        pRoot_->notify_scaling_factor_updated();
-        pRoot_->notify_hovered_frame_dirty();
+    if (root_) {
+        root_->notify_scaling_factor_updated();
+        root_->notify_hovered_frame_dirty();
     }
 }
 
-float manager::get_interface_scaling_factor() const
-{
-    return fScalingFactor_;
+float manager::get_interface_scaling_factor() const {
+    return scaling_factor_;
 }
 
-void manager::enable_caching(bool bEnableCaching)
-{
-    bEnableCaching_ = bEnableCaching;
-    if (pRoot_)
-        pRoot_->enable_caching(bEnableCaching_);
+void manager::enable_caching(bool enable_caching) {
+    enable_caching_ = enable_caching;
+    if (root_)
+        root_->enable_caching(enable_caching_);
 }
 
-void manager::toggle_caching()
-{
-    bEnableCaching_ = !bEnableCaching_;
-    if (pRoot_)
-        pRoot_->enable_caching(bEnableCaching_);
+void manager::toggle_caching() {
+    enable_caching_ = !enable_caching_;
+    if (root_)
+        root_->enable_caching(enable_caching_);
 }
 
-bool manager::is_caching_enabled() const
-{
-    if (pRoot_)
-        return pRoot_->is_caching_enabled();
+bool manager::is_caching_enabled() const {
+    if (root_)
+        return root_->is_caching_enabled();
     else
-        return bEnableCaching_;
+        return enable_caching_;
 }
 
-void manager::add_addon_directory(const std::string& sDirectory)
-{
-    if (utils::find(lGUIDirectoryList_, sDirectory) == lGUIDirectoryList_.end())
-        lGUIDirectoryList_.push_back(sDirectory);
+void manager::add_addon_directory(const std::string& directory) {
+    if (utils::find(gui_directory_list_, directory) == gui_directory_list_.end())
+        gui_directory_list_.push_back(directory);
 }
 
-void manager::clear_addon_directory_list()
-{
-    lGUIDirectoryList_.clear();
+void manager::clear_addon_directory_list() {
+    gui_directory_list_.clear();
 }
 
-sol::state& manager::get_lua()
-{
-    return *pLua_;
+sol::state& manager::get_lua() {
+    return *lua_;
 }
 
-const sol::state& manager::get_lua() const
-{
-    return *pLua_;
+const sol::state& manager::get_lua() const {
+    return *lua_;
 }
 
-void manager::read_files_()
-{
-    if (bLoaded_ || pAddOnRegistry_)
+void manager::read_files_() {
+    if (is_loaded_ || addon_registry_)
         return;
 
-    pAddOnRegistry_ = std::make_unique<addon_registry>(
+    addon_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
 
-    for (const auto& sDirectory : lGUIDirectoryList_)
-        pAddOnRegistry_->load_addon_directory(sDirectory);
+    for (const auto& directory : gui_directory_list_)
+        addon_registry_->load_addon_directory(directory);
 }
 
-void manager::load_ui()
-{
-    if (bLoaded_)
+void manager::load_ui() {
+    if (is_loaded_)
         return;
 
-    pFactory_ = std::make_unique<factory>(*this);
-    pRoot_ = utils::make_owned<root>(*this);
-    pVirtualRoot_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
+    factory_      = std::make_unique<factory>(*this);
+    root_         = utils::make_owned<root>(*this);
+    virtual_root_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
 
     create_lua_();
     read_files_();
 
-    bLoaded_ = true;
-    bCloseUI_ = false;
+    is_loaded_     = true;
+    close_ui_flag_ = false;
 }
 
-void manager::close_ui()
-{
-    if (bUpdating_)
-        bCloseUI_ = true;
+void manager::close_ui() {
+    if (is_updating_)
+        close_ui_flag_ = true;
     else
         close_ui_now();
 }
 
-void manager::close_ui_now()
-{
-    if (!bLoaded_)
+void manager::close_ui_now() {
+    if (!is_loaded_)
         return;
 
-    if (pAddOnRegistry_)
-        pAddOnRegistry_->save_variables();
+    if (addon_registry_)
+        addon_registry_->save_variables();
 
-    pVirtualRoot_ = nullptr;
-    pRoot_ = nullptr;
-    pFactory_ = nullptr;
-    pAddOnRegistry_ = nullptr;
-    pLua_ = nullptr;
+    virtual_root_   = nullptr;
+    root_           = nullptr;
+    factory_        = nullptr;
+    addon_registry_ = nullptr;
+    lua_            = nullptr;
 
-    pLocalizer_->clear_translations();
+    localizer_->clear_translations();
 
-    bLoaded_ = false;
-    bFirstIteration_ = true;
+    is_loaded_          = false;
+    is_first_iteration_ = true;
 }
 
-void manager::reload_ui()
-{
-    if (bUpdating_)
-        bReloadUI_ = true;
+void manager::reload_ui() {
+    if (is_updating_)
+        reload_ui_flag_ = true;
     else
         reload_ui_now();
 }
 
-void manager::reload_ui_now()
-{
+void manager::reload_ui_now() {
     gui::out << "Closing UI..." << std::endl;
     close_ui_now();
     gui::out << "Done. Loading UI..." << std::endl;
     load_ui();
     gui::out << "Done." << std::endl;
 
-    bReloadUI_ = false;
+    reload_ui_flag_ = false;
 }
 
-void manager::render_ui() const
-{
-    pRenderer_->begin();
+void manager::render_ui() const {
+    renderer_->begin();
 
-    pRoot_->render();
+    root_->render();
 
-    pRenderer_->end();
+    renderer_->end();
 }
 
-bool manager::is_loaded() const
-{
-    return bLoaded_;
+bool manager::is_loaded() const {
+    return is_loaded_;
 }
 
-void manager::update_ui(float fDelta)
-{
-    bUpdating_ = true;
+void manager::update_ui(float delta) {
+    is_updating_ = true;
 
     DEBUG_LOG(" Update regions...");
-    pRoot_->update(fDelta);
+    root_->update(delta);
 
-    if (bFirstIteration_)
-    {
+    if (is_first_iteration_) {
         DEBUG_LOG(" Entering world...");
         get_event_emitter().fire_event("ENTERING_WORLD");
-        bFirstIteration_ = false;
+        is_first_iteration_ = false;
 
-        pRoot_->notify_hovered_frame_dirty();
+        root_->notify_hovered_frame_dirty();
     }
 
-    bUpdating_ = false;
+    is_updating_ = false;
 
-    if (bReloadUI_)
+    if (reload_ui_flag_)
         reload_ui_now();
-    if (bCloseUI_)
+    if (close_ui_flag_)
         close_ui_now();
 }
 
-std::string manager::print_ui() const
-{
+std::string manager::print_ui() const {
     std::stringstream s;
 
-    s << "\n\n######################## Regions ########################\n\n########################\n" << std::endl;
-    for (const auto& mFrame : pRoot_->get_root_frames())
-    {
-        s << mFrame.serialize("") << "\n########################\n" << std::endl;
+    s << "\n\n######################## Regions "
+         "########################\n\n########################\n"
+      << std::endl;
+    for (const auto& frame : root_->get_root_frames()) {
+        s << frame.serialize("") << "\n########################\n" << std::endl;
     }
 
-    s << "\n\n#################### Virtual Regions ####################\n\n########################\n" << std::endl;
-    for (const auto& mFrame : pVirtualRoot_->get_root_frames())
-    {
-        s << mFrame.serialize("") << "\n########################\n" << std::endl;
+    s << "\n\n#################### Virtual Regions "
+         "####################\n\n########################\n"
+      << std::endl;
+    for (const auto& frame : virtual_root_->get_root_frames()) {
+        s << frame.serialize("") << "\n########################\n" << std::endl;
     }
 
     return s.str();
 }
 
-}
-}
+} // namespace lxgui::gui

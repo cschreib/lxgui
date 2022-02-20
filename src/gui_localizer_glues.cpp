@@ -1,7 +1,7 @@
-#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_manager.hpp"
 
-#include <sol/state.hpp>
+#include <lxgui/extern_sol2_state.hpp>
 
 /** Global functions for localization / translation of text.
 *   The functions listed on this page are registered in the
@@ -86,7 +86,7 @@
 *   The translation must then refer to these dynamic elements to include them in the
 *   displayed test. Dynamic elements are always indicated with pairs of braces `{}`.
 *   Inside the braces, you can supply additional modifiers which will affect how the
-*   data is being displayed. This follows the [fmtlib](https://fmt.dev/latest/syntax.html)
+*   data is being displayed. This follows the [&](https://fmt.dev/latest/syntax.html)
 *   syntax. For example, the message above can be represented with the string
 *
 *       ["player_lost_hp"] = "{} has lost {} HP.",
@@ -222,152 +222,132 @@
 *   @module Localization
 */
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui::gui {
 
-void localizer::register_on_lua(sol::state& mSol)
-{
+void localizer::register_on_lua(sol::state& lua) {
     /** Returns the preferred languages to display the GUI.
-    *   @see set_preferred_languages
-    *   @function get_preferred_languages
-    *   @treturn table A table listing the languages selected to display the UI
-    *
-    */
-    mSol.set_function("get_preferred_languages", [&]()
-    {
-        return sol::as_table(get_preferred_languages());
-    });
+     *   @see set_preferred_languages
+     *   @function get_preferred_languages
+     *   @treturn table A table listing the languages selected to display the UI
+     *
+     */
+    lua.set_function(
+        "get_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Sets the preferred languages to display the GUI.
-    *   The languages must be listed in order of decreasing preference. They must be of the form
-    *   `{language}{REGION}` where `{language}` is a two-letter lower case word identifying the
-    *   main language, and `{REGION}` is a two-letter upper case word identifying the dialect or
-    *   regional variant of the language (e.g., "enUS" for United States of America English, and
-    *   "enGB" for Great Britain English). This change will not take effect until the GUI is
-    *   re-loaded, see @{Manager.reload_ui}.
-    *   @function set_preferred_languages
-    *   @tparam table languages A table listing the languages to use to display the GUI
-    */
-    mSol.set_function("set_preferred_languages", [&]()
-    {
-        return sol::as_table(get_preferred_languages());
-    });
+     *   The languages must be listed in order of decreasing preference. They must be of the form
+     *   `{language}{REGION}` where `{language}` is a two-letter lower case word identifying the
+     *   main language, and `{REGION}` is a two-letter upper case word identifying the dialect or
+     *   regional variant of the language (e.g., "enUS" for United States of America English, and
+     *   "enGB" for Great Britain English). This change will not take effect until the GUI is
+     *   re-loaded, see @{Manager.reload_ui}.
+     *   @function set_preferred_languages
+     *   @tparam table languages A table listing the languages to use to display the GUI
+     */
+    lua.set_function(
+        "set_preferred_languages", [&]() { return sol::as_table(get_preferred_languages()); });
 
     /** Removes all allowed code points.
-    *   After calling this function, it is highly recommended to always include at least
-    *   the Unicode groups "basic latin" (to render basic ASCII characters) and
-    *   "geometric shapes" (to render the "missing character" glyph).
-    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
-    *   @function clear_allowed_code_points
-    */
-    mSol.set_function("clear_allowed_code_points", [&]()
-    {
-        clear_allowed_code_points();
-    });
+     *   After calling this function, it is highly recommended to always include at least
+     *   the Unicode groups "basic latin" (to render basic ASCII characters) and
+     *   "geometric shapes" (to render the "missing character" glyph).
+     *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     *   @function clear_allowed_code_points
+     */
+    lua.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
 
     /** Adds a new range to the set of allowed code points.
-    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
-    *   @tparam integer first The first code point in the range
-    *   @tparam integer last The last code point in the range
-    *   @function add_allowed_code_points
-    */
-    mSol.set_function("add_allowed_code_points", [&](char32_t uiFirst, char32_t uiLast)
-    {
-        add_allowed_code_points(code_point_range{uiFirst, uiLast});
+     *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     *   @tparam integer first The first code point in the range
+     *   @tparam integer last The last code point in the range
+     *   @function add_allowed_code_points
+     */
+    lua.set_function("add_allowed_code_points", [&](char32_t first, char32_t last) {
+        add_allowed_code_points(code_point_range{first, last});
     });
 
     /** Adds a new range to the set of allowed code points from a Unicode group.
-    *   The Unicode standard defines a set of code groups, which are contiguous
-    *   ranges of Unicode code points that are typically associated to a language
-    *   or a group of languages. This function knows about such groups and the
-    *   ranges of code point they correspond to, and is therefore more user-friendly.
-    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
-    *   @tparam string group The name of the Unicode code group to allow
-    *   @function add_allowed_code_points_for_group
-    */
-    mSol.set_function("add_allowed_code_points_for_group", [&](const std::string& sGroupName)
-    {
-        add_allowed_code_points_for_group(sGroupName);
+     *   The Unicode standard defines a set of code groups, which are contiguous
+     *   ranges of Unicode code points that are typically associated to a language
+     *   or a group of languages. This function knows about such groups and the
+     *   ranges of code point they correspond to, and is therefore more user-friendly.
+     *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     *   @tparam string group The name of the Unicode code group to allow
+     *   @function add_allowed_code_points_for_group
+     */
+    lua.set_function("add_allowed_code_points_for_group", [&](const std::string& group_name) {
+        add_allowed_code_points_for_group(group_name);
     });
 
     /** Adds a new range to the set of allowed code points for a given language.
-    *   Language codes are based on the ISO-639-1 standard, or later standards for those
-    *   languages which were not listed in ISO-639-1. They are always in lower case, and
-    *   typically composed of just two letters, but sometimes more.
-    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
-    *   @tparam string language The language code (e.g., "en", "ru", etc.)
-    *   @function add_allowed_code_points_for_language
-    */
-    mSol.set_function("add_allowed_code_points_for_language", [&](const std::string& sLanguage)
-    {
-        add_allowed_code_points_for_language(sLanguage);
+     *   Language codes are based on the ISO-639-1 standard, or later standards for those
+     *   languages which were not listed in ISO-639-1. They are always in lower case, and
+     *   typically composed of just two letters, but sometimes more.
+     *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     *   @tparam string language The language code (e.g., "en", "ru", etc.)
+     *   @function add_allowed_code_points_for_language
+     */
+    lua.set_function("add_allowed_code_points_for_language", [&](const std::string& language) {
+        add_allowed_code_points_for_language(language);
     });
 
-    /** Attempts to automatically detect the set of allowed code points based on preferred languages.
-    *   Only use it if you need to reset the allowed code points to the default after changing
-    *   the preferred languages with @{set_preferred_languages}.
-    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
-    *   @function auto_detect_allowed_code_points
-    */
-    mSol.set_function("auto_detect_allowed_code_points", [&]()
-    {
-        auto_detect_allowed_code_points();
-    });
+    /** Attempts to automatically detect the set of allowed code points based on preferred
+     * languages. Only use it if you need to reset the allowed code points to the default after
+     * changing the preferred languages with @{set_preferred_languages}. This change will not take
+     * effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     *   @function auto_detect_allowed_code_points
+     */
+    lua.set_function(
+        "auto_detect_allowed_code_points", [&]() { auto_detect_allowed_code_points(); });
 
     /** Sets the default character to display if a character is missing from a font.
-    *   @tparam integer character The Unicode UTF-32 code point of the character to display
-    *   @function set_fallback_code_point
-    */
-    mSol.set_function("set_fallback_code_point", [&](char32_t uiCodePoint)
-    {
-        set_fallback_code_point(uiCodePoint);
+     *   @tparam integer character The Unicode UTF-32 code point of the character to display
+     *   @function set_fallback_code_point
+     */
+    lua.set_function("set_fallback_code_point", [&](char32_t code_point) {
+        set_fallback_code_point(code_point);
     });
 
     /** Loads translations from a folder.
-    *   @function load_translations
-    *   @tparam string folder The folder to search for translations
-    */
-    mSol.set_function("load_translations", [&](const std::string& sFolderPath)
-    {
-        load_translations(sFolderPath);
+     *   @function load_translations
+     *   @tparam string folder The folder to search for translations
+     */
+    lua.set_function("load_translations", [&](const std::string& folder_path) {
+        load_translations(folder_path);
     });
 
     /** Loads translations form a file.
-    *   @function load_translation_file
-    *   @tparam string filename The file from which to read new translations
-    */
-    mSol.set_function("load_translation_file", [&](const std::string& sFilename)
-    {
-        load_translation_file(sFilename);
+     *   @function load_translation_file
+     *   @tparam string filename The file from which to read new translations
+     */
+    lua.set_function("load_translation_file", [&](const std::string& filename) {
+        load_translation_file(filename);
     });
 
     /** Translate a string or message, with arguments.
-    *   The arguments are passed as individual parameters after the string to translate.
-    *   There can be as many arguments are needed (including zero).
-    *   @function localize_string
-    *   @tparam string message The translatable string code (e.g., "{player_health}")
-    *   @param ... Data to display in the translatable string (e.g., the player's health value).
-    *   @treturn string The translated message encoded as UTF-8.
-    */
-    mSol.set_function("localize_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
-    {
-        return localize(sKey, mVArgs);
+     *   The arguments are passed as individual parameters after the string to translate.
+     *   There can be as many arguments are needed (including zero).
+     *   @function localize_string
+     *   @tparam string message The translatable string code (e.g., "{player_health}")
+     *   @param ... Data to display in the translatable string (e.g., the player's health value).
+     *   @treturn string The translated message encoded as UTF-8.
+     */
+    lua.set_function("localize_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return localize(key, v_args);
     });
 
     /** Format a string with arguments.
-    *   The arguments are passed as individual parameters after the string to translate.
-    *   There can be as many arguments are needed (including zero).
-    *   @function format_string
-    *   @tparam string message The string with formatting specifiers (e.g., "Player {0} has {1} HP.")
-    *   @param ... Data to display in the formatted string (e.g., the player's health value).
-    *   @treturn string The formatted string encoded as UTF-8.
-    */
-    mSol.set_function("format_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
-    {
-        return format_string(sKey, mVArgs);
+     *   The arguments are passed as individual parameters after the string to translate.
+     *   There can be as many arguments are needed (including zero).
+     *   @function format_string
+     *   @tparam string message The string with formatting specifiers (e.g., "Player {0} has {1}
+     * HP.")
+     *   @param ... Data to display in the formatted string (e.g., the player's health value).
+     *   @treturn string The formatted string encoded as UTF-8.
+     */
+    lua.set_function("format_string", [&](const std::string& key, sol::variadic_args v_args) {
+        return format_string(key, v_args);
     });
 }
 
-}
-}
+} // namespace lxgui::gui

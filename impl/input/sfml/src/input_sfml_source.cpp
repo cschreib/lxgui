@@ -1,247 +1,216 @@
 #include "lxgui/impl/input_sfml_source.hpp"
-#include <lxgui/utils_string.hpp>
-#include <lxgui/gui_exception.hpp>
 
-#include <SFML/Window/Window.hpp>
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/utils_string.hpp"
+
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Window/Clipboard.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include <SFML/Window/Clipboard.hpp>
-#include <SFML/Graphics/Image.hpp>
+#include <SFML/Window/Window.hpp>
 
 using sf::Keyboard;
 using sf::Mouse;
 
-namespace lxgui {
-namespace input {
-namespace sfml
-{
-source::source(sf::Window& mWindow) : mWindow_(mWindow)
-{
-    mWindowDimensions_ = gui::vector2ui(mWindow_.getSize().x, mWindow_.getSize().y);
+namespace lxgui::input { namespace sfml {
+source::source(sf::Window& win) : window_(win) {
+    window_dimensions_ = gui::vector2ui(window_.getSize().x, window_.getSize().y);
 }
 
-utils::ustring source::get_clipboard_content()
-{
-    auto sUtfString = sf::Clipboard::getString().toUtf32();
-    return utils::ustring(sUtfString.begin(), sUtfString.end());
+utils::ustring source::get_clipboard_content() {
+    auto utf_string = sf::Clipboard::getString().toUtf32();
+    return utils::ustring(utf_string.begin(), utf_string.end());
 }
 
-void source::set_clipboard_content(const utils::ustring& sContent)
-{
-    sf::Clipboard::setString(sf::String::fromUtf32(sContent.begin(), sContent.end()));
+void source::set_clipboard_content(const utils::ustring& content) {
+    sf::Clipboard::setString(sf::String::fromUtf32(content.begin(), content.end()));
 }
 
-void source::set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot)
-{
-    auto mIter = lCursorMap_.find(sFileName);
-    if (mIter == lCursorMap_.end())
-    {
-        sf::Image mImage;
-        if (!mImage.loadFromFile(sFileName))
-        {
-            throw gui::exception("input::sfml::source",
-                "Could not load cursor file '" + sFileName + "'.");
+void source::set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) {
+    auto iter = cursor_map_.find(file_name);
+    if (iter == cursor_map_.end()) {
+        sf::Image image;
+        if (!image.loadFromFile(file_name)) {
+            throw gui::exception(
+                "input::sfml::source", "Could not load cursor file '" + file_name + "'.");
         }
 
-        auto pCursor = std::make_unique<sf::Cursor>();
-        pCursor->loadFromPixels(mImage.getPixelsPtr(), mImage.getSize(),
-            sf::Vector2u(mHotSpot.x, mHotSpot.y));
-        mIter = lCursorMap_.insert(std::make_pair(sFileName, std::move(pCursor))).first;
+        auto cursor = std::make_unique<sf::Cursor>();
+        cursor->loadFromPixels(
+            image.getPixelsPtr(), image.getSize(), sf::Vector2u(hot_spot.x, hot_spot.y));
+        iter = cursor_map_.insert(std::make_pair(file_name, std::move(cursor))).first;
     }
 
-    mWindow_.setMouseCursor(*mIter->second);
+    window_.setMouseCursor(*iter->second);
 }
 
-void source::reset_mouse_cursor()
-{
-    const std::string sName = "system_arrow";
-    auto mIter = lCursorMap_.find(sName);
-    if (mIter == lCursorMap_.end())
-    {
-        auto pCursor = std::make_unique<sf::Cursor>();
-        pCursor->loadFromSystem(sf::Cursor::Arrow);
-        mIter = lCursorMap_.insert(std::make_pair(sName, std::move(pCursor))).first;
+void source::reset_mouse_cursor() {
+    const std::string name = "system_arrow";
+    auto              iter = cursor_map_.find(name);
+    if (iter == cursor_map_.end()) {
+        auto cursor = std::make_unique<sf::Cursor>();
+        cursor->loadFromSystem(sf::Cursor::Arrow);
+        iter = cursor_map_.insert(std::make_pair(name, std::move(cursor))).first;
     }
 
-    mWindow_.setMouseCursor(*mIter->second);
+    window_.setMouseCursor(*iter->second);
 }
 
-key source::from_sfml_(int uiSFKey) const
-{
-    switch ((sf::Keyboard::Key)uiSFKey)
-    {
-    case Keyboard::Escape:    return key::K_ESCAPE;
-    case Keyboard::Num0:      return key::K_0;
-    case Keyboard::Num1:      return key::K_1;
-    case Keyboard::Num2:      return key::K_2;
-    case Keyboard::Num3:      return key::K_3;
-    case Keyboard::Num4:      return key::K_4;
-    case Keyboard::Num5:      return key::K_5;
-    case Keyboard::Num6:      return key::K_6;
-    case Keyboard::Num7:      return key::K_7;
-    case Keyboard::Num8:      return key::K_8;
-    case Keyboard::Num9:      return key::K_9;
-    case Keyboard::Dash:      return key::K_MINUS;
-    case Keyboard::Equal:     return key::K_EQUALS;
-    case Keyboard::BackSpace: return key::K_BACK;
-    case Keyboard::Tab:       return key::K_TAB;
-    case Keyboard::Q:         return key::K_Q;
-    case Keyboard::W:         return key::K_W;
-    case Keyboard::E:         return key::K_E;
-    case Keyboard::R:         return key::K_R;
-    case Keyboard::T:         return key::K_T;
-    case Keyboard::Y:         return key::K_Y;
-    case Keyboard::U:         return key::K_U;
-    case Keyboard::I:         return key::K_I;
-    case Keyboard::O:         return key::K_O;
-    case Keyboard::P:         return key::K_P;
-    case Keyboard::LBracket:  return key::K_LBRACKET;
-    case Keyboard::RBracket:  return key::K_RBRACKET;
-    case Keyboard::Return:    return key::K_RETURN;
-    case Keyboard::LControl:  return key::K_LCONTROL;
-    case Keyboard::A:         return key::K_A;
-    case Keyboard::S:         return key::K_S;
-    case Keyboard::D:         return key::K_D;
-    case Keyboard::F:         return key::K_F;
-    case Keyboard::G:         return key::K_G;
-    case Keyboard::H:         return key::K_H;
-    case Keyboard::J:         return key::K_J;
-    case Keyboard::K:         return key::K_K;
-    case Keyboard::L:         return key::K_L;
-    case Keyboard::SemiColon: return key::K_SEMICOLON;
-    case Keyboard::Quote:     return key::K_APOSTROPHE;
-    case Keyboard::LShift:    return key::K_LSHIFT;
-    case Keyboard::BackSlash: return key::K_BACKSLASH;
-    case Keyboard::Z:         return key::K_Z;
-    case Keyboard::X:         return key::K_X;
-    case Keyboard::C:         return key::K_C;
-    case Keyboard::V:         return key::K_V;
-    case Keyboard::B:         return key::K_B;
-    case Keyboard::N:         return key::K_N;
-    case Keyboard::M:         return key::K_M;
-    case Keyboard::Comma:     return key::K_COMMA;
-    case Keyboard::Period:    return key::K_PERIOD;
-    case Keyboard::Slash:     return key::K_SLASH;
-    case Keyboard::RShift:    return key::K_RSHIFT;
-    case Keyboard::Multiply:  return key::K_MULTIPLY;
-    case Keyboard::LAlt:      return key::K_LMENU;
-    case Keyboard::Space:     return key::K_SPACE;
-    case Keyboard::F1:        return key::K_F1;
-    case Keyboard::F2:        return key::K_F2;
-    case Keyboard::F3:        return key::K_F3;
-    case Keyboard::F4:        return key::K_F4;
-    case Keyboard::F5:        return key::K_F5;
-    case Keyboard::F6:        return key::K_F6;
-    case Keyboard::F7:        return key::K_F7;
-    case Keyboard::F8:        return key::K_F8;
-    case Keyboard::F9:        return key::K_F9;
-    case Keyboard::F10:       return key::K_F10;
-    case Keyboard::Numpad7:   return key::K_NUMPAD7;
-    case Keyboard::Numpad8:   return key::K_NUMPAD8;
-    case Keyboard::Numpad9:   return key::K_NUMPAD9;
-    case Keyboard::Subtract:  return key::K_SUBTRACT;
-    case Keyboard::Numpad4:   return key::K_NUMPAD4;
-    case Keyboard::Numpad5:   return key::K_NUMPAD5;
-    case Keyboard::Numpad6:   return key::K_NUMPAD6;
-    case Keyboard::Add:       return key::K_ADD;
-    case Keyboard::Numpad1:   return key::K_NUMPAD1;
-    case Keyboard::Numpad2:   return key::K_NUMPAD2;
-    case Keyboard::Numpad3:   return key::K_NUMPAD3;
-    case Keyboard::Numpad0:   return key::K_NUMPAD0;
-    case Keyboard::F11:       return key::K_F11;
-    case Keyboard::F12:       return key::K_F12;
-    case Keyboard::F13:       return key::K_F13;
-    case Keyboard::F14:       return key::K_F14;
-    case Keyboard::F15:       return key::K_F15;
-    case Keyboard::RControl:  return key::K_RCONTROL;
-    case Keyboard::Divide:    return key::K_DIVIDE;
-    case Keyboard::RAlt:      return key::K_RMENU;
-    case Keyboard::Pause:     return key::K_PAUSE;
-    case Keyboard::Home:      return key::K_HOME;
-    case Keyboard::Up:        return key::K_UP;
-    case Keyboard::PageUp:    return key::K_PGUP;
-    case Keyboard::Left:      return key::K_LEFT;
-    case Keyboard::Right:     return key::K_RIGHT;
-    case Keyboard::End:       return key::K_END;
-    case Keyboard::Down:      return key::K_DOWN;
-    case Keyboard::PageDown:  return key::K_PGDOWN;
-    case Keyboard::Insert:    return key::K_INSERT;
-    case Keyboard::Delete:    return key::K_DELETE;
-    case Keyboard::LSystem:   return key::K_LWIN;
-    case Keyboard::RSystem:   return key::K_RWIN;
-    case Keyboard::Menu:      return key::K_APPS;
-    default:                  return key::K_UNASSIGNED;
+key source::from_sfml_(int sf_key) const {
+    switch ((sf::Keyboard::Key)sf_key) {
+    case Keyboard::Escape: return key::k_escape;
+    case Keyboard::Num0: return key::k_0;
+    case Keyboard::Num1: return key::k_1;
+    case Keyboard::Num2: return key::k_2;
+    case Keyboard::Num3: return key::k_3;
+    case Keyboard::Num4: return key::k_4;
+    case Keyboard::Num5: return key::k_5;
+    case Keyboard::Num6: return key::k_6;
+    case Keyboard::Num7: return key::k_7;
+    case Keyboard::Num8: return key::k_8;
+    case Keyboard::Num9: return key::k_9;
+    case Keyboard::Dash: return key::k_minus;
+    case Keyboard::Equal: return key::k_equals;
+    case Keyboard::BackSpace: return key::k_back;
+    case Keyboard::Tab: return key::k_tab;
+    case Keyboard::Q: return key::k_q;
+    case Keyboard::W: return key::k_w;
+    case Keyboard::E: return key::k_e;
+    case Keyboard::R: return key::k_r;
+    case Keyboard::T: return key::k_t;
+    case Keyboard::Y: return key::k_y;
+    case Keyboard::U: return key::k_u;
+    case Keyboard::I: return key::k_i;
+    case Keyboard::O: return key::k_o;
+    case Keyboard::P: return key::k_p;
+    case Keyboard::LBracket: return key::k_lbracket;
+    case Keyboard::RBracket: return key::k_rbracket;
+    case Keyboard::Return: return key::k_return;
+    case Keyboard::LControl: return key::k_lcontrol;
+    case Keyboard::A: return key::k_a;
+    case Keyboard::S: return key::k_s;
+    case Keyboard::D: return key::k_d;
+    case Keyboard::F: return key::k_f;
+    case Keyboard::G: return key::k_g;
+    case Keyboard::H: return key::k_h;
+    case Keyboard::J: return key::k_j;
+    case Keyboard::K: return key::k_k;
+    case Keyboard::L: return key::k_l;
+    case Keyboard::SemiColon: return key::k_semicolon;
+    case Keyboard::Quote: return key::k_apostrophe;
+    case Keyboard::LShift: return key::k_lshift;
+    case Keyboard::BackSlash: return key::k_backslash;
+    case Keyboard::Z: return key::k_z;
+    case Keyboard::X: return key::k_x;
+    case Keyboard::C: return key::k_c;
+    case Keyboard::V: return key::k_v;
+    case Keyboard::B: return key::k_b;
+    case Keyboard::N: return key::k_n;
+    case Keyboard::M: return key::k_m;
+    case Keyboard::Comma: return key::k_comma;
+    case Keyboard::Period: return key::k_period;
+    case Keyboard::Slash: return key::k_slash;
+    case Keyboard::RShift: return key::k_rshift;
+    case Keyboard::Multiply: return key::k_multiply;
+    case Keyboard::LAlt: return key::k_lmenu;
+    case Keyboard::Space: return key::k_space;
+    case Keyboard::F1: return key::k_f1;
+    case Keyboard::F2: return key::k_f2;
+    case Keyboard::F3: return key::k_f3;
+    case Keyboard::F4: return key::k_f4;
+    case Keyboard::F5: return key::k_f5;
+    case Keyboard::F6: return key::k_f6;
+    case Keyboard::F7: return key::k_f7;
+    case Keyboard::F8: return key::k_f8;
+    case Keyboard::F9: return key::k_f9;
+    case Keyboard::F10: return key::k_f10;
+    case Keyboard::Numpad7: return key::k_numpad_7;
+    case Keyboard::Numpad8: return key::k_numpad_8;
+    case Keyboard::Numpad9: return key::k_numpad_9;
+    case Keyboard::Subtract: return key::k_subtract;
+    case Keyboard::Numpad4: return key::k_numpad_4;
+    case Keyboard::Numpad5: return key::k_numpad_5;
+    case Keyboard::Numpad6: return key::k_numpad_6;
+    case Keyboard::Add: return key::k_add;
+    case Keyboard::Numpad1: return key::k_numpad_1;
+    case Keyboard::Numpad2: return key::k_numpad_2;
+    case Keyboard::Numpad3: return key::k_numpad_3;
+    case Keyboard::Numpad0: return key::k_numpad_0;
+    case Keyboard::F11: return key::k_f11;
+    case Keyboard::F12: return key::k_f12;
+    case Keyboard::F13: return key::k_f13;
+    case Keyboard::F14: return key::k_f14;
+    case Keyboard::F15: return key::k_f15;
+    case Keyboard::RControl: return key::k_rcontrol;
+    case Keyboard::Divide: return key::k_divide;
+    case Keyboard::RAlt: return key::k_rmenu;
+    case Keyboard::Pause: return key::k_pause;
+    case Keyboard::Home: return key::k_home;
+    case Keyboard::Up: return key::k_up;
+    case Keyboard::PageUp: return key::k_pgup;
+    case Keyboard::Left: return key::k_left;
+    case Keyboard::Right: return key::k_right;
+    case Keyboard::End: return key::k_end;
+    case Keyboard::Down: return key::k_down;
+    case Keyboard::PageDown: return key::k_pgdown;
+    case Keyboard::Insert: return key::k_insert;
+    case Keyboard::Delete: return key::k_delete;
+    case Keyboard::LSystem: return key::k_lwin;
+    case Keyboard::RSystem: return key::k_rwin;
+    case Keyboard::Menu: return key::k_apps;
+    default: return key::k_unassigned;
     }
 }
 
-void source::on_sfml_event(const sf::Event& mEvent)
-{
-    static const mouse_button lMouseFromSFML[3] = {
-        mouse_button::LEFT, mouse_button::RIGHT, mouse_button::MIDDLE};
+void source::on_sfml_event(const sf::Event& event) {
+    static const mouse_button mouse_from_sfml[3] = {
+        mouse_button::left, mouse_button::right, mouse_button::middle};
 
-    if (mEvent.type == sf::Event::TextEntered)
-    {
-        auto c = mEvent.text.unicode;
+    if (event.type == sf::Event::TextEntered) {
+        auto c = event.text.unicode;
         // Remove non printable characters (< 32) and Del. (127)
         if (c >= 32 && c != 127)
             on_text_entered(c);
-    }
-    else if (mEvent.type == sf::Event::MouseWheelMoved)
-    {
-        mMouse_.fWheel += mEvent.mouseWheel.delta;
-        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-        on_mouse_wheel(mEvent.mouseWheel.delta, gui::vector2f(mMousePos.x, mMousePos.y));
-    }
-    else if (mEvent.type == sf::Event::Resized)
-    {
-        mWindowDimensions_ = gui::vector2ui(mEvent.size.width, mEvent.size.height);
-        on_window_resized(mWindowDimensions_);
-    }
-    else if (mEvent.type == sf::Event::KeyPressed)
-    {
-        key mKey = from_sfml_(mEvent.key.code);
-        mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = true;
-        on_key_pressed(mKey);
-    }
-    else if (mEvent.type == sf::Event::KeyReleased)
-    {
-        key mKey = from_sfml_(mEvent.key.code);
-        mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = false;
-        on_key_released(mKey);
-    }
-    else if (mEvent.type == sf::Event::MouseButtonPressed)
-    {
-        mouse_button mButton = lMouseFromSFML[mEvent.mouseButton.button];
-        mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = true;
+    } else if (event.type == sf::Event::MouseWheelMoved) {
+        mouse_.wheel += event.mouseWheel.delta;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_wheel(event.mouseWheel.delta, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::Resized) {
+        window_dimensions_ = gui::vector2ui(event.size.width, event.size.height);
+        on_window_resized(window_dimensions_);
+    } else if (event.type == sf::Event::KeyPressed) {
+        key key                                              = from_sfml_(event.key.code);
+        keyboard_.is_key_down[static_cast<std::size_t>(key)] = true;
+        on_key_pressed(key);
+    } else if (event.type == sf::Event::KeyReleased) {
+        key key                                              = from_sfml_(event.key.code);
+        keyboard_.is_key_down[static_cast<std::size_t>(key)] = false;
+        on_key_released(key);
+    } else if (event.type == sf::Event::MouseButtonPressed) {
+        mouse_button button = mouse_from_sfml[event.mouseButton.button];
+        mouse_.is_button_down[static_cast<std::size_t>(button)] = true;
 
-        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-        on_mouse_pressed(mButton, gui::vector2f(mMousePos.x, mMousePos.y));
-    }
-    else if (mEvent.type == sf::Event::MouseButtonReleased)
-    {
-        mouse_button mButton = lMouseFromSFML[mEvent.mouseButton.button];
-        mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = false;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_pressed(button, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::MouseButtonReleased) {
+        mouse_button button = mouse_from_sfml[event.mouseButton.button];
+        mouse_.is_button_down[static_cast<std::size_t>(button)] = false;
 
-        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-        on_mouse_released(mButton, gui::vector2f(mMousePos.x, mMousePos.y));
-    }
-    else if (mEvent.type == sf::Event::MouseMoved)
-    {
-        gui::vector2i mMousePos(mEvent.mouseMove.x, mEvent.mouseMove.y);
-        gui::vector2i mMouseDelta;
-        if (!bFirstMouseMove_)
-        {
-            mMouseDelta = mMousePos - mOldMousePos_;
-            mOldMousePos_ = mMousePos;
+        const sf::Vector2i mouse_pos = Mouse::getPosition(window_);
+        on_mouse_released(button, gui::vector2f(mouse_pos.x, mouse_pos.y));
+    } else if (event.type == sf::Event::MouseMoved) {
+        gui::vector2i mouse_pos(event.mouseMove.x, event.mouseMove.y);
+        gui::vector2i mouse_delta;
+        if (!first_mouse_move_) {
+            mouse_delta    = mouse_pos - old_mouse_pos_;
+            old_mouse_pos_ = mouse_pos;
         }
 
-        bFirstMouseMove_ = false;
+        first_mouse_move_ = false;
 
-        mMouse_.mPosition = gui::vector2f(mMousePos.x, mMousePos.y);
-        on_mouse_moved(gui::vector2f(mMouseDelta.x, mMouseDelta.y), mMouse_.mPosition);
+        mouse_.position = gui::vector2f(mouse_pos.x, mouse_pos.y);
+        on_mouse_moved(gui::vector2f(mouse_delta.x, mouse_delta.y), mouse_.position);
     }
 }
-}
-}
-}
+}} // namespace lxgui::input::sfml

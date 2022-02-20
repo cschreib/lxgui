@@ -1,88 +1,68 @@
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
-#include "lxgui/impl/gui_sdl_renderer.hpp"
-#include <lxgui/gui_exception.hpp>
 
-#include <iostream>
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/impl/gui_sdl_renderer.hpp"
 
 #include <SDL.h>
+#include <iostream>
 
-namespace lxgui {
-namespace gui {
-namespace sdl
-{
-render_target::render_target(SDL_Renderer* pRenderer,
-    const vector2ui& mDimensions, material::filter mFilter)
-{
-    pTexture_ = std::make_shared<sdl::material>(
-        pRenderer, mDimensions, true, material::wrap::REPEAT, mFilter
-    );
+namespace lxgui::gui::sdl {
+
+render_target::render_target(
+    SDL_Renderer* rdr, const vector2ui& dimensions, material::filter filt) {
+    texture_ = std::make_shared<sdl::material>(rdr, dimensions, true, material::wrap::repeat, filt);
 }
 
-void render_target::begin()
-{
-    if (SDL_SetRenderTarget(pTexture_->get_renderer(), pTexture_->get_render_texture()) != 0)
-    {
+void render_target::begin() {
+    if (SDL_SetRenderTarget(texture_->get_renderer(), texture_->get_render_texture()) != 0) {
         throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
 
-    mViewMatrix_ = matrix4f::view(vector2f(get_canvas_dimensions()));
+    view_matrix_ = matrix4f::view(vector2f(get_canvas_dimensions()));
 }
 
-void render_target::end()
-{
-    SDL_SetRenderTarget(pTexture_->get_renderer(), nullptr);
+void render_target::end() {
+    SDL_SetRenderTarget(texture_->get_renderer(), nullptr);
 }
 
-void render_target::clear(const color& mColor)
-{
-    SDL_SetRenderDrawColor(pTexture_->get_renderer(),
-        mColor.r*255, mColor.g*255, mColor.b*255, mColor.a*255);
+void render_target::clear(const color& c) {
+    SDL_SetRenderDrawColor(texture_->get_renderer(), c.r * 255, c.g * 255, c.b * 255, c.a * 255);
 
-    SDL_RenderClear(pTexture_->get_renderer());
+    SDL_RenderClear(texture_->get_renderer());
 }
 
-bounds2f render_target::get_rect() const
-{
-    return pTexture_->get_rect();
+bounds2f render_target::get_rect() const {
+    return texture_->get_rect();
 }
 
-vector2ui render_target::get_canvas_dimensions() const
-{
-    return pTexture_->get_canvas_dimensions();
+vector2ui render_target::get_canvas_dimensions() const {
+    return texture_->get_canvas_dimensions();
 }
 
-bool render_target::set_dimensions(const vector2ui& mDimensions)
-{
-    return pTexture_->set_dimensions(mDimensions);
- }
-
-std::weak_ptr<sdl::material> render_target::get_material()
-{
-    return pTexture_;
+bool render_target::set_dimensions(const vector2ui& dimensions) {
+    return texture_->set_dimensions(dimensions);
 }
 
-SDL_Texture* render_target::get_render_texture()
-{
-    return pTexture_->get_render_texture();
+std::weak_ptr<sdl::material> render_target::get_material() {
+    return texture_;
 }
 
-const matrix4f& render_target::get_view_matrix() const
-{
-    return mViewMatrix_;
+SDL_Texture* render_target::get_render_texture() {
+    return texture_->get_render_texture();
 }
 
-void render_target::check_availability(SDL_Renderer* pRenderer)
-{
-    SDL_RendererInfo mInfo;
-    SDL_GetRendererInfo(pRenderer, &mInfo);
+const matrix4f& render_target::get_view_matrix() const {
+    return view_matrix_;
+}
 
-    if ((mInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0)
-    {
-        throw gui::exception("gui::sdl::render_target",
-            "Render targets are not supported by hardware.");
+void render_target::check_availability(SDL_Renderer* rdr) {
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(rdr, &info);
+
+    if ((info.flags & SDL_RENDERER_TARGETTEXTURE) == 0) {
+        throw gui::exception(
+            "gui::sdl::render_target", "Render targets are not supported by hardware.");
     }
 }
 
-}
-}
-}
+} // namespace lxgui::gui::sdl

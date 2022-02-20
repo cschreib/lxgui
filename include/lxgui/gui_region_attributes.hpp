@@ -1,30 +1,28 @@
 #ifndef LXGUI_GUI_REGION_ATTRIBUTES_HPP
 #define LXGUI_GUI_REGION_ATTRIBUTES_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils_observer.hpp"
 
-#include <lxgui/utils_observer.hpp>
 #include <string>
 #include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    class frame;
-    class region;
+namespace lxgui::gui {
 
-    /// Struct holding all the core information about a region necessary for its creation.
-    struct region_core_attributes
-    {
-        std::string sObjectType;
-        std::string sName;
-        bool        bVirtual = false;
+class frame;
+class region;
 
-        utils::observer_ptr<frame> pParent = nullptr;
+/// Struct holding all the core information about a region necessary for its creation.
+struct region_core_attributes {
+    std::string object_type;
+    std::string name;
+    bool        is_virtual = false;
 
-        std::vector<utils::observer_ptr<const region>> lInheritance;
-    };
-}
-}
+    utils::observer_ptr<frame> parent = nullptr;
+
+    std::vector<utils::observer_ptr<const region>> inheritance;
+};
+
+} // namespace lxgui::gui
 
 #endif

@@ -1,25 +1,18 @@
 #include "lxgui/utils_exception.hpp"
 
-namespace lxgui {
-namespace utils
-{
-exception::exception(const std::string& sMessage) : sMessage_(sMessage)
-{
+namespace lxgui::utils {
+
+exception::exception(const std::string& message) : message_(message) {}
+
+exception::exception(const std::string& class_name, const std::string& message) :
+    message_(class_name + " : " + message) {}
+
+const std::string& exception::get_description() const {
+    return message_;
 }
 
-exception::exception(const std::string& sClassName, const std::string& sMessage) :
-    sMessage_(sClassName+" : "+sMessage)
-{
+const char* exception::what() const noexcept {
+    return message_.c_str();
 }
 
-const std::string& exception::get_description() const
-{
-    return sMessage_;
-}
-
-const char* exception::what() const noexcept
-{
-    return sMessage_.c_str();
-}
-}
-}
+} // namespace lxgui::utils

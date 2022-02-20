@@ -1,107 +1,95 @@
 #include "lxgui/gui_localizer.hpp"
-#include "lxgui/gui_out.hpp"
+
 #include "lxgui/gui_exception.hpp"
-#include <lxgui/utils_variant.hpp>
-#include <lxgui/utils_filesystem.hpp>
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_range.hpp>
+#include "lxgui/gui_out.hpp"
+#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_range.hpp"
+#include "lxgui/utils_string.hpp"
+#include "lxgui/utils_variant.hpp"
 
-#include <fmt/args.h>
-#include <sol/state.hpp>
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
+#include <fmt/args.h>
 #include <functional>
+#include <lxgui/extern_sol2_state.hpp>
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui::gui {
 
-namespace
-{
-    std::string to_lower(std::string sStr)
-    {
-        for (char& cChar : sStr)
-            cChar = static_cast<char>(std::tolower(cChar));
+namespace {
+std::string to_lower(std::string str) {
+    for (char& c : str)
+        c = static_cast<char>(std::tolower(c));
 
-        return sStr;
-    }
-
-    std::string get_environment_variable(const std::string& sName)
-    {
-    #if defined(LXGUI_PLATFORM_WINDOWS)
-        // Windows has std::getenv, but MSVC offers a safer alternative that it insists on using
-        char* sBuffer = nullptr;
-        std::size_t uiSize = 0;
-        if (_dupenv_s(&sBuffer, &uiSize, sName.c_str()) != 0 || sBuffer == nullptr)
-            return "";
-
-        std::string sResult = sBuffer;
-        free(sBuffer);
-        return sResult;
-    #else
-        const char* sResult = std::getenv(sName.c_str());
-        return sResult != nullptr ? sResult : "";
-    #endif
-    }
-
-    std::vector<std::string> get_default_languages()
-    {
-        // First try parsing the LANGUAGE environment variable.
-        // This is the best, because it lets the user specify a list of languages
-        // in descending priority, so if a translation is unavailable in their
-        // primary language, they may still get another match which would be
-        // better for them than the default enUS (e.g., a French person could
-        // prefer to fall back on a Spanish translation rather than English).
-        const std::string sLanguageVar = get_environment_variable("LANGUAGE");
-        if (!sLanguageVar.empty())
-        {
-            std::vector<std::string> lOutput;
-            for (auto sLanguage : utils::cut(sLanguageVar, ":"))
-            {
-                std::string sLanguageNormalized{sLanguage};
-                utils::replace(sLanguageNormalized, "_", "");
-                if (sLanguageNormalized.size() == 4)
-                    lOutput.push_back(sLanguageNormalized);
-            }
-
-            if (!lOutput.empty())
-                return lOutput;
-        }
-
-    #if defined(LXGUI_PLATFORM_WINDOWS)
-        // If LANGUAGE is not specified, on Windows, try OS-specific function.
-        // TODO: https://github.com/cschreib/lxgui/issues/95
-    #endif
-
-        // If LANGUAGE is not specified or empty, try LANG.
-        std::string sLang = get_environment_variable("LANG");
-        if (!sLang.empty())
-        {
-            auto uiPos1 = sLang.find_first_of(".@");
-            if (uiPos1 != std::string::npos)
-                sLang = sLang.substr(0, uiPos1);
-
-            utils::replace(sLang, "_", "");
-            if (sLang.size() == 4)
-                return {sLang};
-        }
-
-        return {"enUS"};
-    }
+    return str;
 }
 
-localizer::localizer()
-{
-    try
-    {
-        // Try to set locale to system default.
-        mLocale_ = std::locale("");
+std::string get_environment_variable(const std::string& name) {
+#if defined(LXGUI_PLATFORM_WINDOWS)
+    // Windows has std::getenv, but MSVC offers a safer alternative that it insists on using
+    char*       buffer = nullptr;
+    std::size_t size   = 0;
+    if (_dupenv_s(&buffer, &size, name.c_str()) != 0 || buffer == nullptr)
+        return "";
+
+    std::string result = buffer;
+    free(buffer);
+    return result;
+#else
+    const char* result = std::getenv(name.c_str());
+    return result != nullptr ? result : "";
+#endif
+}
+
+std::vector<std::string> get_default_languages() {
+    // First try parsing the LANGUAGE environment variable.
+    // This is the best, because it lets the user specify a list of languages
+    // in descending priority, so if a translation is unavailable in their
+    // primary language, they may still get another match which would be
+    // better for them than the default enUS (e.g., a French person could
+    // prefer to fall back on a Spanish translation rather than English).
+    const std::string language_var = get_environment_variable("LANGUAGE");
+    if (!language_var.empty()) {
+        std::vector<std::string> output;
+        for (auto language : utils::cut(language_var, ":")) {
+            std::string language_normalized{language};
+            utils::replace(language_normalized, "_", "");
+            if (language_normalized.size() == 4)
+                output.push_back(language_normalized);
+        }
+
+        if (!output.empty())
+            return output;
     }
-    catch (const std::exception& mException)
-    {
+
+#if defined(LXGUI_PLATFORM_WINDOWS)
+    // If LANGUAGE is not specified, on Windows, try OS-specific function.
+    // TODO: https://github.com/cschreib/lxgui/issues/95
+#endif
+
+    // If LANGUAGE is not specified or empty, try LANG.
+    std::string lang = get_environment_variable("LANG");
+    if (!lang.empty()) {
+        auto pos1 = lang.find_first_of(".@");
+        if (pos1 != std::string::npos)
+            lang = lang.substr(0, pos1);
+
+        utils::replace(lang, "_", "");
+        if (lang.size() == 4)
+            return {lang};
+    }
+
+    return {"enUS"};
+}
+} // namespace
+
+localizer::localizer() {
+    try {
+        // Try to set locale to system default.
+        locale_ = std::locale("");
+    } catch (const std::exception& exception) {
         // Revert to C locale.
-        mLocale_ = std::locale::classic();
-        gui::out << gui::error << "gui::locale : " << mException.what() << std::endl;
+        locale_ = std::locale::classic();
+        gui::out << gui::error << "gui::locale : " << exception.what() << std::endl;
         gui::out << gui::error << "gui::locale : reverting to default classic locale" << std::endl;
     }
 
@@ -110,112 +98,99 @@ localizer::localizer()
     auto_detect_allowed_code_points();
 
     // Set up Lua sandbox.
-    mLua_.open_libraries(
-        sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
-        sol::lib::os, sol::lib::string, sol::lib::debug
-    );
+    lua_.open_libraries(
+        sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io, sol::lib::os,
+        sol::lib::string, sol::lib::debug);
 
     // Give the translation Lua state the localize_string and format_string function, so
     // it can call it recursively as needed, but not the other functions
     // which could load more translation strings.
-    mLua_.set_function("localize_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
-    {
-        return localize(sKey, mVArgs);
+    lua_.set_function("localize_string", [&](const std::string& key, sol::variadic_args args) {
+        return localize(key, args);
     });
-    mLua_.set_function("format_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
-    {
-        return format_string(sKey, mVArgs);
+    lua_.set_function("format_string", [&](const std::string& key, sol::variadic_args args) {
+        return format_string(key, args);
     });
 }
 
-void localizer::set_locale(const std::locale& mLocale)
-{
-    if (mLocale_ == mLocale)
+void localizer::set_locale(const std::locale& locale) {
+    if (locale_ == locale)
         return;
 
-    mLocale_ = mLocale;
+    locale_ = locale;
     clear_translations();
 }
 
-void localizer::set_preferred_languages(const std::vector<std::string>& lLanguages)
-{
+void localizer::set_preferred_languages(const std::vector<std::string>& languages) {
+#if 0
     // TODO implement more generic input checks
     // https://github.com/cschreib/lxgui/issues/98
-    // for (const auto& sLanguage : lLanguages)
-    // {
-    //     if (sLanguage.size() != 4)
-    //         throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
-    // }
+    for (const auto& language : languages) {
+        if (language.size() != 4) {
+            throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
+        }
+    }
+#endif
 
-    lLanguages_ = lLanguages;
+    languages_ = languages;
     clear_translations();
 }
 
-void localizer::auto_detect_preferred_languages()
-{
+void localizer::auto_detect_preferred_languages() {
     set_preferred_languages(get_default_languages());
 }
 
-const std::locale& localizer::get_locale() const
-{
-    return mLocale_;
+const std::locale& localizer::get_locale() const {
+    return locale_;
 }
 
-const std::vector<std::string>& localizer::get_preferred_languages() const
-{
-    return lLanguages_;
+const std::vector<std::string>& localizer::get_preferred_languages() const {
+    return languages_;
 }
 
-void localizer::clear_allowed_code_points()
-{
-    lCodePoints_.clear();
+void localizer::clear_allowed_code_points() {
+    code_points_.clear();
 }
 
-void localizer::add_allowed_code_points(const code_point_range& mRange)
-{
-    if (mRange.uiLast < mRange.uiFirst)
+void localizer::add_allowed_code_points(const code_point_range& range) {
+    if (range.last < range.first)
         throw gui::exception("gui::localizer", "code point range must have last >= first");
 
-    code_point_range mTestRange = mRange;
-    auto mIter = lCodePoints_.begin();
+    code_point_range test_range = range;
+    auto             iter       = code_points_.begin();
 
-    do
-    {
+    do {
         // Find next overlapping range
-        mIter = std::find_if(lCodePoints_.begin(), lCodePoints_.end(), [&](const auto& mOther)
-        {
-            return (mTestRange.uiFirst >= mOther.uiFirst && mTestRange.uiFirst <= mOther.uiLast) ||
-                   (mTestRange.uiLast  >= mOther.uiFirst && mTestRange.uiLast  <= mOther.uiLast) ||
-                   (mOther.uiFirst >= mTestRange.uiFirst && mOther.uiFirst <= mTestRange.uiLast) ||
-                   (mOther.uiLast  >= mTestRange.uiFirst && mOther.uiLast  <= mTestRange.uiLast);
+        iter = std::find_if(code_points_.begin(), code_points_.end(), [&](const auto& other) {
+            return (test_range.first >= other.first && test_range.first <= other.last) ||
+                   (test_range.last >= other.first && test_range.last <= other.last) ||
+                   (other.first >= test_range.first && other.first <= test_range.last) ||
+                   (other.last >= test_range.first && other.last <= test_range.last);
         });
 
-        if (mIter != lCodePoints_.end())
-        {
+        if (iter != code_points_.end()) {
             // Combine the ranges
-            mTestRange.uiFirst = std::min(mTestRange.uiFirst, mIter->uiFirst);
-            mTestRange.uiLast = std::max(mTestRange.uiLast, mIter->uiLast);
+            test_range.first = std::min(test_range.first, iter->first);
+            test_range.last  = std::max(test_range.last, iter->last);
 
             // Erase the overlap
-            lCodePoints_.erase(mIter);
+            code_points_.erase(iter);
         }
-    } while (mIter != lCodePoints_.end());
+    } while (iter != code_points_.end());
 
     // Add the new range
-    lCodePoints_.push_back(mTestRange);
+    code_points_.push_back(test_range);
 
     // Sort by ascending code point
-    std::sort(lCodePoints_.begin(), lCodePoints_.end(), [](const auto& mLeft, const auto& mRight)
-    {
-        return mLeft.uiFirst < mRight.uiFirst;
+    std::sort(code_points_.begin(), code_points_.end(), [](const auto& left, const auto& right) {
+        return left.first < right.first;
     });
 }
 
-void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGroup)
-{
+void localizer::add_allowed_code_points_for_group(const std::string& unicode_group) {
     // List from http://www.unicode.org/Public/5.2.0/ucdxml/ucd.all.flat.zip
     // Adjusted "basic latin" and "latin-1 supplement" to remove non-printable chars.
-    static std::unordered_map<std::string, code_point_range> lUnicodeGroups = {
+    static std::unordered_map<std::string, code_point_range> unicode_groups = {
         {"basic latin", {0x0020, 0x007e}},
         {"latin-1 supplement", {0x00a0, 0x00ff}},
         {"latin extended-a", {0x0100, 0x017f}},
@@ -234,8 +209,10 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"thaana", {0x0780, 0x07bf}},
         {"nko", {0x07c0, 0x07ff}},
         {"samaritan", {0x0800, 0x083f}},
-        {"mandaic", {0x0840, 0x085f}}, // added manually! souce https://en.wikipedia.org/wiki/Mandaic_script
-        {"arabic extended-a", {0x08a0, 0x08ff}}, // added manually! souce https://en.wikipedia.org/wiki/Arabic_alphabet
+        // added manually! source https://en.wikipedia.org/wiki/Mandaic_script
+        {"mandaic", {0x0840, 0x085f}},
+        // added manually! source https://en.wikipedia.org/wiki/Arabic_alphabet
+        {"arabic extended-a", {0x08a0, 0x08ff}},
         {"devanagari", {0x0900, 0x097f}},
         {"bengali", {0x0980, 0x09ff}},
         {"gurmukhi", {0x0a00, 0x0a7f}},
@@ -273,10 +250,12 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"tai tham", {0x1a20, 0x1aaf}},
         {"balinese", {0x1b00, 0x1b7f}},
         {"sundanese", {0x1b80, 0x1bbf}},
-        {"batak", {0x1bc0, 0x1bff}}, // added manually! souce https://en.wikipedia.org/wiki/Batak_script
+        // added manually! source https://en.wikipedia.org/wiki/Batak_script
+        {"batak", {0x1bc0, 0x1bff}},
         {"lepcha", {0x1c00, 0x1c4f}},
         {"ol chiki", {0x1c50, 0x1c7f}},
-        {"cyrillic extended-c", {0x1c80, 0x1c8f}}, // added manually! souce https://en.wikipedia.org/wiki/Cyrillic_script
+        // added manually! source https://en.wikipedia.org/wiki/Cyrillic_script
+        {"cyrillic extended-c", {0x1c80, 0x1c8f}},
         {"vedic extensions", {0x1cd0, 0x1cff}},
         {"phonetic extensions", {0x1d00, 0x1d7f}},
         {"phonetic extensions supplement", {0x1d80, 0x1dbf}},
@@ -352,7 +331,8 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"cham", {0xaa00, 0xaa5f}},
         {"myanmar extended-a", {0xaa60, 0xaa7f}},
         {"tai viet", {0xaa80, 0xaadf}},
-        {"latin extended-e", {0xab30, 0xab6f}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        // added manually! source https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        {"latin extended-e", {0xab30, 0xab6f}},
         {"meetei mayek", {0xabc0, 0xabff}},
         {"hangul syllables", {0xac00, 0xd7af}},
         {"hangul jamo extended-b", {0xd7b0, 0xd7ff}},
@@ -373,8 +353,10 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"specials", {0xfff0, 0xffff}},
         {"linear b syllabary", {0x10000, 0x1007f}},
         {"linear b ideograms", {0x10080, 0x100ff}},
-        {"caucasian albanian", {0x10530, 0x1056f}}, // added manually! souce https://en.wikipedia.org/wiki/Caucasian_Albanian_script
-        {"linear a", {0x10600, 0x1077f}}, // added manually! souce https://en.wikipedia.org/wiki/Linear_A
+        // added manually! source https://en.wikipedia.org/wiki/Caucasian_Albanian_script
+        {"caucasian albanian", {0x10530, 0x1056f}},
+        // added manually! source https://en.wikipedia.org/wiki/Linear_A
+        {"linear a", {0x10600, 0x1077f}},
         {"aegean numbers", {0x10100, 0x1013f}},
         {"ancient greek numbers", {0x10140, 0x1018f}},
         {"ancient symbols", {0x10190, 0x101cf}},
@@ -389,9 +371,12 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"deseret", {0x10400, 0x1044f}},
         {"shavian", {0x10450, 0x1047f}},
         {"osmanya", {0x10480, 0x104af}},
-        {"osage", {0x104b0, 0x104ff}}, // added manually! souce https://en.wikipedia.org/wiki/Osage_script
-        {"elbasan", {0x10500, 0x1052f}}, // added manually! souce https://en.wikipedia.org/wiki/Elbasan_script
-        {"latin extended-f", {0x10780, 0x107bf}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        // added manually! source https://en.wikipedia.org/wiki/Osage_script
+        {"osage", {0x104b0, 0x104ff}},
+        // added manually! source https://en.wikipedia.org/wiki/Elbasan_script
+        {"elbasan", {0x10500, 0x1052f}},
+        // added manually! source https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        {"latin extended-f", {0x10780, 0x107bf}},
         {"cypriot syllabary", {0x10800, 0x1083f}},
         {"imperial aramaic", {0x10840, 0x1085f}},
         {"phoenician", {0x10900, 0x1091f}},
@@ -399,26 +384,40 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"meroitic", {0x10980, 0x109ff}},
         {"kharoshthi", {0x10a00, 0x10a5f}},
         {"old south arabian", {0x10a60, 0x10a7f}},
-        {"old north arabian", {0x10a80, 0x10a9f}}, // added manually! source https://en.wikipedia.org/wiki/Old_North_Arabian_(Unicode_block)
-        {"manichaean", {0x10ac0, 0x10aff}}, // added manually! source https://en.wikipedia.org/wiki/Manichaean_script
+        // added manually! source https://en.wikipedia.org/wiki/Old_North_Arabian_(Unicode_block)
+        {"old north arabian", {0x10a80, 0x10a9f}},
+        // added manually! source https://en.wikipedia.org/wiki/Manichaean_script
+        {"manichaean", {0x10ac0, 0x10aff}},
         {"avestan", {0x10b00, 0x10b3f}},
         {"inscriptional parthian", {0x10b40, 0x10b5f}},
         {"inscriptional pahlavi", {0x10b60, 0x10b7f}},
         {"old turkic", {0x10c00, 0x10c4f}},
         {"rumi numeral symbols", {0x10e60, 0x10e7f}},
         {"kaithi", {0x11080, 0x110cf}},
-        {"sora sompeng", {0x110d0, 0x110ff}}, // added manually! source https://en.wikipedia.org/wiki/Sorang_Sompeng_script
-        {"chakma", {0x11100, 0x1114f}}, // added manually! souce https://en.wikipedia.org/wiki/Chakma_script
-        {"mahajani", {0x11150, 0x1117f}}, // added manually! souce https://en.wikipedia.org/wiki/Mahajani
-        {"sharada", {0x11180, 0x111df}}, // added manually! souce https://en.wikipedia.org/wiki/Sharada_(Unicode_block)
-        {"khojki", {0x11200, 0x1124f}}, // added manually! souce https://en.wikipedia.org/wiki/Khojki_script
-        {"khudawadi", {0x112b0, 0x112ff}}, // added manually! souce https://en.wikipedia.org/wiki/Khudabadi_script
-        {"grantha", {0x11300, 0x1137f}}, // added manually! souce https://en.wikipedia.org/wiki/Grantha_script
-        {"tirhuta", {0x11480, 0x114df}}, // added manually! souce https://en.wikipedia.org/wiki/Tirhuta_script
-        {"siddham", {0x11580, 0x115ff}}, // added manually! souce https://en.wikipedia.org/wiki/Siddha%E1%B9%83_script
-        {"modi", {0x11600, 0x1165f}}, // added manually! souce https://en.wikipedia.org/wiki/Modi_script
-        {"takri", {0x11680, 0x116cf}}, // added manually! souce https://en.wikipedia.org/wiki/Takri_script
-        {"varang kshiti", {0x118a0, 0x118ff}}, // added manually! souce https://en.wikipedia.org/wiki/Warang_Citi
+        // added manually! source https://en.wikipedia.org/wiki/Sorang_Sompeng_script
+        {"sora sompeng", {0x110d0, 0x110ff}},
+        // added manually! source https://en.wikipedia.org/wiki/Chakma_script
+        {"chakma", {0x11100, 0x1114f}},
+        // added manually! source https://en.wikipedia.org/wiki/Mahajani
+        {"mahajani", {0x11150, 0x1117f}},
+        // added manually! source https://en.wikipedia.org/wiki/Sharada_(Unicode_block)
+        {"sharada", {0x11180, 0x111df}},
+        // added manually! source https://en.wikipedia.org/wiki/Khojki_script
+        {"khojki", {0x11200, 0x1124f}},
+        // added manually! source https://en.wikipedia.org/wiki/Khudabadi_script
+        {"khudawadi", {0x112b0, 0x112ff}},
+        // added manually! source https://en.wikipedia.org/wiki/Grantha_script
+        {"grantha", {0x11300, 0x1137f}},
+        // added manually! source https://en.wikipedia.org/wiki/Tirhuta_script
+        {"tirhuta", {0x11480, 0x114df}},
+        // added manually! source https://en.wikipedia.org/wiki/Siddha%E1%B9%83_script
+        {"siddham", {0x11580, 0x115ff}},
+        // added manually! source https://en.wikipedia.org/wiki/Modi_script
+        {"modi", {0x11600, 0x1165f}},
+        // added manually! source https://en.wikipedia.org/wiki/Takri_script
+        {"takri", {0x11680, 0x116cf}},
+        // added manually! source https://en.wikipedia.org/wiki/Warang_Citi
+        {"varang kshiti", {0x118a0, 0x118ff}},
         {"cuneiform", {0x12000, 0x123ff}},
         {"cuneiform numbers and punctuation", {0x12400, 0x1247f}},
         {"egyptian hieroglyphs", {0x13000, 0x1342f}},
@@ -429,275 +428,255 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"counting rod numerals", {0x1d360, 0x1d37f}},
         {"mathematical alphanumeric symbols", {0x1d400, 0x1d7ff}},
         {"adlam", {0x1e800, 0x1e8df}},
-        {"mende", {0x1e900, 0x1e95f}}, // added manually! souce https://en.wikipedia.org/wiki/Mende_Kikakui_script
-        {"arabic mathematical alphabetic symbols", {0x1ee00, 0x1eeff}}, // added manually! souce https://en.wikipedia.org/wiki/Arabic_alphabet
+        // added manually! source https://en.wikipedia.org/wiki/Mende_Kikakui_script
+        {"mende", {0x1e900, 0x1e95f}},
+        // added manually! source https://en.wikipedia.org/wiki/Arabic_alphabet
+        {"arabic mathematical alphabetic symbols", {0x1ee00, 0x1eeff}},
         {"mahjong tiles", {0x1f000, 0x1f02f}},
         {"domino tiles", {0x1f030, 0x1f09f}},
         {"enclosed alphanumeric supplement", {0x1f100, 0x1f1ff}},
         {"enclosed ideographic supplement", {0x1f200, 0x1f2ff}},
-        {"mro", {0x16a40, 0x16a6f}}, // added manually! souce https://en.wikipedia.org/wiki/Mro_(Unicode_block)
-        {"pahawh hmong", {0x16b00, 0x16bbf}}, // added manually! souce https://en.wikipedia.org/wiki/Pahawh_Hmong
-        {"pollard", {0x16f00, 0x16f9f}}, // added manually! souce https://en.wikipedia.org/wiki/Pollard_script
-        {"latin extended-g", {0x1df00, 0x1dfff}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        // added manually! source https://en.wikipedia.org/wiki/Mro_(Unicode_block)
+        {"mro", {0x16a40, 0x16a6f}},
+        // added manually! source https://en.wikipedia.org/wiki/Pahawh_Hmong
+        {"pahawh hmong", {0x16b00, 0x16bbf}},
+        // added manually! source https://en.wikipedia.org/wiki/Pollard_script
+        {"pollard", {0x16f00, 0x16f9f}},
+        // added manually! source https://en.wikipedia.org/wiki/Latin_script_in_Unicode
+        {"latin extended-g", {0x1df00, 0x1dfff}},
         {"cjk unified ideographs extension b", {0x20000, 0x2a6df}},
         {"cjk unified ideographs extension c", {0x2a700, 0x2b73f}},
-        {"cjk unified ideographs extension d", {0x2b740, 0x2b81f}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
-        {"cjk unified ideographs extension e", {0x2b820, 0x2ceaf}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
-        {"cjk unified ideographs extension f", {0x2ceb0, 0x2ebef}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension d", {0x2b740, 0x2b81f}},
+        // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension e", {0x2b820, 0x2ceaf}},
+        // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension f", {0x2ceb0, 0x2ebef}},
         {"cjk compatibility ideographs supplement", {0x2f800, 0x2fa1f}},
-        {"cjk unified ideographs extension g", {0x30000, 0x3134f}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension g", {0x30000, 0x3134f}},
         {"tags", {0xe0000, 0xe007f}},
         {"variation selectors supplement", {0xe0100, 0xe01ef}},
         {"supplementary private use area-a", {0xf0000, 0xfffff}},
-        {"supplementary private use area-b", {0x100000, 0x10ffff}}
-    };
+        {"supplementary private use area-b", {0x100000, 0x10ffff}}};
 
-    auto mIter = lUnicodeGroups.find(to_lower(sUnicodeGroup));
-    if (mIter == lUnicodeGroups.end())
-        throw gui::exception("gui::localizer", "unknown Unicode group '" + sUnicodeGroup + "'");
+    auto iter = unicode_groups.find(to_lower(unicode_group));
+    if (iter == unicode_groups.end())
+        throw gui::exception("gui::localizer", "unknown Unicode group '" + unicode_group + "'");
 
-    add_allowed_code_points(mIter->second);
+    add_allowed_code_points(iter->second);
 }
 
-void localizer::add_allowed_code_points_for_language(const std::string& sLanguageCode)
-{
+void localizer::add_allowed_code_points_for_language(const std::string& language_code) {
     // Lists from http://unicode.org/Public/cldr/39/cldr-common-39.0.zip
     // Mapped manually to Unicode groups above with the help of
     // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/scripts_and_languages.html
-    static const std::vector<std::pair<std::vector<std::string>,std::vector<std::string>>> lScripts =
-    {
-        {{"basic latin", "latin-1 supplement", "latin extended-a", "latin extended-b",
-            "latin extended-c", "latin extended-d", "latin extended-e", "latin extended-f",
-            "latin extended-g", "latin extended additional"},
-        {
-            "aa", "abr", "ace", "ach", "ada", "af", "agq", "ain", "ak", "akz", "ale", "aln", "amo",
-            "an", "ang", "aoz", "arn", "aro", "arp", "arw", "asa", "ast", "atj", "avk", "ay", "az",
-            "bal", "ban", "bar", "bas", "bbc", "bbj", "bci", "bem", "bew", "bez", "bfd", "bi", "bik",
-            "bin", "bjn", "bkm", "bku", "bla", "bm", "bmq", "bqv", "br", "brh", "bs", "bss", "bto",
-            "buc", "bug", "bum", "bvb", "byv", "bze", "bzx", "ca", "cad", "car", "cay", "cch", "ceb",
-            "cgg", "ch", "chk", "chn", "cho", "chp", "chy", "cic", "co", "cps", "cr", "crj", "crl",
-            "crs", "cs", "csb", "ctd", "cy", "da", "dak", "dav", "de", "del", "den", "dgr", "din",
-            "dje", "dnj", "dsb", "dtm", "dtp", "dua", "dum", "dyo", "dyu", "ebu", "ee", "efi", "egl",
-            "eka", "en", "enm", "eo", "es", "esu", "et", "ett", "eu", "ewo", "ext", "fan", "ff", "ffm",
-            "fi", "fil", "fit", "fj", "fo", "fon", "fr", "frc", "frm", "fro", "frp", "frr", "frs",
-            "fud", "fuq", "fur", "fuv", "fvr", "fy", "ga", "gaa", "gag", "gay", "gba", "gcr", "gd",
-            "gil", "gl", "gmh", "gn", "goh", "gor", "gos", "grb", "gsw", "gub", "guc", "gur", "guz",
-            "gv", "gwi", "ha", "hai", "haw", "hi", "hif", "hil", "hmn", "hnn", "ho", "hop", "hr",
-            "hsb", "ht", "hu", "hup", "hz", "ia", "iba", "ibb", "id", "ife", "ig", "ii", "ik", "ikt",
-            "ilo", "inh", "is", "it", "iu", "izh", "jam", "jgo", "jmc", "jut", "jv", "kab", "kac",
-            "kaj", "kam", "kao", "kcg", "kck", "kde", "kea", "kfo", "kg", "kge", "kgp", "kha", "khq",
-            "ki", "kiu", "kj", "kjg", "kkj", "kl", "kln", "kmb", "kos", "kpe", "kr", "kri", "krj",
-            "krl", "ksb", "ksf", "ksh", "ku", "kut", "kvr", "kw", "ky", "la", "lag", "laj", "lam",
-            "lb", "lbw", "lfn", "lg", "li", "lij", "liv", "ljp", "lkt", "lmo", "ln", "lol", "loz",
-            "lt", "ltg", "lu", "lua", "lui", "lun", "luo", "lut", "luy", "lv", "lzz", "mad", "maf",
-            "mak", "man", "mas", "maz", "mdh", "mdr", "mdt", "men", "mer", "mfe", "mg", "mgh", "mgo",
-            "mgy", "mh", "mi", "mic", "min", "mls", "moe", "moh", "mos", "mro", "ms", "mt", "mua",
-            "mus", "mwk", "mwl", "mwv", "mxc", "myx", "na", "nap", "naq", "nb", "nch", "nd", "ndc",
-            "nds", "ng", "ngl", "nhe", "nhw", "nia", "nij", "niu", "njo", "nl", "nmg", "nn", "nnh",
-            "no", "nov", "nr", "nsk", "nso", "nus", "nv", "nxq", "ny", "nym", "nyn", "nyo", "nzi",
-            "oc", "oj", "om", "osa", "osc", "pag", "pam", "pap", "pau", "pcd", "pcm", "pdc", "pdt",
-            "pfl", "pko", "pl", "pms", "pnt", "pon", "prg", "pro", "pt", "puu", "qu", "quc", "qug",
-            "rap", "rar", "rcf", "rej", "rgn", "ria", "rif", "rm", "rmf", "rmo", "rmu", "rn", "rng",
-            "ro", "rob", "rof", "rom", "rtm", "rug", "rup", "rw", "rwk", "sad", "saf", "saq", "sas",
-            "sat", "sbp", "sc", "scn", "sco", "scs", "sdc", "se", "see", "sef", "seh", "sei", "ses",
-            "sg", "sga", "sgs", "shi", "sid", "sk", "sl", "sli", "sly", "sm", "sma", "smj", "smn",
-            "sms", "sn", "snk", "so", "sq", "sr", "srb", "srn", "srr", "ss", "ssy", "st", "stq", "su",
-            "suk", "sus", "sv", "sw", "swb", "swg", "sxn", "syi", "szl", "tbw", "tem", "teo", "ter",
-            "tet", "tg", "tiv", "tk", "tkl", "tkr", "tli", "tly", "tmh", "tn", "to", "tog", "tpi",
-            "tr", "tru", "trv", "ts", "tsg", "tsi", "ttj", "ttt", "tum", "tvl", "twq", "ty", "tzm",
-            "udm", "ug", "uli", "umb", "uz", "vai", "ve", "vec", "vep", "vi", "vic", "vls", "vmf",
-            "vmw", "vo", "vot", "vro", "vun", "wa", "wae", "war", "was", "wbp", "wls", "wo", "xav",
-            "xh", "xog", "xum", "yao", "yap", "yav", "ybb", "yo", "yrl", "yua", "za", "zag", "zap",
-            "zea", "zmi", "zu", "zun", "zza"
-        }},
-        {{"cyrillic", "cyrillic supplement", "cyrillic extended-a", "cyrillic extended-b",
-            "cyrillic extended-c"},
-        {
-            "ab", "abq", "ady", "aii", "alt", "av", "az", "ba", "be", "bg", "bs", "bua", "ce", "chm",
-            "cjs", "ckt", "crh", "cu", "cv", "dar", "dng", "evn", "gag", "gld", "inh", "kaa", "kbd",
-            "kca", "kjh", "kk", "koi", "kpy", "krc", "ku", "kum", "kv", "ky", "lbe", "lez", "lfn",
-            "mdf", "mk", "mn", "mns", "mrj", "myv", "nog", "os", "pnt", "ro", "rom", "ru", "rue",
-            "sah", "se", "sel", "sr", "tab", "tg", "tk", "tkr", "tly", "tt", "ttt", "tyv", "ude",
-            "udm", "ug", "uk", "uz", "xal", "yrk"
-        }},
-        {{"devanagari", "devanagari extended", "vedic extensions"},
-        {
-            "anp", "awa", "bap", "bfy", "bgc", "bhb", "bhi", "bho", "bjj", "bra", "brx", "btv", "doi",
-            "dty", "gbm", "gom", "gon", "gvr", "hi", "hif", "hne", "hoc", "hoj", "jml", "kfr", "kfy",
-            "khn", "kok", "kru", "ks", "lif", "mag", "mai", "mgp", "mr", "mrd", "mtr", "mwr", "ne",
-            "new", "noe", "pi", "raj", "rjs", "sa", "sat", "sck", "sd", "srx", "swv", "taj", "tdg",
-            "tdh", "thl", "thq", "thr", "tkt", "unr", "unx", "wbr", "wtm", "xnr", "xsr"
-        }},
-        {{"arabic", "arabic supplement", "arabic extended-a", "arabic presentation forms-a",
-            "arabic presentation forms-b", "arabic mathematical alphabetic symbols"},
-        {
-            "aeb", "ar", "arq", "ars", "ary", "arz", "az", "bal", "bej", "bft", "bgn", "bqi", "brh",
-            "cja", "cjm", "ckb", "cop", "dcc", "doi", "dyo", "fa", "fia", "gbz", "gjk", "gju", "glk",
-            "ha", "haz", "hnd", "hno", "id", "inh", "khw", "kk", "ks", "ku", "kvx", "kxp", "ky", "lah",
-            "lki", "lrc", "luz", "mfa", "ms", "mvy", "mzn", "pa", "prd", "ps", "rmt", "sd", "sdh",
-            "shi", "skr", "so", "sus", "swb", "tg", "tk", "tly", "tr", "trw", "ttt", "ug", "ur", "uz",
-            "wni", "wo", "zdj"
-        }},
-        {{"cjk radicals supplement", "cjk strokes", "cjk symbols and punctuation",
-            "cjk unified ideographs", "cjk unified ideographs extension a",
-            "cjk unified ideographs extension b", "cjk unified ideographs extension c",
-            "cjk unified ideographs extension d", "cjk unified ideographs extension e",
-            "cjk unified ideographs extension f", "cjk unified ideographs extension g",
-            "cjk compatibility", "cjk compatibility ideographs", "cjk compatibility forms",
-            "cjk compatibility ideographs supplement", "kangxi radicals"},
-        {
-            "gan", "hak", "hsn", "lzh", "nan", "vi", "wuu", "yue", "za", "zh", "ko", "ja"
-        }},
-        {{"greek and coptic", "greek extended", "coptic"},
-        {
-            "bgx", "cop", "el", "grc", "pnt", "tsd"
-        }},
-        {{"bengali"},
-        {
-            "as", "bn", "bpy", "ccp", "grt", "kha", "lus", "mni", "rkt", "sat", "syl", "unr", "unx"
-        }},
-        {{"thai"},
-        {
-            "kdt", "kxm", "lcp", "lwl", "pi", "sou", "th", "tts"
-        }},
-        {{"ethiopic", "ethiopic supplement", "ethiopic extended"},
-        {
-            "am", "byn", "gez", "om", "ti", "tig", "wal"
-        }},
-        {{"hebrew"},
-        {
-            "he", "jpr", "jrb", "lad", "sam", "yi"
-        }},
-        {{"tibetan"},
-        {
-            "bft", "bo", "dz", "taj", "tdg", "tsj"
-        }},
-        {{"unified canadian aboriginal syllabics"},
-        {
-            "bft", "bo", "dz", "taj", "tdg", "tsj"
-        }},
-        {{"tifinagh"},
-        {
-            "rif", "shi", "tzm", "zen", "zgh"
-        }},
-        {{"telugu"}, {"gon", "lmn", "te", "wbq" }},
-        {{"syriac"}, {"aii", "ar", "syr", "tru"}},
-        {{"myanmar"}, {"kht", "mnw", "my", "shn"}},
-        {{"nko"}, {"bm", "man", "nqo"}},
-        {{"buginese"}, {"bug", "mak", "mdr"}},
-        {{"old italic"}, {"ett", "osc", "xum"}},
-        {{"lao"}, {"hnj", "kjg", "lo"}},
-        {{"georgian", "georgian supplement"}, {"ka", "lzz", "xmf"}},
-        {{"sinhala"}, {"pi", "sa", "si"}},
-        {{"tamil"}, {"bfq", "ta"}},
-        {{"katakana", "katakana phonetic extensions"}, {"ain", "ryu"}},
-        {{"cuneiform", "cuneiform numbers and punctuation"}, {"akk", "hit"}},
-        {{"cham"}, {"cja", "cjm"}},
-        {{"runic"}, {"de", "non"}},
-        {{"kayah"}, {"eky", "kyu"}},
-        {{"kannada"}, {"kn", "tcy"}},
-        {{"mongolian"}, {"mn", "mnc"}},
-        {{"phags-pa"}, {"mn", "zh"}},
-        {{"oriya"}, {"or", "sat"}},
-        {{"samaritan"}, {"sam", "smp"}},
-        {{"armenian"}, {"hy"}},
-        {{"javanese"}, {"jv"}},
-        {{"gujarati"}, {"gu"}},
-        {{"malayalam"}, {"ml"}},
-        {{"avestan"}, {"ae"}},
-        {{"aramaic"}, {"arc"}},
-        {{"balinese"}, {"ban"}},
-        {{"bamum"}, {"bax"}},
-        {{"batak"}, {"bbc"}},
-        {{"buhid"}, {"bku"}},
-        {{"tai viet"}, {"blt"}},
-        {{"chakma"}, {"ccp"}},
-        {{"cherokee"}, {"chr"}},
-        {{"takri"}, {"doi"}},
-        {{"thaana"}, {"dv"}},
-        {{"egyptian hieroglyphs"}, {"egy"}},
-        {{"adlam"}, {"ff"}},
-        {{"tagalog"}, {"fil"}},
-        {{"gothic"}, {"got"}},
-        {{"cypriot"}, {"grc"}},
-        {{"linear b syllabary", "linear b ideograms"}, {"grc"}},
-        {{"mahajani"}, {"hi"}},
-        {{"pollard"}, {"hmd"}},
-        {{"pahawh hmong"}, {"hmn"}},
-        {{"hanunoo"}, {"hnn"}},
-        {{"varang kshiti"}, {"hoc"}},
-        {{"yi syllables", "yi radicals"}, {"ii"}},
-        {{"hiragana", "katakana"}, {"ja"}},
-        {{"new tai lue"}, {"khb"}},
-        {{"khmer", "khmer symbols"}, {"km"}},
-        {{"hangul jamo", "hangul compatibility jamo", "hangul jamo extended-a",
-            "hangul jamo extended-b", "hangul syllables"}, {"ko"}},
-        {{"permic"}, {"kv"}},
-        {{"linear a"}, {"lab"}},
-        {{"lepcha"}, {"lep"}},
-        {{"caucasian albanian"}, {"lez"}},
-        {{"limbu"}, {"lif"}},
-        {{"lisu"}, {"lis"}},
-        {{"tirhuta"}, {"mai"}},
-        {{"mende"}, {"men"}},
-        {{"meetei mayek"}, {"mni"}},
-        {{"modi"}, {"mr"}},
-        {{"mro"}, {"mro"}},
-        {{"mandaic"}, {"myz"}},
-        {{"tai tham"}, {"nod"}},
-        {{"osage"}, {"osa"}},
-        {{"old turkic"}, {"otk"}},
-        {{"gurmukhi"}, {"pa"}},
-        {{"inscriptional pahlavi"}, {"pal"}},
-        {{"old persian"}, {"peo"}},
-        {{"phoenician"}, {"phn"}},
-        {{"rejang"}, {"rej"}},
-        {{"grantha", "sharada", "siddham"}, {"sa"}},
-        {{"ol chiki"}, {"sat"}},
-        {{"saurashtra"}, {"saz"}},
-        {{"khojki", "khudawadi"}, {"sd"}},
-        {{"ogham"}, {"sga"}},
-        {{"osmanya"}, {"so"}},
-        {{"elbasan"}, {"sq"}},
-        {{"sora sompeng"}, {"srb"}},
-        {{"sundanese"}, {"su"}},
-        {{"syloti nagri"}, {"syl"}},
-        {{"tagbanwa"}, {"tbw"}},
-        {{"tai le"}, {"tdd"}},
-        {{"ugaritic"}, {"uga"}},
-        {{"vai"}, {"vai"}},
-        {{"carian"}, {"xcr"}},
-        {{"lycian"}, {"xlc"}},
-        {{"lydian"}, {"xld"}},
-        {{"manichaean"}, {"xmn"}},
-        {{"meroitic"}, {"xmr"}},
-        {{"old north arabian"}, {"xna"}},
-        {{"inscriptional parthian"}, {"xpr"}},
-        {{"old south arabian"}, {"xsa"}},
-        {{"bopomofo", "bopomofo extended"}, {"zh"}}
-    };
+    static const std::vector<std::pair<std::vector<std::string>, std::vector<std::string>>>
+        scripts = {
+            {{"basic latin", "latin-1 supplement", "latin extended-a", "latin extended-b",
+              "latin extended-c", "latin extended-d", "latin extended-e", "latin extended-f",
+              "latin extended-g", "latin extended additional"},
+             {"aa",  "abr", "ace", "ach", "ada", "af",  "agq", "ain", "ak",  "akz", "ale", "aln",
+              "amo", "an",  "ang", "aoz", "arn", "aro", "arp", "arw", "asa", "ast", "atj", "avk",
+              "ay",  "az",  "bal", "ban", "bar", "bas", "bbc", "bbj", "bci", "bem", "bew", "bez",
+              "bfd", "bi",  "bik", "bin", "bjn", "bkm", "bku", "bla", "bm",  "bmq", "bqv", "br",
+              "brh", "bs",  "bss", "bto", "buc", "bug", "bum", "bvb", "byv", "bze", "bzx", "ca",
+              "cad", "car", "cay", "cch", "ceb", "cgg", "ch",  "chk", "chn", "cho", "chp", "chy",
+              "cic", "co",  "cps", "cr",  "crj", "crl", "crs", "cs",  "csb", "ctd", "cy",  "da",
+              "dak", "dav", "de",  "del", "den", "dgr", "din", "dje", "dnj", "dsb", "dtm", "dtp",
+              "dua", "dum", "dyo", "dyu", "ebu", "ee",  "efi", "egl", "eka", "en",  "enm", "eo",
+              "es",  "esu", "et",  "ett", "eu",  "ewo", "ext", "fan", "ff",  "ffm", "fi",  "fil",
+              "fit", "fj",  "fo",  "fon", "fr",  "frc", "frm", "fro", "frp", "frr", "frs", "fud",
+              "fuq", "fur", "fuv", "fvr", "fy",  "ga",  "gaa", "gag", "gay", "gba", "gcr", "gd",
+              "gil", "gl",  "gmh", "gn",  "goh", "gor", "gos", "grb", "gsw", "gub", "guc", "gur",
+              "guz", "gv",  "gwi", "ha",  "hai", "haw", "hi",  "hif", "hil", "hmn", "hnn", "ho",
+              "hop", "hr",  "hsb", "ht",  "hu",  "hup", "hz",  "ia",  "iba", "ibb", "id",  "ife",
+              "ig",  "ii",  "ik",  "ikt", "ilo", "inh", "is",  "it",  "iu",  "izh", "jam", "jgo",
+              "jmc", "jut", "jv",  "kab", "kac", "kaj", "kam", "kao", "kcg", "kck", "kde", "kea",
+              "kfo", "kg",  "kge", "kgp", "kha", "khq", "ki",  "kiu", "kj",  "kjg", "kkj", "kl",
+              "kln", "kmb", "kos", "kpe", "kr",  "kri", "krj", "krl", "ksb", "ksf", "ksh", "ku",
+              "kut", "kvr", "kw",  "ky",  "la",  "lag", "laj", "lam", "lb",  "lbw", "lfn", "lg",
+              "li",  "lij", "liv", "ljp", "lkt", "lmo", "ln",  "lol", "loz", "lt",  "ltg", "lu",
+              "lua", "lui", "lun", "luo", "lut", "luy", "lv",  "lzz", "mad", "maf", "mak", "man",
+              "mas", "maz", "mdh", "mdr", "mdt", "men", "mer", "mfe", "mg",  "mgh", "mgo", "mgy",
+              "mh",  "mi",  "mic", "min", "mls", "moe", "moh", "mos", "mro", "ms",  "mt",  "mua",
+              "mus", "mwk", "mwl", "mwv", "mxc", "myx", "na",  "nap", "naq", "nb",  "nch", "nd",
+              "ndc", "nds", "ng",  "ngl", "nhe", "nhw", "nia", "nij", "niu", "njo", "nl",  "nmg",
+              "nn",  "nnh", "no",  "nov", "nr",  "nsk", "nso", "nus", "nv",  "nxq", "ny",  "nym",
+              "nyn", "nyo", "nzi", "oc",  "oj",  "om",  "osa", "osc", "pag", "pam", "pap", "pau",
+              "pcd", "pcm", "pdc", "pdt", "pfl", "pko", "pl",  "pms", "pnt", "pon", "prg", "pro",
+              "pt",  "puu", "qu",  "quc", "qug", "rap", "rar", "rcf", "rej", "rgn", "ria", "rif",
+              "rm",  "rmf", "rmo", "rmu", "rn",  "rng", "ro",  "rob", "rof", "rom", "rtm", "rug",
+              "rup", "rw",  "rwk", "sad", "saf", "saq", "sas", "sat", "sbp", "sc",  "scn", "sco",
+              "scs", "sdc", "se",  "see", "sef", "seh", "sei", "ses", "sg",  "sga", "sgs", "shi",
+              "sid", "sk",  "sl",  "sli", "sly", "sm",  "sma", "smj", "smn", "sms", "sn",  "snk",
+              "so",  "sq",  "sr",  "srb", "srn", "srr", "ss",  "ssy", "st",  "stq", "su",  "suk",
+              "sus", "sv",  "sw",  "swb", "swg", "sxn", "syi", "szl", "tbw", "tem", "teo", "ter",
+              "tet", "tg",  "tiv", "tk",  "tkl", "tkr", "tli", "tly", "tmh", "tn",  "to",  "tog",
+              "tpi", "tr",  "tru", "trv", "ts",  "tsg", "tsi", "ttj", "ttt", "tum", "tvl", "twq",
+              "ty",  "tzm", "udm", "ug",  "uli", "umb", "uz",  "vai", "ve",  "vec", "vep", "vi",
+              "vic", "vls", "vmf", "vmw", "vo",  "vot", "vro", "vun", "wa",  "wae", "war", "was",
+              "wbp", "wls", "wo",  "xav", "xh",  "xog", "xum", "yao", "yap", "yav", "ybb", "yo",
+              "yrl", "yua", "za",  "zag", "zap", "zea", "zmi", "zu",  "zun", "zza"}},
+            {{"cyrillic", "cyrillic supplement", "cyrillic extended-a", "cyrillic extended-b",
+              "cyrillic extended-c"},
+             {"ab",  "abq", "ady", "aii", "alt", "av",  "az",  "ba",  "be",  "bg",  "bs",  "bua",
+              "ce",  "chm", "cjs", "ckt", "crh", "cu",  "cv",  "dar", "dng", "evn", "gag", "gld",
+              "inh", "kaa", "kbd", "kca", "kjh", "kk",  "koi", "kpy", "krc", "ku",  "kum", "kv",
+              "ky",  "lbe", "lez", "lfn", "mdf", "mk",  "mn",  "mns", "mrj", "myv", "nog", "os",
+              "pnt", "ro",  "rom", "ru",  "rue", "sah", "se",  "sel", "sr",  "tab", "tg",  "tk",
+              "tkr", "tly", "tt",  "ttt", "tyv", "ude", "udm", "ug",  "uk",  "uz",  "xal", "yrk"}},
+            {{"devanagari", "devanagari extended", "vedic extensions"},
+             {"anp", "awa", "bap", "bfy", "bgc", "bhb", "bhi", "bho", "bjj", "bra", "brx",
+              "btv", "doi", "dty", "gbm", "gom", "gon", "gvr", "hi",  "hif", "hne", "hoc",
+              "hoj", "jml", "kfr", "kfy", "khn", "kok", "kru", "ks",  "lif", "mag", "mai",
+              "mgp", "mr",  "mrd", "mtr", "mwr", "ne",  "new", "noe", "pi",  "raj", "rjs",
+              "sa",  "sat", "sck", "sd",  "srx", "swv", "taj", "tdg", "tdh", "thl", "thq",
+              "thr", "tkt", "unr", "unx", "wbr", "wtm", "xnr", "xsr"}},
+            {{"arabic", "arabic supplement", "arabic extended-a", "arabic presentation forms-a",
+              "arabic presentation forms-b", "arabic mathematical alphabetic symbols"},
+             {"aeb", "ar",  "arq", "ars", "ary", "arz", "az",  "bal", "bej", "bft", "bgn", "bqi",
+              "brh", "cja", "cjm", "ckb", "cop", "dcc", "doi", "dyo", "fa",  "fia", "gbz", "gjk",
+              "gju", "glk", "ha",  "haz", "hnd", "hno", "id",  "inh", "khw", "kk",  "ks",  "ku",
+              "kvx", "kxp", "ky",  "lah", "lki", "lrc", "luz", "mfa", "ms",  "mvy", "mzn", "pa",
+              "prd", "ps",  "rmt", "sd",  "sdh", "shi", "skr", "so",  "sus", "swb", "tg",  "tk",
+              "tly", "tr",  "trw", "ttt", "ug",  "ur",  "uz",  "wni", "wo",  "zdj"}},
+            {{"cjk radicals supplement", "cjk strokes", "cjk symbols and punctuation",
+              "cjk unified ideographs", "cjk unified ideographs extension a",
+              "cjk unified ideographs extension b", "cjk unified ideographs extension c",
+              "cjk unified ideographs extension d", "cjk unified ideographs extension e",
+              "cjk unified ideographs extension f", "cjk unified ideographs extension g",
+              "cjk compatibility", "cjk compatibility ideographs", "cjk compatibility forms",
+              "cjk compatibility ideographs supplement", "kangxi radicals"},
+             {"gan", "hak", "hsn", "lzh", "nan", "vi", "wuu", "yue", "za", "zh", "ko", "ja"}},
+            {{"greek and coptic", "greek extended", "coptic"},
+             {"bgx", "cop", "el", "grc", "pnt", "tsd"}},
+            {{"bengali"},
+             {"as", "bn", "bpy", "ccp", "grt", "kha", "lus", "mni", "rkt", "sat", "syl", "unr",
+              "unx"}},
+            {{"thai"}, {"kdt", "kxm", "lcp", "lwl", "pi", "sou", "th", "tts"}},
+            {{"ethiopic", "ethiopic supplement", "ethiopic extended"},
+             {"am", "byn", "gez", "om", "ti", "tig", "wal"}},
+            {{"hebrew"}, {"he", "jpr", "jrb", "lad", "sam", "yi"}},
+            {{"tibetan"}, {"bft", "bo", "dz", "taj", "tdg", "tsj"}},
+            {{"unified canadian aboriginal syllabics"}, {"bft", "bo", "dz", "taj", "tdg", "tsj"}},
+            {{"tifinagh"}, {"rif", "shi", "tzm", "zen", "zgh"}},
+            {{"telugu"}, {"gon", "lmn", "te", "wbq"}},
+            {{"syriac"}, {"aii", "ar", "syr", "tru"}},
+            {{"myanmar"}, {"kht", "mnw", "my", "shn"}},
+            {{"nko"}, {"bm", "man", "nqo"}},
+            {{"buginese"}, {"bug", "mak", "mdr"}},
+            {{"old italic"}, {"ett", "osc", "xum"}},
+            {{"lao"}, {"hnj", "kjg", "lo"}},
+            {{"georgian", "georgian supplement"}, {"ka", "lzz", "xmf"}},
+            {{"sinhala"}, {"pi", "sa", "si"}},
+            {{"tamil"}, {"bfq", "ta"}},
+            {{"katakana", "katakana phonetic extensions"}, {"ain", "ryu"}},
+            {{"cuneiform", "cuneiform numbers and punctuation"}, {"akk", "hit"}},
+            {{"cham"}, {"cja", "cjm"}},
+            {{"runic"}, {"de", "non"}},
+            {{"kayah"}, {"eky", "kyu"}},
+            {{"kannada"}, {"kn", "tcy"}},
+            {{"mongolian"}, {"mn", "mnc"}},
+            {{"phags-pa"}, {"mn", "zh"}},
+            {{"oriya"}, {"or", "sat"}},
+            {{"samaritan"}, {"sam", "smp"}},
+            {{"armenian"}, {"hy"}},
+            {{"javanese"}, {"jv"}},
+            {{"gujarati"}, {"gu"}},
+            {{"malayalam"}, {"ml"}},
+            {{"avestan"}, {"ae"}},
+            {{"aramaic"}, {"arc"}},
+            {{"balinese"}, {"ban"}},
+            {{"bamum"}, {"bax"}},
+            {{"batak"}, {"bbc"}},
+            {{"buhid"}, {"bku"}},
+            {{"tai viet"}, {"blt"}},
+            {{"chakma"}, {"ccp"}},
+            {{"cherokee"}, {"chr"}},
+            {{"takri"}, {"doi"}},
+            {{"thaana"}, {"dv"}},
+            {{"egyptian hieroglyphs"}, {"egy"}},
+            {{"adlam"}, {"ff"}},
+            {{"tagalog"}, {"fil"}},
+            {{"gothic"}, {"got"}},
+            {{"cypriot"}, {"grc"}},
+            {{"linear b syllabary", "linear b ideograms"}, {"grc"}},
+            {{"mahajani"}, {"hi"}},
+            {{"pollard"}, {"hmd"}},
+            {{"pahawh hmong"}, {"hmn"}},
+            {{"hanunoo"}, {"hnn"}},
+            {{"varang kshiti"}, {"hoc"}},
+            {{"yi syllables", "yi radicals"}, {"ii"}},
+            {{"hiragana", "katakana"}, {"ja"}},
+            {{"new tai lue"}, {"khb"}},
+            {{"khmer", "khmer symbols"}, {"km"}},
+            {{"hangul jamo", "hangul compatibility jamo", "hangul jamo extended-a",
+              "hangul jamo extended-b", "hangul syllables"},
+             {"ko"}},
+            {{"permic"}, {"kv"}},
+            {{"linear a"}, {"lab"}},
+            {{"lepcha"}, {"lep"}},
+            {{"caucasian albanian"}, {"lez"}},
+            {{"limbu"}, {"lif"}},
+            {{"lisu"}, {"lis"}},
+            {{"tirhuta"}, {"mai"}},
+            {{"mende"}, {"men"}},
+            {{"meetei mayek"}, {"mni"}},
+            {{"modi"}, {"mr"}},
+            {{"mro"}, {"mro"}},
+            {{"mandaic"}, {"myz"}},
+            {{"tai tham"}, {"nod"}},
+            {{"osage"}, {"osa"}},
+            {{"old turkic"}, {"otk"}},
+            {{"gurmukhi"}, {"pa"}},
+            {{"inscriptional pahlavi"}, {"pal"}},
+            {{"old persian"}, {"peo"}},
+            {{"phoenician"}, {"phn"}},
+            {{"rejang"}, {"rej"}},
+            {{"grantha", "sharada", "siddham"}, {"sa"}},
+            {{"ol chiki"}, {"sat"}},
+            {{"saurashtra"}, {"saz"}},
+            {{"khojki", "khudawadi"}, {"sd"}},
+            {{"ogham"}, {"sga"}},
+            {{"osmanya"}, {"so"}},
+            {{"elbasan"}, {"sq"}},
+            {{"sora sompeng"}, {"srb"}},
+            {{"sundanese"}, {"su"}},
+            {{"syloti nagri"}, {"syl"}},
+            {{"tagbanwa"}, {"tbw"}},
+            {{"tai le"}, {"tdd"}},
+            {{"ugaritic"}, {"uga"}},
+            {{"vai"}, {"vai"}},
+            {{"carian"}, {"xcr"}},
+            {{"lycian"}, {"xlc"}},
+            {{"lydian"}, {"xld"}},
+            {{"manichaean"}, {"xmn"}},
+            {{"meroitic"}, {"xmr"}},
+            {{"old north arabian"}, {"xna"}},
+            {{"inscriptional parthian"}, {"xpr"}},
+            {{"old south arabian"}, {"xsa"}},
+            {{"bopomofo", "bopomofo extended"}, {"zh"}}};
 
     // Add basic latin (= ASCII) for all languages (required to display URLs for example).
     add_allowed_code_points_for_group("basic latin");
     // Add "geometric shapes" to allow rendering the "missing character" glyph
     add_allowed_code_points_for_group("geometric shapes");
 
-    for (const auto& mScript : lScripts)
-    {
-        if (std::find(mScript.second.begin(), mScript.second.end(), sLanguageCode) == mScript.second.end())
+    for (const auto& script : scripts) {
+        if (std::find(script.second.begin(), script.second.end(), language_code) ==
+            script.second.end())
             continue;
 
-        for (const auto& mCodeRange : mScript.first)
-            add_allowed_code_points_for_group(mCodeRange);
+        for (const auto& code_range : script.first)
+            add_allowed_code_points_for_group(code_range);
     }
 }
 
-void localizer::auto_detect_allowed_code_points()
-{
+void localizer::auto_detect_allowed_code_points() {
     clear_allowed_code_points();
 
-    if (lLanguages_.empty())
-    {
+    if (languages_.empty()) {
         // If no language specified, fall back to basic latin (=ASCII)
         add_allowed_code_points_for_group("basic latin");
         // Add "geometric shapes" to allow rendering the "missing character" glyph
@@ -706,180 +685,159 @@ void localizer::auto_detect_allowed_code_points()
     }
 
     // Add language-specific groups
-    for (const auto& sLanguage : lLanguages_)
-    {
+    for (const auto& language : languages_) {
         // Extract the language code from the language string (first set of lower case letters)
-        auto mPos = std::find_if(sLanguage.begin(), sLanguage.end(),
-            [](char cChar) { return std::isupper(cChar); });
+        auto pos =
+            std::find_if(language.begin(), language.end(), [](char c) { return std::isupper(c); });
 
-        add_allowed_code_points_for_language(std::string(sLanguage.begin(), mPos));
+        add_allowed_code_points_for_language(std::string(language.begin(), pos));
     }
 }
 
-const std::vector<code_point_range>& localizer::get_allowed_code_points() const
-{
-    return lCodePoints_;
+const std::vector<code_point_range>& localizer::get_allowed_code_points() const {
+    return code_points_;
 }
 
-void localizer::set_fallback_code_point(char32_t uiCodePoint)
-{
-    uiDefaultCodePoint_ = uiCodePoint;
+void localizer::set_fallback_code_point(char32_t code_point) {
+    default_code_point_ = code_point;
 }
 
-char32_t localizer::get_fallback_code_point() const
-{
-    return uiDefaultCodePoint_;
+char32_t localizer::get_fallback_code_point() const {
+    return default_code_point_;
 }
 
-void localizer::load_translations(const std::string& sFolderPath)
-{
+void localizer::load_translations(const std::string& folder_path) {
     // First, look for an exact match
-    for (const std::string& sLanguage : lLanguages_)
-    {
-        std::string sLanguageFile = sFolderPath + "/" + sLanguage + ".lua";
-        if (utils::file_exists(sLanguageFile))
-        {
-            load_translation_file(sLanguageFile);
+    for (const std::string& language : languages_) {
+        std::string language_file = folder_path + "/" + language + ".lua";
+        if (utils::file_exists(language_file)) {
+            load_translation_file(language_file);
             return;
         }
     }
 
     // If no exact match found, look for an approximate match (ignore region)
-    const auto lFiles = utils::get_file_list(sFolderPath, false, "lua");
-    for (const std::string& sLanguage : lLanguages_)
-    {
-        auto mIter = std::find_if(lFiles.begin(), lFiles.end(), [&](const std::string& sFile)
-        {
-            return sFile.size() == 8u && sFile.substr(0, 2) == sLanguage.substr(0, 2);
+    const auto files = utils::get_file_list(folder_path, false, "lua");
+    for (const std::string& language : languages_) {
+        auto iter = std::find_if(files.begin(), files.end(), [&](const std::string& file) {
+            return file.size() == 8u && file.substr(0, 2) == language.substr(0, 2);
         });
 
-        if (mIter == lFiles.end())
+        if (iter == files.end())
             continue;
 
-        std::string sLanguageFile = sFolderPath + "/" + *mIter;
-        load_translation_file(sLanguageFile);
+        std::string language_file = folder_path + "/" + *iter;
+        load_translation_file(language_file);
         return;
     }
 
     // If no match found, fall back to US english
-    std::string sLanguageFile = sFolderPath + "/enUS.lua";
-    if (utils::file_exists(sLanguageFile))
-    {
-        load_translation_file(sLanguageFile);
+    std::string language_file = folder_path + "/enUS.lua";
+    if (utils::file_exists(language_file)) {
+        load_translation_file(language_file);
         return;
     }
 }
 
-void localizer::load_translation_file(const std::string& sFilename) try
-{
-    auto mResult = mLua_.safe_script_file(sFilename);
-    if (!mResult.valid())
-    {
-        sol::error mError = mResult;
-        gui::out << gui::error << "gui::locale : " << mError.what() << std::endl;
+void localizer::load_translation_file(const std::string& file_name) try {
+    auto result = lua_.safe_script_file(file_name);
+    if (!result.valid()) {
+        gui::out << gui::error << "gui::locale : " << result.get<sol::error>().what() << std::endl;
         return;
     }
 
-    sol::table mTable = mLua_["localize"];
-    if (mTable == sol::lua_nil)
-    {
-        gui::out << gui::warning << "gui::locale : no 'localize' table in " << sFilename << std::endl;
+    sol::table table = lua_["localize"];
+    if (table == sol::lua_nil) {
+        gui::out << gui::warning << "gui::locale : no 'localize' table in " << file_name
+                 << std::endl;
         return;
     }
 
-    mTable.for_each([&](const sol::object& mKey, const sol::object& mValue)
-    {
-        if (!mKey.is<std::string>()) return;
-        std::string ks = mKey.as<std::string>();
+    table.for_each([&](const sol::object& key, const sol::object& value) {
+        if (!key.is<std::string>())
+            return;
+        std::string ks = key.as<std::string>();
 
-        if (mValue.is<std::string>())
-            lMap_.insert(std::make_pair(std::hash<std::string>{}(ks), mValue.as<std::string>()));
-        else if (mValue.is<sol::protected_function>())
-            lMap_.insert(std::make_pair(std::hash<std::string>{}(ks), mValue.as<sol::protected_function>()));
+        if (value.is<std::string>())
+            map_.insert(std::make_pair(std::hash<std::string>{}(ks), value.as<std::string>()));
+        else if (value.is<sol::protected_function>())
+            map_.insert(
+                std::make_pair(std::hash<std::string>{}(ks), value.as<sol::protected_function>()));
     });
 
     // Keep a copy so variables/functions remain alive
-    mLua_["localize_" + std::to_string(std::hash<std::string>{}(sFilename))] = mTable;
-}
-catch (const sol::error& mError)
-{
-    gui::out << gui::error << "gui::locale : " << mError.what() << std::endl;
+    lua_["localize_" + std::to_string(std::hash<std::string>{}(file_name))] = table;
+} catch (const sol::error& err) {
+    gui::out << gui::error << "gui::locale : " << err.what() << std::endl;
     return;
 }
 
-void localizer::clear_translations()
-{
-    lMap_.clear();
+void localizer::clear_translations() {
+    map_.clear();
 }
 
-bool localizer::is_key_valid_(std::string_view sKey) const
-{
-    return !sKey.empty() && sKey.front() == '{' && sKey.back() == '}';
+bool localizer::is_key_valid_(std::string_view key) const {
+    return !key.empty() && key.front() == '{' && key.back() == '}';
 }
 
-localizer::map_type::const_iterator localizer::find_key_(std::string_view sKey) const
-{
-    auto sSubstring = sKey.substr(1, sKey.size() - 2);
-    return lMap_.find(std::hash<std::string_view>{}(sSubstring));
+localizer::map_type::const_iterator localizer::find_key_(std::string_view key) const {
+    auto substring = key.substr(1, key.size() - 2);
+    return map_.find(std::hash<std::string_view>{}(substring));
 }
 
-std::string localizer::format_string(std::string_view sMessage, sol::variadic_args mVArgs) const
-{
-    fmt::dynamic_format_arg_store<fmt::format_context> mStore;
-    for (auto&& mArg : mVArgs)
-    {
-        lxgui::utils::variant mVariant;
-        if (!mArg.is<sol::lua_nil_t>())
-            mVariant = mArg;
+std::string localizer::format_string(std::string_view message, sol::variadic_args args) const {
+    fmt::dynamic_format_arg_store<fmt::format_context> store;
+    for (auto&& arg : args) {
+        lxgui::utils::variant variant;
+        if (!arg.is<sol::lua_nil_t>())
+            variant = arg;
 
-        std::visit([&](auto& mValue)
-        {
-            using inner_type = std::decay_t<decltype(mValue)>;
-            if constexpr (std::is_same_v<inner_type, lxgui::utils::empty>)
-                mStore.push_back(static_cast<const char*>(""));
-            else
-                mStore.push_back(mValue);
-        }, mVariant);
+        std::visit(
+            [&](auto& value) {
+                using inner_type = std::decay_t<decltype(value)>;
+                if constexpr (std::is_same_v<inner_type, lxgui::utils::empty>)
+                    store.push_back(static_cast<const char*>(""));
+                else
+                    store.push_back(value);
+            },
+            variant);
     }
 
-    return fmt::vformat(mLocale_, sMessage, mStore);
+    return fmt::vformat(locale_, message, store);
 }
 
-std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs) const
-{
-    if (!is_key_valid_(sKey)) return std::string{sKey};
+std::string localizer::localize(std::string_view key, sol::variadic_args args) const {
+    if (!is_key_valid_(key))
+        return std::string{key};
 
-    auto mIter = find_key_(sKey);
-    if (mIter == lMap_.end()) return std::string{sKey};
+    auto iter = find_key_(key);
+    if (iter == map_.end())
+        return std::string{key};
 
-    return std::visit([&](const auto& mItem)
-    {
-        using inner_type = std::decay_t<decltype(mItem)>;
-        if constexpr (std::is_same_v<inner_type, std::string>)
-        {
-            return format_string(mItem, mVArgs);
-        }
-        else
-        {
-            auto mResult = mItem(mVArgs);
-            if (!mResult.valid())
-            {
-                sol::error mError = mResult;
-                gui::out << gui::error << "gui::locale : " << mError.what() << std::endl;
-                return std::string{sKey};
+    return std::visit(
+        [&](const auto& item) {
+            using inner_type = std::decay_t<decltype(item)>;
+            if constexpr (std::is_same_v<inner_type, std::string>) {
+                return format_string(item, args);
+            } else {
+                auto result = item(args);
+                if (!result.valid()) {
+                    gui::out << gui::error
+                             << "gui::locale : " << result.template get<sol::error>().what()
+                             << std::endl;
+                    return std::string{key};
+                }
+
+                if (result.begin() != result.end()) {
+                    auto&& first = *result.begin();
+                    if (first.template is<std::string>())
+                        return first.template as<std::string>();
+                }
+
+                return std::string{key};
             }
-
-            if (mResult.begin() != mResult.end())
-            {
-                auto&& mFirst = *mResult.begin();
-                if (mFirst.template is<std::string>())
-                    return mFirst.template as<std::string>();
-            }
-
-            return std::string{sKey};
-        }
-    }, mIter->second);
+        },
+        iter->second);
 }
 
-}
-}
+} // namespace lxgui::gui

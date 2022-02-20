@@ -1,55 +1,47 @@
 #include "lxgui/impl/gui_sfml_atlas.hpp"
+
+#include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_out.hpp"
 #include "lxgui/impl/gui_sfml_renderer.hpp"
-#include <lxgui/gui_out.hpp>
-#include <lxgui/gui_exception.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/utils_string.hpp"
 
-namespace lxgui {
-namespace gui {
-namespace sfml
-{
+namespace lxgui::gui::sfml {
 
-atlas_page::atlas_page(gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
-{
-    const std::size_t uiSize = mRenderer.get_texture_atlas_page_size();
+atlas_page::atlas_page(gui::renderer& rdr, material::filter filt) : gui::atlas_page(filt) {
+    const std::size_t size = rdr.get_texture_atlas_page_size();
 
-    if (!mTexture_.create(uiSize, uiSize))
-    {
-        throw gui::exception("gui::sfml::atlas_page", "Could not create texture with dimensions "+
-            utils::to_string(uiSize)+" x "+utils::to_string(uiSize)+".");
+    if (!texture_.create(size, size)) {
+        throw gui::exception(
+            "gui::sfml::atlas_page", "Could not create texture with dimensions " +
+                                         utils::to_string(size) + " x " + utils::to_string(size) +
+                                         ".");
     }
 
-    mTexture_.setSmooth(mFilter == material::filter::LINEAR);
+    texture_.setSmooth(filt == material::filter::linear);
 }
 
-std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const bounds2f& mLocation)
-{
-    const sfml::material& mSFMat = static_cast<const sfml::material&>(mMat);
+std::shared_ptr<gui::material>
+atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
+    const sfml::material& sf_mat = static_cast<const sfml::material&>(mat);
 
-    const sf::Image mImage = mSFMat.get_texture()->copyToImage();
-    mTexture_.update(mImage, mLocation.left, mLocation.top);
+    const sf::Image image = sf_mat.get_texture()->copyToImage();
+    texture_.update(image, location.left, location.top);
 
-    return std::make_shared<sfml::material>(mTexture_, mLocation, mFilter_);
+    return std::make_shared<sfml::material>(texture_, location, filter_);
 }
 
-float atlas_page::get_width() const
-{
-    return mTexture_.getSize().x;
+float atlas_page::get_width_() const {
+    return texture_.getSize().x;
 }
 
-float atlas_page::get_height() const
-{
-    return mTexture_.getSize().y;
+float atlas_page::get_height_() const {
+    return texture_.getSize().y;
 }
 
-atlas::atlas(renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
+atlas::atlas(renderer& rdr, material::filter filt) : gui::atlas(rdr, filt) {}
 
-std::unique_ptr<gui::atlas_page> atlas::create_page_()
-{
-    return std::make_unique<sfml::atlas_page>(mRenderer_, mFilter_);
+std::unique_ptr<gui::atlas_page> atlas::create_page_() {
+    return std::make_unique<sfml::atlas_page>(renderer_, filter_);
 }
 
-}
-}
-}
+} // namespace lxgui::gui::sfml

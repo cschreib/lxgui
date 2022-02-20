@@ -1,45 +1,37 @@
 #include "lxgui/gui_material.hpp"
 
-namespace lxgui {
-namespace gui
-{
+namespace lxgui::gui {
 
-material::material(bool bIsAtlas) : bIsAtlas_(bIsAtlas)
-{
+material::material(bool is_atlas) : is_atlas_(is_atlas) {}
+
+vector2f material::get_canvas_uv(const vector2f& texture_uv, bool from_normalized) const {
+    const bounds2f quad = get_rect();
+
+    vector2f pixel_uv = texture_uv;
+    if (from_normalized)
+        pixel_uv *= quad.dimensions();
+
+    pixel_uv += quad.top_left();
+    pixel_uv /= vector2f(get_canvas_dimensions());
+
+    return pixel_uv;
 }
 
-vector2f material::get_canvas_uv(const vector2f& mTextureUV, bool bFromNormalized) const
-{
-    const bounds2f mQuad = get_rect();
+vector2f material::get_local_uv(const vector2f& canvas_uv, bool as_normalized) const {
+    const bounds2f quad = get_rect();
 
-    vector2f mPixelUV = mTextureUV;
-    if (bFromNormalized)
-        mPixelUV *= mQuad.dimensions();
+    vector2f pixel_uv = canvas_uv;
+    pixel_uv *= vector2f(get_canvas_dimensions());
+    pixel_uv -= quad.top_left();
 
-    mPixelUV += mQuad.top_left();
-    mPixelUV /= vector2f(get_canvas_dimensions());
+    if (as_normalized)
+        pixel_uv /= quad.dimensions();
 
-    return mPixelUV;
+    return pixel_uv;
 }
 
-vector2f material::get_local_uv(const vector2f& mCanvasUV, bool bAsNormalized) const
-{
-    const bounds2f mQuad = get_rect();
-
-    vector2f mPixelUV = mCanvasUV;
-    mPixelUV *= vector2f(get_canvas_dimensions());
-    mPixelUV -= mQuad.top_left();
-
-    if (bAsNormalized)
-        mPixelUV /= mQuad.dimensions();
-
-    return mPixelUV;
+bool material::is_in_atlas() const {
+    return is_atlas_;
 }
 
-bool material::is_in_atlas() const
-{
-    return bIsAtlas_;
-}
-
-}
-}
+} // namespace lxgui::gui

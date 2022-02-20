@@ -1,216 +1,180 @@
 #include "lxgui/input_dispatcher.hpp"
-#include "lxgui/input_source.hpp"
-#include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_eventemitter.hpp"
-#include "lxgui/gui_out.hpp"
 
-#include <lxgui/utils_exception.hpp>
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_std.hpp>
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_out.hpp"
+#include "lxgui/input_source.hpp"
+#include "lxgui/utils_exception.hpp"
+#include "lxgui/utils_std.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <iostream>
 
-namespace lxgui {
-namespace input
-{
+namespace lxgui::input {
 
-dispatcher::dispatcher(source& mSource) : mSource_(mSource)
-{
-    lConnections_.push_back(mSource.on_key_pressed.connect([&](input::key mKey)
-    {
+dispatcher::dispatcher(source& src) : source_(src) {
+    connections_.push_back(src.on_key_pressed.connect([&](key key_id) {
         // Record press time
-        lKeyPressedTime_[static_cast<std::size_t>(mKey)] = timer::now();
+        key_pressed_time_[static_cast<std::size_t>(key_id)] = timer::now();
         // Forward
-        on_key_pressed(mKey);
+        on_key_pressed(key_id);
     }));
 
-    lConnections_.push_back(mSource.on_key_released.connect([&](input::key mKey)
-    {
+    connections_.push_back(src.on_key_released.connect([&](key key_id) {
         // Forward
-        on_key_released(mKey);
+        on_key_released(key_id);
     }));
 
-    lConnections_.push_back(mSource.on_text_entered.connect([&](std::uint32_t uiChar)
-    {
+    connections_.push_back(src.on_text_entered.connect([&](std::uint32_t c) {
         // Forward
-        on_text_entered(uiChar);
+        on_text_entered(c);
     }));
 
-    lConnections_.push_back(mSource.on_mouse_pressed.connect(
-        [&](input::mouse_button mButton, gui::vector2f mMousePos)
-        {
+    connections_.push_back(
+        src.on_mouse_pressed.connect([&](mouse_button button_id, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            mMousePos /= fScalingFactor_;
+            mouse_pos /= scaling_factor_;
 
             // Record press time
-            auto mTimeLast = lMousePressedTime_[static_cast<std::size_t>(mButton)];
-            auto mTimeNow = timer::now();
-            lMousePressedTime_[static_cast<std::size_t>(mButton)] = mTimeNow;
-            double dClickTime = std::chrono::duration<double>(mTimeNow - mTimeLast).count();
+            auto time_last = mouse_pressed_time_[static_cast<std::size_t>(button_id)];
+            auto time_now  = timer::now();
+            mouse_pressed_time_[static_cast<std::size_t>(button_id)] = time_now;
+            double click_time = std::chrono::duration<double>(time_now - time_last).count();
 
             // Forward
-            on_mouse_pressed(mButton, mMousePos);
+            on_mouse_pressed(button_id, mouse_pos);
 
-            if (dClickTime < dDoubleClickTime_)
-                on_mouse_double_clicked(mButton, mMousePos);
-        }
-    ));
+            if (click_time < double_click_time_)
+                on_mouse_double_clicked(button_id, mouse_pos);
+        }));
 
-    lConnections_.push_back(mSource.on_mouse_released.connect(
-        [&](input::mouse_button mButton, gui::vector2f mMousePos)
-        {
+    connections_.push_back(
+        src.on_mouse_released.connect([&](mouse_button button_id, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            mMousePos /= fScalingFactor_;
+            mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_released(mButton, mMousePos);
+            on_mouse_released(button_id, mouse_pos);
 
-            if (bMouseDragged_ && mButton == mMouseDragButton_)
-            {
-                bMouseDragged_ = false;
-                on_mouse_drag_stop(mButton, mMousePos);
+            if (is_mouse_dragged_ && button_id == mouse_drag_button_) {
+                is_mouse_dragged_ = false;
+                on_mouse_drag_stop(button_id, mouse_pos);
             }
-        }
-    ));
+        }));
 
-    lConnections_.push_back(mSource.on_mouse_wheel.connect(
-        [&](float fWheel, gui::vector2f mMousePos)
-        {
-            // Apply scaling factor to mouse coordinates
-            mMousePos /= fScalingFactor_;
-            // Forward
-            on_mouse_wheel(fWheel, mMousePos);
-        }
-    ));
+    connections_.push_back(src.on_mouse_wheel.connect([&](float wheel, gui::vector2f mouse_pos) {
+        // Apply scaling factor to mouse coordinates
+        mouse_pos /= scaling_factor_;
+        // Forward
+        on_mouse_wheel(wheel, mouse_pos);
+    }));
 
-    lConnections_.push_back(mSource.on_mouse_moved.connect(
-        [&](gui::vector2f mMovement, gui::vector2f mMousePos)
-        {
+    connections_.push_back(
+        src.on_mouse_moved.connect([&](gui::vector2f movement, gui::vector2f mouse_pos) {
             // Apply scaling factor to mouse coordinates
-            mMovement /= fScalingFactor_;
-            mMousePos /= fScalingFactor_;
+            movement /= scaling_factor_;
+            mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_moved(mMovement, mMousePos);
+            on_mouse_moved(movement, mouse_pos);
 
-            if (!bMouseDragged_)
-            {
-                std::size_t uiMouseButtonPressed = std::numeric_limits<std::size_t>::max();
-                for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
-                {
-                    if (mouse_is_down(static_cast<mouse_button>(i)))
-                    {
-                        uiMouseButtonPressed = i;
+            if (!is_mouse_dragged_) {
+                std::size_t mouse_button_pressed = std::numeric_limits<std::size_t>::max();
+                for (std::size_t i = 0; i < mouse_button_number; ++i) {
+                    if (mouse_is_down(static_cast<mouse_button>(i))) {
+                        mouse_button_pressed = i;
                         break;
                     }
                 }
 
-                if (uiMouseButtonPressed != std::numeric_limits<std::size_t>::max())
-                {
-                    bMouseDragged_ = true;
-                    mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
-                    on_mouse_drag_start(mMouseDragButton_, mMousePos);
+                if (mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
+                    is_mouse_dragged_  = true;
+                    mouse_drag_button_ = static_cast<mouse_button>(mouse_button_pressed);
+                    on_mouse_drag_start(mouse_drag_button_, mouse_pos);
                 }
             }
-        }
-    ));
+        }));
 }
 
-bool dispatcher::any_key_is_down() const
-{
-    const auto& lKeyState = mSource_.get_key_state().lKeyState;
-    for (std::size_t i = 1; i < KEY_NUMBER; ++i)
-    {
-        if (lKeyState[i])
+bool dispatcher::any_key_is_down() const {
+    const auto& is_key_down = source_.get_key_state().is_key_down;
+    for (std::size_t i = 1; i < key_number; ++i) {
+        if (is_key_down[i])
             return true;
     }
 
     return false;
 }
 
-bool dispatcher::key_is_down(key mKey) const
-{
-    return mSource_.get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
+bool dispatcher::key_is_down(key key_id) const {
+    return source_.get_key_state().is_key_down[static_cast<std::size_t>(key_id)];
 }
 
-double dispatcher::get_key_down_duration(key mKey) const
-{
-    if (!key_is_down(mKey))
+double dispatcher::get_key_down_duration(key key_id) const {
+    if (!key_is_down(key_id))
         return 0.0;
 
     return std::chrono::duration<double>(
-        timer::now() - lKeyPressedTime_[static_cast<std::size_t>(mKey)]).count();
+               timer::now() - key_pressed_time_[static_cast<std::size_t>(key_id)])
+        .count();
 }
 
-bool dispatcher::mouse_is_down(mouse_button mID) const
-{
-    return mSource_.get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
+bool dispatcher::mouse_is_down(mouse_button button_id) const {
+    return source_.get_mouse_state().is_button_down[static_cast<std::size_t>(button_id)];
 }
 
-double dispatcher::get_mouse_down_duration(mouse_button mID) const
-{
-    if (!mouse_is_down(mID))
+double dispatcher::get_mouse_down_duration(mouse_button button_id) const {
+    if (!mouse_is_down(button_id))
         return 0.0;
 
     return std::chrono::duration<double>(
-        timer::now() - lMousePressedTime_[static_cast<std::size_t>(mID)]).count();
+               timer::now() - mouse_pressed_time_[static_cast<std::size_t>(button_id)])
+        .count();
 }
 
-void dispatcher::set_doubleclick_time(double dDoubleClickTime)
-{
-    dDoubleClickTime_ = dDoubleClickTime;
+void dispatcher::set_doubleclick_time(double double_click_time) {
+    double_click_time_ = double_click_time;
 }
 
-double dispatcher::get_doubleclick_time() const
-{
-    return dDoubleClickTime_;
+double dispatcher::get_doubleclick_time() const {
+    return double_click_time_;
 }
 
-bool dispatcher::alt_is_pressed() const
-{
-    return key_is_down(key::K_LMENU) || key_is_down(key::K_RMENU);
+bool dispatcher::alt_is_pressed() const {
+    return key_is_down(key::k_lmenu) || key_is_down(key::k_rmenu);
 }
 
-bool dispatcher::shift_is_pressed() const
-{
-    return key_is_down(key::K_LSHIFT) || key_is_down(key::K_RSHIFT);
+bool dispatcher::shift_is_pressed() const {
+    return key_is_down(key::k_lshift) || key_is_down(key::k_rshift);
 }
 
-bool dispatcher::ctrl_is_pressed() const
-{
-    return key_is_down(key::K_LCONTROL) || key_is_down(key::K_RCONTROL);
+bool dispatcher::ctrl_is_pressed() const {
+    return key_is_down(key::k_lcontrol) || key_is_down(key::k_rcontrol);
 }
 
-gui::vector2f dispatcher::get_mouse_position() const
-{
-    return mSource_.get_mouse_state().mPosition/fScalingFactor_;
+gui::vector2f dispatcher::get_mouse_position() const {
+    return source_.get_mouse_state().position / scaling_factor_;
 }
 
-float dispatcher::get_mouse_wheel() const
-{
-    return mSource_.get_mouse_state().fWheel;
+float dispatcher::get_mouse_wheel() const {
+    return source_.get_mouse_state().wheel;
 }
 
-const source& dispatcher::get_source() const
-{
-    return mSource_;
+const source& dispatcher::get_source() const {
+    return source_;
 }
 
-source& dispatcher::get_source()
-{
-    return mSource_;
+source& dispatcher::get_source() {
+    return source_;
 }
 
-void dispatcher::set_interface_scaling_factor(float fScalingFactor)
-{
-    fScalingFactor_ = fScalingFactor;
+void dispatcher::set_interface_scaling_factor(float scaling_factor) {
+    scaling_factor_ = scaling_factor;
 }
 
-float dispatcher::get_interface_scaling_factor() const
-{
-    return fScalingFactor_;
+float dispatcher::get_interface_scaling_factor() const {
+    return scaling_factor_;
 }
 
-}
-}
+} // namespace lxgui::input
