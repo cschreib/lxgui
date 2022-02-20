@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
         // Start the main loop
         bool                     running                = true;
         bool                     focus                  = true;
-        double                   delta                  = 0.0;
+        float                    delta                  = 0.0f;
         timing_clock::time_point prev_time              = timing_clock::now();
         input::dispatcher&       input_dispatcher       = manager->get_input_dispatcher();
         input::world_dispatcher& world_input_dispatcher = manager->get_world_input_dispatcher();
