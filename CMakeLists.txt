@@ -309,6 +309,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_periodic_timer.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_string.cpp
 )
 

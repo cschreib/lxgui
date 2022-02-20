@@ -18,7 +18,8 @@ using namespace lxgui::input;
 namespace lxgui::gui {
 
 edit_box::edit_box(utils::control_block& block, manager& mgr) :
-    frame(block, mgr), carret_timer_(blink_speed_, periodic_timer::start_type::first_tick, false) {
+    frame(block, mgr),
+    carret_timer_(blink_period_, utils::periodic_timer::start_type::first_tick, false) {
     type_.push_back(class_name);
 
     iter_carret_pos_     = unicode_text_.begin();
@@ -50,7 +51,7 @@ void edit_box::copy_from(const region& obj) {
         return;
 
     this->set_max_letters(box_obj->get_max_letters());
-    this->set_blink_speed(box_obj->get_blink_speed());
+    this->set_blink_period(box_obj->get_blink_period());
     this->set_numeric_only(box_obj->is_numeric_only());
     this->set_positive_only(box_obj->is_positive_only());
     this->set_integer_only(box_obj->is_integer_only());
@@ -367,16 +368,17 @@ std::size_t edit_box::get_num_letters() const {
     return unicode_text_.size();
 }
 
-void edit_box::set_blink_speed(double blink_speed) {
-    if (blink_speed_ == blink_speed)
+void edit_box::set_blink_period(double blink_period) {
+    if (blink_period_ == blink_period)
         return;
 
-    blink_speed_  = blink_speed;
-    carret_timer_ = periodic_timer(blink_speed_, periodic_timer::start_type::first_tick, false);
+    blink_period_ = blink_period;
+    carret_timer_ =
+        utils::periodic_timer(blink_period_, utils::periodic_timer::start_type::first_tick, false);
 }
 
-double edit_box::get_blink_speed() const {
-    return blink_speed_;
+double edit_box::get_blink_period() const {
+    return blink_period_;
 }
 
 void edit_box::set_numeric_only(bool numeric_only) {
@@ -1123,60 +1125,6 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
                 return;
         }
     }
-}
-
-periodic_timer::periodic_timer(double duration, start_type type, bool ticks_now) :
-    elapsed_(ticks_now ? duration : 0.0), duration_(duration), type_(type) {
-    if (type == start_type::now)
-        start();
-}
-
-double periodic_timer::get_elapsed() const {
-    return elapsed_;
-}
-
-double periodic_timer::get_period() const {
-    return duration_;
-}
-
-bool periodic_timer::is_paused() const {
-    return paused_;
-}
-
-bool periodic_timer::ticks() {
-    if (type_ == start_type::first_tick && first_tick_) {
-        start();
-        first_tick_ = false;
-    }
-
-    if (elapsed_ >= duration_) {
-        if (!paused_)
-            zero();
-
-        return true;
-    } else
-        return false;
-}
-
-void periodic_timer::stop() {
-    elapsed_ = 0.0;
-    paused_  = true;
-}
-
-void periodic_timer::pause() {
-    paused_ = true;
-}
-
-void periodic_timer::start() {
-    paused_ = false;
-}
-
-void periodic_timer::zero() {
-    elapsed_ = 0.0;
-}
-
-void periodic_timer::update(double delta) {
-    elapsed_ += delta;
 }
 
 } // namespace lxgui::gui

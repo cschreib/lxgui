@@ -7,81 +7,13 @@
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
+#include "lxgui/utils_periodic_timer.hpp"
 #include "lxgui/utils_string.hpp"
 
 namespace lxgui::gui {
 
 class font_string;
 class texture;
-
-/// A repeating timer
-/** This timer is meant to tick periodicaly,
- *   so you can use it for any periodic event
- *   such as key repetition or a count down.
- */
-class periodic_timer {
-public:
-    enum class start_type {
-        /// The timer will start if you call Start()
-        paused,
-        /// The timer starts immediatly after it is created
-        now,
-        /// The timer will start when you first call Ticks()
-        first_tick
-    };
-
-    /// Default constructor
-    /** \param duration The time interval between each tick
-     *   \param type     See TimerType
-     *   \param ticks_now    The timer ticks immediately
-     */
-    periodic_timer(double duration, start_type type, bool ticks_now);
-
-    /// Returns the time elapsed since the last tick.
-    /** \return The time elapsed since last tick
-     */
-    double get_elapsed() const;
-
-    /// Returns the period of the periodic_timer.
-    /** \return The period of the periodic_timer
-     */
-    double get_period() const;
-
-    /// Cheks if this periodic_timer is paused.
-    /** \return 'true' if this periodic_timer is paused
-     */
-    bool is_paused() const;
-
-    /// Checks if the timer's period has been reached.
-    /** \return 'true' if the period has been reached
-     */
-    bool ticks();
-
-    /// Pauses the timer and resets it.
-    void stop();
-
-    /// Starts the timer but doesn't reset it.
-    void start();
-
-    /// Pauses the timer.
-    void pause();
-
-    /// Resets the timer but doesn't pause it.
-    void zero();
-
-    /// Updates this timer (adds time).
-    /** \param delta The time elapsed since last update
-     */
-    void update(double delta);
-
-private:
-    double elapsed_    = 0.0;
-    double duration_   = 0.0;
-    bool   paused_     = true;
-    bool   first_tick_ = true;
-
-    start_type type_ = start_type::paused;
-};
 
 /// A #frame with an editable text box.
 /** This frame lets the user input arbitrary text into a box,
@@ -224,14 +156,14 @@ public:
     std::size_t get_num_letters() const;
 
     /// Sets the carret's blink speed.
-    /** \param dBlinkSpeed The number of seconds to wait between each blink
+    /** \param blink_period The number of seconds to wait between each blink
      */
-    void set_blink_speed(double blink_speed);
+    void set_blink_period(double blink_period);
 
     /// Returns the carret's blink speed.
     /** \return the carret's blink speed (time in seconds between each blink)
      */
-    double get_blink_speed() const;
+    double get_blink_period() const;
 
     /// Makes this edit_box allow numeric characters only.
     /** \param numeric_only 'true' to only allow numeric characters
@@ -420,9 +352,9 @@ protected:
     std::size_t                  selection_end_pos_   = 0u;
     bool                         is_text_selected_    = false;
 
-    utils::observer_ptr<texture> carret_      = nullptr;
-    double                       blink_speed_ = 0.5;
-    periodic_timer               carret_timer_;
+    utils::observer_ptr<texture> carret_       = nullptr;
+    double                       blink_period_ = 0.5;
+    utils::periodic_timer        carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;
     std::size_t                 max_history_lines_    = std::numeric_limits<std::size_t>::max();

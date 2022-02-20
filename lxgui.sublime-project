@@ -1013,16 +1013,28 @@
 					"shell_cmd": "make -j12 src/utils_maths.s",
 				},
 				{
+					"name": "src/utils_periodic_timer.o",
+					"shell_cmd": "make -j12 src/utils_periodic_timer.o",
+				},
+				{
+					"name": "src/utils_periodic_timer.i",
+					"shell_cmd": "make -j12 src/utils_periodic_timer.i",
+				},
+				{
+					"name": "src/utils_periodic_timer.s",
+					"shell_cmd": "make -j12 src/utils_periodic_timer.s",
+				},
+				{
 					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o",
+					"shell_cmd": "make -j12 src/utils_string.o"
 				},
 				{
 					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i",
+					"shell_cmd": "make -j12 src/utils_string.i"
 				},
 				{
 					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s",
+					"shell_cmd": "make -j12 src/utils_string.s"
 				},
 			],
 			"working_dir": "$folder/build",
