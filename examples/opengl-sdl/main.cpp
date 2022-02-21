@@ -34,7 +34,7 @@ struct GLContext {
 
     explicit GLContext(SDL_Window* window) : context(SDL_GL_CreateContext(window)) {
         if (context == nullptr)
-            throw gui::exception("SDL_GL_CreateContext", "Coult not create OpenGL context.");
+            throw gui::exception("SDL_GL_CreateContext", "Could not create OpenGL context.");
     }
 
     ~GLContext() noexcept {
