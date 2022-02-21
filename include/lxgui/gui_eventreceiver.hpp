@@ -14,7 +14,7 @@ class event_emitter;
 
 /// Utility object to store and manage connections to event signals.
 /** This class enables registering callbacks to multiple events, and
- *   automatically manages the lifetime of the callbacks.
+ * automatically manages the lifetime of the callbacks.
  */
 class event_receiver {
 public:
@@ -31,7 +31,7 @@ public:
 
     /// Enables reaction to an event.
     /** \param event_name The name of the event this class should react to
-     *   \param callback  The callback function to register to this event
+     * \param callback The callback function to register to this event
      */
     void register_event(const std::string& event_name, event_handler_function callback);
 

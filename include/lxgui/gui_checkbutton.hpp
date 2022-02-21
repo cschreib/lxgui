@@ -9,7 +9,7 @@ namespace lxgui::gui {
 
 /// A #button with two additional states: checked and unchecked.
 /** This region works exactly like a classic #button, but is has two
- *   additional special textures for the check sign.
+ * additional special textures for the check sign.
  */
 class check_button : public button {
     using base = button;
@@ -20,7 +20,7 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
@@ -45,7 +45,7 @@ public:
 
     /// Releases this check button.
     /** \note This function only has a visual impact:
-     *         the OnClick() handler is not called.
+     *       the OnClick() handler is not called.
      */
     void release() override;
 

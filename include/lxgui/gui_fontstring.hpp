@@ -10,25 +10,25 @@ namespace lxgui::gui {
 
 /// A #layered_region that can draw text on the screen.
 /** This class holds a string and a reference to a font, which
- *   is used to draw the string on the screen. The appearance of
- *   the string can be changed (font, size, color, alignment, wrapping).
- *   In addition, it is possible to change the color of a portion of
- *   the string, for example to highlight a particular name.
+ * is used to draw the string on the screen. The appearance of
+ * the string can be changed (font, size, color, alignment, wrapping).
+ * In addition, it is possible to change the color of a portion of
+ * the string, for example to highlight a particular name.
  *
- *   __Sizing.__ The #font_string class has a special property when it
- *   comes to determining the size of its region on the screen, hence
- *   how other object anchor to it, and how it anchors to other objects.
- *   See the documentation for #region for more information on anchors.
- *   While other regions must either have a fixed size or more than two
- *   anchors constraining their size, the #font_string does not. If only
- *   one anchor is specified, the width and height of the #font_string will
- *   be determined by the area occupied by the displayed text, however long and
- *   tall this may be. If the width is already constrained by the fixed size
- *   or anchors, then the text will word wrap (if allowed) and the
- *   #font_string's height will be as tall as the height of the wrapped text.
- *   Finally, if both the width and height are constrained by fixed sizes or
- *   anchors, the text will simply word wrap (if allowed) and be cut to fit
- *   in the specified area.
+ * __Sizing.__ The #font_string class has a special property when it
+ * comes to determining the size of its region on the screen, hence
+ * how other object anchor to it, and how it anchors to other objects.
+ * See the documentation for #region for more information on anchors.
+ * While other regions must either have a fixed size or more than two
+ * anchors constraining their size, the #font_string does not. If only
+ * one anchor is specified, the width and height of the #font_string will
+ * be determined by the area occupied by the displayed text, however long and
+ * tall this may be. If the width is already constrained by the fixed size
+ * or anchors, then the text will word wrap (if allowed) and the
+ * #font_string's height will be as tall as the height of the wrapped text.
+ * Finally, if both the width and height are constrained by fixed sizes or
+ * anchors, the text will simply word wrap (if allowed) and be cut to fit
+ * in the specified area.
  */
 class font_string : public layered_region {
     using base = layered_region;
@@ -39,7 +39,7 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
@@ -63,8 +63,8 @@ public:
 
     /// Adds or remove the outline around the text.
     /** \param is_outlined 'true' to enable the outline
-     *   \note The thickness of this outline is constant and
-     *         does not depend on the font's size.
+     * \note The thickness of this outline is constant and
+     *       does not depend on the font's size.
      */
     void set_outlined(bool is_outlined);
 
@@ -90,13 +90,13 @@ public:
 
     /// Returns this font_string's shadow offset.
     /** \return This font_string's shadow offset
-     *   \note Contains (X, Y) offset.
+     * \note Contains (X, Y) offset.
      */
     const vector2f& get_shadow_offset() const;
 
     /// Returns this font_string's offset.
     /** \return This font_string's offset
-     *   \note Contains (X, Y) offset.
+     * \note Contains (X, Y) offset.
      */
     const vector2f& get_offset() const;
 
@@ -117,7 +117,7 @@ public:
 
     /// Sets this font_string's font (file and size).
     /** \param font_name The file path to the .ttf file
-     *   \param height   The font height
+     * \param height The font height
      */
     void set_font(const std::string& font_name, float height);
 
@@ -138,13 +138,13 @@ public:
 
     /// Sets this font_string's shadow offset.
     /** \param shadow_offset Offset
-     *   \note Contains (X, Y) offset.
+     * \note Contains (X, Y) offset.
      */
     void set_shadow_offset(const vector2f& shadow_offset);
 
     /// Sets this font_string's offset.
     /** \param offset Offset
-     *   \note Contains (X, Y) offset.
+     * \note Contains (X, Y) offset.
      */
     void set_offset(const vector2f& offset);
 
@@ -155,9 +155,9 @@ public:
 
     /// Sets the space between each line as a fraction of the font height.
     /** \param line_spacing The space between each line, as a relative factor of the font height
-     *   \note A line spacing of 1 is the default and results in fairly dense text. To increase
-     *         the space between lines, set the line spacing to a larger value, for example 1.5
-     *         results in 50% more space.
+     * \note A line spacing of 1 is the default and results in fairly dense text. To increase
+     *       the space between lines, set the line spacing to a larger value, for example 1.5
+     *       results in 50% more space.
      */
     void set_line_spacing(float line_spacing);
 
@@ -168,7 +168,7 @@ public:
 
     /// Checks is large text is truncated or wrapped.
     /** \return 'true' if larget text is truncated
-     *   \note See set_non_space_wrap for more infos.
+     * \note See set_non_space_wrap for more infos.
      */
     bool can_non_space_wrap() const;
 
@@ -184,7 +184,7 @@ public:
 
     /// Returns the width of a string if no format or wrapping is applied.
     /** \param content The string for which to calculate the width
-     *   \return The width of a string if no format or wrapping is applied
+     * \return The width of a string if no format or wrapping is applied
      */
     float get_string_width(const utils::ustring& content) const;
 
@@ -195,10 +195,10 @@ public:
 
     /// Sets whether large text is truncated or wrapped.
     /** \param can_non_space_wrap 'true' to truncate the text
-     *   \note This applies to large chunks of text with no
-     *         spaces. When truncated, "..." is appended at
-     *         the line's end. Else, the "word" is cut and
-     *         continues on the next line.
+     * \note This applies to large chunks of text with no
+     *       spaces. When truncated, "..." is appended at
+     *       the line's end. Else, the "word" is cut and
+     *       continues on the next line.
      */
     void set_non_space_wrap(bool can_non_space_wrap);
 
@@ -214,8 +214,8 @@ public:
 
     /// Enables word wrap.
     /** \param can_word_wrap 'true' to enable word wrap
-     *   \param add_ellipsis 'true' to put "..." at the end of a truncated line
-     *   \note Enabled by default.
+     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
+     * \note Enabled by default.
      */
     void set_word_wrap(bool can_word_wrap, bool add_ellipsis);
 
@@ -226,7 +226,7 @@ public:
 
     /// Enables color formatting.
     /** \param formatting 'true' to enable color formatting
-     *   \note Enabled by default. See text::enable_formatting().
+     * \note Enabled by default. See text::enable_formatting().
      */
     void enable_formatting(bool formatting);
 
@@ -237,7 +237,7 @@ public:
 
     /// Sets the rendered text.
     /** \param content The rendered text
-     *   \note See text::set_text for more infos about formatting.
+     * \note See text::set_text for more infos about formatting.
      */
     void set_text(const utils::ustring& content);
 

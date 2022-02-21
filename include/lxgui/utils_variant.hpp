@@ -16,12 +16,12 @@ struct empty {};
 
 /// Type-erased value for passing arguments to events
 /** \note This contains all the basic numerical types up to 64bit precision.
- *         Any other scalar types (such as charXX_t, or strongly typed enums)
- *         can be represented as one of these. Use utils::get() to enable
- *         automatic support for strongly typed enums.
- *   \note The utils::empty type is used to indicate an un-specified value.
- *         This is also the state of a default constructed utils::variant.
- *         When transferred to Lua, utils::empty is translated as nil.
+ *       Any other scalar types (such as charXX_t, or strongly typed enums)
+ *       can be represented as one of these. Use utils::get() to enable
+ *       automatic support for strongly typed enums.
+ * \note The utils::empty type is used to indicate an un-specified value.
+ *       This is also the state of a default constructed utils::variant.
+ *       When transferred to Lua, utils::empty is translated as nil.
  */
 using variant = std::variant<
     empty,
@@ -40,8 +40,8 @@ using variant = std::variant<
 
 /// Retreive the value stored in an utils::variant
 /** \param value The variant
- *   \return The stored value, or throws std::bad_variant_access if the type was incorrect
- *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
+ * \return The stored value, or throws std::bad_variant_access if the type was incorrect
+ * \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
 T& get(variant& value) {
@@ -53,8 +53,8 @@ T& get(variant& value) {
 
 /// Retreive the value stored in an utils::variant
 /** \param value The variant
- *   \return The stored value, or throws std::bad_variant_access if the type was incorrect
- *   \note This wrapper around std::get() enables automatic support for strongly typed enums.
+ * \return The stored value, or throws std::bad_variant_access if the type was incorrect
+ * \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
 template<typename T>
 const T& get(const variant& value) {

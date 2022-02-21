@@ -15,13 +15,13 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** Global functions for interacting with the GUI.
- *   The functions listed on this page are registered in the
- *   Lua state as globals, and as such are accessible from
- *   anywhere automatically. They offer various functionalities
- *   for creating or destroying @{Frame}s, and accessing a few
- *   other global properties or objects.
+ * The functions listed on this page are registered in the
+ * Lua state as globals, and as such are accessible from
+ * anywhere automatically. They offer various functionalities
+ * for creating or destroying @{Frame}s, and accessing a few
+ * other global properties or objects.
  *
- *   @module Manager
+ * @module Manager
  */
 
 namespace lxgui::gui {
@@ -100,8 +100,8 @@ void manager::create_lua_() {
     lua.set_function("reload_ui", [&]() { reload_ui(); });
 
     /** Sets the global interface scaling factor.
-     *   @function set_interface_scaling_factor
-     *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
+     * @function set_interface_scaling_factor
+     * @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
      * textures, etc.)
      */
     lua.set_function("set_interface_scaling_factor", [&](float scaling) {
@@ -109,8 +109,8 @@ void manager::create_lua_() {
     });
 
     /** Return the global interface scaling factor.
-     *   @function get_interface_scaling_factor
-     *   @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures,
+     * @function get_interface_scaling_factor
+     * @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures,
      * etc.)
      */
     lua.set_function(

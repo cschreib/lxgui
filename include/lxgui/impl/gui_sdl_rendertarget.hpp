@@ -17,9 +17,9 @@ namespace lxgui::gui::sdl {
 class render_target final : public gui::render_target {
 public:
     /// Constructor.
-    /** \param rdr   The SDL render to create the render_target for
-     *   \param dimensions The dimensions of the render_target
-     *   \param filt     The filtering to apply to the target texture when displayed
+    /** \param rdr The SDL render to create the render_target for
+     * \param dimensions The dimensions of the render_target
+     * \param filt The filtering to apply to the target texture when displayed
      */
     render_target(
         SDL_Renderer*    rdr,
@@ -44,17 +44,17 @@ public:
 
     /// Sets this render target's dimensions.
     /** \param dimensions The new dimensions (in pixels)
-     *   \return 'true' if the function had to re-create a
-     *           new render target
+     * \return 'true' if the function had to re-create a
+     *         new render target
      */
     bool set_dimensions(const vector2ui& dimensions) override;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
-     *   \note This is the physical size of the render target.
-     *         On some systems, abitrary dimensions are not supported:
-     *         they can be promoted to the nearest power of two from
-     *         for example.
+     * \note This is the physical size of the render target.
+     *       On some systems, abitrary dimensions are not supported:
+     *       they can be promoted to the nearest power of two from
+     *       for example.
      */
     vector2ui get_canvas_dimensions() const override;
 
@@ -70,7 +70,7 @@ public:
 
     /// Checks if the machine is capable of using render targets.
     /** \param rdr The renderer to check for availability
-     *   \note If not, this function throws a gui::exception.
+     * \note If not, this function throws a gui::exception.
      */
     static void check_availability(SDL_Renderer* rdr);
 

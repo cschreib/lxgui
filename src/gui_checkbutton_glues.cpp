@@ -6,13 +6,13 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Button} with two additional states: checked and unchecked.
- *   This region works exactly like a classic @{Button}, but is has two
- *   additional special textures for the check sign.
+ * This region works exactly like a classic @{Button}, but is has two
+ * additional special textures for the check sign.
  *
- *   Inherits all methods from: @{Region}, @{Frame}, @{Button}.
+ * Inherits all methods from: @{Region}, @{Frame}, @{Button}.
  *
- *   Child classes: none.
- *   @classmod CheckButton
+ * Child classes: none.
+ * @classmod CheckButton
  */
 
 namespace lxgui::gui {
@@ -24,14 +24,14 @@ void check_button::register_on_lua(sol::state& lua) {
         sol::meta_function::new_index, member_function<&check_button::set_lua_member_>());
 
     /** Checks if this CheckButton is checked.
-     *   @function is_checked
-     *   @treturn boolean 'true' if checked, 'false' otherwise
+     * @function is_checked
+     * @treturn boolean 'true' if checked, 'false' otherwise
      */
     type.set_function("is_checked", member_function<&check_button::is_checked>());
 
     /** Returns this button's checked texture.
-     *   @function get_checked_texture
-     *   @treturn Texture This button's checked texture
+     * @function get_checked_texture
+     * @treturn Texture This button's checked texture
      */
     type.set_function(
         "get_checked_texture",
@@ -40,8 +40,8 @@ void check_button::register_on_lua(sol::state& lua) {
                 &check_button::get_checked_texture)>());
 
     /** Returns this button's disabled checked texture.
-     *   @function get_disabled_checked_texture
-     *   @treturn Texture This button's disabled checked texture
+     * @function get_disabled_checked_texture
+     * @treturn Texture This button's disabled checked texture
      */
     type.set_function(
         "get_disabled_checked_texture",
@@ -50,12 +50,12 @@ void check_button::register_on_lua(sol::state& lua) {
                 &check_button::get_disabled_checked_texture)>());
 
     /** Check or uncheck the button.
-     *   @function set_checked
-     *   @tparam boolean is_checked 'true' to check, 'false' to uncheck (if nil or missing,
+     * @function set_checked
+     * @tparam boolean is_checked 'true' to check, 'false' to uncheck (if nil or missing,
      * equivalent to 'true')
      */
     /** Checks the button.
-     *   @function set_checked
+     * @function set_checked
      */
     type.set_function("set_checked", [](check_button& self, sol::optional<bool> is_checked) {
         if (is_checked.value_or(true))
@@ -65,14 +65,14 @@ void check_button::register_on_lua(sol::state& lua) {
     });
 
     /** Sets this button's checked texture.
-     *   @function set_checked_texture
-     *   @tparam Texture tex The new texture
+     * @function set_checked_texture
+     * @tparam Texture tex The new texture
      */
     type.set_function("set_checked_texture", member_function<&check_button::set_checked_texture>());
 
     /** Sets this button's disabled checked texture.
-     *   @function set_disabled_checked_texture
-     *   @tparam Texture tex The new texture
+     * @function set_disabled_checked_texture
+     * @tparam Texture tex The new texture
      */
     type.set_function(
         "set_disabled_checked_texture",

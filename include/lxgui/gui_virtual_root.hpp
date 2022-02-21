@@ -17,13 +17,13 @@ class renderer;
 
 /// Root of the virtual UI object hierarchy.
 /** This class contains and owns all virtual "root" frames (frames with no parents)
- *   and is responsible for their lifetime.
+ * and is responsible for their lifetime.
  */
 class virtual_root : public frame_container {
 public:
     /// Constructor.
-    /** \param mgr            The GUI manager
-     *   \param non_virtual_registry The registry for non-virtual objects (for error messages)
+    /** \param mgr The GUI manager
+     * \param non_virtual_registry The registry for non-virtual objects (for error messages)
      */
     explicit virtual_root(manager& mgr, registry& non_virtual_registry);
 

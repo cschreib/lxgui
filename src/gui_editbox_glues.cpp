@@ -7,52 +7,52 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with an editable text box.
- *   This frame lets the user input arbitrary text into a box,
- *   which can be read and used by the rest of the interface.
- *   The text box can be either single-line or multi-line.
- *   Text can be selected by holding the Shift key, and natural
- *   navigation is available with the Left, Right, Up, Down, Home,
- *   End, Page Up, and Page Down keys. Copy and paste operations
- *   are also supported. The edit box can also remember the history
- *   of previously entered values or commands, which can be brought
- *   back at will. The characters entered as handled by the
- *   operating system, hence this class will use whatever keyboard
- *   layout is currently in use. Finally, the edit box can be
- *   configured to only accept numeric values (of either sign, or
- *   positive only), and to hide the input characters to simulate a
- *   password box (no encryption or other safety measure is used).
+ * This frame lets the user input arbitrary text into a box,
+ * which can be read and used by the rest of the interface.
+ * The text box can be either single-line or multi-line.
+ * Text can be selected by holding the Shift key, and natural
+ * navigation is available with the Left, Right, Up, Down, Home,
+ * End, Page Up, and Page Down keys. Copy and paste operations
+ * are also supported. The edit box can also remember the history
+ * of previously entered values or commands, which can be brought
+ * back at will. The characters entered as handled by the
+ * operating system, hence this class will use whatever keyboard
+ * layout is currently in use. Finally, the edit box can be
+ * configured to only accept numeric values (of either sign, or
+ * positive only), and to hide the input characters to simulate a
+ * password box (no encryption or other safety measure is used).
  *
- *   Note that an @{EditBox} has @{Frame:enable_mouse} set to `true`
- *   and @{Frame:register_for_drag} set to `"LeftButton"` by default.
+ * Note that an @{EditBox} has @{Frame:enable_mouse} set to `true`
+ * and @{Frame:register_for_drag} set to `"LeftButton"` by default.
  *
- *   __Events.__ Hard-coded events available to all @{EditBox}es,
- *   in addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{EditBox}es,
+ * in addition to those from @{Frame}:
  *
- *   - `OnCursorChanged`: Triggered whenever the position of the edit
- *   cursor is changed (not yet implemented).
- *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
- *   is pressed while the edit box is focussed. This captures both
- *   the main keyboard key and the smaller one on the numpad.
- *   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
- *   while the edit box is focussed.
- *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
- *   while the edit box is focussed.
- *   - `OnTabPressed`: Triggered when the `Tab` key is pressed
- *   while the edit box is focussed.
- *   - `OnUpPressed`: Triggered when the `Up` key is pressed
- *   while the edit box is focussed.
- *   - `OnDownPressed`: Triggered when the `Down` key is pressed
- *   while the edit box is focussed.
- *   - `OnTextChanged`: Triggered whenever the text contained in the
- *   edit box changes (character added or deleted, text set or pasted,
- *   etc.). Triggered after `OnChar`.
- *   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
- *   followed by `OnTextChanged`.
+ * - `OnCursorChanged`: Triggered whenever the position of the edit
+ * cursor is changed (not yet implemented).
+ * - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
+ * is pressed while the edit box is focussed. This captures both
+ * the main keyboard key and the smaller one on the numpad.
+ * - `OnEscapePressed`: Triggered when the `Escape` key is pressed
+ * while the edit box is focussed.
+ * - `OnSpacePressed`: Triggered when the `Space` key is pressed
+ * while the edit box is focussed.
+ * - `OnTabPressed`: Triggered when the `Tab` key is pressed
+ * while the edit box is focussed.
+ * - `OnUpPressed`: Triggered when the `Up` key is pressed
+ * while the edit box is focussed.
+ * - `OnDownPressed`: Triggered when the `Down` key is pressed
+ * while the edit box is focussed.
+ * - `OnTextChanged`: Triggered whenever the text contained in the
+ * edit box changes (character added or deleted, text set or pasted,
+ * etc.). Triggered after `OnChar`.
+ * - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
+ * followed by `OnTextChanged`.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: none.
- *   @classmod EditBox
+ * Child classes: none.
+ * @classmod EditBox
  */
 
 namespace lxgui::gui {

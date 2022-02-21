@@ -12,24 +12,24 @@ class texture;
 
 /// A #frame with scrollable content.
 /** This frame has a special child frame, the "scroll child". The scroll
- *   child is rendered on a separate render target, which is then rendered
- *   on the screen. This allows clipping the content of the scroll child
- *   and only display a portion of it (as if scrolling on a page). The
- *   displayed portion is controlled by the scroll value, which can be
- *   changed in both the vertical and horizontal directions.
+ * child is rendered on a separate render target, which is then rendered
+ * on the screen. This allows clipping the content of the scroll child
+ * and only display a portion of it (as if scrolling on a page). The
+ * displayed portion is controlled by the scroll value, which can be
+ * changed in both the vertical and horizontal directions.
  *
- *   By default, the mouse wheel movement will not trigger any scrolling;
- *   this has to be explicitly implemented using the `OnMouseWheel` callback
- *   and the scroll_frame::set_horizontal_scroll function.
+ * By default, the mouse wheel movement will not trigger any scrolling;
+ * this has to be explicitly implemented using the `OnMouseWheel` callback
+ * and the scroll_frame::set_horizontal_scroll function.
  *
- *   __Events.__ Hard-coded events available to all scroll frames,
- *   in addition to those from #frame:
+ * __Events.__ Hard-coded events available to all scroll frames,
+ * in addition to those from #frame:
  *
- *   - `OnHorizontalScroll`: Triggered by scroll_frame::set_horizontal_scroll.
- *   - `OnScrollRangeChanged`: Triggered whenever the range of the scroll value
- *   changes. This happens either when the size of the scrollable content
- *   changes, or when the size of the scroll frame changes.
- *   - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
+ * - `OnHorizontalScroll`: Triggered by scroll_frame::set_horizontal_scroll.
+ * - `OnScrollRangeChanged`: Triggered whenever the range of the scroll value
+ * changes. This happens either when the size of the scrollable content
+ * changes, or when the size of the scroll frame changes.
+ * - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
  */
 class scroll_frame : public frame, public frame_renderer {
     using base = frame;
@@ -43,9 +43,9 @@ public:
 
     /// Updates this region's logic.
     /** \param delta Time spent since last update
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void update(float delta) override;
 
@@ -56,23 +56,23 @@ public:
 
     /// Returns 'true' if this scroll_frame can use a script.
     /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+     * \note This method can be overriden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param data       Stores scripts arguments
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Sets this scroll_frame's scroll child.
     /** \param obj The scroll child
-     *   \note Creates the render target.
+     * \note Creates the render target.
      */
     void set_scroll_child(utils::owner_ptr<frame> obj);
 
@@ -122,12 +122,12 @@ public:
 
     /// Find the topmost frame matching the provided predicate
     /** \param predicate A function returning 'true' if the frame can be selected
-     *   \return The topmost frame, if any, and nullptr otherwise.
-     *   \note For most frames, this can either return 'this' or 'nullptr'. For
-     *         frames responsible for rendering other frames (such as @ref scroll_frame),
-     *         this can return other frames.
-     *   \note For scroll children to receive input, the scroll_frame must be
-     *         keyboard/mouse/wheel enabled.
+     * \return The topmost frame, if any, and nullptr otherwise.
+     * \note For most frames, this can either return 'this' or 'nullptr'. For
+     *       frames responsible for rendering other frames (such as @ref scroll_frame),
+     *       this can return other frames.
+     * \note For scroll children to receive input, the scroll_frame must be
+     *       keyboard/mouse/wheel enabled.
      */
     utils::observer_ptr<const frame>
     find_topmost_frame(const std::function<bool(const frame&)>& predicate) const override;
@@ -136,8 +136,8 @@ public:
     void notify_strata_needs_redraw(frame_strata strata_id) override;
 
     /// Tells this renderer that it should (or not) render another frame.
-    /** \param obj    The frame to render
-     *   \param rendered 'true' if this renderer needs to render that new object
+    /** \param obj The frame to render
+     * \param rendered 'true' if this renderer needs to render that new object
      */
     void notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) override;
 

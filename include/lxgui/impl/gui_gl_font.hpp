@@ -13,17 +13,17 @@ namespace lxgui::gui::gl {
 
 /// A texture containing characters
 /** This is the OpenGL implementation of the gui::font.
- *   It uses the freetype library to read data from .ttf and
- *   .otf files and to render the characters on the font texture.
+ * It uses the freetype library to read data from .ttf and
+ * .otf files and to render the characters on the font texture.
  */
 class font final : public gui::font {
 public:
     /// Constructor.
-    /** \param font_file   The name of the font file to read
-     *   \param size      The requested size of the characters (in points)
-     *   \param outline   The thickness of the outline (in points)
-     *   \param code_points The list of Unicode characters to load
-     *   \param default_code_point The character to display as fallback
+    /** \param font_file The name of the font file to read
+     * \param size The requested size of the characters (in points)
+     * \param outline The thickness of the outline (in points)
+     * \param code_points The list of Unicode characters to load
+     * \param default_code_point The character to display as fallback
      */
     font(
         const std::string&                   font_file,
@@ -42,38 +42,38 @@ public:
 
     /// Returns the uv coordinates of a character on the texture.
     /** \param c The unicode character
-     *   \return The uv coordinates of this character on the texture
-     *   \note The uv coordinates are normalised, i.e. they range from
-     *         0 to 1. They are arranged as {u1, v1, u2, v2}.
+     * \return The uv coordinates of this character on the texture
+     * \note The uv coordinates are normalised, i.e. they range from
+     *       0 to 1. They are arranged as {u1, v1, u2, v2}.
      */
     bounds2f get_character_uvs(char32_t c) const override;
 
     /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
     /** \param c The unicode character
-     *   \return The rect coordinates of this character (in pixels, relative to the baseline)
+     * \return The rect coordinates of this character (in pixels, relative to the baseline)
      */
     bounds2f get_character_bounds(char32_t c) const override;
 
     /// Returns the width of a character in pixels.
     /** \param c The unicode character
-     *   \return The width of the character in pixels.
+     * \return The width of the character in pixels.
      */
     float get_character_width(char32_t c) const override;
 
     /// Returns the height of a character in pixels.
     /** \param c The unicode character
-     *   \return The height of the character in pixels.
+     * \return The height of the character in pixels.
      */
     float get_character_height(char32_t c) const override;
 
     /// Return the kerning amount between two characters.
     /** \param c1 The first unicode character
-     *   \param c2 The second unicode character
-     *   \return The kerning amount between the two characters
-     *   \note Kerning is a font rendering adjustment that makes some
-     *         letters closer, for example in 'VA', there is room for
-     *         the two to be closer than with 'VW'. This has no effect
-     *         for fixed width fonts (like Courrier, etc).
+     * \param c2 The second unicode character
+     * \return The kerning amount between the two characters
+     * \note Kerning is a font rendering adjustment that makes some
+     *       letters closer, for example in 'VA', there is room for
+     *       the two to be closer than with 'VW'. This has no effect
+     *       for fixed width fonts (like Courrier, etc).
      */
     float get_character_kerning(char32_t c1, char32_t c2) const override;
 

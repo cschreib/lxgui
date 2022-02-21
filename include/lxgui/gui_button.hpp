@@ -15,29 +15,29 @@ class font_string;
 
 /// A #frame with a button that can be clicked.
 /** This class can handle three different states: "normal", "pushed"
- *   and "disabled". You can provide a different texture for each of
- *   these states, and two different fontstrings for "normal" and
- *   "disabled".
+ * and "disabled". You can provide a different texture for each of
+ * these states, and two different fontstrings for "normal" and
+ * "disabled".
  *
- *   In addition, you can provide another texture/fontstring for the
- *   "highlight" state (when the mouse is over the button region).
+ * In addition, you can provide another texture/fontstring for the
+ * "highlight" state (when the mouse is over the button region).
  *
- *   Note that there is no fontstring for the "pushed" state: in this
- *   case, the "normal" font is rendered with a slight offset that you
- *   are free to define.
+ * Note that there is no fontstring for the "pushed" state: in this
+ * case, the "normal" font is rendered with a slight offset that you
+ * are free to define.
  *
- *   Note that a button has frame::enable_mouse set to `true` by
- *   default.
+ * Note that a button has frame::enable_mouse set to `true` by
+ * default.
  *
- *   __Events.__ Hard-coded events available to all buttons, in
- *   addition to those from frame:
+ * __Events.__ Hard-coded events available to all buttons, in
+ * addition to those from frame:
  *
- *   - `OnClick`: Triggered when the button is clicked, either when
- *   button::click is called, or just when a mouse button is pressed
- *   when the cursor is over the button.
- *   - `OnDoubleClick`: Triggered when the button is double-clicked.
- *   - `OnEnable`: Triggered by button::enable.
- *   - `OnDisable`: Triggered by button::disable.
+ * - `OnClick`: Triggered when the button is clicked, either when
+ * button::click is called, or just when a mouse button is pressed
+ * when the cursor is over the button.
+ * - `OnDoubleClick`: Triggered when the button is double-clicked.
+ * - `OnEnable`: Triggered by button::enable.
+ * - `OnDisable`: Triggered by button::disable.
  */
 class button : public frame {
     using base = frame;
@@ -50,7 +50,7 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
@@ -59,16 +59,16 @@ public:
 
     /// Returns 'true' if this button can use a script.
     /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+     * \note This method can be overriden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param data       Stores scripts arguments
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -260,15 +260,15 @@ public:
 
     /// Highlights this button.
     /** \note The button will be highlighted even if the
-     *         mouse is not over it. It will stop when the
-     *         mouse leaves it.
+     *       mouse is not over it. It will stop when the
+     *       mouse leaves it.
      */
     virtual void highlight();
 
     /// Unlights this button.
     /** \note The button will be unlighted even if the
-     *         mouse is over it. It will highlight again
-     *         when the mouse leaves then enters its region.
+     *       mouse is over it. It will highlight again
+     *       when the mouse leaves then enters its region.
      */
     virtual void unlight();
 
@@ -279,7 +279,7 @@ public:
 
     /// Locks this button's highlighting.
     /** \note The button will always be highlighted
-     *         until you call unlock_highlight().
+     *       until you call unlock_highlight().
      */
     void lock_highlight();
 

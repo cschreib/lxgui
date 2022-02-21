@@ -7,8 +7,8 @@ namespace lxgui::utils {
 
 /// A repeating timer
 /** This timer is meant to tick periodicaly,
- *   so you can use it for any periodic event
- *   such as key repetition or a count down.
+ * so you can use it for any periodic event
+ * such as key repetition or a count down.
  */
 class periodic_timer {
 public:
@@ -23,8 +23,8 @@ public:
 
     /// Default constructor
     /** \param duration The time interval between each tick
-     *   \param type     See TimerType
-     *   \param ticks_now    The timer ticks immediately
+     * \param type See TimerType
+     * \param ticks_now The timer ticks immediately
      */
     periodic_timer(double duration, start_type type, bool ticks_now);
 

@@ -8,63 +8,63 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw text on the screen.
- *   This class holds a string and a reference to a font, which
- *   is used to draw the string on the screen. The appearance of
- *   the string can be changed (font, size, color, alignment, wrapping).
- *   In addition, it is possible to change the color of a portion of
- *   the string, for example to highlight a particular name.
+ * This class holds a string and a reference to a font, which
+ * is used to draw the string on the screen. The appearance of
+ * the string can be changed (font, size, color, alignment, wrapping).
+ * In addition, it is possible to change the color of a portion of
+ * the string, for example to highlight a particular name.
  *
- *   __Sizing.__ The @{FontString} class has a special property when it
- *   comes to determining the size of its region on the screen, hence
- *   how other object anchor to it, and how it anchors to other objects.
- *   See the documentation for @{Region} for more information on anchors.
- *   While other @{Region}s must either have a fixed size or more than two
- *   anchors constraining their size, the @{FontString} does not. If only
- *   one anchor is specified, the width and height of the @{FontString} will
- *   be determined by the area occupied by the displayed text, however long and
- *   tall this may be. If the width is already constrained by the fixed size
- *   or anchors, then the text will word wrap (if allowed) and the
- *   @{FontString}'s height will be as tall as the height of the wrapped text.
- *   Finally, if both the width and height are constrained by fixed sizes or
- *   anchors, the text will simply word wrap (if allowed) and be cut to fit
- *   in the specified area.
+ * __Sizing.__ The @{FontString} class has a special property when it
+ * comes to determining the size of its region on the screen, hence
+ * how other object anchor to it, and how it anchors to other objects.
+ * See the documentation for @{Region} for more information on anchors.
+ * While other @{Region}s must either have a fixed size or more than two
+ * anchors constraining their size, the @{FontString} does not. If only
+ * one anchor is specified, the width and height of the @{FontString} will
+ * be determined by the area occupied by the displayed text, however long and
+ * tall this may be. If the width is already constrained by the fixed size
+ * or anchors, then the text will word wrap (if allowed) and the
+ * @{FontString}'s height will be as tall as the height of the wrapped text.
+ * Finally, if both the width and height are constrained by fixed sizes or
+ * anchors, the text will simply word wrap (if allowed) and be cut to fit
+ * in the specified area.
  *
- *   __Formatting.__ If @{FontString:is_formatting_enabled} is true (default),
- *   the string displayed by the @{FontString} class can have special
- *   formatting. This is done by entering the pipe `|` character, followed by
- *   a command:
+ * __Formatting.__ If @{FontString:is_formatting_enabled} is true (default),
+ * the string displayed by the @{FontString} class can have special
+ * formatting. This is done by entering the pipe `|` character, followed by
+ * a command:
  *
- *   - `|caarrggbb` sets the color of the text. `aa`, `rr`, `gg`, and `bb`
- *   must be two-digit hexadecimal values representing each color
- *   component. For example, an opaque red color would be `|cffff0000`,
- *   while a semi-transparent blue would be `|c880000ff`.
+ * - `|caarrggbb` sets the color of the text. `aa`, `rr`, `gg`, and `bb`
+ * must be two-digit hexadecimal values representing each color
+ * component. For example, an opaque red color would be `|cffff0000`,
+ * while a semi-transparent blue would be `|c880000ff`.
  *
- *   - `|r` cancels the change of color from the previous `|c[...]`
- *   command. Color change commands stack up, and can be nested. In the
- *   formatted string
- *   `|cffff0000 hello |cff00ff00 world |r example |r formatting`,
- *   the word `hello` would be displayed in red, `world` in blue,
- *   `example` in red again, and `formatting` would be of whatever color
- *   is the default for the @{FontString} object (see
- *   @{FontString:get_text_color}).
+ * - `|r` cancels the change of color from the previous `|c[...]`
+ * command. Color change commands stack up, and can be nested. In the
+ * formatted string
+ * `|cffff0000 hello |cff00ff00 world |r example |r formatting`,
+ * the word `hello` would be displayed in red, `world` in blue,
+ * `example` in red again, and `formatting` would be of whatever color
+ * is the default for the @{FontString} object (see
+ * @{FontString:get_text_color}).
  *
- *   - `|Tpath/to/texture.png:w:h|t` displays a texture. The command
- *   parameters must be contained within an opening `|T` and a closing
- *   `|t`. The parameters are separated by colons `:`. The first parameter
- *   must be the path to the texture file, and it is mandatory.
- *   The other two parameters are optional, and define the size of the
- *   displayed texture. If omitted, the texture will be displayed as a
- *   square matching the size of the current font. If only `w` is supplied,
- *   the texture will be displayed as a square of size `w` pixels.
- *   If both `w` and `h` are supplied, they set the width and height of the
- *   displayed texture, in pixels.
+ * - `|Tpath/to/texture.png:w:h|t` displays a texture. The command
+ * parameters must be contained within an opening `|T` and a closing
+ * `|t`. The parameters are separated by colons `:`. The first parameter
+ * must be the path to the texture file, and it is mandatory.
+ * The other two parameters are optional, and define the size of the
+ * displayed texture. If omitted, the texture will be displayed as a
+ * square matching the size of the current font. If only `w` is supplied,
+ * the texture will be displayed as a square of size `w` pixels.
+ * If both `w` and `h` are supplied, they set the width and height of the
+ * displayed texture, in pixels.
  *
- *   - `||` displays a single `|` character.
+ * - `||` displays a single `|` character.
  *
- *   Inherits all methods from: @{Region}, @{LayeredRegion}.
+ * Inherits all methods from: @{Region}, @{LayeredRegion}.
  *
- *   Child classes: none.
- *   @classmod FontString
+ * Child classes: none.
+ * @classmod FontString
  */
 
 namespace lxgui::gui {

@@ -10,7 +10,7 @@ namespace lxgui::gui {
 
 /// A place to render things (the screen, a texture, ...)
 /** \note This is an abstract class that must be inherited
- *         from and created by the corresponding gui::renderer.
+ *       from and created by the corresponding gui::renderer.
  */
 class render_target {
 public:
@@ -50,16 +50,16 @@ public:
 
     /// Sets this render target's dimensions.
     /** \param dimensions The new dimensions (in pixels)
-     *   \return 'true' if the function had to re-create a new render target
+     * \return 'true' if the function had to re-create a new render target
      */
     virtual bool set_dimensions(const vector2ui& dimensions) = 0;
 
     /// Returns this render target's canvas dimension.
     /** \return This render target's canvas dimension
-     *   \note This is the physical size of the render target.
-     *         On some systems, abitrary dimensions are not supported:
-     *         they can be promoted to the nearest power of two from
-     *         for example.
+     * \note This is the physical size of the render target.
+     *       On some systems, abitrary dimensions are not supported:
+     *       they can be promoted to the nearest power of two from
+     *       for example.
      */
     virtual vector2ui get_canvas_dimensions() const = 0;
 };

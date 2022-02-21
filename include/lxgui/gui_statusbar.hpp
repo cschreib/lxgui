@@ -12,20 +12,20 @@ class texture;
 
 /// A #frame representing a variable-length bar.
 /** This frame has three main properties: a minimum value, a
- *   maximum value, and a current value that must be contained
- *   between the minimum and maximum values. The frame will
- *   render a textured bar that will either be full, empty, or
- *   anything in between depending on the current value.
+ * maximum value, and a current value that must be contained
+ * between the minimum and maximum values. The frame will
+ * render a textured bar that will either be full, empty, or
+ * anything in between depending on the current value.
  *
- *   This can be used to display health bars, or progress bars.
+ * This can be used to display health bars, or progress bars.
  *
- *   __Events.__ Hard-coded events available to all status bars,
- *   in addition to those from #frame:
+ * __Events.__ Hard-coded events available to all status bars,
+ * in addition to those from #frame:
  *
- *   - `OnValueChanged`: Triggered whenever the value represented by
- *   the status bar changes. This is triggered by status_bar::set_value.
- *   This can also be triggered by status_bar::set_min_max_values if
- *   the previous value would not satisfy the new constraints.
+ * - `OnValueChanged`: Triggered whenever the value represented by
+ * the status bar changes. This is triggered by status_bar::set_value.
+ * This can also be triggered by status_bar::set_min_max_values if
+ * the previous value would not satisfy the new constraints.
  */
 class status_bar : public frame {
     using base = frame;
@@ -38,13 +38,13 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
     /// Returns 'true' if this status_bar can use a script.
     /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+     * \note This method can be overriden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
@@ -65,7 +65,7 @@ public:
 
     /// Sets this status_bar's value range.
     /** \param min_value The minimum value
-     *   \param max_value The maximum value
+     * \param max_value The maximum value
      */
     void set_min_max_values(float min_value, float max_value);
 
@@ -106,10 +106,10 @@ public:
 
     /// Reverses this status_bar.
     /** \param reversed 'true' to reverse it
-     *   \note By default, if the status bar is oriented horizontally
-     *         (vertically), if will grow from left to right (bottom to top).
-     *         You can use this function to reverse the growth, that is
-     *         make it grow from right to left.
+     * \note By default, if the status bar is oriented horizontally
+     *       (vertically), if will grow from left to right (bottom to top).
+     *       You can use this function to reverse the growth, that is
+     *       make it grow from right to left.
      */
     void set_reversed(bool reversed);
 
@@ -167,9 +167,9 @@ public:
 
     /// Updates this region's logic.
     /** \param delta Time spent since last update
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void update(float delta) override;
 

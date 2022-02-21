@@ -8,9 +8,9 @@ namespace lxgui::gui {
 
 /// Exception to be thrown by GUI code.
 /** \note These exceptions should always be handled.<br>
- *         The GUI is never a critical part of the program, so
- *         whatever happens here <b>must not</b> close the
- *         program.
+ *       The GUI is never a critical part of the program, so
+ *       whatever happens here <b>must not</b> close the
+ *       program.
  */
 class exception : public utils::exception {
 public:

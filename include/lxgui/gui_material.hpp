@@ -18,7 +18,7 @@ struct ub32color {
 
 /// A class that holds rendering data
 /** This is an abstract class that must be implemented
- *   and created by the corresponding gui::renderer.
+ * and created by the corresponding gui::renderer.
  */
 class material {
 public:
@@ -53,13 +53,13 @@ public:
 
     /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
     /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
-     *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
-     *         namely, the 2D pixel array containing the texture data. However, some old
-     *         hardware don't support textures that have non power-of-two dimensions.
-     *         If the user creates a material for such a texture, the gui::renderer will
-     *         create a bigger canvas that has power-of-two dimensions, and store the
-     *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
-     *         the canvas will contain more than one texture.
+     * \note When a texture is loaded, most of the time it will fill the entire "canvas",
+     *       namely, the 2D pixel array containing the texture data. However, some old
+     *       hardware don't support textures that have non power-of-two dimensions.
+     *       If the user creates a material for such a texture, the gui::renderer will
+     *       create a bigger canvas that has power-of-two dimensions, and store the
+     *       texture in it. Likewise, if a texture is placed in a wider texture atlas,
+     *       the canvas will contain more than one texture.
      */
     virtual vector2ui get_canvas_dimensions() const = 0;
 
@@ -69,16 +69,16 @@ public:
     virtual bool uses_same_texture(const material& other) const = 0;
 
     /// Returns normalised UV coordinates on the canvas, given local UV coordinates.
-    /** \param texture_uv      The original UV coordinates, local to this texture
-     *   \param from_normalized Set to 'true' if input coordinates are normalised to [0,1]
-     *                          and 'false' if input coordinates are in pixels
+    /** \param texture_uv The original UV coordinates, local to this texture
+     * \param from_normalized Set to 'true' if input coordinates are normalised to [0,1]
+     *                        and 'false' if input coordinates are in pixels
      */
     vector2f get_canvas_uv(const vector2f& texture_uv, bool from_normalized) const;
 
     /// Returns local UV coordinates on the texture, given canvas UV coordinates.
-    /** \param canvas_uv     The canvas UV coordinates
-     *   \param as_normalized Set to 'true' if output coordinates should be normalised to [0,1]
-     *                        and 'false' if output coordinates should be in pixels
+    /** \param canvas_uv The canvas UV coordinates
+     * \param as_normalized Set to 'true' if output coordinates should be normalised to [0,1]
+     *                      and 'false' if output coordinates should be in pixels
      */
     vector2f get_local_uv(const vector2f& canvas_uv, bool as_normalized) const;
 

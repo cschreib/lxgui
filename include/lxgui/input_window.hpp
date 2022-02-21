@@ -36,8 +36,8 @@ public:
 
     /// Sets the mouse cursor to a given image on disk.
     /** \param file_name The cursor image
-     *   \param hot_spot The pixel position of the tip of the pointer in the image
-     *   \note Use reset_mouse_cursor() to set the cursor back to the default.
+     * \param hot_spot The pixel position of the tip of the pointer in the image
+     * \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
     void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot);
 
@@ -46,10 +46,10 @@ public:
 
     /// Return the interface scaling factor suggested by the operating system.
     /** \return The interface scaling factor suggested by the operating system
-     *   \note This is implementation-dependent; not all input implementations are able
-     *         to produce this hint, in which case the function always returns 1.
-     *         Consequently, it is recommended to not rely blindly on this hint, and
-     *         to offer a way for the user to change the scaling factor.
+     * \note This is implementation-dependent; not all input implementations are able
+     *       to produce this hint, in which case the function always returns 1.
+     *       Consequently, it is recommended to not rely blindly on this hint, and
+     *       to offer a way for the user to change the scaling factor.
      */
     float get_interface_scaling_factor_hint() const;
 

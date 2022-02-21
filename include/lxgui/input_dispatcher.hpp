@@ -18,28 +18,28 @@ class source;
 
 /// Handles inputs (keyboard and mouse)
 /** The implementation is responsible for generating the
- *   following events:
- *    - @ref on_mouse_moved
- *    - @ref on_mouse_wheel
- *    - @ref on_mouse_pressed
- *    - @ref on_mouse_released
- *    - @ref on_mouse_double_clicked
- *    - @ref on_mouse_drag_start
- *    - @ref on_mouse_drag_stop
- *    - @ref on_key_pressed
- *    - @ref on_key_released
- *    - @ref on_text_entered
+ * following events:
+ *  - @ref on_mouse_moved
+ *  - @ref on_mouse_wheel
+ *  - @ref on_mouse_pressed
+ *  - @ref on_mouse_released
+ *  - @ref on_mouse_double_clicked
+ *  - @ref on_mouse_drag_start
+ *  - @ref on_mouse_drag_stop
+ *  - @ref on_key_pressed
+ *  - @ref on_key_released
+ *  - @ref on_text_entered
  *
- *   These events are "global" and are not restricted by the UI.
- *   For example, @ref on_mouse_pressed will trigger whenever a mouse
- *   button is pressed, even if the mouse pointer is currently over
- *   a UI element that should capture mouse input. Likewise, @ref
- *   on_key_pressed will trigger even if a UI element has focus.
- *   These global events are meant to be consumed by the @ref gui::root,
- *   which takes care of forwarding them to UI elements, and determining
- *   if a particular event is allowed to propagate to the elements below
- *   the UI. If you need to react only to events that are not captured by
- *   the UI, use events from @ref input::world_dispatcher instead.
+ * These events are "global" and are not restricted by the UI.
+ * For example, @ref on_mouse_pressed will trigger whenever a mouse
+ * button is pressed, even if the mouse pointer is currently over
+ * a UI element that should capture mouse input. Likewise, @ref
+ * on_key_pressed will trigger even if a UI element has focus.
+ * These global events are meant to be consumed by the @ref gui::root,
+ * which takes care of forwarding them to UI elements, and determining
+ * if a particular event is allowed to propagate to the elements below
+ * the UI. If you need to react only to events that are not captured by
+ * the UI, use events from @ref input::world_dispatcher instead.
  */
 class dispatcher : public signals {
 public:
@@ -60,14 +60,14 @@ public:
     bool any_key_is_down() const;
 
     /// Checks if a key is being pressed.
-    /** \param key_id   The ID code of the key you are interested in
-     *   \return 'true' if the key is being pressed
+    /** \param key_id The ID code of the key you are interested in
+     * \return 'true' if the key is being pressed
      */
     bool key_is_down(key key_id) const;
 
     /// Returns elapsed time since the key has been pressed.
     /** \param key_id The ID code of the key you are interested in
-     *   \return Elapsed time since the key has been pressed
+     * \return Elapsed time since the key has been pressed
      */
     double get_key_down_duration(key key_id) const;
 
@@ -88,13 +88,13 @@ public:
 
     /// Checks if a mouse button is being pressed.
     /** \param button_id The ID code of the mouse button you are interested in
-     *   \return 'true' if the mouse button is being pressed
+     * \return 'true' if the mouse button is being pressed
      */
     bool mouse_is_down(mouse_button button_id) const;
 
     /// Returns elapsed time since the mouse button has been pressed.
     /** \param key_id The ID code of the mouse button you are interested in
-     *   \return Elapsed time since the mouse button has been pressed
+     * \return Elapsed time since the mouse button has been pressed
      */
     double get_mouse_down_duration(mouse_button key_id) const;
 
@@ -120,8 +120,8 @@ public:
 
     /// Sets the scaling factor applied to the interface.
     /** \param scaling_factor The new scaling factor (default: 1)
-     *   \note This is the conversion factor between UI units and pixels in the display.
-     *         This factor should match gui::renderer::get_interface_scaling_factor().
+     * \note This is the conversion factor between UI units and pixels in the display.
+     *       This factor should match gui::renderer::get_interface_scaling_factor().
      */
     void set_interface_scaling_factor(float scaling_factor);
 

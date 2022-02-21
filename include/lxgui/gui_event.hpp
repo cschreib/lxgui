@@ -35,7 +35,7 @@ public:
 
     /// Returns a parameter of this event.
     /** \param index The index of the parameter (see get_num_param())
-     *   \return A parameter of this event
+     * \return A parameter of this event
      */
     const utils::variant& get(std::size_t index) const {
         if (index >= arg_list_.size())
@@ -45,7 +45,7 @@ public:
 
     /// Returns a parameter of this event.
     /** \param index The index of the parameter (see get_num_param())
-     *   \return A parameter of this event
+     * \return A parameter of this event
      */
     utils::variant& get(std::size_t index) {
         if (index >= arg_list_.size())
@@ -55,7 +55,7 @@ public:
 
     /// Returns a parameter of this event.
     /** \param index The index of the parameter (see get_num_param())
-     *   \return A parameter of this event
+     * \return A parameter of this event
      */
     template<typename T>
     const T& get(std::size_t index) const {
@@ -64,7 +64,7 @@ public:
 
     /// Returns a parameter of this event.
     /** \param index The index of the parameter (see get_num_param())
-     *   \return A parameter of this event
+     * \return A parameter of this event
      */
     template<typename T>
     T& get(std::size_t index) {

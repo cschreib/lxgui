@@ -16,7 +16,7 @@ class renderer;
 
 /// A layered_region that can draw images and colored rectangles.
 /** This object contains either a texture taken from a file,
- *   or a plain color (possibly with a different color on each corner).
+ * or a plain color (possibly with a different color on each corner).
  */
 class texture : public layered_region {
     using base = layered_region;
@@ -29,7 +29,7 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
@@ -73,11 +73,11 @@ public:
 
     /// Returns this texture's texture coordinates.
     /** \return This texture's texture coordinates
-     *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
-     *         4 (bottom left).<br>
-     *         The returned array is composed like this:
-     *         (x1, y1, x2, y2, x3, y3, x4, y4).
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     *       of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     *       4 (bottom left).<br>
+     *       The returned array is composed like this:
+     *       (x1, y1, x2, y2, x3, y3, x4, y4).
      */
     std::array<float, 8> get_tex_coord() const;
 
@@ -98,16 +98,16 @@ public:
 
     /// Returns this textures's vertex color.
     /** \param index The vertex index (0 to 3 included)
-     *   \return This textures's vertex color
-     *   \note This color is used to filter the texture's colors:
-     *         for each pixel, the original color is multiplied by this vertex color.
+     * \return This textures's vertex color
+     * \note This color is used to filter the texture's colors:
+     *       for each pixel, the original color is multiplied by this vertex color.
      */
     color get_vertex_color(std::size_t index) const;
 
     /// Checks if this texture is desaturated.
     /** \return 'true' if the texture is desaturated
-     *   \note Only available on certain graphic cards (most of modern ones
-     *         are capable of this).
+     * \note Only available on certain graphic cards (most of modern ones
+     *       are capable of this).
      */
     bool is_desaturated() const;
 
@@ -138,29 +138,29 @@ public:
 
     /// Adds a gradient effect to this texture.
     /** \param g The gradient to add
-     *   \note To remove a gradient, call set_gradient(Gradient::NONE).
+     * \note To remove a gradient, call set_gradient(Gradient::NONE).
      */
     void set_gradient(const gradient& g);
 
     /// Sets this texture's texture coordinates.
     /** \param texture_rect This texture's texture coordinates
-     *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
-     *         4 (bottom left).<br>
-     *         The array must be arranged like this: (x1, y1, x3, y3), or (left,
-     *         top, right, bottom). Other corners are calculated using these coordinates.
-     *   \note This function only allows horizontal/rectangle texture coordinates.
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     *       of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     *       4 (bottom left).<br>
+     *       The array must be arranged like this: (x1, y1, x3, y3), or (left,
+     *       top, right, bottom). Other corners are calculated using these coordinates.
+     * \note This function only allows horizontal/rectangle texture coordinates.
      */
     void set_tex_rect(const std::array<float, 4>& texture_rect);
 
     /// Sets this texture's texture coordinates.
     /** \param texture_coords This texture's texture coordinates
-     *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
-     *         4 (bottom left).<br>
-     *         The array must be arranged like this:
-     *         (x1, y1, x2, y2, x3, y3, x4, y4).
-     *   \note This function allows rotated/deformed texture coordinates.
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     *       of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     *       4 (bottom left).<br>
+     *       The array must be arranged like this:
+     *       (x1, y1, x2, y2, x3, y3, x4, y4).
+     * \note This function allows rotated/deformed texture coordinates.
      */
     void set_tex_coord(const std::array<float, 8>& texture_coords);
 
@@ -171,39 +171,39 @@ public:
 
     /// Sets this texture's texture file.
     /** \param file_name The file from which to read data
-     *   \note This function takes care of checking that the file can be opened.
-     *   \note This function will replace the solid color set by set_solid_color(). If you need
-     *         to blend the texture with a color, use set_vertex_color() instead.
+     * \note This function takes care of checking that the file can be opened.
+     * \note This function will replace the solid color set by set_solid_color(). If you need
+     *       to blend the texture with a color, use set_vertex_color() instead.
      */
     void set_texture(const std::string& file_name);
 
     /// Reads texture data from a render_target.
     /** \param target The render_target from which to read the data
-     *   \note This function will replace the solid color set by set_solid_color(). If you need
-     *         to blend the texture with a color, use set_vertex_color() instead.
+     * \note This function will replace the solid color set by set_solid_color(). If you need
+     *       to blend the texture with a color, use set_vertex_color() instead.
      */
     void set_texture(std::shared_ptr<render_target> target);
 
     /// Sets this texture's color.
     /** \param c The color to use
-     *   \note This function will replace the texture set by set_texture() with a solid color.
-     *         If you need to blend the texture with a color, use set_vertex_color() instead.
+     * \note This function will replace the texture set by set_texture() with a solid color.
+     *       If you need to blend the texture with a color, use set_vertex_color() instead.
      */
     void set_solid_color(const color& c);
 
     /// Directly sets this texture's underlying quad (vertices and material).
     /** \param q The new quad to use
-     *   \note The texture's dimensions will be adjusted to fit those
-     *         of the provided quad, and same goes for texture coordinates.
+     * \note The texture's dimensions will be adjusted to fit those
+     *       of the provided quad, and same goes for texture coordinates.
      */
     void set_quad(const quad& q);
 
     /// Sets this texture's vertex color.
     /** \param c This textures's new vertex color
-     *   \param index The vertex index (-1: all vertices)
-     *   \note This color is used to filter the texture's colors:
-     *         for each pixel, the original color is multiplied
-     *         by this vertex color.
+     * \param index The vertex index (-1: all vertices)
+     * \note This color is used to filter the texture's colors:
+     *       for each pixel, the original color is multiplied
+     *       by this vertex color.
      */
     void
     set_vertex_color(const color& c, std::size_t index = std::numeric_limits<std::size_t>::max());

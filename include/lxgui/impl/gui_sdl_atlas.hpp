@@ -20,7 +20,7 @@ class renderer;
 
 /// A single texture holding multiple materials for efficient rendering
 /** This is an abstract class that must be implemented
- *   and created by the corresponding gui::renderer.
+ * and created by the corresponding gui::renderer.
  */
 class atlas_page final : public gui::atlas_page {
 public:
@@ -32,9 +32,9 @@ public:
 
 protected:
     /// Adds a new material to this page, at the provided location
-    /** \param mat      The material to add
-     *   \param location The position at which to insert this material
-     *   \return A new material pointing to inside this page
+    /** \param mat The material to add
+     * \param location The position at which to insert this material
+     * \return A new material pointing to inside this page
      */
     std::shared_ptr<gui::material>
     add_material_(const gui::material& mat, const bounds2f& location) override;
@@ -57,14 +57,14 @@ private:
 
 /// A class that holds rendering data
 /** This implementation can contain either a plain color
- *   or a real SDL_Texture. It is also used by the
- *   gui::sdl::render_target class to store the output data.
+ * or a real SDL_Texture. It is also used by the
+ * gui::sdl::render_target class to store the output data.
  */
 class atlas final : public gui::atlas {
 public:
     /// Constructor for textures.
     /** \param rdr The renderer with witch to create this atlas
-     *   \param filt   Use texture filtering or not (see set_filter())
+     * \param filt Use texture filtering or not (see set_filter())
      */
     explicit atlas(renderer& rdr, material::filter filt);
 

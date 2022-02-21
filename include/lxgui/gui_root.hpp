@@ -29,7 +29,7 @@ class renderer;
 
 /// Root of the UI object hierarchy.
 /** This class contains and owns all "root" frames (frames with no parents)
- *   and is responsible for their lifetime, update, and rendering.
+ * and is responsible for their lifetime, update, and rendering.
  */
 class root :
     public frame_renderer,
@@ -37,8 +37,8 @@ class root :
     public utils::enable_observer_from_this<root> {
 public:
     /// Constructor.
-    /** \param block   The owner pointer control block
-     *   \param mgr The GUI manager
+    /** \param block The owner pointer control block
+     * \param mgr The GUI manager
      */
     explicit root(utils::control_block& block, manager& mgr);
 
@@ -61,21 +61,21 @@ public:
 
     /// Enables or disables interface caching.
     /** \param enable 'true' to enable, 'false' to disable
-     *   \see toggle_caching()
+     * \see toggle_caching()
      */
     void enable_caching(bool enable);
 
     /// Toggles interface caching.
     /** \note Disabled by default. Enabling this will most likely improve performances,
-     *         at the expense of higher GPU memory usage. The UI will be cached into
-     *         large render targets, which are only redrawn when the UI changes, rather
-     *         than redrawn on each frame.
+     *       at the expense of higher GPU memory usage. The UI will be cached into
+     *       large render targets, which are only redrawn when the UI changes, rather
+     *       than redrawn on each frame.
      */
     void toggle_caching();
 
     /// Checks if interface caching is enabled.
     /** \return 'true' if interface caching is enabled
-     *   \see toggle_caching()
+     * \see toggle_caching()
      */
     bool is_caching_enabled() const;
 
@@ -133,12 +133,12 @@ public:
     }
 
     /// Start manually moving a region with the mouse.
-    /** \param obj        The object to move
-     *   \param a     The reference anchor
-     *   \param constraint The constraint axis if any
-     *   \param apply_constraint_func Optional function to implement further constraints
-     *   \note Movement is handled by the root, you don't need to do anything except
-     *         calling stop_moving() when you are done.
+    /** \param obj The object to move
+     * \param a The reference anchor
+     * \param constraint The constraint axis if any
+     * \param apply_constraint_func Optional function to implement further constraints
+     * \note Movement is handled by the root, you don't need to do anything except
+     *       calling stop_moving() when you are done.
      */
     void start_moving(
         utils::observer_ptr<region> obj,
@@ -153,15 +153,15 @@ public:
 
     /// Checks if the given object is allowed to move.
     /** \param obj The object to check
-     *   \return 'true' if the given object is allowed to move
+     * \return 'true' if the given object is allowed to move
      */
     bool is_moving(const region& obj) const;
 
     /// Starts manually resizing a region with the mouse.
-    /** \param obj   The object to resize
-     *   \param point The sizing point
-     *   \note Resizing is handled by the root, you don't need to do anything except
-     *         calling stop_sizing() when you are done.
+    /** \param obj The object to resize
+     * \param point The sizing point
+     * \note Resizing is handled by the root, you don't need to do anything except
+     *       calling stop_sizing() when you are done.
      */
     void start_sizing(utils::observer_ptr<region> obj, anchor_point point);
 
@@ -172,18 +172,18 @@ public:
 
     /// Checks if the given object is allowed to be resized.
     /** \param obj The object to check
-     *   \return 'true' if the given object is allowed to be resized
+     * \return 'true' if the given object is allowed to be resized
      */
     bool is_sizing(const region& obj) const;
 
     /// Sets whether keyboard input should be focussed.
     /** \param receiver The frame that requires focus
-     *   \note This function will forward all keyboard events to the new receiver.
-     *         This is usefull to implement an edit box: the user can type letters using keys
-     *         that can be bound to special actions in the game, and these should be prevented
-     *         from happening. This can be achieved by calling this function and using the
-     *         edit box as second argument, which will ensure that input events are only sent
-     *         to the edit box exclusively.
+     * \note This function will forward all keyboard events to the new receiver.
+     *       This is usefull to implement an edit box: the user can type letters using keys
+     *       that can be bound to special actions in the game, and these should be prevented
+     *       from happening. This can be achieved by calling this function and using the
+     *       edit box as second argument, which will ensure that input events are only sent
+     *       to the edit box exclusively.
      */
     void request_focus(utils::observer_ptr<frame> receiver);
 
@@ -197,7 +197,7 @@ public:
 
     /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
     /** \return 'true' if input is focused
-     *   \note See set_focus() for more information.
+     * \note See set_focus() for more information.
      */
     bool is_focused() const;
 

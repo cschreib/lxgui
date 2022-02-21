@@ -5,25 +5,25 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with a movable texture.
- *   This frame contains a special texture, the "slider thumb".
- *   It can be moved along a single axis (X or Y) and its position
- *   can be used to represent a value (for configuration menus, or
- *   scroll bars).
+ * This frame contains a special texture, the "slider thumb".
+ * It can be moved along a single axis (X or Y) and its position
+ * can be used to represent a value (for configuration menus, or
+ * scroll bars).
  *
- *   __Events.__ Hard-coded events available to all @{Slider}s,
- *   in addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{Slider}s,
+ * in addition to those from @{Frame}:
  *
- *   - `OnValueChanged`: Triggered whenever the value controlled by
- *   the slider changes. This is triggered whenever the user moves
- *   the slider thumb, and by @{Slider:set_value}. This can also be
- *   triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
- *   @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
- *   previous value would not satisfy the new constraints.
+ * - `OnValueChanged`: Triggered whenever the value controlled by
+ * the slider changes. This is triggered whenever the user moves
+ * the slider thumb, and by @{Slider:set_value}. This can also be
+ * triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
+ * @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
+ * previous value would not satisfy the new constraints.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: none.
- *   @classmod Slider
+ * Child classes: none.
+ * @classmod Slider
  */
 
 namespace lxgui::gui {

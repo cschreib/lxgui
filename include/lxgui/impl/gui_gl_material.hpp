@@ -13,23 +13,23 @@ namespace lxgui::gui::gl {
 
 /// A class that holds rendering data
 /** This implementation can contain either a plain color
- *   or a real OpenGL texture. It is also used by the
- *   gui::gl::render_target class to store the output data.
+ * or a real OpenGL texture. It is also used by the
+ * gui::gl::render_target class to store the output data.
  */
 class material final : public gui::material {
 public:
     /// Constructor for textures.
     /** \param dimensions The requested texture dimensions
-     *   \param wrp       How to adjust texture coordinates that are outside the [0,1] range
-     *   \param filt     Use texture filtering or not (see set_filter())
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
+     * \param filt Use texture filtering or not (see set_filter())
      */
     material(const vector2ui& dimensions, wrap wrp = wrap::repeat, filter filt = filter::none);
 
     /// Constructor for atlas textures.
-    /** \param texture_handle   The handle to the texture object of the atlas
-     *   \param canvas_dimensions The dimensions of the texture atlas
-     *   \param rect             The position of this texture inside the atlas
-     *   \param filt           Use texture filtering or not (see set_filter())
+    /** \param texture_handle The handle to the texture object of the atlas
+     * \param canvas_dimensions The dimensions of the texture atlas
+     * \param rect The position of this texture inside the atlas
+     * \param filt Use texture filtering or not (see set_filter())
      */
     material(
         std::uint32_t    texture_handle,
@@ -52,13 +52,13 @@ public:
 
     /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
     /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
-     *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
-     *         namely, the 2D pixel array containing the texture data. However, some old
-     *         hardware don't support textures that have non power-of-two dimensions.
-     *         If the user creates a material for such a texture, the gui::renderer will
-     *         create a bigger canvas that has power-of-two dimensions, and store the
-     *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
-     *         the canvas will contain more than one texture.
+     * \note When a texture is loaded, most of the time it will fill the entire "canvas",
+     *       namely, the 2D pixel array containing the texture data. However, some old
+     *       hardware don't support textures that have non power-of-two dimensions.
+     *       If the user creates a material for such a texture, the gui::renderer will
+     *       create a bigger canvas that has power-of-two dimensions, and store the
+     *       texture in it. Likewise, if a texture is placed in a wider texture atlas,
+     *       the canvas will contain more than one texture.
      */
     vector2ui get_canvas_dimensions() const override;
 
@@ -69,15 +69,15 @@ public:
 
     /// Resizes this texture.
     /** \param dimensions The new texture dimensions
-     *   \return 'true' if the function had to re-create a new texture object
-     *   \note All the previous data that was stored in this texture will be lost.
+     * \return 'true' if the function had to re-create a new texture object
+     * \note All the previous data that was stored in this texture will be lost.
      */
     bool set_dimensions(const vector2ui& dimensions);
 
     /// Premultiplies the texture by alpha component.
     /** \param data The pixel data to pre-multiply
-     *   \note Premultiplied alpha is a rendering technique that allows perfect
-     *         alpha blending when using render targets.
+     * \note Premultiplied alpha is a rendering technique that allows perfect
+     *       alpha blending when using render targets.
      */
     static void premultiply_alpha(std::vector<ub32color>& data);
 
@@ -88,8 +88,8 @@ public:
 
     /// Sets the filter mode of this texture.
     /** \param filt Use texture filtering or not
-     *   \note When texture filtering is disabled, enlarged textures get pixelated.
-     *         Else, the GPU uses an averaging algorithm to blur the pixels.
+     * \note When texture filtering is disabled, enlarged textures get pixelated.
+     *       Else, the GPU uses an averaging algorithm to blur the pixels.
      */
     void set_filter(filter filt);
 
@@ -113,8 +113,8 @@ public:
 
     /// Checks if the machine is capable of using some features.
     /** \note The function checks for non power of two capability.
-     *         If the graphics card doesn't support it, the material
-     *         class will automatically create power of two textures.
+     *       If the graphics card doesn't support it, the material
+     *       class will automatically create power of two textures.
      */
     static void check_availability();
 

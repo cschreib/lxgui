@@ -6,26 +6,26 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} representing a variable-length bar.
- *   This frame has three main properties: a minimum value, a
- *   maximum value, and a current value that must be contained
- *   between the minimum and maximum values. The frame will
- *   render a textured bar that will either be full, empty, or
- *   anything in between depending on the current value.
+ * This frame has three main properties: a minimum value, a
+ * maximum value, and a current value that must be contained
+ * between the minimum and maximum values. The frame will
+ * render a textured bar that will either be full, empty, or
+ * anything in between depending on the current value.
  *
- *   This can be used to display health bars, or progress bars.
+ * This can be used to display health bars, or progress bars.
  *
- *   __Events.__ Hard-coded events available to all @{StatusBar}s,
- *   in addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{StatusBar}s,
+ * in addition to those from @{Frame}:
  *
- *   - `OnValueChanged`: Triggered whenever the value represented by
- *   the status bar changes. This is triggered by @{StatusBar:set_value}.
- *   This can also be triggered by @{StatusBar:set_min_max_values} if
- *   the previous value would not satisfy the new constraints.
+ * - `OnValueChanged`: Triggered whenever the value represented by
+ * the status bar changes. This is triggered by @{StatusBar:set_value}.
+ * This can also be triggered by @{StatusBar:set_min_max_values} if
+ * the previous value would not satisfy the new constraints.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: none.
- *   @classmod StatusBar
+ * Child classes: none.
+ * @classmod StatusBar
  */
 
 namespace lxgui::gui {

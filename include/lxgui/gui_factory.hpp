@@ -30,9 +30,9 @@ class manager;
 
 /// Handles the creation of new UI objects.
 /** \note This is a low-level class, which is only meant to be used
- *         internally by the GUI. To create your own UI objects, use
- *         root::create_root_frame(), frame::create_child(), or
- *         frame::create_region().
+ *       internally by the GUI. To create your own UI objects, use
+ *       root::create_root_frame(), frame::create_child(), or
+ *       frame::create_region().
  */
 class factory {
 private:
@@ -65,33 +65,33 @@ public:
 
     /// Creates a new region.
     /** \param reg The registry in which to register this object
-     *   \param attr     The attributes of the object
-     *   \return The new frame
-     *   \note This function takes care of the basic initializing: the
-     *         object is directly usable.
+     * \param attr The attributes of the object
+     * \return The new frame
+     * \note This function takes care of the basic initializing: the
+     *       object is directly usable.
      */
     utils::owner_ptr<region> create_region(registry& reg, const region_core_attributes& attr);
 
     /// Creates a new frame.
     /** \param reg The registry in which to register this frame
-     *   \param rdr The frame_renderer that will render this frame
-     *   \param attr     The attributes of the frame
-     *   \return The new frame
-     *   \note This function takes care of the basic initializing: the
-     *         frame is directly usable. However, you still need to call
-     *         notify_loaded() when you are done with any extra initialization
-     *         you require on this frame. If you do not, the frame's OnLoad
-     *         callback will not fire.
+     * \param rdr The frame_renderer that will render this frame
+     * \param attr The attributes of the frame
+     * \return The new frame
+     * \note This function takes care of the basic initializing: the
+     *       frame is directly usable. However, you still need to call
+     *       notify_loaded() when you are done with any extra initialization
+     *       you require on this frame. If you do not, the frame's OnLoad
+     *       callback will not fire.
      */
     utils::owner_ptr<frame>
     create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr);
 
     /// Creates a new layered_region.
     /** \param reg The registry in which to register this region
-     *   \param attr     The attributes of the region
-     *   \return The new layered_region
-     *   \note This function takes care of the basic initializing: the
-     *         region is directly usable.
+     * \param attr The attributes of the region
+     * \return The new layered_region
+     * \note This function takes care of the basic initializing: the
+     *       region is directly usable.
      */
     utils::owner_ptr<layered_region>
     create_layered_region(registry& reg, const region_core_attributes& attr);

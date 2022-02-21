@@ -7,30 +7,30 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with scrollable content.
- *   This frame has a special child frame, the "scroll child". The scroll
- *   child is rendered on a separate render target, which is then rendered
- *   on the screen. This allows clipping the content of the scroll child
- *   and only display a portion of it (as if scrolling on a page). The
- *   displayed portion is controlled by the scroll value, which can be
- *   changed in both the vertical and horizontal directions.
+ * This frame has a special child frame, the "scroll child". The scroll
+ * child is rendered on a separate render target, which is then rendered
+ * on the screen. This allows clipping the content of the scroll child
+ * and only display a portion of it (as if scrolling on a page). The
+ * displayed portion is controlled by the scroll value, which can be
+ * changed in both the vertical and horizontal directions.
  *
- *   By default, the mouse wheel movement will not trigger any scrolling;
- *   this has to be explicitly implemented using the `OnMouseWheel` callback
- *   and the @{ScrollFrame:set_horizontal_scroll} function.
+ * By default, the mouse wheel movement will not trigger any scrolling;
+ * this has to be explicitly implemented using the `OnMouseWheel` callback
+ * and the @{ScrollFrame:set_horizontal_scroll} function.
  *
- *   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
- *   in addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{ScrollFrame}s,
+ * in addition to those from @{Frame}:
  *
- *   - `OnHorizontalScroll`: Triggered by @{ScrollFrame:set_horizontal_scroll}.
- *   - `OnScrollRangeChanged`: Triggered whenever the range of the scroll value
- *   changes. This happens either when the size of the scrollable content
- *   changes, or when the size of the scroll frame changes.
- *   - `OnVerticalScroll`: Triggered by @{ScrollFrame:set_vertical_scroll}.
+ * - `OnHorizontalScroll`: Triggered by @{ScrollFrame:set_horizontal_scroll}.
+ * - `OnScrollRangeChanged`: Triggered whenever the range of the scroll value
+ * changes. This happens either when the size of the scrollable content
+ * changes, or when the size of the scroll frame changes.
+ * - `OnVerticalScroll`: Triggered by @{ScrollFrame:set_vertical_scroll}.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: none.
- *   @classmod ScrollFrame
+ * Child classes: none.
+ * @classmod ScrollFrame
  */
 
 namespace lxgui::gui {

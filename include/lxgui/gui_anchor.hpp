@@ -118,7 +118,7 @@ public:
 
     /// Returns this anchor's absolute coordinates (in pixels).
     /** \param object The object owning this anchor
-     *   \return The absolute coordinates of this anchor.
+     * \return The absolute coordinates of this anchor.
      */
     vector2f get_point(const region& object) const;
 
@@ -138,7 +138,7 @@ public:
 
     /// Prints all relevant information about this anchor in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this anchor
+     * \return All relevant information about this anchor
      */
     std::string serialize(const std::string& tab) const;
 

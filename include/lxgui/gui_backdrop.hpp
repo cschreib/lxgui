@@ -51,8 +51,8 @@ public:
 
     /// Sets the background color.
     /** \param c The background color
-     *   \note This color can be used to tint the background texture if any
-     *         or simply render a plain color background.
+     * \note This color can be used to tint the background texture if any
+     *       or simply render a plain color background.
      */
     void set_background_color(const color& c);
 
@@ -73,7 +73,7 @@ public:
 
     /// Sets the appearent tile size.
     /** \param tile_size The new tile size
-     *   \note Tile will be scaled by tile_size/background_texture_size.
+     * \note Tile will be scaled by tile_size/background_texture_size.
      */
     void set_tile_size(float tile_size);
 
@@ -104,17 +104,17 @@ public:
 
     /// Sets the edge/corner texture.
     /** \param edge_file The edge/corner texture
-     *   \note This texture's width must be 8 times greater than its
-     *         height.<br><br>
-     *         texture parts are interpreted as :<br>
-     *         - [  0, 1/8]: left edge
-     *         - [1/8, 1/4]: right edge
-     *         - [1/4, 3/8]: top edge (rotated 90 degrees ccw)
-     *         - [3/8, 1/2]: bottom edge (rotated 90 degrees ccw)
-     *         - [1/2, 5/8]: top-left corner
-     *         - [5/8, 3/4]: top-right corner
-     *         - [3/4, 7/8]: bottom-left corner
-     *         - [7/8,   1]: bottom-right corner
+     * \note This texture's width must be 8 times greater than its
+     *       height.<br><br>
+     *       texture parts are interpreted as :<br>
+     *       - [  0, 1/8]: left edge
+     *       - [1/8, 1/4]: right edge
+     *       - [1/4, 3/8]: top edge (rotated 90 degrees ccw)
+     *       - [3/8, 1/2]: bottom edge (rotated 90 degrees ccw)
+     *       - [1/2, 5/8]: top-left corner
+     *       - [5/8, 3/4]: top-right corner
+     *       - [3/4, 7/8]: bottom-left corner
+     *       - [7/8,   1]: bottom-right corner
      */
     void set_edge(const std::string& edge_file);
 
@@ -125,8 +125,8 @@ public:
 
     /// Sets the edge color.
     /** \param c The edge color
-     *   \note This color can be used to tint the edge texture if any
-     *         or simply render a plain color edge.
+     * \note This color can be used to tint the edge texture if any
+     *       or simply render a plain color edge.
      */
     void set_edge_color(const color& c);
 
@@ -137,7 +137,7 @@ public:
 
     /// Sets the appearent edge size.
     /** \param edge_size The new edge size
-     *   \note Edges will be scaled by edge_size/edge_texture_height.
+     * \note Edges will be scaled by edge_size/edge_texture_height.
      */
     void set_edge_size(float edge_size);
 

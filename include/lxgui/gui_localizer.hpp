@@ -45,31 +45,31 @@ public:
 
     /// Changes the current locale (used to format numbers).
     /** \param locale The new locale
-     *   \note This function should only be called before the UI is loaded. If you need to change
-     *         the locale after the UI has been loaded: close the UI, set the locale, and load the
-     *         UI again.
+     * \note This function should only be called before the UI is loaded. If you need to change
+     *       the locale after the UI has been loaded: close the UI, set the locale, and load the
+     *       UI again.
      */
     void set_locale(const std::locale& locale);
 
     /// Changes the current language (used to translate messages and strings).
     /** \param languages A list of languages
-     *   \details This function specifies which languages to use for translating messages. The
-     *            languages listed in the supplied array will be tried one after the other, until a
-     *            translation is found. Each language in the list must be formatted as
-     *            "{language}{REGION}" with "{language}" a two-letter lower case word, and
+     * \details This function specifies which languages to use for translating messages. The
+     *          languages listed in the supplied array will be tried one after the other, until a
+     *          translation is found. Each language in the list must be formatted as
+     *          "{language}{REGION}" with "{language}" a two-letter lower case word, and
      * "{REGION}" a two-letter upper case word. For example: "enUS" for United State English, and
-     *            "enGB" for British English, "frFR" for mainland French, etc. The default value is
-     *            {"enUS"}.
-     *   \note This function should only be called before the UI is loaded. If you need to change
-     *         the language after the UI has been loaded: close the UI, set the language, and load
-     *         the UI again.
+     *          "enGB" for British English, "frFR" for mainland French, etc. The default value is
+     *          {"enUS"}.
+     * \note This function should only be called before the UI is loaded. If you need to change
+     *       the language after the UI has been loaded: close the UI, set the language, and load
+     *       the UI again.
      */
     void set_preferred_languages(const std::vector<std::string>& languages);
 
     /// Attempts to automatically detect the current language (used to translate messages and
     /// strings).
     /** \note This is called in the constructor, only use it if you need to reset the languages
-     *         to the default after calling set_preferred_languages().
+     *       to the default after calling set_preferred_languages().
      */
     void auto_detect_preferred_languages();
 
@@ -91,43 +91,43 @@ public:
 
     /// Adds a new range to the set of allowed code points.
     /** \param range The new range to allow
-     *   \see get_allowed_code_points()
+     * \see get_allowed_code_points()
      */
     void add_allowed_code_points(const code_point_range& range);
 
     /// Adds a new range to the set of allowed code points from a Unicode group.
     /** \param unicode_group The name of the Unicode code group to allow
-     *   \note The Unicode standard defines a set of code groups, which are contiguous
-     *         ranges of Unicode code points that are typically associated to a language
-     *         or a group of languages. This function knows about such groups and the
-     *         ranges of code point they correspond to, and is therefore more user-friendly.
-     *   \see get_allowed_code_points()
+     * \note The Unicode standard defines a set of code groups, which are contiguous
+     *       ranges of Unicode code points that are typically associated to a language
+     *       or a group of languages. This function knows about such groups and the
+     *       ranges of code point they correspond to, and is therefore more user-friendly.
+     * \see get_allowed_code_points()
      */
     void add_allowed_code_points_for_group(const std::string& unicode_group);
 
     /// Adds a new range to the set of allowed code points for a given language.
     /** \param language_code The language code (e.g., "en", "ru", etc.)
-     *   \note Language codes are based on the ISO-639-1 standard, or later standards for those
-     *         languages which were not listed in ISO-639-1. They are always in lower case, and
-     *         typically composed of just two letters, but sometimes more.
-     *   \see get_allowed_code_points()
+     * \note Language codes are based on the ISO-639-1 standard, or later standards for those
+     *       languages which were not listed in ISO-639-1. They are always in lower case, and
+     *       typically composed of just two letters, but sometimes more.
+     * \see get_allowed_code_points()
      */
     void add_allowed_code_points_for_language(const std::string& language_code);
 
     /// Attempts to automatically detect the set of allowed code points based on preferred
     /// languages.
     /** \note This is called in the constructor, only use it if you need to reset the allowed
-     *         code points to the default after changing the preferred languages.
+     *       code points to the default after changing the preferred languages.
      */
     void auto_detect_allowed_code_points();
 
     /// Returns the list of allowed code points (Unicode characters), for text rendering.
     /** \return The list of allowed code points.
-     *   \note The list contains no duplicate or overlapping ranges. The ranges are sorted
-     *         by increasing code point value. This list is used by the font system to
-     *         pre-render all the characters that are allowed on the GUI, to allow for
-     *         more efficient rendering and batching. Code points or characters not on this
-     *         list will not be rendered, or will be replaced by a placeholder character.
+     * \note The list contains no duplicate or overlapping ranges. The ranges are sorted
+     *       by increasing code point value. This list is used by the font system to
+     *       pre-render all the characters that are allowed on the GUI, to allow for
+     *       more efficient rendering and batching. Code points or characters not on this
+     *       list will not be rendered, or will be replaced by a placeholder character.
      */
     const std::vector<code_point_range>& get_allowed_code_points() const;
 
@@ -143,17 +143,17 @@ public:
 
     /// Loads new translations from a folder, selecting the language automatically.
     /** \param folder_path The path to the folder to load translations from
-     *   \note Based on the current language (see get_language()), this function will scan files in
-     *         the supplied folder with name "{language}{REGION}.lua", and pick the combination of
-     *         "language" and "REGION" closest to the currently configured language.
-     *         It then loads translations from this file using load_translation_file() (see the
-     *         documentation of this function for more information).
+     * \note Based on the current language (see get_language()), this function will scan files in
+     *       the supplied folder with name "{language}{REGION}.lua", and pick the combination of
+     *       "language" and "REGION" closest to the currently configured language.
+     *       It then loads translations from this file using load_translation_file() (see the
+     *       documentation of this function for more information).
      */
     void load_translations(const std::string& folder_path);
 
     /// Loads new translations from a file.
     /** \param file_name The path to the file to load translations from
-     *   \note The file must be a Lua script. It will be loaded in a sandboxed Lua state
+     * \note The file must be a Lua script. It will be loaded in a sandboxed Lua state
      * (independent of the Lua state of the GUI). The script must define a table called
      * "localize", which will be scanned to add new translations for the current locale
      * (each file must only contain translations for one language; separate different
@@ -171,24 +171,24 @@ public:
 
     /// Removes all previously loaded translations.
     /** \note After calling this function, it is highly recommended to always include at least
-     *         the Unicode groups "basic latin" (to render basic ASCII characters) and
-     *         "geometric shapes" (to render the "missing character" glyph).
+     *       the Unicode groups "basic latin" (to render basic ASCII characters) and
+     *       "geometric shapes" (to render the "missing character" glyph).
      */
     void clear_translations();
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
     /** \param message The string to format (e.g., "Player {0} has {1} HP.").
-     *   \param args A variadic list of formatting input arguments from a Sol Lua state.
-     *   \return The formatted string.
-     *   \details The string to format must follow the rules of libfmt format strings.
+     * \param args A variadic list of formatting input arguments from a Sol Lua state.
+     * \return The formatted string.
+     * \details The string to format must follow the rules of libfmt format strings.
      */
     std::string format_string(std::string_view message, sol::variadic_args args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param message The string to format (e.g., "Player {0} has {1} HP.").
-     *   \param args A variadic list of formatting input arguments.
-     *   \return The formatted string.
-     *   \details The string to format must follow the rules of libfmt format strings.
+     * \param args A variadic list of formatting input arguments.
+     * \return The formatted string.
+     * \details The string to format must follow the rules of libfmt format strings.
      */
     template<typename... Args>
     std::string format_string(std::string_view message, Args&&... args) const {
@@ -196,24 +196,24 @@ public:
     }
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
-    /** \param key   The key identifying the sentence / text to translate (e.g.,
+    /** \param key The key identifying the sentence / text to translate (e.g.,
      * "{player_health}"). Must start with '{' and end with '}'.
-     *   \param args A variadic list of translation input arguments from a Sol Lua state.
-     *   \return The translated string, or key if not found or an error occurred.
-     *   \note See the other overload for more information.
+     * \param args A variadic list of translation input arguments from a Sol Lua state.
+     * \return The translated string, or key if not found or an error occurred.
+     * \note See the other overload for more information.
      */
     std::string localize(std::string_view key, sol::variadic_args args) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
-    /** \param key  The key identifying the sentence / text to translate (e.g., "{player_health}").
-     *                Must start with '{' and end with '}'.
-     *   \param args A variadic list of translation input arguments.
-     *   \return The translated string, or key if not found or an error occurred.
-     *   \details This function will search the translation database (created from loading
-     *            translations with load_translations() or load_translation_file()) for a
-     *            string matching key. If one is found, it will forward the supplied arguments
-     *            to the translated formatting function, which will insert the arguments at
-     *            the proper place for the selected language.
+    /** \param key The key identifying the sentence / text to translate (e.g., "{player_health}").
+     *              Must start with '{' and end with '}'.
+     * \param args A variadic list of translation input arguments.
+     * \return The translated string, or key if not found or an error occurred.
+     * \details This function will search the translation database (created from loading
+     *          translations with load_translations() or load_translation_file()) for a
+     *          string matching key. If one is found, it will forward the supplied arguments
+     *          to the translated formatting function, which will insert the arguments at
+     *          the proper place for the selected language.
      */
     template<typename... Args>
     std::string localize(std::string_view key, Args&&... args) const {
@@ -250,8 +250,8 @@ public:
 
     /// Registers this localizer on a Lua state.
     /** \param lua The Lua lua to register on
-     *   \note Only one localizer object can be registered on any Lua state.
-     *         Registering enables Lua functions such as "get_locale()".
+     * \note Only one localizer object can be registered on any Lua state.
+     *       Registering enables Lua functions such as "get_locale()".
      */
     void register_on_lua(sol::state& lua);
 };

@@ -24,7 +24,7 @@ public:
 
     /// Return a list of virtual regions matching the provided comma-separated list.
     /** \param names Comma-separated list of object names
-     *   \return A vector of objects matching the list. Objects not found will be excluded.
+     * \return A vector of objects matching the list. Objects not found will be excluded.
      */
     std::vector<utils::observer_ptr<const region>>
     get_virtual_region_list(std::string_view names) const;

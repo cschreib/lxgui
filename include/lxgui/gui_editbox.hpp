@@ -17,46 +17,46 @@ class texture;
 
 /// A #frame with an editable text box.
 /** This frame lets the user input arbitrary text into a box,
- *   which can be read and used by the rest of the interface.
- *   The text box can be either single-line or multi-line.
- *   Text can be selected by holding the Shift key, and natural
- *   navigation is available with the Left, Right, Up, Down, Home,
- *   End, Page Up, and Page Down keys. Copy and paste operations
- *   are also supported. The edit box can also remember the history
- *   of previously entered values or commands, which can be brought
- *   back at will. The characters entered as handled by the
- *   operating system, hence this class will use whatever keyboard
- *   layout is currently in use. Finally, the edit box can be
- *   configured to only accept numeric values (of either sign, or
- *   positive only), and to hide the input characters to simulate a
- *   password box (no encryption or other safety measure is used).
+ * which can be read and used by the rest of the interface.
+ * The text box can be either single-line or multi-line.
+ * Text can be selected by holding the Shift key, and natural
+ * navigation is available with the Left, Right, Up, Down, Home,
+ * End, Page Up, and Page Down keys. Copy and paste operations
+ * are also supported. The edit box can also remember the history
+ * of previously entered values or commands, which can be brought
+ * back at will. The characters entered as handled by the
+ * operating system, hence this class will use whatever keyboard
+ * layout is currently in use. Finally, the edit box can be
+ * configured to only accept numeric values (of either sign, or
+ * positive only), and to hide the input characters to simulate a
+ * password box (no encryption or other safety measure is used).
  *
- *   Note that an edit_box has frame::enable_mouse set to `true`
- *   and frame::register_for_drag set to `"LeftButton"` by default.
+ * Note that an edit_box has frame::enable_mouse set to `true`
+ * and frame::register_for_drag set to `"LeftButton"` by default.
  *
- *   __Events.__ Hard-coded events available to all edit_boxes,
- *   in addition to those from #frame:
+ * __Events.__ Hard-coded events available to all edit_boxes,
+ * in addition to those from #frame:
  *
- *   - `OnCursorChanged`: Triggered whenever the position of the edit
- *   cursor is changed (not yet implemented).
- *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
- *   is pressed while the edit box is focussed. This captures both
- *   the main keyboard key and the smaller one on the numpad.
- *   - `OnEscapePressed`: Triggered when the `Escape` key is pressed
- *   while the edit box is focussed.
- *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
- *   while the edit box is focussed.
- *   - `OnTabPressed`: Triggered when the `Tab` key is pressed
- *   while the edit box is focussed.
- *   - `OnUpPressed`: Triggered when the `Up` key is pressed
- *   while the edit box is focussed.
- *   - `OnDownPressed`: Triggered when the `Down` key is pressed
- *   while the edit box is focussed.
- *   - `OnTextChanged`: Triggered whenever the text contained in the
- *   edit box changes (character added or deleted, text set or pasted,
- *   etc.). Triggered after `OnChar`.
- *   - `OnTextSet`: Triggered by edit_box::set_text. Will always be
- *   followed by `OnTextChanged`.
+ * - `OnCursorChanged`: Triggered whenever the position of the edit
+ * cursor is changed (not yet implemented).
+ * - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
+ * is pressed while the edit box is focussed. This captures both
+ * the main keyboard key and the smaller one on the numpad.
+ * - `OnEscapePressed`: Triggered when the `Escape` key is pressed
+ * while the edit box is focussed.
+ * - `OnSpacePressed`: Triggered when the `Space` key is pressed
+ * while the edit box is focussed.
+ * - `OnTabPressed`: Triggered when the `Tab` key is pressed
+ * while the edit box is focussed.
+ * - `OnUpPressed`: Triggered when the `Up` key is pressed
+ * while the edit box is focussed.
+ * - `OnDownPressed`: Triggered when the `Down` key is pressed
+ * while the edit box is focussed.
+ * - `OnTextChanged`: Triggered whenever the text contained in the
+ * edit box changes (character added or deleted, text set or pasted,
+ * etc.). Triggered after `OnChar`.
+ * - `OnTextSet`: Triggered by edit_box::set_text. Will always be
+ * followed by `OnTextChanged`.
  */
 class edit_box : public frame {
     using base = frame;
@@ -72,25 +72,25 @@ public:
 
     /// Updates this region's logic.
     /** \param delta Time spent since last update
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void update(float delta) override;
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param data       Stores scripts arguments
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
     /// Returns 'true' if this edit_box can use a script.
     /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+     * \note This method can be overriden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
@@ -105,10 +105,10 @@ public:
     const utils::ustring& get_text() const;
 
     /// Selects a portion of the content.
-    /** \param start      The first character to select
-     *   \param end        The last character to select
-     *   \param force_update 'true' to bypass all redundancy checks
-     *   \note Will select (end - start) characters
+    /** \param start The first character to select
+     * \param end The last character to select
+     * \param force_update 'true' to bypass all redundancy checks
+     * \note Will select (end - start) characters
      */
     void highlight_text(
         std::size_t start        = 0u,
@@ -172,13 +172,13 @@ public:
 
     /// Makes this edit_box allow positive numbers only.
     /** \param positive_only 'true' to only allow positive numbers
-     *   \note Only workds if set_numeric_only(true) has been called.
+     * \note Only workds if set_numeric_only(true) has been called.
      */
     void set_positive_only(bool positive_only);
 
     /// Makes this edit_box allow integer numbers only.
     /** \param integer_only 'true' to only allow integer numbers
-     *   \note Only workds if set_numeric_only(true) has been called.
+     * \note Only workds if set_numeric_only(true) has been called.
      */
     void set_integer_only(bool integer_only);
 
@@ -199,8 +199,8 @@ public:
 
     /// Enables password mode.
     /** \param enable 'true' to enable password mode
-     *   \note In password mode, the content of the edit_box is replaced
-     *         by stars (*).
+     * \note In password mode, the content of the edit_box is replaced
+     *       by stars (*).
      */
     void enable_password_mode(bool enable);
 
@@ -211,11 +211,11 @@ public:
 
     /// Allows this edit_box to have several lines in it.
     /** \param multi_line 'true' to allow several lines in this edit_box
-     *   \note The behavior of a "multi line" edit_box is very different from
-     *         a single line one.<br>
-     *         History lines are only available to single line edit_boxes.<br>
-     *         Scrolling in a single line edit_box is done horizontally, while
-     *         it is only done vertically in a multi line one.
+     * \note The behavior of a "multi line" edit_box is very different from
+     *       a single line one.<br>
+     *       History lines are only available to single line edit_boxes.<br>
+     *       Scrolling in a single line edit_box is done horizontally, while
+     *       it is only done vertically in a multi line one.
      */
     void set_multi_line(bool multi_line);
 
@@ -236,13 +236,13 @@ public:
 
     /// Adds a new history line to the history line list.
     /** \param history_line The content of this history line
-     *   \note This option is only available to single line edit_boxes.
+     * \note This option is only available to single line edit_boxes.
      */
     void add_history_line(const utils::ustring& history_line);
 
     /// Returns the history line list.
     /** \return The history line list
-     *   \note This list will always be empty for multi line edit_boxes.
+     * \note This list will always be empty for multi line edit_boxes.
      */
     const std::vector<utils::ustring>& get_history_lines() const;
 
@@ -256,8 +256,8 @@ public:
 
     /// Sets the insets used to render the content text.
     /** \param insets (left, right, top, bottom)
-     *   \note Positive insets will reduce the text area, while
-     *         negative ones will enlarge it
+     * \note Positive insets will reduce the text area, while
+     *       negative ones will enlarge it
      */
     void set_text_insets(const bounds2f& insets);
 
@@ -287,7 +287,7 @@ public:
 
     /// Sets the font (file and size) to render the content.
     /** \param font_name The file path to the .ttf file
-     *   \param height   The font height
+     * \param height The font height
      */
     void set_font(const std::string& font_name, float height);
 

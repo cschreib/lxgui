@@ -19,10 +19,10 @@ enum class rounding_method {
 };
 
 /// Round a floating point value to a specific unit and using a specific rounding method.
-/** \param value  The value to round
- *   \param unit   The rounding unit (e.g., if set to 2, the output must be a multiple of 2)
- *   \param method The rounding method
- *   \return The rounded value
+/** \param value The value to round
+ * \param unit The rounding unit (e.g., if set to 2, the output must be a multiple of 2)
+ * \param method The rounding method
+ * \return The rounded value
  */
 float round(float value, float unit, rounding_method method);
 

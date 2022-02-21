@@ -11,19 +11,19 @@ class texture;
 
 /// A #frame with a movable texture.
 /** This frame contains a special texture, the "slider thumb".
- *   It can be moved along a single axis (X or Y) and its position
- *   can be used to represent a value (for configuration menus, or
- *   scroll bars).
+ * It can be moved along a single axis (X or Y) and its position
+ * can be used to represent a value (for configuration menus, or
+ * scroll bars).
  *
- *   __Events.__ Hard-coded events available to all sliders,
- *   in addition to those from #frame:
+ * __Events.__ Hard-coded events available to all sliders,
+ * in addition to those from #frame:
  *
- *   - `OnValueChanged`: Triggered whenever the value controlled by
- *   the slider changes. This is triggered whenever the user moves
- *   the slider thumb, and by slider::set_value. This can also be
- *   triggered by slider::set_min_value, slider::set_max_value,
- *   slider::set_min_max_values, and slider::set_value_step if the
- *   previous value would not satisfy the new constraints.
+ * - `OnValueChanged`: Triggered whenever the value controlled by
+ * the slider changes. This is triggered whenever the user moves
+ * the slider thumb, and by slider::set_value. This can also be
+ * triggered by slider::set_min_value, slider::set_max_value,
+ * slider::set_min_max_values, and slider::set_value_step if the
+ * previous value would not satisfy the new constraints.
  */
 class slider : public frame {
     using base = frame;
@@ -36,22 +36,22 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
     /// Returns 'true' if this slider can use a script.
     /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+     * \note This method can be overriden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
     /// Calls a script.
     /** \param script_name The name of the script
-     *   \param data       Stores scripts arguments
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     *       to use the frame again after calling this function, use
+     *       the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -97,7 +97,7 @@ public:
 
     /// Sets the slider's value range.
     /** \param min_value The minimum value
-     *   \param max_value The maximum value
+     * \param max_value The maximum value
      */
     void set_min_max_values(float min_value, float max_value);
 
@@ -122,8 +122,8 @@ public:
     float get_max_value() const;
 
     /// Sets this slider's value.
-    /** \param value  The value
-     *   \param silent 'true' to prevent OnValueChanged to be fired
+    /** \param value The value
+     * \param silent 'true' to prevent OnValueChanged to be fired
      */
     void set_value(float value, bool silent = false);
 
@@ -164,14 +164,14 @@ public:
 
     /// Checks if clicks are allowed outside of the thumb.
     /** \return 'true' if it is the case
-     *   \note See set_allow_clicks_outside_thumb().
+     * \note See set_allow_clicks_outside_thumb().
      */
     bool are_clicks_outside_thumb_allowed() const;
 
     /// Checks if the provided coordinates are in the slider.
     /** \param position The coordinate to test
-     *   \return 'true' if the provided coordinates are in the slider, its title region,
-     *           or its thumb texture
+     * \return 'true' if the provided coordinates are in the slider, its title region,
+     *         or its thumb texture
      */
     bool is_in_region(const vector2f& position) const override;
 

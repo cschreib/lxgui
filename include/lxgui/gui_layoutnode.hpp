@@ -15,8 +15,8 @@ namespace lxgui::gui {
 
 /// An attribute in a layout file
 /** This is a format-agnostic representation of a GUI layout, as read
- *   for example from an XML or YAML file. The GUI uses this class to de-couple
- *   the layout parsing format (XML, YAML, etc) from the actual parsed layout.
+ * for example from an XML or YAML file. The GUI uses this class to de-couple
+ * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */
 class layout_attribute {
 public:
@@ -79,7 +79,7 @@ public:
 
     /// Returns this node's value as string.
     /** \return This node's value as string
-     *   \note Returns an empty string if none
+     * \note Returns an empty string if none
      */
     std::string_view get_value() const noexcept {
         accessed_ = true;
@@ -88,7 +88,7 @@ public:
 
     /// Returns this node's value as string, or a default value if empty.
     /** \param fallback The fallback value if the node has no value
-     *   \return This node's value as string, or a default value if empty
+     * \return This node's value as string, or a default value if empty
      */
     std::string_view get_value_or(std::string_view fallback) const noexcept {
         accessed_ = true;
@@ -100,8 +100,8 @@ public:
 
     /// Returns this node's value converted to a specific type.
     /** \return This node's value converted to a specific type
-     *   \note Will throw if the value could not be converted. Use get_value_or()
-     *         to avoid throwing.
+     * \note Will throw if the value could not be converted. Use get_value_or()
+     *       to avoid throwing.
      */
     template<typename T>
     T get_value() const {
@@ -118,7 +118,7 @@ public:
 
     /// Returns this node's value converted to a specific type, or a default value.
     /** \return This node's value converted to a specific type, or a default value
-     *   \note Will return the default value if the value could not be converted.
+     * \note Will return the default value if the value could not be converted.
      */
     template<typename T>
     T get_value_or(T fallback) const noexcept {
@@ -194,8 +194,8 @@ protected:
 
 /// An node in a layout file
 /** This is a format-agnostic representation of a GUI layout, as read
- *   for example from an XML or YAML file. The GUI uses this class to de-couple
- *   the layout parsing format (XML, YAML, etc) from the actual parsed layout.
+ * for example from an XML or YAML file. The GUI uses this class to de-couple
+ * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */
 class layout_node : public layout_attribute {
 public:
@@ -218,7 +218,7 @@ public:
 
     /// Returns a specific child of this node, by index
     /** \param index The index (starting from 0) of this child
-     *   \return The child at the specified index
+     * \return The child at the specified index
      */
     const layout_node& get_child(std::size_t index) const noexcept {
         accessed_ = true;
@@ -247,7 +247,7 @@ public:
 
     /// Returns a view to the list of children with a given name.
     /** \param name The name to look for
-     *   \return A view to the list of children with a given name
+     * \return A view to the list of children with a given name
      */
     filtered_children_view get_children(std::string_view name) const noexcept {
         accessed_ = true;
@@ -256,7 +256,7 @@ public:
 
     /// Returns the first child with a given name, or null if none.
     /** \param name The name to look for
-     *   \return The first child with a given name, or null if none
+     * \return The first child with a given name, or null if none
      */
     const layout_node* try_get_child(std::string_view name) const noexcept {
         accessed_ = true;
@@ -269,9 +269,9 @@ public:
 
     /// Returns the first child with a given name, and throws if none.
     /** \param name The name to look for
-     *   \return The first child with a given name, and throws if none
-     *   \note Will throw if no child is found with this name. Use try_get_child()
-     *         to avoid throwing.
+     * \return The first child with a given name, and throws if none
+     * \note Will throw if no child is found with this name. Use try_get_child()
+     *       to avoid throwing.
      */
     const layout_node& get_child(std::string_view name) const {
         accessed_ = true;
@@ -285,7 +285,7 @@ public:
 
     /// Checks if at least one child exists with the given name
     /** \param name The name to look for
-     *   \return 'true' if at least one child exists, 'false' otherwise
+     * \return 'true' if at least one child exists, 'false' otherwise
      */
     bool has_child(std::string_view name) const noexcept {
         accessed_ = true;
@@ -294,9 +294,9 @@ public:
 
     /// Returns the attribute with the provided name, or null if none.
     /** \param name The name to look for
-     *   \return The attribute with the provided name, or null if none
-     *   \note Will throw if no child is found with this name. Use get_attribute_value_or()
-     *         to avoid throwing.
+     * \return The attribute with the provided name, or null if none
+     * \note Will throw if no child is found with this name. Use get_attribute_value_or()
+     *       to avoid throwing.
      */
     const layout_attribute* try_get_attribute(std::string_view name) const noexcept {
         accessed_ = true;
@@ -310,9 +310,9 @@ public:
 
     /// Returns the value of the first child with the provided name, throws if none.
     /** \param name The name to look for
-     *   \return The value of the first child with the provided name.
-     *   \note Will throw if no attribute is found with this name. Use try_get_attribute()
-     *         to avoid throwing.
+     * \return The value of the first child with the provided name.
+     * \note Will throw if no attribute is found with this name. Use try_get_attribute()
+     *       to avoid throwing.
      */
     const layout_attribute& get_attribute(std::string_view name) const {
         accessed_ = true;
@@ -326,7 +326,7 @@ public:
 
     /// Checks if a given attribute has been specified
     /** \param name The name to look for
-     *   \return 'true' if attribute is specified, 'false' otherwise
+     * \return 'true' if attribute is specified, 'false' otherwise
      */
     bool has_attribute(std::string_view name) const noexcept {
         accessed_ = true;
@@ -335,9 +335,9 @@ public:
 
     /// Returns the value of the attribute with the provided name, throws if none.
     /** \param name The name to look for
-     *   \return The value of the attribute with the provided name.
-     *   \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     *         to avoid throwing.
+     * \return The value of the attribute with the provided name.
+     * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
+     *       to avoid throwing.
      */
     std::string_view get_attribute_value(std::string_view name) const {
         accessed_ = true;
@@ -346,9 +346,9 @@ public:
 
     /// Returns the value of the attribute with the provided name, throws if none.
     /** \param name The name to look for
-     *   \return The value of the attribute with the provided name.
-     *   \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     *         to avoid throwing.
+     * \return The value of the attribute with the provided name.
+     * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
+     *       to avoid throwing.
      */
     template<typename T>
     T get_attribute_value(std::string_view name) const {
@@ -357,9 +357,9 @@ public:
     }
 
     /// Returns the value of the attribute with the provided name, or a default value if none.
-    /** \param name     The name to look for
-     *   \param fallback The fallback value
-     *   \return The value of the attribute with the provided name, or a default value if none
+    /** \param name The name to look for
+     * \param fallback The fallback value
+     * \return The value of the attribute with the provided name, or a default value if none
      */
     std::string_view
     get_attribute_value_or(std::string_view name, std::string_view fallback) const noexcept {
@@ -371,9 +371,9 @@ public:
     }
 
     /// Returns the value of the attribute with the provided name, or a default value if none.
-    /** \param name     The name to look for
-     *   \param fallback The fallback value
-     *   \return The value of the attribute with the provided name, or a default value if none
+    /** \param name The name to look for
+     * \param fallback The fallback value
+     * \return The value of the attribute with the provided name, or a default value if none
      */
     template<typename T>
     T get_attribute_value_or(std::string_view name, T fallback) const noexcept {
@@ -411,11 +411,11 @@ public:
     }
 
     /// Returns the value of the attribute with the provided name, or set it if none.
-    /** \param name  The name to look for
-     *   \param value The value to set if the attribute is missing
-     *   \return The value of the attribute with the provided name.
-     *   \note This will modify the layout node object if the value is missing. If you need
-     *         a non-modifying alternative, use get_attribute_value_or().
+    /** \param name The name to look for
+     * \param value The value to set if the attribute is missing
+     * \return The value of the attribute with the provided name.
+     * \note This will modify the layout node object if the value is missing. If you need
+     *       a non-modifying alternative, use get_attribute_value_or().
      */
     std::string_view get_or_set_attribute_value(std::string_view name, std::string_view value) {
         accessed_ = true;

@@ -7,13 +7,13 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw images and colored rectangles.
- *   This object contains either a texture taken from a file,
- *   or a plain color (possibly with a different color on each corner).
+ * This object contains either a texture taken from a file,
+ * or a plain color (possibly with a different color on each corner).
  *
- *   Inherits all methods from: @{Region}, @{LayeredRegion}.
+ * Inherits all methods from: @{Region}, @{LayeredRegion}.
  *
- *   Child classes: none.
- *   @classmod Texture
+ * Child classes: none.
+ * @classmod Texture
  */
 
 namespace lxgui::gui {

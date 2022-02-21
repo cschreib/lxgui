@@ -13,11 +13,11 @@ class virtual_registry;
 class layout_node;
 
 /// Parse "core" attributes from a layout node, before creating a frame.
-/** \param reg        The UI object registry, for parent lookup
- *   \param vreg The virtual UI object registry, for inheritance lookup
- *   \param node            The layout node to parse from
- *   \param parent          The current layout parent frame of this node (nullptr if none)
- *   \return Filled-in core attributes structure.
+/** \param reg The UI object registry, for parent lookup
+ * \param vreg The virtual UI object registry, for inheritance lookup
+ * \param node The layout node to parse from
+ * \param parent The current layout parent frame of this node (nullptr if none)
+ * \return Filled-in core attributes structure.
  */
 region_core_attributes parse_core_attributes(
     registry&                  reg,

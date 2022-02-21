@@ -5,18 +5,18 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Region} that can be rendered in a layer.
- *   LayeredRegions can display content on the screen (texture,
- *   texts, 3D models, ...) and must be contained inside a layer,
- *   within a @{Frame} object. The frame will then render all
- *   its layered regions, sorted by layers.
+ * LayeredRegions can display content on the screen (texture,
+ * texts, 3D models, ...) and must be contained inside a layer,
+ * within a @{Frame} object. The frame will then render all
+ * its layered regions, sorted by layers.
  *
- *   Layered regions cannot themselves react to events; this
- *   must be taken care of by the parent @{Frame}.
+ * Layered regions cannot themselves react to events; this
+ * must be taken care of by the parent @{Frame}.
  *
- *   Inherits all methods from: @{Region}.
+ * Inherits all methods from: @{Region}.
  *
- *   Child classes: @{FontString}, @{Texture}.
- *   @classmod LayeredRegion
+ * Child classes: @{FontString}, @{Texture}.
+ * @classmod LayeredRegion
  */
 
 namespace lxgui::gui {

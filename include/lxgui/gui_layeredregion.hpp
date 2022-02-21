@@ -20,18 +20,18 @@ enum class layer {
 
 /// Converts a string representation of a layer into the corresponding enumerator
 /** \param layer_name The layer string (e.g., "ARTWORK")
- *   \return The corresponding enumerator, or "ARTWORK" if parsing failed
+ * \return The corresponding enumerator, or "ARTWORK" if parsing failed
  */
 layer parse_layer_type(const std::string& layer_name);
 
 /// A #region that can be rendered in a layer.
 /** Layered regions can display content on the screen (texture,
- *   texts, 3D models, ...) and must be contained inside a layer,
- *   within a #lxgui::gui::frame object. The frame will then render all
- *   its layered regions, sorted by layers.
+ * texts, 3D models, ...) and must be contained inside a layer,
+ * within a #lxgui::gui::frame object. The frame will then render all
+ * its layered regions, sorted by layers.
  *
- *   Layered regions cannot themselves react to events; this
- *   must be taken care of by the parent frame.
+ * Layered regions cannot themselves react to events; this
+ * must be taken care of by the parent frame.
  */
 class layered_region : public region {
     using base = region;
@@ -42,7 +42,7 @@ public:
 
     /// Prints all relevant information about this region in a string.
     /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
@@ -56,13 +56,13 @@ public:
 
     /// shows this region.
     /** \note Its parent must be shown for it to appear on
-     *         the screen.
+     *       the screen.
      */
     void show() override;
 
     /// hides this region.
     /** \note All its children won't be visible on the screen
-     *   anymore, even if they are still marked as shown.
+     * anymore, even if they are still marked as shown.
      */
     void hide() override;
 
