@@ -19,7 +19,7 @@ void event_receiver::unregister_event(const std::string& event_name) {
         registered_events_, [&](const auto& event) { return event.name == event_name; });
 
     if (iter == registered_events_.end()) {
-        gui::out << gui::warning << "event_emitter : "
+        gui::out << gui::warning << "event_emitter: "
                  << "Event \"" << event_name << "\" is not registered to this event_receiver."
                  << std::endl;
 

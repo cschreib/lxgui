@@ -249,14 +249,12 @@ public:
     bool is_enabled() const;
 
     /// Pushed this button.
-    /** \note This function only has a visual impact :
-     *         the OnClick() handler is not called.
+    /** \note This function only has a visual impact: the OnClick() handler is not called.
      */
     virtual void push();
 
     /// Releases this button.
-    /** \note This function only has a visual impact :
-     *         the OnClick() handler is not called.
+    /** \note This function only has a visual impact: the OnClick() handler is not called.
      */
     virtual void release();
 

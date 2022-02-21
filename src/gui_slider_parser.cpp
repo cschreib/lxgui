@@ -27,7 +27,7 @@ void slider::parse_attributes_(const layout_node& node) {
         else if (orient == "VERTICAL")
             set_orientation(orientation::vertical);
         else {
-            gui::out << gui::warning << node.get_location() << " : Unknown Slider orientation : \""
+            gui::out << gui::warning << node.get_location() << ": Unknown Slider orientation: \""
                      << orient
                      << "\". Expecting either \"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
                      << std::endl;

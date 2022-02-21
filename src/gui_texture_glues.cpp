@@ -26,7 +26,7 @@ sol::optional<gradient::orientation> get_gradient_orientation(const std::string&
         orientation = gradient::orientation::vertical;
     else {
         gui::out << gui::warning
-                 << "Texture:set_gradient : Unknown gradient orientation : \"" + orientation_name +
+                 << "Texture:set_gradient: Unknown gradient orientation: \"" + orientation_name +
                         "\"."
                  << std::endl;
     }
@@ -113,8 +113,8 @@ void texture::register_on_lua(sol::state& lua) {
         else if (blend_mode_name == "MOD")
             blend = texture::blend_mode::mod;
         else {
-            gui::out << gui::warning << "Texture:set_blend_mode : "
-                     << "Unknown blending mode : \"" + blend_mode_name + "\"." << std::endl;
+            gui::out << gui::warning << "Texture:set_blend_mode: "
+                     << "Unknown blending mode: \"" + blend_mode_name + "\"." << std::endl;
             return;
         }
 
@@ -130,8 +130,8 @@ void texture::register_on_lua(sol::state& lua) {
         else if (filter_name == "LINEAR")
             filt = material::filter::linear;
         else {
-            gui::out << gui::warning << "Texture:set_filter_mode : "
-                     << "Unknown filtering mode : \"" + filter_name + "\"." << std::endl;
+            gui::out << gui::warning << "Texture:set_filter_mode: "
+                     << "Unknown filtering mode: \"" + filter_name + "\"." << std::endl;
             return;
         }
 

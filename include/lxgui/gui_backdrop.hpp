@@ -107,14 +107,14 @@ public:
      *   \note This texture's width must be 8 times greater than its
      *         height.<br><br>
      *         texture parts are interpreted as :<br>
-     *         - [  0, 1/8] : left edge
-     *         - [1/8, 1/4] : right edge
-     *         - [1/4, 3/8] : top edge (rotated 90 degrees ccw)
-     *         - [3/8, 1/2] : bottom edge (rotated 90 degrees ccw)
-     *         - [1/2, 5/8] : top-left corner
-     *         - [5/8, 3/4] : top-right corner
-     *         - [3/4, 7/8] : bottom-left corner
-     *         - [7/8,   1] : bottom-right corner
+     *         - [  0, 1/8]: left edge
+     *         - [1/8, 1/4]: right edge
+     *         - [1/4, 3/8]: top edge (rotated 90 degrees ccw)
+     *         - [3/8, 1/2]: bottom edge (rotated 90 degrees ccw)
+     *         - [1/2, 5/8]: top-left corner
+     *         - [5/8, 3/4]: top-right corner
+     *         - [3/4, 7/8]: bottom-left corner
+     *         - [7/8,   1]: bottom-right corner
      */
     void set_edge(const std::string& edge_file);
 

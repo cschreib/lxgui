@@ -16,7 +16,7 @@ material::material(const vector2ui& dimensions, bool is_render_target, wrap wrp,
     if (dimensions_.x > sf::Texture::getMaximumSize() ||
         dimensions_.y > sf::Texture::getMaximumSize()) {
         throw gui::exception(
-            "gui::sfml::material", "Texture dimensions not supported by graphics card : (" +
+            "gui::sfml::material", "Texture dimensions not supported by graphics card: (" +
                                        utils::to_string(dimensions_.x) + " x " +
                                        utils::to_string(dimensions_.y) + ").");
     }

@@ -209,7 +209,7 @@ void main_loop(void* type_erased_data) {
         emscripten_cancel_main_loop();
         return;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         emscripten_cancel_main_loop();
         return;
     }
@@ -405,7 +405,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
         manager->set_interface_scaling_factor(scale_factor);
 
-        // Load files :
+        // Load files:
         //  - first set the directory in which the interface is located
         manager->add_addon_directory("interface");
         //  - register Lua "glues" (C++ functions and classes callable from Lua)
@@ -489,7 +489,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
             "if (self.timer > self.update_time) then"
             "    local fps = self.frames/self.timer;"
-            "    self.Text:set_text(\"FPS : \"..math.floor(fps));"
+            "    self.Text:set_text(\"FPS: \"..math.floor(fps));"
 
             "    self.timer = 0.0;"
             "    self.frames = 0;"
@@ -510,7 +510,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
                     if (auto txt = self.get_region<gui::font_string>("Text")) {
                         txt->set_text(
-                            U"(created in C++)\nFrame time (us) : " +
+                            U"(created in C++)\nFrame time (us): " +
                             utils::to_ustring(std::round(frame_time)));
                     }
 
@@ -594,7 +594,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 

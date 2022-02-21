@@ -88,17 +88,17 @@ region::~region() {
 std::string region::serialize(const std::string& tab) const {
     std::ostringstream str;
 
-    str << tab << "  # Name        : " << name_
+    str << tab << "  # Name       : " << name_
         << " (" + std::string(is_ready_ ? "ready" : "not ready") +
                std::string(is_special_ ? ", special)\n" : ")\n");
-    str << tab << "  # Raw name    : " << raw_name_ << "\n";
-    str << tab << "  # Lua name    : " << lua_name_ << "\n";
-    str << tab << "  # Type        : " << type_.back() << "\n";
+    str << tab << "  # Raw name   : " << raw_name_ << "\n";
+    str << tab << "  # Lua name   : " << lua_name_ << "\n";
+    str << tab << "  # Type       : " << type_.back() << "\n";
     if (parent_)
-        str << tab << "  # Parent      : " << parent_->get_name() << "\n";
+        str << tab << "  # Parent     : " << parent_->get_name() << "\n";
     else
-        str << tab << "  # Parent      : none\n";
-    str << tab << "  # Num anchors : " << get_num_point() << "\n";
+        str << tab << "  # Parent     : none\n";
+    str << tab << "  # Num anchors: " << get_num_point() << "\n";
     if (!anchor_list_.empty()) {
         str << tab << "  |-###\n";
         for (const auto& anchor : anchor_list_) {
@@ -110,15 +110,15 @@ std::string region::serialize(const std::string& tab) const {
     }
     str << tab << "  # Borders :\n";
     str << tab << "  |-###\n";
-    str << tab << "  |   # left   : " << border_list_.left << "\n";
-    str << tab << "  |   # top    : " << border_list_.top << "\n";
-    str << tab << "  |   # right  : " << border_list_.right << "\n";
-    str << tab << "  |   # bottom : " << border_list_.bottom << "\n";
+    str << tab << "  |   # left  : " << border_list_.left << "\n";
+    str << tab << "  |   # top   : " << border_list_.top << "\n";
+    str << tab << "  |   # right : " << border_list_.right << "\n";
+    str << tab << "  |   # bottom: " << border_list_.bottom << "\n";
     str << tab << "  |-###\n";
-    str << tab << "  # Alpha       : " << alpha_ << "\n";
-    str << tab << "  # Shown       : " << is_shown_ << "\n";
-    str << tab << "  # Abs width   : " << dimensions_.x << "\n";
-    str << tab << "  # Abs height  : " << dimensions_.y << "\n";
+    str << tab << "  # Alpha      : " << alpha_ << "\n";
+    str << tab << "  # Shown      : " << is_shown_ << "\n";
+    str << tab << "  # Abs width  : " << dimensions_.x << "\n";
+    str << tab << "  # Abs height : " << dimensions_.y << "\n";
 
     return str.str();
 }
@@ -301,7 +301,7 @@ void region::set_name_(const std::string& name) {
             if (parent_)
                 utils::replace(lua_name_, "$parent", parent_->get_lua_name());
             else {
-                gui::out << gui::warning << "gui::" << type_.back() << " : \"" << name_
+                gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
                          << "\" has no parent" << std::endl;
                 utils::replace(lua_name_, "$parent", "");
             }
@@ -310,14 +310,14 @@ void region::set_name_(const std::string& name) {
         if (!is_virtual_)
             name_ = lua_name_;
     } else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "set_name() can only be called once." << std::endl;
     }
 }
 
 void region::set_parent_(utils::observer_ptr<frame> parent) {
     if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_parent(this)."
+        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
@@ -332,7 +332,7 @@ void region::set_parent_(utils::observer_ptr<frame> parent) {
 
 void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent) {
     if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_parent(this)."
+        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
@@ -405,7 +405,7 @@ void region::clear_all_points() {
 
 void region::set_all_points(const std::string& obj_name) {
     if (obj_name == name_) {
-        gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_all_points(this)."
+        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
                  << std::endl;
         return;
     }
@@ -429,7 +429,7 @@ void region::set_all_points(const std::string& obj_name) {
 
 void region::set_all_points(const utils::observer_ptr<region>& obj) {
     if (obj == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << " : Cannot call set_all_points(this)."
+        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
                  << std::endl;
         return;
     }
@@ -712,8 +712,7 @@ void region::update_anchors_() {
         utils::observer_ptr<region> obj = anchor->get_parent();
         if (obj) {
             if (obj->depends_on(*this)) {
-                gui::out << gui::error << "gui::" << type_.back()
-                         << " : Cyclic anchor dependency ! "
+                gui::out << gui::error << "gui::" << type_.back() << ": Cyclic anchor dependency ! "
                          << "\"" << name_ << "\" and \"" << obj->get_name()
                          << "\" depend on eachothers (directly or indirectly). \""
                          << anchor::get_anchor_point_name(anchor->point) << "\" anchor removed."
@@ -825,7 +824,7 @@ std::string region::parse_file_name(const std::string& file_name) const {
 void region::set_addon(const addon* a) {
     if (addon_) {
         gui::out << gui::warning << "gui::" << type_.back()
-                 << " : set_addon() can only be called once." << std::endl;
+                 << ": set_addon() can only be called once." << std::endl;
         return;
     }
 

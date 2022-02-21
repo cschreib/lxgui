@@ -33,7 +33,7 @@ void anchor::update_parent_(region& object) {
     if (obj_parent) {
         utils::replace(parent_full_name, "$parent", obj_parent->get_lua_name());
     } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << " : "
+        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\", but '$parent' does not exist." << std::endl;
         return;
@@ -43,7 +43,7 @@ void anchor::update_parent_(region& object) {
         object.get_registry().get_region_by_name(parent_full_name);
 
     if (!new_parent) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << " : "
+        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
         return;
@@ -113,22 +113,22 @@ vector2f anchor::get_point(const region& object) const {
 std::string anchor::serialize(const std::string& tab) const {
     std::stringstream str;
 
-    str << tab << "  |   # Point      : " << get_anchor_point_name(point) << "\n";
+    str << tab << "  |   # Point     : " << get_anchor_point_name(point) << "\n";
     if (parent_)
-        str << tab << "  |   # Parent     : " << parent_->get_name();
+        str << tab << "  |   # Parent    : " << parent_->get_name();
     else
-        str << tab << "  |   # Parent     : none";
+        str << tab << "  |   # Parent    : none";
     if (!parent_name.empty())
-        str << " (raw name : " << parent_name << ")\n";
+        str << " (raw name: " << parent_name << ")\n";
     else
         str << "\n";
-    str << tab << "  |   # Rel. point : " << get_anchor_point_name(parent_point) << "\n";
+    str << tab << "  |   # Rel. point: " << get_anchor_point_name(parent_point) << "\n";
     if (type == anchor_type::abs) {
-        str << tab << "  |   # Offset X   : " << offset.x << "\n";
-        str << tab << "  |   # Offset Y   : " << offset.y << "\n";
+        str << tab << "  |   # Offset X  : " << offset.x << "\n";
+        str << tab << "  |   # Offset Y  : " << offset.y << "\n";
     } else {
-        str << tab << "  |   # Offset X   : " << offset.x << " (rel)\n";
-        str << tab << "  |   # Offset Y   : " << offset.y << " (rel)\n";
+        str << tab << "  |   # Offset X  : " << offset.x << " (rel)\n";
+        str << tab << "  |   # Offset Y  : " << offset.y << " (rel)\n";
     }
 
     return str.str();

@@ -65,9 +65,9 @@ public:
     /// Sets the text to render (unicode character set).
     /** \param content The text to render
      *   \note This text can be formated :<br>
-     *         - "|cAARRGGBB" : sets text color (hexadecimal).<br>
-     *         - "|r" : sets text color to default.<br>
-     *         - "||" : writes "|".
+     *         - "|cAARRGGBB": sets text color (hexadecimal).<br>
+     *         - "|r": sets text color to default.<br>
+     *         - "||": writes "|".
      */
     void set_text(const utils::ustring& content);
 
@@ -173,7 +173,7 @@ public:
      *   \param c2 The second character
      *   \return The kerning between two characters
      *   \note Kerning is a letter spacing adjustment that makes the
-     *         text look more condensed : is you stick an A near a V,
+     *         text look more condensed: is you stick an A near a V,
      *         you can reduce the space between the two letters, but not
      *         if you put two Vs side to side.
      */
@@ -232,7 +232,7 @@ public:
 
     /// Allows removal of a line's starting spaces.
     /** \param remove_starting_spaces 'true' to remove them
-     *   \note The text box does word wrapping : it cuts too long
+     *   \note The text box does word wrapping: it cuts too long
      *         lines only between words. But sometimes, the rendered
      *         text must be cut between several spaces. By default,
      *         the algorithm puts cuted spaces at the beginning of
@@ -262,9 +262,9 @@ public:
     /// Enables color formatting.
     /** \param formatting 'true' to enable color formatting
      *   \note Enabled by default.
-     *   \note - "|cAARRGGBB" : sets text color (hexadecimal).<br>
-     *         - "|r" : sets text color to default.<br>
-     *         - "||" : writes "|".
+     *   \note - "|cAARRGGBB": sets text color (hexadecimal).<br>
+     *         - "|r": sets text color to default.<br>
+     *         - "||": writes "|".
      */
     void enable_formatting(bool formatting);
 

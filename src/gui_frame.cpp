@@ -75,8 +75,8 @@ std::string frame::serialize(const std::string& tab) const {
 
     str << base::serialize(tab);
     if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(renderer_))
-        str << tab << "  # Man. render : " << frame_renderer->get_name() << "\n";
-    str << tab << "  # Strata      : ";
+        str << tab << "  # Man. render: " << frame_renderer->get_name() << "\n";
+    str << tab << "  # Strata     : ";
     switch (strata_) {
     case frame_strata::parent: str << "PARENT\n"; break;
     case frame_strata::background: str << "BACKGROUND\n"; break;
@@ -88,14 +88,14 @@ std::string frame::serialize(const std::string& tab) const {
     case frame_strata::fullscreen_dialog: str << "FULLSCREEN_DIALOG\n"; break;
     case frame_strata::tooltip: str << "TOOLTIP\n"; break;
     }
-    str << tab << "  # Level       : " << level_ << "\n";
-    str << tab << "  # TopLevel    : " << is_top_level_;
+    str << tab << "  # Level      : " << level_ << "\n";
+    str << tab << "  # TopLevel   : " << is_top_level_;
     if (!is_top_level_ && get_top_level_parent())
         str << " (" << get_top_level_parent()->get_name() << ")\n";
     else
         str << "\n";
     if (!is_mouse_click_enabled_ && !is_mouse_move_enabled_ && !!is_mouse_wheel_enabled_)
-        str << tab << "  # Inputs      : none\n";
+        str << tab << "  # Inputs     : none\n";
     else {
         str << tab << "  # Inputs      :\n";
         str << tab << "  |-###\n";
@@ -107,21 +107,21 @@ std::string frame::serialize(const std::string& tab) const {
             str << tab << "  |   # mouse wheel\n";
         str << tab << "  |-###\n";
     }
-    str << tab << "  # Movable     : " << is_movable_ << "\n";
-    str << tab << "  # Resizable   : " << is_resizable_ << "\n";
-    str << tab << "  # Clamped     : " << is_clamped_to_screen_ << "\n";
+    str << tab << "  # Movable    : " << is_movable_ << "\n";
+    str << tab << "  # Resizable  : " << is_resizable_ << "\n";
+    str << tab << "  # Clamped    : " << is_clamped_to_screen_ << "\n";
     str << tab << "  # HRect inset :\n";
     str << tab << "  |-###\n";
-    str << tab << "  |   # left   : " << abs_hit_rect_inset_list_.left << "\n";
-    str << tab << "  |   # right  : " << abs_hit_rect_inset_list_.right << "\n";
-    str << tab << "  |   # top    : " << abs_hit_rect_inset_list_.top << "\n";
-    str << tab << "  |   # bottom : " << abs_hit_rect_inset_list_.bottom << "\n";
+    str << tab << "  |   # left  : " << abs_hit_rect_inset_list_.left << "\n";
+    str << tab << "  |   # right : " << abs_hit_rect_inset_list_.right << "\n";
+    str << tab << "  |   # top   : " << abs_hit_rect_inset_list_.top << "\n";
+    str << tab << "  |   # bottom: " << abs_hit_rect_inset_list_.bottom << "\n";
     str << tab << "  |-###\n";
-    str << tab << "  # Min width   : " << min_width_ << "\n";
-    str << tab << "  # Max width   : " << max_width_ << "\n";
-    str << tab << "  # Min height  : " << min_height_ << "\n";
-    str << tab << "  # Max height  : " << max_height_ << "\n";
-    str << tab << "  # Scale       : " << scale_ << "\n";
+    str << tab << "  # Min width  : " << min_width_ << "\n";
+    str << tab << "  # Max width  : " << max_width_ << "\n";
+    str << tab << "  # Min height : " << min_height_ << "\n";
+    str << tab << "  # Max height : " << max_height_ << "\n";
+    str << tab << "  # Scale      : " << scale_ << "\n";
     if (title_region_) {
         str << tab << "  # Title reg.  :\n";
         str << tab << "  |-###\n";
@@ -133,27 +133,27 @@ std::string frame::serialize(const std::string& tab) const {
 
         str << tab << "  # Backdrop    :\n";
         str << tab << "  |-###\n";
-        str << tab << "  |   # Background : " << backdrop_->get_background_file() << "\n";
-        str << tab << "  |   # Tilling    : " << backdrop_->is_background_tilling() << "\n";
+        str << tab << "  |   # Background: " << backdrop_->get_background_file() << "\n";
+        str << tab << "  |   # Tilling   : " << backdrop_->is_background_tilling() << "\n";
         if (backdrop_->is_background_tilling())
-            str << tab << "  |   # Tile size  : " << backdrop_->get_tile_size() << "\n";
+            str << tab << "  |   # Tile size : " << backdrop_->get_tile_size() << "\n";
         str << tab << "  |   # BG Insets  :\n";
         str << tab << "  |   |-###\n";
-        str << tab << "  |   |   # left   : " << insets.left << "\n";
-        str << tab << "  |   |   # right  : " << insets.right << "\n";
-        str << tab << "  |   |   # top    : " << insets.top << "\n";
-        str << tab << "  |   |   # bottom : " << insets.bottom << "\n";
+        str << tab << "  |   |   # left  : " << insets.left << "\n";
+        str << tab << "  |   |   # right : " << insets.right << "\n";
+        str << tab << "  |   |   # top   : " << insets.top << "\n";
+        str << tab << "  |   |   # bottom: " << insets.bottom << "\n";
         str << tab << "  |   |-###\n";
-        str << tab << "  |   # Edge       : " << backdrop_->get_edge_file() << "\n";
-        str << tab << "  |   # Edge size  : " << backdrop_->get_edge_size() << "\n";
+        str << tab << "  |   # Edge      : " << backdrop_->get_edge_file() << "\n";
+        str << tab << "  |   # Edge size : " << backdrop_->get_edge_size() << "\n";
         str << tab << "  |-###\n";
     }
 
     if (!region_list_.empty()) {
         if (child_list_.size() == 1)
-            str << tab << "  # Region : \n";
+            str << tab << "  # Region: \n";
         else
-            str << tab << "  # Regions     : " << region_list_.size() << "\n";
+            str << tab << "  # Regions    : " << region_list_.size() << "\n";
         str << tab << "  |-###\n";
 
         for (auto& obj : get_regions()) {
@@ -164,9 +164,9 @@ std::string frame::serialize(const std::string& tab) const {
 
     if (!child_list_.empty()) {
         if (child_list_.size() == 1)
-            str << tab << "  # Child : \n";
+            str << tab << "  # Child: \n";
         else
-            str << tab << "  # Children    : " << child_list_.size() << "\n";
+            str << tab << "  # Children   : " << child_list_.size() << "\n";
         str << tab << "  |-###\n";
 
         for (const auto& child : get_children()) {
@@ -283,7 +283,7 @@ void frame::copy_from(const region& obj) {
 
 void frame::create_title_region() {
     if (title_region_) {
-        gui::out << gui::warning << "gui::" << type_.back() << " : \"" << name_
+        gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
                  << "\" already has a title region." << std::endl;
         return;
     }
@@ -525,7 +525,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
     auto iter = utils::find_if(region_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == region_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "Trying to remove \"" << reg->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -624,7 +624,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
     auto   iter = utils::find_if(child_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == child_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "Trying to remove \"" << child->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -1134,7 +1134,7 @@ void frame::set_frame_strata(const std::string& strata_name) {
         }
     } else {
         gui::out << gui::warning << "gui::" << type_.back()
-                 << " : Unknown strata : \"" + strata_name + "\"." << std::endl;
+                 << ": Unknown strata: \"" + strata_name + "\"." << std::endl;
         return;
     }
 

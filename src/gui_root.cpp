@@ -95,8 +95,8 @@ void root::create_caching_render_target_() {
         else
             target_ = renderer_.create_render_target(screen_dimensions_);
     } catch (const utils::exception& e) {
-        gui::out << gui::error << "gui::root : "
-                 << "Unable to create render_target for GUI caching : " << e.get_description()
+        gui::out << gui::error << "gui::root: "
+                 << "Unable to create render_target for GUI caching: " << e.get_description()
                  << std::endl;
 
         caching_enabled_ = false;
@@ -203,8 +203,8 @@ void root::update(float delta) {
                 renderer_.end();
             }
         } catch (const utils::exception& e) {
-            gui::out << gui::error << "gui::root : "
-                     << "Unable to create render_target for strata : " << e.get_description()
+            gui::out << gui::error << "gui::root: "
+                     << "Unable to create render_target for strata: " << e.get_description()
                      << std::endl;
 
             caching_enabled_ = false;
@@ -336,7 +336,7 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
             is_resizing_from_bottom_ = true;
             break;
         case anchor_point::center:
-            gui::out << gui::error << "gui::manager : "
+            gui::out << gui::error << "gui::manager: "
                      << "Cannot resize \"" << sized_object_->get_name() << "\" from its center."
                      << std::endl;
             sized_object_ = nullptr;

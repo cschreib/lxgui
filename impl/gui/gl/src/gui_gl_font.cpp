@@ -77,14 +77,14 @@ font::font(
     const std::vector<code_point_range>& code_points,
     char32_t                             default_code_point) :
     size_(size), default_code_point_(default_code_point) {
-    // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
+    // NOTE: Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org
     // ... and SFML
     // https://www.sfml-dev.org
     //
-    // Some tweaking has been done to improve the text quality :
+    // Some tweaking has been done to improve the text quality:
     //  - Disable hinting (FT_LOAD_NO_HINTING)
-    //  - Character width is calculated as : max(x_bearing + width, advance),
+    //  - Character width is calculated as: max(x_bearing + width, advance),
     //    since advance sometimes doesn't cover the whole glyph
     //    (typical example is the 'w' character, in Consolas:9).
 
@@ -101,27 +101,27 @@ font::font(
 
         if (FT_New_Face(ft, font_file.c_str(), 0, &face_) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + font_file + "\" : cannot load face.");
+                "gui::gl::font", "Error loading font: \"" + font_file + "\": cannot load face.");
         }
 
         if (outline > 0) {
             if (FT_Stroker_New(ft, &stroker) != 0) {
                 throw gui::exception(
                     "gui::gl::font",
-                    "Error loading font : \"" + font_file + "\" : cannot create stroker.");
+                    "Error loading font: \"" + font_file + "\": cannot create stroker.");
             }
         }
 
         if (FT_Select_Charmap(face_, FT_ENCODING_UNICODE) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + font_file +
-                                     "\" : cannot select Unicode character map.");
+                "gui::gl::font",
+                "Error loading font: \"" + font_file + "\": cannot select Unicode character map.");
         }
 
         if (FT_Set_Pixel_Sizes(face_, 0, size) != 0) {
             throw gui::exception(
                 "gui::gl::font",
-                "Error loading font : \"" + font_file + "\" : cannot set font size.");
+                "Error loading font: \"" + font_file + "\": cannot set font size.");
         }
 
         FT_Int32 load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
@@ -217,13 +217,13 @@ font::font(
                 ci.code_point      = code_point;
 
                 if (FT_Load_Char(face_, code_point, load_flags) != 0) {
-                    gui::out << gui::warning << "gui::gl::font : Cannot load character "
+                    gui::out << gui::warning << "gui::gl::font: Cannot load character "
                              << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
                 if (FT_Get_Glyph(face_->glyph, &glyph) != 0) {
-                    gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character "
+                    gui::out << gui::warning << "gui::gl::font: Cannot get glyph for character "
                              << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }

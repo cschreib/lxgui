@@ -48,7 +48,7 @@ material::material(const vector2ui& dimensions, wrap wrp, filter filt) :
 
     if (canvas_dimensions_.x > maximum_size || canvas_dimensions_.y > maximum_size) {
         throw gui::exception(
-            "gui::gl::material", "Texture dimensions not supported by graphics card : (" +
+            "gui::gl::material", "Texture dimensions not supported by graphics card: (" +
                                      utils::to_string(canvas_dimensions_.x) + " x " +
                                      utils::to_string(canvas_dimensions_.y) + ").");
     }

@@ -146,8 +146,8 @@ void font_string::register_on_lua(sol::state& lua) {
                 } else if (flags.value().empty()) {
                     self.set_outlined(false);
                 } else {
-                    gui::out << gui::warning << "EditBox:set_font : "
-                             << "Unknown flags : \"" << flags.value() << "\"." << std::endl;
+                    gui::out << gui::warning << "EditBox:set_font: "
+                             << "Unknown flags: \"" << flags.value() << "\"." << std::endl;
                 }
             } else {
                 self.set_outlined(false);
@@ -164,8 +164,8 @@ void font_string::register_on_lua(sol::state& lua) {
         else if (justify_h == "RIGHT")
             self.set_alignment_x(alignment_x::right);
         else {
-            gui::out << gui::warning << "font_string:set_alignment_x : "
-                     << "Unknown justify behavior : \"" << justify_h << "\"." << std::endl;
+            gui::out << gui::warning << "font_string:set_alignment_x: "
+                     << "Unknown justify behavior: \"" << justify_h << "\"." << std::endl;
         }
     });
 
@@ -179,8 +179,8 @@ void font_string::register_on_lua(sol::state& lua) {
         else if (justify_v == "BOTTOM")
             self.set_alignment_y(alignment_y::bottom);
         else {
-            gui::out << gui::warning << "font_string:set_alignment_y : "
-                     << "Unknown justify behavior : \"" << justify_v << "\"." << std::endl;
+            gui::out << gui::warning << "font_string:set_alignment_y: "
+                     << "Unknown justify behavior: \"" << justify_v << "\"." << std::endl;
         }
     });
 

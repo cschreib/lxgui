@@ -29,10 +29,10 @@ std::string status_bar::serialize(const std::string& tab) const {
     case orientation::vertical: str << "VERTICAL"; break;
     }
     str << "\n";
-    str << tab << "  # Reversed   : " << is_reversed_ << "\n";
-    str << tab << "  # Value      : " << value_ << "\n";
-    str << tab << "  # Min value  : " << min_value_ << "\n";
-    str << tab << "  # Max value  : " << max_value_ << "\n";
+    str << tab << "  # Reversed  : " << is_reversed_ << "\n";
+    str << tab << "  # Value     : " << value_ << "\n";
+    str << tab << "  # Min value : " << min_value_ << "\n";
+    str << tab << "  # Max value : " << max_value_ << "\n";
 
     return str.str();
 }
@@ -132,7 +132,7 @@ void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
     else if (bar_layer_name == "OVERLAY")
         bar_layer = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown layer type : \""
+        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown layer type: \""
                  << bar_layer_name << "\". Using \"ARTWORK\"." << std::endl;
         bar_layer = layer::artwork;
     }
@@ -181,7 +181,7 @@ void status_bar::set_orientation(const std::string& orientation_name) {
     else if (orientation_name == "HORIZONTAL")
         orient = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown orientation : \""
+        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown orientation: \""
                  << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
     }
 

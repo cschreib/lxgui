@@ -12,7 +12,7 @@ namespace lxgui::utils {
 class exception : public std::exception {
 public:
     /// Default exception.
-    /** \note Reports : "Undefined exception."
+    /** \note Reports: "Undefined exception."
      */
     exception() = default;
 
@@ -21,14 +21,14 @@ public:
 
     /// Simple message exception.
     /** \param message The message to throw
-     *   \note Reports : "<message>"
+     *   \note Reports: "<message>"
      */
     explicit exception(const std::string& message);
 
     /// Class name + message exception.
     /** \param class_name The name of the class which throws the exception
      *   \param message   The message to throw
-     *   \note Reports : "<class_name> : <message>"
+     *   \note Reports: "<class_name>: <message>"
      */
     exception(const std::string& class_name, const std::string& message);
 

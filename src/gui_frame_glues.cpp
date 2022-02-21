@@ -680,7 +680,7 @@ void frame::register_on_lua(sol::state& lua) {
         "set_script", [](frame& self, const std::string& script_name,
                          sol::optional<sol::protected_function> script) {
             if (!self.can_use_script(script_name)) {
-                gui::out << gui::error << self.get_frame_type() << " : "
+                gui::out << gui::error << self.get_frame_type() << ": "
                          << "\"" << self.get_name() << "\" cannot use script \"" << script_name
                          << "\"." << std::endl;
                 return;

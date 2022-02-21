@@ -36,11 +36,11 @@ std::string slider::serialize(const std::string& tab) const {
     case orientation::vertical: str << "VERTICAL"; break;
     }
     str << "\n";
-    str << tab << "  # Value      : " << value_ << "\n";
-    str << tab << "  # Min value  : " << min_value_ << "\n";
-    str << tab << "  # Max value  : " << max_value_ << "\n";
-    str << tab << "  # Step       : " << value_step_ << "\n";
-    str << tab << "  # Click out  : " << allow_clicks_outside_thumb_ << "\n";
+    str << tab << "  # Value     : " << value_ << "\n";
+    str << tab << "  # Min value : " << min_value_ << "\n";
+    str << tab << "  # Max value : " << max_value_ << "\n";
+    str << tab << "  # Step      : " << value_step_ << "\n";
+    str << tab << "  # Click out : " << allow_clicks_outside_thumb_ << "\n";
 
     return str.str();
 }
@@ -287,7 +287,7 @@ void slider::set_orientation(const std::string& orientation_name) {
     else if (orientation_name == "HORIZONTAL")
         orient = orientation::horizontal;
     else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown orientation : \""
+        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown orientation: \""
                  << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
     }
 
@@ -314,7 +314,7 @@ void slider::set_thumb_draw_layer(const std::string& thumb_layer_name) {
     else if (thumb_layer_name == "OVERLAY")
         thumb_layer = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : Unknown layer type : \""
+        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown layer type: \""
                  << thumb_layer_name << "\". Using \"OVERLAY\"." << std::endl;
         thumb_layer = layer::overlay;
     }

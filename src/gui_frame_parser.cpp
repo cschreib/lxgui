@@ -54,7 +54,7 @@ void frame::parse_attributes_(const layout_node& node) {
             if (frame_level != "PARENT" && utils::from_string(frame_level, level))
                 set_level(level);
         } else {
-            gui::out << gui::warning << node.get_location() << " : "
+            gui::out << gui::warning << node.get_location() << ": "
                      << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
@@ -83,7 +83,7 @@ void frame::parse_resize_bounds_node_(const layout_node& node) {
                 else if (has_y)
                     set_min_height(dimensions.second.y.value());
             } else {
-                gui::out << gui::warning << min_node->get_location() << " : "
+                gui::out << gui::warning << min_node->get_location() << ": "
                          << "\"RelDimension\" for ResizeBounds:Min is not yet supported. Skipped."
                          << std::endl;
             }
@@ -102,7 +102,7 @@ void frame::parse_resize_bounds_node_(const layout_node& node) {
                 else if (has_y)
                     set_max_height(dimensions.second.y.value());
             } else {
-                gui::out << gui::warning << max_node->get_location() << " : "
+                gui::out << gui::warning << max_node->get_location() << ": "
                          << "\"RelDimension\" for ResizeBounds:Max is not yet supported. Skipped."
                          << std::endl;
             }
@@ -137,14 +137,14 @@ void frame::parse_backdrop_node_(const layout_node& node) {
 
             if (abs_inset_node && rel_inset_node) {
                 gui::out << gui::warning << bg_insets_node->get_location()
-                         << " : BackgroundInsets node can only contain one of AbsInset or "
+                         << ": BackgroundInsets node can only contain one of AbsInset or "
                             "RelInset, but not both. RelInset ignored."
                          << std::endl;
             }
 
             if (!abs_inset_node && !rel_inset_node) {
                 gui::out << gui::warning << bg_insets_node->get_location()
-                         << " : BackgroundInsets node must contain one of AbsInset or RelInset."
+                         << ": BackgroundInsets node must contain one of AbsInset or RelInset."
                          << std::endl;
                 return;
             }
@@ -156,7 +156,7 @@ void frame::parse_backdrop_node_(const layout_node& node) {
                     abs_inset_node->get_attribute_value_or<float>("top", 0.0f),
                     abs_inset_node->get_attribute_value_or<float>("bottom", 0.0f)));
             } else {
-                gui::out << gui::warning << rel_inset_node->get_location() << " : "
+                gui::out << gui::warning << rel_inset_node->get_location() << ": "
                          << "RelInset for Backdrop:BackgroundInsets is not yet supported (" << name_
                          << ")." << std::endl;
             }
@@ -168,14 +168,14 @@ void frame::parse_backdrop_node_(const layout_node& node) {
 
             if (abs_inset_node && rel_inset_node) {
                 gui::out << gui::warning << edge_insets_node->get_location()
-                         << " : EdgeInsets node can only contain one of AbsInset or RelInset, but "
+                         << ": EdgeInsets node can only contain one of AbsInset or RelInset, but "
                             "not both. RelInset ignored."
                          << std::endl;
             }
 
             if (!abs_inset_node && !rel_inset_node) {
                 gui::out << gui::warning << edge_insets_node->get_location()
-                         << " : EdgeInsets node must contain one of AbsInset or RelInset."
+                         << ": EdgeInsets node must contain one of AbsInset or RelInset."
                          << std::endl;
                 return;
             }
@@ -187,7 +187,7 @@ void frame::parse_backdrop_node_(const layout_node& node) {
                     abs_inset_node->get_attribute_value_or<float>("top", 0.0f),
                     abs_inset_node->get_attribute_value_or<float>("bottom", 0.0f)));
             } else {
-                gui::out << gui::warning << rel_inset_node->get_location() << " : "
+                gui::out << gui::warning << rel_inset_node->get_location() << ": "
                          << "RelInset for Backdrop:EdgeInsets is not yet supported (" << name_
                          << ")." << std::endl;
             }
@@ -205,14 +205,14 @@ void frame::parse_backdrop_node_(const layout_node& node) {
 
             if (abs_value_node && rel_value_node) {
                 gui::out << gui::warning << edge_size_node->get_location()
-                         << " : EdgeSize node can only contain one of AbsValue or RelValue, but "
+                         << ": EdgeSize node can only contain one of AbsValue or RelValue, but "
                             "not both. RelValue ignored."
                          << std::endl;
             }
 
             if (!abs_value_node && !rel_value_node) {
                 gui::out << gui::warning << edge_size_node->get_location()
-                         << " : EdgeSize node must contain one of AbsValue or RelValue."
+                         << ": EdgeSize node must contain one of AbsValue or RelValue."
                          << std::endl;
                 return;
             }
@@ -220,7 +220,7 @@ void frame::parse_backdrop_node_(const layout_node& node) {
             if (abs_value_node) {
                 bdrop->set_edge_size(abs_value_node->get_attribute_value_or("x", 0.0f));
             } else {
-                gui::out << gui::warning << rel_value_node->get_location() << " : "
+                gui::out << gui::warning << rel_value_node->get_location() << ": "
                          << "RelValue for Backdrop:EdgeSize is not yet supported (" << name_ << ")."
                          << std::endl;
             }
@@ -232,14 +232,14 @@ void frame::parse_backdrop_node_(const layout_node& node) {
 
             if (abs_value_node && rel_value_node) {
                 gui::out << gui::warning << tile_size_node->get_location()
-                         << " : TileSize node can only contain one of AbsValue or RelValue, but "
+                         << ": TileSize node can only contain one of AbsValue or RelValue, but "
                             "not both. RelValue ignored."
                          << std::endl;
             }
 
             if (!abs_value_node && !rel_value_node) {
                 gui::out << gui::warning << tile_size_node->get_location()
-                         << " : TileSize node must contain one of AbsValue or RelValue."
+                         << ": TileSize node must contain one of AbsValue or RelValue."
                          << std::endl;
                 return;
             }
@@ -247,7 +247,7 @@ void frame::parse_backdrop_node_(const layout_node& node) {
             if (abs_value_node) {
                 bdrop->set_tile_size(abs_value_node->get_attribute_value_or("x", 0.0f));
             } else {
-                gui::out << gui::warning << rel_value_node->get_location() << " : "
+                gui::out << gui::warning << rel_value_node->get_location() << ": "
                          << "RelValue for Backdrop:TileSize is not yet supported (" << name_ << ")."
                          << std::endl;
             }
@@ -264,14 +264,14 @@ void frame::parse_hit_rect_insets_node_(const layout_node& node) {
 
         if (abs_inset_node && rel_inset_node) {
             gui::out << gui::warning << hit_rect_block->get_location()
-                     << " : HitRectInsets node can only contain one of AbsInset or RelInset, but "
+                     << ": HitRectInsets node can only contain one of AbsInset or RelInset, but "
                         "not both. RelInset ignored."
                      << std::endl;
         }
 
         if (!abs_inset_node && !rel_inset_node) {
             gui::out << gui::warning << hit_rect_block->get_location()
-                     << " : HitRectInsets node must contain one of AbsInset or RelInset."
+                     << ": HitRectInsets node must contain one of AbsInset or RelInset."
                      << std::endl;
             return;
         }
@@ -325,7 +325,7 @@ void frame::parse_layers_node_(const layout_node& node) {
     if (const layout_node* layers_node = node.try_get_child("Layers")) {
         for (const layout_node& layer_node : layers_node->get_children()) {
             if (layer_node.get_name() != "Layer" && layer_node.get_name() != "") {
-                gui::out << gui::warning << layer_node.get_location() << " : "
+                gui::out << gui::warning << layer_node.get_location() << ": "
                          << "unexpected node '" << layer_node.get_name() << "'; ignored."
                          << std::endl;
                 continue;

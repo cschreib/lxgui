@@ -27,14 +27,14 @@ region::parse_dimension_(const layout_node& node) {
     const layout_node* rel_dim_node = node.try_get_child("RelDimension");
 
     if (abs_dim_node && rel_dim_node) {
-        gui::out << gui::warning << node.get_location() << " : " << node.get_name()
+        gui::out << gui::warning << node.get_location() << ": " << node.get_name()
                  << " node can only contain one of AbsDimension or RelDimension, but not both. "
                     "RelDimension ignored."
                  << std::endl;
     }
 
     if (!abs_dim_node && !rel_dim_node) {
-        gui::out << gui::warning << node.get_location() << " : " << node.get_name()
+        gui::out << gui::warning << node.get_location() << ": " << node.get_name()
                  << " node must contain one of AbsDimension or RelDimension." << std::endl;
         return {};
     }
@@ -92,7 +92,7 @@ void region::parse_anchor_node_(const layout_node& node) {
         std::vector<std::string> found_points;
         for (const auto& anchor_node : anchors_node->get_children()) {
             if (anchor_node.get_name() != "Anchor" && anchor_node.get_name() != "") {
-                gui::out << gui::warning << anchor_node.get_location() << " : "
+                gui::out << gui::warning << anchor_node.get_location() << ": "
                          << "unexpected node '" << anchor_node.get_name() << "'; ignored."
                          << std::endl;
                 continue;
@@ -106,7 +106,7 @@ void region::parse_anchor_node_(const layout_node& node) {
                 anchor_node.get_attribute_value_or<std::string>("relativePoint", point);
 
             if (utils::find(found_points, point) != found_points.end()) {
-                gui::out << gui::warning << anchor_node.get_location() << " : "
+                gui::out << gui::warning << anchor_node.get_location() << ": "
                          << "anchor point \"" << point << "\" has already been defined for \""
                          << name_ << "\". anchor skipped." << std::endl;
                 continue;

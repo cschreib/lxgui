@@ -43,8 +43,8 @@ void font_string::parse_attributes_(const layout_node& node) {
         else if (outline == "NONE")
             set_outlined(false);
         else {
-            gui::out << gui::warning << node.get_location() << " : "
-                     << "Unknown outline type for " << name_ << " : \"" << outline << "\"."
+            gui::out << gui::warning << node.get_location() << ": "
+                     << "Unknown outline type for " << name_ << ": \"" << outline << "\"."
                      << std::endl;
         }
     }
@@ -58,8 +58,8 @@ void font_string::parse_attributes_(const layout_node& node) {
         else if (align_x == "RIGHT")
             set_alignment_x(alignment_x::right);
         else {
-            gui::out << gui::warning << node.get_location() << " : "
-                     << "Unknown horizontal alignment behavior for " << name_ << " : \"" << align_x
+            gui::out << gui::warning << node.get_location() << ": "
+                     << "Unknown horizontal alignment behavior for " << name_ << ": \"" << align_x
                      << "\"." << std::endl;
         }
     }
@@ -73,8 +73,8 @@ void font_string::parse_attributes_(const layout_node& node) {
         else if (align_y == "BOTTOM")
             set_alignment_y(alignment_y::bottom);
         else {
-            gui::out << gui::warning << node.get_location() << " : "
-                     << "Unknown vertical alignment behavior for " << name_ << " : \"" << align_y
+            gui::out << gui::warning << node.get_location() << ": "
+                     << "Unknown vertical alignment behavior for " << name_ << ": \"" << align_y
                      << "\"." << std::endl;
         }
     }

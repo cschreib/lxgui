@@ -18,7 +18,7 @@ std::string layered_region::serialize(const std::string& tab) const {
     std::ostringstream str;
     str << base::serialize(tab);
 
-    str << tab << "  # Layer       : ";
+    str << tab << "  # Layer      : ";
     switch (layer_) {
     case layer::background: str << "BACKGROUND\n"; break;
     case layer::border: str << "BORDER\n"; break;
@@ -98,9 +98,8 @@ layer parse_layer_type(const std::string& layer_name) {
     else if (layer_name == "OVERLAY")
         layer_id = layer::overlay;
     else {
-        gui::out << gui::warning << "gui::parse_layer_type : "
-                 << "Unknown layer type : \"" << layer_name << "\". Using \"ARTWORK\"."
-                 << std::endl;
+        gui::out << gui::warning << "gui::parse_layer_type: "
+                 << "Unknown layer type: \"" << layer_name << "\". Using \"ARTWORK\"." << std::endl;
 
         layer_id = layer::artwork;
     }

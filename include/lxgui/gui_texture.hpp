@@ -74,9 +74,9 @@ public:
     /// Returns this texture's texture coordinates.
     /** \return This texture's texture coordinates
      *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
+     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
      *         4 (bottom left).<br>
-     *         The returned array is composed like this :
+     *         The returned array is composed like this:
      *         (x1, y1, x2, y2, x3, y3, x4, y4).
      */
     std::array<float, 8> get_tex_coord() const;
@@ -99,9 +99,8 @@ public:
     /// Returns this textures's vertex color.
     /** \param index The vertex index (0 to 3 included)
      *   \return This textures's vertex color
-     *   \note This color is used to filter the texture's colors :
-     *         for each pixel, the original color is multiplied
-     *         by this vertex color.
+     *   \note This color is used to filter the texture's colors:
+     *         for each pixel, the original color is multiplied by this vertex color.
      */
     color get_vertex_color(std::size_t index) const;
 
@@ -146,9 +145,9 @@ public:
     /// Sets this texture's texture coordinates.
     /** \param texture_rect This texture's texture coordinates
      *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
+     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
      *         4 (bottom left).<br>
-     *         The array must be arranged like this : (x1, y1, x3, y3), or (left,
+     *         The array must be arranged like this: (x1, y1, x3, y3), or (left,
      *         top, right, bottom). Other corners are calculated using these coordinates.
      *   \note This function only allows horizontal/rectangle texture coordinates.
      */
@@ -157,9 +156,9 @@ public:
     /// Sets this texture's texture coordinates.
     /** \param texture_coords This texture's texture coordinates
      *   \note The texture coordinates are arranged as a rectangle, which is made
-     *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
+     *         of four points: 1 (top left), 2 (top right), 3 (bottom right) and
      *         4 (bottom left).<br>
-     *         The array must be arranged like this :
+     *         The array must be arranged like this:
      *         (x1, y1, x2, y2, x3, y3, x4, y4).
      *   \note This function allows rotated/deformed texture coordinates.
      */

@@ -25,8 +25,8 @@ void status_bar::parse_attributes_(const layout_node& node) {
         else if (orient == "VERTICAL")
             set_orientation(orientation::vertical);
         else {
-            gui::out << gui::warning << node.get_location()
-                     << " : Unknown StatusBar orientation : \"" << orient
+            gui::out << gui::warning << node.get_location() << ": Unknown StatusBar orientation: \""
+                     << orient
                      << "\". Expecting either \"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
                      << std::endl;
         }
@@ -43,7 +43,7 @@ void status_bar::parse_all_nodes_before_children_(const layout_node& node) {
     const layout_node* color_node   = node.try_get_child("BarColor");
     if (color_node && texture_node) {
         gui::out << gui::warning << node.get_location()
-                 << " : StatusBar can only contain one of BarTexture or BarColor, but not both. "
+                 << ": StatusBar can only contain one of BarTexture or BarColor, but not both. "
                     "BarColor ignored."
                  << std::endl;
     }

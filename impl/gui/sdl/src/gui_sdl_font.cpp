@@ -115,7 +115,7 @@ font::font(
             ci.code_point      = code_point;
 
             if (code_point > std::numeric_limits<Uint16>::max()) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot load character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot load character " << code_point
                          << " because SDL_ttf only accepts 16bit code points." << std::endl;
                 break;
             }
@@ -124,14 +124,14 @@ font::font(
 
             int min_x = 0, max_x = 0, min_y = 0, max_y = 0, advance = 0;
             if (TTF_GlyphMetrics(fnt, alt_char, &min_x, &max_x, &min_y, &max_y, &advance) != 0) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot load character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot load character " << code_point
                          << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }
 
             SDL_Surface* glyph_surface = TTF_RenderGlyph_Blended(fnt, alt_char, color);
             if (!glyph_surface) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot draw character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot draw character " << code_point
                          << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }

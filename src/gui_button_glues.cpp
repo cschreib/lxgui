@@ -200,7 +200,7 @@ void button::register_on_lua(sol::state& lua) {
             self.release();
         } else {
             gui::out << gui::warning << "Button:set_button_state"
-                     << " : Unknown button state : \"" + state + "\"." << std::endl;
+                     << ": Unknown button state: \"" + state + "\"." << std::endl;
         }
     });
 

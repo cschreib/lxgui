@@ -48,8 +48,8 @@ void backdrop::set_background(const std::string& background_file) {
         background_texture_ = nullptr;
         background_file_    = "";
 
-        gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << background_file << "\" for " << parent_.get_name()
+        gui::out << gui::warning << "backdrop: "
+                 << "Cannot find file: \"" << background_file << "\" for " << parent_.get_name()
                  << "'s backdrop background file. No background will be drawn." << std::endl;
 
         return;
@@ -148,8 +148,8 @@ void backdrop::set_edge(const std::string& edge_file) {
         edge_texture_ = nullptr;
         edge_file_    = "";
 
-        gui::out << gui::warning << "backdrop : "
-                 << "Cannot find file : \"" << edge_file << "\" for " << parent_.get_name()
+        gui::out << gui::warning << "backdrop: "
+                 << "Cannot find file: \"" << edge_file << "\" for " << parent_.get_name()
                  << "'s backdrop edge. No edge will be drawn." << std::endl;
 
         return;
@@ -162,7 +162,7 @@ void backdrop::set_edge(const std::string& edge_file) {
         edge_texture_ = nullptr;
         edge_file_    = "";
 
-        gui::out << gui::error << "backdrop : "
+        gui::out << gui::error << "backdrop: "
                  << "An edge texture width must be exactly 8 times greater than its height "
                  << "(in " << edge_file << "). No edge will be drawn for " << parent_.get_name()
                  << "'s backdrop." << std::endl;

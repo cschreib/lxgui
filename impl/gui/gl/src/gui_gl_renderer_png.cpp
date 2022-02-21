@@ -31,7 +31,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
     file.read(reinterpret_cast<char*>(signature), pngsigsize);
     if (!file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
         throw gui::exception(
-            "gui::gl::manager", file_name + "' is not a valid PNG image : '" +
+            "gui::gl::manager", file_name + "' is not a valid PNG image: '" +
                                     std::string(signature, signature + pngsigsize) + "'.");
     }
 
@@ -94,7 +94,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
 
         return std::move(tex);
     } catch (const gui::exception& e) {
-        gui::out << gui::error << "gui::gl::manager : Error parsing " << file_name << "."
+        gui::out << gui::error << "gui::gl::manager: Error parsing " << file_name << "."
                  << std::endl;
         gui::out << gui::error << e.what() << "" << std::endl;
 

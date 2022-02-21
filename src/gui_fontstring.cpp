@@ -60,23 +60,23 @@ std::string font_string::serialize(const std::string& tab) const {
 
     str << base::serialize(tab);
 
-    str << tab << "  # Font name   : " << font_name_ << "\n";
-    str << tab << "  # Font height : " << height_ << "\n";
-    str << tab << "  # Text ready  : " << (text_ != nullptr) << "\n";
-    str << tab << "  # Text        : \"" << utils::unicode_to_utf8(content_) << "\"\n";
-    str << tab << "  # Outlined    : " << is_outlined_ << "\n";
-    str << tab << "  # Text color  : " << text_color_ << "\n";
-    str << tab << "  # Spacing     : " << spacing_ << "\n";
+    str << tab << "  # Font name  : " << font_name_ << "\n";
+    str << tab << "  # Font height: " << height_ << "\n";
+    str << tab << "  # Text ready : " << (text_ != nullptr) << "\n";
+    str << tab << "  # Text       : \"" << utils::unicode_to_utf8(content_) << "\"\n";
+    str << tab << "  # Outlined   : " << is_outlined_ << "\n";
+    str << tab << "  # Text color : " << text_color_ << "\n";
+    str << tab << "  # Spacing    : " << spacing_ << "\n";
     str << tab << "  # Justify     :\n";
     str << tab << "  #-###\n";
-    str << tab << "  |   # horizontal : ";
+    str << tab << "  |   # horizontal: ";
     switch (align_x_) {
     case alignment_x::left: str << "LEFT\n"; break;
     case alignment_x::center: str << "CENTER\n"; break;
     case alignment_x::right: str << "RIGHT\n"; break;
     default: str << "<error>\n"; break;
     }
-    str << tab << "  |   # vertical   : ";
+    str << tab << "  |   # vertical  : ";
     switch (align_y_) {
     case alignment_y::top: str << "TOP\n"; break;
     case alignment_y::middle: str << "MIDDLE\n"; break;
@@ -84,11 +84,10 @@ std::string font_string::serialize(const std::string& tab) const {
     default: str << "<error>\n"; break;
     }
     str << tab << "  #-###\n";
-    str << tab << "  # NonSpaceW.  : " << non_space_wrap_enabled_ << "\n";
+    str << tab << "  # NonSpaceW. : " << non_space_wrap_enabled_ << "\n";
     if (has_shadow_) {
-        str << tab << "  # Shadow off. : (" << shadow_offset_.x << ", " << shadow_offset_.y
-            << ")\n";
-        str << tab << "  # Shadow col. : " << shadow_color_ << "\n";
+        str << tab << "  # Shadow off.: (" << shadow_offset_.x << ", " << shadow_offset_.y << ")\n";
+        str << tab << "  # Shadow col.: " << shadow_color_ << "\n";
     }
 
     return str.str();

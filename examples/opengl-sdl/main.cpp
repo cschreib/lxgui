@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 

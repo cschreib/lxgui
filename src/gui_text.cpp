@@ -606,7 +606,7 @@ void text::update_() const {
     if (max_line_nbr != 0) {
         auto manual_line_list = utils::cut_each(unicode_text_, U"\n");
         for (auto iter_manual : utils::range::iterator(manual_line_list)) {
-            DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
+            DEBUG_LOG("     Line: '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
             std::vector<parser::item> parsed_content =
@@ -689,7 +689,7 @@ void text::update_() const {
                         DEBUG_LOG("       Single word");
                         // There is only one word on this line, or word
                         // wrap is disabled. Anyway, this line is just
-                        // too long for the text box : our only option
+                        // too long for the text box: our only option
                         // is to truncate it.
                         if (ellipsis_enabled_) {
                             DEBUG_LOG("       Ellipsis");
@@ -707,7 +707,7 @@ void text::update_() const {
                             }
 
                             DEBUG_LOG(
-                                "       Char to erase : " + utils::to_string(chars_to_erase) +
+                                "       Char to erase: " + utils::to_string(chars_to_erase) +
                                 " / " + utils::to_string(line.content.size()));
 
                             line.content.erase(

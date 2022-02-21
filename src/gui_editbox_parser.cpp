@@ -58,13 +58,13 @@ void edit_box::parse_font_string_node_(const layout_node& node) {
         }
 
         if (const layout_node* error_node = defaulted.try_get_child("Anchors")) {
-            gui::out << gui::warning << error_node->get_location() << " : "
-                     << "edit_box : font_string's anchors will be ignored." << std::endl;
+            gui::out << gui::warning << error_node->get_location() << ": "
+                     << "edit_box: font_string's anchors will be ignored." << std::endl;
         }
 
         if (const layout_node* error_node = defaulted.try_get_child("Size")) {
-            gui::out << gui::warning << error_node->get_location() << " : "
-                     << "edit_box : font_string's Size will be ignored." << std::endl;
+            gui::out << gui::warning << error_node->get_location() << ": "
+                     << "edit_box: font_string's Size will be ignored." << std::endl;
         }
 
         warn_for_not_accessed_node(defaulted);

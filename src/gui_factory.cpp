@@ -17,7 +17,7 @@ utils::owner_ptr<region> factory::create_region(registry& reg, const region_core
 
     auto iter = custom_object_list_.find(attr.object_type);
     if (iter == custom_object_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown object class : \"" << attr.object_type
+        gui::out << gui::warning << "gui::factory: Unknown object class: \"" << attr.object_type
                  << "\"." << std::endl;
         return nullptr;
     }
@@ -41,7 +41,7 @@ factory::create_frame(registry& reg, frame_renderer* rdr, const region_core_attr
 
     auto iter = custom_frame_list_.find(attr.object_type);
     if (iter == custom_frame_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown frame class : \"" << attr.object_type
+        gui::out << gui::warning << "gui::factory: Unknown frame class: \"" << attr.object_type
                  << "\"." << std::endl;
         return nullptr;
     }
@@ -68,7 +68,7 @@ factory::create_layered_region(registry& reg, const region_core_attributes& attr
 
     auto iter = custom_region_list_.find(attr.object_type);
     if (iter == custom_region_list_.end()) {
-        gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
+        gui::out << gui::warning << "gui::factory: Unknown layered_region class: \""
                  << attr.object_type << "\"." << std::endl;
         return nullptr;
     }
@@ -116,7 +116,7 @@ bool factory::finalize_object_(registry& reg, region& object, const region_core_
 void factory::apply_inheritance_(region& object, const region_core_attributes& attr) {
     for (const auto& base : attr.inheritance) {
         if (!object.is_object_type(base->get_object_type())) {
-            gui::out << gui::warning << "gui::factory : "
+            gui::out << gui::warning << "gui::factory: "
                      << "\"" << object.get_name() << "\" (" << object.get_object_type()
                      << ") cannot inherit from \"" << base->get_name() << "\" ("
                      << base->get_object_type() << "). Inheritance skipped." << std::endl;

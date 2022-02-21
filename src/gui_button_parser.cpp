@@ -145,7 +145,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
             set_pushed_text_offset(
                 vector2f(dimensions.second.x.value_or(0.0f), dimensions.second.y.value_or(0.0f)));
         } else {
-            gui::out << gui::warning << offset_block->get_location() << " : "
+            gui::out << gui::warning << offset_block->get_location() << ": "
                      << "RelDimension for Button:PushedTextOffset is not yet supported. Skipped."
                      << std::endl;
         }

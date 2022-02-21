@@ -523,7 +523,7 @@ public:
     /** \note Special objects are not automatically copied
      *         in the frame inheritance process. They must be
      *         explicitely copied by the derived class
-     *         (example : Button will have to copy its button
+     *         (example: Button will have to copy its button
      *         textures itself).
      */
     void set_special();

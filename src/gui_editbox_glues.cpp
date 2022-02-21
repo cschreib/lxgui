@@ -170,8 +170,8 @@ void edit_box::register_on_lua(sol::state& lua) {
                 else if (flags.value().empty())
                     font_string->set_outlined(false);
                 else {
-                    gui::out << gui::warning << "EditBox:set_font : "
-                             << "Unknown flags : \"" << flags.value() << "\"." << std::endl;
+                    gui::out << gui::warning << "EditBox:set_font: "
+                             << "Unknown flags: \"" << flags.value() << "\"." << std::endl;
                 }
             } else
                 font_string->set_outlined(false);

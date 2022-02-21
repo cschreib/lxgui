@@ -129,7 +129,7 @@ void examples_setup_gui(gui::manager& manager) {
 
         "if (self.timer > self.update_time) then"
         "    local fps = self.frames/self.timer;"
-        "    self.Text:set_text(\"FPS : \"..math.floor(fps));"
+        "    self.Text:set_text(\"FPS: \"..math.floor(fps));"
 
         "    self.timer = 0.0;"
         "    self.frames = 0;"
@@ -148,8 +148,7 @@ void examples_setup_gui(gui::manager& manager) {
         if (timer > update_time) {
             if (auto txt = self.get_region<gui::font_string>("Text")) {
                 txt->set_text(
-                    U"(created in C++)\nFPS : " +
-                    utils::to_ustring(std::floor(num_frames / timer)));
+                    U"(created in C++)\nFPS: " + utils::to_ustring(std::floor(num_frames / timer)));
             }
 
             timer      = 0.0f;

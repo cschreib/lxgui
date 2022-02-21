@@ -77,7 +77,7 @@ void main_loop(void* type_erased_data) try {
     emscripten_cancel_main_loop();
     return;
 } catch (...) {
-    std::cout << "# Error # : Unhandled exception !" << std::endl;
+    std::cout << "# Error #: Unhandled exception !" << std::endl;
     emscripten_cancel_main_loop();
     return;
 }
@@ -157,7 +157,7 @@ int main(int argc, char* argv[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 
