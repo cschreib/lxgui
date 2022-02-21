@@ -39,8 +39,9 @@ class layout_node;
 class frame;
 class frame_renderer;
 
-/// The base class of all elements in the GUI.
-/** Objects of this class offers core functionalities needed by every element
+/**
+ * \brief The base class of all elements in the GUI.
+ * Objects of this class offers core functionalities needed by every element
  * of the interface. They have a name, and a corresponding variable created
  * in Lua to access them. They can have a parent #lxgui::gui::frame. They can be
  * placed on the screen at an absolute position, or relative to other regions.
@@ -91,7 +92,7 @@ class frame_renderer;
  * objects, only on their child-parent relationship.
  *
  * __Positioning.__ regions have a position on the screen, but this is
- * not parametrized as a simple pair of X and Y coordinates. Instead, objects
+ * not parameterized as a simple pair of X and Y coordinates. Instead, objects
  * are positioned based on a list of "anchors". Anchors are links between
  * objects, which force one edge or one corner of a given object to match with
  * the edge or corner of another object. For example, given two objects A and B,
@@ -176,19 +177,22 @@ public:
     /// Renders this region on the current render target.
     virtual void render() const;
 
-    /// Updates this region's logic.
-    /** \param delta Time spent since last update
+    /**
+     * \brief Updates this region's logic.
+     * \param delta Time spent since last update
      */
     virtual void update(float delta);
 
-    /// Prints all relevant information about this region in a string.
-    /** \param tab The offset to give to all lines
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
      * \return All relevant information about this region
      */
     virtual std::string serialize(const std::string& tab) const;
 
-    /// Copies a region's parameters into this region (inheritance).
-    /** \param obj The region to copy
+    /**
+     * \brief Copies a region's parameters into this region (inheritance).
+     * \param obj The region to copy
      */
     virtual void copy_from(const region& obj);
 
@@ -198,126 +202,148 @@ public:
     /// Tells this region that the global interface scaling factor has changed.
     virtual void notify_scaling_factor_updated();
 
-    /// Returns this region's name.
-    /** \return This region's name
+    /**
+     * \brief Returns this region's name.
+     * \return This region's name
      */
     const std::string& get_name() const;
 
-    /// Returns this region's Lua name.
-    /** \return This region's Lua name
+    /**
+     * \brief Returns this region's Lua name.
+     * \return This region's Lua name
      */
     const std::string& get_lua_name() const;
 
-    /// Returns this region's raw name.
-    /** \return This region's raw name
+    /**
+     * \brief Returns this region's raw name.
+     * \return This region's raw name
      * \note This is the name of the region before "$parent"
      *       has been replaced by its parent's name.
      */
     const std::string& get_raw_name() const;
 
-    /// Returns this region's parent.
-    /** \return This region's parent
+    /**
+     * \brief Returns this region's parent.
+     * \return This region's parent
      */
     utils::observer_ptr<const frame> get_parent() const {
         return parent_;
     }
 
-    /// Returns this region's parent.
-    /** \return This region's parent
+    /**
+     * \brief Returns this region's parent.
+     * \return This region's parent
      */
     const utils::observer_ptr<frame>& get_parent() {
         return parent_;
     }
 
-    /// Removes this region from its parent and return an owning pointer.
-    /** \return An owning pointer to this region
+    /**
+     * \brief Removes this region from its parent and return an owning pointer.
+     * \return An owning pointer to this region
      */
     virtual utils::owner_ptr<region> release_from_parent();
 
-    /// Forcefully removes this region from the GUI.
-    /** \warning After calling this function, any pointer to the object is invalidated!
+    /**
+     * \brief Forcefully removes this region from the GUI.
+     * \warning After calling this function, any pointer to the object is invalidated!
      *          Only call this function if you need the object to be destroyed early,
      *          before its parent (if any) would itself be destroyed.
      */
     void destroy();
 
-    /// Changes this region's alpha (opacity).
-    /** \param alpha The new alpha value
+    /**
+     * \brief Changes this region's alpha (opacity).
+     * \param alpha The new alpha value
      * \note Default is 1.0f.
      */
     void set_alpha(float alpha);
 
-    /// Returns this region's alpha (opacity).
-    /** \return This region's alpha (opacity).
+    /**
+     * \brief Returns this region's alpha (opacity).
+     * \return This region's alpha (opacity).
      */
     float get_alpha() const;
 
-    /// Returns this region's effective alpha (opacity).
-    /** \return This region's effective alpha (opacity).
+    /**
+     * \brief Returns this region's effective alpha (opacity).
+     * \return This region's effective alpha (opacity).
      * \note This includes the region's parent alpha.
      */
     float get_effective_alpha() const;
 
-    /// shows this region.
-    /** \note Its parent must be shown for it to appear on
+    /**
+     * \brief shows this region.
+     * \note Its parent must be shown for it to appear on
      *       the screen.
      */
     virtual void show();
 
-    /// hides this region.
-    /** \note All its children won't be visible on the screen
+    /**
+     * \brief hides this region.
+     * \note All its children won't be visible on the screen
      *       anymore, even if they are still marked as shown.
      */
     virtual void hide();
 
-    /// shows/hides this region.
-    /** \param is_shown 'true' if you want to show this region
-     * \note See show() and hide() for more infos.
+    /**
+     * \brief shows/hides this region.
+     * \param is_shown 'true' if you want to show this region
+     * \note See show() and hide() for more information.
      */
     void set_shown(bool is_shown);
 
-    /// Checks if this region is shown.
-    /** \return 'true' if this region is shown
+    /**
+     * \brief Checks if this region is shown.
+     * \return 'true' if this region is shown
      */
     bool is_shown() const;
 
-    /// Checks if this region can be seen on the screen.
-    /** \return 'true' if this region can be seen on the screen
+    /**
+     * \brief Checks if this region can be seen on the screen.
+     * \return 'true' if this region can be seen on the screen
      */
     virtual bool is_visible() const;
 
-    /// Changes this region's absolute dimensions (in pixels).
-    /** \param dimensions The new dimensions
+    /**
+     * \brief Changes this region's absolute dimensions (in pixels).
+     * \param dimensions The new dimensions
      */
     virtual void set_dimensions(const vector2f& dimensions);
 
-    /// Changes this region's absolute width (in pixels).
-    /** \param abs_width The new width
+    /**
+     * \brief Changes this region's absolute width (in pixels).
+     * \param abs_width The new width
      */
     virtual void set_width(float abs_width);
 
-    /// Changes this region's absolute height (in pixels).
-    /** \param abs_height The new height
+    /**
+     * \brief Changes this region's absolute height (in pixels).
+     * \param abs_height The new height
      */
     virtual void set_height(float abs_height);
 
-    /// Changes this region's dimensions (relative to its parent).
-    /** \param dimensions The new dimensions (relative)
+    /**
+     * \brief Changes this region's dimensions (relative to its parent).
+     * \param dimensions The new dimensions (relative)
      */
     void set_relative_dimensions(const vector2f& dimensions);
 
-    /// Changes this region's width (relative to its parent).
-    /** \param rel_width The new width
+    /**
+     * \brief Changes this region's width (relative to its parent).
+     * \param rel_width The new width
      */
     void set_relative_width(float rel_width);
 
-    /// Changes this region's height (relative to its parent).
-    /** \param rel_height The new height
+    /**
+     * \brief Changes this region's height (relative to its parent).
+     * \param rel_height The new height
      */
     void set_relative_height(float rel_height);
 
-    /// Returns this region's explicitly-defined width and height (in pixels).
-    /** \return This region's explicitly-defined width and height (in pixels)
+    /**
+     * \brief Returns this region's explicitly-defined width and height (in pixels).
+     * \return This region's explicitly-defined width and height (in pixels)
      * \note If you need to get the actual size of a region on the screen,
      *       use get_apparent_dimensions(), as some regions may not have
      *       their dimensions explicitly defined, and instead get their
@@ -326,8 +352,9 @@ public:
      */
     const vector2f& get_dimensions() const;
 
-    /// Returns this region's appearent width and height (in pixels).
-    /** \return This region's appearent width and height (in pixels)
+    /**
+     * \brief Returns this region's apparent width and height (in pixels).
+     * \return This region's apparent width and height (in pixels)
      * \note If you need to get the actual size of a region on the screen,
      *       use this function instead of get_dimensions(), as some regions
      *       may not have their dimensions explicitly defined, and instead
@@ -335,8 +362,9 @@ public:
      */
     vector2f get_apparent_dimensions() const;
 
-    /// Checks if this region's apparent width is defined.
-    /** \return 'true' if defined, 'false' otherwise
+    /**
+     * \brief Checks if this region's apparent width is defined.
+     * \return 'true' if defined, 'false' otherwise
      * \note The apparent width is defined if either the region's absolute
      *       or relative width is explicitly specified (from set_width(),
      *       set_relative_width(), set_dimensions(), or set_relative_dimensions()),
@@ -345,8 +373,9 @@ public:
      */
     bool is_apparent_width_defined() const;
 
-    /// Checks if this region's apparent height is defined.
-    /** \return 'true' if defined, 'false' otherwise
+    /**
+     * \brief Checks if this region's apparent height is defined.
+     * \return 'true' if defined, 'false' otherwise
      * \note The apparent height is defined if either the region's absolute
      *       or relative height is explicitly specified (from set_height(),
      *       set_relative_height(), set_dimensions(), or set_relative_dimensions()),
@@ -355,91 +384,107 @@ public:
      */
     bool is_apparent_height_defined() const;
 
-    /// Checks if the provided coordinates are inside this region.
-    /** \param position The coordinates to test
+    /**
+     * \brief Checks if the provided coordinates are inside this region.
+     * \param position The coordinates to test
      * \return 'true' if the provided coordinates are inside this region
      */
     virtual bool is_in_region(const vector2f& position) const;
 
-    /// Returns the type of this region.
-    /** \return The type of this region
+    /**
+     * \brief Returns the type of this region.
+     * \return The type of this region
      */
     const std::string& get_object_type() const;
 
-    /// Checks if this region is of the provided type.
-    /** \param type_name The type to test
+    /**
+     * \brief Checks if this region is of the provided type.
+     * \param type_name The type to test
      * \return 'true' if this region is of the provided type
      */
     bool is_object_type(const std::string& type_name) const;
 
-    /// Checks if this region is of the provided type.
-    /** \return 'true' if this region is of the provided type
+    /**
+     * \brief Checks if this region is of the provided type.
+     * \return 'true' if this region is of the provided type
      */
     template<typename ObjectType>
     bool is_object_type() const {
         return is_object_type(ObjectType::class_name);
     }
 
-    /// Returns an array containing all the types of this region.
-    /** \return An array containing all the types of this region
+    /**
+     * \brief Returns an array containing all the types of this region.
+     * \return An array containing all the types of this region
      */
     const std::vector<std::string>& get_object_type_list() const;
 
-    /// Returns the vertical position of this region's bottom border.
-    /** \return The vertical position of this region's bottom border
+    /**
+     * \brief Returns the vertical position of this region's bottom border.
+     * \return The vertical position of this region's bottom border
      */
     float get_bottom() const;
 
-    /// Returns the position of this region's center.
-    /** \return The position of this region's center
+    /**
+     * \brief Returns the position of this region's center.
+     * \return The position of this region's center
      */
     vector2f get_center() const;
 
-    /// Returns the horizontal position of this region's left border.
-    /** \return The horizontal position of this region's left border
+    /**
+     * \brief Returns the horizontal position of this region's left border.
+     * \return The horizontal position of this region's left border
      */
     float get_left() const;
 
-    /// Returns the horizontal position of this region's right border.
-    /** \return The horizontal position of this region's right border
+    /**
+     * \brief Returns the horizontal position of this region's right border.
+     * \return The horizontal position of this region's right border
      */
     float get_right() const;
 
-    /// Returns the vertical position of this region's top border.
-    /** \return The vertical position of this region's top border
+    /**
+     * \brief Returns the vertical position of this region's top border.
+     * \return The vertical position of this region's top border
      */
     float get_top() const;
 
-    /// Returns this region's borders.
-    /** \return This region's borders
+    /**
+     * \brief Returns this region's borders.
+     * \return This region's borders
      */
     const bounds2f& get_borders() const;
 
-    /// Removes all anchors.
-    /** \note This region and its children won't be visible until you
+    /**
+     * \brief Removes all anchors.
+     * \note This region and its children won't be visible until you
      *       define at least one anchor.
      */
     void clear_all_points();
 
-    /// Adjusts this regions anchors to fit the provided region.
-    /** \param obj A pointer to the object you want to wrap
+    /**
+     * \brief Adjusts this regions anchors to fit the provided region.
+     * \param obj A pointer to the object you want to wrap
      * \note Removes all anchors and defines two new ones.
      */
     void set_all_points(const utils::observer_ptr<region>& obj);
 
-    /// Adjusts this regions anchors to fit the provided region.
-    /** \param obj_name The name of the object to fit to
+    /**
+     * \brief Adjusts this regions anchors to fit the provided region.
+     * \param obj_name The name of the object to fit to
      * \note Removes all anchors and defines two new ones.
      */
     void set_all_points(const std::string& obj_name);
 
-    /// Adds/replaces an anchor.
-    /** \param anchor The anchor to add
+    /**
+     * \brief Adds/replaces an anchor.
+     * \param anchor The anchor to add
      */
     void set_point(const anchor_data& anchor);
 
-    /// Adds/replaces an anchor.
-    /** \param args Argument to construct a new anchor_data
+    /**
+     * \brief Adds/replaces an anchor.
+     * \param args Argument to construct a new anchor_data
      */
     template<typename... Args>
     void set_point(Args&&... args) {
@@ -448,44 +493,51 @@ public:
         (this->*set_point_overload)(anchor_data{std::forward<Args>(args)...});
     }
 
-    /// Checks if this region depends on another.
-    /** \param obj The region to test
-     * \note Usefull to detect circular refences.
+    /**
+     * \brief Checks if this region depends on another.
+     * \param obj The region to test
+     * \note Useful to detect circular references.
      */
     bool depends_on(const region& obj) const;
 
-    /// Returns the number of defined anchors.
-    /** \return The number of defined anchors
+    /**
+     * \brief Returns the number of defined anchors.
+     * \return The number of defined anchors
      */
     std::size_t get_num_point() const;
 
-    /// Returns one of this region's anchor to modify it.
-    /** \param point The anchor point
+    /**
+     * \brief Returns one of this region's anchor to modify it.
+     * \param point The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
     anchor& modify_point(anchor_point point);
 
-    /// Returns one of this region's anchor.
-    /** \param point The anchor point
+    /**
+     * \brief Returns one of this region's anchor.
+     * \param point The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
     const anchor& get_point(anchor_point point) const;
 
-    /// Returns all of this regions's anchors.
-    /** \return All of this regions's anchors
+    /**
+     * \brief Returns all of this region's anchors.
+     * \return All of this region's anchors
      */
     const std::array<std::optional<anchor>, 9>& get_point_list() const;
 
-    /// Round an absolute position on screen to the nearest physical pixel.
-    /** \param value The input absolute position (can be fractional)
+    /**
+     * \brief Round an absolute position on screen to the nearest physical pixel.
+     * \param value The input absolute position (can be fractional)
      * \param method The rounding method
      * \return The position of the nearest physical pixel
      */
     float round_to_pixel(
         float value, utils::rounding_method method = utils::rounding_method::nearest) const;
 
-    /// Round an absolute position on screen to the nearest physical pixel.
-    /** \param position The input absolute position (can be fractional)
+    /**
+     * \brief Round an absolute position on screen to the nearest physical pixel.
+     * \param position The input absolute position (can be fractional)
      * \param method The rounding method
      * \return The position of the nearest physical pixel
      */
@@ -493,79 +545,91 @@ public:
         const vector2f&        position,
         utils::rounding_method method = utils::rounding_method::nearest) const;
 
-    /// Notifies this region that another one is anchored to it.
-    /** \param obj The anchored region
+    /**
+     * \brief Notifies this region that another one is anchored to it.
+     * \param obj The anchored region
      * \note Anchored objects get their borders automatically updated
-     *       whenever this objet's borders are updated.
+     *       whenever this object's borders are updated.
      */
     void add_anchored_object(region& obj);
 
-    /// Notifies this region that another one is no longer anchored to it.
-    /** \param obj The region no longer anchored
+    /**
+     * \brief Notifies this region that another one is no longer anchored to it.
+     * \param obj The region no longer anchored
      * \see add_anchored_object()
      */
     void remove_anchored_object(region& obj);
 
-    /// Checks if this region is virtual.
-    /** \return 'true' if this region is virtual
+    /**
+     * \brief Checks if this region is virtual.
+     * \return 'true' if this region is virtual
      * \note A virtual region will not be displayed on the screen, but can serve as a
      *       template to create new GUI elements (it is then "inherited", although note
      *       that this has no connection to C++ inheritance).
      */
     bool is_virtual() const;
 
-    /// Makes this region virtual.
-    /** \note See is_virtual().
+    /**
+     * \brief Makes this region virtual.
+     * \note See is_virtual().
      */
     void set_virtual();
 
-    /// Flags this object as "special".
-    /** \note Special objects are not automatically copied
+    /**
+     * \brief Flags this object as "special".
+     * \note Special objects are not automatically copied
      *       in the frame inheritance process. They must be
-     *       explicitely copied by the derived class
+     *       explicitly copied by the derived class
      *       (example: Button will have to copy its button
      *       textures itself).
      */
     void set_special();
 
-    /// Checks if this object is special.
-    /** \return 'true' if this objet is special
-     * \note For more informations, see set_special().
+    /**
+     * \brief Checks if this object is special.
+     * \return 'true' if this object is special
+     * \note For more information, see set_special().
      */
     bool is_special() const;
 
-    /// Returns the renderer of this object or its parents.
-    /** \return The renderer of this object or its parents
-     * \note For more informations, see frame::set_renderer().
+    /**
+     * \brief Returns the renderer of this object or its parents.
+     * \return The renderer of this object or its parents
+     * \note For more information, see frame::set_renderer().
      */
     virtual utils::observer_ptr<const frame_renderer> get_top_level_renderer() const;
 
-    /// Returns the renderer of this object or its parents, nullptr if none.
-    /** \return The renderer of this object or its parents, nullptr if none
-     * \note For more informations, see set_renderer().
+    /**
+     * \brief Returns the renderer of this object or its parents, nullptr if none.
+     * \return The renderer of this object or its parents, nullptr if none
+     * \note For more information, see set_renderer().
      */
     utils::observer_ptr<frame_renderer> get_top_level_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
             const_cast<const region*>(this)->get_top_level_renderer());
     }
 
-    /// Notifies the renderer of this region that it needs to be redrawn.
-    /** \note Automatically called by any shape-changing function.
+    /**
+     * \brief Notifies the renderer of this region that it needs to be redrawn.
+     * \note Automatically called by any shape-changing function.
      */
     virtual void notify_renderer_need_redraw();
 
-    /// Returns the list of all objects that are anchored to this one.
-    /** \return The list of all objects that are anchored to this one
+    /**
+     * \brief Returns the list of all objects that are anchored to this one.
+     * \return The list of all objects that are anchored to this one
      */
     const std::vector<utils::observer_ptr<region>>& get_anchored_objects() const;
 
-    /// Notifies this region that it has been fully loaded.
-    /** \see is_loaded()
+    /**
+     * \brief Notifies this region that it has been fully loaded.
+     * \see is_loaded()
      */
     virtual void notify_loaded();
 
-    /// Checks if this region has been fully loaded.
-    /** \note A region that is not fully loaded still has all its core attributes
+    /**
+     * \brief Checks if this region has been fully loaded.
+     * \note A region that is not fully loaded still has all its core attributes
      *       set, hence can be considered as "fully constructed" from a C++ point
      *       of view. However, semantically, the object may need further steps to
      *       be complete, as designed by the UI designer. Therefore, form the UI's
@@ -575,30 +639,35 @@ public:
      */
     bool is_loaded() const;
 
-    /// Notifies this region that it is now visible on screen.
-    /** \note Automatically called by show()/hide().
+    /**
+     * \brief Notifies this region that it is now visible on screen.
+     * \note Automatically called by show()/hide().
      */
     virtual void notify_visible();
 
-    /// Notifies this region that it is no longer visible on screen.
-    /** \note Automatically called by show()/hide().
+    /**
+     * \brief Notifies this region that it is no longer visible on screen.
+     * \note Automatically called by show()/hide().
      */
     virtual void notify_invisible();
 
-    /// Sets the addon this frame belongs to.
-    /** \param a The addon this frame belongs to
+    /**
+     * \brief Sets the addon this frame belongs to.
+     * \param a The addon this frame belongs to
      */
     void set_addon(const addon* a);
 
-    /// Returns this frame's addon.
-    /** \return This frame's addon
+    /**
+     * \brief Returns this frame's addon.
+     * \return This frame's addon
      * \note Returns "nullptr" if the frame has been created
      *       by Lua code and wasn't assigned a parent.
      */
     const addon* get_addon() const;
 
-    /// Convert an addon-relative file path to a application-relative path
-    /** \param file_name The raw file name
+    /**
+     * \brief Convert an addon-relative file path to a application-relative path
+     * \param file_name The raw file name
      * \return The modified file name
      * \note All file names must be relative to the current working directory
      *       (typically, the application's executable path),
@@ -609,27 +678,31 @@ public:
      */
     std::string parse_file_name(const std::string& file_name) const;
 
-    /// Returns this region's manager.
-    /** \return This region's manager
+    /**
+     * \brief Returns this region's manager.
+     * \return This region's manager
      */
     manager& get_manager() {
         return manager_;
     }
 
-    /// Returns this region's manager.
-    /** \return This region's manager
+    /**
+     * \brief Returns this region's manager.
+     * \return This region's manager
      */
     const manager& get_manager() const {
         return manager_;
     }
 
-    /// Returns the UI object registry, which keeps track of all objects in the UI.
-    /** \return The registry object
+    /**
+     * \brief Returns the UI object registry, which keeps track of all objects in the UI.
+     * \return The registry object
      */
     registry& get_registry();
 
-    /// Returns the UI object registry, which keeps track of all objects in the UI.
-    /** \return The registry object
+    /**
+     * \brief Returns the UI object registry, which keeps track of all objects in the UI.
+     * \return The registry object
      */
     const registry& get_registry() const;
 
@@ -639,8 +712,9 @@ public:
     /// Removes the Lua glue.
     void remove_glue();
 
-    /// Parses data from a layout_node.
-    /** \param node The layout node
+    /**
+     * \brief Parses data from a layout_node.
+     * \param node The layout node
      */
     virtual void parse_layout(const layout_node& node);
 
@@ -680,21 +754,24 @@ protected:
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
 
-    /// Sets this region's name.
-    /** \param name This region's name
+    /**
+     * \brief Sets this region's name.
+     * \param name This region's name
      * \note Can only be called once. If you need to set both the name and the parent
      *       at the same time (typically, at creation), use set_name_and_parent_().
      */
     void set_name_(const std::string& name);
 
-    /// Changes this region's parent.
-    /** \param parent The new parent
+    /**
+     * \brief Changes this region's parent.
+     * \param parent The new parent
      * \note Default is nullptr.
      */
     void set_parent_(utils::observer_ptr<frame> parent);
 
-    /// Sets this region's name and parent at once.
-    /** \param name This region's name
+    /**
+     * \brief Sets this region's name and parent at once.
+     * \param name This region's name
      * \param parent The new parent
      * \note The name can only be set once. If you need to just change the
      *       parent, call set_parent_().
@@ -735,8 +812,9 @@ protected:
     std::unordered_map<std::string, sol::object> lua_members_;
 };
 
-/// Obtain a pointer to a derived class.
-/** \param self The pointer to down cast
+/**
+ * \brief Obtain a pointer to a derived class.
+ * \param self The pointer to down cast
  * \return A pointer to a derived class
  * \note Like dynamic_cast(), this will return nullptr if this region
  *       is not of the requested type. However, it will throw if the cast
@@ -754,8 +832,9 @@ const ObjectType* down_cast(const region* self) {
     return object;
 }
 
-/// Obtain a pointer to a derived class.
-/** \param self The pointer to down cast
+/**
+ * \brief Obtain a pointer to a derived class.
+ * \param self The pointer to down cast
  * \return A pointer to a derived class
  * \note Like dynamic_cast(), this will return nullptr if this region
  *       is not of the requested type. However, it will throw if the cast
@@ -767,8 +846,9 @@ ObjectType* down_cast(region* self) {
     return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(self)));
 }
 
-/// Perform a down cast on an owning pointer.
-/** \param object The owning pointer to down cast
+/**
+ * \brief Perform a down cast on an owning pointer.
+ * \param object The owning pointer to down cast
  * \return The down casted pointer.
  * \note See down_cast(const region*) for more information.
  */
@@ -777,8 +857,9 @@ utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<region>&& object) {
     return utils::owner_ptr<ObjectType>(std::move(object), down_cast<ObjectType>(object.get()));
 }
 
-/// Perform a down cast on an observer pointer.
-/** \param object The observer pointer to down cast
+/**
+ * \brief Perform a down cast on an observer pointer.
+ * \param object The observer pointer to down cast
  * \return The down casted pointer.
  * \note See down_cast(const region*) for more information.
  */
@@ -787,8 +868,9 @@ utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<region>& obj
     return utils::observer_ptr<ObjectType>(object, down_cast<ObjectType>(object.get()));
 }
 
-/// Perform a down cast on an observer pointer.
-/** \param object The observer pointer to down cast
+/**
+ * \brief Perform a down cast on an observer pointer.
+ * \param object The observer pointer to down cast
  * \return The down casted pointer.
  * \note See down_cast(const region*) for more information.
  */
@@ -797,8 +879,9 @@ utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& object) 
     return utils::observer_ptr<ObjectType>(std::move(object), down_cast<ObjectType>(object.get()));
 }
 
-/// Obtain an observer pointer from a raw pointer (typically 'this')
-/** \param self The raw pointer to get an observer from
+/**
+ * \brief Obtain an observer pointer from a raw pointer (typically 'this')
+ * \param self The raw pointer to get an observer from
  * \return The observer pointer.
  * \note This returns the same things as self->observer_from_this(),
  *       but returning a pointer to the most-derived type known form the

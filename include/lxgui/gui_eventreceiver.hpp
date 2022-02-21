@@ -12,14 +12,16 @@ namespace lxgui::gui {
 class event;
 class event_emitter;
 
-/// Utility object to store and manage connections to event signals.
-/** This class enables registering callbacks to multiple events, and
+/**
+ * \brief Utility object to store and manage connections to event signals.
+ * This class enables registering callbacks to multiple events, and
  * automatically manages the lifetime of the callbacks.
  */
 class event_receiver {
 public:
-    /// Constructor.
-    /** \param emitter The event emitter to listen to
+    /**
+     * \brief Constructor.
+     * \param emitter The event emitter to listen to
      */
     explicit event_receiver(event_emitter& emitter);
 
@@ -29,14 +31,16 @@ public:
     event_receiver& operator=(const event_receiver&) = delete;
     event_receiver& operator=(event_receiver&&) = delete;
 
-    /// Enables reaction to an event.
-    /** \param event_name The name of the event this class should react to
+    /**
+     * \brief Enables reaction to an event.
+     * \param event_name The name of the event this class should react to
      * \param callback The callback function to register to this event
      */
     void register_event(const std::string& event_name, event_handler_function callback);
 
-    /// Disables reaction to an event.
-    /** \param event_name The name of the event this class shouldn't react to anymore
+    /**
+     * \brief Disables reaction to an event.
+     * \param event_name The name of the event this class shouldn't react to anymore
      */
     void unregister_event(const std::string& event_name);
 

@@ -134,7 +134,7 @@ void renderer::render_cache_(
     const sfml::vertex_cache& sf_cache = static_cast<const sfml::vertex_cache&>(cache);
 
     // Note: the following will not work correctly, as vertex_cache has texture coordinates
-    // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
+    // normalized, but sf::RenderTarget::draw assumes coordinates in pixels.
     // Requires https://github.com/SFML/SFML/pull/1807
     sf::RenderStates state;
     // Premultiplied alpha

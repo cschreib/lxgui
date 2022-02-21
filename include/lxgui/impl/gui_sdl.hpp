@@ -9,8 +9,9 @@ struct SDL_Renderer;
 
 namespace lxgui::gui::sdl {
 
-/// Create a new gui::manager using a full SDL implementation.
-/** \param win The SDL render window
+/**
+ * \brief Create a new gui::manager using a full SDL implementation.
+ * \param win The SDL render window
  * \param rdr The SDL renderer
  * \param initialise_sdl_image Set to 'false' if SDL Image has already been initialised elsewhere
  * \return The new gui::manager instance

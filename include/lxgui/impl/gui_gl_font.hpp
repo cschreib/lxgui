@@ -11,15 +11,17 @@
 
 namespace lxgui::gui::gl {
 
-/// A texture containing characters
-/** This is the OpenGL implementation of the gui::font.
+/**
+ * \brief A texture containing characters
+ * This is the OpenGL implementation of the gui::font.
  * It uses the freetype library to read data from .ttf and
  * .otf files and to render the characters on the font texture.
  */
 class font final : public gui::font {
 public:
-    /// Constructor.
-    /** \param font_file The name of the font file to read
+    /**
+     * \brief Constructor.
+     * \param font_file The name of the font file to read
      * \param size The requested size of the characters (in points)
      * \param outline The thickness of the outline (in points)
      * \param code_points The list of Unicode characters to load
@@ -35,39 +37,45 @@ public:
     /// Destructor.
     ~font() override;
 
-    /// Get the size of the font in pixels.
-    /** \return The size of the font in pixels
+    /**
+     * \brief Get the size of the font in pixels.
+     * \return The size of the font in pixels
      */
     std::size_t get_size() const override;
 
-    /// Returns the uv coordinates of a character on the texture.
-    /** \param c The unicode character
+    /**
+     * \brief Returns the uv coordinates of a character on the texture.
+     * \param c The unicode character
      * \return The uv coordinates of this character on the texture
-     * \note The uv coordinates are normalised, i.e. they range from
+     * \note The uv coordinates are normalized, i.e. they range from
      *       0 to 1. They are arranged as {u1, v1, u2, v2}.
      */
     bounds2f get_character_uvs(char32_t c) const override;
 
-    /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
-    /** \param c The unicode character
+    /**
+     * \brief Returns the rect coordinates of a character as it should be drawn relative to the baseline.
+     * \param c The unicode character
      * \return The rect coordinates of this character (in pixels, relative to the baseline)
      */
     bounds2f get_character_bounds(char32_t c) const override;
 
-    /// Returns the width of a character in pixels.
-    /** \param c The unicode character
+    /**
+     * \brief Returns the width of a character in pixels.
+     * \param c The unicode character
      * \return The width of the character in pixels.
      */
     float get_character_width(char32_t c) const override;
 
-    /// Returns the height of a character in pixels.
-    /** \param c The unicode character
+    /**
+     * \brief Returns the height of a character in pixels.
+     * \param c The unicode character
      * \return The height of the character in pixels.
      */
     float get_character_height(char32_t c) const override;
 
-    /// Return the kerning amount between two characters.
-    /** \param c1 The first unicode character
+    /**
+     * \brief Return the kerning amount between two characters.
+     * \param c1 The first unicode character
      * \param c2 The second unicode character
      * \return The kerning amount between the two characters
      * \note Kerning is a font rendering adjustment that makes some
@@ -77,13 +85,15 @@ public:
      */
     float get_character_kerning(char32_t c1, char32_t c2) const override;
 
-    /// Returns the underlying material to use for rendering.
-    /** \return The underlying material to use for rendering
+    /**
+     * \brief Returns the underlying material to use for rendering.
+     * \return The underlying material to use for rendering
      */
     std::weak_ptr<gui::material> get_texture() const override;
 
-    /// Update the material to use for rendering.
-    /** \param mat The material to use for rendering
+    /**
+     * \brief Update the material to use for rendering.
+     * \param mat The material to use for rendering
      */
     void update_texture(std::shared_ptr<gui::material> mat) override;
 

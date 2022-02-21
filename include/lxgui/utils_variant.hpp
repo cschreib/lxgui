@@ -14,8 +14,9 @@ namespace lxgui::utils {
 /// Empty type, used in the implementation of utils::variant
 struct empty {};
 
-/// Type-erased value for passing arguments to events
-/** \note This contains all the basic numerical types up to 64bit precision.
+/**
+ * \brief Type-erased value for passing arguments to events
+ * \note This contains all the basic numerical types up to 64bit precision.
  *       Any other scalar types (such as charXX_t, or strongly typed enums)
  *       can be represented as one of these. Use utils::get() to enable
  *       automatic support for strongly typed enums.
@@ -38,8 +39,9 @@ using variant = std::variant<
     float,
     std::string>;
 
-/// Retreive the value stored in an utils::variant
-/** \param value The variant
+/**
+ * \brief Retrieve the value stored in an utils::variant
+ * \param value The variant
  * \return The stored value, or throws std::bad_variant_access if the type was incorrect
  * \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */
@@ -51,8 +53,9 @@ T& get(variant& value) {
         return std::get<T>(value);
 }
 
-/// Retreive the value stored in an utils::variant
-/** \param value The variant
+/**
+ * \brief Retrieve the value stored in an utils::variant
+ * \param value The variant
  * \return The stored value, or throws std::bad_variant_access if the type was incorrect
  * \note This wrapper around std::get() enables automatic support for strongly typed enums.
  */

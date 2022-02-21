@@ -8,8 +8,9 @@
 
 namespace lxgui::gui {
 
-/// A place to render things (the screen, a texture, ...)
-/** \note This is an abstract class that must be inherited
+/**
+ * \brief A place to render things (the screen, a texture, ...)
+ * \note This is an abstract class that must be inherited
  *       from and created by the corresponding gui::renderer.
  */
 class render_target {
@@ -38,24 +39,28 @@ public:
     /// Ends rendering on this target.
     virtual void end() = 0;
 
-    /// Clears the content of this render_target.
-    /** \param c The color to use as background
+    /**
+     * \brief Clears the content of this render_target.
+     * \param c The color to use as background
      */
     virtual void clear(const color& c) = 0;
 
-    /// Returns this render target's pixel rect.
-    /** \return This render target's pixel rect
+    /**
+     * \brief Returns this render target's pixel rect.
+     * \return This render target's pixel rect
      */
     virtual bounds2f get_rect() const = 0;
 
-    /// Sets this render target's dimensions.
-    /** \param dimensions The new dimensions (in pixels)
+    /**
+     * \brief Sets this render target's dimensions.
+     * \param dimensions The new dimensions (in pixels)
      * \return 'true' if the function had to re-create a new render target
      */
     virtual bool set_dimensions(const vector2ui& dimensions) = 0;
 
-    /// Returns this render target's canvas dimension.
-    /** \return This render target's canvas dimension
+    /**
+     * \brief Returns this render target's canvas dimension.
+     * \return This render target's canvas dimension
      * \note This is the physical size of the render target.
      *       On some systems, abitrary dimensions are not supported:
      *       they can be promoted to the nearest power of two from

@@ -25,8 +25,9 @@ namespace lxgui::gui::gl {
  */
 class vertex_cache final : public gui::vertex_cache {
 public:
-    /// Constructor.
-    /** \param t The type of data this cache will hold
+    /**
+     * \brief Constructor.
+     * \param t The type of data this cache will hold
      * \details A default constructed vertex cache holds no data. Use update()
      *          to store vertices to be rendered. The size hint can enable the cache to be
      *          pre-allocated, which will avoid a reallocation when update() is called.
@@ -36,20 +37,23 @@ public:
     /// Destructor.
     ~vertex_cache() override;
 
-    /// Update the data stored in the cache, reusing existing indices.
-    /** \param vertex_data The vertices to cache
+    /**
+     * \brief Update the data stored in the cache, reusing existing indices.
+     * \param vertex_data The vertices to cache
      * \param num_vertex The number of vertices to cache
      */
     void update_data(const vertex* vertex_data, std::size_t num_vertex);
 
-    /// Update the indices stored in the cache, reusing existing data.
-    /** \param vertex_indices The indices to use for drawing triangles
+    /**
+     * \brief Update the indices stored in the cache, reusing existing data.
+     * \param vertex_indices The indices to use for drawing triangles
      * \param num_indices The number of indices to cache
      */
     void update_indices(const std::uint32_t* vertex_indices, std::size_t num_indices);
 
-    /// Update the indices stored in the cache, but only if the current index cache is smaller.
-    /** \param vertex_indices The indices to use for drawing triangles
+    /**
+     * \brief Update the indices stored in the cache, but only if the current index cache is smaller.
+     * \param vertex_indices The indices to use for drawing triangles
      * \param num_indices The number of indices to cache
      * \note This function assumes that the index buffer is always initialised with
      *       valid indices, and that only the *number* of indices changes. Indices that
@@ -58,16 +62,18 @@ public:
      */
     void update_indices_if_grow(const std::uint32_t* vertex_indices, std::size_t num_indices);
 
-    /// Update the data stored in the cache to form new triangles.
-    /** \param vertex_data The vertices to cache
+    /**
+     * \brief Update the data stored in the cache to form new triangles.
+     * \param vertex_data The vertices to cache
      * \param num_vertex The number of vertices to cache
      * \note If the type if TRIANGLES, num_vertex must be a multiple of 3.
      *       If the type if QUADS, num_vertex must be a multiple of 4.
      */
     void update(const vertex* vertex_data, std::size_t num_vertex) override;
 
-    /// Renders the cache.
-    /** \note This does not bind the material, just binds the cache and renders it
+    /**
+     * \brief Renders the cache.
+     * \note This does not bind the material, just binds the cache and renders it
      *       with whatever shader / texture is currently bound.
      */
     void render() const;

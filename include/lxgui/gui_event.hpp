@@ -25,16 +25,18 @@ public:
     event_data& operator=(const event_data&) = default;
     event_data& operator=(event_data&&) = default;
 
-    /// Adds a parameter to this event.
-    /** \param value The value
+    /**
+     * \brief Adds a parameter to this event.
+     * \param value The value
      */
     template<typename T>
     void add(T&& value) {
         arg_list_.push_back(std::forward<T>(value));
     }
 
-    /// Returns a parameter of this event.
-    /** \param index The index of the parameter (see get_num_param())
+    /**
+     * \brief Returns a parameter of this event.
+     * \param index The index of the parameter (see get_num_param())
      * \return A parameter of this event
      */
     const utils::variant& get(std::size_t index) const {
@@ -43,8 +45,9 @@ public:
         return arg_list_[index];
     }
 
-    /// Returns a parameter of this event.
-    /** \param index The index of the parameter (see get_num_param())
+    /**
+     * \brief Returns a parameter of this event.
+     * \param index The index of the parameter (see get_num_param())
      * \return A parameter of this event
      */
     utils::variant& get(std::size_t index) {
@@ -53,8 +56,9 @@ public:
         return arg_list_[index];
     }
 
-    /// Returns a parameter of this event.
-    /** \param index The index of the parameter (see get_num_param())
+    /**
+     * \brief Returns a parameter of this event.
+     * \param index The index of the parameter (see get_num_param())
      * \return A parameter of this event
      */
     template<typename T>
@@ -62,8 +66,9 @@ public:
         return utils::get<T>(this->get(index));
     }
 
-    /// Returns a parameter of this event.
-    /** \param index The index of the parameter (see get_num_param())
+    /**
+     * \brief Returns a parameter of this event.
+     * \param index The index of the parameter (see get_num_param())
      * \return A parameter of this event
      */
     template<typename T>
@@ -71,8 +76,9 @@ public:
         return utils::get<T>(this->get(index));
     }
 
-    /// Returns the number of parameters.
-    /** \return The number of parameters
+    /**
+     * \brief Returns the number of parameters.
+     * \return The number of parameters
      */
     std::size_t get_num_param() const {
         return arg_list_.size();

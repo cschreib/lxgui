@@ -9,8 +9,9 @@ namespace lxgui::gui {
 
 class region;
 
-/// Utility class for safe checking of region validity
-/** To use this class, construct an instance of alive_checker
+/**
+ * \brief Utility class for safe checking of region validity
+ * To use this class, construct an instance of alive_checker
  * with any object you wish to monitor. Then use the object.
  * Then use alive_checker::is_alive() to check if the object
  * is still alive.
@@ -20,8 +21,9 @@ class region;
  */
 class alive_checker {
 public:
-    /// Contructor.
-    /** \param object The object to monitor
+    /**
+     * \brief Contructor.
+     * \param object The object to monitor
      */
     explicit alive_checker(region& object) : object_(object.observer_from_this()) {}
 
@@ -31,8 +33,9 @@ public:
     alive_checker& operator=(const alive_checker&) = delete;
     alive_checker& operator=(alive_checker&&) = delete;
 
-    /// Check if the wrapped region is still alive
-    /** \return 'true' if the region is alive, 'false' otherwise
+    /**
+     * \brief Check if the wrapped region is still alive
+     * \return 'true' if the region is alive, 'false' otherwise
      */
     bool is_alive() const {
         return !object_.expired();

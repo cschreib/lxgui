@@ -28,8 +28,9 @@ class registry;
 class frame_renderer;
 class manager;
 
-/// Handles the creation of new UI objects.
-/** \note This is a low-level class, which is only meant to be used
+/**
+ * \brief Handles the creation of new UI objects.
+ * \note This is a low-level class, which is only meant to be used
  *       internally by the GUI. To create your own UI objects, use
  *       root::create_root_frame(), frame::create_child(), or
  *       frame::create_region().
@@ -52,8 +53,9 @@ private:
     }
 
 public:
-    /// Constructor.
-    /** \param mgr The GUI manager
+    /**
+     * \brief Constructor.
+     * \param mgr The GUI manager
      */
     explicit factory(manager& mgr);
 
@@ -63,8 +65,9 @@ public:
     factory& operator=(const factory&) = delete;
     factory& operator=(factory&&) = delete;
 
-    /// Creates a new region.
-    /** \param reg The registry in which to register this object
+    /**
+     * \brief Creates a new region.
+     * \param reg The registry in which to register this object
      * \param attr The attributes of the object
      * \return The new frame
      * \note This function takes care of the basic initializing: the
@@ -72,8 +75,9 @@ public:
      */
     utils::owner_ptr<region> create_region(registry& reg, const region_core_attributes& attr);
 
-    /// Creates a new frame.
-    /** \param reg The registry in which to register this frame
+    /**
+     * \brief Creates a new frame.
+     * \param reg The registry in which to register this frame
      * \param rdr The frame_renderer that will render this frame
      * \param attr The attributes of the frame
      * \return The new frame
@@ -86,8 +90,9 @@ public:
     utils::owner_ptr<frame>
     create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr);
 
-    /// Creates a new layered_region.
-    /** \param reg The registry in which to register this region
+    /**
+     * \brief Creates a new layered_region.
+     * \param reg The registry in which to register this region
      * \param attr The attributes of the region
      * \return The new layered_region
      * \note This function takes care of the basic initializing: the
@@ -96,8 +101,9 @@ public:
     utils::owner_ptr<layered_region>
     create_layered_region(registry& reg, const region_core_attributes& attr);
 
-    /// Registers a new object type.
-    /** \note Set the first template argument as the C++ type of this object.
+    /**
+     * \brief Registers a new object type.
+     * \note Set the first template argument as the C++ type of this object.
      */
     template<
         typename ObjectType,
@@ -114,13 +120,15 @@ public:
         ObjectType::register_on_lua(get_lua());
     }
 
-    /// Returns the GUI Lua state (sol wrapper).
-    /** \return The GUI Lua state
+    /**
+     * \brief Returns the GUI Lua state (sol wrapper).
+     * \return The GUI Lua state
      */
     sol::state& get_lua();
 
-    /// Returns the GUI Lua state (sol wrapper).
-    /** \return The GUI Lua state
+    /**
+     * \brief Returns the GUI Lua state (sol wrapper).
+     * \return The GUI Lua state
      */
     const sol::state& get_lua() const;
 

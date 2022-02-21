@@ -403,9 +403,9 @@ void request_focus_to_list(
 }
 
 void root::request_focus(utils::observer_ptr<frame> receiver) {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     request_focus_to_list(std::move(receiver), focus_stack_);
-    auto new_focus = get_focussed_frame();
+    auto new_focus = get_focused_frame();
 
     if (old_focus != new_focus) {
         if (old_focus)
@@ -417,9 +417,9 @@ void root::request_focus(utils::observer_ptr<frame> receiver) {
 }
 
 void root::release_focus(const frame& receiver) {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     release_focus_to_list(receiver, focus_stack_);
-    auto new_focus = get_focussed_frame();
+    auto new_focus = get_focused_frame();
 
     if (old_focus != new_focus) {
         if (old_focus)
@@ -431,7 +431,7 @@ void root::release_focus(const frame& receiver) {
 }
 
 void root::clear_focus() {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     focus_stack_.clear();
 
     if (old_focus)
@@ -439,10 +439,10 @@ void root::clear_focus() {
 }
 
 bool root::is_focused() const {
-    return get_focussed_frame() != nullptr;
+    return get_focused_frame() != nullptr;
 }
 
-utils::observer_ptr<const frame> root::get_focussed_frame() const {
+utils::observer_ptr<const frame> root::get_focused_frame() const {
     for (const auto& ptr : utils::range::reverse(focus_stack_)) {
         if (ptr)
             return ptr;
@@ -629,7 +629,7 @@ void root::on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos) 
 }
 
 void root::on_text_entered_(std::uint32_t c) {
-    if (auto focus = get_focussed_frame()) {
+    if (auto focus = get_focused_frame()) {
         event_data data;
         data.add(utils::unicode_to_utf8(utils::ustring(1, c)));
         data.add(c);
@@ -669,10 +669,10 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
 
     std::string key_name = get_key_name(key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed);
 
-    // First, give priority to the focussed frame
-    utils::observer_ptr<frame> topmost_frame = get_focussed_frame();
+    // First, give priority to the focused frame
+    utils::observer_ptr<frame> topmost_frame = get_focused_frame();
 
-    // If no focussed frame, look top-down for a frame that captures this key
+    // If no focused frame, look top-down for a frame that captures this key
     if (!topmost_frame) {
         topmost_frame = find_topmost_frame(
             [&](const frame& frame) { return frame.is_key_capture_enabled(key_name); });
@@ -724,7 +724,7 @@ void root::on_mouse_button_state_changed_(
     });
 
     if (is_down && !is_double_click) {
-        if (!hovered_frame || hovered_frame != get_focussed_frame())
+        if (!hovered_frame || hovered_frame != get_focused_frame())
             clear_focus();
     }
 

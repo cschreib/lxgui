@@ -18,14 +18,16 @@ enum class layer {
     enum_size
 };
 
-/// Converts a string representation of a layer into the corresponding enumerator
-/** \param layer_name The layer string (e.g., "ARTWORK")
+/**
+ * \brief Converts a string representation of a layer into the corresponding enumerator
+ * \param layer_name The layer string (e.g., "ARTWORK")
  * \return The corresponding enumerator, or "ARTWORK" if parsing failed
  */
 layer parse_layer_type(const std::string& layer_name);
 
-/// A #region that can be rendered in a layer.
-/** Layered regions can display content on the screen (texture,
+/**
+ * \brief A #region that can be rendered in a layer.
+ * Layered regions can display content on the screen (texture,
  * texts, 3D models, ...) and must be contained inside a layer,
  * within a #lxgui::gui::frame object. The frame will then render all
  * its layered regions, sorted by layers.
@@ -40,8 +42,9 @@ public:
     /// Constructor.
     explicit layered_region(utils::control_block& block, manager& mgr);
 
-    /// Prints all relevant information about this region in a string.
-    /** \param tab The offset to give to all lines
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
      * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
@@ -49,50 +52,59 @@ public:
     /// Creates the associated Lua glue.
     void create_glue() override;
 
-    /// Removes this region from its parent and return an owning pointer.
-    /** \return An owning pointer to this region
+    /**
+     * \brief Removes this region from its parent and return an owning pointer.
+     * \return An owning pointer to this region
      */
     utils::owner_ptr<region> release_from_parent() override;
 
-    /// shows this region.
-    /** \note Its parent must be shown for it to appear on
+    /**
+     * \brief shows this region.
+     * \note Its parent must be shown for it to appear on
      *       the screen.
      */
     void show() override;
 
-    /// hides this region.
-    /** \note All its children won't be visible on the screen
+    /**
+     * \brief hides this region.
+     * \note All its children won't be visible on the screen
      * anymore, even if they are still marked as shown.
      */
     void hide() override;
 
-    /// Checks if this region can be seen on the screen.
-    /** \return 'true' if this region can be seen on the screen
+    /**
+     * \brief Checks if this region can be seen on the screen.
+     * \return 'true' if this region can be seen on the screen
      */
     bool is_visible() const override;
 
-    /// Returns this layered_region's draw layer.
-    /** \return this layered_region's draw layer
+    /**
+     * \brief Returns this layered_region's draw layer.
+     * \return this layered_region's draw layer
      */
     layer get_draw_layer() const;
 
-    /// Sets this layered_region's draw layer.
-    /** \param layer_id The new layer
+    /**
+     * \brief Sets this layered_region's draw layer.
+     * \param layer_id The new layer
      */
     virtual void set_draw_layer(layer layer_id);
 
-    /// Sets this layered_region's draw layer.
-    /** \param layer_name The new layer
+    /**
+     * \brief Sets this layered_region's draw layer.
+     * \param layer_name The new layer
      */
     void set_draw_layer(const std::string& layer_name);
 
-    /// Notifies the renderer of this region that it needs to be redrawn.
-    /** \note Automatically called by any shape changing function.
+    /**
+     * \brief Notifies the renderer of this region that it needs to be redrawn.
+     * \note Automatically called by any shape changing function.
      */
     void notify_renderer_need_redraw() override;
 
-    /// Parses data from a layout_node.
-    /** \param node The layout node
+    /**
+     * \brief Parses data from a layout_node.
+     * \param node The layout node
      */
     void parse_layout(const layout_node& node) override;
 

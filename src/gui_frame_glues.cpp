@@ -116,7 +116,7 @@
  * - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
  * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
  * been registered for capture using @{Frame:enable_key_capture}. If no
- * frame is focussed, only the topmost frame with
+ * frame is focused, only the topmost frame with
  * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @{Manager:set_key_binding}). This event provides two arguments to the registered
@@ -126,7 +126,7 @@
  * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
  * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
  * been registered for capture using @{Frame:enable_key_capture}. If no
- * frame is focussed, only the topmost frame with
+ * frame is focused, only the topmost frame with
  * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @{Manager:set_key_binding}). This event provides two arguments to the registered

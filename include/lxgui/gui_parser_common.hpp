@@ -12,8 +12,9 @@ class registry;
 class virtual_registry;
 class layout_node;
 
-/// Parse "core" attributes from a layout node, before creating a frame.
-/** \param reg The UI object registry, for parent lookup
+/**
+ * \brief Parse "core" attributes from a layout node, before creating a frame.
+ * \param reg The UI object registry, for parent lookup
  * \param vreg The virtual UI object registry, for inheritance lookup
  * \param node The layout node to parse from
  * \param parent The current layout parent frame of this node (nullptr if none)
@@ -25,8 +26,9 @@ region_core_attributes parse_core_attributes(
     const layout_node&         node,
     utils::observer_ptr<frame> parent);
 
-/// Emit a warning if this node (or any of its attributes/children) was not read.
-/** \param node The node to check
+/**
+ * \brief Emit a warning if this node (or any of its attributes/children) was not read.
+ * \param node The node to check
  */
 void warn_for_not_accessed_node(const layout_node& node);
 

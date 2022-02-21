@@ -43,23 +43,27 @@ public:
     /// Destructor.
     virtual ~renderer() = default;
 
-    /// Returns a human-readable name for this renderer.
-    /** \return A human-readable name for this renderer
+    /**
+     * \brief Returns a human-readable name for this renderer.
+     * \return A human-readable name for this renderer
      */
     virtual std::string get_name() const = 0;
 
-    /// Checks if the renderer supports setting colors for each vertex of a textured quad.
-    /** \return 'true' if supported, 'false' otherwise
+    /**
+     * \brief Checks if the renderer supports setting colors for each vertex of a textured quad.
+     * \return 'true' if supported, 'false' otherwise
      */
     virtual bool is_texture_vertex_color_supported() const = 0;
 
-    /// Checks if the renderer has quad render batching enabled.
-    /** \return 'true' if enabled, 'false' otherwise
+    /**
+     * \brief Checks if the renderer has quad render batching enabled.
+     * \return 'true' if enabled, 'false' otherwise
      */
     bool is_quad_batching_enabled() const;
 
-    /// Enables/disables quad batching.
-    /** \param enabled 'true' to enable quad batching, 'false' to disable it
+    /**
+     * \brief Enables/disables quad batching.
+     * \param enabled 'true' to enable quad batching, 'false' to disable it
      * \note Quad batching is enabled by default.
      * \note When quad batching is disabled, each call to render_quads() renders
      *       immediately to the screen. This can lead to a large number of draw
@@ -70,25 +74,29 @@ public:
      */
     void set_quad_batching_enabled(bool enabled);
 
-    /// Returns the maximum texture width/height (in pixels).
-    /** \return The maximum texture width/height (in pixels)
+    /**
+     * \brief Returns the maximum texture width/height (in pixels).
+     * \return The maximum texture width/height (in pixels)
      */
     virtual std::size_t get_texture_max_size() const = 0;
 
-    /// Checks if the renderer supports texture atlases natively.
-    /** \return 'true' if enabled, 'false' otherwise
+    /**
+     * \brief Checks if the renderer supports texture atlases natively.
+     * \return 'true' if enabled, 'false' otherwise
      * \note If 'false', texture atlases will be implemented using a generic
      *       solution with render targets.
      */
     virtual bool is_texture_atlas_supported() const = 0;
 
-    /// Checks if the renderer has texture atlases enabled.
-    /** \return 'true' if enabled, 'false' otherwise
+    /**
+     * \brief Checks if the renderer has texture atlases enabled.
+     * \return 'true' if enabled, 'false' otherwise
      */
     bool is_texture_atlas_enabled() const;
 
-    /// Enables/disables texture atlases.
-    /** \param enabled 'true' to enable texture atlases, 'false' to disable them
+    /**
+     * \brief Enables/disables texture atlases.
+     * \param enabled 'true' to enable texture atlases, 'false' to disable them
      * \note Texture atlases are enabled by default. Changing this flag will only
      *       impact newly created materials. Existing materials will not be affected.
      * \note In general, texture atlases only increase performance when vertex caches
@@ -99,13 +107,15 @@ public:
      */
     void set_texture_atlas_enabled(bool enabled);
 
-    /// Returns the width/height of a texture atlas page (in pixels).
-    /** \return The width/height of a texture atlas page (in pixels)
+    /**
+     * \brief Returns the width/height of a texture atlas page (in pixels).
+     * \return The width/height of a texture atlas page (in pixels)
      */
     std::size_t get_texture_atlas_page_size() const;
 
-    /// Set the width/height of a texture atlas page (in pixels).
-    /** \param page_size The texture width/height in pixels
+    /**
+     * \brief Set the width/height of a texture atlas page (in pixels).
+     * \param page_size The texture width/height in pixels
      * \note Changing this value will only impact newly created atlas pages.
      *       Existing pages will not be affected.
      * \note Increase this value to allow more materials to fit on a single atlas
@@ -115,23 +125,27 @@ public:
      */
     void set_texture_atlas_page_size(std::size_t page_size);
 
-    /// Count the total number of texture atlas pages curently in use.
-    /** \return The total number of texture atlas pages curently in use
+    /**
+     * \brief Count the total number of texture atlas pages currently in use.
+     * \return The total number of texture atlas pages currently in use
      */
     std::size_t get_num_texture_atlas_pages() const;
 
-    /// Checks if the renderer supports vertex caches.
-    /** \return 'true' if supported, 'false' otherwise
+    /**
+     * \brief Checks if the renderer supports vertex caches.
+     * \return 'true' if supported, 'false' otherwise
      */
     virtual bool is_vertex_cache_supported() const = 0;
 
-    /// Checks if the renderer has enabled support for vertex caches.
-    /** \return 'true' if vertex caches are supported and enabled, 'false' otherwise
+    /**
+     * \brief Checks if the renderer has enabled support for vertex caches.
+     * \return 'true' if vertex caches are supported and enabled, 'false' otherwise
      */
     bool is_vertex_cache_enabled() const;
 
-    /// Enables/disables vertex caches.
-    /** \param enabled 'true' to enable vertex caches, 'false' to disable them
+    /**
+     * \brief Enables/disables vertex caches.
+     * \param enabled 'true' to enable vertex caches, 'false' to disable them
      * \note Even if enabled with this function, vertex caches may not be supported
      *       by the renderer, see is_vertex_cache_supported().
      */
@@ -140,22 +154,25 @@ public:
     /// Automatically determines the best rendering settings for the current platform.
     void auto_detect_settings();
 
-    /// Returns the number of batches of vertices sent to the GPU during the last frame.
-    /** \return The number of batches of vertices sent to the GPU during the last frame
+    /**
+     * \brief Returns the number of batches of vertices sent to the GPU during the last frame.
+     * \return The number of batches of vertices sent to the GPU during the last frame
      * \note This will be zero unless is_quad_batching_enabled() is 'true'.
      */
     std::size_t get_batch_count() const;
 
-    /// Begins rendering on a particular render target.
-    /** \param target The render target (main screen if nullptr)
+    /**
+     * \brief Begins rendering on a particular render target.
+     * \param target The render target (main screen if nullptr)
      */
     void begin(std::shared_ptr<render_target> target = nullptr);
 
     /// Ends rendering.
     void end();
 
-    /// Flushes any pending quad batch render operation.
-    /** \note If is_quad_batching_enabled(), quad rendering is done in batches.
+    /**
+     * \brief Flushes any pending quad batch render operation.
+     * \note If is_quad_batching_enabled(), quad rendering is done in batches.
      *       This means that the quads are not actually rendered until this
      *       function is called. The renderer calls this function automatically in
      *       various situations: when calling end(), when trying to render something
@@ -169,8 +186,9 @@ public:
      */
     void flush_quad_batch();
 
-    /// Sets the view matrix to use when rendering (viewport).
-    /** \param view_matrix The view matrix
+    /**
+     * \brief Sets the view matrix to use when rendering (viewport).
+     * \param view_matrix The view matrix
      * \note This function is called by default in begin(), which resets the
      *       view to span the entire render target (or the entire screen). Therefore
      *       it is only necessary to use this function when a custom view is required.
@@ -186,23 +204,26 @@ public:
      */
     void set_view(const matrix4f& view_matrix);
 
-    /// Returns the current view matrix to use when rendering (viewport).
-    /** \return The current view matrix to use when rendering
+    /**
+     * \brief Returns the current view matrix to use when rendering (viewport).
+     * \return The current view matrix to use when rendering
      * \note See set_view() for more information. The returned matrix may be different
      *       from the matrix given to set_view(), if the rendering backend does not
      *       support certain transformations.
      */
     virtual matrix4f get_view() const = 0;
 
-    /// Renders a quad.
-    /** \param q The quad to render on the current render target
+    /**
+     * \brief Renders a quad.
+     * \param q The quad to render on the current render target
      * \note This function is meant to be called between begin() and
      *       end() only.
      */
     void render_quad(const quad& q);
 
-    /// Renders a set of quads.
-    /** \param mat The material to use for rendering, or null if none
+    /**
+     * \brief Renders a set of quads.
+     * \param mat The material to use for rendering, or null if none
      * \param quad_list The list of the quads you want to render
      * \note This function is meant to be called between begin() and
      *       end() only. When multiple quads share the same material, it is
@@ -211,8 +232,9 @@ public:
      */
     void render_quads(const material* mat, const std::vector<std::array<vertex, 4>>& quad_list);
 
-    /// Renders a vertex cache.
-    /** \param mat The material to use for rendering, or null if none
+    /**
+     * \brief Renders a vertex cache.
+     * \param mat The material to use for rendering, or null if none
      * \param cache The vertex cache
      * \param model_transform The transformation matrix to apply to vertices
      * \note This function is meant to be called between begin() and
@@ -232,8 +254,9 @@ public:
         const vertex_cache& cache,
         const matrix4f&     model_transform = matrix4f::identity);
 
-    /// Creates a new material from a texture file.
-    /** \param file_name The name of the file
+    /**
+     * \brief Creates a new material from a texture file.
+     * \param file_name The name of the file
      * \param filt The filtering to apply to the texture
      * \return The new material
      * \note Supported texture formats are defined by implementation.
@@ -242,8 +265,9 @@ public:
     std::shared_ptr<material>
     create_material(const std::string& file_name, material::filter filt = material::filter::none);
 
-    /// Creates a new material from a texture file.
-    /** \param atlas_category The category of atlas in which to create the texture
+    /**
+     * \brief Creates a new material from a texture file.
+     * \param atlas_category The category of atlas in which to create the texture
      * \param file_name The name of the file
      * \param filt The filtering to apply to the texture
      * \return The new material
@@ -268,22 +292,25 @@ public:
         const std::string& file_name,
         material::filter   filt = material::filter::none);
 
-    /// Creates a new material from a portion of a render target.
-    /** \param target The render target from which to read the pixels
+    /**
+     * \brief Creates a new material from a portion of a render target.
+     * \param target The render target from which to read the pixels
      * \param location The portion of the render target to use as material
      * \return The new material
      */
     virtual std::shared_ptr<material>
     create_material(std::shared_ptr<render_target> target, const bounds2f& location) = 0;
 
-    /// Creates a new material from an entire render target.
-    /** \param target The render target from which to read the pixels
+    /**
+     * \brief Creates a new material from an entire render target.
+     * \param target The render target from which to read the pixels
      * \return The new material
      */
     std::shared_ptr<material> create_material(std::shared_ptr<render_target> target);
 
-    /// Creates a new material from arbitrary pixel data.
-    /** \param dimensions The dimensions of the material
+    /**
+     * \brief Creates a new material from arbitrary pixel data.
+     * \param dimensions The dimensions of the material
      * \param pixel_data The color data for all the pixels in the material
      * \param filt The filtering to apply to the texture
      * \return The new material
@@ -293,15 +320,17 @@ public:
         const ub32color* pixel_data,
         material::filter filt = material::filter::none) = 0;
 
-    /// Creates a new render target.
-    /** \param dimensions The dimensions of the render target
+    /**
+     * \brief Creates a new render target.
+     * \param dimensions The dimensions of the render target
      * \param filt The filtering to apply to the target texture when displayed
      */
     virtual std::shared_ptr<render_target> create_render_target(
         const vector2ui& dimensions, material::filter filt = material::filter::none) = 0;
 
-    /// Creates a new font.
-    /** \param font_file The file from which to read the font
+    /**
+     * \brief Creates a new font.
+     * \param font_file The file from which to read the font
      * \param size The requested size of the characters (in points)
      * \param outline The thickness of the outline (in points)
      * \param code_points The list of Unicode characters to load
@@ -320,8 +349,9 @@ public:
         const std::vector<code_point_range>& code_points,
         char32_t                             default_code_point);
 
-    /// Creates a new font.
-    /** \param atlas_category The category of atlas in which to create the font texture
+    /**
+     * \brief Creates a new font.
+     * \param atlas_category The category of atlas in which to create the font texture
      * \param font_file The file from which to read the font
      * \param size The requested size of the characters (in points)
      * \param outline The thickness of the outline (in points)
@@ -340,28 +370,32 @@ public:
         const std::vector<code_point_range>& code_points,
         char32_t                             default_code_point);
 
-    /// Creates a new empty vertex cache.
-    /** \param type The type of data this cache will hold
+    /**
+     * \brief Creates a new empty vertex cache.
+     * \param type The type of data this cache will hold
      * \note Not all implementations support vertex caches. See is_vertex_cache_supported().
      */
     virtual std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type type) = 0;
 
-    /// Notifies the renderer that the render window has been resized.
-    /** \param dimensions The new window dimensions
+    /**
+     * \brief Notifies the renderer that the render window has been resized.
+     * \param dimensions The new window dimensions
      */
     virtual void notify_window_resized(const vector2ui& dimensions);
 
 protected:
-    /// Begins rendering on a particular render target.
-    /** \param target The render target (main screen if nullptr)
+    /**
+     * \brief Begins rendering on a particular render target.
+     * \param target The render target (main screen if nullptr)
      */
     virtual void begin_(std::shared_ptr<render_target> target) = 0;
 
     /// Ends rendering.
     virtual void end_() = 0;
 
-    /// Sets the view matrix to use when rendering (viewport).
-    /** \param view_matrix The view matrix
+    /**
+     * \brief Sets the view matrix to use when rendering (viewport).
+     * \param view_matrix The view matrix
      * \note This function is called by default in begin(), which resets the
      *       view to span the entire render target (or the entire screen). Therefore
      *       it is only necessary to use this function when a custom view is required.
@@ -377,8 +411,9 @@ protected:
      */
     virtual void set_view_(const matrix4f& view_matrix) = 0;
 
-    /// Renders a set of quads.
-    /** \param mat The material to use for rendering, or null if none
+    /**
+     * \brief Renders a set of quads.
+     * \param mat The material to use for rendering, or null if none
      * \param quad_list The list of the quads you want to render
      * \note This function is meant to be called between begin() and
      *       end() only. When multiple quads share the same material, it is
@@ -388,8 +423,9 @@ protected:
     virtual void
     render_quads_(const material* mat, const std::vector<std::array<vertex, 4>>& quad_list) = 0;
 
-    /// Renders a vertex cache.
-    /** \param mat The material to use for rendering, or null if none
+    /**
+     * \brief Renders a vertex cache.
+     * \param mat The material to use for rendering, or null if none
      * \param cache The vertex cache
      * \param model_transform The transformation matrix to apply to vertices
      * \note This function is meant to be called between begin() and
@@ -407,8 +443,9 @@ protected:
     virtual void render_cache_(
         const material* mat, const vertex_cache& cache, const matrix4f& model_transform) = 0;
 
-    /// Creates a new material from a texture file.
-    /** \param file_name The name of the file
+    /**
+     * \brief Creates a new material from a texture file.
+     * \param file_name The name of the file
      * \param filt The filtering to apply to the texture
      * \return The new material
      * \note Supported texture formats are defined by implementation.
@@ -417,14 +454,16 @@ protected:
     virtual std::shared_ptr<material>
     create_material_(const std::string& file_name, material::filter filt) = 0;
 
-    /// Creates a new atlas with a given texture filter mode.
-    /** \param filt The filtering to apply to the texture
+    /**
+     * \brief Creates a new atlas with a given texture filter mode.
+     * \param filt The filtering to apply to the texture
      * \return The new atlas
      */
     virtual std::shared_ptr<atlas> create_atlas_(material::filter filt) = 0;
 
-    /// Creates a new font.
-    /** \param font_file The file from which to read the font
+    /**
+     * \brief Creates a new font.
+     * \param font_file The file from which to read the font
      * \param size The requested size of the characters (in points)
      * \param outline The thickness of the outline (in points)
      * \param code_points The list of Unicode characters to load

@@ -10,8 +10,9 @@
 
 namespace lxgui::gui {
 
-/// An object representing cached vertex data on the GPU
-/** A vertex cache stores vertices and indices that can be used to draw
+/**
+ * \brief An object representing cached vertex data on the GPU
+ * A vertex cache stores vertices and indices that can be used to draw
  * any shape on the screen. If the type is TRIANGLES, each group of 3
  * vertices forms a triangle, while if the type is QUADS, each group of 4
  * vertices forms a quad.
@@ -33,8 +34,9 @@ public:
         quads /// 4 vertices per element
     };
 
-    /// Constructor.
-    /** \param t The type of data this cache will hold
+    /**
+     * \brief Constructor.
+     * \param t The type of data this cache will hold
      * \details A default constructed vertex cache holds no data. Use update()
      *          to store vertices to be rendered.
      */
@@ -55,8 +57,9 @@ public:
     /// Non-movable
     vertex_cache& operator=(vertex_cache&&) = delete;
 
-    /// Update the data stored in the cache to form new triangles.
-    /** \param vertex_data The vertices to cache
+    /**
+     * \brief Update the data stored in the cache to form new triangles.
+     * \param vertex_data The vertices to cache
      * \param num_vertex The number of vertices to cache
      * \note If the type if TRIANGLES, num_vertex must be a multiple of 3.
      *       If the type if QUADS, num_vertex must be a multiple of 4.

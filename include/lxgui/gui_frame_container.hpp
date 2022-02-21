@@ -18,14 +18,16 @@ class registry;
 class frame_renderer;
 class factory;
 
-/// Container of frames.
-/** This class contains and owns "root" frames (frames with no parents)
+/**
+ * \brief Container of frames.
+ * This class contains and owns "root" frames (frames with no parents)
  * and is responsible for their lifetime.
  */
 class frame_container {
 public:
-    /// Type of the root frame list.
-    /** \note Constraints on the choice container type:
+    /**
+     * \brief Type of the root frame list.
+     * \note Constraints on the choice container type:
      *        - must not invalidate iterators on back insertion
      *        - must allow forward iteration
      *        - iterators can be invalidated on removal
@@ -42,8 +44,9 @@ public:
         utils::view::smart_ptr_dereferencer,
         utils::view::non_null_filter>;
 
-    /// Constructor.
-    /** \param fac The GUI object factory
+    /**
+     * \brief Constructor.
+     * \param fac The GUI object factory
      * \param reg The registry in which new frames should be registered
      * \param rdr The frame_renderer that will render these frames (nullptr if none).
      */
@@ -55,8 +58,9 @@ public:
     frame_container& operator=(const frame_container&) = delete;
     frame_container& operator=(frame_container&&) = delete;
 
-    /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param attr The core attributes of the frame (parent will be ignored)
+    /**
+     * \brief Creates a new frame, ready for use, and owned by this frame_container.
+     * \param attr The core attributes of the frame (parent will be ignored)
      * \return The new frame
      * \note This function takes care of the basic initializing: the
      *       frame is directly usable. However, you still need to call
@@ -70,8 +74,9 @@ public:
         return create_root_frame_(attr);
     }
 
-    /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param attr The core attributes of the frame (object_type and parent will be ignored)
+    /**
+     * \brief Creates a new frame, ready for use, and owned by this frame_container.
+     * \param attr The core attributes of the frame (object_type and parent will be ignored)
      * \return The new frame
      * \note This function takes care of the basic initializing: the
      *       frame is directly usable. However, you still need to call
@@ -90,8 +95,9 @@ public:
         return utils::static_pointer_cast<FrameType>(create_root_frame_(attr));
     }
 
-    /// Creates a new frame, ready for use, and owned by this frame_container.
-    /** \param name The name of this frame
+    /**
+     * \brief Creates a new frame, ready for use, and owned by this frame_container.
+     * \param name The name of this frame
      * \return The new frame
      * \note This function takes care of the basic initializing: the
      *       frame is directly usable. However, you still need to call
@@ -111,58 +117,67 @@ public:
         return utils::static_pointer_cast<FrameType>(create_root_frame_(attr));
     }
 
-    /// Make a frame owned by this frame_container.
-    /** \param obj The frame to add to the root frame list
+    /**
+     * \brief Make a frame owned by this frame_container.
+     * \param obj The frame to add to the root frame list
      * \return Raw pointer to the frame
      */
     utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> obj);
 
-    /// Remove a frame from the list of frames owned by this frame_container.
-    /** \param obj The frame to be released
+    /**
+     * \brief Remove a frame from the list of frames owned by this frame_container.
+     * \param obj The frame to be released
      * \return A unique_ptr to the previously owned frame, ignore it to destroy it.
      */
     utils::owner_ptr<frame> remove_root_frame(const utils::observer_ptr<frame>& obj);
 
-    /// Returns the root frame list.
-    /** \return The root frame list
+    /**
+     * \brief Returns the root frame list.
+     * \return The root frame list
      */
     root_frame_list_view get_root_frames();
 
-    /// Returns the root frame list.
-    /** \return The root frame list
+    /**
+     * \brief Returns the root frame list.
+     * \return The root frame list
      */
     const_root_frame_list_view get_root_frames() const;
 
-    /// Clean deleted entries from the frame list.
-    /** \note This must not be called while the root frames are being iterated on.
+    /**
+     * \brief Clean deleted entries from the frame list.
+     * \note This must not be called while the root frames are being iterated on.
      *       All this does is free up "nullptr" entries from the list, to speed up
      *       future iteration.
      */
     void garbage_collect();
 
-    /// Returns the GUI object factory.
-    /** \return The GUI object factory
+    /**
+     * \brief Returns the GUI object factory.
+     * \return The GUI object factory
      */
     factory& get_factory() {
         return factory_;
     }
 
-    /// Returns the GUI object factory.
-    /** \return The GUI object factory
+    /**
+     * \brief Returns the GUI object factory.
+     * \return The GUI object factory
      */
     const factory& get_factory() const {
         return factory_;
     }
 
-    /// Returns the UI object registry, which keeps track of all objects in the UI.
-    /** \return The registry object
+    /**
+     * \brief Returns the UI object registry, which keeps track of all objects in the UI.
+     * \return The registry object
      */
     registry& get_registry() {
         return registry_;
     }
 
-    /// Returns the UI object registry, which keeps track of all objects in the UI.
-    /** \return The registry object
+    /**
+     * \brief Returns the UI object registry, which keeps track of all objects in the UI.
+     * \return The registry object
      */
     const registry& get_registry() const {
         return registry_;

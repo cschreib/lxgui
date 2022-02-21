@@ -18,8 +18,9 @@ namespace lxgui::input { namespace sdl {
 
 class source final : public input::source {
 public:
-    /// Initializes this input source.
-    /** \param win The window from which to receive input
+    /**
+     * \brief Initializes this input source.
+     * \param win The window from which to receive input
      * \param rdr The SDL renderer, or null if using raw OpenGL
      * \param initialise_sdl_image Set to 'true' if SDL Image has not been initialised yet
      */

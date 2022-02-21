@@ -10,8 +10,9 @@ namespace lxgui::gui {
 
 class texture;
 
-/// A #frame representing a variable-length bar.
-/** This frame has three main properties: a minimum value, a
+/**
+ * \brief A #frame representing a variable-length bar.
+ * This frame has three main properties: a minimum value, a
  * maximum value, and a current value that must be contained
  * between the minimum and maximum values. The frame will
  * render a textured bar that will either be full, empty, or
@@ -36,76 +37,90 @@ public:
     /// Constructor.
     explicit status_bar(utils::control_block& block, manager& mgr);
 
-    /// Prints all relevant information about this region in a string.
-    /** \param tab The offset to give to all lines
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
      * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
-    /// Returns 'true' if this status_bar can use a script.
-    /** \param script_name The name of the script
-     * \note This method can be overriden if needed.
+    /**
+     * \brief Returns 'true' if this status_bar can use a script.
+     * \param script_name The name of the script
+     * \note This method can be overridden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
-    /// Copies a region's parameters into this status_bar (inheritance).
-    /** \param obj The region to copy
+    /**
+     * \brief Copies a region's parameters into this status_bar (inheritance).
+     * \param obj The region to copy
      */
     void copy_from(const region& obj) override;
 
-    /// Sets this status_bar's minimum value.
-    /** \param min_value The minimum value
+    /**
+     * \brief Sets this status_bar's minimum value.
+     * \param min_value The minimum value
      */
     void set_min_value(float min_value);
 
-    /// Sets this status_bar's maximum value.
-    /** \param max_value The maximum value
+    /**
+     * \brief Sets this status_bar's maximum value.
+     * \param max_value The maximum value
      */
     void set_max_value(float max_value);
 
-    /// Sets this status_bar's value range.
-    /** \param min_value The minimum value
+    /**
+     * \brief Sets this status_bar's value range.
+     * \param min_value The minimum value
      * \param max_value The maximum value
      */
     void set_min_max_values(float min_value, float max_value);
 
-    /// Sets this status_bar's value.
-    /** \param value The value
+    /**
+     * \brief Sets this status_bar's value.
+     * \param value The value
      */
     void set_value(float value);
 
-    /// Sets the draw layer of this status_bar's bar texture.
-    /** \param bar_layer The layer
+    /**
+     * \brief Sets the draw layer of this status_bar's bar texture.
+     * \param bar_layer The layer
      */
     void set_bar_draw_layer(layer bar_layer);
 
-    /// Sets the draw layer of this status_bar's bar texture.
-    /** \param bar_layer_name The layer
+    /**
+     * \brief Sets the draw layer of this status_bar's bar texture.
+     * \param bar_layer_name The layer
      */
     void set_bar_draw_layer(const std::string& bar_layer_name);
 
-    /// Sets this status_bar's bar texture.
-    /** \param bar_texture The bar texture
+    /**
+     * \brief Sets this status_bar's bar texture.
+     * \param bar_texture The bar texture
      */
     void set_bar_texture(utils::observer_ptr<texture> bar_texture);
 
-    /// Sets this status_bar's bar color.
-    /** \param bar_color The bar color
+    /**
+     * \brief Sets this status_bar's bar color.
+     * \param bar_color The bar color
      */
     void set_bar_color(const color& bar_color);
 
-    /// Sets this status_bar's orientation.
-    /** \param orient The orientation
+    /**
+     * \brief Sets this status_bar's orientation.
+     * \param orient The orientation
      */
     void set_orientation(orientation orient);
 
-    /// Sets this status_bar's orientation.
-    /** \param orientation_name The orientation ("VERTICAL" or "HORIZONTAL")
+    /**
+     * \brief Sets this status_bar's orientation.
+     * \param orientation_name The orientation ("VERTICAL" or "HORIZONTAL")
      */
     void set_orientation(const std::string& orientation_name);
 
-    /// Reverses this status_bar.
-    /** \param reversed 'true' to reverse it
+    /**
+     * \brief Reverses this status_bar.
+     * \param reversed 'true' to reverse it
      * \note By default, if the status bar is oriented horizontally
      *       (vertically), if will grow from left to right (bottom to top).
      *       You can use this function to reverse the growth, that is
@@ -113,60 +128,70 @@ public:
      */
     void set_reversed(bool reversed);
 
-    /// Returns this status_bar's minimum value.
-    /** \return This status_bar's minimum value
+    /**
+     * \brief Returns this status_bar's minimum value.
+     * \return This status_bar's minimum value
      */
     float get_min_value() const;
 
-    /// Returns this status_bar's maximum value.
-    /** \return This status_bar's maximum value
+    /**
+     * \brief Returns this status_bar's maximum value.
+     * \return This status_bar's maximum value
      */
     float get_max_value() const;
 
-    /// Returns this status_bar's value.
-    /** \return This status_bar's value
+    /**
+     * \brief Returns this status_bar's value.
+     * \return This status_bar's value
      */
     float get_value() const;
 
-    /// Returns the draw layer of status_bar's bar texture.
-    /** \return The draw layer of status_bar's bar texture
+    /**
+     * \brief Returns the draw layer of status_bar's bar texture.
+     * \return The draw layer of status_bar's bar texture
      */
     layer get_bar_draw_layer() const;
 
-    /// Returns this status_bar's bar texture.
-    /** \return This status_bar's bar texture
+    /**
+     * \brief Returns this status_bar's bar texture.
+     * \return This status_bar's bar texture
      */
     const utils::observer_ptr<texture>& get_bar_texture() {
         return bar_texture_;
     }
 
-    /// Returns this status_bar's bar texture.
-    /** \return This status_bar's bar texture
+    /**
+     * \brief Returns this status_bar's bar texture.
+     * \return This status_bar's bar texture
      */
     utils::observer_ptr<const texture> get_bar_texture() const {
         return bar_texture_;
     }
 
-    /// Returns this status_bar's bar color.
-    /** \return This status_bar's bar color
+    /**
+     * \brief Returns this status_bar's bar color.
+     * \return This status_bar's bar color
      */
     const color& get_bar_color() const;
 
-    /// Returns this status_bar's orientation.
-    /** \return This status_bar's orientation
+    /**
+     * \brief Returns this status_bar's orientation.
+     * \return This status_bar's orientation
      */
     orientation get_orientation() const;
 
-    /// Checks if this status_bar is reversed.
-    /** \return 'true' if it is the case
+    /**
+     * \brief Checks if this status_bar is reversed.
+     * \return 'true' if it is the case
      */
     bool is_reversed() const;
 
     /// Returns this region's Lua glue.
     void create_glue() override;
 
-    /// Updates this region's logic.
-    /** \param delta Time spent since last update
+    /**
+     * \brief Updates this region's logic.
+     * \param delta Time spent since last update
      * \note Triggered callbacks could destroy the frame. If you need
      *       to use the frame again after calling this function, use
      *       the helper class alive_checker.

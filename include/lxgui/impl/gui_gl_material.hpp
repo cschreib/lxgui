@@ -11,22 +11,25 @@
 
 namespace lxgui::gui::gl {
 
-/// A class that holds rendering data
-/** This implementation can contain either a plain color
+/**
+ * \brief A class that holds rendering data
+ * This implementation can contain either a plain color
  * or a real OpenGL texture. It is also used by the
  * gui::gl::render_target class to store the output data.
  */
 class material final : public gui::material {
 public:
-    /// Constructor for textures.
-    /** \param dimensions The requested texture dimensions
+    /**
+     * \brief Constructor for textures.
+     * \param dimensions The requested texture dimensions
      * \param wrp How to adjust texture coordinates that are outside the [0,1] range
      * \param filt Use texture filtering or not (see set_filter())
      */
     material(const vector2ui& dimensions, wrap wrp = wrap::repeat, filter filt = filter::none);
 
-    /// Constructor for atlas textures.
-    /** \param texture_handle The handle to the texture object of the atlas
+    /**
+     * \brief Constructor for atlas textures.
+     * \param texture_handle The handle to the texture object of the atlas
      * \param canvas_dimensions The dimensions of the texture atlas
      * \param rect The position of this texture inside the atlas
      * \param filt Use texture filtering or not (see set_filter())
@@ -45,13 +48,15 @@ public:
     /// Destructor.
     ~material() override;
 
-    /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
-    /** \return The pixel rect in pixels of the canvas containing this texture (if any)
+    /**
+     * \brief Returns the pixel rect in pixels of the canvas containing this texture (if any).
+     * \return The pixel rect in pixels of the canvas containing this texture (if any)
      */
     bounds2f get_rect() const override;
 
-    /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
-    /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
+    /**
+     * \brief Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
+     * \return The physical dimensions (in pixels) of the canvas containing this (if any)
      * \note When a texture is loaded, most of the time it will fill the entire "canvas",
      *       namely, the 2D pixel array containing the texture data. However, some old
      *       hardware don't support textures that have non power-of-two dimensions.
@@ -62,64 +67,74 @@ public:
      */
     vector2ui get_canvas_dimensions() const override;
 
-    /// Checks if another material is based on the same texture as the current material.
-    /** \return 'true' if both materials use the same texture, 'false' otherwise
+    /**
+     * \brief Checks if another material is based on the same texture as the current material.
+     * \return 'true' if both materials use the same texture, 'false' otherwise
      */
     bool uses_same_texture(const gui::material& other) const override;
 
-    /// Resizes this texture.
-    /** \param dimensions The new texture dimensions
+    /**
+     * \brief Resizes this texture.
+     * \param dimensions The new texture dimensions
      * \return 'true' if the function had to re-create a new texture object
      * \note All the previous data that was stored in this texture will be lost.
      */
     bool set_dimensions(const vector2ui& dimensions);
 
-    /// Premultiplies the texture by alpha component.
-    /** \param data The pixel data to pre-multiply
+    /**
+     * \brief Premultiplies the texture by alpha component.
+     * \param data The pixel data to pre-multiply
      * \note Premultiplied alpha is a rendering technique that allows perfect
      *       alpha blending when using render targets.
      */
     static void premultiply_alpha(std::vector<ub32color>& data);
 
-    /// Sets the wrap mode of this texture.
-    /** \param wrp How to adjust texture coordinates that are outside the [0,1] range
+    /**
+     * \brief Sets the wrap mode of this texture.
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
      */
     void set_wrap(wrap wrp);
 
-    /// Sets the filter mode of this texture.
-    /** \param filt Use texture filtering or not
+    /**
+     * \brief Sets the filter mode of this texture.
+     * \param filt Use texture filtering or not
      * \note When texture filtering is disabled, enlarged textures get pixelated.
      *       Else, the GPU uses an averaging algorithm to blur the pixels.
      */
     void set_filter(filter filt);
 
-    /// Returns the filter mode of this texture.
-    /** \return The filter mode of this texture
+    /**
+     * \brief Returns the filter mode of this texture.
+     * \return The filter mode of this texture
      */
     filter get_filter() const;
 
     /// Sets this material as the active one.
     void bind() const;
 
-    /// Updates the texture that is in GPU memory.
-    /** \param data The new pixel data
+    /**
+     * \brief Updates the texture that is in GPU memory.
+     * \param data The new pixel data
      */
     void update_texture(const ub32color* data);
 
-    /// Returns the OpenGL texture handle.
-    /** \note For internal use.
+    /**
+     * \brief Returns the OpenGL texture handle.
+     * \note For internal use.
      */
     std::uint32_t get_handle() const;
 
-    /// Checks if the machine is capable of using some features.
-    /** \note The function checks for non power of two capability.
+    /**
+     * \brief Checks if the machine is capable of using some features.
+     * \note The function checks for non power of two capability.
      *       If the graphics card doesn't support it, the material
      *       class will automatically create power of two textures.
      */
     static void check_availability();
 
-    /// Returns the maximum size available for a texture, in pixels.
-    /** \return The maximum size available for a texture, in pixels
+    /**
+     * \brief Returns the maximum size available for a texture, in pixels.
+     * \return The maximum size available for a texture, in pixels
      */
     static std::size_t get_max_size();
 

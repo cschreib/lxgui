@@ -31,18 +31,18 @@
  * - `OnCursorChanged`: Triggered whenever the position of the edit
  * cursor is changed (not yet implemented).
  * - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
- * is pressed while the edit box is focussed. This captures both
+ * is pressed while the edit box is focused. This captures both
  * the main keyboard key and the smaller one on the numpad.
  * - `OnEscapePressed`: Triggered when the `Escape` key is pressed
- * while the edit box is focussed.
+ * while the edit box is focused.
  * - `OnSpacePressed`: Triggered when the `Space` key is pressed
- * while the edit box is focussed.
+ * while the edit box is focused.
  * - `OnTabPressed`: Triggered when the `Tab` key is pressed
- * while the edit box is focussed.
+ * while the edit box is focused.
  * - `OnUpPressed`: Triggered when the `Up` key is pressed
- * while the edit box is focussed.
+ * while the edit box is focused.
  * - `OnDownPressed`: Triggered when the `Down` key is pressed
- * while the edit box is focussed.
+ * while the edit box is focused.
  * - `OnTextChanged`: Triggered whenever the text contained in the
  * edit box changes (character added or deleted, text set or pasted,
  * etc.). Triggered after `OnChar`.

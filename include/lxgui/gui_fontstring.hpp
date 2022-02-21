@@ -8,8 +8,9 @@
 
 namespace lxgui::gui {
 
-/// A #layered_region that can draw text on the screen.
-/** This class holds a string and a reference to a font, which
+/**
+ * \brief A #layered_region that can draw text on the screen.
+ * This class holds a string and a reference to a font, which
  * is used to draw the string on the screen. The appearance of
  * the string can be changed (font, size, color, alignment, wrapping).
  * In addition, it is possible to change the color of a portion of
@@ -37,8 +38,9 @@ public:
     /// Constructor.
     explicit font_string(utils::control_block& block, manager& mgr);
 
-    /// Prints all relevant information about this region in a string.
-    /** \param tab The offset to give to all lines
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
      * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
@@ -46,155 +48,183 @@ public:
     /// Renders this region on the current render target.
     void render() const override;
 
-    /// Copies a region's parameters into this font_string (inheritance).
-    /** \param obj The region to copy
+    /**
+     * \brief Copies a region's parameters into this font_string (inheritance).
+     * \param obj The region to copy
      */
     void copy_from(const region& obj) override;
 
-    /// Returns the name of the font file.
-    /** \return The name of the font file
+    /**
+     * \brief Returns the name of the font file.
+     * \return The name of the font file
      */
     const std::string& get_font_name() const;
 
-    /// Returns the heigh of the font.
-    /** \return The heigh of the font
+    /**
+     * \brief Returns the height of the font.
+     * \return The height of the font
      */
     float get_font_height() const;
 
-    /// Adds or remove the outline around the text.
-    /** \param is_outlined 'true' to enable the outline
+    /**
+     * \brief Adds or remove the outline around the text.
+     * \param is_outlined 'true' to enable the outline
      * \note The thickness of this outline is constant and
      *       does not depend on the font's size.
      */
     void set_outlined(bool is_outlined);
 
-    /// Check if this font_string is outlined.
-    /** \return 'true' if this font_string is outlined
+    /**
+     * \brief Check if this font_string is outlined.
+     * \return 'true' if this font_string is outlined
      */
     bool is_outlined() const;
 
-    /// Returns the horizontal alignment behavior.
-    /** \return The horizontal alignment behavior
+    /**
+     * \brief Returns the horizontal alignment behavior.
+     * \return The horizontal alignment behavior
      */
     alignment_x get_alignment_x() const;
 
-    /// Returns the vertical alignment behavior.
-    /** \return The vertical alignment behavior
+    /**
+     * \brief Returns the vertical alignment behavior.
+     * \return The vertical alignment behavior
      */
     alignment_y get_alignment_y() const;
 
-    /// Returns this font_string's shadow color.
-    /** \return This font_string's shadow color
+    /**
+     * \brief Returns this font_string's shadow color.
+     * \return This font_string's shadow color
      */
     const color& get_shadow_color() const;
 
-    /// Returns this font_string's shadow offset.
-    /** \return This font_string's shadow offset
+    /**
+     * \brief Returns this font_string's shadow offset.
+     * \return This font_string's shadow offset
      * \note Contains (X, Y) offset.
      */
     const vector2f& get_shadow_offset() const;
 
-    /// Returns this font_string's offset.
-    /** \return This font_string's offset
+    /**
+     * \brief Returns this font_string's offset.
+     * \return This font_string's offset
      * \note Contains (X, Y) offset.
      */
     const vector2f& get_offset() const;
 
-    /// Returns the space between each letter.
-    /** \return The space between each letter
+    /**
+     * \brief Returns the space between each letter.
+     * \return The space between each letter
      */
     float get_spacing() const;
 
-    /// Returns the space between each line as a fraction of the font height.
-    /** \return The space between each line as a fraction of the font height (default is 1).
+    /**
+     * \brief Returns the space between each line as a fraction of the font height.
+     * \return The space between each line as a fraction of the font height (default is 1).
      */
     float get_line_spacing() const;
 
-    /// Returns the text color.
-    /** \return The text color
+    /**
+     * \brief Returns the text color.
+     * \return The text color
      */
     const color& get_text_color() const;
 
-    /// Sets this font_string's font (file and size).
-    /** \param font_name The file path to the .ttf file
+    /**
+     * \brief Sets this font_string's font (file and size).
+     * \param font_name The file path to the .ttf file
      * \param height The font height
      */
     void set_font(const std::string& font_name, float height);
 
-    /// Sets this font_string's horizontal aligment behavior.
-    /** \param align_x The horizontal alignment behavior
+    /**
+     * \brief Sets this font_string's horizontal alignment behavior.
+     * \param align_x The horizontal alignment behavior
      */
     void set_alignment_x(alignment_x align_x);
 
-    /// Sets this font_string's vertical aligment behavior.
-    /** \param align_y The vertical alignment behavior
+    /**
+     * \brief Sets this font_string's vertical alignment behavior.
+     * \param align_y The vertical alignment behavior
      */
     void set_alignment_y(alignment_y align_y);
 
-    /// Sets this font_string's shadow color.
-    /** \param shadow_color The shadow color
+    /**
+     * \brief Sets this font_string's shadow color.
+     * \param shadow_color The shadow color
      */
     void set_shadow_color(const color& shadow_color);
 
-    /// Sets this font_string's shadow offset.
-    /** \param shadow_offset Offset
+    /**
+     * \brief Sets this font_string's shadow offset.
+     * \param shadow_offset Offset
      * \note Contains (X, Y) offset.
      */
     void set_shadow_offset(const vector2f& shadow_offset);
 
-    /// Sets this font_string's offset.
-    /** \param offset Offset
+    /**
+     * \brief Sets this font_string's offset.
+     * \param offset Offset
      * \note Contains (X, Y) offset.
      */
     void set_offset(const vector2f& offset);
 
-    /// Sets the space between each letter.
-    /** \param spacing The space between each letter
+    /**
+     * \brief Sets the space between each letter.
+     * \param spacing The space between each letter
      */
     void set_spacing(float spacing);
 
-    /// Sets the space between each line as a fraction of the font height.
-    /** \param line_spacing The space between each line, as a relative factor of the font height
+    /**
+     * \brief Sets the space between each line as a fraction of the font height.
+     * \param line_spacing The space between each line, as a relative factor of the font height
      * \note A line spacing of 1 is the default and results in fairly dense text. To increase
      *       the space between lines, set the line spacing to a larger value, for example 1.5
      *       results in 50% more space.
      */
     void set_line_spacing(float line_spacing);
 
-    /// Sets the text color.
-    /** \param text_color The text color
+    /**
+     * \brief Sets the text color.
+     * \param text_color The text color
      */
     void set_text_color(const color& text_color);
 
-    /// Checks is large text is truncated or wrapped.
-    /** \return 'true' if larget text is truncated
-     * \note See set_non_space_wrap for more infos.
+    /**
+     * \brief Checks is large text is truncated or wrapped.
+     * \return 'true' if large text is truncated
+     * \note See set_non_space_wrap for more information.
      */
     bool can_non_space_wrap() const;
 
-    /// Returns the height of the string if no format or wrapping is applied.
-    /** \return The height of the string if no format or wrapping is applied
+    /**
+     * \brief Returns the height of the string if no format or wrapping is applied.
+     * \return The height of the string if no format or wrapping is applied
      */
     float get_string_height() const;
 
-    /// Returns the width of the string if no format or wrapping is applied.
-    /** \return The width of the string if no format or wrapping is applied
+    /**
+     * \brief Returns the width of the string if no format or wrapping is applied.
+     * \return The width of the string if no format or wrapping is applied
      */
     float get_string_width() const;
 
-    /// Returns the width of a string if no format or wrapping is applied.
-    /** \param content The string for which to calculate the width
+    /**
+     * \brief Returns the width of a string if no format or wrapping is applied.
+     * \param content The string for which to calculate the width
      * \return The width of a string if no format or wrapping is applied
      */
     float get_string_width(const utils::ustring& content) const;
 
-    /// Returns the rendered text (with format tags).
-    /** \return The rendered text (with format tags)
+    /**
+     * \brief Returns the rendered text (with format tags).
+     * \return The rendered text (with format tags)
      */
     const utils::ustring& get_text() const;
 
-    /// Sets whether large text is truncated or wrapped.
-    /** \param can_non_space_wrap 'true' to truncate the text
+    /**
+     * \brief Sets whether large text is truncated or wrapped.
+     * \param can_non_space_wrap 'true' to truncate the text
      * \note This applies to large chunks of text with no
      *       spaces. When truncated, "..." is appended at
      *       the line's end. Else, the "word" is cut and
@@ -202,42 +232,49 @@ public:
      */
     void set_non_space_wrap(bool can_non_space_wrap);
 
-    /// Checks if this font_string draws a shadow under its text.
-    /** \return 'true' if this font_string draws a shadow under its text
+    /**
+     * \brief Checks if this font_string draws a shadow under its text.
+     * \return 'true' if this font_string draws a shadow under its text
      */
     bool has_shadow() const;
 
-    /// Sets whether this font_string should draw a shadow under its text.
-    /** \param has_shadow 'true' to enable shadow
+    /**
+     * \brief Sets whether this font_string should draw a shadow under its text.
+     * \param has_shadow 'true' to enable shadow
      */
     void set_shadow(bool has_shadow);
 
-    /// Enables word wrap.
-    /** \param can_word_wrap 'true' to enable word wrap
+    /**
+     * \brief Enables word wrap.
+     * \param can_word_wrap 'true' to enable word wrap
      * \param add_ellipsis 'true' to put "..." at the end of a truncated line
      * \note Enabled by default.
      */
     void set_word_wrap(bool can_word_wrap, bool add_ellipsis);
 
-    /// Checks if word wrap is enabled.
-    /** \return 'true' if word wrap is enabled
+    /**
+     * \brief Checks if word wrap is enabled.
+     * \return 'true' if word wrap is enabled
      */
     bool can_word_wrap() const;
 
-    /// Enables color formatting.
-    /** \param formatting 'true' to enable color formatting
+    /**
+     * \brief Enables color formatting.
+     * \param formatting 'true' to enable color formatting
      * \note Enabled by default. See text::enable_formatting().
      */
     void enable_formatting(bool formatting);
 
-    /// Checks if color formatting is enabled.
-    /** \return 'true' if color formatting is enabled
+    /**
+     * \brief Checks if color formatting is enabled.
+     * \return 'true' if color formatting is enabled
      */
     bool is_formatting_enabled() const;
 
-    /// Sets the rendered text.
-    /** \param content The rendered text
-     * \note See text::set_text for more infos about formatting.
+    /**
+     * \brief Sets the rendered text.
+     * \param content The rendered text
+     * \note See text::set_text for more information about formatting.
      */
     void set_text(const utils::ustring& content);
 
@@ -247,18 +284,21 @@ public:
     /// Creates the associated Lua glue.
     void create_glue() override;
 
-    /// Parses data from a layout_node.
-    /** \param node The layout node
+    /**
+     * \brief Parses data from a layout_node.
+     * \param node The layout node
      */
     void parse_layout(const layout_node& node) override;
 
-    /// Returns the text used to render this font_string.
-    /** \return The text used to render this font_string
+    /**
+     * \brief Returns the text used to render this font_string.
+     * \return The text used to render this font_string
      */
     text* get_text_object();
 
-    /// Returns the text used to render this font_string.
-    /** \return The text used to render this font_string
+    /**
+     * \brief Returns the text used to render this font_string.
+     * \return The text used to render this font_string
      */
     const text* get_text_object() const;
 

@@ -89,8 +89,9 @@ public:
     using connection::connected;
 };
 
-/// Generic class for observing and triggering events.
-/** The implementation guarantees that the following is safe:
+/**
+ * \brief Generic class for observing and triggering events.
+ * The implementation guarantees that the following is safe:
  *  - Connecting or disconnecting a slot from inside any other slot (including self).
  *  - Destroying the signal from any slot.
  *  - Calling the signal recursively from any slot (up to standard stack exhaustion limits).
@@ -140,8 +141,9 @@ public:
 template<typename T>
 class signal {
 public:
-    /// Type of the callable function stored in a slot.
-    /** Can use any function/delegate type here, as long as it
+    /**
+     * \brief Type of the callable function stored in a slot.
+     * Can use any function/delegate type here, as long as it
      * has a matching call operator. The function type does not
      * need to be owning; in this case, the slot must be manually
      * disconnected whenever the pointed function is destroyed.
@@ -149,8 +151,9 @@ public:
     using function_type = std::function<T>;
 
 private:
-    /// Type of a slot.
-    /** This inherits from slot_base, which allows a slot to be disconnected
+    /**
+     * \brief Type of a slot.
+     * This inherits from slot_base, which allows a slot to be disconnected
      * using a simple boolean flag. This enable safe disconnection at any time.
      */
     struct slot : signal_impl::slot_base {
@@ -159,8 +162,9 @@ private:
         function_type callback;
     };
 
-    /// Type of the slot list (internal).
-    /** Constraints on the choice container type:
+    /**
+     * \brief Type of the slot list (internal).
+     * Constraints on the choice container type:
      *  1. must allow back insertion
      *  2. must allow forward iteration
      *  3. ordering of elements is relevant
@@ -183,8 +187,9 @@ private:
     template<typename U>
     using container_type = std::vector<U>;
 
-    /// Type of the slot list.
-    /** Slots are stored as observable shared pointers, so that connection objects
+    /**
+     * \brief Type of the slot list.
+     * Slots are stored as observable shared pointers, so that connection objects
      * can be implemented as a simple observer pointer, without risk of accessing
      * an already deleted slot. If manual disconnection is not required, this could
      * be changed to store slots by value directly for better performance.
@@ -246,8 +251,9 @@ public:
             slt->disconnected = true;
     }
 
-    /// Check if this signal contains any slot.
-    /** \return 'true' if at least one slot is connected.
+    /**
+     * \brief Check if this signal contains any slot.
+     * \return 'true' if at least one slot is connected.
      */
     [[nodiscard]] bool empty() const noexcept {
         const auto& slots = impl_->slots;
@@ -255,16 +261,18 @@ public:
             slots.begin(), slots.end(), [](const auto& slt) { return !slt->disconnected; });
     }
 
-    /// Return a constant view onto the connected slots.
-    /** \return A constant view onto the connected slots
+    /**
+     * \brief Return a constant view onto the connected slots.
+     * \return A constant view onto the connected slots
      * \warning Do not attempt to connect or disconnect slots while iterating over this view.
      */
     [[nodiscard]] slot_list_view slots() const noexcept {
         return slot_list_view(impl_->slots);
     }
 
-    /// Connect a new slot to this signal.
-    /** \param function The function to store in the slot.
+    /**
+     * \brief Connect a new slot to this signal.
+     * \param function The function to store in the slot.
      * \return A connection object, which can be used to disconnect the slot at any time.
      * \note If the returned connection object is discarded, the slot will remain connected
      *       for the entire lifetime of the signal, or until @ref disconnect_all is called.
@@ -277,8 +285,9 @@ public:
         return connection(impl_->slots.back());
     }
 
-    /// Trigger the signal.
-    /** \param args Arguments to forward to all the connected slots.
+    /**
+     * \brief Trigger the signal.
+     * \param args Arguments to forward to all the connected slots.
      */
     template<typename... Args>
     void operator()(Args&&... args) {

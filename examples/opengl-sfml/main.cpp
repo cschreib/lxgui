@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
                     .on_sfml_event(event);
             }
 
-            // If the window is not focussed, do nothing and wait until focus comes back
+            // If the window is not focused, do nothing and wait until focus comes back
             if (!focus) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 continue;

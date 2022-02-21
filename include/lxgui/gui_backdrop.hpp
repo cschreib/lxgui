@@ -17,8 +17,9 @@ class frame;
 /// Draws borders and background of a frame.
 class backdrop {
 public:
-    /// Constructor.
-    /** \param parent The frame it is linked to
+    /**
+     * \brief Constructor.
+     * \param parent The frame it is linked to
      */
     explicit backdrop(frame& parent);
 
@@ -34,76 +35,90 @@ public:
     /// Non-movable
     backdrop& operator=(backdrop&&) = delete;
 
-    /// Copies a backdrop's parameters into this one (inheritance).
-    /** \param other The backdrop to copy
+    /**
+     * \brief Copies a backdrop's parameters into this one (inheritance).
+     * \param other The backdrop to copy
      */
     void copy_from(const backdrop& other);
 
-    /// Sets the background texture.
-    /** \param background_file The background texture
+    /**
+     * \brief Sets the background texture.
+     * \param background_file The background texture
      */
     void set_background(const std::string& background_file);
 
-    /// Returns this backdrop's background file.
-    /** \return This backdrop's background file
+    /**
+     * \brief Returns this backdrop's background file.
+     * \return This backdrop's background file
      */
     const std::string& get_background_file() const;
 
-    /// Sets the background color.
-    /** \param c The background color
+    /**
+     * \brief Sets the background color.
+     * \param c The background color
      * \note This color can be used to tint the background texture if any
      *       or simply render a plain color background.
      */
     void set_background_color(const color& c);
 
-    /// Returns the background color.
-    /** \return The background color
+    /**
+     * \brief Returns the background color.
+     * \return The background color
      */
     color get_background_color() const;
 
-    /// Enables tilling for the background texture.
-    /** \param is_tilling 'true' to enable tilling
+    /**
+     * \brief Enables tilling for the background texture.
+     * \param is_tilling 'true' to enable tilling
      */
     void set_background_tilling(bool is_tilling);
 
-    /// Checks if tilling is enabled for the background texture.
-    /** \return 'true' if tilling is enabled for the background texture
+    /**
+     * \brief Checks if tilling is enabled for the background texture.
+     * \return 'true' if tilling is enabled for the background texture
      */
     bool is_background_tilling() const;
 
-    /// Sets the appearent tile size.
-    /** \param tile_size The new tile size
+    /**
+     * \brief Sets the apparent tile size.
+     * \param tile_size The new tile size
      * \note Tile will be scaled by tile_size/background_texture_size.
      */
     void set_tile_size(float tile_size);
 
-    /// Returns this backdrop's tile size.
-    /** \return This backdrop's tile size
+    /**
+     * \brief Returns this backdrop's tile size.
+     * \return This backdrop's tile size
      */
     float get_tile_size() const;
 
-    /// Sets insets for the background texture.
-    /** \param insets The insets array
+    /**
+     * \brief Sets insets for the background texture.
+     * \param insets The insets array
      */
     void set_background_insets(const bounds2f& insets);
 
-    /// Returns this backdrop's background insets.
-    /** \return This backdrop's background insets
+    /**
+     * \brief Returns this backdrop's background insets.
+     * \return This backdrop's background insets
      */
     const bounds2f& get_background_insets() const;
 
-    /// Sets insets for the edge texture.
-    /** \param insets The insets array
+    /**
+     * \brief Sets insets for the edge texture.
+     * \param insets The insets array
      */
     void set_edge_insets(const bounds2f& insets);
 
-    /// Returns this backdrop's edge insets.
-    /** \return This backdrop's edge insets
+    /**
+     * \brief Returns this backdrop's edge insets.
+     * \return This backdrop's edge insets
      */
     const bounds2f& get_edge_insets() const;
 
-    /// Sets the edge/corner texture.
-    /** \param edge_file The edge/corner texture
+    /**
+     * \brief Sets the edge/corner texture.
+     * \param edge_file The edge/corner texture
      * \note This texture's width must be 8 times greater than its
      *       height.<br><br>
      *       texture parts are interpreted as :<br>
@@ -118,36 +133,42 @@ public:
      */
     void set_edge(const std::string& edge_file);
 
-    /// Returns this backdrop's edge file.
-    /** \return This backdrop's edge file
+    /**
+     * \brief Returns this backdrop's edge file.
+     * \return This backdrop's edge file
      */
     const std::string& get_edge_file() const;
 
-    /// Sets the edge color.
-    /** \param c The edge color
+    /**
+     * \brief Sets the edge color.
+     * \param c The edge color
      * \note This color can be used to tint the edge texture if any
      *       or simply render a plain color edge.
      */
     void set_edge_color(const color& c);
 
-    /// Returns the edge color.
-    /** \return The edge color
+    /**
+     * \brief Returns the edge color.
+     * \return The edge color
      */
     color get_edge_color() const;
 
-    /// Sets the appearent edge size.
-    /** \param edge_size The new edge size
+    /**
+     * \brief Sets the apparent edge size.
+     * \param edge_size The new edge size
      * \note Edges will be scaled by edge_size/edge_texture_height.
      */
     void set_edge_size(float edge_size);
 
-    /// Returns this backdrop's edge size.
-    /** \return This backdrop's edge size
+    /**
+     * \brief Returns this backdrop's edge size.
+     * \return This backdrop's edge size
      */
     float get_edge_size() const;
 
-    /// Sets the color to be multiplied to all drawn vertices.
-    /** \param c The new vertex color
+    /**
+     * \brief Sets the color to be multiplied to all drawn vertices.
+     * \param c The new vertex color
      */
     void set_vertex_color(const color& c);
 

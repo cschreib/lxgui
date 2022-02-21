@@ -25,13 +25,15 @@ enum class alignment_x { left, center, right };
 
 enum class alignment_y { top, middle, bottom };
 
-/// Used to draw some text on the screen
 /**
+ * \brief Used to draw some text on the screen
+ *
  */
 class text {
 public:
-    /// Constructor.
-    /** \param rdr The renderer instance to use
+    /**
+     * \brief Constructor.
+     * \param rdr The renderer instance to use
      * \param fnt The font to use for rendering
      * \param outline_fnt The font to use for outlines
      */
@@ -44,132 +46,154 @@ public:
     text& operator=(const text&) = delete;
     text& operator=(text&&) = delete;
 
-    /// Returns the height of one line (constant).
-    /** \return The height of one line (constant)
+    /**
+     * \brief Returns the height of one line (constant).
+     * \return The height of one line (constant)
      */
     float get_line_height() const;
 
-    /// Set the scaling factor to use when rendering glyphs.
-    /** \param scaling_factor The scaling factor
+    /**
+     * \brief Set the scaling factor to use when rendering glyphs.
+     * \param scaling_factor The scaling factor
      * \note This defines the conversion factor between pixels (from the texture of the
      *       font object) and interface units. By default this is set to 1, but needs to
      *       be changed on high DPI systems.
      */
     void set_scaling_factor(float scaling_factor);
 
-    /// Returns the scaling factor used when rendering glyphs.
-    /** \return The scaling factor used when rendering glyphs
+    /**
+     * \brief Returns the scaling factor used when rendering glyphs.
+     * \return The scaling factor used when rendering glyphs
      */
     float get_scaling_factor() const;
 
-    /// Sets the text to render (unicode character set).
-    /** \param content The text to render
-     * \note This text can be formated :<br>
+    /**
+     * \brief Sets the text to render (unicode character set).
+     * \param content The text to render
+     * \note This text can be formatted :<br>
      *       - "|cAARRGGBB": sets text color (hexadecimal).<br>
      *       - "|r": sets text color to default.<br>
      *       - "||": writes "|".
      */
     void set_text(const utils::ustring& content);
 
-    /// Returns the text that will be rendered (unicode character set).
-    /** \return The text that will be rendered (unicode character set)
+    /**
+     * \brief Returns the text that will be rendered (unicode character set).
+     * \return The text that will be rendered (unicode character set)
      * \note This string contains format tags.
      */
     const utils::ustring& get_text() const;
 
-    /// Sets this text's default color.
-    /** \param c The default color
+    /**
+     * \brief Sets this text's default color.
+     * \param c The default color
      * \param force_color 'true' to ignore color tags
      */
     void set_color(const color& c, bool force_color = false);
 
-    /// Returns this text's default color.
-    /** \return This text's default color
+    /**
+     * \brief Returns this text's default color.
+     * \return This text's default color
      */
     const color& get_color() const;
 
-    /// Sets this text's transparency (alpha).
-    /** \param alpha The new alpha value
+    /**
+     * \brief Sets this text's transparency (alpha).
+     * \param alpha The new alpha value
      */
     void set_alpha(float alpha);
 
-    /// Returns this text's transparency (alpha).
-    /** \return This text's transparency (alpha)
+    /**
+     * \brief Returns this text's transparency (alpha).
+     * \return This text's transparency (alpha)
      */
     float get_alpha() const;
 
-    /// Sets the dimensions of the text box.
-    /** \param box_width The new witdh
+    /**
+     * \brief Sets the dimensions of the text box.
+     * \param box_width The new width
      * \param box_height The new height
      * \note To remove the text box, use 0.0f.
      */
     void set_box_dimensions(float box_width, float box_height);
 
-    /// Sets the width of the text box.
-    /** \param box_width The new witdh
+    /**
+     * \brief Sets the width of the text box.
+     * \param box_width The new width
      * \note To remove it, use 0.0f.
      */
     void set_box_width(float box_width);
 
-    /// Sets the height of the text box.
-    /** \param box_height The new height
+    /**
+     * \brief Sets the height of the text box.
+     * \param box_height The new height
      * \note To remove it, use 0.0f.
      */
     void set_box_height(float box_height);
 
-    /// Returns the width of the rendered text.
-    /** \return The width of the rendered text
+    /**
+     * \brief Returns the width of the rendered text.
+     * \return The width of the rendered text
      * \note Takes the text box into account if any.
      */
     float get_width() const;
 
-    /// Returns the height of the rendered text.
-    /** \return The height of the rendered text
+    /**
+     * \brief Returns the height of the rendered text.
+     * \return The height of the rendered text
      * \note Takes the text box into account if any.
      */
     float get_height() const;
 
-    /// Returns the width of the text box.
-    /** \return The width of the text box
+    /**
+     * \brief Returns the width of the text box.
+     * \return The width of the text box
      */
     float get_box_width() const;
 
-    /// Returns the height of the text box.
-    /** \return The height of the text box
+    /**
+     * \brief Returns the height of the text box.
+     * \return The height of the text box
      */
     float get_box_height() const;
 
-    /// Returns the length of the text.
-    /** \return The length of the text
+    /**
+     * \brief Returns the length of the text.
+     * \return The length of the text
      * \note Ignores the text box, but not manual line jumps.
      */
     float get_text_width() const;
 
-    /// Returns the number of text lines.
-    /** \return The number of text lines
+    /**
+     * \brief Returns the number of text lines.
+     * \return The number of text lines
      */
     std::size_t get_num_lines() const;
 
-    /// Returns the lenght of a provided string.
-    /** \param content The string to measure
-     * \return The lenght of the provided string
+    /**
+     * \brief Returns the length of a provided string.
+     * \param content The string to measure
+     * \return The length of the provided string
      */
     float get_string_width(const std::string& content) const;
 
-    /// Returns the lenght of a provided string.
-    /** \param content The string to measure
-     * \return The lenght of the provided string
+    /**
+     * \brief Returns the length of a provided string.
+     * \param content The string to measure
+     * \return The length of the provided string
      */
     float get_string_width(const utils::ustring& content) const;
 
-    /// Returns the length of a single character.
-    /** \param c The character to measure
-     * \return The lenght of this character
+    /**
+     * \brief Returns the length of a single character.
+     * \param c The character to measure
+     * \return The length of this character
      */
     float get_character_width(char32_t c) const;
 
-    /// Returns the kerning between two characters.
-    /** \param c1 The first character
+    /**
+     * \brief Returns the kerning between two characters.
+     * \param c1 The first character
      * \param c2 The second character
      * \return The kerning between two characters
      * \note Kerning is a letter spacing adjustment that makes the
@@ -179,88 +203,102 @@ public:
      */
     float get_character_kerning(char32_t c1, char32_t c2) const;
 
-    /// Returns the height of the text.
-    /** \return The height of one text
+    /**
+     * \brief Returns the height of the text.
+     * \return The height of one text
      * \note Ignores the text box, but not manual line jumps.
      */
     float get_text_height() const;
 
-    /// Sets text horizontal alignment.
-    /** \param align_x The new horizontal alignment
+    /**
+     * \brief Sets text horizontal alignment.
+     * \param align_x The new horizontal alignment
      */
     void set_alignment_x(alignment_x align_x);
 
-    /// Sets text vertical alignment.
-    /** \param align_y The new vertical alignment
+    /**
+     * \brief Sets text vertical alignment.
+     * \param align_y The new vertical alignment
      */
     void set_alignment_y(alignment_y align_y);
 
-    /// Returns the text horizontal alignment.
-    /** \return The text horizontal alignment
+    /**
+     * \brief Returns the text horizontal alignment.
+     * \return The text horizontal alignment
      */
     alignment_x get_alignment_x() const;
 
-    /// Returns the text vertical alignment.
-    /** \return The text vertical alignment
+    /**
+     * \brief Returns the text vertical alignment.
+     * \return The text vertical alignment
      */
     alignment_y get_alignment_y() const;
 
-    /// Sets this text's tracking.
-    /** \param tracking The new tracking
+    /**
+     * \brief Sets this text's tracking.
+     * \param tracking The new tracking
      * \note Tracking is the space between each character. Default
      *       is 0.
      */
     void set_tracking(float tracking);
 
-    /// Returns this text's tracking.
-    /** \return This text's tracking
+    /**
+     * \brief Returns this text's tracking.
+     * \return This text's tracking
      */
     float get_tracking() const;
 
-    /// Sets this text's line spacing.
-    /** \param line_spacing The new line spacing
+    /**
+     * \brief Sets this text's line spacing.
+     * \param line_spacing The new line spacing
      * \note Line spacing is a coefficient that, multiplied by the
      *       height of a line, gives the space between two lines.
      *       Default is 1.5f.
      */
     void set_line_spacing(float line_spacing);
 
-    /// Returns this text's line spacing.
-    /** \return This text's line spacing
+    /**
+     * \brief Returns this text's line spacing.
+     * \return This text's line spacing
      */
     float get_line_spacing() const;
 
-    /// Allows removal of a line's starting spaces.
-    /** \param remove_starting_spaces 'true' to remove them
+    /**
+     * \brief Allows removal of a line's starting spaces.
+     * \param remove_starting_spaces 'true' to remove them
      * \note The text box does word wrapping: it cuts too long
      *       lines only between words. But sometimes, the rendered
      *       text must be cut between several spaces. By default,
-     *       the algorithm puts cuted spaces at the beginning of
+     *       the algorithm puts cut spaces at the beginning of
      *       the next line. You can change this behavior by setting
      *       this function to 'true'.
      */
     void set_remove_starting_spaces(bool remove_starting_spaces);
 
-    /// Checks if starting spaces removing is active.
-    /** \return 'true' if starting spaces removing is active
+    /**
+     * \brief Checks if starting spaces removing is active.
+     * \return 'true' if starting spaces removing is active
      */
     bool get_remove_starting_spaces() const;
 
-    /// Allows word wrap when the line is too long for the text box.
-    /** \param wrap 'true' to enable word wrap
+    /**
+     * \brief Allows word wrap when the line is too long for the text box.
+     * \param wrap 'true' to enable word wrap
      * \param add_ellipsis 'true' to put "..." at the end of a truncated line
      * \note Enabled by default.
      */
 
     void enable_word_wrap(bool wrap, bool add_ellipsis);
 
-    /// Checks if word wrap is enabled.
-    /** \return 'true' if word wrap is enabled
+    /**
+     * \brief Checks if word wrap is enabled.
+     * \return 'true' if word wrap is enabled
      */
     bool is_word_wrap_enabled() const;
 
-    /// Enables color formatting.
-    /** \param formatting 'true' to enable color formatting
+    /**
+     * \brief Enables color formatting.
+     * \param formatting 'true' to enable color formatting
      * \note Enabled by default.
      * \note - "|cAARRGGBB": sets text color (hexadecimal).<br>
      *       - "|r": sets text color to default.<br>
@@ -268,8 +306,9 @@ public:
      */
     void enable_formatting(bool formatting);
 
-    /// Renders this text at the given position.
-    /** \param transform The transform to apply to the text
+    /**
+     * \brief Renders this text at the given position.
+     * \param transform The transform to apply to the text
      * \note Must be called between renderer::begin() and
      *       renderer::end(). If the transform is left to the default (IDENTITY),
      *       the text will be rendered at the top-left corner of the screen, with the
@@ -278,14 +317,16 @@ public:
      */
     void render(const matrix4f& transform = matrix4f::identity) const;
 
-    /// Returns the number of letters currently displayed.
-    /** \return The number of letters currently displayed
+    /**
+     * \brief Returns the number of letters currently displayed.
+     * \return The number of letters currently displayed
      * \note This function may update the quad cache as needed.
      */
     std::size_t get_num_letters() const;
 
-    /// Returns the quad for the letter at the provided index (position, texture coords, color).
-    /** \param index The index of the letter (0: first letter);
+    /**
+     * \brief Returns the quad for the letter at the provided index (position, texture coords, color).
+     * \param index The index of the letter (0: first letter);
      *                must be less than get_num_letters().
      * \return The quad of the specified letter
      * \note The vertex positions in the quad do not account for the rendering position
@@ -295,21 +336,24 @@ public:
      */
     const std::array<vertex, 4>& get_letter_quad(std::size_t index) const;
 
-    /// Creates a quad that contains the provided character.
-    /** \param c The character to draw
+    /**
+     * \brief Creates a quad that contains the provided character.
+     * \param c The character to draw
      * \note Uses this text's font texture.
      */
     quad create_letter_quad(char32_t c) const;
 
-    /// Returns the renderer used to render this text.
-    /** \return The renderer used to render this text
+    /**
+     * \brief Returns the renderer used to render this text.
+     * \return The renderer used to render this text
      */
     const renderer& get_renderer() const {
         return renderer_;
     }
 
-    /// Returns the renderer used to render this text.
-    /** \return The renderer used to render this text
+    /**
+     * \brief Returns the renderer used to render this text.
+     * \return The renderer used to render this text
      */
     renderer& get_renderer() {
         return renderer_;

@@ -13,8 +13,9 @@ class source;
 /// Represents the window in which the UI is displayed
 class window {
 public:
-    /// Initializes this window with a chosen input source.
-    /** \param src The input source
+    /**
+     * \brief Initializes this window with a chosen input source.
+     * \param src The input source
      */
     explicit window(source& src);
 
@@ -24,18 +25,21 @@ public:
     window& operator=(const window&) = delete;
     window& operator=(window&&) = delete;
 
-    /// Retrieve a copy of the clipboard content.
-    /** \return A copy of the clipboard content (empty string is clipboard is empty).
+    /**
+     * \brief Retrieve a copy of the clipboard content.
+     * \return A copy of the clipboard content (empty string is clipboard is empty).
      */
     utils::ustring get_clipboard_content();
 
-    /// Replace the content of the clipboard.
-    /** \param content The new clipboard content
+    /**
+     * \brief Replace the content of the clipboard.
+     * \param content The new clipboard content
      */
     void set_clipboard_content(const utils::ustring& content);
 
-    /// Sets the mouse cursor to a given image on disk.
-    /** \param file_name The cursor image
+    /**
+     * \brief Sets the mouse cursor to a given image on disk.
+     * \param file_name The cursor image
      * \param hot_spot The pixel position of the tip of the pointer in the image
      * \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
@@ -44,8 +48,9 @@ public:
     /// Sets the mouse cursor back to the default (arrow).
     void reset_mouse_cursor();
 
-    /// Return the interface scaling factor suggested by the operating system.
-    /** \return The interface scaling factor suggested by the operating system
+    /**
+     * \brief Return the interface scaling factor suggested by the operating system.
+     * \return The interface scaling factor suggested by the operating system
      * \note This is implementation-dependent; not all input implementations are able
      *       to produce this hint, in which case the function always returns 1.
      *       Consequently, it is recommended to not rely blindly on this hint, and
@@ -53,18 +58,21 @@ public:
      */
     float get_interface_scaling_factor_hint() const;
 
-    /// Get the window size (in pixels)
-    /** \return The window size
+    /**
+     * \brief Get the window size (in pixels)
+     * \return The window size
      */
     const gui::vector2ui& get_dimensions() const;
 
-    /// Returns the input source.
-    /** \return The input source
+    /**
+     * \brief Returns the input source.
+     * \return The input source
      */
     const source& get_source() const;
 
-    /// Returns the input source.
-    /** \return The input source
+    /**
+     * \brief Returns the input source.
+     * \return The input source
      */
     source& get_source();
 

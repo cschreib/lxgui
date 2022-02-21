@@ -10,8 +10,9 @@
 
 namespace lxgui::utils {
 
-/// Sorted std::vector wrapper.
-/** This class is a light alternative to std::set.
+/**
+ * \brief Sorted std::vector wrapper.
+ * This class is a light alternative to std::set.
     Inspired from: [1] www.lafstern.org/matt/col1.pdf
 
     The sorted vector achieves the same O(log(N)) look up complexity as std::set, but with a
@@ -75,16 +76,18 @@ public:
     using reverse_iterator       = typename base::reverse_iterator;
     using const_reverse_iterator = typename base::const_reverse_iterator;
 
-    /// Default constructor.
-    /** Creates an empty vector.
+    /**
+     * \brief Default constructor.
+     * Creates an empty vector.
      **/
     sorted_vector() = default;
 
     /// Copy another vector into this one.
     sorted_vector(const sorted_vector& s) = default;
 
-    /// Move another sorted_vector into this one.
-    /** The other vector is left empty in the process, and all its content is transfered into
+    /**
+     * \brief Move another sorted_vector into this one.
+     * The other vector is left empty in the process, and all its content is transfered into
         this new one.
     **/
     sorted_vector(sorted_vector&& s) = default;
@@ -92,31 +95,36 @@ public:
     /// Copy another sorted_vector into this one.
     sorted_vector& operator=(const sorted_vector& s) = default;
 
-    /// Move another vector into this one.
-    /** The other vector is left empty in the process, and all its content is transfered into
+    /**
+     * \brief Move another vector into this one.
+     * The other vector is left empty in the process, and all its content is transfered into
         this new one.
     **/
     sorted_vector& operator=(sorted_vector&& s) = default;
 
-    /// Copy a pre-built vector into this one.
-    /** The provided vector must be sorted, and shall not contain any duplicate value.
+    /**
+     * \brief Copy a pre-built vector into this one.
+     * The provided vector must be sorted, and shall not contain any duplicate value.
      **/
     explicit sorted_vector(const base& s) : base(s) {}
 
-    /// Move a pre-built vector into this one.
-    /** The provided vector must be sorted, and shall not contain any duplicate value. It is
+    /**
+     * \brief Move a pre-built vector into this one.
+     * The provided vector must be sorted, and shall not contain any duplicate value. It is
         left empty in the process, and all its content is transfered into this new
         sorted_vector.
     **/
     explicit sorted_vector(base&& s) : base(std::move(s)) {}
 
-    /// Default constructor, with comparator.
-    /** Creates an empty vector and sets the comparator function.
+    /**
+     * \brief Default constructor, with comparator.
+     * Creates an empty vector and sets the comparator function.
      **/
     explicit sorted_vector(const Cmp& c) : compare(c) {}
 
-    /// Write an initializer list into this vector.
-    /** The list need not be sorted.
+    /**
+     * \brief Write an initializer list into this vector.
+     * The list need not be sorted.
      **/
     sorted_vector(std::initializer_list<T> l) {
         for (auto& e : l) {
@@ -124,16 +132,18 @@ public:
         }
     }
 
-    /// Insert a copy of the provided object in the vector.
-    /** If an object already exists with the same key, it is destroyed and replaced by this
+    /**
+     * \brief Insert a copy of the provided object in the vector.
+     * If an object already exists with the same key, it is destroyed and replaced by this
         copy.
     **/
     iterator insert(const T& t) {
         return insert(T(t));
     }
 
-    /// Insert the provided object in the vector.
-    /** If an object already exists with the same key, it is destroyed and replaced by this one.
+    /**
+     * \brief Insert the provided object in the vector.
+     * If an object already exists with the same key, it is destroyed and replaced by this one.
      **/
     iterator insert(T&& t) {
         if (empty()) {
@@ -160,8 +170,9 @@ public:
         return base::erase(first, last);
     }
 
-    /// Erase an element from this vector by its key.
-    /** The key can be a copy of the element itself, or any other object that is supported by
+    /**
+     * \brief Erase an element from this vector by its key.
+     * The key can be a copy of the element itself, or any other object that is supported by
         the chosen comparison function. If no object is found with that key, this function does
         nothing.
     **/
@@ -175,8 +186,9 @@ public:
         }
     }
 
-    /// Find an object in this vector by its key.
-    /** The key can be a copy of the element itself, or any other object that is supported by
+    /**
+     * \brief Find an object in this vector by its key.
+     * The key can be a copy of the element itself, or any other object that is supported by
         the chosen comparison function. If no element is found, this function returns end().
     **/
     template<typename Key>
@@ -190,8 +202,9 @@ public:
         return end();
     }
 
-    /// Find an object in this vector by its key.
-    /** The key can be a copy of the element itself, or any other object that is supported by
+    /**
+     * \brief Find an object in this vector by its key.
+     * The key can be a copy of the element itself, or any other object that is supported by
         the chosen comparison function. If no element is found, this function returns end().
     **/
     template<typename Key>

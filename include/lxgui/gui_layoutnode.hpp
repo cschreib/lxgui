@@ -13,8 +13,9 @@
 
 namespace lxgui::gui {
 
-/// An attribute in a layout file
-/** This is a format-agnostic representation of a GUI layout, as read
+/**
+ * \brief An attribute in a layout file
+ * This is a format-agnostic representation of a GUI layout, as read
  * for example from an XML or YAML file. The GUI uses this class to de-couple
  * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */
@@ -26,30 +27,34 @@ public:
     layout_attribute& operator=(const layout_attribute&) = default;
     layout_attribute& operator=(layout_attribute&&) = default;
 
-    /// Returns this node's location in the file as {file}:{line}.
-    /** \return This node's location in the file as {file}:{line}
+    /**
+     * \brief Returns this node's location in the file as {file}:{line}.
+     * \return This node's location in the file as {file}:{line}
      */
     std::string_view get_location() const noexcept {
         return location_;
     }
 
-    /// Returns this node's value location in the file as {file}:{line}.
-    /** \return This node's value location in the file as {file}:{line}
+    /**
+     * \brief Returns this node's value location in the file as {file}:{line}.
+     * \return This node's value location in the file as {file}:{line}
      */
     std::string_view get_value_location() const noexcept {
         return value_location_;
     }
 
-    /// Returns the file from in which this node is located.
-    /** \return The file from in which this node is located
+    /**
+     * \brief Returns the file from in which this node is located.
+     * \return The file from in which this node is located
      */
     std::string_view get_filename() const noexcept {
         auto pos = location_.find(':');
         return std::string_view(location_.c_str(), pos == location_.npos ? location_.size() : pos);
     }
 
-    /// Returns the line number on which this node is located.
-    /** \return The line number on which this node is located
+    /**
+     * \brief Returns the line number on which this node is located.
+     * \return The line number on which this node is located
      */
     std::size_t get_line_number() const noexcept {
         std::size_t line = std::numeric_limits<std::size_t>::max();
@@ -59,8 +64,9 @@ public:
         return line;
     }
 
-    /// Returns the line number on which this node's value is located.
-    /** \return The line number on which this node's value is located
+    /**
+     * \brief Returns the line number on which this node's value is located.
+     * \return The line number on which this node's value is located
      */
     std::size_t get_value_line_number() const noexcept {
         std::size_t line = std::numeric_limits<std::size_t>::max();
@@ -70,15 +76,17 @@ public:
         return line;
     }
 
-    /// Returns this node's name.
-    /** \return This node's name
+    /**
+     * \brief Returns this node's name.
+     * \return This node's name
      */
     std::string_view get_name() const noexcept {
         return name_;
     }
 
-    /// Returns this node's value as string.
-    /** \return This node's value as string
+    /**
+     * \brief Returns this node's value as string.
+     * \return This node's value as string
      * \note Returns an empty string if none
      */
     std::string_view get_value() const noexcept {
@@ -86,8 +94,9 @@ public:
         return value_;
     }
 
-    /// Returns this node's value as string, or a default value if empty.
-    /** \param fallback The fallback value if the node has no value
+    /**
+     * \brief Returns this node's value as string, or a default value if empty.
+     * \param fallback The fallback value if the node has no value
      * \return This node's value as string, or a default value if empty
      */
     std::string_view get_value_or(std::string_view fallback) const noexcept {
@@ -98,8 +107,9 @@ public:
             return value_;
     }
 
-    /// Returns this node's value converted to a specific type.
-    /** \return This node's value converted to a specific type
+    /**
+     * \brief Returns this node's value converted to a specific type.
+     * \return This node's value converted to a specific type
      * \note Will throw if the value could not be converted. Use get_value_or()
      *       to avoid throwing.
      */
@@ -116,8 +126,9 @@ public:
         return value;
     }
 
-    /// Returns this node's value converted to a specific type, or a default value.
-    /** \return This node's value converted to a specific type, or a default value
+    /**
+     * \brief Returns this node's value converted to a specific type, or a default value.
+     * \return This node's value converted to a specific type, or a default value
      * \note Will return the default value if the value could not be converted.
      */
     template<typename T>
@@ -130,29 +141,33 @@ public:
         return value;
     }
 
-    /// Set this node's location.
-    /** \param location The new location
+    /**
+     * \brief Set this node's location.
+     * \param location The new location
      */
     void set_location(std::string location) noexcept {
         location_ = std::move(location);
     }
 
-    /// Set this node's value location.
-    /** \param location The new value location
+    /**
+     * \brief Set this node's value location.
+     * \param location The new value location
      */
     void set_value_location(std::string location) noexcept {
         value_location_ = std::move(location);
     }
 
-    /// Set this node's name.
-    /** \param name The new name
+    /**
+     * \brief Set this node's name.
+     * \param name The new name
      */
     void set_name(std::string name) noexcept {
         name_ = std::move(name);
     }
 
-    /// Set this node's value.
-    /** \param value The new value
+    /**
+     * \brief Set this node's value.
+     * \param value The new value
      */
     void set_value(std::string value) noexcept {
         value_ = std::move(value);
@@ -168,15 +183,17 @@ public:
         access_bypass_ = true;
     }
 
-    /// Check if this node was accessed by the parser.
-    /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
+    /**
+     * \brief Check if this node was accessed by the parser.
+     * \return 'true' if this node was accessed by the parser, 'false' otherwise.
      */
     bool was_accessed() const {
         return accessed_;
     }
 
-    /// Check if this node should be bypassed for access checks.
-    /** \return 'true' if this node should be bypassed, 'false' otherwise.
+    /**
+     * \brief Check if this node should be bypassed for access checks.
+     * \return 'true' if this node should be bypassed, 'false' otherwise.
      */
     bool is_access_check_bypassed() const {
         return access_bypass_;
@@ -192,8 +209,9 @@ protected:
     mutable bool access_bypass_ = false;
 };
 
-/// An node in a layout file
-/** This is a format-agnostic representation of a GUI layout, as read
+/**
+ * \brief An node in a layout file
+ * This is a format-agnostic representation of a GUI layout, as read
  * for example from an XML or YAML file. The GUI uses this class to de-couple
  * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */
@@ -209,15 +227,17 @@ public:
     using children_view = utils::view::
         adaptor<const child_list, utils::view::standard_dereferencer, utils::view::no_filter>;
 
-    /// Returns the number of children of this node.
-    /** \return The number of children of this node
+    /**
+     * \brief Returns the number of children of this node.
+     * \return The number of children of this node
      */
     std::size_t get_children_count() const noexcept {
         return child_list_.size();
     }
 
-    /// Returns a specific child of this node, by index
-    /** \param index The index (starting from 0) of this child
+    /**
+     * \brief Returns a specific child of this node, by index
+     * \param index The index (starting from 0) of this child
      * \return The child at the specified index
      */
     const layout_node& get_child(std::size_t index) const noexcept {
@@ -225,8 +245,9 @@ public:
         return child_list_[index];
     }
 
-    /// Returns a view to the list of children.
-    /** \return A view to the list of children
+    /**
+     * \brief Returns a view to the list of children.
+     * \return A view to the list of children
      */
     children_view get_children() const noexcept {
         accessed_ = true;
@@ -245,8 +266,9 @@ public:
     using filtered_children_view =
         utils::view::adaptor<const child_list, utils::view::standard_dereferencer, name_filter>;
 
-    /// Returns a view to the list of children with a given name.
-    /** \param name The name to look for
+    /**
+     * \brief Returns a view to the list of children with a given name.
+     * \param name The name to look for
      * \return A view to the list of children with a given name
      */
     filtered_children_view get_children(std::string_view name) const noexcept {
@@ -254,8 +276,9 @@ public:
         return filtered_children_view(child_list_, {}, {name});
     }
 
-    /// Returns the first child with a given name, or null if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the first child with a given name, or null if none.
+     * \param name The name to look for
      * \return The first child with a given name, or null if none
      */
     const layout_node* try_get_child(std::string_view name) const noexcept {
@@ -267,8 +290,9 @@ public:
         return nullptr;
     }
 
-    /// Returns the first child with a given name, and throws if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the first child with a given name, and throws if none.
+     * \param name The name to look for
      * \return The first child with a given name, and throws if none
      * \note Will throw if no child is found with this name. Use try_get_child()
      *       to avoid throwing.
@@ -283,8 +307,9 @@ public:
                 "' in '" + std::string(name_) + "'");
     }
 
-    /// Checks if at least one child exists with the given name
-    /** \param name The name to look for
+    /**
+     * \brief Checks if at least one child exists with the given name
+     * \param name The name to look for
      * \return 'true' if at least one child exists, 'false' otherwise
      */
     bool has_child(std::string_view name) const noexcept {
@@ -292,8 +317,9 @@ public:
         return try_get_child(name) != nullptr;
     }
 
-    /// Returns the attribute with the provided name, or null if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the attribute with the provided name, or null if none.
+     * \param name The name to look for
      * \return The attribute with the provided name, or null if none
      * \note Will throw if no child is found with this name. Use get_attribute_value_or()
      *       to avoid throwing.
@@ -308,8 +334,9 @@ public:
         return nullptr;
     }
 
-    /// Returns the value of the first child with the provided name, throws if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the first child with the provided name, throws if none.
+     * \param name The name to look for
      * \return The value of the first child with the provided name.
      * \note Will throw if no attribute is found with this name. Use try_get_attribute()
      *       to avoid throwing.
@@ -324,8 +351,9 @@ public:
                 std::string(name) + "' in '" + std::string(name_) + "'");
     }
 
-    /// Checks if a given attribute has been specified
-    /** \param name The name to look for
+    /**
+     * \brief Checks if a given attribute has been specified
+     * \param name The name to look for
      * \return 'true' if attribute is specified, 'false' otherwise
      */
     bool has_attribute(std::string_view name) const noexcept {
@@ -333,8 +361,9 @@ public:
         return try_get_attribute(name) != nullptr;
     }
 
-    /// Returns the value of the attribute with the provided name, throws if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the attribute with the provided name, throws if none.
+     * \param name The name to look for
      * \return The value of the attribute with the provided name.
      * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
      *       to avoid throwing.
@@ -344,8 +373,9 @@ public:
         return get_attribute(name).get_value();
     }
 
-    /// Returns the value of the attribute with the provided name, throws if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the attribute with the provided name, throws if none.
+     * \param name The name to look for
      * \return The value of the attribute with the provided name.
      * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
      *       to avoid throwing.
@@ -356,8 +386,9 @@ public:
         return get_attribute(name).get_value<T>();
     }
 
-    /// Returns the value of the attribute with the provided name, or a default value if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the attribute with the provided name, or a default value if none.
+     * \param name The name to look for
      * \param fallback The fallback value
      * \return The value of the attribute with the provided name, or a default value if none
      */
@@ -370,8 +401,9 @@ public:
             return fallback;
     }
 
-    /// Returns the value of the attribute with the provided name, or a default value if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the attribute with the provided name, or a default value if none.
+     * \param name The name to look for
      * \param fallback The fallback value
      * \return The value of the attribute with the provided name, or a default value if none
      */
@@ -388,30 +420,34 @@ public:
     using attribute_view = utils::view::
         adaptor<const attribute_list, utils::view::standard_dereferencer, utils::view::no_filter>;
 
-    /// Returns a view to the list of attributes.
-    /** \return A view to the list of attributes
+    /**
+     * \brief Returns a view to the list of attributes.
+     * \return A view to the list of attributes
      */
     attribute_view get_attributes() const noexcept {
         accessed_ = true;
         return attribute_view(attr_list_);
     }
 
-    /// Add a new child to this node
-    /** \return A reference to the added child
+    /**
+     * \brief Add a new child to this node
+     * \return A reference to the added child
      */
     layout_node& add_child() {
         return child_list_.emplace_back();
     }
 
-    /// Add a new attribute to this node
-    /** \return A reference to the added attribute
+    /**
+     * \brief Add a new attribute to this node
+     * \return A reference to the added attribute
      */
     layout_attribute& add_attribute() {
         return attr_list_.emplace_back();
     }
 
-    /// Returns the value of the attribute with the provided name, or set it if none.
-    /** \param name The name to look for
+    /**
+     * \brief Returns the value of the attribute with the provided name, or set it if none.
+     * \param name The name to look for
      * \param value The value to set if the attribute is missing
      * \return The value of the attribute with the provided name.
      * \note This will modify the layout node object if the value is missing. If you need

@@ -16,8 +16,9 @@ namespace lxgui::input {
 
 class source;
 
-/// Handles inputs (keyboard and mouse)
-/** The implementation is responsible for generating the
+/**
+ * \brief Handles inputs (keyboard and mouse)
+ * The implementation is responsible for generating the
  * following events:
  *  - @ref on_mouse_moved
  *  - @ref on_mouse_wheel
@@ -43,8 +44,9 @@ class source;
  */
 class dispatcher : public signals {
 public:
-    /// Initializes this dispatcher with a chosen input source.
-    /** \param src The input source
+    /**
+     * \brief Initializes this dispatcher with a chosen input source.
+     * \param src The input source
      */
     explicit dispatcher(source& src);
 
@@ -54,89 +56,105 @@ public:
     dispatcher& operator=(const dispatcher&) = delete;
     dispatcher& operator=(dispatcher&&) = delete;
 
-    /// Checks if any key is being pressed.
-    /** \return 'true' if any key is being pressed
+    /**
+     * \brief Checks if any key is being pressed.
+     * \return 'true' if any key is being pressed
      */
     bool any_key_is_down() const;
 
-    /// Checks if a key is being pressed.
-    /** \param key_id The ID code of the key you are interested in
+    /**
+     * \brief Checks if a key is being pressed.
+     * \param key_id The ID code of the key you are interested in
      * \return 'true' if the key is being pressed
      */
     bool key_is_down(key key_id) const;
 
-    /// Returns elapsed time since the key has been pressed.
-    /** \param key_id The ID code of the key you are interested in
+    /**
+     * \brief Returns elapsed time since the key has been pressed.
+     * \param key_id The ID code of the key you are interested in
      * \return Elapsed time since the key has been pressed
      */
     double get_key_down_duration(key key_id) const;
 
-    /// Checks if Alt is beeing pressed.
-    /** \return 'true' if Alt is beeing pressed
+    /**
+     * \brief Checks if Alt is being pressed.
+     * \return 'true' if Alt is being pressed
      */
     bool alt_is_pressed() const;
 
-    /// Checks if Shift is beeing pressed.
-    /** \return 'true' if Shift is beeing pressed
+    /**
+     * \brief Checks if Shift is being pressed.
+     * \return 'true' if Shift is being pressed
      */
     bool shift_is_pressed() const;
 
-    /// Checks if Control (Ctrl) is beeing pressed.
-    /** \return 'true' if Control (Ctrl) is beeing pressed
+    /**
+     * \brief Checks if Control (Ctrl) is being pressed.
+     * \return 'true' if Control (Ctrl) is being pressed
      */
     bool ctrl_is_pressed() const;
 
-    /// Checks if a mouse button is being pressed.
-    /** \param button_id The ID code of the mouse button you are interested in
+    /**
+     * \brief Checks if a mouse button is being pressed.
+     * \param button_id The ID code of the mouse button you are interested in
      * \return 'true' if the mouse button is being pressed
      */
     bool mouse_is_down(mouse_button button_id) const;
 
-    /// Returns elapsed time since the mouse button has been pressed.
-    /** \param key_id The ID code of the mouse button you are interested in
+    /**
+     * \brief Returns elapsed time since the mouse button has been pressed.
+     * \param key_id The ID code of the mouse button you are interested in
      * \return Elapsed time since the mouse button has been pressed
      */
     double get_mouse_down_duration(mouse_button key_id) const;
 
-    /// Returns the position of the mouse in pixels.
-    /** \return The position of the mouse in pixels
+    /**
+     * \brief Returns the position of the mouse in pixels.
+     * \return The position of the mouse in pixels
      */
     gui::vector2f get_mouse_position() const;
 
-    /// Returns the accumulated rolling ammount of the mouse wheel.
-    /** \return The accumulated rolling ammount of the mouse wheel
+    /**
+     * \brief Returns the accumulated rolling amount of the mouse wheel.
+     * \return The accumulated rolling amount of the mouse wheel
      */
     float get_mouse_wheel() const;
 
-    /// Sets the double click maximum time.
-    /** \param double_click_time Maximum amount of time between two clicks in a double click
+    /**
+     * \brief Sets the double click maximum time.
+     * \param double_click_time Maximum amount of time between two clicks in a double click
      */
     void set_doubleclick_time(double double_click_time);
 
-    /// Returns the double click maximum time.
-    /** \return The double click maximum time
+    /**
+     * \brief Returns the double click maximum time.
+     * \return The double click maximum time
      */
     double get_doubleclick_time() const;
 
-    /// Sets the scaling factor applied to the interface.
-    /** \param scaling_factor The new scaling factor (default: 1)
+    /**
+     * \brief Sets the scaling factor applied to the interface.
+     * \param scaling_factor The new scaling factor (default: 1)
      * \note This is the conversion factor between UI units and pixels in the display.
      *       This factor should match gui::renderer::get_interface_scaling_factor().
      */
     void set_interface_scaling_factor(float scaling_factor);
 
-    /// Return the current interface scaling factor.
-    /** \return The current interface scaling factor
+    /**
+     * \brief Return the current interface scaling factor.
+     * \return The current interface scaling factor
      */
     float get_interface_scaling_factor() const;
 
-    /// Returns the input source.
-    /** \return The input source
+    /**
+     * \brief Returns the input source.
+     * \return The input source
      */
     const source& get_source() const;
 
-    /// Returns the input source.
-    /** \return The input source
+    /**
+     * \brief Returns the input source.
+     * \return The input source
      */
     source& get_source();
 
