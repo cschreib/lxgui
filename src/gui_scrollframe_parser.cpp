@@ -14,17 +14,15 @@ void scroll_frame::parse_scroll_child_node_(const layout_node& node) {
     if (const layout_node* scroll_child_node = node.try_get_child("ScrollChild")) {
         if (scroll_child_node->get_children_count() == 0) {
             gui::out << gui::warning << scroll_child_node->get_location()
-                     << " : "
-                        "ScrollChild node needs a child node."
-                     << std::endl;
+                     << " : ScrollChild node needs a child node." << std::endl;
             return;
         }
 
         if (scroll_child_node->get_children_count() > 1) {
-            gui::out << gui::warning << scroll_child_node->get_location()
-                     << " : "
-                        "ScrollChild node needs only one child node; other nodes will be ignored."
-                     << std::endl;
+            gui::out
+                << gui::warning << scroll_child_node->get_location()
+                << " : ScrollChild node needs only one child node; other nodes will be ignored."
+                << std::endl;
             return;
         }
 
@@ -41,8 +39,7 @@ void scroll_frame::parse_scroll_child_node_(const layout_node& node) {
 
         if (!child_node.has_child("Size")) {
             gui::out << gui::warning << child_node.get_location()
-                     << " : "
-                        "Scroll child needs its size to be defined in a Size block."
+                     << " : Scroll child needs its size to be defined in a Size block."
                      << std::endl;
         }
 

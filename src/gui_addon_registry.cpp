@@ -232,8 +232,7 @@ void addon_registry::save_variables_(const addon& a) const noexcept {
     if (!a.saved_variable_list.empty()) {
         if (!utils::make_directory("saves/interface/" + a.main_directory)) {
             gui::out << gui::error
-                     << "gui::addon_registry : "
-                        "unable to create directory 'saves/interface/"
+                     << "gui::addon_registry : unable to create directory 'saves/interface/"
                      << a.main_directory << "'" << std::endl;
             return;
         }

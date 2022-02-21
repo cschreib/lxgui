@@ -26,9 +26,8 @@ sol::optional<gradient::orientation> get_gradient_orientation(const std::string&
         orientation = gradient::orientation::vertical;
     else {
         gui::out << gui::warning
-                 << "Texture:set_gradient : "
-                    "Unknown gradient orientation : \"" +
-                        orientation_name + "\"."
+                 << "Texture:set_gradient : Unknown gradient orientation : \"" + orientation_name +
+                        "\"."
                  << std::endl;
     }
 

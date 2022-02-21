@@ -245,8 +245,7 @@ bool material::set_dimensions(const vector2ui& dimensions) {
 
         if (tex == nullptr) {
             throw gui::exception(
-                "gui::sdl::material", "Could not create render target "
-                                      "with dimensions " +
+                "gui::sdl::material", "Could not create render target with dimensions " +
                                           utils::to_string(canvas_dimensions.x) + " x " +
                                           utils::to_string(canvas_dimensions.y) + ".");
         }

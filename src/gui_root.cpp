@@ -96,8 +96,8 @@ void root::create_caching_render_target_() {
             target_ = renderer_.create_render_target(screen_dimensions_);
     } catch (const utils::exception& e) {
         gui::out << gui::error << "gui::root : "
-                 << "Unable to create render_target for GUI caching :\n"
-                 << e.get_description() << std::endl;
+                 << "Unable to create render_target for GUI caching : " << e.get_description()
+                 << std::endl;
 
         caching_enabled_ = false;
         return;
@@ -204,8 +204,8 @@ void root::update(float delta) {
             }
         } catch (const utils::exception& e) {
             gui::out << gui::error << "gui::root : "
-                     << "Unable to create render_target for strata :\n"
-                     << e.get_description() << std::endl;
+                     << "Unable to create render_target for strata : " << e.get_description()
+                     << std::endl;
 
             caching_enabled_ = false;
         }

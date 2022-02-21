@@ -283,8 +283,8 @@ void frame::copy_from(const region& obj) {
 
 void frame::create_title_region() {
     if (title_region_) {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << " : \"" + name_ + "\" already has a title region." << std::endl;
+        gui::out << gui::warning << "gui::" << type_.back() << " : \"" << name_
+                 << "\" already has a title region." << std::endl;
         return;
     }
 
@@ -527,9 +527,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
     if (iter == region_list_.end()) {
         gui::out << gui::warning << "gui::" << type_.back() << " : "
                  << "Trying to remove \"" << reg->get_name() << "\" from \"" << name_
-                 << "\"'s children, "
-                    "but it was not one of this frame's children."
-                 << std::endl;
+                 << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
     }
 

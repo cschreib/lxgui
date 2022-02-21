@@ -48,30 +48,22 @@ void texture::parse_gradient_node_(const layout_node& node) {
             orient = gradient::orientation::vertical;
         else {
             gui::out << gui::warning << gradient_node->get_location()
-                     << " : "
-                        "Unknown gradient orientation for " +
-                            name_ + " : \"" + orientation +
-                            "\". "
-                            "No gradient will be shown for this texture."
-                     << std::endl;
+                     << " : Unknown gradient orientation for " << name_ << " : \"" << orientation
+                     << "\". No gradient will be shown for this texture." << std::endl;
             return;
         }
 
         const layout_node* min_color_node = gradient_node->try_get_child("MinColor");
         if (!min_color_node) {
             gui::out << gui::warning << node.get_location()
-                     << " : "
-                        "Gradient requires MinColor child node."
-                     << std::endl;
+                     << " : Gradient requires MinColor child node." << std::endl;
             return;
         }
 
         const layout_node* max_color_node = gradient_node->try_get_child("MaxColor");
         if (!max_color_node) {
             gui::out << gui::warning << node.get_location()
-                     << " : "
-                        "Gradient requires MaxColor child node."
-                     << std::endl;
+                     << " : Gradient requires MaxColor child node." << std::endl;
             return;
         }
 

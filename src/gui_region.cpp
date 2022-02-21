@@ -715,8 +715,7 @@ void region::update_anchors_() {
                 gui::out << gui::error << "gui::" << type_.back()
                          << " : Cyclic anchor dependency ! "
                          << "\"" << name_ << "\" and \"" << obj->get_name()
-                         << "\" depend on "
-                            "eachothers (directly or indirectly).\n\""
+                         << "\" depend on eachothers (directly or indirectly). \""
                          << anchor::get_anchor_point_name(anchor->point) << "\" anchor removed."
                          << std::endl;
 

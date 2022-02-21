@@ -106,9 +106,9 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
 
         if (num_vertex % 4 != 0) {
             throw gui::exception(
-                "gui::gl::vertex_cache", "Number of vertices in quad array must be a multiple of 4 "
-                                         "(got " +
-                                             utils::to_string(num_vertex) + ").");
+                "gui::gl::vertex_cache",
+                "Number of vertices in quad array must be a multiple of 4 (got " +
+                    utils::to_string(num_vertex) + ").");
         }
 
         // Update the vertex data
@@ -132,8 +132,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
         if (num_vertex % 3 != 0) {
             throw gui::exception(
                 "gui::gl::vertex_cache",
-                "Number of vertices in triangle array must be a multiple of 3 "
-                "(got " +
+                "Number of vertices in triangle array must be a multiple of 3 (got " +
                     utils::to_string(num_vertex) + ").");
         }
 

@@ -29,7 +29,7 @@ void slider::parse_attributes_(const layout_node& node) {
         else {
             gui::out << gui::warning << node.get_location() << " : Unknown Slider orientation : \""
                      << orient
-                     << "\". Expecting either :\n\"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
+                     << "\". Expecting either \"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
                      << std::endl;
         }
     }

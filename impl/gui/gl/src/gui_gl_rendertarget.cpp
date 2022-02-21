@@ -104,8 +104,7 @@ void render_target::check_availability() {
     if (!renderer::is_gl_extension_supported("GL_EXT_framebuffer_object")) {
         throw gui::exception(
             "gui::gl::render_target",
-            "OpenGL extension "
-            "'GL_EXT_framebuffer_object' is not supported by your hardware.");
+            "OpenGL extension 'GL_EXT_framebuffer_object' is not supported by your hardware.");
     }
 #else
     // Always supported in OpenGL 3 / OpenGL ES 3

@@ -372,7 +372,7 @@ void texture::set_texture(const std::string& file_name) {
     } else {
         gui::out << gui::error << "gui::" << type_.back() << " : "
                  << "Cannot load file \"" << parsed_file << "\" for \"" << name_
-                 << "\".\nUsing white texture instead." << std::endl;
+                 << "\". Using white texture instead." << std::endl;
     }
 
     notify_renderer_need_redraw();
@@ -402,8 +402,7 @@ void texture::set_texture(std::shared_ptr<render_target> target) {
             set_height(quad_.mat->get_rect().height());
     } else {
         gui::out << gui::error << "gui::" << type_.back() << " : "
-                 << "Cannot create a texture from render target.\n"
-                    "Using white texture instead."
+                 << "Cannot create a texture from render target. Using white texture instead."
                  << std::endl;
     }
 

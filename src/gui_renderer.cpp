@@ -24,8 +24,8 @@ void renderer::begin(std::shared_ptr<render_target> target) {
             } catch (const std::exception& e) {
                 gui::out << gui::warning << e.what() << std::endl;
                 gui::out << gui::warning
-                         << "gui::renderer : Failed to create caches for quad batching. "
-                            "Vertex caches will be disabled."
+                         << "gui::renderer : Failed to create caches for quad batching. Vertex "
+                            "caches will be disabled."
                          << std::endl;
 
                 vertex_cache_enabled_ = false;

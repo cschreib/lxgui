@@ -28,8 +28,8 @@ region::parse_dimension_(const layout_node& node) {
 
     if (abs_dim_node && rel_dim_node) {
         gui::out << gui::warning << node.get_location() << " : " << node.get_name()
-                 << " node can only contain one of AbsDimension or RelDimension, "
-                    "but not both. RelDimension ignored."
+                 << " node can only contain one of AbsDimension or RelDimension, but not both. "
+                    "RelDimension ignored."
                  << std::endl;
     }
 
@@ -107,9 +107,7 @@ void region::parse_anchor_node_(const layout_node& node) {
 
             if (utils::find(found_points, point) != found_points.end()) {
                 gui::out << gui::warning << anchor_node.get_location() << " : "
-                         << "anchor point \"" << point
-                         << "\" has already been defined "
-                            "for \""
+                         << "anchor point \"" << point << "\" has already been defined for \""
                          << name_ << "\". anchor skipped." << std::endl;
                 continue;
             }
