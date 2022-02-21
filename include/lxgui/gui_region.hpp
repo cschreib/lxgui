@@ -127,7 +127,7 @@ class frame_renderer;
  *   - `TOP_LEFT`: constrains the max Y and min X.
  *   - `TOP_RIGHT`: constrains the max Y and max X.
  *   - `BOTTOM_LEFT`: constrains the min Y and min X.
- *   - `BOTTOMRIGH`: constrains the min Y and max X.
+ *   - `BOTTOM_RIGHT`: constrains the min Y and max X.
  *   - `LEFT`: constrains the min X and the midpoint in Y.
  *   - `RIGHT`: constrains the max X and the midpoint in Y.
  *   - `TOP`: constrains the max Y and the midpoint in X.
