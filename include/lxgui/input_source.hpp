@@ -16,7 +16,7 @@ namespace lxgui::input {
 
 /**
  * \brief The base class for input source implementation
- * The implementation is responsible for generating the
+ * \details The implementation is responsible for generating the
  * following low-level events:
  *  - @ref on_mouse_moved
  *  - @ref on_mouse_wheel

@@ -41,7 +41,7 @@ class frame_renderer;
 
 /**
  * \brief The base class of all elements in the GUI.
- * Objects of this class offers core functionalities needed by every element
+ * \details Objects of this class offers core functionalities needed by every element
  * of the interface. They have a name, and a corresponding variable created
  * in Lua to access them. They can have a parent #lxgui::gui::frame. They can be
  * placed on the screen at an absolute position, or relative to other regions.

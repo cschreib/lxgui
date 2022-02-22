@@ -28,7 +28,7 @@ enum class anchor_point {
 
 enum class constraint { none, x, y };
 
-/// Stores a position for a UI region
+/// Raw data of an anchor (value type)
 struct anchor_data {
     anchor_data(anchor_point input_point) :
         point(input_point), parent_name("$default"), parent_point(input_point) {}

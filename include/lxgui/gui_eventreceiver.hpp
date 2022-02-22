@@ -14,7 +14,7 @@ class event_emitter;
 
 /**
  * \brief Utility object to store and manage connections to event signals.
- * This class enables registering callbacks to multiple events, and
+ * \details This class enables registering callbacks to multiple events, and
  * automatically manages the lifetime of the callbacks.
  */
 class event_receiver {

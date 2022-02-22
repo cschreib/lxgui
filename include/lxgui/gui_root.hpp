@@ -29,7 +29,7 @@ class renderer;
 
 /**
  * \brief Root of the UI object hierarchy.
- * This class contains and owns all "root" frames (frames with no parents)
+ * \details This class contains and owns all "root" frames (frames with no parents)
  * and is responsible for their lifetime, update, and rendering.
  */
 class root :

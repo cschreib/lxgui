@@ -10,7 +10,7 @@ namespace lxgui::input {
 
 /**
  * \brief Generates input events for the world, after filtering by the UI.
- * The implementation is responsible for generating the
+ * \details The implementation is responsible for generating the
  * following events:
  *  - @ref on_mouse_moved
  *  - @ref on_mouse_wheel

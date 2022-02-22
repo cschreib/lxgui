@@ -18,7 +18,7 @@ struct ub32color {
 
 /**
  * \brief A class that holds rendering data
- * This is an abstract class that must be implemented
+ * \details This is an abstract class that must be implemented
  * and created by the corresponding gui::renderer.
  */
 class material {

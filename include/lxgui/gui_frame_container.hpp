@@ -20,7 +20,7 @@ class factory;
 
 /**
  * \brief Container of frames.
- * This class contains and owns "root" frames (frames with no parents)
+ * \details This class contains and owns "root" frames (frames with no parents)
  * and is responsible for their lifetime.
  */
 class frame_container {

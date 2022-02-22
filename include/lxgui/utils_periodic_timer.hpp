@@ -7,7 +7,7 @@ namespace lxgui::utils {
 
 /**
  * \brief A repeating timer
- * This timer is meant to tick periodicaly,
+ * \details This timer is meant to tick periodicaly,
  * so you can use it for any periodic event
  * such as key repetition or a count down.
  */

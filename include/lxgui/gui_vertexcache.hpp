@@ -12,7 +12,7 @@ namespace lxgui::gui {
 
 /**
  * \brief An object representing cached vertex data on the GPU
- * A vertex cache stores vertices and indices that can be used to draw
+ * \details A vertex cache stores vertices and indices that can be used to draw
  * any shape on the screen. If the type is TRIANGLES, each group of 3
  * vertices forms a triangle, while if the type is QUADS, each group of 4
  * vertices forms a quad.

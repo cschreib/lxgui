@@ -12,7 +12,7 @@ class texture;
 
 /**
  * \brief A #frame representing a variable-length bar.
- * This frame has three main properties: a minimum value, a
+ * \details This frame has three main properties: a minimum value, a
  * maximum value, and a current value that must be contained
  * between the minimum and maximum values. The frame will
  * render a textured bar that will either be full, empty, or

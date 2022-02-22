@@ -15,7 +15,7 @@ namespace lxgui::gui {
 
 /**
  * \brief An attribute in a layout file
- * This is a format-agnostic representation of a GUI layout, as read
+ * \details This is a format-agnostic representation of a GUI layout, as read
  * for example from an XML or YAML file. The GUI uses this class to de-couple
  * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */
@@ -211,7 +211,7 @@ protected:
 
 /**
  * \brief An node in a layout file
- * This is a format-agnostic representation of a GUI layout, as read
+ * \details This is a format-agnostic representation of a GUI layout, as read
  * for example from an XML or YAML file. The GUI uses this class to de-couple
  * the layout parsing format (XML, YAML, etc) from the actual parsed layout.
  */

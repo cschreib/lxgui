@@ -17,7 +17,7 @@ class renderer;
 
 /**
  * \brief Root of the virtual UI object hierarchy.
- * This class contains and owns all virtual "root" frames (frames with no parents)
+ * \details This class contains and owns all virtual "root" frames (frames with no parents)
  * and is responsible for their lifetime.
  */
 class virtual_root : public frame_container {

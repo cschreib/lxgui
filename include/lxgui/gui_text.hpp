@@ -25,10 +25,7 @@ enum class alignment_x { left, center, right };
 
 enum class alignment_y { top, middle, bottom };
 
-/**
- * \brief Used to draw some text on the screen
- *
- */
+/// Used to draw some text on the screen
 class text {
 public:
     /**

@@ -16,7 +16,7 @@ class material;
 
 /**
  * \brief A texture containing characters
- * This class is purely virtual. It needs to be implemented
+ * \details This class is purely virtual. It needs to be implemented
  * and created by the corresponding gui::renderer.
  */
 class font {

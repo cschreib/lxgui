@@ -12,7 +12,7 @@ class texture;
 
 /**
  * \brief A #frame with scrollable content.
- * This frame has a special child frame, the "scroll child". The scroll
+ * \details This frame has a special child frame, the "scroll child". The scroll
  * child is rendered on a separate render target, which is then rendered
  * on the screen. This allows clipping the content of the scroll child
  * and only display a portion of it (as if scrolling on a page). The

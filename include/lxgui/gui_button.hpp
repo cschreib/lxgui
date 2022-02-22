@@ -15,7 +15,7 @@ class font_string;
 
 /**
  * \brief A #frame with a button that can be clicked.
- * This class can handle three different states: "normal", "pushed"
+ * \details This class can handle three different states: "normal", "pushed"
  * and "disabled". You can provide a different texture for each of
  * these states, and two different fontstrings for "normal" and
  * "disabled".

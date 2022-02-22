@@ -10,7 +10,7 @@ namespace lxgui::gui {
 
 /**
  * \brief A #layered_region that can draw text on the screen.
- * This class holds a string and a reference to a font, which
+ * \details This class holds a string and a reference to a font, which
  * is used to draw the string on the screen. The appearance of
  * the string can be changed (font, size, color, alignment, wrapping).
  * In addition, it is possible to change the color of a portion of

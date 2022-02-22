@@ -51,7 +51,7 @@ using script_list_view = script_signal::slot_list_view;
 
 /**
  * \brief A #region that can contain other regions and react to events.
- * This class, which is at the core of the UI design, can contain
+ * \details This class, which is at the core of the UI design, can contain
  * other frames as "children", and layered regions sorted by layers
  * (text, images, ...). A frame can also react to events, and register
  * callbacks to be executed on particular events (key presses, etc.)

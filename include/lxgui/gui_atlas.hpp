@@ -19,7 +19,7 @@ class font;
 
 /**
  * \brief A single texture holding multiple materials for efficient rendering
- * This is an abstract class that must be implemented
+ * \details This is an abstract class that must be implemented
  * and created by the corresponding gui::renderer.
  */
 class atlas_page {
@@ -120,7 +120,7 @@ private:
 
 /**
  * \brief A class that holds multiple materials for efficient rendering
- * This is an abstract class that must be implemented
+ * \details This is an abstract class that must be implemented
  * and created by the corresponding gui::renderer.
  */
 class atlas {

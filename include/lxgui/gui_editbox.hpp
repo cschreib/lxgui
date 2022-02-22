@@ -17,7 +17,7 @@ class texture;
 
 /**
  * \brief A #frame with an editable text box.
- * This frame lets the user input arbitrary text into a box,
+ * \details This frame lets the user input arbitrary text into a box,
  * which can be read and used by the rest of the interface.
  * The text box can be either single-line or multi-line.
  * Text can be selected by holding the Shift key, and natural

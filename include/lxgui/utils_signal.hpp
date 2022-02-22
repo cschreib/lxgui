@@ -91,7 +91,7 @@ public:
 
 /**
  * \brief Generic class for observing and triggering events.
- * The implementation guarantees that the following is safe:
+ * \details The implementation guarantees that the following is safe:
  *  - Connecting or disconnecting a slot from inside any other slot (including self).
  *  - Destroying the signal from any slot.
  *  - Calling the signal recursively from any slot (up to standard stack exhaustion limits).

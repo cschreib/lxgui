@@ -11,7 +11,7 @@ class region;
 
 /**
  * \brief Utility class for safe checking of region validity
- * To use this class, construct an instance of alive_checker
+ * \details To use this class, construct an instance of alive_checker
  * with any object you wish to monitor. Then use the object.
  * Then use alive_checker::is_alive() to check if the object
  * is still alive.

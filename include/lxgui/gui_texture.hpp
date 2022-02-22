@@ -16,7 +16,7 @@ class renderer;
 
 /**
  * \brief A layered_region that can draw images and colored rectangles.
- * This object contains either a texture taken from a file,
+ * \details This object contains either a texture taken from a file,
  * or a plain color (possibly with a different color on each corner).
  */
 class texture : public layered_region {

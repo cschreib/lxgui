@@ -27,7 +27,7 @@ layer parse_layer_type(const std::string& layer_name);
 
 /**
  * \brief A #region that can be rendered in a layer.
- * Layered regions can display content on the screen (texture,
+ * \details Layered regions can display content on the screen (texture,
  * texts, 3D models, ...) and must be contained inside a layer,
  * within a #lxgui::gui::frame object. The frame will then render all
  * its layered regions, sorted by layers.

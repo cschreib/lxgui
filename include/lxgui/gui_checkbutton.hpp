@@ -9,7 +9,7 @@ namespace lxgui::gui {
 
 /**
  * \brief A #button with two additional states: checked and unchecked.
- * This region works exactly like a classic #button, but is has two
+ * \details This region works exactly like a classic #button, but is has two
  * additional special textures for the check sign.
  */
 class check_button : public button {
