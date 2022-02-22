@@ -117,20 +117,14 @@ public:
         else
             custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
 
-        ObjectType::register_on_lua(get_lua());
+        custom_lua_regs_[ObjectType::class_name] = &ObjectType::register_on_lua;
     }
 
     /**
-     * \brief Returns the GUI Lua state (sol wrapper).
-     * \return The GUI Lua state
+     * \brief Registers all region types on the provided Lua state
+     * \param lua The Lua state
      */
-    sol::state& get_lua();
-
-    /**
-     * \brief Returns the GUI Lua state (sol wrapper).
-     * \return The GUI Lua state
-     */
-    const sol::state& get_lua() const;
+    void register_on_lua(sol::state& lua);
 
 private:
     bool finalize_object_(registry& reg, region& object, const region_core_attributes& attr);
@@ -145,6 +139,7 @@ private:
     string_map<std::function<utils::owner_ptr<region>(manager&)>>         custom_object_list_;
     string_map<std::function<utils::owner_ptr<frame>(manager&)>>          custom_frame_list_;
     string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> custom_region_list_;
+    string_map<std::function<void(sol::state&)>>                          custom_lua_regs_;
 };
 
 } // namespace lxgui::gui

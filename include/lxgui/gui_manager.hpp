@@ -4,6 +4,7 @@
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"
+#include "lxgui/utils_signal.hpp"
 
 #include <functional>
 #include <memory>
@@ -128,16 +129,14 @@ public:
     void clear_addon_directory_list();
 
     /**
-     * \brief Set the code to be executed on each fresh Lua state.
-     * \param lua_regs Code that will get executed immediately after the Lua state is created
-     * \note This function is useful if you need to create additionnal
+     * \brief Triggers on each fresh Lua state (e.g., on startup or after a UI re-load).
+     * \note This signal is useful if you need to create additionnal
      * resources on the Lua state before the GUI files are loaded.
-     * The argument to this function will be stored and reused, each time
-     * the Lua state is created (e.g., when the GUI is re-loaded, see reload_ui()).
-     * If the UI is already loaded, this change will only take effect after
-     * the UI is reloaded.
+     * This signal will be triggered each time the Lua state is created (e.g., when the GUI is
+     * re-loaded, see reload_ui()). If the UI is already loaded, any new callback connected to this
+     * signal will only take effect after the UI is reloaded.
      */
-    void register_lua_glues(std::function<void(gui::manager&)> lua_regs);
+    utils::signal<void(sol::state&)> on_create_lua;
 
     /**
      * \brief Prints debug information in the log file.
@@ -392,11 +391,10 @@ private:
     void read_files_();
 
     // Persistent state
-    float                              scaling_factor_      = 1.0f;
-    float                              base_scaling_factor_ = 1.0f;
-    bool                               enable_caching_      = false;
-    std::function<void(gui::manager&)> lua_regs_;
-    std::vector<std::string>           gui_directory_list_;
+    float                    scaling_factor_      = 1.0f;
+    float                    base_scaling_factor_ = 1.0f;
+    bool                     enable_caching_      = false;
+    std::vector<std::string> gui_directory_list_;
 
     // Implementations
     std::unique_ptr<input::source> input_source_;

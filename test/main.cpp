@@ -405,25 +405,24 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
         manager->set_interface_scaling_factor(scale_factor);
 
+        // Register the needed region types
+        gui::factory& fac = manager->get_factory();
+        fac.register_region_type<gui::texture>();
+        fac.register_region_type<gui::font_string>();
+        fac.register_region_type<gui::button>();
+        fac.register_region_type<gui::slider>();
+        fac.register_region_type<gui::edit_box>();
+        fac.register_region_type<gui::scroll_frame>();
+        fac.register_region_type<gui::status_bar>();
+
         // Load files:
         //  - first set the directory in which the interface is located
         manager->add_addon_directory("interface");
         //  - register Lua "glues" (C++ functions and classes callable from Lua)
-        manager->register_lua_glues([](gui::manager& mgr) {
+        manager->on_create_lua.connect([&](sol::state& lua) {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
-            //  - register the needed region types
-            gui::factory& fac = mgr.get_factory();
-            fac.register_region_type<gui::texture>();
-            fac.register_region_type<gui::font_string>();
-            fac.register_region_type<gui::button>();
-            fac.register_region_type<gui::slider>();
-            fac.register_region_type<gui::edit_box>();
-            fac.register_region_type<gui::scroll_frame>();
-            fac.register_region_type<gui::status_bar>();
-            //  - register additional lua functions
-            sol::state& lua = mgr.get_lua();
             lua.set_function("get_folder_list", [](const std::string& dir) {
                 return sol::as_table(utils::get_directory_list(dir));
             });

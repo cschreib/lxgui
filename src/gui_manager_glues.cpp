@@ -26,10 +26,6 @@
 
 namespace lxgui::gui {
 
-void manager::register_lua_glues(std::function<void(gui::manager&)> lua_regs) {
-    lua_regs_ = std::move(lua_regs);
-}
-
 void manager::create_lua_() {
     if (lua_)
         return;
@@ -116,15 +112,14 @@ void manager::create_lua_() {
     lua.set_function(
         "get_interface_scaling_factor", [&]() { return get_interface_scaling_factor(); });
 
+    // Register localization functions
     localizer_->register_on_lua(lua);
 
-    // Base types
-    factory_->register_region_type<region>();
-    factory_->register_region_type<frame>();
-    factory_->register_region_type<layered_region>();
+    // Register all region types
+    factory_->register_on_lua(lua);
 
-    if (lua_regs_)
-        lua_regs_(*this);
+    // Register user callbacks
+    on_create_lua(lua);
 }
 
 } // namespace lxgui::gui

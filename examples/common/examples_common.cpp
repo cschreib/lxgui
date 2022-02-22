@@ -51,25 +51,24 @@ void examples_setup_gui(gui::manager& manager) {
     std::cout << "  Quad batching enabled: " << gui_renderer.is_quad_batching_enabled()
               << std::endl;
 
-    // The first thing to do is register any required C++ classes and functions
-    // onto the Lua state.
-    manager.register_lua_glues([](gui::manager& mgr) {
-        // We use a lambda function because this code might be called
-        // again later on, for example when one reloads the GUI (the
+    // The first thing to do is register any required region classes to the GUI factory.
+    // By default, only the base classes gui::region, gui::frame, and gui::layered_region
+    // are registered. If you want to use more, you need to do this explicitly. This is
+    // also where you would register your own region types, if any.
+    gui::factory& factory = manager.get_factory();
+    factory.register_region_type<gui::texture>();
+    factory.register_region_type<gui::font_string>();
+    factory.register_region_type<gui::button>();
+    factory.register_region_type<gui::slider>();
+    factory.register_region_type<gui::edit_box>();
+    factory.register_region_type<gui::scroll_frame>();
+    factory.register_region_type<gui::status_bar>();
+
+    // Then we register our own custom Lua functions onto the Lua state.
+    manager.on_create_lua.connect([](sol::state& lua) {
+        // We do so by connecting a lambda function to a signal, because this code
+        // might be called again later on, for example when one reloads the GUI (the
         // lua state is destroyed and created again).
-
-        //  - register the needed region types
-        gui::factory& fac = mgr.get_factory();
-        fac.register_region_type<gui::texture>();
-        fac.register_region_type<gui::font_string>();
-        fac.register_region_type<gui::button>();
-        fac.register_region_type<gui::slider>();
-        fac.register_region_type<gui::edit_box>();
-        fac.register_region_type<gui::scroll_frame>();
-        fac.register_region_type<gui::status_bar>();
-
-        //  - register additional lua functions (add your own functions here)
-        sol::state& lua = mgr.get_lua();
         lua.set_function("get_folder_list", [](const std::string& dir) {
             return sol::as_table(utils::get_directory_list(dir));
         });

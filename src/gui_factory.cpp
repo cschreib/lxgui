@@ -85,12 +85,9 @@ factory::create_layered_region(registry& reg, const region_core_attributes& attr
     return new_region;
 }
 
-sol::state& factory::get_lua() {
-    return manager_.get_lua();
-}
-
-const sol::state& factory::get_lua() const {
-    return manager_.get_lua();
+void factory::register_on_lua(sol::state& lua) {
+    for (const auto& reg : custom_lua_regs_)
+        reg.second(lua);
 }
 
 bool factory::finalize_object_(registry& reg, region& object, const region_core_attributes& attr) {

@@ -45,8 +45,14 @@ manager::manager(
     input_dispatcher_(std::make_unique<input::dispatcher>(*input_source_)),
     world_input_dispatcher_(std::make_unique<input::world_dispatcher>()),
     event_emitter_(std::make_unique<gui::event_emitter>()),
+    factory_(std::make_unique<factory>(*this)),
     localizer_(std::make_unique<localizer>()) {
     set_interface_scaling_factor(1.0f);
+
+    // Register base types
+    factory_->register_region_type<region>();
+    factory_->register_region_type<frame>();
+    factory_->register_region_type<layered_region>();
 
     window_->on_window_resized.connect([&](const vector2ui& dimensions) {
         // Update the scaling factor; on mobile platforms, rotating the screen will
@@ -134,7 +140,6 @@ void manager::load_ui() {
     if (is_loaded_)
         return;
 
-    factory_      = std::make_unique<factory>(*this);
     root_         = utils::make_owned<root>(*this);
     virtual_root_ = utils::make_owned<virtual_root>(*this, get_root().get_registry());
 
@@ -161,7 +166,6 @@ void manager::close_ui_now() {
 
     virtual_root_   = nullptr;
     root_           = nullptr;
-    factory_        = nullptr;
     addon_registry_ = nullptr;
     lua_            = nullptr;
 

@@ -287,10 +287,30 @@ utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
 // Grab a pointer to the SFML input source so we can feed events to it later
 input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
-    manager->get_input_dispatcher().get_source()
-);
+    manager->get_input_dispatcher().get_source());
 
-// Load GUI addons:
+// Register any required region classes to the GUI factory.
+// By default, only the base classes gui::region, gui::frame, and gui::layered_region
+// are registered. If you want to use more, you need to do this explicitly. This is
+// also where you would register your own region types, if any.
+gui::factory& factory = manager->get_factory();
+factory.register_region_type<gui::texture>();
+factory.register_region_type<gui::font_string>();
+factory.register_region_type<gui::button>();
+factory.register_region_type<gui::slider>();
+factory.register_region_type<gui::edit_box>();
+factory.register_region_type<gui::scroll_frame>();
+factory.register_region_type<gui::status_bar>();
+
+// Then register your own Lua "glues" (C++ classes and functions to expose to Lua)
+manager->on_create_lua.connect([](sol::state& lua) {
+    // This code might be called again later on, for example when one
+    // reloads the GUI (the Lua state is destroyed and created again).
+    // This is where you would register your own additional Lua "glue" functions, if needed.
+    // ...
+});
+
+// Then load GUI addons.
 // In lxgui, the GUI is formed of multiple modular "addons", each of which defines
 // the appearance and behavior of a specific GUI element (e.g., one addon for
 // the player status bars, one addon for the inventory, etc.).
@@ -298,35 +318,15 @@ input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
 
 //  - First set the directory in which the GUI addons are located
 manager->add_addon_directory("interface");
-//  - Then register Lua "glues" (C++ classes and functions to expose to Lua)
-manager->register_lua_glues([](gui::manager& mgr)
-{
-    // This code might be called again later on, for example when one
-    // reloads the GUI (the Lua state is destroyed and created again).
-    //  - register the needed region types
-    gui::factory& fac = mgr.get_factory();
-    fac.register_region_type<gui::texture>();
-    fac.register_region_type<gui::font_string>();
-    fac.register_region_type<gui::button>();
-    fac.register_region_type<gui::slider>();
-    fac.register_region_type<gui::edit_box>();
-    fac.register_region_type<gui::scroll_frame>();
-    fac.register_region_type<gui::status_bar>();
-    //  - register your own additional Lua "glue" functions, if needed.
-    // ...
-});
-
 //  - and eventually load all addons
 manager->load_ui();
 
 // Start the main loop
 sf::Clock clock;
-while (true)
-{
+while (true) {
     // Retrieve the window events
     sf::Event event;
-    while (window.pollEvent(event))
-    {
+    while (window.pollEvent(event)) {
         // Send these to the input source.
         sfml_source.on_sfml_event(event);
 
