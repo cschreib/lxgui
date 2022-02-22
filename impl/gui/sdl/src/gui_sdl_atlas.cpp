@@ -41,8 +41,8 @@ std::shared_ptr<gui::material>
 atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
     const sdl::material& sdl_mat = static_cast<const sdl::material&>(mat);
 
-    std::size_t      texture_pitch  = 0;
-    const ub32color* texture_pixels = nullptr;
+    std::size_t    texture_pitch  = 0;
+    const color32* texture_pixels = nullptr;
 
     try {
         texture_pixels = sdl_mat.lock_pointer(&texture_pitch);

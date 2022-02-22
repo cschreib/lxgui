@@ -8,7 +8,7 @@
 
 namespace lxgui::gui {
 
-/// A simple color class (float RGBA)
+/// Holds a single color (float RGBA, 128 bits)
 class color {
 public:
     using channel = float;
@@ -64,6 +64,19 @@ color operator*(float f, const color& c2) noexcept;
 
 std::ostream& operator<<(std::ostream& stream, const color& c);
 std::istream& operator>>(std::istream& stream, color& c);
+
+/**
+ * \brief Holds a single color (byte RGBA, 32 bits)
+ * \details This has far less precision than \ref color, but is the native data type
+ * of colors rendered on the screen, and it is commonly used for storage (texture files). Therefore,
+ * it should only be used when strictly necessary, and \ref color should be preferred when color
+ * transformations or interpolations need to be computed.
+ */
+struct color32 {
+    using chanel = unsigned char;
+
+    chanel r, g, b, a;
+};
 
 } // namespace lxgui::gui
 

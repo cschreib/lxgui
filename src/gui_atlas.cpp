@@ -238,8 +238,8 @@ void atlas::add_page_() {
     // Add a white pixel as the first material in the atlas.
     // This can be used for optimizing quad batching, to render
     // quads with no texture.
-    ub32color pixel(255, 255, 255, 255);
-    auto      tex       = renderer_.create_material(vector2ui(1u, 1u), &pixel);
+    color32 pixel{255, 255, 255, 255};
+    auto    tex         = renderer_.create_material(vector2ui(1u, 1u), &pixel);
     item.no_texture_mat = item.page->add_material("", *tex);
 
     page_list_.push_back(std::move(item));

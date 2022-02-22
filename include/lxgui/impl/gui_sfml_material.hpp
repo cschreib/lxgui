@@ -130,7 +130,7 @@ public:
      * \brief Updates the texture that is in GPU memory.
      * \param data The new pixel data
      */
-    void update_texture(const ub32color* data);
+    void update_texture(const color32* data);
 
     /**
      * \brief Returns the underlying SFML render texture object.

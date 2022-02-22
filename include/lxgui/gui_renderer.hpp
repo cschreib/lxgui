@@ -317,7 +317,7 @@ public:
      */
     virtual std::shared_ptr<material> create_material(
         const vector2ui& dimensions,
-        const ub32color* pixel_data,
+        const color32*   pixel_data,
         material::filter filt = material::filter::none) = 0;
 
     /**

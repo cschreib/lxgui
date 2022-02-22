@@ -8,15 +8,6 @@
 
 namespace lxgui::gui {
 
-/// A 32 bit RGBA color
-struct ub32color {
-    using chanel = unsigned char;
-
-    ub32color() = default;
-    ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
-    chanel r, g, b, a;
-};
-
 /**
  * \brief A class that holds rendering data
  * \details This is an abstract class that must be implemented

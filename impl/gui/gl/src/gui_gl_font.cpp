@@ -189,8 +189,8 @@ font::font(
         if (final_width * final_height / 2 >= tex_size)
             final_height = final_height / 2;
 
-        std::vector<ub32color> data(final_width * final_height);
-        std::fill(data.begin(), data.end(), ub32color(0, 0, 0, 0));
+        std::vector<color32> data(final_width * final_height);
+        std::fill(data.begin(), data.end(), color32{0, 0, 0, 0});
 
         std::size_t x = 0, y = 0;
 
@@ -249,12 +249,12 @@ font::font(
 
                 // Some characters do not have a bitmap, like white spaces.
                 // This is legal, and we should just have blank geometry for them.
-                const ub32color::chanel* buffer = bitmap.buffer;
+                const color32::chanel* buffer = bitmap.buffer;
                 if (buffer) {
                     for (std::size_t j = 0; j < bitmap.rows; ++j) {
                         std::size_t row_offset = (y + j) * final_width + x;
                         for (std::size_t i = 0; i < bitmap.width; ++i, ++buffer)
-                            data[i + row_offset] = ub32color(255, 255, 255, *buffer);
+                            data[i + row_offset] = color32{255, 255, 255, *buffer};
                     }
                 }
 

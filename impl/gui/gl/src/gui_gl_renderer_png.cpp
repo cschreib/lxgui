@@ -75,7 +75,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
         std::size_t width  = png_get_image_width(read_struct, info_struct);
         std::size_t height = png_get_image_height(read_struct, info_struct);
 
-        std::vector<ub32color> data(width * height);
+        std::vector<color32>   data(width * height);
         std::vector<png_bytep> rows(height);
 
         for (std::size_t i = 0; i < height; ++i)

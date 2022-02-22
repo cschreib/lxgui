@@ -167,7 +167,7 @@ void material::bind() const {
     glBindTexture(GL_TEXTURE_2D, texture_handle_);
 }
 
-void material::premultiply_alpha(std::vector<ub32color>& data) {
+void material::premultiply_alpha(std::vector<color32>& data) {
     for (auto& c : data) {
         float a = c.a / 255.0f;
         c.r *= a;
@@ -246,7 +246,7 @@ bool material::set_dimensions(const vector2ui& dimensions) {
     return canvas_updated;
 }
 
-void material::update_texture(const ub32color* data) {
+void material::update_texture(const color32* data) {
     GLint previous_id;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &previous_id);
 

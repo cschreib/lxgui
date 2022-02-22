@@ -105,7 +105,7 @@ color interpolate_color(const color& color1, const color& color2, float interp) 
         color1.a * (1.0f - interp) + color2.a * interp);
 }
 
-ub32color to_ub32color(const color& color) {
+color32 to_color32(const color& color) {
     return {
         static_cast<unsigned char>(color.r * 255), static_cast<unsigned char>(color.g * 255),
         static_cast<unsigned char>(color.b * 255), static_cast<unsigned char>(color.a * 255)};
@@ -415,7 +415,7 @@ void renderer::render_quad_(const sdl::material* mat, const std::array<vertex, 4
                 premultiply_alpha(view_list[3].col, pre_multiplied_alpha_supported_)};
 
             sdl::material temp_mat(renderer_, vector2ui(dest_quad.w, dest_quad.h), false);
-            ub32color*    pixel_data = temp_mat.lock_pointer();
+            color32*      pixel_data = temp_mat.lock_pointer();
             for (int y = 0; y < dest_quad.h; ++y)
                 for (int x = 0; x < dest_quad.w; ++x) {
                     const color col_y1 =
@@ -423,7 +423,7 @@ void renderer::render_quad_(const sdl::material* mat, const std::array<vertex, 4
                     const color col_y2 =
                         interpolate_color(color_quad[1], color_quad[2], y / float(dest_quad.h - 1));
                     pixel_data[y * dest_quad.w + x] =
-                        to_ub32color(interpolate_color(col_y1, col_y2, x / float(dest_quad.w - 1)));
+                        to_color32(interpolate_color(col_y1, col_y2, x / float(dest_quad.w - 1)));
                 }
             temp_mat.unlock_pointer();
 
@@ -479,16 +479,16 @@ bool renderer::is_vertex_cache_supported() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    const vector2ui& dimensions, const color32* pixel_data, material::filter filt) {
     std::shared_ptr<sdl::material> tex =
         std::make_shared<sdl::material>(renderer_, dimensions, false, material::wrap::repeat, filt);
 
     std::size_t pitch    = 0u;
-    ub32color*  tex_data = tex->lock_pointer(&pitch);
+    color32*    tex_data = tex->lock_pointer(&pitch);
 
     for (std::size_t y = 0u; y < dimensions.y; ++y) {
-        const ub32color* pixel_data_row = pixel_data + y * dimensions.x;
-        ub32color*       tex_data_row   = tex_data + y * pitch;
+        const color32* pixel_data_row = pixel_data + y * dimensions.x;
+        color32*       tex_data_row   = tex_data + y * pitch;
         std::copy(pixel_data_row, pixel_data_row + dimensions.x, tex_data_row);
     }
 

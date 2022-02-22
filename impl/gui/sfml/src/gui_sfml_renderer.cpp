@@ -170,7 +170,7 @@ bool renderer::is_texture_vertex_color_supported() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    const vector2ui& dimensions, const color32* pixel_data, material::filter filt) {
     std::shared_ptr<sfml::material> tex =
         std::make_shared<sfml::material>(dimensions, false, material::wrap::repeat, filt);
 

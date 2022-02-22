@@ -95,8 +95,8 @@ font::font(
     vector2f  canvas_dimensions_float = vector2f(canvas_dimensions);
 
     std::size_t pitch          = 0;
-    ub32color*  texture_pixels = texture_->lock_pointer(&pitch);
-    std::fill(texture_pixels, texture_pixels + pitch * canvas_dimensions.y, ub32color(0, 0, 0, 0));
+    color32*    texture_pixels = texture_->lock_pointer(&pitch);
+    std::fill(texture_pixels, texture_pixels + pitch * canvas_dimensions.y, color32{0, 0, 0, 0});
 
     std::size_t x = 0, y = 0;
     std::size_t line_max_height = max_height;
@@ -156,8 +156,8 @@ font::font(
             // SDL_ttf outputs glyphs in BGRA (little-endian) and we use RGBA;
             // this is fine because we always render glyphs in white, and don't care about
             // the color information.
-            ub32color*  glyph_pixels = reinterpret_cast<ub32color*>(glyph_surface->pixels);
-            std::size_t glyph_pitch  = glyph_surface->pitch / sizeof(ub32color);
+            color32*    glyph_pixels = reinterpret_cast<color32*>(glyph_surface->pixels);
+            std::size_t glyph_pitch  = glyph_surface->pitch / sizeof(color32);
             for (std::size_t j = 0; j < glyph_height; ++j)
                 for (std::size_t i = 0; i < glyph_width; ++i)
                     texture_pixels[x + i + (y + j) * pitch] = glyph_pixels[i + j * glyph_pitch];

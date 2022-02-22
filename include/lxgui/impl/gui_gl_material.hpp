@@ -87,7 +87,7 @@ public:
      * \note Premultiplied alpha is a rendering technique that allows perfect
      * alpha blending when using render targets.
      */
-    static void premultiply_alpha(std::vector<ub32color>& data);
+    static void premultiply_alpha(std::vector<color32>& data);
 
     /**
      * \brief Sets the wrap mode of this texture.
@@ -116,7 +116,7 @@ public:
      * \brief Updates the texture that is in GPU memory.
      * \param data The new pixel data
      */
-    void update_texture(const ub32color* data);
+    void update_texture(const color32* data);
 
     /**
      * \brief Returns the OpenGL texture handle.

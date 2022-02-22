@@ -117,11 +117,11 @@ material::material(
     }
 
     // Copy data into the texture
-    std::size_t      pitch          = 0;
-    ub32color*       texture_pixels = lock_pointer(&pitch);
-    const ub32color* surface_pixels_start =
-        reinterpret_cast<const ub32color*>(converted_surface->pixels);
-    const ub32color* surface_pixels_end = surface_pixels_start + pitch * height;
+    std::size_t    pitch          = 0;
+    color32*       texture_pixels = lock_pointer(&pitch);
+    const color32* surface_pixels_start =
+        reinterpret_cast<const color32*>(converted_surface->pixels);
+    const color32* surface_pixels_end = surface_pixels_start + pitch * height;
     std::copy(surface_pixels_start, surface_pixels_end, texture_pixels);
     unlock_pointer();
 
@@ -185,7 +185,7 @@ material::filter material::get_filter() const {
 }
 
 void material::premultiply_alpha(SDL_Surface* surface) {
-    ub32color* pixel_data = reinterpret_cast<ub32color*>(surface->pixels);
+    color32* pixel_data = reinterpret_cast<color32*>(surface->pixels);
 
     const std::size_t area = surface->w * surface->h;
     for (std::size_t i = 0; i < area; ++i) {
@@ -262,7 +262,7 @@ bool material::set_dimensions(const vector2ui& dimensions) {
     return canvas_updated;
 }
 
-const ub32color* material::lock_pointer(std::size_t* pitch) const {
+const color32* material::lock_pointer(std::size_t* pitch) const {
     void* pixel_data = nullptr;
     int   int_pitch  = 0;
     if (SDL_LockTexture(texture_, nullptr, &pixel_data, &int_pitch) != 0) {
@@ -270,18 +270,18 @@ const ub32color* material::lock_pointer(std::size_t* pitch) const {
     }
 
     if (pitch)
-        *pitch = static_cast<std::size_t>(int_pitch) / sizeof(ub32color);
+        *pitch = static_cast<std::size_t>(int_pitch) / sizeof(color32);
 
-    return reinterpret_cast<ub32color*>(pixel_data);
+    return reinterpret_cast<color32*>(pixel_data);
 }
 
-ub32color* material::lock_pointer(std::size_t* pitch) {
+color32* material::lock_pointer(std::size_t* pitch) {
     if (!is_owner_) {
         throw gui::exception(
             "gui::sdl::material", "A material in an atlas cannot update its data.");
     }
 
-    return const_cast<ub32color*>(const_cast<const material*>(this)->lock_pointer(pitch));
+    return const_cast<color32*>(const_cast<const material*>(this)->lock_pointer(pitch));
 }
 
 void material::unlock_pointer() const {

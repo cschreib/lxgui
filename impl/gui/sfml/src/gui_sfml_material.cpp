@@ -118,7 +118,7 @@ material::filter material::get_filter() const {
     return filter_;
 }
 
-void material::update_texture(const ub32color* data) {
+void material::update_texture(const color32* data) {
     if (is_render_target_)
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
 

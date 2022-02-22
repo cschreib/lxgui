@@ -94,7 +94,7 @@ atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
     glFramebufferTexture2D(
         GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gl_mat.get_handle(), 0);
 
-    std::vector<ub32color> pixel_data(location.width() * location.height());
+    std::vector<color32> pixel_data(location.width() * location.height());
     glReadPixels(
         0, 0, location.width(), location.height(), GL_RGBA, GL_UNSIGNED_BYTE, pixel_data.data());
 
