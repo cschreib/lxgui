@@ -22,6 +22,7 @@ class Event;
 
 namespace lxgui::input { namespace sfml {
 
+/// SFML implementation of input::source
 class source final : public input::source {
 public:
     /**

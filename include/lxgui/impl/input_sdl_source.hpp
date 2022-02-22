@@ -16,6 +16,7 @@ union SDL_Event;
 
 namespace lxgui::input { namespace sdl {
 
+/// SDL implementation of input::source
 class source final : public input::source {
 public:
     /**
