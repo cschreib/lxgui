@@ -8,6 +8,7 @@
 
 namespace lxgui::gui {
 
+/// A 32 bit RGBA color
 struct ub32color {
     using chanel = unsigned char;
 

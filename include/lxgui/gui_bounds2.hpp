@@ -6,6 +6,10 @@
 
 namespace lxgui::gui {
 
+/**
+ * \brief Holds 2D bounds of a region.
+ * \details The bounds are stored as left, right, top, and bottom coordinates.
+ */
 template<typename T>
 struct bounds2 {
     constexpr bounds2() = default;
@@ -146,7 +150,9 @@ bounds2<T> operator/(const bounds2<T>& quad, T scale) noexcept {
 template<typename T>
 const bounds2<T> bounds2<T>::zero(0, 0, 0, 0);
 
+/// Holds 2D bounds of a region (as floats).
 using bounds2f = bounds2<float>;
+/// Holds 2D bounds of a region (as signed integers).
 using bounds2i = bounds2<int>;
 
 template<typename O, typename T>

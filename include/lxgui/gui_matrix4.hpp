@@ -9,6 +9,7 @@
 
 namespace lxgui::gui {
 
+/// A 4x4 matrix, used for coordinate transformations
 struct matrix4f {
     using element_type = float;
 
