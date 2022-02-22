@@ -52,9 +52,9 @@ public:
      * \brief Return the interface scaling factor suggested by the operating system.
      * \return The interface scaling factor suggested by the operating system
      * \note This is implementation-dependent; not all input implementations are able
-     *       to produce this hint, in which case the function always returns 1.
-     *       Consequently, it is recommended to not rely blindly on this hint, and
-     *       to offer a way for the user to change the scaling factor.
+     * to produce this hint, in which case the function always returns 1.
+     * Consequently, it is recommended to not rely blindly on this hint, and
+     * to offer a way for the user to change the scaling factor.
      */
     float get_interface_scaling_factor_hint() const;
 

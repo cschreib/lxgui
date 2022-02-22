@@ -56,8 +56,8 @@ public:
      * \brief Set the scaling factor to use when rendering glyphs.
      * \param scaling_factor The scaling factor
      * \note This defines the conversion factor between pixels (from the texture of the
-     *       font object) and interface units. By default this is set to 1, but needs to
-     *       be changed on high DPI systems.
+     * font object) and interface units. By default this is set to 1, but needs to
+     * be changed on high DPI systems.
      */
     void set_scaling_factor(float scaling_factor);
 
@@ -70,10 +70,10 @@ public:
     /**
      * \brief Sets the text to render (unicode character set).
      * \param content The text to render
-     * \note This text can be formatted :<br>
-     *       - "|cAARRGGBB": sets text color (hexadecimal).<br>
-     *       - "|r": sets text color to default.<br>
-     *       - "||": writes "|".
+     * \note This text can be formatted :
+     *  - "|cAARRGGBB": sets text color (hexadecimal).
+     *  - "|r": sets text color to default.
+     *  - "||": writes "|".
      */
     void set_text(const utils::ustring& content);
 
@@ -197,9 +197,9 @@ public:
      * \param c2 The second character
      * \return The kerning between two characters
      * \note Kerning is a letter spacing adjustment that makes the
-     *       text look more condensed: is you stick an A near a V,
-     *       you can reduce the space between the two letters, but not
-     *       if you put two Vs side to side.
+     * text look more condensed: is you stick an A near a V,
+     * you can reduce the space between the two letters, but not
+     * if you put two Vs side to side.
      */
     float get_character_kerning(char32_t c1, char32_t c2) const;
 
@@ -237,8 +237,7 @@ public:
     /**
      * \brief Sets this text's tracking.
      * \param tracking The new tracking
-     * \note Tracking is the space between each character. Default
-     *       is 0.
+     * \note Tracking is the space between each character. Default is 0.
      */
     void set_tracking(float tracking);
 
@@ -252,8 +251,8 @@ public:
      * \brief Sets this text's line spacing.
      * \param line_spacing The new line spacing
      * \note Line spacing is a coefficient that, multiplied by the
-     *       height of a line, gives the space between two lines.
-     *       Default is 1.5f.
+     * height of a line, gives the space between two lines.
+     * Default is 1.5f.
      */
     void set_line_spacing(float line_spacing);
 
@@ -267,11 +266,11 @@ public:
      * \brief Allows removal of a line's starting spaces.
      * \param remove_starting_spaces 'true' to remove them
      * \note The text box does word wrapping: it cuts too long
-     *       lines only between words. But sometimes, the rendered
-     *       text must be cut between several spaces. By default,
-     *       the algorithm puts cut spaces at the beginning of
-     *       the next line. You can change this behavior by setting
-     *       this function to 'true'.
+     * lines only between words. But sometimes, the rendered
+     * text must be cut between several spaces. By default,
+     * the algorithm puts cut spaces at the beginning of
+     * the next line. You can change this behavior by setting
+     * this function to 'true'.
      */
     void set_remove_starting_spaces(bool remove_starting_spaces);
 
@@ -299,10 +298,7 @@ public:
     /**
      * \brief Enables color formatting.
      * \param formatting 'true' to enable color formatting
-     * \note Enabled by default.
-     * \note - "|cAARRGGBB": sets text color (hexadecimal).<br>
-     *       - "|r": sets text color to default.<br>
-     *       - "||": writes "|".
+     * \note Enabled by default. See \ref set_text for more information on formatting.
      */
     void enable_formatting(bool formatting);
 
@@ -310,10 +306,10 @@ public:
      * \brief Renders this text at the given position.
      * \param transform The transform to apply to the text
      * \note Must be called between renderer::begin() and
-     *       renderer::end(). If the transform is left to the default (IDENTITY),
-     *       the text will be rendered at the top-left corner of the screen, with the
-     *       anchor position (coordinate [0,0]) set by the vertical and horizontal
-     *       alignment (see get_alignment() and get_vertical_alignment()).
+     * renderer::end(). If the transform is left to the default (IDENTITY),
+     * the text will be rendered at the top-left corner of the screen, with the
+     * anchor position (coordinate [0,0]) set by the vertical and horizontal
+     * alignment (see get_alignment() and get_vertical_alignment()).
      */
     void render(const matrix4f& transform = matrix4f::identity) const;
 
@@ -326,13 +322,12 @@ public:
 
     /**
      * \brief Returns the quad for the letter at the provided index (position, texture coords, color).
-     * \param index The index of the letter (0: first letter);
-     *                must be less than get_num_letters().
+     * \param index The index of the letter (0: first letter); must be less than get_num_letters().
      * \return The quad of the specified letter
      * \note The vertex positions in the quad do not account for the rendering position
-     *       provided to render(). The first letter always has its top-left corner as
-     *       the position (0,0) (if left-aligned). This function may update the quad cache as
-     *       needed.
+     * provided to render(). The first letter always has its top-left corner as
+     * the position (0,0) (if left-aligned). This function may update the quad cache as
+     * needed.
      */
     const std::array<vertex, 4>& get_letter_quad(std::size_t index) const;
 

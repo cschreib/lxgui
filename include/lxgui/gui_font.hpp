@@ -38,7 +38,7 @@ public:
      * \param c The unicode character
      * \return The uv coordinates of this character on the texture
      * \note The uv coordinates are normalized, i.e. they range from
-     *       0 to 1. They are arranged as {u1, v1, u2, v2}.
+     * 0 to 1. They are arranged as {u1, v1, u2, v2}.
      */
     virtual bounds2f get_character_uvs(char32_t c) const = 0;
 
@@ -69,9 +69,9 @@ public:
      * \param c2 The second unicode character
      * \return The kerning amount between the two characters
      * \note Kerning is a font rendering adjustment that makes some
-     *       letters closer, for example in 'VA', there is room for
-     *       the two to be closer than with 'VW'. This has no effect
-     *       for fixed width fonts (like Courrier, etc).
+     * letters closer, for example in 'VA', there is room for
+     * the two to be closer than with 'VW'. This has no effect
+     * for fixed width fonts (like Courrier, etc).
      */
     virtual float get_character_kerning(char32_t c1, char32_t c2) const = 0;
 

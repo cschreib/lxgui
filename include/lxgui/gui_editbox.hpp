@@ -76,8 +76,8 @@ public:
      * \brief Updates this region's logic.
      * \param delta Time spent since last update
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void update(float delta) override;
 
@@ -86,8 +86,8 @@ public:
      * \param script_name The name of the script
      * \param data Stores scripts arguments
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -224,7 +224,7 @@ public:
      * \brief Enables password mode.
      * \param enable 'true' to enable password mode
      * \note In password mode, the content of the edit_box is replaced
-     *       by stars (*).
+     * by stars (*).
      */
     void enable_password_mode(bool enable);
 
@@ -238,10 +238,10 @@ public:
      * \brief Allows this edit_box to have several lines in it.
      * \param multi_line 'true' to allow several lines in this edit_box
      * \note The behavior of a "multi line" edit_box is very different from
-     *       a single line one.<br>
-     *       History lines are only available to single line edit_boxes.<br>
-     *       Scrolling in a single line edit_box is done horizontally, while
-     *       it is only done vertically in a multi line one.
+     * a single line one.<br>
+     * History lines are only available to single line edit_boxes.<br>
+     * Scrolling in a single line edit_box is done horizontally, while
+     * it is only done vertically in a multi line one.
      */
     void set_multi_line(bool multi_line);
 
@@ -290,7 +290,7 @@ public:
      * \brief Sets the insets used to render the content text.
      * \param insets (left, right, top, bottom)
      * \note Positive insets will reduce the text area, while
-     *       negative ones will enlarge it
+     * negative ones will enlarge it
      */
     void set_text_insets(const bounds2f& insets);
 

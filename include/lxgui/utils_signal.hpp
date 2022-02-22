@@ -99,7 +99,7 @@ public:
  * Other notable behaviors:
  *  - Slots will be called in order of connection.
  *  - Slots connected while the signal is being triggered will not be called until the
- *    next trigger of the signal.
+ *  next trigger of the signal.
  *
  * Example:
  *
@@ -275,10 +275,10 @@ public:
      * \param function The function to store in the slot.
      * \return A connection object, which can be used to disconnect the slot at any time.
      * \note If the returned connection object is discarded, the slot will remain connected
-     *       for the entire lifetime of the signal, or until @ref disconnect_all is called.
-     *       If this is not desirable, store the returned connection, and disconnect the slot
-     *       when it should no longer be called. The RAII helper class @ref scoped_connection
-     *       can do this safely.
+     * for the entire lifetime of the signal, or until @ref disconnect_all is called.
+     * If this is not desirable, store the returned connection, and disconnect the slot
+     * when it should no longer be called. The RAII helper class @ref scoped_connection
+     * can do this safely.
      */
     connection connect(function_type function) {
         impl_->slots.push_back(utils::make_owned<slot>(std::move(function)));

@@ -61,7 +61,7 @@ public:
     /**
      * \brief shows this region.
      * \note Its parent must be shown for it to appear on
-     *       the screen.
+     * the screen.
      */
     void show() override;
 

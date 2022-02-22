@@ -71,8 +71,8 @@ public:
      * \param script_name The name of the script
      * \param data Stores scripts arguments
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -295,16 +295,16 @@ public:
     /**
      * \brief Highlights this button.
      * \note The button will be highlighted even if the
-     *       mouse is not over it. It will stop when the
-     *       mouse leaves it.
+     * mouse is not over it. It will stop when the
+     * mouse leaves it.
      */
     virtual void highlight();
 
     /**
      * \brief Unlights this button.
      * \note The button will be unlighted even if the
-     *       mouse is over it. It will highlight again
-     *       when the mouse leaves then enters its region.
+     * mouse is over it. It will highlight again
+     * when the mouse leaves then enters its region.
      */
     virtual void unlight();
 
@@ -317,7 +317,7 @@ public:
     /**
      * \brief Locks this button's highlighting.
      * \note The button will always be highlighted
-     *       until you call unlock_highlight().
+     * until you call unlock_highlight().
      */
     void lock_highlight();
 

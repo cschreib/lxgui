@@ -49,7 +49,7 @@ public:
      * \brief Sets this render target's dimensions.
      * \param dimensions The new dimensions (in pixels)
      * \return 'true' if the function had to re-create a
-     *         new render target
+     * new render target
      */
     bool set_dimensions(const vector2ui& dimensions) override;
 
@@ -57,9 +57,9 @@ public:
      * \brief Returns this render target's canvas dimension.
      * \return This render target's canvas dimension
      * \note This is the physical size of the render target.
-     *       On some systems, abitrary dimensions are not supported:
-     *       they can be promoted to the nearest power of two from
-     *       for example.
+     * On some systems, abitrary dimensions are not supported:
+     * they can be promoted to the nearest power of two from
+     * for example.
      */
     vector2ui get_canvas_dimensions() const override;
 

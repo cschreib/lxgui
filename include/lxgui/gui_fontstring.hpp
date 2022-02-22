@@ -70,7 +70,7 @@ public:
      * \brief Adds or remove the outline around the text.
      * \param is_outlined 'true' to enable the outline
      * \note The thickness of this outline is constant and
-     *       does not depend on the font's size.
+     * does not depend on the font's size.
      */
     void set_outlined(bool is_outlined);
 
@@ -179,8 +179,8 @@ public:
      * \brief Sets the space between each line as a fraction of the font height.
      * \param line_spacing The space between each line, as a relative factor of the font height
      * \note A line spacing of 1 is the default and results in fairly dense text. To increase
-     *       the space between lines, set the line spacing to a larger value, for example 1.5
-     *       results in 50% more space.
+     * the space between lines, set the line spacing to a larger value, for example 1.5
+     * results in 50% more space.
      */
     void set_line_spacing(float line_spacing);
 
@@ -226,9 +226,9 @@ public:
      * \brief Sets whether large text is truncated or wrapped.
      * \param can_non_space_wrap 'true' to truncate the text
      * \note This applies to large chunks of text with no
-     *       spaces. When truncated, "..." is appended at
-     *       the line's end. Else, the "word" is cut and
-     *       continues on the next line.
+     * spaces. When truncated, "..." is appended at
+     * the line's end. Else, the "word" is cut and
+     * continues on the next line.
      */
     void set_non_space_wrap(bool can_non_space_wrap);
 

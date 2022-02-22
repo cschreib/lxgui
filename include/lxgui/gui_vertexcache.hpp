@@ -24,7 +24,7 @@ namespace lxgui::gui {
  * A vertex cache can be rendered with gui::renderer::render_vertex_cache().
  *
  * \note This is an abstract class that must be inherited
- *       from and created by the corresponding gui::renderer.
+ * from and created by the corresponding gui::renderer.
  */
 class vertex_cache {
 public:
@@ -38,7 +38,7 @@ public:
      * \brief Constructor.
      * \param t The type of data this cache will hold
      * \details A default constructed vertex cache holds no data. Use update()
-     *          to store vertices to be rendered.
+     * to store vertices to be rendered.
      */
     explicit vertex_cache(type t);
 
@@ -62,7 +62,7 @@ public:
      * \param vertex_data The vertices to cache
      * \param num_vertex The number of vertices to cache
      * \note If the type if TRIANGLES, num_vertex must be a multiple of 3.
-     *       If the type if QUADS, num_vertex must be a multiple of 4.
+     * If the type if QUADS, num_vertex must be a multiple of 4.
      */
     virtual void update(const vertex* vertex_data, std::size_t num_vertex) = 0;
 

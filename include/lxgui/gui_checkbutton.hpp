@@ -50,7 +50,7 @@ public:
     /**
      * \brief Releases this check button.
      * \note This function only has a visual impact:
-     *       the OnClick() handler is not called.
+     * the OnClick() handler is not called.
      */
     void release() override;
 

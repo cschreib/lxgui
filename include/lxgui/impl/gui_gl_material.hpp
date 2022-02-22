@@ -58,12 +58,12 @@ public:
      * \brief Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
      * \return The physical dimensions (in pixels) of the canvas containing this (if any)
      * \note When a texture is loaded, most of the time it will fill the entire "canvas",
-     *       namely, the 2D pixel array containing the texture data. However, some old
-     *       hardware don't support textures that have non power-of-two dimensions.
-     *       If the user creates a material for such a texture, the gui::renderer will
-     *       create a bigger canvas that has power-of-two dimensions, and store the
-     *       texture in it. Likewise, if a texture is placed in a wider texture atlas,
-     *       the canvas will contain more than one texture.
+     * namely, the 2D pixel array containing the texture data. However, some old
+     * hardware don't support textures that have non power-of-two dimensions.
+     * If the user creates a material for such a texture, the gui::renderer will
+     * create a bigger canvas that has power-of-two dimensions, and store the
+     * texture in it. Likewise, if a texture is placed in a wider texture atlas,
+     * the canvas will contain more than one texture.
      */
     vector2ui get_canvas_dimensions() const override;
 
@@ -85,7 +85,7 @@ public:
      * \brief Premultiplies the texture by alpha component.
      * \param data The pixel data to pre-multiply
      * \note Premultiplied alpha is a rendering technique that allows perfect
-     *       alpha blending when using render targets.
+     * alpha blending when using render targets.
      */
     static void premultiply_alpha(std::vector<ub32color>& data);
 
@@ -99,7 +99,7 @@ public:
      * \brief Sets the filter mode of this texture.
      * \param filt Use texture filtering or not
      * \note When texture filtering is disabled, enlarged textures get pixelated.
-     *       Else, the GPU uses an averaging algorithm to blur the pixels.
+     * Else, the GPU uses an averaging algorithm to blur the pixels.
      */
     void set_filter(filter filt);
 
@@ -127,8 +127,8 @@ public:
     /**
      * \brief Checks if the machine is capable of using some features.
      * \note The function checks for non power of two capability.
-     *       If the graphics card doesn't support it, the material
-     *       class will automatically create power of two textures.
+     * If the graphics card doesn't support it, the material
+     * class will automatically create power of two textures.
      */
     static void check_availability();
 

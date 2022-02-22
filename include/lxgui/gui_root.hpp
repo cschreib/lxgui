@@ -72,9 +72,9 @@ public:
     /**
      * \brief Toggles interface caching.
      * \note Disabled by default. Enabling this will most likely improve performances,
-     *       at the expense of higher GPU memory usage. The UI will be cached into
-     *       large render targets, which are only redrawn when the UI changes, rather
-     *       than redrawn on each frame.
+     * at the expense of higher GPU memory usage. The UI will be cached into
+     * large render targets, which are only redrawn when the UI changes, rather
+     * than redrawn on each frame.
      */
     void toggle_caching();
 
@@ -152,7 +152,7 @@ public:
      * \param constraint The constraint axis if any
      * \param apply_constraint_func Optional function to implement further constraints
      * \note Movement is handled by the root, you don't need to do anything except
-     *       calling stop_moving() when you are done.
+     * calling stop_moving() when you are done.
      */
     void start_moving(
         utils::observer_ptr<region> obj,
@@ -178,7 +178,7 @@ public:
      * \param obj The object to resize
      * \param point The sizing point
      * \note Resizing is handled by the root, you don't need to do anything except
-     *       calling stop_sizing() when you are done.
+     * calling stop_sizing() when you are done.
      */
     void start_sizing(utils::observer_ptr<region> obj, anchor_point point);
 
@@ -199,11 +199,11 @@ public:
      * \brief Sets whether keyboard input should be focused.
      * \param receiver The frame that requires focus
      * \note This function will forward all keyboard events to the new receiver.
-     *       This is useful to implement an edit box: the user can type letters using keys
-     *       that can be bound to special actions in the game, and these should be prevented
-     *       from happening. This can be achieved by calling this function and using the
-     *       edit box as second argument, which will ensure that input events are only sent
-     *       to the edit box exclusively.
+     * This is useful to implement an edit box: the user can type letters using keys
+     * that can be bound to special actions in the game, and these should be prevented
+     * from happening. This can be achieved by calling this function and using the
+     * edit box as second argument, which will ensure that input events are only sent
+     * to the edit box exclusively.
      */
     void request_focus(utils::observer_ptr<frame> receiver);
 

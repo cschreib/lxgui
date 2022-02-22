@@ -80,12 +80,12 @@ public:
      * \brief Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
      * \return The physical dimensions (in pixels) of the canvas containing this (if any)
      * \note When a texture is loaded, most of the time it will fill the entire "canvas",
-     *       namely, the 2D pixel array containing the texture data. However, some old
-     *       hardware don't support textures that have non power-of-two dimensions.
-     *       If the user creates a material for such a texture, the gui::renderer will
-     *       create a bigger canvas that has power-of-two dimensions, and store the
-     *       texture in it. Likewise, if a texture is placed in a wider texture atlas,
-     *       the canvas will contain more than one texture.
+     * namely, the 2D pixel array containing the texture data. However, some old
+     * hardware don't support textures that have non power-of-two dimensions.
+     * If the user creates a material for such a texture, the gui::renderer will
+     * create a bigger canvas that has power-of-two dimensions, and store the
+     * texture in it. Likewise, if a texture is placed in a wider texture atlas,
+     * the canvas will contain more than one texture.
      */
     vector2ui get_canvas_dimensions() const override;
 
@@ -106,7 +106,7 @@ public:
     /**
      * \brief Premultiplies an image by its alpha component.
      * \note Premultiplied alpha is a rendering technique that allows perfect
-     *       alpha blending when using render targets.
+     * alpha blending when using render targets.
      */
     static void premultiply_alpha(SDL_Surface* data);
 
@@ -126,7 +126,7 @@ public:
      * \brief Sets the filter mode of this texture.
      * \param filt Use texture filtering or not
      * \note When texture filtering is disabled, enlarged textures get pixelated.
-     *       Else, the GPU uses an averaging algorithm to blur the pixels.
+     * Else, the GPU uses an averaging algorithm to blur the pixels.
      */
     void set_filter(filter filt);
 
@@ -165,7 +165,7 @@ public:
      * \param pitch An output pointer to the size (in bytes) of a row (ignored if nullptr)
      * \return A pointer to the texture data, which can be modified
      * \note The pointer is owned by this class, you must not delete it.
-     *       Make sure you call unlock_pointer() when you are done.
+     * Make sure you call unlock_pointer() when you are done.
      */
     ub32color* lock_pointer(std::size_t* pitch = nullptr);
 

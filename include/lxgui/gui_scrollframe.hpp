@@ -46,8 +46,8 @@ public:
      * \brief Updates this region's logic.
      * \param delta Time spent since last update
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void update(float delta) override;
 
@@ -69,8 +69,8 @@ public:
      * \param script_name The name of the script
      * \param data Stores scripts arguments
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -139,10 +139,10 @@ public:
      * \param predicate A function returning 'true' if the frame can be selected
      * \return The topmost frame, if any, and nullptr otherwise.
      * \note For most frames, this can either return 'this' or 'nullptr'. For
-     *       frames responsible for rendering other frames (such as @ref scroll_frame),
-     *       this can return other frames.
+     * frames responsible for rendering other frames (such as @ref scroll_frame),
+     * this can return other frames.
      * \note For scroll children to receive input, the scroll_frame must be
-     *       keyboard/mouse/wheel enabled.
+     * keyboard/mouse/wheel enabled.
      */
     utils::observer_ptr<const frame>
     find_topmost_frame(const std::function<bool(const frame&)>& predicate) const override;

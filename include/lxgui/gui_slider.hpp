@@ -54,8 +54,8 @@ public:
      * \param script_name The name of the script
      * \param data Stores scripts arguments
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
@@ -197,7 +197,7 @@ public:
      * \brief Checks if the provided coordinates are in the slider.
      * \param position The coordinate to test
      * \return 'true' if the provided coordinates are in the slider, its title region,
-     *         or its thumb texture
+     * or its thumb texture
      */
     bool is_in_region(const vector2f& position) const override;
 

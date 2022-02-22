@@ -218,7 +218,7 @@ public:
      * \brief Returns this region's raw name.
      * \return This region's raw name
      * \note This is the name of the region before "$parent"
-     *       has been replaced by its parent's name.
+     * has been replaced by its parent's name.
      */
     const std::string& get_raw_name() const;
 
@@ -247,8 +247,8 @@ public:
     /**
      * \brief Forcefully removes this region from the GUI.
      * \warning After calling this function, any pointer to the object is invalidated!
-     *          Only call this function if you need the object to be destroyed early,
-     *          before its parent (if any) would itself be destroyed.
+     * Only call this function if you need the object to be destroyed early,
+     * before its parent (if any) would itself be destroyed.
      */
     void destroy();
 
@@ -275,14 +275,14 @@ public:
     /**
      * \brief shows this region.
      * \note Its parent must be shown for it to appear on
-     *       the screen.
+     * the screen.
      */
     virtual void show();
 
     /**
      * \brief hides this region.
      * \note All its children won't be visible on the screen
-     *       anymore, even if they are still marked as shown.
+     * anymore, even if they are still marked as shown.
      */
     virtual void hide();
 
@@ -345,10 +345,10 @@ public:
      * \brief Returns this region's explicitly-defined width and height (in pixels).
      * \return This region's explicitly-defined width and height (in pixels)
      * \note If you need to get the actual size of a region on the screen,
-     *       use get_apparent_dimensions(), as some regions may not have
-     *       their dimensions explicitly defined, and instead get their
-     *       extents from anchors. If a dimension is not explicitly defined,
-     *       it will be returned as zero.
+     * use get_apparent_dimensions(), as some regions may not have
+     * their dimensions explicitly defined, and instead get their
+     * extents from anchors. If a dimension is not explicitly defined,
+     * it will be returned as zero.
      */
     const vector2f& get_dimensions() const;
 
@@ -356,9 +356,9 @@ public:
      * \brief Returns this region's apparent width and height (in pixels).
      * \return This region's apparent width and height (in pixels)
      * \note If you need to get the actual size of a region on the screen,
-     *       use this function instead of get_dimensions(), as some regions
-     *       may not have their dimensions explicitly defined, and instead
-     *       get their extents from anchors.
+     * use this function instead of get_dimensions(), as some regions
+     * may not have their dimensions explicitly defined, and instead
+     * get their extents from anchors.
      */
     vector2f get_apparent_dimensions() const;
 
@@ -366,10 +366,10 @@ public:
      * \brief Checks if this region's apparent width is defined.
      * \return 'true' if defined, 'false' otherwise
      * \note The apparent width is defined if either the region's absolute
-     *       or relative width is explicitly specified (from set_width(),
-     *       set_relative_width(), set_dimensions(), or set_relative_dimensions()),
-     *       or if its left and right borders are anchored. A region with an undefined
-     *       apparent width will not be rendered on the screen until its width is defined.
+     * or relative width is explicitly specified (from set_width(),
+     * set_relative_width(), set_dimensions(), or set_relative_dimensions()),
+     * or if its left and right borders are anchored. A region with an undefined
+     * apparent width will not be rendered on the screen until its width is defined.
      */
     bool is_apparent_width_defined() const;
 
@@ -377,10 +377,10 @@ public:
      * \brief Checks if this region's apparent height is defined.
      * \return 'true' if defined, 'false' otherwise
      * \note The apparent height is defined if either the region's absolute
-     *       or relative height is explicitly specified (from set_height(),
-     *       set_relative_height(), set_dimensions(), or set_relative_dimensions()),
-     *       or if its left and right borders are anchored. A region with an undefined
-     *       apparent height will not be rendered on the screen until its height is defined.
+     * or relative height is explicitly specified (from set_height(),
+     * set_relative_height(), set_dimensions(), or set_relative_dimensions()),
+     * or if its left and right borders are anchored. A region with an undefined
+     * apparent height will not be rendered on the screen until its height is defined.
      */
     bool is_apparent_height_defined() const;
 
@@ -458,7 +458,7 @@ public:
     /**
      * \brief Removes all anchors.
      * \note This region and its children won't be visible until you
-     *       define at least one anchor.
+     * define at least one anchor.
      */
     void clear_all_points();
 
@@ -549,7 +549,7 @@ public:
      * \brief Notifies this region that another one is anchored to it.
      * \param obj The anchored region
      * \note Anchored objects get their borders automatically updated
-     *       whenever this object's borders are updated.
+     * whenever this object's borders are updated.
      */
     void add_anchored_object(region& obj);
 
@@ -564,8 +564,8 @@ public:
      * \brief Checks if this region is virtual.
      * \return 'true' if this region is virtual
      * \note A virtual region will not be displayed on the screen, but can serve as a
-     *       template to create new GUI elements (it is then "inherited", although note
-     *       that this has no connection to C++ inheritance).
+     * template to create new GUI elements (it is then "inherited", although note
+     * that this has no connection to C++ inheritance).
      */
     bool is_virtual() const;
 
@@ -578,10 +578,10 @@ public:
     /**
      * \brief Flags this object as "special".
      * \note Special objects are not automatically copied
-     *       in the frame inheritance process. They must be
-     *       explicitly copied by the derived class
-     *       (example: Button will have to copy its button
-     *       textures itself).
+     * in the frame inheritance process. They must be
+     * explicitly copied by the derived class
+     * (example: Button will have to copy its button
+     * textures itself).
      */
     void set_special();
 
@@ -630,12 +630,12 @@ public:
     /**
      * \brief Checks if this region has been fully loaded.
      * \note A region that is not fully loaded still has all its core attributes
-     *       set, hence can be considered as "fully constructed" from a C++ point
-     *       of view. However, semantically, the object may need further steps to
-     *       be complete, as designed by the UI designer. Therefore, form the UI's
-     *       point of view, a region is considered "complete" only if is_loaded()
-     *       returns 'true' (see notifu_loaded()). Only then can the region, e.g.,
-     *       react to or generate events.
+     * set, hence can be considered as "fully constructed" from a C++ point
+     * of view. However, semantically, the object may need further steps to
+     * be complete, as designed by the UI designer. Therefore, form the UI's
+     * point of view, a region is considered "complete" only if is_loaded()
+     * returns 'true' (see notifu_loaded()). Only then can the region, e.g.,
+     * react to or generate events.
      */
     bool is_loaded() const;
 
@@ -661,7 +661,7 @@ public:
      * \brief Returns this frame's addon.
      * \return This frame's addon
      * \note Returns "nullptr" if the frame has been created
-     *       by Lua code and wasn't assigned a parent.
+     * by Lua code and wasn't assigned a parent.
      */
     const addon* get_addon() const;
 
@@ -670,11 +670,11 @@ public:
      * \param file_name The raw file name
      * \return The modified file name
      * \note All file names must be relative to the current working directory
-     *       (typically, the application's executable path),
-     *       but sometimes it is more convenient and maintainable to specify a path that
-     *       is relative to the addon directory. This can be achieved by simply putting
-     *       "|" in front of a file name, which will then be interpreted as relative
-     *       to the addon directory. This function takes care of this transformation.
+     * (typically, the application's executable path),
+     * but sometimes it is more convenient and maintainable to specify a path that
+     * is relative to the addon directory. This can be achieved by simply putting
+     * "|" in front of a file name, which will then be interpreted as relative
+     * to the addon directory. This function takes care of this transformation.
      */
     std::string parse_file_name(const std::string& file_name) const;
 
@@ -758,7 +758,7 @@ protected:
      * \brief Sets this region's name.
      * \param name This region's name
      * \note Can only be called once. If you need to set both the name and the parent
-     *       at the same time (typically, at creation), use set_name_and_parent_().
+     * at the same time (typically, at creation), use set_name_and_parent_().
      */
     void set_name_(const std::string& name);
 
@@ -774,7 +774,7 @@ protected:
      * \param name This region's name
      * \param parent The new parent
      * \note The name can only be set once. If you need to just change the
-     *       parent, call set_parent_().
+     * parent, call set_parent_().
      */
     void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
 
@@ -817,9 +817,9 @@ protected:
  * \param self The pointer to down cast
  * \return A pointer to a derived class
  * \note Like dynamic_cast(), this will return nullptr if this region
- *       is not of the requested type. However, it will throw if the cast
- *       failed because the derived class destructor has already been
- *       called. This indicates a programming error.
+ * is not of the requested type. However, it will throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
  */
 template<typename ObjectType>
 const ObjectType* down_cast(const region* self) {
@@ -837,9 +837,9 @@ const ObjectType* down_cast(const region* self) {
  * \param self The pointer to down cast
  * \return A pointer to a derived class
  * \note Like dynamic_cast(), this will return nullptr if this region
- *       is not of the requested type. However, it will throw if the cast
- *       failed because the derived class destructor has already been
- *       called. This indicates a programming error.
+ * is not of the requested type. However, it will throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
  */
 template<typename ObjectType>
 ObjectType* down_cast(region* self) {
@@ -884,8 +884,8 @@ utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& object) 
  * \param self The raw pointer to get an observer from
  * \return The observer pointer.
  * \note This returns the same things as self->observer_from_this(),
- *       but returning a pointer to the most-derived type known form the
- *       input pointer.
+ * but returning a pointer to the most-derived type known form the
+ * input pointer.
  */
 template<typename ObjectType>
 utils::observer_ptr<ObjectType> observer_from(ObjectType* self) {

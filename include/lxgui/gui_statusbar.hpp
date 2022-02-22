@@ -122,9 +122,9 @@ public:
      * \brief Reverses this status_bar.
      * \param reversed 'true' to reverse it
      * \note By default, if the status bar is oriented horizontally
-     *       (vertically), if will grow from left to right (bottom to top).
-     *       You can use this function to reverse the growth, that is
-     *       make it grow from right to left.
+     * (vertically), if will grow from left to right (bottom to top).
+     * You can use this function to reverse the growth, that is
+     * make it grow from right to left.
      */
     void set_reversed(bool reversed);
 
@@ -193,8 +193,8 @@ public:
      * \brief Updates this region's logic.
      * \param delta Time spent since last update
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void update(float delta) override;
 

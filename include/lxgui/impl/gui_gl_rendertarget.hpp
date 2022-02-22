@@ -52,9 +52,9 @@ public:
      * \brief Returns this render target's canvas dimension.
      * \return This render target's canvas dimension
      * \note This is the physical size of the render target.
-     *       On some systems, abitrary dimensions are not supported:
-     *       they can be promoted to the nearest power of two from
-     *       for example.
+     * On some systems, abitrary dimensions are not supported:
+     * they can be promoted to the nearest power of two from
+     * for example.
      */
     vector2ui get_canvas_dimensions() const override;
 

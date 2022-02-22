@@ -136,7 +136,7 @@ public:
      * \brief Sets the scaling factor applied to the interface.
      * \param scaling_factor The new scaling factor (default: 1)
      * \note This is the conversion factor between UI units and pixels in the display.
-     *       This factor should match gui::renderer::get_interface_scaling_factor().
+     * This factor should match gui::renderer::get_interface_scaling_factor().
      */
     void set_interface_scaling_factor(float scaling_factor);
 

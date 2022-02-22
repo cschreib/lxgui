@@ -111,7 +111,7 @@ public:
      * \brief Returns this node's value converted to a specific type.
      * \return This node's value converted to a specific type
      * \note Will throw if the value could not be converted. Use get_value_or()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     template<typename T>
     T get_value() const {
@@ -295,7 +295,7 @@ public:
      * \param name The name to look for
      * \return The first child with a given name, and throws if none
      * \note Will throw if no child is found with this name. Use try_get_child()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     const layout_node& get_child(std::string_view name) const {
         accessed_ = true;
@@ -322,7 +322,7 @@ public:
      * \param name The name to look for
      * \return The attribute with the provided name, or null if none
      * \note Will throw if no child is found with this name. Use get_attribute_value_or()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     const layout_attribute* try_get_attribute(std::string_view name) const noexcept {
         accessed_ = true;
@@ -339,7 +339,7 @@ public:
      * \param name The name to look for
      * \return The value of the first child with the provided name.
      * \note Will throw if no attribute is found with this name. Use try_get_attribute()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     const layout_attribute& get_attribute(std::string_view name) const {
         accessed_ = true;
@@ -366,7 +366,7 @@ public:
      * \param name The name to look for
      * \return The value of the attribute with the provided name.
      * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     std::string_view get_attribute_value(std::string_view name) const {
         accessed_ = true;
@@ -378,7 +378,7 @@ public:
      * \param name The name to look for
      * \return The value of the attribute with the provided name.
      * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     *       to avoid throwing.
+     * to avoid throwing.
      */
     template<typename T>
     T get_attribute_value(std::string_view name) const {
@@ -451,7 +451,7 @@ public:
      * \param value The value to set if the attribute is missing
      * \return The value of the attribute with the provided name.
      * \note This will modify the layout node object if the value is missing. If you need
-     *       a non-modifying alternative, use get_attribute_value_or().
+     * a non-modifying alternative, use get_attribute_value_or().
      */
     std::string_view get_or_set_attribute_value(std::string_view name, std::string_view value) {
         accessed_ = true;

@@ -57,7 +57,7 @@ public:
      * \brief Sets the background color.
      * \param c The background color
      * \note This color can be used to tint the background texture if any
-     *       or simply render a plain color background.
+     * or simply render a plain color background.
      */
     void set_background_color(const color& c);
 
@@ -120,16 +120,15 @@ public:
      * \brief Sets the edge/corner texture.
      * \param edge_file The edge/corner texture
      * \note This texture's width must be 8 times greater than its
-     *       height.<br><br>
-     *       texture parts are interpreted as :<br>
-     *       - [  0, 1/8]: left edge
-     *       - [1/8, 1/4]: right edge
-     *       - [1/4, 3/8]: top edge (rotated 90 degrees ccw)
-     *       - [3/8, 1/2]: bottom edge (rotated 90 degrees ccw)
-     *       - [1/2, 5/8]: top-left corner
-     *       - [5/8, 3/4]: top-right corner
-     *       - [3/4, 7/8]: bottom-left corner
-     *       - [7/8,   1]: bottom-right corner
+     * height. The texture data is interpreted as:
+     *  - [  0, 1/8]: left edge
+     *  - [1/8, 1/4]: right edge
+     *  - [1/4, 3/8]: top edge (rotated 90 degrees ccw)
+     *  - [3/8, 1/2]: bottom edge (rotated 90 degrees ccw)
+     *  - [1/2, 5/8]: top-left corner
+     *  - [5/8, 3/4]: top-right corner
+     *  - [3/4, 7/8]: bottom-left corner
+     *  - [7/8,   1]: bottom-right corner
      */
     void set_edge(const std::string& edge_file);
 
@@ -143,7 +142,7 @@ public:
      * \brief Sets the edge color.
      * \param c The edge color
      * \note This color can be used to tint the edge texture if any
-     *       or simply render a plain color edge.
+     * or simply render a plain color edge.
      */
     void set_edge_color(const color& c);
 

@@ -39,9 +39,9 @@ public:
      * \param callback The function to execute when the event is triggered
      * \return A object representing the connection between this emitter and the callback.
      * \note To avoid dangling references, the caller should store the returned connection
-     *       object, and use it to terminate the connection when the owner of the callback is
-     *       destroyed. This can be done automatically if using the @ref event_receiver helper
-     *       class.
+     * object, and use it to terminate the connection when the owner of the callback is
+     * destroyed. This can be done automatically if using the @ref event_receiver helper
+     * class.
      * \see fire_event
      */
     utils::connection

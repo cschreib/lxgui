@@ -246,11 +246,11 @@ public:
     /**
      * \brief Type of the frame child list (internal).
      * \note Constraints on the choice container type:
-     *        - must not invalidate iterators on back insertion
-     *        - must allow forward iteration
-     *        - iterators can be invalidated on removal
-     *        - most common use is iteration, not addition or removal
-     *        - ordering of elements is irrelevant
+     *  - must not invalidate iterators on back insertion
+     *  - must allow forward iteration
+     *  - iterators can be invalidated on removal
+     *  - most common use is iteration, not addition or removal
+     *  - ordering of elements is irrelevant
      */
     using child_list      = std::list<utils::owner_ptr<frame>>;
     using child_list_view = utils::view::
@@ -263,11 +263,11 @@ public:
     /**
      * \brief Type of the region list (internal).
      * \note Constraints on the choice container type:
-     *        - must not invalidate iterators on back insertion
-     *        - must allow forward iteration
-     *        - iterators can be invalidated on removal
-     *        - most common use is iteration, not addition or removal
-     *        - ordering of elements is irrelevant
+     *  - must not invalidate iterators on back insertion
+     *  - must allow forward iteration
+     *  - iterators can be invalidated on removal
+     *  - most common use is iteration, not addition or removal
+     *  - ordering of elements is irrelevant
      */
     using region_list      = std::list<utils::owner_ptr<layered_region>>;
     using region_list_view = utils::view::
@@ -290,8 +290,8 @@ public:
      * \brief Updates this region's logic.
      * \param delta Time spent since last update
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void update(float delta) override;
 
@@ -362,10 +362,10 @@ public:
      * \param key_name The key to capture
      * \param is_capture_enabled 'true' to enable
      * \note If the frame captures the key, other frames below it will not be able to receive
-     *       the input from this key. The format of the input key name is standard English,
-     *       with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
-     *       "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
-     *       simultaneously.
+     * the input from this key. The format of the input key name is standard English,
+     * with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+     * "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
+     * simultaneously.
      * \see is_key_capture_enabled()
      */
     void enable_key_capture(const std::string& key_name, bool is_capture_enabled);
@@ -409,9 +409,9 @@ public:
      * \param attr The core attributes of the region (parent will be ignored)
      * \return The created region.
      * \note You don't have the responsibility to delete this region.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created region.
+     * you can directly use the created region.
      */
     utils::observer_ptr<layered_region>
     create_layered_region(layer layer_id, region_core_attributes attr);
@@ -422,9 +422,9 @@ public:
      * \param attr The core attributes of the region (object_type and parent will be ignored)
      * \return The created region.
      * \note You don't have the responsibility to delete this region.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created region.
+     * you can directly use the created region.
      */
     template<
         typename RegionType,
@@ -444,9 +444,9 @@ public:
      * \param name The name of the region
      * \return The created region.
      * \note You don't have the responsibility to delete this region.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created region.
+     * you can directly use the created region.
      */
     template<
         typename RegionType,
@@ -466,11 +466,11 @@ public:
      * \param attr The core attributes of the frame (parent will be ignored)
      * \return The created frame.
      * \note You don't have the responsibility to delete this frame.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created frame. However, you still need to call
-     *       notify_loaded() when you are done with any extra initialization you require on
-     *       this frame. If you do not, the frame's OnLoad callback will not fire.
+     * you can directly use the created frame. However, you still need to call
+     * notify_loaded() when you are done with any extra initialization you require on
+     * this frame. If you do not, the frame's OnLoad callback will not fire.
      */
     utils::observer_ptr<frame> create_child(region_core_attributes attr);
 
@@ -479,11 +479,11 @@ public:
      * \param attr The core attributes of the frame (object_type and parent will be ignored)
      * \return The created frame.
      * \note You don't have the responsibility to delete this frame.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created frame. However, you still need to call
-     *       notify_loaded() when you are done with any extra initialization you require on this
-     *       frame. If you do not, the frame's OnLoad callback will not fire.
+     * you can directly use the created frame. However, you still need to call
+     * notify_loaded() when you are done with any extra initialization you require on this
+     * frame. If you do not, the frame's OnLoad callback will not fire.
      */
     template<
         typename FrameType,
@@ -500,11 +500,11 @@ public:
      * \param name The name of the frame
      * \return The created frame.
      * \note You don't have the responsibility to delete this frame.
-     *       It will be done automatically when its parent is deleted.
+     * It will be done automatically when its parent is deleted.
      * \note This function takes care of the basic initializing:
-     *       you can directly use the created frame. However, you still need to call
-     *       notify_loaded() when you are done with any extra initialization you require on this
-     *       frame. If you do not, the frame's OnLoad callback will not fire.
+     * you can directly use the created frame. However, you still need to call
+     * notify_loaded() when you are done with any extra initialization you require on this
+     * frame. If you do not, the frame's OnLoad callback will not fire.
      */
     template<
         typename FrameType,
@@ -561,9 +561,9 @@ public:
      * \param name The name of the child
      * \return One of this frame's children
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no child is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no child is found, on the
+     * relative name.
      */
     utils::observer_ptr<const frame> get_child(const std::string& name) const;
 
@@ -572,9 +572,9 @@ public:
      * \param name The name of the child
      * \return One of this frame's children
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no child is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no child is found, on the
+     * relative name.
      */
     utils::observer_ptr<frame> get_child(const std::string& name) {
         return utils::const_pointer_cast<frame>(const_cast<const frame*>(this)->get_child(name));
@@ -585,9 +585,9 @@ public:
      * \param name The name of the child
      * \return One of this frame's children
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no child is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no child is found, on the
+     * relative name.
      */
     template<
         typename FrameType,
@@ -602,9 +602,9 @@ public:
      * \param name The name of the child
      * \return One of this frame's children
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no child is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no child is found, on the
+     * relative name.
      */
     template<
         typename FrameType,
@@ -631,9 +631,9 @@ public:
      * \param name The name of the region
      * \return One of this frame's region
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no region is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no region is found, on the
+     * relative name.
      */
     utils::observer_ptr<const layered_region> get_region(const std::string& name) const;
 
@@ -642,9 +642,9 @@ public:
      * \param name The name of the region
      * \return One of this frame's region
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no region is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no region is found, on the
+     * relative name.
      */
     utils::observer_ptr<layered_region> get_region(const std::string& name) {
         return utils::const_pointer_cast<layered_region>(
@@ -656,9 +656,9 @@ public:
      * \param name The name of the region
      * \return One of this frame's region
      * \note The provided name can either be the full name or the relative name
-     *       (i.e. without the "$parent" in front). This function first looks
-     *       for matches on the full name, then if no region is found, on the
-     *       relative name.
+     * (i.e. without the "$parent" in front). This function first looks
+     * for matches on the full name, then if no region is found, on the
+     * relative name.
      */
     template<
         typename RegionType,
@@ -759,7 +759,7 @@ public:
      * \brief Returns the number of children of this frame.
      * \return The number of children of this frame
      * \note If only an approximate number is acceptable, use get_rough_num_children(),
-     *       which is faster.
+     * which is faster.
      */
     std::size_t get_num_children() const;
 
@@ -767,8 +767,8 @@ public:
      * \brief Returns the approximate number of children of this frame.
      * \return The approximate number of children of this frame
      * \note The returned number is an *upper bound* on the actual number of children.
-     *       This can be used to reserve enough space for memory allocations.
-     *       If the exact number of children is required, use get_num_children().
+     * This can be used to reserve enough space for memory allocations.
+     * If the exact number of children is required, use get_num_children().
      */
     std::size_t get_rough_num_children() const;
 
@@ -776,7 +776,7 @@ public:
      * \brief Returns the number of regions of this frame.
      * \return The number of regions of this frame
      * \note If only an approximate number is acceptable, use get_rough_num_regions(),
-     *       which is faster.
+     * which is faster.
      */
     std::size_t get_num_regions() const;
 
@@ -784,8 +784,8 @@ public:
      * \brief Returns the approximate number of regions of this frame.
      * \return The approximate number of regions of this frame
      * \note The returned number is an *upper bound* on the actual number of regions.
-     *       This can be used to reserve enough space for memory allocations.
-     *       If the exact number of regions is required, use get_num_regions().
+     * This can be used to reserve enough space for memory allocations.
+     * If the exact number of regions is required, use get_num_regions().
      */
     std::size_t get_rough_num_regions() const;
 
@@ -793,7 +793,7 @@ public:
      * \brief Returns this frame's scale.
      * \return This frame's scale
      * \note If you want it's true scale on the screen,
-     *       use get_effective_scale().
+     * use get_effective_scale().
      */
     float get_scale() const;
 
@@ -825,8 +825,8 @@ public:
      * \param predicate A function returning 'true' if the frame can be selected
      * \return The topmost frame, if any, and nullptr otherwise.
      * \note For most frames, this can either return 'this' or 'nullptr'. For
-     *       frames responsible for rendering other frames (such as @ref scroll_frame),
-     *       this can return other frames.
+     * frames responsible for rendering other frames (such as @ref scroll_frame),
+     * this can return other frames.
      */
     virtual utils::observer_ptr<const frame>
     find_topmost_frame(const std::function<bool(const frame&)>& predicate) const;
@@ -836,8 +836,8 @@ public:
      * \param predicate A function returning 'true' if the frame can be selected
      * \return The topmost frame, if any, and nullptr otherwise.
      * \note For most frames, this can either return 'this' or 'nullptr'. For
-     *       frames responsible for rendering other frames (such as @ref scroll_frame),
-     *       this can return other frames.
+     * frames responsible for rendering other frames (such as @ref scroll_frame),
+     * this can return other frames.
      */
     utils::observer_ptr<frame>
     find_topmost_frame(const std::function<bool(const frame&)>& predicate) {
@@ -916,8 +916,8 @@ public:
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
      * \note The script_info parameter is used only for displaying error messages.
-     *       This function is meant to be used by the layout file parser. If you want to
-     *       manually define your own script handlers, prefer the other overloads.
+     * This function is meant to be used by the layout file parser. If you want to
+     * manually define your own script handlers, prefer the other overloads.
      */
     utils::connection add_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
@@ -931,9 +931,9 @@ public:
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
      * \note This defines a Lua function to be called for the event specified in script_name.
-     *       This provides more flexibility compared to using C++ function, but also has a
-     *       larger overhead. If performance is a concern, prefer the other overload taking a
-     *       C++ function instead.
+     * This provides more flexibility compared to using C++ function, but also has a
+     * larger overhead. If performance is a concern, prefer the other overload taking a
+     * C++ function instead.
      */
     utils::connection add_script(
         const std::string&      script_name,
@@ -966,8 +966,8 @@ public:
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
      * \note The script_info parameter is used only for displaying error messages.
-     *       This function is meant to be used by the layout file parser. If you want to
-     *       manually define your own script handlers, prefer the other overloads.
+     * This function is meant to be used by the layout file parser. If you want to
+     * manually define your own script handlers, prefer the other overloads.
      */
     utils::connection set_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
@@ -981,9 +981,9 @@ public:
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
      * \note This defines a Lua function to be called for the event specified in script_name.
-     *       This provides more flexibility compared to using C++ function, but also has a
-     *       larger overhead. If performance is a concern, prefer the other overload taking a
-     *       C++ function instead.
+     * This provides more flexibility compared to using C++ function, but also has a
+     * larger overhead. If performance is a concern, prefer the other overload taking a
+     * C++ function instead.
      */
     utils::connection set_script(
         const std::string&      script_name,
@@ -999,9 +999,9 @@ public:
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
      * \note This defines a C++ function to be called for the event specified in script_name.
-     *       This provides the best performance, but lacks direct access to the Lua
-     *       environment. If this is required, prefer the other overload taking a Lua function
-     *       instead.
+     * This provides the best performance, but lacks direct access to the Lua
+     * environment. If this is required, prefer the other overload taking a Lua function
+     * instead.
      */
     utils::connection set_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
@@ -1028,8 +1028,8 @@ public:
      * \param script_name The name of the script (e.g., "OnEvent")
      * \param data Stores scripts arguments
      * \note Triggered callbacks could destroy the frame. If you need
-     *       to use the frame again after calling this function, use
-     *       the helper class alive_checker.
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     virtual void fire_script(const std::string& script_name, const event_data& data = event_data{});
 
@@ -1160,9 +1160,9 @@ public:
      * \brief Sets if this frame is at top level.
      * \param is_top_level 'true' to put the frame at top level
      * \note A top-level frame will be raised to the foreground if it or
-     *       any of its children are clicked. This should typically be
-     *       set to 'true' for any "dialog" or "window" frame, which
-     *       can be moved around, and not for "element" frames (buttons, etc.).
+     * any of its children are clicked. This should typically be
+     * set to 'true' for any "dialog" or "window" frame, which
+     * can be moved around, and not for "element" frames (buttons, etc.).
      */
     void set_top_level(bool is_top_level);
 
@@ -1197,14 +1197,14 @@ public:
     /**
      * \brief shows this region.
      * \note Its parent must be shown for it to appear on
-     *       the screen.
+     * the screen.
      */
     void show() override;
 
     /**
      * \brief hides this region.
      * \note All its children won't be visible on the screen
-     *       anymore, even if they are still marked as shown.
+     * anymore, even if they are still marked as shown.
      */
     void hide() override;
 
@@ -1224,8 +1224,8 @@ public:
      * \brief Asks for focus for this frame.
      * \param focus 'true' to ask for focus, 'false' to release it
      * \note Focus can be lost if another frame asks for focus later.
-     *       The focus will be restored automatically when that other frame
-     *       releases focus, or it can be requested again by calling set_focus(true).
+     * The focus will be restored automatically when that other frame
+     * releases focus, or it can be requested again by calling set_focus(true).
      */
     void set_focus(bool focus);
 
@@ -1241,7 +1241,7 @@ public:
      * \note By default, objects are rendered by the gui::manager.
      * \note The renderer also takes care of providing inputs.
      * \note If the renderer is set to nullptr, the frame will inherit the renderer of its
-     *       parent. If the frame has no parent, this will default to the gui::manager.
+     * parent. If the frame has no parent, this will default to the gui::manager.
      */
     void set_renderer(utils::observer_ptr<frame_renderer> rdr);
 
@@ -1309,8 +1309,8 @@ public:
      * \param mouse_in_frame 'true' if the mouse is above this frame
      * \param mouse_pos The mouse coordinates in pixels
      * \note Always use the mouse position set by this function and
-     *       not the one returned by the input_manager, because there
-     *       can be an offset applied (for example with scroll_frame).
+     * not the one returned by the input_manager, because there
+     * can be an offset applied (for example with scroll_frame).
      */
     virtual void notify_mouse_in_frame(bool mouse_in_frame, const vector2f& mouse_pos);
 
@@ -1341,7 +1341,7 @@ public:
     /**
      * \brief Tells this frame to rebuild its layer list.
      * \note Automatically called by add_region(), remove_region(), and
-     *       layered_region::set_draw_layer().
+     * layered_region::set_draw_layer().
      */
     void notify_layers_need_update();
 
@@ -1355,8 +1355,8 @@ public:
      * \brief Parses data from a layout_node.
      * \param node The layout node
      * \note Derived classes must override parse_all_nodes_before_children_() if
-     *       they need to parse additional blocks, and parse_attributes_() if they
-     *       need to parse additional attributes.
+     * they need to parse additional blocks, and parse_attributes_() if they
+     * need to parse additional attributes.
      */
     void parse_layout(const layout_node& node) final;
 

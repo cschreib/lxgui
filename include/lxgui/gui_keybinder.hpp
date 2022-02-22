@@ -35,10 +35,10 @@ public:
      * \param name The name of the key binding (e.g., "JUMP")
      * \param lua_function The Lua function that will be executed
      * \note The name of the key binding can be anything, but it must be unique.
-     *       This only registers the action as "available" for a key binding.
-     *       You must then call @ref set_key_binding() to actually bind it to a key.
+     * This only registers the action as "available" for a key binding.
+     * You must then call @ref set_key_binding() to actually bind it to a key.
      * \return A connection object representing the registered callback function, can be used
-     *         to gracefully disconnect the callback.
+     * to gracefully disconnect the callback.
      */
     utils::connection
     register_key_binding(std::string_view name, sol::protected_function lua_function);
@@ -48,10 +48,10 @@ public:
      * \param name The name of the key binding (e.g., "JUMP")
      * \param function The C++ function that will be executed
      * \note The name of the key binding can be anything, but it must be unique.
-     *       This only registers the action as "available" for a key binding.
-     *       You must then call @ref set_key_binding() to actually bind it to a key.
+     * This only registers the action as "available" for a key binding.
+     * You must then call @ref set_key_binding() to actually bind it to a key.
      * \return A connection object representing the registered callback function, can be used
-     *         to gracefully disconnect the callback.
+     * to gracefully disconnect the callback.
      */
     utils::connection register_key_binding(std::string_view name, function_type function);
 
@@ -60,9 +60,9 @@ public:
      * \param name The action to bind
      * \param key_name The key to bind it to (e.g., "Shift-T")
      * \note The format of the `key_name` parameter is any key name as returned from @ref
-     *       input::get_key_codename(), preceded by optional modifiers (any
-     *       combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
-     *       to frames in the "OnKeyDown" and "OnKeyUp" scripts.
+     * input::get_key_codename(), preceded by optional modifiers (any
+     * combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
+     * to frames in the "OnKeyDown" and "OnKeyUp" scripts.
      */
     void set_key_binding(std::string_view name, std::string_view key_name);
 
@@ -94,7 +94,7 @@ public:
      * \param ctrl_is_pressed Is the Ctrl key pressed
      * \param alt_is_pressed Is the Alt key pressed
      * \return 'true' if a key binding was found matching this key combination,
-     *         'false' otherwise.
+     * 'false' otherwise.
      */
     bool on_key_down(
         input::key key_id, bool shift_is_pressed, bool ctrl_is_pressed, bool alt_is_pressed);

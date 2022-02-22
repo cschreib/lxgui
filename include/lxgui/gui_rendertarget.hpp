@@ -11,7 +11,7 @@ namespace lxgui::gui {
 /**
  * \brief A place to render things (the screen, a texture, ...)
  * \note This is an abstract class that must be inherited
- *       from and created by the corresponding gui::renderer.
+ * from and created by the corresponding gui::renderer.
  */
 class render_target {
 public:
@@ -62,9 +62,9 @@ public:
      * \brief Returns this render target's canvas dimension.
      * \return This render target's canvas dimension
      * \note This is the physical size of the render target.
-     *       On some systems, abitrary dimensions are not supported:
-     *       they can be promoted to the nearest power of two from
-     *       for example.
+     * On some systems, abitrary dimensions are not supported:
+     * they can be promoted to the nearest power of two from
+     * for example.
      */
     virtual vector2ui get_canvas_dimensions() const = 0;
 };

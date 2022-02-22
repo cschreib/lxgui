@@ -48,8 +48,8 @@ public:
      * \brief Parse all addons inside a directory.
      * \param directory The directory to load addons from
      * \note The directory must contain a file named addon.txt, and
-     *       listing all enabled (and possibly disabled) addons.
-     *       Each addon is then a sub-directory.
+     * listing all enabled (and possibly disabled) addons.
+     * Each addon is then a sub-directory.
      */
     void load_addon_directory(const std::string& directory);
 
@@ -63,9 +63,9 @@ public:
      * \brief Sets the current addon.
      * \param a The current addon
      * \note The current addon is used to set the addon of each new region.
-     *       This is normally set by the parser, while loading each addon.
-     *       For regions created manually, after the loading stage, this is
-     *       also set by @ref frame, before each call to a handler function.
+     * This is normally set by the parser, while loading each addon.
+     * For regions created manually, after the loading stage, this is
+     * also set by @ref frame, before each call to a handler function.
      */
     void set_current_addon(const addon* a);
 
