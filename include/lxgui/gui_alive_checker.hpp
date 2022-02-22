@@ -15,9 +15,17 @@ class region;
  * with any object you wish to monitor. Then use the object.
  * Then use alive_checker::is_alive() to check if the object
  * is still alive.
- * \note This class will not be able to notice that an object
- * is not alive if the object was already destroyed before
- * the alive_checker instance is created.
+ *
+ * \code{cpp}
+ * // Construct the checker
+ * alive_checker checker(*this);
+ *
+ * // Call a member function that may destroy 'this'
+ * maybe_destroy_this();
+ *
+ * // Check if 'this' is still alive
+ * if (!checker.is_alive()) return;
+ * \endcode
  */
 class alive_checker {
 public:
