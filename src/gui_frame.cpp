@@ -1322,12 +1322,12 @@ void frame::stop_moving() {
         get_manager().get_root().stop_moving();
 }
 
-void frame::start_sizing(const anchor_point& point) {
+void frame::start_sizing(const anchor_point& p) {
     if (!is_resizable_)
         return;
 
     set_user_placed(true);
-    get_manager().get_root().start_sizing(observer_from(this), point);
+    get_manager().get_root().start_sizing(observer_from(this), p);
 }
 
 void frame::stop_sizing() {

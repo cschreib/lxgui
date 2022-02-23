@@ -721,22 +721,23 @@ void edit_box::update_carret_position_() {
         return;
 
     if (unicode_text_.empty()) {
-        anchor_point point;
+        anchor_point p;
         float        offset = 0.0f;
+
         switch (font_string_->get_alignment_x()) {
         case alignment_x::left:
-            point  = anchor_point::left;
+            p      = anchor_point::left;
             offset = text_insets_.left - 1;
             break;
-        case alignment_x::center: point = anchor_point::center; break;
+        case alignment_x::center: p = anchor_point::center; break;
         case alignment_x::right:
-            point  = anchor_point::right;
+            p      = anchor_point::right;
             offset = -text_insets_.right - 1;
             break;
-        default: point = anchor_point::left; break;
+        default: p = anchor_point::left; break;
         }
 
-        carret_->set_point(anchor_point::center, point, vector2f(offset, 0.0f));
+        carret_->set_point(anchor_point::center, p, vector2f(offset, 0.0f));
     } else {
         text*                    text = font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;

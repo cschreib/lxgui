@@ -208,20 +208,20 @@ void region::register_on_lua(sol::state& lua) {
 
     /** @function get_point
      */
-    type.set_function("get_point", [](const region& self, sol::optional<std::size_t> point) {
+    type.set_function("get_point", [](const region& self, sol::optional<std::size_t> p) {
         anchor_point point_value = anchor_point::top_left;
-        if (point.has_value()) {
-            if (point.value() > static_cast<std::size_t>(anchor_point::center))
+        if (p.has_value()) {
+            if (p.value() > static_cast<std::size_t>(anchor_point::center))
                 throw sol::error("requested anchor point is invalid");
 
-            point_value = static_cast<anchor_point>(point.value());
+            point_value = static_cast<anchor_point>(p.value());
         }
 
-        const anchor& anchor = self.get_point(point_value);
+        const anchor& a = self.get_point(point_value);
 
         return std::make_tuple(
-            anchor::get_anchor_point_name(anchor.point), anchor.get_parent(),
-            anchor::get_anchor_point_name(anchor.parent_point), anchor.offset.x, anchor.offset.y);
+            anchor::get_anchor_point_name(a.object_point), a.get_parent(),
+            anchor::get_anchor_point_name(a.parent_point), a.offset.x, a.offset.y);
     });
 
     /** @function get_right
@@ -292,7 +292,7 @@ void region::register_on_lua(sol::state& lua) {
                         sol::optional<std::string> relative_point, sol::optional<float> x_offset,
                         sol::optional<float> y_offset) {
             // point
-            anchor_point point = anchor::get_anchor_point(point_name);
+            anchor_point p = anchor::get_anchor_point(point_name);
 
             // parent
             utils::observer_ptr<region> parent_obj;
@@ -308,7 +308,7 @@ void region::register_on_lua(sol::state& lua) {
             }
 
             // relativePoint
-            anchor_point parent_point = point;
+            anchor_point parent_point = p;
             if (relative_point.has_value())
                 parent_point = anchor::get_anchor_point(relative_point.value());
 
@@ -317,8 +317,7 @@ void region::register_on_lua(sol::state& lua) {
             float abs_y = y_offset.value_or(0.0f);
 
             self.set_point(
-                point, parent_obj ? parent_obj->get_name() : "", parent_point,
-                vector2f(abs_x, abs_y));
+                p, parent_obj ? parent_obj->get_name() : "", parent_point, vector2f(abs_x, abs_y));
         });
 
     /** @function set_rel_point
@@ -329,7 +328,7 @@ void region::register_on_lua(sol::state& lua) {
                             sol::optional<std::string>                        relative_point,
                             sol::optional<float> x_offset, sol::optional<float> y_offset) {
             // point
-            anchor_point point = anchor::get_anchor_point(point_name);
+            anchor_point p = anchor::get_anchor_point(point_name);
 
             // parent
             utils::observer_ptr<region> parent_obj;
@@ -345,7 +344,7 @@ void region::register_on_lua(sol::state& lua) {
             }
 
             // relativePoint
-            anchor_point parent_point = point;
+            anchor_point parent_point = p;
             if (relative_point.has_value())
                 parent_point = anchor::get_anchor_point(relative_point.value());
 
@@ -354,8 +353,8 @@ void region::register_on_lua(sol::state& lua) {
             float rel_y = y_offset.value_or(0.0f);
 
             self.set_point(
-                point, parent_obj ? parent_obj->get_name() : "", parent_point,
-                vector2f(rel_x, rel_y), anchor_type::rel);
+                p, parent_obj ? parent_obj->get_name() : "", parent_point, vector2f(rel_x, rel_y),
+                anchor_type::rel);
         });
 
     /** @function set_width

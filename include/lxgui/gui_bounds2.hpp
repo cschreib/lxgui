@@ -61,8 +61,8 @@ struct bounds2 {
         return vector2<T>(width(), height());
     }
 
-    bool contains(const vector2<T>& point) const {
-        return point.x >= left && point.x < right && point.y >= top && point.y < bottom;
+    bool contains(const vector2<T>& p) const {
+        return p.x >= left && p.x < right && p.y >= top && p.y < bottom;
     }
 
     bool overlaps(const bounds2<T>& quad) const {

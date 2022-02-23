@@ -706,8 +706,8 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function start_sizing
      */
-    type.set_function("start_sizing", [](frame& self, const std::string& point) {
-        self.start_sizing(anchor::get_anchor_point(point));
+    type.set_function("start_sizing", [](frame& self, const std::string& p) {
+        self.start_sizing(anchor::get_anchor_point(p));
     });
 
     /** @function stop_moving_or_sizing

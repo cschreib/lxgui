@@ -31,16 +31,16 @@ enum class constraint { none, x, y };
 /// Raw data of an anchor (value type)
 struct anchor_data {
     anchor_data(anchor_point input_point) :
-        point(input_point), parent_name("$default"), parent_point(input_point) {}
+        object_point(input_point), parent_name("$default"), parent_point(input_point) {}
 
     anchor_data(anchor_point input_point, const std::string& input_parent) :
-        point(input_point), parent_name(input_parent), parent_point(input_point) {}
+        object_point(input_point), parent_name(input_parent), parent_point(input_point) {}
 
     anchor_data(
         anchor_point       input_point,
         const std::string& input_parent,
         anchor_point       input_parent_point) :
-        point(input_point), parent_name(input_parent), parent_point(input_parent_point) {}
+        object_point(input_point), parent_name(input_parent), parent_point(input_parent_point) {}
 
     anchor_data(
         anchor_point       input_point,
@@ -48,7 +48,7 @@ struct anchor_data {
         anchor_point       input_parent_point,
         const vector2f&    input_offset,
         anchor_type        input_type = anchor_type::abs) :
-        point(input_point),
+        object_point(input_point),
         parent_name(input_parent),
         parent_point(input_parent_point),
         offset(input_offset),
@@ -59,7 +59,7 @@ struct anchor_data {
         const std::string& input_parent,
         const vector2f&    input_offset,
         anchor_type        input_type = anchor_type::abs) :
-        point(input_point),
+        object_point(input_point),
         parent_name(input_parent),
         parent_point(input_point),
         offset(input_offset),
@@ -69,7 +69,7 @@ struct anchor_data {
         anchor_point    input_point,
         const vector2f& input_offset,
         anchor_type     input_type = anchor_type::abs) :
-        point(input_point),
+        object_point(input_point),
         parent_name("$default"),
         parent_point(input_point),
         offset(input_offset),
@@ -80,16 +80,16 @@ struct anchor_data {
         anchor_point    input_parent_point,
         const vector2f& input_offset,
         anchor_type     input_type = anchor_type::abs) :
-        point(input_point),
+        object_point(input_point),
         parent_name("$default"),
         parent_point(input_parent_point),
         offset(input_offset),
         type(input_type) {}
 
     anchor_data(anchor_point input_point, anchor_point input_parent_point) :
-        point(input_point), parent_name("$default"), parent_point(input_parent_point) {}
+        object_point(input_point), parent_name("$default"), parent_point(input_parent_point) {}
 
-    anchor_point point = anchor_point::top_left;
+    anchor_point object_point = anchor_point::top_left;
     std::string  parent_name;
     anchor_point parent_point = anchor_point::top_left;
     vector2f     offset;
@@ -99,9 +99,9 @@ struct anchor_data {
 /// Stores a position for a UI region
 class anchor : private anchor_data {
 public:
+    using anchor_data::object_point;
     using anchor_data::offset;
     using anchor_data::parent_point;
-    using anchor_data::point;
     using anchor_data::type;
 
     /**
@@ -157,9 +157,9 @@ public:
 
     /**
      * \brief Returns the name of an anchor point.
-     * \param point The anchor point
+     * \param p The anchor point
      */
-    static std::string get_anchor_point_name(anchor_point point);
+    static std::string get_anchor_point_name(anchor_point p);
 
     /**
      * \brief Returns the anchor point from its name.

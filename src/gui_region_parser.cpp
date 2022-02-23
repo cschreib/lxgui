@@ -98,31 +98,30 @@ void region::parse_anchor_node_(const layout_node& node) {
                 continue;
             }
 
-            std::string point =
-                anchor_node.get_attribute_value_or<std::string>("point", "TOP_LEFT");
+            std::string pt = anchor_node.get_attribute_value_or<std::string>("point", "TOP_LEFT");
             std::string parent = anchor_node.get_attribute_value_or<std::string>(
                 "relativeTo", parent_ || is_virtual() ? "$parent" : "");
             std::string relative_point =
-                anchor_node.get_attribute_value_or<std::string>("relativePoint", point);
+                anchor_node.get_attribute_value_or<std::string>("relativePoint", pt);
 
-            if (utils::find(found_points, point) != found_points.end()) {
+            if (utils::find(found_points, pt) != found_points.end()) {
                 gui::out << gui::warning << anchor_node.get_location() << ": "
-                         << "anchor point \"" << point << "\" has already been defined for \""
-                         << name_ << "\". anchor skipped." << std::endl;
+                         << "anchor point \"" << pt << "\" has already been defined for \"" << name_
+                         << "\". anchor skipped." << std::endl;
                 continue;
             }
 
-            anchor_data anchor(
-                anchor::get_anchor_point(point), parent, anchor::get_anchor_point(relative_point));
+            anchor_data a(
+                anchor::get_anchor_point(pt), parent, anchor::get_anchor_point(relative_point));
 
             if (const layout_node* offset_node = anchor_node.try_get_child("Offset")) {
                 auto dimensions = parse_dimension_(*offset_node);
-                anchor.type     = dimensions.first;
-                anchor.offset   = vector2f(
+                a.type          = dimensions.first;
+                a.offset        = vector2f(
                     dimensions.second.x.value_or(0.0f), dimensions.second.y.value_or(0.0f));
             }
 
-            set_point(anchor);
+            set_point(a);
         }
     }
 }

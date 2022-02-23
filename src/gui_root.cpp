@@ -295,7 +295,7 @@ bool root::is_moving(const region& obj) const {
     return moved_object_.get() == &obj;
 }
 
-void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
+void root::start_sizing(utils::observer_ptr<region> obj, anchor_point p) {
     moved_object_   = nullptr;
     sized_object_   = std::move(obj);
     mouse_movement_ = vector2f::zero;
@@ -306,7 +306,7 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
         anchor_point opposite_point = anchor_point::center;
         vector2f     offset;
 
-        switch (point) {
+        switch (p) {
         case anchor_point::top_left:
         case anchor_point::top:
             opposite_point           = anchor_point::bottom_right;
@@ -348,10 +348,10 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
 
         resize_start_ = sized_object_->get_apparent_dimensions();
 
-        if (point == anchor_point::left || point == anchor_point::right) {
+        if (p == anchor_point::left || p == anchor_point::right) {
             is_resizing_width_  = true;
             is_resizing_height_ = false;
-        } else if (point == anchor_point::top || point == anchor_point::bottom) {
+        } else if (p == anchor_point::top || p == anchor_point::bottom) {
             is_resizing_width_  = false;
             is_resizing_height_ = true;
         } else {

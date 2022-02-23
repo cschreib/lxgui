@@ -113,7 +113,7 @@ vector2f anchor::get_point(const region& object) const {
 std::string anchor::serialize(const std::string& tab) const {
     std::stringstream str;
 
-    str << tab << "  |   # Point     : " << get_anchor_point_name(point) << "\n";
+    str << tab << "  |   # Point     : " << get_anchor_point_name(object_point) << "\n";
     if (parent_)
         str << tab << "  |   # Parent    : " << parent_->get_name();
     else

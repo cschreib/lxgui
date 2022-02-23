@@ -176,11 +176,11 @@ public:
     /**
      * \brief Starts manually resizing a region with the mouse.
      * \param obj The object to resize
-     * \param point The sizing point
+     * \param p The sizing point
      * \note Resizing is handled by the root, you don't need to do anything except
      * calling stop_sizing() when you are done.
      */
-    void start_sizing(utils::observer_ptr<region> obj, anchor_point point);
+    void start_sizing(utils::observer_ptr<region> obj, anchor_point p);
 
     /**
      * \brief Stops sizing for the current object.

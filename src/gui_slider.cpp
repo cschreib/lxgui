@@ -63,10 +63,10 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
     if (script_name == "OnDragStart") {
         if (thumb_texture_ &&
             thumb_texture_->is_in_region({data.get<float>(1), data.get<float>(2)})) {
-            anchor& anchor = thumb_texture_->modify_point(anchor_point::center);
+            anchor& a = thumb_texture_->modify_point(anchor_point::center);
 
             get_manager().get_root().start_moving(
-                thumb_texture_, &anchor,
+                thumb_texture_, &a,
                 orientation_ == orientation::horizontal ? constraint::x : constraint::y,
                 [&]() { constrain_thumb_(); });
 
@@ -152,7 +152,7 @@ void slider::constrain_thumb_() {
 
     float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
-    anchor& anchor = thumb_texture_->modify_point(anchor_point::center);
+    anchor& a = thumb_texture_->modify_point(anchor_point::center);
 
     vector2f new_offset;
     if (orientation_ == orientation::horizontal)
@@ -160,8 +160,8 @@ void slider::constrain_thumb_() {
     else
         new_offset = vector2f(0, apparent_size.y * coef);
 
-    if (new_offset != anchor.offset) {
-        anchor.offset = new_offset;
+    if (new_offset != a.offset) {
+        a.offset = new_offset;
         thumb_texture_->notify_borders_need_update();
     }
 

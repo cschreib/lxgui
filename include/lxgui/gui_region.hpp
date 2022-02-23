@@ -478,9 +478,9 @@ public:
 
     /**
      * \brief Adds/replaces an anchor.
-     * \param anchor The anchor to add
+     * \param a The anchor to add
      */
-    void set_point(const anchor_data& anchor);
+    void set_point(const anchor_data& a);
 
     /**
      * \brief Adds/replaces an anchor.
@@ -508,17 +508,19 @@ public:
 
     /**
      * \brief Returns one of this region's anchor to modify it.
-     * \param point The anchor point
-     * \return A pointer to the anchor, nullptr if none
+     * \param p The anchor point
+     * \return A reference to the anchor, will throw if this point has no anchor.
+     * \note After you have modified the anchor, you must call notify_borders_need_update() to
+     * ensure that the object's borders are properly updated.
      */
-    anchor& modify_point(anchor_point point);
+    anchor& modify_point(anchor_point p);
 
     /**
      * \brief Returns one of this region's anchor.
-     * \param point The anchor point
+     * \param p The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(anchor_point point) const;
+    const anchor& get_point(anchor_point p) const;
 
     /**
      * \brief Returns all of this region's anchors.
