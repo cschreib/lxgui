@@ -247,29 +247,29 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_button.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_button_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_button_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_check_button.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_check_button_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_check_button_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_color.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_editbox.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_editbox_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_editbox_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_edit_box.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_edit_box_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_edit_box_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_eventemitter.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_eventreceiver.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_event_emitter.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_event_receiver.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_factory.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_fontstring.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_fontstring_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_fontstring_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_font_string.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_font_string_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_font_string_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_framerenderer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_frame_renderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_container.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_keybinder.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_key_binder.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layered_region.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layered_region_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layered_region_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_localizer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_localizer_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_manager.cpp
@@ -284,20 +284,20 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_root.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scroll_frame.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scroll_frame_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scroll_frame_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_slider.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_slider_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_slider_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_statusbar.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_statusbar_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_statusbar_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_status_bar.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_status_bar_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_status_bar_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_text.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_texture_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_vertex_cache.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_root.cpp
     ${PROJECT_SOURCE_DIR}/src/input_dispatcher.cpp
@@ -305,7 +305,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp
     ${PROJECT_SOURCE_DIR}/src/input_window.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp
-    ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_file_system.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_periodic_timer.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_string.cpp

@@ -1,8 +1,8 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_keybinder.hpp"
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_key_binder.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -76,16 +76,16 @@ void manager::create_lua_() {
     /** @function register_key_binding
      */
     lua.set_function("register_key_binding", [&](std::string id, sol::protected_function function) {
-        get_root().get_keybinder().register_key_binding(id, function);
+        get_root().get_key_binder().register_key_binding(id, function);
     });
 
     /** @function set_key_binding
      */
     lua.set_function("set_key_binding", [&](std::string id, sol::optional<std::string> key) {
         if (key.has_value())
-            get_root().get_keybinder().set_key_binding(id, key.value());
+            get_root().get_key_binder().set_key_binding(id, key.value());
         else
-            get_root().get_keybinder().remove_key_binding(id);
+            get_root().get_key_binder().remove_key_binding(id);
     });
 
     /** Closes the whole GUI and re-loads addons from files.

@@ -2,7 +2,7 @@
 #define LXGUI_GUI_TEXTURE_HPP
 
 #include "lxgui/gui_gradient.hpp"
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"

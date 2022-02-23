@@ -1,7 +1,7 @@
 #include "lxgui/gui_anchor.hpp"
 
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_framerenderer.hpp"
+#include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"

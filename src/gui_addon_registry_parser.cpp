@@ -1,13 +1,13 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_layout_node.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_root.hpp"
 #include "lxgui/gui_virtual_root.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <lxgui/extern_sol2_state.hpp>

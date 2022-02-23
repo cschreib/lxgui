@@ -3,21 +3,21 @@
 #include <iostream>
 #include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/gui_button.hpp>
-#include <lxgui/gui_editbox.hpp>
+#include <lxgui/gui_edit_box.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_factory.hpp>
-#include <lxgui/gui_fontstring.hpp>
+#include <lxgui/gui_font_string.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_renderer.hpp>
 #include <lxgui/gui_root.hpp>
-#include <lxgui/gui_scrollframe.hpp>
+#include <lxgui/gui_scroll_frame.hpp>
 #include <lxgui/gui_slider.hpp>
-#include <lxgui/gui_statusbar.hpp>
+#include <lxgui/gui_status_bar.hpp>
 #include <lxgui/gui_texture.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/lxgui.hpp>
-#include <lxgui/utils_filesystem.hpp>
+#include <lxgui/utils_file_system.hpp>
 
 using namespace lxgui;
 

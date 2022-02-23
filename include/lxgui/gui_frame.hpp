@@ -3,8 +3,8 @@
 
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_event_receiver.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_attributes.hpp"
 #include "lxgui/lxgui.hpp"
@@ -156,20 +156,20 @@ using script_list_view = script_signal::slot_list_view;
  * frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref keybinder). This event provides two arguments to the registered
+ * @ref key_binder). This event provides two arguments to the registered
  * callback: a number identifying the key, and the human-readable name of the
  * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @ref keybinder.
+ * the @ref key_binder.
  * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
  * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
  * been registered for capture using @ref frame::enable_key_capture. If no
  * frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref keybinder). This event provides two arguments to the registered
+ * @ref key_binder). This event provides two arguments to the registered
  * callback: a number identifying the key, and the human-readable name of the
  * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @ref keybinder.
+ * the @ref key_binder.
  * - `OnLeave`: Triggered when the mouse pointer leaves the area of the
  * screen occupied by the frame. Note: this only takes into account the
  * position and size of the frame and its title region, but not the space

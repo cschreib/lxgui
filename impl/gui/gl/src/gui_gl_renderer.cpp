@@ -6,8 +6,8 @@
 #include "lxgui/impl/gui_gl_atlas.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
-#include "lxgui/impl/gui_gl_rendertarget.hpp"
-#include "lxgui/impl/gui_gl_vertexcache.hpp"
+#include "lxgui/impl/gui_gl_render_target.hpp"
+#include "lxgui/impl/gui_gl_vertex_cache.hpp"
 #include "lxgui/utils_string.hpp"
 
 #if defined(LXGUI_PLATFORM_WINDOWS)

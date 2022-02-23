@@ -1,8 +1,8 @@
 #include "lxgui/gui_factory.hpp"
 
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_framerenderer.hpp"
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_frame_renderer.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"

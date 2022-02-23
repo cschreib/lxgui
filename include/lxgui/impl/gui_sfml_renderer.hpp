@@ -2,7 +2,7 @@
 #define LXGUI_GUI_SFML_RENDERER_HPP
 
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/impl/gui_sfml_rendertarget.hpp"
+#include "lxgui/impl/gui_sfml_render_target.hpp"
 #include "lxgui/utils.hpp"
 
 #include <memory>

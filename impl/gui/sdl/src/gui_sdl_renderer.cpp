@@ -7,7 +7,7 @@
 #include "lxgui/impl/gui_sdl_atlas.hpp"
 #include "lxgui/impl/gui_sdl_font.hpp"
 #include "lxgui/impl/gui_sdl_material.hpp"
-#include "lxgui/impl/gui_sdl_rendertarget.hpp"
+#include "lxgui/impl/gui_sdl_render_target.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <SDL.h>

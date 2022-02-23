@@ -3,7 +3,7 @@
 #include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
-#include "lxgui/gui_rendertarget.hpp"
+#include "lxgui/gui_render_target.hpp"
 #include "lxgui/utils_string.hpp"
 
 namespace lxgui::gui {

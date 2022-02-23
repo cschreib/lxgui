@@ -1,10 +1,10 @@
-#ifndef LXGUI_GUI_RENDERER_IMPL_HPP
-#define LXGUI_GUI_RENDERER_IMPL_HPP
+#ifndef LXGUI_GUI_RENDERER_HPP
+#define LXGUI_GUI_RENDERER_HPP
 
 #include "lxgui/gui_code_point_range.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_matrix4.hpp"
-#include "lxgui/gui_vertexcache.hpp"
+#include "lxgui/gui_vertex_cache.hpp"
 #include "lxgui/lxgui.hpp"
 
 #include <array>

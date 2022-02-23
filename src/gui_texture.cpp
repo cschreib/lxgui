@@ -1,13 +1,13 @@
 #include "lxgui/gui_texture.hpp"
 
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
+#include "lxgui/gui_render_target.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_rendertarget.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 
 #include <sstream>
 

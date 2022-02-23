@@ -7,8 +7,8 @@
 #include "lxgui/impl/gui_sfml_atlas.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
-#include "lxgui/impl/gui_sfml_rendertarget.hpp"
-#include "lxgui/impl/gui_sfml_vertexcache.hpp"
+#include "lxgui/impl/gui_sfml_render_target.hpp"
+#include "lxgui/impl/gui_sfml_vertex_cache.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>

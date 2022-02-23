@@ -6,7 +6,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 
 namespace lxgui::gui {
 

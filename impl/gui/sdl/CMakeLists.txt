@@ -7,7 +7,7 @@ add_library(lxgui-sdl
     ${SRCROOT}/gui_sdl_font.cpp
     ${SRCROOT}/gui_sdl_renderer.cpp
     ${SRCROOT}/gui_sdl_material.cpp
-    ${SRCROOT}/gui_sdl_rendertarget.cpp
+    ${SRCROOT}/gui_sdl_render_target.cpp
 )
 
 add_library(lxgui::gui::sdl ALIAS lxgui-sdl)

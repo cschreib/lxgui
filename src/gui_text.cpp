@@ -7,7 +7,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_vertexcache.hpp"
+#include "lxgui/gui_vertex_cache.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_range.hpp"
 

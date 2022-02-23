@@ -1,10 +1,10 @@
-#ifndef LXGUI_GUI_UIROOT_HPP
-#define LXGUI_GUI_UIROOT_HPP
+#ifndef LXGUI_GUI_ROOT_HPP
+#define LXGUI_GUI_ROOT_HPP
 
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_frame_container.hpp"
-#include "lxgui/gui_framerenderer.hpp"
-#include "lxgui/gui_keybinder.hpp"
+#include "lxgui/gui_frame_renderer.hpp"
+#include "lxgui/gui_key_binder.hpp"
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
@@ -270,19 +270,19 @@ public:
     }
 
     /**
-     * \brief Returns the keybinder object, which enables binding global actions to key presses.
-     * \return The keybinder object
+     * \brief Returns the key_binder object, which enables binding global actions to key presses.
+     * \return The key_binder object
      */
-    keybinder& get_keybinder() {
-        return keybinder_;
+    key_binder& get_key_binder() {
+        return key_binder_;
     }
 
     /**
-     * \brief Returns the keybinder object, which enables binding global actions to key presses.
-     * \return The keybinder object
+     * \brief Returns the key_binder object, which enables binding global actions to key presses.
+     * \return The key_binder object
      */
-    const keybinder& get_keybinder() const {
-        return keybinder_;
+    const key_binder& get_key_binder() const {
+        return key_binder_;
     }
 
 private:
@@ -307,7 +307,7 @@ private:
     manager&                 manager_;
     renderer&                renderer_;
     registry                 object_registry_;
-    keybinder                keybinder_;
+    key_binder               key_binder_;
     input::world_dispatcher& world_input_dispatcher_;
 
     // Rendering

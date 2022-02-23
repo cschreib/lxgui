@@ -1,7 +1,7 @@
 #include "lxgui/gui_parser_common.hpp"
 
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_layout_node.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_root.hpp"

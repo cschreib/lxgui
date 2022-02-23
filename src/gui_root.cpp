@@ -696,9 +696,9 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     }
 
     if (is_down) {
-        // If no frame is found, try the keybinder
+        // If no frame is found, try the key_binder
         try {
-            if (get_keybinder().on_key_down(
+            if (get_key_binder().on_key_down(
                     key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {
                 return;
             }

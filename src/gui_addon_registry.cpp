@@ -1,10 +1,10 @@
 #include "lxgui/gui_addon_registry.hpp"
 
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_range.hpp"
 #include "lxgui/utils_std.hpp"
 #include "lxgui/utils_string.hpp"

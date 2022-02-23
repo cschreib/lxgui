@@ -1,6 +1,6 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_color.hpp"
-#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_layout_node.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/utils_std.hpp"

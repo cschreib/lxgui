@@ -2,7 +2,7 @@
 
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"

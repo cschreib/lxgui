@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_VIRTUAL_UIROOT_HPP
-#define LXGUI_GUI_VIRTUAL_UIROOT_HPP
+#ifndef LXGUI_GUI_VIRTUAL_ROOT_HPP
+#define LXGUI_GUI_VIRTUAL_ROOT_HPP
 
 #include "lxgui/gui_frame_container.hpp"
 #include "lxgui/gui_virtual_registry.hpp"

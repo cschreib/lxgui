@@ -4,7 +4,7 @@
 #include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_quad.hpp"
-#include "lxgui/gui_vertexcache.hpp"
+#include "lxgui/gui_vertex_cache.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 

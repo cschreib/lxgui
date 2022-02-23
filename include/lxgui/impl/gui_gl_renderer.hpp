@@ -1,9 +1,9 @@
 #ifndef LXGUI_GUI_GL_RENDERER_HPP
 #define LXGUI_GUI_GL_RENDERER_HPP
 
-#include "lxgui/impl/gui_gl_rendertarget.hpp"
+#include "lxgui/impl/gui_gl_render_target.hpp"
 #if defined(LXGUI_OPENGL3)
-#    include "lxgui/impl/gui_gl_vertexcache.hpp"
+#    include "lxgui/impl/gui_gl_vertex_cache.hpp"
 #endif
 
 #include "lxgui/gui_matrix4.hpp"
