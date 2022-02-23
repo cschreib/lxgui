@@ -18,21 +18,6 @@ namespace lxgui::gui {
 
 /// Utility class to translate strings for display in GUI.
 class localizer {
-    using hash_type   = std::size_t;
-    using mapped_item = std::variant<std::string, sol::protected_function>;
-    using map_type    = std::unordered_map<hash_type, mapped_item>;
-
-    std::locale                   locale_;
-    std::vector<std::string>      languages_;
-    std::vector<code_point_range> code_points_;
-    char32_t                      default_code_point_ = U'\u25a1'; // '□'
-    sol::state                    lua_;
-    map_type                      map_;
-
-    bool                     is_key_valid_(std::string_view key) const;
-    map_type::const_iterator find_key_(std::string_view key) const;
-    void                     reset_language_fallback_();
-
 public:
     /// Default constructor.
     localizer();
@@ -275,6 +260,22 @@ public:
      * Registering enables Lua functions such as "get_locale()".
      */
     void register_on_lua(sol::state& lua);
+
+private:
+    using hash_type   = std::size_t;
+    using mapped_item = std::variant<std::string, sol::protected_function>;
+    using map_type    = std::unordered_map<hash_type, mapped_item>;
+
+    std::locale                   locale_;
+    std::vector<std::string>      languages_;
+    std::vector<code_point_range> code_points_;
+    char32_t                      default_code_point_ = U'\u25a1'; // '□'
+    sol::state                    lua_;
+    map_type                      map_;
+
+    bool                     is_key_valid_(std::string_view key) const;
+    map_type::const_iterator find_key_(std::string_view key) const;
+    void                     reset_language_fallback_();
 };
 
 } // namespace lxgui::gui
