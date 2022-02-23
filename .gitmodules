@@ -16,3 +16,6 @@
 [submodule "extern/rapidyaml"]
 	path = extern/rapidyaml
 	url = https://github.com/biojppm/rapidyaml.git
+[submodule "extern/magic_enum"]
+	path = extern/magic_enum
+	url = https://github.com/Neargye/magic_enum.git

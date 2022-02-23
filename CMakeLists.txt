@@ -192,8 +192,10 @@ endif()
 
 # add the subdirectories for dependencies
 set(UTF8_INSTALL 1)
+set(MAGIC_ENUM_OPT_INSTALL 1)
 add_subdirectory(extern/utfcpp)
 add_subdirectory(extern/observable_unique_ptr)
+add_subdirectory(extern/magic_enum)
 
 if(LXGUI_BUILD_FMT)
     set(FMT_INSTALL TRUE)
@@ -327,6 +329,7 @@ target_link_libraries(lxgui PUBLIC Lua::Lua)
 target_link_libraries(lxgui PUBLIC sol2::sol2)
 target_link_libraries(lxgui PUBLIC fmt::fmt)
 target_link_libraries(lxgui PUBLIC oup::oup)
+target_link_libraries(lxgui PUBLIC magic_enum::magic_enum)
 target_compile_definitions(lxgui PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
 target_link_libraries(lxgui PRIVATE utf8::cpp)
 if(LXGUI_ENABLE_XML_PARSER)
