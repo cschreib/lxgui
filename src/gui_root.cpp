@@ -277,9 +277,9 @@ void root::start_moving(
             const bounds2f borders = moved_object_->get_borders();
 
             moved_object_->clear_all_points();
-            moved_object_->set_point(anchor_point::top_left, "", borders.top_left());
+            moved_object_->set_point(point::top_left, "", borders.top_left());
 
-            moved_anchor_ = &moved_object_->modify_point(anchor_point::top_left);
+            moved_anchor_ = &moved_object_->modify_point(point::top_left);
 
             movement_start_position_ = borders.top_left();
         }
@@ -295,7 +295,7 @@ bool root::is_moving(const region& obj) const {
     return moved_object_.get() == &obj;
 }
 
-void root::start_sizing(utils::observer_ptr<region> obj, anchor_point p) {
+void root::start_sizing(utils::observer_ptr<region> obj, point p) {
     moved_object_   = nullptr;
     sized_object_   = std::move(obj);
     mouse_movement_ = vector2f::zero;
@@ -303,39 +303,39 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point p) {
     if (sized_object_) {
         const bounds2f borders = sized_object_->get_borders();
 
-        anchor_point opposite_point = anchor_point::center;
-        vector2f     offset;
+        point    opposite_point = point::center;
+        vector2f offset;
 
         switch (p) {
-        case anchor_point::top_left:
-        case anchor_point::top:
-            opposite_point           = anchor_point::bottom_right;
+        case point::top_left:
+        case point::top:
+            opposite_point           = point::bottom_right;
             offset                   = borders.bottom_right();
             is_resizing_from_right_  = false;
             is_resizing_from_bottom_ = false;
             break;
-        case anchor_point::top_right:
-        case anchor_point::right:
-            opposite_point           = anchor_point::bottom_left;
+        case point::top_right:
+        case point::right:
+            opposite_point           = point::bottom_left;
             offset                   = borders.bottom_left();
             is_resizing_from_right_  = true;
             is_resizing_from_bottom_ = false;
             break;
-        case anchor_point::bottom_right:
-        case anchor_point::bottom:
-            opposite_point           = anchor_point::top_left;
+        case point::bottom_right:
+        case point::bottom:
+            opposite_point           = point::top_left;
             offset                   = borders.top_left();
             is_resizing_from_right_  = true;
             is_resizing_from_bottom_ = true;
             break;
-        case anchor_point::bottom_left:
-        case anchor_point::left:
-            opposite_point           = anchor_point::top_right;
+        case point::bottom_left:
+        case point::left:
+            opposite_point           = point::top_right;
             offset                   = borders.top_right();
             is_resizing_from_right_  = false;
             is_resizing_from_bottom_ = true;
             break;
-        case anchor_point::center:
+        case point::center:
             gui::out << gui::error << "gui::manager: "
                      << "Cannot resize \"" << sized_object_->get_name() << "\" from its center."
                      << std::endl;
@@ -344,14 +344,14 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point p) {
         }
 
         sized_object_->clear_all_points();
-        sized_object_->set_point(opposite_point, "", anchor_point::top_left, offset);
+        sized_object_->set_point(opposite_point, "", point::top_left, offset);
 
         resize_start_ = sized_object_->get_apparent_dimensions();
 
-        if (p == anchor_point::left || p == anchor_point::right) {
+        if (p == point::left || p == point::right) {
             is_resizing_width_  = true;
             is_resizing_height_ = false;
-        } else if (p == anchor_point::top || p == anchor_point::bottom) {
+        } else if (p == point::top || p == point::bottom) {
             is_resizing_width_  = false;
             is_resizing_height_ = true;
         } else {

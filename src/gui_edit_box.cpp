@@ -275,9 +275,8 @@ void edit_box::highlight_text(std::size_t start, std::size_t end, bool force_upd
                         right_pos += text->get_letter_quad(right)[2].pos.x;
                 }
 
-                highlight_->set_point(anchor_point::left, name_, vector2f(left_pos, 0));
-                highlight_->set_point(
-                    anchor_point::right, name_, anchor_point::left, vector2f(right_pos, 0));
+                highlight_->set_point(point::left, name_, vector2f(left_pos, 0));
+                highlight_->set_point(point::right, name_, point::left, vector2f(right_pos, 0));
 
                 highlight_->show();
             } else
@@ -526,8 +525,8 @@ void edit_box::set_text_insets(const bounds2f& insets) {
 
     if (font_string_) {
         font_string_->clear_all_points();
-        font_string_->set_point(anchor_point::top_left, text_insets_.top_left());
-        font_string_->set_point(anchor_point::bottom_right, -text_insets_.bottom_right());
+        font_string_->set_point(point::top_left, text_insets_.top_left());
+        font_string_->set_point(point::bottom_right, -text_insets_.bottom_right());
 
         update_displayed_text_();
         update_font_string_();
@@ -580,8 +579,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> fstr) {
     font_string_->set_dimensions(vector2f(0, 0));
     font_string_->clear_all_points();
 
-    font_string_->set_point(anchor_point::top_left, text_insets_.top_left());
-    font_string_->set_point(anchor_point::bottom_right, -text_insets_.bottom_right());
+    font_string_->set_point(point::top_left, text_insets_.top_left());
+    font_string_->set_point(point::bottom_right, -text_insets_.bottom_right());
 
     font_string_->enable_formatting(false);
 
@@ -619,8 +618,8 @@ void edit_box::create_highlight_() {
 
     highlight->set_special();
 
-    highlight->set_point(anchor_point::top, vector2f(0.0f, text_insets_.top));
-    highlight->set_point(anchor_point::bottom, vector2f(0.0f, -text_insets_.bottom));
+    highlight->set_point(point::top, vector2f(0.0f, text_insets_.top));
+    highlight->set_point(point::bottom, vector2f(0.0f, -text_insets_.bottom));
 
     highlight->set_solid_color(highlight_color_);
 
@@ -639,8 +638,7 @@ void edit_box::create_carret_() {
 
         carret->set_special();
 
-        carret->set_point(
-            anchor_point::center, anchor_point::left, vector2f(text_insets_.left - 1.0f, 0.0f));
+        carret->set_point(point::center, point::left, vector2f(text_insets_.left - 1.0f, 0.0f));
 
         carret->notify_loaded();
         carret_ = carret;
@@ -721,23 +719,23 @@ void edit_box::update_carret_position_() {
         return;
 
     if (unicode_text_.empty()) {
-        anchor_point p;
-        float        offset = 0.0f;
+        point p;
+        float offset = 0.0f;
 
         switch (font_string_->get_alignment_x()) {
         case alignment_x::left:
-            p      = anchor_point::left;
+            p      = point::left;
             offset = text_insets_.left - 1;
             break;
-        case alignment_x::center: p = anchor_point::center; break;
+        case alignment_x::center: p = point::center; break;
         case alignment_x::right:
-            p      = anchor_point::right;
+            p      = point::right;
             offset = -text_insets_.right - 1;
             break;
-        default: p = anchor_point::left; break;
+        default: p = point::left; break;
         }
 
-        carret_->set_point(anchor_point::center, p, vector2f(offset, 0.0f));
+        carret_->set_point(point::center, p, vector2f(offset, 0.0f));
     } else {
         text*                    text = font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;
@@ -809,7 +807,7 @@ void edit_box::update_carret_position_() {
                 x_offset += text->get_letter_quad(index)[2].pos.x;
         }
 
-        carret_->set_point(anchor_point::center, anchor_point::left, vector2f(x_offset, y_offset));
+        carret_->set_point(point::center, point::left, vector2f(x_offset, y_offset));
     }
 
     carret_timer_.zero();

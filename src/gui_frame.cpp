@@ -1322,7 +1322,7 @@ void frame::stop_moving() {
         get_manager().get_root().stop_moving();
 }
 
-void frame::start_sizing(const anchor_point& p) {
+void frame::start_sizing(const point& p) {
     if (!is_resizable_)
         return;
 

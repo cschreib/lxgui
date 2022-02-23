@@ -209,12 +209,12 @@ void region::register_on_lua(sol::state& lua) {
     /** @function get_point
      */
     type.set_function("get_point", [](const region& self, sol::optional<std::size_t> p) {
-        anchor_point point_value = anchor_point::top_left;
+        point point_value = point::top_left;
         if (p.has_value()) {
-            if (p.value() > static_cast<std::size_t>(anchor_point::center))
+            if (p.value() > static_cast<std::size_t>(point::center))
                 throw sol::error("requested anchor point is invalid");
 
-            point_value = static_cast<anchor_point>(p.value());
+            point_value = static_cast<point>(p.value());
         }
 
         const anchor& a = self.get_point(point_value);

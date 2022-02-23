@@ -14,7 +14,7 @@ class region;
 
 enum class anchor_type { abs, rel };
 
-enum class anchor_point {
+enum class point {
     top_left = 0,
     top,
     top_right,
@@ -30,22 +30,19 @@ enum class constraint { none, x, y };
 
 /// Raw data of an anchor (value type)
 struct anchor_data {
-    anchor_data(anchor_point input_point) :
+    anchor_data(point input_point) :
         object_point(input_point), parent_name("$default"), parent_point(input_point) {}
 
-    anchor_data(anchor_point input_point, const std::string& input_parent) :
+    anchor_data(point input_point, const std::string& input_parent) :
         object_point(input_point), parent_name(input_parent), parent_point(input_point) {}
 
-    anchor_data(
-        anchor_point       input_point,
-        const std::string& input_parent,
-        anchor_point       input_parent_point) :
+    anchor_data(point input_point, const std::string& input_parent, point input_parent_point) :
         object_point(input_point), parent_name(input_parent), parent_point(input_parent_point) {}
 
     anchor_data(
-        anchor_point       input_point,
+        point              input_point,
         const std::string& input_parent,
-        anchor_point       input_parent_point,
+        point              input_parent_point,
         const vector2f&    input_offset,
         anchor_type        input_type = anchor_type::abs) :
         object_point(input_point),
@@ -55,7 +52,7 @@ struct anchor_data {
         type(input_type) {}
 
     anchor_data(
-        anchor_point       input_point,
+        point              input_point,
         const std::string& input_parent,
         const vector2f&    input_offset,
         anchor_type        input_type = anchor_type::abs) :
@@ -66,7 +63,7 @@ struct anchor_data {
         type(input_type) {}
 
     anchor_data(
-        anchor_point    input_point,
+        point           input_point,
         const vector2f& input_offset,
         anchor_type     input_type = anchor_type::abs) :
         object_point(input_point),
@@ -76,8 +73,8 @@ struct anchor_data {
         type(input_type) {}
 
     anchor_data(
-        anchor_point    input_point,
-        anchor_point    input_parent_point,
+        point           input_point,
+        point           input_parent_point,
         const vector2f& input_offset,
         anchor_type     input_type = anchor_type::abs) :
         object_point(input_point),
@@ -86,14 +83,14 @@ struct anchor_data {
         offset(input_offset),
         type(input_type) {}
 
-    anchor_data(anchor_point input_point, anchor_point input_parent_point) :
+    anchor_data(point input_point, point input_parent_point) :
         object_point(input_point), parent_name("$default"), parent_point(input_parent_point) {}
 
-    anchor_point object_point = anchor_point::top_left;
-    std::string  parent_name;
-    anchor_point parent_point = anchor_point::top_left;
-    vector2f     offset;
-    anchor_type  type = anchor_type::abs;
+    point       object_point = point::top_left;
+    std::string parent_name;
+    point       parent_point = point::top_left;
+    vector2f    offset;
+    anchor_type type = anchor_type::abs;
 };
 
 /// Stores a position for a UI region

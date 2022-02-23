@@ -72,36 +72,36 @@ vector2f anchor::get_point(const region& object) const {
 
     vector2f parent_offset;
     switch (parent_point) {
-    case anchor_point::top_left:
+    case point::top_left:
         parent_offset.x = 0.0f;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::left:
+    case point::left:
         parent_offset.x = 0.0f;
         parent_offset.y = parent_size.y / 2.0f;
         break;
-    case anchor_point::bottom_left:
+    case point::bottom_left:
         parent_offset.x = 0.0f;
         parent_offset.y = parent_size.y;
         break;
-    case anchor_point::top:
+    case point::top:
         parent_offset.x = parent_size.x / 2.0f;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::center: parent_offset = parent_size / 2.0f; break;
-    case anchor_point::bottom:
+    case point::center: parent_offset = parent_size / 2.0f; break;
+    case point::bottom:
         parent_offset.x = parent_size.x / 2.0f;
         parent_offset.y = parent_size.y;
         break;
-    case anchor_point::top_right:
+    case point::top_right:
         parent_offset.x = parent_size.x;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::right:
+    case point::right:
         parent_offset.x = parent_size.x;
         parent_offset.y = parent_size.y / 2.0f;
         break;
-    case anchor_point::bottom_right:
+    case point::bottom_right:
         parent_offset.x = parent_size.x;
         parent_offset.y = parent_size.y;
         break;
@@ -113,7 +113,7 @@ vector2f anchor::get_point(const region& object) const {
 std::string anchor::serialize(const std::string& tab) const {
     std::stringstream str;
 
-    str << tab << "  |   # Point     : " << get_anchor_point_name(object_point) << "\n";
+    str << tab << "  |   # Point     : " << utils::to_string(object_point) << "\n";
     if (parent_)
         str << tab << "  |   # Parent    : " << parent_->get_name();
     else
@@ -122,7 +122,7 @@ std::string anchor::serialize(const std::string& tab) const {
         str << " (raw name: " << parent_name << ")\n";
     else
         str << "\n";
-    str << tab << "  |   # Rel. point: " << get_anchor_point_name(parent_point) << "\n";
+    str << tab << "  |   # Rel. point: " << utils::to_string(parent_point) << "\n";
     if (type == anchor_type::abs) {
         str << tab << "  |   # Offset X  : " << offset.x << "\n";
         str << tab << "  |   # Offset Y  : " << offset.y << "\n";

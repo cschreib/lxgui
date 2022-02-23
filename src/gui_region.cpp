@@ -44,7 +44,7 @@ region::~region() {
             if (!obj)
                 continue;
 
-            std::vector<anchor_point> anchored_point_list;
+            std::vector<point> anchored_point_list;
             for (const auto& a : obj->get_point_list()) {
                 if (a && a->get_parent().get() == this)
                     anchored_point_list.push_back(a->object_point);
@@ -52,23 +52,19 @@ region::~region() {
 
             for (const auto& p : anchored_point_list) {
                 const anchor& a          = obj->get_point(p);
-                anchor_data   new_anchor = anchor_data(p, "", anchor_point::top_left);
+                anchor_data   new_anchor = anchor_data(p, "", point::top_left);
                 new_anchor.offset        = a.offset;
 
                 switch (a.parent_point) {
-                case anchor_point::top_left: new_anchor.offset += border_list_.top_left(); break;
-                case anchor_point::top: new_anchor.offset.y += border_list_.top; break;
-                case anchor_point::top_right: new_anchor.offset += border_list_.top_right(); break;
-                case anchor_point::right: new_anchor.offset.x += border_list_.right; break;
-                case anchor_point::bottom_right:
-                    new_anchor.offset += border_list_.bottom_right();
-                    break;
-                case anchor_point::bottom: new_anchor.offset.y += border_list_.bottom; break;
-                case anchor_point::bottom_left:
-                    new_anchor.offset += border_list_.bottom_left();
-                    break;
-                case anchor_point::left: new_anchor.offset.x += border_list_.left; break;
-                case anchor_point::center: new_anchor.offset += border_list_.center(); break;
+                case point::top_left: new_anchor.offset += border_list_.top_left(); break;
+                case point::top: new_anchor.offset.y += border_list_.top; break;
+                case point::top_right: new_anchor.offset += border_list_.top_right(); break;
+                case point::right: new_anchor.offset.x += border_list_.right; break;
+                case point::bottom_right: new_anchor.offset += border_list_.bottom_right(); break;
+                case point::bottom: new_anchor.offset.y += border_list_.bottom; break;
+                case point::bottom_left: new_anchor.offset += border_list_.bottom_left(); break;
+                case point::left: new_anchor.offset.x += border_list_.left; break;
+                case point::center: new_anchor.offset += border_list_.center(); break;
                 }
 
                 obj->set_point(new_anchor);
@@ -412,11 +408,11 @@ void region::set_all_points(const std::string& obj_name) {
 
     clear_all_points();
 
-    anchor_list_[static_cast<int>(anchor_point::top_left)].emplace(
-        *this, anchor_data(anchor_point::top_left, obj_name));
+    anchor_list_[static_cast<int>(point::top_left)].emplace(
+        *this, anchor_data(point::top_left, obj_name));
 
-    anchor_list_[static_cast<int>(anchor_point::bottom_right)].emplace(
-        *this, anchor_data(anchor_point::bottom_right, obj_name));
+    anchor_list_[static_cast<int>(point::bottom_right)].emplace(
+        *this, anchor_data(point::bottom_right, obj_name));
 
     defined_border_list_ = bounds2<bool>(true, true, true, true);
 
@@ -441,26 +437,26 @@ void region::set_point(const anchor_data& a) {
     anchor_list_[static_cast<int>(a.object_point)].emplace(*this, a);
 
     switch (a.object_point) {
-    case anchor_point::top_left:
+    case point::top_left:
         defined_border_list_.top  = true;
         defined_border_list_.left = true;
         break;
-    case anchor_point::top: defined_border_list_.top = true; break;
-    case anchor_point::top_right:
+    case point::top: defined_border_list_.top = true; break;
+    case point::top_right:
         defined_border_list_.top   = true;
         defined_border_list_.right = true;
         break;
-    case anchor_point::right: defined_border_list_.right = true; break;
-    case anchor_point::bottom_right:
+    case point::right: defined_border_list_.right = true; break;
+    case point::bottom_right:
         defined_border_list_.bottom = true;
         defined_border_list_.right  = true;
         break;
-    case anchor_point::bottom: defined_border_list_.bottom = true; break;
-    case anchor_point::bottom_left:
+    case point::bottom: defined_border_list_.bottom = true; break;
+    case point::bottom_left:
         defined_border_list_.bottom = true;
         defined_border_list_.left   = true;
         break;
-    case anchor_point::left: defined_border_list_.left = true; break;
+    case point::left: defined_border_list_.left = true; break;
     default: break;
     }
 
@@ -497,7 +493,7 @@ std::size_t region::get_num_point() const {
     return num_anchors;
 }
 
-anchor& region::modify_point(anchor_point p) {
+anchor& region::modify_point(point p) {
     auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
@@ -507,7 +503,7 @@ anchor& region::modify_point(anchor_point p) {
     return *a;
 }
 
-const anchor& region::get_point(anchor_point p) const {
+const anchor& region::get_point(point p) const {
     const auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
@@ -594,39 +590,39 @@ void region::read_anchors_(
         const vector2f p = a.get_point(*this);
 
         switch (a.object_point) {
-        case anchor_point::top_left:
+        case point::top_left:
             top  = std::min<float>(top, p.y);
             left = std::min<float>(left, p.x);
             break;
-        case anchor_point::top:
+        case point::top:
             top      = std::min<float>(top, p.y);
             x_center = p.x;
             break;
-        case anchor_point::top_right:
+        case point::top_right:
             top   = std::min<float>(top, p.y);
             right = std::max<float>(right, p.x);
             break;
-        case anchor_point::right:
+        case point::right:
             right    = std::max<float>(right, p.x);
             y_center = p.y;
             break;
-        case anchor_point::bottom_right:
+        case point::bottom_right:
             bottom = std::max<float>(bottom, p.y);
             right  = std::max<float>(right, p.x);
             break;
-        case anchor_point::bottom:
+        case point::bottom:
             bottom   = std::max<float>(bottom, p.y);
             x_center = p.x;
             break;
-        case anchor_point::bottom_left:
+        case point::bottom_left:
             bottom = std::max<float>(bottom, p.y);
             left   = std::min<float>(left, p.x);
             break;
-        case anchor_point::left:
+        case point::left:
             left     = std::min<float>(left, p.x);
             y_center = p.y;
             break;
-        case anchor_point::center:
+        case point::center:
             x_center = p.x;
             y_center = p.y;
             break;

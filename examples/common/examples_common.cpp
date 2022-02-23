@@ -102,15 +102,15 @@ void examples_setup_gui(gui::manager& manager) {
     // Create a root frame.
     utils::observer_ptr<gui::frame> fps_frame;
     fps_frame = root.create_root_frame<gui::frame>("FPSCounter");
-    fps_frame->set_point(gui::anchor_point::top_left);
+    fps_frame->set_point(gui::point::top_left);
     fps_frame->set_point(
-        gui::anchor_point::bottom_right, "FontstringTestFrameText", gui::anchor_point::top_right);
+        gui::point::bottom_right, "FontstringTestFrameText", gui::point::top_right);
 
     // Create a font_string in the frame.
     utils::observer_ptr<gui::font_string> fps_text;
     fps_text =
         fps_frame->create_layered_region<gui::font_string>(gui::layer::artwork, "$parentText");
-    fps_text->set_point(gui::anchor_point::bottom_right, gui::vector2f(0, -5));
+    fps_text->set_point(gui::point::bottom_right, gui::vector2f(0, -5));
     fps_text->set_font("interface/fonts/main.ttf", 15);
     fps_text->set_alignment_y(gui::alignment_y::bottom);
     fps_text->set_alignment_x(gui::alignment_x::right);

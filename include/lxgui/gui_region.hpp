@@ -513,14 +513,14 @@ public:
      * \note After you have modified the anchor, you must call notify_borders_need_update() to
      * ensure that the object's borders are properly updated.
      */
-    anchor& modify_point(anchor_point p);
+    anchor& modify_point(point p);
 
     /**
      * \brief Returns one of this region's anchor.
      * \param p The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(anchor_point p) const;
+    const anchor& get_point(point p) const;
 
     /**
      * \brief Returns all of this region's anchors.

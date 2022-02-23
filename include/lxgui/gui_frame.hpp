@@ -1189,7 +1189,7 @@ public:
      * \brief Starts resizing this frame with the mouse.
      * \param p The corner to move
      */
-    void start_sizing(const anchor_point& p);
+    void start_sizing(const point& p);
 
     /// ends resizing this frame.
     void stop_sizing();
