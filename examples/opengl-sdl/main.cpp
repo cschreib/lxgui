@@ -92,6 +92,9 @@ int main(int argc, char* argv[]) {
             std::make_unique<gui::gl::renderer>(input_source->get_window_dimensions());
 
         // Create the GUI manager
+        // NB: utils::owner_ptr is a lightweight, unique-ownership smart pointer similar to
+        // std::unique_ptr. The difference is that you can create "observer" pointers that can
+        // safely be checked for validity after the object is deleted (they will be null).
         utils::owner_ptr<gui::manager> manager = utils::make_owned<gui::manager>(
             // Provide the input source
             std::move(input_source),

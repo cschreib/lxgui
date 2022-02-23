@@ -27,7 +27,7 @@ float get_time_delta(const timing_clock::time_point& t1, const timing_clock::tim
 
 void examples_setup_gui(gui::manager& manager) {
     // -------------------------------------------------
-    // Initialise the GUI
+    // Initialise the GUI.
     // -------------------------------------------------
 
     // Automatically select best settings
@@ -90,19 +90,23 @@ void examples_setup_gui(gui::manager& manager) {
     // Alternatively, you can also create GUI elements directly in C++ code, see below.
 
     // -------------------------------------------------
-    // Create GUI elements in C++
+    // Create GUI elements in C++.
     // -------------------------------------------------
 
-    // Create a frame
-    // A "root" frame has no parent and is directly owned by the gui::manager.
-    // A "child" frame is owned by another frame.
+    // Root frames vs child frames:
+    //  - a "root" frame has no parent and is directly owned by the gui::root.
+    //  - a "child" frame is owned by another frame.
+    // To start with, we therefore need a root frame.
+    gui::root& root = manager->get_root();
+
+    // Create a root frame.
     utils::observer_ptr<gui::frame> fps_frame;
-    fps_frame = manager.get_root().create_root_frame<gui::frame>("FPSCounter");
+    fps_frame = root.create_root_frame<gui::frame>("FPSCounter");
     fps_frame->set_point(gui::anchor_point::top_left);
     fps_frame->set_point(
         gui::anchor_point::bottom_right, "FontstringTestFrameText", gui::anchor_point::top_right);
 
-    // Create a font_string in the frame
+    // Create a font_string in the frame.
     utils::observer_ptr<gui::font_string> fps_text;
     fps_text =
         fps_frame->create_layered_region<gui::font_string>(gui::layer::artwork, "$parentText");
@@ -114,7 +118,7 @@ void examples_setup_gui(gui::manager& manager) {
     fps_text->set_text_color(gui::color::red);
     fps_text->notify_loaded();
 
-    // Create the scripts for this frame
+    // Create the scripts for this frame.
     // In Lua
     /*fps_frame->add_script("OnLoad",
         "self.update_time = 0.5;"
@@ -155,7 +159,7 @@ void examples_setup_gui(gui::manager& manager) {
         }
     });
 
-    // Tell the Frame is has been fully loaded, and call "OnLoad"
+    // Tell the Frame is has been fully loaded, and call "OnLoad".
     fps_frame->notify_loaded();
 
     // The GUI now has some elements to display.
@@ -163,7 +167,7 @@ void examples_setup_gui(gui::manager& manager) {
     // captured by the UI.
 
     // -------------------------------------------------
-    // Reacting to inputs in your game
+    // Reacting to inputs in your game.
     // -------------------------------------------------
 
     // Lxgui offers multiple layers to react to events:
