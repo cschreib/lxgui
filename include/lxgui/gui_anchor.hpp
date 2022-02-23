@@ -152,18 +152,6 @@ public:
         return *this;
     }
 
-    /**
-     * \brief Returns the name of an anchor point.
-     * \param p The anchor point
-     */
-    static std::string get_anchor_point_name(anchor_point p);
-
-    /**
-     * \brief Returns the anchor point from its name.
-     * \param point_name The name of the anchor point
-     */
-    static anchor_point get_anchor_point(const std::string& point_name);
-
 private:
     /**
      * \brief Update the anchor parent object from the parent string.

@@ -220,8 +220,8 @@ void region::register_on_lua(sol::state& lua) {
         const anchor& a = self.get_point(point_value);
 
         return std::make_tuple(
-            anchor::get_anchor_point_name(a.object_point), a.get_parent(),
-            anchor::get_anchor_point_name(a.parent_point), a.offset.x, a.offset.y);
+            utils::to_string(a.object_point), a.get_parent(), utils::to_string(a.parent_point),
+            a.offset.x, a.offset.y);
     });
 
     /** @function get_right
@@ -292,7 +292,7 @@ void region::register_on_lua(sol::state& lua) {
                         sol::optional<std::string> relative_point, sol::optional<float> x_offset,
                         sol::optional<float> y_offset) {
             // point
-            anchor_point p = anchor::get_anchor_point(point_name);
+            point p = utils::from_string<point>(point_name).value();
 
             // parent
             utils::observer_ptr<region> parent_obj;
@@ -307,10 +307,10 @@ void region::register_on_lua(sol::state& lua) {
                     parent_obj->get_name() + "\" depend on eachothers (directly or indirectly)");
             }
 
-            // relativePoint
-            anchor_point parent_point = p;
+            // relative point
+            point parent_point = p;
             if (relative_point.has_value())
-                parent_point = anchor::get_anchor_point(relative_point.value());
+                parent_point = utils::from_string<point>(relative_point.value()).value();
 
             // x, y
             float abs_x = x_offset.value_or(0.0f);
@@ -328,7 +328,7 @@ void region::register_on_lua(sol::state& lua) {
                             sol::optional<std::string>                        relative_point,
                             sol::optional<float> x_offset, sol::optional<float> y_offset) {
             // point
-            anchor_point p = anchor::get_anchor_point(point_name);
+            point p = utils::from_string<point>(point_name).value();
 
             // parent
             utils::observer_ptr<region> parent_obj;
@@ -344,9 +344,9 @@ void region::register_on_lua(sol::state& lua) {
             }
 
             // relativePoint
-            anchor_point parent_point = p;
+            point parent_point = p;
             if (relative_point.has_value())
-                parent_point = anchor::get_anchor_point(relative_point.value());
+                parent_point = utils::from_string<point>(relative_point.value()).value();
 
             // x, y
             float rel_x = x_offset.value_or(0.0f);

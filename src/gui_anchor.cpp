@@ -134,41 +134,4 @@ std::string anchor::serialize(const std::string& tab) const {
     return str.str();
 }
 
-std::string anchor::get_anchor_point_name(anchor_point p) {
-    switch (p) {
-    case anchor_point::top_left: return "TOP_LEFT";
-    case anchor_point::top: return "TOP";
-    case anchor_point::top_right: return "TOP_RIGHT";
-    case anchor_point::right: return "RIGHT";
-    case anchor_point::bottom_right: return "BOTTOM_RIGHT";
-    case anchor_point::bottom: return "BOTTOM";
-    case anchor_point::bottom_left: return "BOTTOM_LEFT";
-    case anchor_point::left: return "LEFT";
-    case anchor_point::center: return "CENTER";
-    }
-    return "";
-}
-
-anchor_point anchor::get_anchor_point(const std::string& point_name) {
-    if (point_name == "TOP_LEFT")
-        return anchor_point::top_left;
-    else if (point_name == "TOP")
-        return anchor_point::top;
-    else if (point_name == "TOP_RIGHT")
-        return anchor_point::top_right;
-    else if (point_name == "RIGHT")
-        return anchor_point::right;
-    else if (point_name == "BOTTOM_RIGHT")
-        return anchor_point::bottom_right;
-    else if (point_name == "BOTTOM")
-        return anchor_point::bottom;
-    else if (point_name == "BOTTOM_LEFT")
-        return anchor_point::bottom_left;
-    else if (point_name == "LEFT")
-        return anchor_point::left;
-    else if (point_name == "CENTER")
-        return anchor_point::center;
-    return anchor_point::top_left;
-}
-
 } // namespace lxgui::gui

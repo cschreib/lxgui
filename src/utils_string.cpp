@@ -181,113 +181,144 @@ std::size_t hex_to_uint(string_view s) {
     return i;
 }
 
+namespace impl {
+
 template<typename T>
-bool from_string_template(string_view s, T& v) {
+std::optional<T> from_string_template(string_view s) {
     std::istringstream ss{std::string(s)};
     ss.imbue(std::locale::classic());
+
+    T v;
     ss >> v;
 
     if (!ss.fail()) {
         if (ss.eof())
-            return true;
+            return v;
 
         std::string rem;
         ss >> rem;
 
-        return rem.find_first_not_of(" \t") == rem.npos;
+        if (rem.find_first_not_of(" \t") == rem.npos)
+            return v;
     }
 
-    return false;
+    return {};
 }
 
-bool from_string(string_view s, int& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<int> from_string<int>(string_view s) {
+    return from_string_template<int>(s);
 }
 
-bool from_string(string_view s, long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<long> from_string<long>(string_view s) {
+    return from_string_template<long>(s);
 }
 
-bool from_string(string_view s, long long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<long long> from_string<long long>(string_view s) {
+    return from_string_template<long long>(s);
 }
 
-bool from_string(string_view s, unsigned& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned> from_string<unsigned>(string_view s) {
+    return from_string_template<unsigned>(s);
 }
 
-bool from_string(string_view s, unsigned long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned long> from_string<unsigned long>(string_view s) {
+    return from_string_template<unsigned long>(s);
 }
 
-bool from_string(string_view s, unsigned long long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(string_view s) {
+    return from_string_template<unsigned long long>(s);
 }
 
-bool from_string(string_view s, float& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<float> from_string<float>(string_view s) {
+    return from_string_template<float>(s);
 }
 
-bool from_string(string_view s, double& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<double> from_string<double>(string_view s) {
+    return from_string_template<double>(s);
 }
 
-bool from_string(string_view s, bool& v) {
-    v = s == "true";
-    return v || s == "false";
+template<>
+std::optional<bool> from_string<bool>(string_view s) {
+    if (s == "true")
+        return true;
+    if (s == "false")
+        return false;
+    return {};
 }
 
-bool from_string(string_view s, string& v) {
-    v = s;
-    return true;
+template<>
+std::optional<string> from_string<string>(string_view s) {
+    return string{s};
 }
 
 template<typename T>
-bool from_string_template(ustring_view s, T& v) {
-    return from_string(unicode_to_utf8(s), v);
+std::optional<T> from_string_template(ustring_view s) {
+    return from_string<T>(unicode_to_utf8(s));
 }
 
-bool from_string(ustring_view s, int& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<int> from_string<int>(ustring_view s) {
+    return from_string_template<int>(s);
 }
 
-bool from_string(ustring_view s, long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<long> from_string<long>(ustring_view s) {
+    return from_string_template<long>(s);
 }
 
-bool from_string(ustring_view s, long long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<long long> from_string<long long>(ustring_view s) {
+    return from_string_template<long long>(s);
 }
 
-bool from_string(ustring_view s, unsigned& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned> from_string<unsigned>(ustring_view s) {
+    return from_string_template<unsigned>(s);
 }
 
-bool from_string(ustring_view s, unsigned long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned long> from_string<unsigned long>(ustring_view s) {
+    return from_string_template<unsigned long>(s);
 }
 
-bool from_string(ustring_view s, unsigned long long& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(ustring_view s) {
+    return from_string_template<unsigned long long>(s);
 }
 
-bool from_string(ustring_view s, float& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<float> from_string<float>(ustring_view s) {
+    return from_string_template<float>(s);
 }
 
-bool from_string(ustring_view s, double& v) {
-    return from_string_template(s, v);
+template<>
+std::optional<double> from_string<double>(ustring_view s) {
+    return from_string_template<double>(s);
 }
 
-bool from_string(ustring_view s, bool& v) {
-    v = s == U"true";
-    return v || s == U"false";
+template<>
+std::optional<bool> from_string<bool>(ustring_view s) {
+    if (s == U"true")
+        return true;
+    if (s == U"false")
+        return false;
+    return {};
 }
 
-bool from_string(ustring_view s, ustring& v) {
-    v = s;
-    return true;
+template<>
+std::optional<ustring> from_string<ustring>(ustring_view s) {
+    return ustring{s};
 }
+
+} // namespace impl
 
 bool is_number(string_view s) {
     std::istringstream temp{std::string(s)};
@@ -393,7 +424,7 @@ string to_string(bool b) {
     return b ? "true" : "false";
 }
 
-string to_string(void* p) {
+string to_string(const void* p) {
     std::ostringstream stream;
     stream.imbue(std::locale::classic());
     stream << p;

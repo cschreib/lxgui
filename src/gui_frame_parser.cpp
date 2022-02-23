@@ -50,9 +50,8 @@ void frame::parse_attributes_(const layout_node& node) {
     if (const layout_attribute* attr = node.try_get_attribute("frameLevel")) {
         if (!is_virtual_) {
             std::string frame_level = attr->get_value<std::string>();
-            int         level       = 0;
-            if (frame_level != "PARENT" && utils::from_string(frame_level, level))
-                set_level(level);
+            if (frame_level != "PARENT")
+                set_level(attr->get_value<int>());
         } else {
             gui::out << gui::warning << node.get_location() << ": "
                      << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;

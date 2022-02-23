@@ -669,12 +669,9 @@ void edit_box::check_text_() {
         return;
     }
 
-    if (is_positive_only_) {
-        double value = 0.0;
-        if (!utils::from_string(unicode_text_, value) || value < 0.0) {
-            unicode_text_.clear();
-            return;
-        }
+    if (is_positive_only_ && utils::from_string<double>(unicode_text_).value_or(-1.0) < 0.0) {
+        unicode_text_.clear();
+        return;
     }
 }
 

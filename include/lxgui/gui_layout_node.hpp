@@ -59,8 +59,9 @@ public:
     std::size_t get_line_number() const noexcept {
         std::size_t line = std::numeric_limits<std::size_t>::max();
         auto        pos  = location_.find(':');
-        if (pos != location_.npos && pos < location_.size() - 1)
-            utils::from_string(location_.substr(pos + 1), line);
+        if (pos != location_.npos && pos < location_.size() - 1) {
+            line = utils::from_string<std::size_t>(location_.substr(pos + 1)).value_or(line);
+        }
         return line;
     }
 
@@ -71,8 +72,9 @@ public:
     std::size_t get_value_line_number() const noexcept {
         std::size_t line = std::numeric_limits<std::size_t>::max();
         auto        pos  = value_location_.find(':');
-        if (pos != value_location_.npos && pos < value_location_.size() - 1)
-            utils::from_string(value_location_.substr(pos + 1), line);
+        if (pos != value_location_.npos && pos < value_location_.size() - 1) {
+            line = utils::from_string<std::size_t>(value_location_.substr(pos + 1)).value_or(line);
+        }
         return line;
     }
 
@@ -115,15 +117,15 @@ public:
      */
     template<typename T>
     T get_value() const {
-        accessed_ = true;
-        T value{};
-        if (!utils::from_string(value_, value)) {
+        accessed_  = true;
+        auto value = utils::from_string<T>(value_);
+        if (!value.has_value()) {
             throw utils::exception(
                 std::string(get_location()) + ": could not parse value for '" + std::string(name_) +
                 "': '" + std::string(value_) + "'");
         }
 
-        return value;
+        return value.value();
     }
 
     /**
@@ -134,11 +136,7 @@ public:
     template<typename T>
     T get_value_or(T fallback) const noexcept {
         accessed_ = true;
-        T value{};
-        if (!utils::from_string(value_, value))
-            value = fallback;
-
-        return value;
+        return utils::from_string<T>(value_).value_or(fallback);
     }
 
     /**

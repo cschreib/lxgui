@@ -89,7 +89,7 @@ void region::parse_size_node_(const layout_node& node) {
 
 void region::parse_anchor_node_(const layout_node& node) {
     if (const layout_node* anchors_node = node.try_get_child("Anchors")) {
-        std::vector<std::string> found_points;
+        std::vector<point> found_points;
         for (const auto& anchor_node : anchors_node->get_children()) {
             if (anchor_node.get_name() != "Anchor" && anchor_node.get_name() != "") {
                 gui::out << gui::warning << anchor_node.get_location() << ": "
@@ -98,21 +98,20 @@ void region::parse_anchor_node_(const layout_node& node) {
                 continue;
             }
 
-            std::string pt = anchor_node.get_attribute_value_or<std::string>("point", "TOP_LEFT");
+            point       pt = anchor_node.get_attribute_value_or<point>("point", point::top_left);
             std::string parent = anchor_node.get_attribute_value_or<std::string>(
                 "relativeTo", parent_ || is_virtual() ? "$parent" : "");
-            std::string relative_point =
-                anchor_node.get_attribute_value_or<std::string>("relativePoint", pt);
+            point relative_point = anchor_node.get_attribute_value_or<point>("relativePoint", pt);
 
             if (utils::find(found_points, pt) != found_points.end()) {
                 gui::out << gui::warning << anchor_node.get_location() << ": "
-                         << "anchor point \"" << pt << "\" has already been defined for \"" << name_
-                         << "\". anchor skipped." << std::endl;
+                         << "anchor point \"" << utils::to_string(pt)
+                         << "\" has already been defined for \"" << name_ << "\". anchor skipped."
+                         << std::endl;
                 continue;
             }
 
-            anchor_data a(
-                anchor::get_anchor_point(pt), parent, anchor::get_anchor_point(relative_point));
+            anchor_data a(pt, parent, relative_point);
 
             if (const layout_node* offset_node = anchor_node.try_get_child("Offset")) {
                 auto dimensions = parse_dimension_(*offset_node);

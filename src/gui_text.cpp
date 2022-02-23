@@ -103,11 +103,14 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                         texture.width = texture.height = std::numeric_limits<float>::quiet_NaN();
 
                         if (words.size() == 2) {
-                            utils::from_string(words[1], texture.width);
+                            texture.width =
+                                utils::from_string<float>(words[1]).value_or(texture.width);
                             texture.height = texture.width;
                         } else if (words.size() > 2) {
-                            utils::from_string(words[1], texture.width);
-                            utils::from_string(words[2], texture.height);
+                            texture.width =
+                                utils::from_string<float>(words[1]).value_or(texture.width);
+                            texture.height =
+                                utils::from_string<float>(words[2]).value_or(texture.height);
                         }
 
                         content.push_back(texture);

@@ -857,12 +857,13 @@ hijack_sol_error_line(std::string original_message, const std::string& file, std
     if (pos4 == std::string::npos)
         return original_message;
 
-    std::size_t offset = 0;
-    if (!utils::from_string(original_message.substr(pos3 + 1, pos4 - pos3 - 1), offset))
+    auto offset =
+        utils::from_string<std::size_t>(original_message.substr(pos3 + 1, pos4 - pos3 - 1));
+    if (!offset.has_value())
         return original_message;
 
     original_message.erase(pos3 + 1, pos4 - pos3 - 1);
-    original_message.insert(pos3 + 1, utils::to_string(line_nbr + offset - 1));
+    original_message.insert(pos3 + 1, utils::to_string(line_nbr + offset.value() - 1));
     pos4 = original_message.find_first_of(':', pos3 + 1);
 
     auto pos5 = original_message.find("[string \"" + file, pos4);
