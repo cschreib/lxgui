@@ -97,7 +97,7 @@ void examples_setup_gui(gui::manager& manager) {
     //  - a "root" frame has no parent and is directly owned by the gui::root.
     //  - a "child" frame is owned by another frame.
     // To start with, we therefore need a root frame.
-    gui::root& root = manager->get_root();
+    gui::root& root = manager.get_root();
 
     // Create a root frame.
     utils::observer_ptr<gui::frame> fps_frame;
