@@ -3,6 +3,7 @@
 
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_orientation.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
@@ -32,8 +33,6 @@ class status_bar : public frame {
     using base = frame;
 
 public:
-    enum class orientation { horizontal, vertical };
-
     /// Constructor.
     explicit status_bar(utils::control_block& block, manager& mgr);
 
@@ -89,12 +88,6 @@ public:
     void set_bar_draw_layer(layer bar_layer);
 
     /**
-     * \brief Sets the draw layer of this status_bar's bar texture.
-     * \param bar_layer_name The layer
-     */
-    void set_bar_draw_layer(const std::string& bar_layer_name);
-
-    /**
      * \brief Sets this status_bar's bar texture.
      * \param bar_texture The bar texture
      */
@@ -111,12 +104,6 @@ public:
      * \param orient The orientation
      */
     void set_orientation(orientation orient);
-
-    /**
-     * \brief Sets this status_bar's orientation.
-     * \param orientation_name The orientation ("VERTICAL" or "HORIZONTAL")
-     */
-    void set_orientation(const std::string& orientation_name);
 
     /**
      * \brief Reverses this status_bar.

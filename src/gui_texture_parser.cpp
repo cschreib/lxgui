@@ -19,8 +19,16 @@ void texture::parse_layout(const layout_node& node) {
 void texture::parse_attributes_(const layout_node& node) {
     layered_region::parse_attributes_(node);
 
-    if (const layout_attribute* attr = node.try_get_attribute("filter"))
-        set_filter_mode(attr->get_value<std::string>());
+    if (const layout_attribute* attr = node.try_get_attribute("filter")) {
+        std::string filter_name = attr->get_value<std::string>();
+        if (auto converted = utils::from_string<material::filter>(filter_name);
+            converted.has_value()) {
+            set_filter_mode(converted.value());
+        } else {
+            gui::out << gui::warning << node.get_location() << ": Unknown Texture filter type: \""
+                     << filter_name << "\". Attribute ignored." << std::endl;
+        }
+    }
 
     if (const layout_attribute* attr = node.try_get_attribute("file"))
         set_texture(attr->get_value<std::string>());
@@ -38,17 +46,16 @@ void texture::parse_tex_coords_node_(const layout_node& node) {
 
 void texture::parse_gradient_node_(const layout_node& node) {
     if (const layout_node* gradient_node = node.try_get_child("Gradient")) {
-        std::string orientation =
+        std::string orientation_name =
             gradient_node->get_attribute_value_or<std::string>("orientation", "HORIZONTAL");
 
-        gradient::orientation orient;
-        if (orientation == "HORIZONTAL")
-            orient = gradient::orientation::horizontal;
-        else if (orientation == "VERTICAL")
-            orient = gradient::orientation::vertical;
-        else {
+        orientation orient;
+        if (auto converted = utils::from_string<orientation>(orientation_name);
+            converted.has_value()) {
+            orient = converted.value();
+        } else {
             gui::out << gui::warning << gradient_node->get_location()
-                     << ": Unknown gradient orientation for " << name_ << ": \"" << orientation
+                     << ": Unknown gradient orientation for " << name_ << ": \"" << orientation_name
                      << "\". No gradient will be shown for this texture." << std::endl;
             return;
         }

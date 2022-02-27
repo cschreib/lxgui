@@ -23,12 +23,7 @@ std::string status_bar::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    str << tab << "  # Orientation: ";
-    switch (orientation_) {
-    case orientation::horizontal: str << "HORIZONTAL"; break;
-    case orientation::vertical: str << "VERTICAL"; break;
-    }
-    str << "\n";
+    str << tab << "  # Orientation: " << utils::to_string(orientation_) << "\n";
     str << tab << "  # Reversed  : " << is_reversed_ << "\n";
     str << tab << "  # Value     : " << value_ << "\n";
     str << tab << "  # Min value : " << min_value_ << "\n";
@@ -38,12 +33,7 @@ std::string status_bar::serialize(const std::string& tab) const {
 }
 
 bool status_bar::can_use_script(const std::string& script_name) const {
-    if (base::can_use_script(script_name))
-        return true;
-    else if (script_name == "OnValueChanged")
-        return true;
-    else
-        return false;
+    return base::can_use_script(script_name) || script_name == "OnValueChanged";
 }
 
 void status_bar::copy_from(const region& obj) {
@@ -77,67 +67,57 @@ void status_bar::copy_from(const region& obj) {
 }
 
 void status_bar::set_min_value(float min_value) {
-    if (min_value != min_value_) {
-        min_value_ = min_value;
-        if (min_value_ > max_value_)
-            min_value_ = max_value_;
-        value_ = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
-        notify_bar_texture_needs_update_();
-    }
+    if (min_value == min_value_)
+        return;
+
+    min_value_ = min_value;
+    if (min_value_ > max_value_)
+        min_value_ = max_value_;
+
+    value_ = std::clamp(value_, min_value_, max_value_);
+
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_max_value(float max_value) {
-    if (max_value != max_value_) {
-        max_value_ = max_value;
-        if (max_value_ < min_value_)
-            max_value_ = min_value_;
-        value_ = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
-        notify_bar_texture_needs_update_();
-    }
+    if (max_value == max_value_)
+        return;
+
+    max_value_ = max_value;
+    if (max_value_ < min_value_)
+        max_value_ = min_value_;
+
+    value_ = std::clamp(value_, min_value_, max_value_);
+
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_min_max_values(float min_value, float max_value) {
-    if (min_value != min_value_ || max_value != max_value_) {
-        min_value_ = std::min(min_value, max_value);
-        max_value_ = std::max(min_value, max_value);
-        value_     = value_ > max_value_ ? max_value_ : (value_ < min_value_ ? min_value_ : value_);
-        notify_bar_texture_needs_update_();
-    }
+    if (min_value == min_value_ && max_value == max_value_)
+        return;
+
+    min_value_ = std::min(min_value, max_value);
+    max_value_ = std::max(min_value, max_value);
+
+    value_ = std::clamp(value_, min_value_, max_value_);
+
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_value(float value) {
-    value = value > max_value_ ? max_value_ : (value < min_value_ ? min_value_ : value);
-    if (value != value_) {
-        value_ = value;
-        notify_bar_texture_needs_update_();
-    }
+    value = std::clamp(value, min_value_, max_value_);
+
+    if (value == value_)
+        return;
+
+    value_ = value;
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_bar_draw_layer(layer bar_layer) {
     bar_layer_ = bar_layer;
     if (bar_texture_)
         bar_texture_->set_draw_layer(bar_layer_);
-}
-
-void status_bar::set_bar_draw_layer(const std::string& bar_layer_name) {
-    layer bar_layer;
-    if (bar_layer_name == "ARTWORK")
-        bar_layer = layer::artwork;
-    else if (bar_layer_name == "BACKGROUND")
-        bar_layer = layer::background;
-    else if (bar_layer_name == "BORDER")
-        bar_layer = layer::border;
-    else if (bar_layer_name == "HIGHLIGHT")
-        bar_layer = layer::highlight;
-    else if (bar_layer_name == "OVERLAY")
-        bar_layer = layer::overlay;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown layer type: \""
-                 << bar_layer_name << "\". Using \"ARTWORK\"." << std::endl;
-        bar_layer = layer::artwork;
-    }
-
-    set_bar_draw_layer(bar_layer);
 }
 
 void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
@@ -172,20 +152,6 @@ void status_bar::set_orientation(orientation orient) {
 
     orientation_ = orient;
     notify_bar_texture_needs_update_();
-}
-
-void status_bar::set_orientation(const std::string& orientation_name) {
-    orientation orient = orientation::horizontal;
-    if (orientation_name == "VERTICAL")
-        orient = orientation::vertical;
-    else if (orientation_name == "HORIZONTAL")
-        orient = orientation::horizontal;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown orientation: \""
-                 << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
-    }
-
-    set_orientation(orient);
 }
 
 void status_bar::set_reversed(bool reversed) {
@@ -225,7 +191,7 @@ const color& status_bar::get_bar_color() const {
     return bar_color_;
 }
 
-status_bar::orientation status_bar::get_orientation() const {
+orientation status_bar::get_orientation() const {
     return orientation_;
 }
 

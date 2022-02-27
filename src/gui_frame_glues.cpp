@@ -8,6 +8,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_virtual_root.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/extern_sol2_variadic_args.hpp>
@@ -246,9 +247,17 @@ void frame::register_on_lua(sol::state& lua) {
         "create_font_string",
         [](frame& self, const std::string& name, sol::optional<std::string> layer_name,
            sol::optional<std::string> inheritance) {
-            layer layer = layer::artwork;
-            if (layer_name.has_value())
-                layer = parse_layer_type(layer_name.value());
+            layer layer_id = layer::artwork;
+            if (layer_name.has_value()) {
+                if (auto converted = utils::from_string<layer>(layer_name.value());
+                    converted.has_value()) {
+                    layer_id = converted.value();
+                } else {
+                    gui::out << gui::warning << "Frame.create_font_string: "
+                             << "Unknown layer type: \"" << layer_name.value() << "\"."
+                             << std::endl;
+                }
+            }
 
             region_core_attributes attr;
             attr.name = name;
@@ -256,7 +265,7 @@ void frame::register_on_lua(sol::state& lua) {
                 self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     inheritance.value_or(""));
 
-            return self.create_layered_region<font_string>(layer, std::move(attr));
+            return self.create_layered_region<font_string>(layer_id, std::move(attr));
         });
 
     /** @function create_texture
@@ -265,9 +274,17 @@ void frame::register_on_lua(sol::state& lua) {
         "create_texture",
         [](frame& self, const std::string& name, sol::optional<std::string> layer_name,
            sol::optional<std::string> inheritance) {
-            layer layer = layer::artwork;
-            if (layer_name.has_value())
-                layer = parse_layer_type(layer_name.value());
+            layer layer_id = layer::artwork;
+            if (layer_name.has_value()) {
+                if (auto converted = utils::from_string<layer>(layer_name.value());
+                    converted.has_value()) {
+                    layer_id = converted.value();
+                } else {
+                    gui::out << gui::warning << "Frame.create_texture: "
+                             << "Unknown layer type: \"" << layer_name.value() << "\"."
+                             << std::endl;
+                }
+            }
 
             region_core_attributes attr;
             attr.name = name;
@@ -275,7 +292,7 @@ void frame::register_on_lua(sol::state& lua) {
                 self.get_manager().get_virtual_root().get_registry().get_virtual_region_list(
                     inheritance.value_or(""));
 
-            return self.create_layered_region<texture>(layer, std::move(attr));
+            return self.create_layered_region<texture>(layer_id, std::move(attr));
         });
 
     /** @function create_title_region
@@ -285,13 +302,23 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function disable_draw_layer
      */
     type.set_function("disable_draw_layer", [](frame& self, const std::string& layer_name) {
-        self.disable_draw_layer(parse_layer_type(layer_name));
+        if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
+            self.disable_draw_layer(converted.value());
+        } else {
+            gui::out << gui::warning << "Frame.disable_draw_layer: "
+                     << "Unknown layer type: \"" << layer_name << "\"." << std::endl;
+        }
     });
 
     /** @function enable_draw_layer
      */
     type.set_function("enable_draw_layer", [](frame& self, const std::string& layer_name) {
-        self.enable_draw_layer(parse_layer_type(layer_name));
+        if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
+            self.enable_draw_layer(converted.value());
+        } else {
+            gui::out << gui::warning << "Frame.enable_draw_layer: "
+                     << "Unknown layer type: \"" << layer_name << "\"." << std::endl;
+        }
     });
 
     /** @function enable_mouse

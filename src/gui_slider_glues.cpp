@@ -1,3 +1,4 @@
+#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_slider.hpp"
 #include "lxgui/gui_texture.hpp"
@@ -56,11 +57,7 @@ void slider::register_on_lua(sol::state& lua) {
     /** @function get_orientation
      */
     type.set_function("get_orientation", [](const slider& self) {
-        switch (self.get_orientation()) {
-        case slider::orientation::vertical: return "VERTICAL";
-        case slider::orientation::horizontal: return "HORIZONTAL";
-        default: return "";
-        }
+        return utils::to_string(self.get_orientation());
     });
 
     /** @function get_thumb_texture
@@ -92,10 +89,15 @@ void slider::register_on_lua(sol::state& lua) {
 
     /** @function set_orientation
      */
-    type.set_function(
-        "set_orientation",
-        member_function< // select the right overload for Lua
-            static_cast<void (slider::*)(const std::string&)>(&slider::set_orientation)>());
+    type.set_function("set_orientation", [](slider& self, std::string orientation_name) {
+        if (auto converted = utils::from_string<orientation>(orientation_name);
+            converted.has_value()) {
+            self.set_orientation(converted.value());
+        } else {
+            gui::out << gui::warning << "Slider:set_orientation: Unknown orientation: \""
+                     << orientation_name << "\"." << std::endl;
+        }
+    });
 
     /** @function set_thumb_texture
      */

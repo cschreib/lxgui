@@ -30,12 +30,7 @@ std::string slider::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    str << tab << "  # Orientation: ";
-    switch (orientation_) {
-    case orientation::horizontal: str << "HORIZONTAL"; break;
-    case orientation::vertical: str << "VERTICAL"; break;
-    }
-    str << "\n";
+    str << tab << "  # Orientation: " << utils::to_string(orientation_) << "\n";
     str << tab << "  # Value     : " << value_ << "\n";
     str << tab << "  # Min value : " << min_value_ << "\n";
     str << tab << "  # Max value : " << max_value_ << "\n";
@@ -46,12 +41,7 @@ std::string slider::serialize(const std::string& tab) const {
 }
 
 bool slider::can_use_script(const std::string& script_name) const {
-    if (base::can_use_script(script_name))
-        return true;
-    else if (script_name == "OnValueChanged")
-        return true;
-    else
-        return false;
+    return base::can_use_script(script_name) || script_name == "OnValueChanged";
 }
 
 void slider::fire_script(const std::string& script_name, const event_data& data) {
@@ -170,85 +160,90 @@ void slider::constrain_thumb_() {
 }
 
 void slider::set_min_value(float min_value) {
-    if (min_value != min_value_) {
-        min_value_ = min_value;
-        if (min_value_ > max_value_)
-            min_value_ = max_value_;
-        else
-            step_value(min_value_, value_step_);
+    if (min_value == min_value_)
+        return;
 
-        if (value_ < min_value_) {
-            value_ = min_value_;
-            fire_script("OnValueChanged");
-        }
+    min_value_ = min_value;
+    if (min_value_ > max_value_)
+        min_value_ = max_value_;
+    else
+        step_value(min_value_, value_step_);
 
-        notify_thumb_texture_needs_update_();
+    if (value_ < min_value_) {
+        value_ = min_value_;
+        fire_script("OnValueChanged");
     }
+
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_max_value(float max_value) {
-    if (max_value != max_value_) {
-        max_value_ = max_value;
-        if (max_value_ < min_value_)
-            max_value_ = min_value_;
-        else
-            step_value(max_value_, value_step_);
+    if (max_value == max_value_)
+        return;
 
-        if (value_ > max_value_) {
-            value_ = max_value_;
-            fire_script("OnValueChanged");
-        }
+    max_value_ = max_value;
+    if (max_value_ < min_value_)
+        max_value_ = min_value_;
+    else
+        step_value(max_value_, value_step_);
 
-        notify_thumb_texture_needs_update_();
+    if (value_ > max_value_) {
+        value_ = max_value_;
+        fire_script("OnValueChanged");
     }
+
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_min_max_values(float min_value, float max_value) {
-    if (min_value != min_value_ || max_value != max_value_) {
-        min_value_ = std::min(min_value, max_value);
-        max_value_ = std::max(min_value, max_value);
-        step_value(min_value_, value_step_);
-        step_value(max_value_, value_step_);
+    if (min_value == min_value_ && max_value == max_value_)
+        return;
 
-        if (value_ > max_value_ || value_ < min_value_) {
-            value_ = std::clamp(value_, min_value_, max_value_);
-            fire_script("OnValueChanged");
-        }
+    min_value_ = std::min(min_value, max_value);
+    max_value_ = std::max(min_value, max_value);
+    step_value(min_value_, value_step_);
+    step_value(max_value_, value_step_);
 
-        notify_thumb_texture_needs_update_();
+    if (value_ > max_value_ || value_ < min_value_) {
+        value_ = std::clamp(value_, min_value_, max_value_);
+        fire_script("OnValueChanged");
     }
+
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_value(float value, bool silent) {
     value = std::clamp(value, min_value_, max_value_);
     step_value(value, value_step_);
 
-    if (value != value_) {
-        value_ = value;
+    if (value == value_)
+        return;
 
-        if (!silent)
-            fire_script("OnValueChanged");
+    value_ = value;
 
-        notify_thumb_texture_needs_update_();
-    }
+    if (!silent)
+        fire_script("OnValueChanged");
+
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_value_step(float value_step) {
-    if (value_step_ != value_step) {
-        value_step_ = value_step;
+    if (value_step_ == value_step)
+        return;
 
-        step_value(min_value_, value_step_);
-        step_value(max_value_, value_step_);
+    value_step_ = value_step;
 
-        float old_value = value_;
-        value_          = std::clamp(value_, min_value_, max_value_);
-        step_value(value_, value_step_);
+    step_value(min_value_, value_step_);
+    step_value(max_value_, value_step_);
 
-        if (value_ != old_value)
-            fire_script("OnValueChanged");
+    float old_value = value_;
+    value_          = std::clamp(value_, min_value_, max_value_);
+    step_value(value_, value_step_);
 
-        notify_thumb_texture_needs_update_();
-    }
+    if (value_ != old_value)
+        fire_script("OnValueChanged");
+
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_thumb_texture(utils::observer_ptr<texture> tex) {
@@ -280,46 +275,11 @@ void slider::set_orientation(orientation orient) {
     notify_thumb_texture_needs_update_();
 }
 
-void slider::set_orientation(const std::string& orientation_name) {
-    orientation orient = orientation::horizontal;
-    if (orientation_name == "VERTICAL")
-        orient = orientation::vertical;
-    else if (orientation_name == "HORIZONTAL")
-        orient = orientation::horizontal;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown orientation: \""
-                 << orientation_name << "\". Using \"HORIZONTAL\"." << std::endl;
-    }
-
-    set_orientation(orient);
-}
-
 void slider::set_thumb_draw_layer(layer thumb_layer) {
     thumb_layer_ = thumb_layer;
 
     if (thumb_texture_)
         thumb_texture_->set_draw_layer(thumb_layer_);
-}
-
-void slider::set_thumb_draw_layer(const std::string& thumb_layer_name) {
-    layer thumb_layer;
-    if (thumb_layer_name == "ARTWORK")
-        thumb_layer = layer::artwork;
-    else if (thumb_layer_name == "BACKGROUND")
-        thumb_layer = layer::background;
-    else if (thumb_layer_name == "BORDER")
-        thumb_layer = layer::border;
-    else if (thumb_layer_name == "HIGHLIGHT")
-        thumb_layer = layer::highlight;
-    else if (thumb_layer_name == "OVERLAY")
-        thumb_layer = layer::overlay;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": Unknown layer type: \""
-                 << thumb_layer_name << "\". Using \"OVERLAY\"." << std::endl;
-        thumb_layer = layer::overlay;
-    }
-
-    set_thumb_draw_layer(thumb_layer);
 }
 
 float slider::get_min_value() const {
@@ -338,7 +298,7 @@ float slider::get_value_step() const {
     return value_step_;
 }
 
-slider::orientation slider::get_orientation() const {
+orientation slider::get_orientation() const {
     return orientation_;
 }
 

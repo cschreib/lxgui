@@ -17,16 +17,21 @@ void slider::parse_attributes_(const layout_node& node) {
         set_max_value(attr->get_value<float>());
     if (const layout_attribute* attr = node.try_get_attribute("defaultValue"))
         set_value(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("drawLayer"))
-        set_thumb_draw_layer(attr->get_value<std::string>());
+    if (const layout_attribute* attr = node.try_get_attribute("drawLayer")) {
+        std::string layer_name = attr->get_value<std::string>();
+        if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
+            set_thumb_draw_layer(converted.value());
+        } else {
+            gui::out << gui::warning << node.get_location() << ": Unknown Slider draw layer: \""
+                     << layer_name << "\". Attribute ignored." << std::endl;
+        }
+    }
 
     if (const layout_attribute* attr = node.try_get_attribute("orientation")) {
         std::string orient = attr->get_value<std::string>();
-        if (orient == "HORIZONTAL")
-            set_orientation(orientation::horizontal);
-        else if (orient == "VERTICAL")
-            set_orientation(orientation::vertical);
-        else {
+        if (auto converted = utils::from_string<orientation>(orient); converted.has_value()) {
+            set_orientation(converted.value());
+        } else {
             gui::out << gui::warning << node.get_location() << ": Unknown Slider orientation: \""
                      << orient
                      << "\". Expecting either \"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."

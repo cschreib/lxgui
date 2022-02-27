@@ -301,7 +301,14 @@ utils::observer_ptr<layered_region> frame::parse_region_(
         if (!type.empty())
             attr.object_type = type;
 
-        auto reg = create_layered_region(parse_layer_type(layer_name), attr);
+        auto layer_id = utils::from_string<layer>(layer_name);
+        if (!layer_id.has_value()) {
+            gui::out << gui::warning << node.get_location() << ": "
+                     << "Unknown layer type: \"" << layer_name << "\". Using \"ARTWORK\"."
+                     << std::endl;
+        }
+
+        auto reg = create_layered_region(layer_id.value_or(layer::artwork), attr);
         if (!reg)
             return nullptr;
 

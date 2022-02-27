@@ -132,22 +132,10 @@ public:
     void set_blend_mode(blend_mode mode);
 
     /**
-     * \brief Sets this texture's blending mode.
-     * \param blend_mode_name The new blending mode
-     */
-    void set_blend_mode(const std::string& blend_mode_name);
-
-    /**
      * \brief Sets this texture's filtering mode.
      * \param filt The new filtering mode
      */
     void set_filter_mode(material::filter filt);
-
-    /**
-     * \brief Sets this texture's blending mode.
-     * \param filter_name The new filtering mode
-     */
-    void set_filter_mode(const std::string& filter_name);
 
     /**
      * \brief Makes this texture appear without any color.

@@ -17,17 +17,7 @@ layered_region::layered_region(utils::control_block& block, manager& mgr) : base
 std::string layered_region::serialize(const std::string& tab) const {
     std::ostringstream str;
     str << base::serialize(tab);
-
-    str << tab << "  # Layer      : ";
-    switch (layer_) {
-    case layer::background: str << "BACKGROUND\n"; break;
-    case layer::border: str << "BORDER\n"; break;
-    case layer::artwork: str << "ARTWORK\n"; break;
-    case layer::overlay: str << "OVERLAY\n"; break;
-    case layer::highlight: str << "HIGHLIGHT\n"; break;
-    case layer::specialhigh: str << "SPECIALHIGH\n"; break;
-    default: str << "<error>\n"; break;
-    }
+    str << tab << "  # Layer      : " << utils::to_string(layer_) << "\n";
 
     return str.str();
 }
@@ -73,38 +63,12 @@ void layered_region::set_draw_layer(layer layer_id) {
     }
 }
 
-void layered_region::set_draw_layer(const std::string& layer_name) {
-    set_draw_layer(parse_layer_type(layer_name));
-}
-
 void layered_region::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
     if (parent_)
         parent_->notify_renderer_need_redraw();
-}
-
-layer parse_layer_type(const std::string& layer_name) {
-    layer layer_id;
-    if (layer_name == "ARTWORK")
-        layer_id = layer::artwork;
-    else if (layer_name == "BACKGROUND")
-        layer_id = layer::background;
-    else if (layer_name == "BORDER")
-        layer_id = layer::border;
-    else if (layer_name == "HIGHLIGHT")
-        layer_id = layer::highlight;
-    else if (layer_name == "OVERLAY")
-        layer_id = layer::overlay;
-    else {
-        gui::out << gui::warning << "gui::parse_layer_type: "
-                 << "Unknown layer type: \"" << layer_name << "\". Using \"ARTWORK\"." << std::endl;
-
-        layer_id = layer::artwork;
-    }
-
-    return layer_id;
 }
 
 } // namespace lxgui::gui

@@ -30,17 +30,11 @@ edit_box::edit_box(utils::control_block& block, manager& mgr) :
 }
 
 bool edit_box::can_use_script(const std::string& script_name) const {
-    if (base::can_use_script(script_name))
-        return true;
-    else if (
-        (script_name == "OnCursorChanged") || (script_name == "OnEnterPressed") ||
-        (script_name == "OnEscapePressed") || (script_name == "OnSpacePressed") ||
-        (script_name == "OnTabPressed") || (script_name == "OnUpPressed") ||
-        (script_name == "OnDownPressed") || (script_name == "OnTextChanged") ||
-        (script_name == "OnTextSet"))
-        return true;
-    else
-        return false;
+    return base::can_use_script(script_name) || script_name == "OnCursorChanged" ||
+           script_name == "OnEnterPressed" || script_name == "OnEscapePressed" ||
+           script_name == "OnSpacePressed" || script_name == "OnTabPressed" ||
+           script_name == "OnUpPressed" || script_name == "OnDownPressed" ||
+           script_name == "OnTextChanged" || script_name == "OnTextSet";
 }
 
 void edit_box::copy_from(const region& obj) {

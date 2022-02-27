@@ -1,4 +1,5 @@
 #include "lxgui/gui_layered_region.hpp"
+#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 
@@ -29,23 +30,19 @@ void layered_region::register_on_lua(sol::state& lua) {
 
     /** @function set_draw_layer
      */
-    type.set_function(
-        "set_draw_layer", member_function< // select the right overload for Lua
-                              static_cast<void (layered_region::*)(const std::string&)>(
-                                  &layered_region::set_draw_layer)>());
+    type.set_function("set_draw_layer", [](layered_region& self, std::string layer_name) {
+        if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
+            self.set_draw_layer(converted.value());
+        } else {
+            gui::out << gui::warning << "LayeredRegion.set_draw_layer: "
+                     << "Unknown layer type: \"" << layer_name << "\"." << std::endl;
+        }
+    });
 
     /** @function get_draw_layer
      */
     type.set_function("get_draw_layer", [](const layered_region& self) {
-        switch (self.get_draw_layer()) {
-        case layer::background: return std::string("BACKGROUND");
-        case layer::border: return std::string("BORDER");
-        case layer::artwork: return std::string("ARTWORK");
-        case layer::overlay: return std::string("OVERLAY");
-        case layer::highlight: return std::string("HIGHLIGHT");
-        case layer::specialhigh: return std::string("SPECIALHIGH");
-        default: throw sol::error("unreachable");
-        }
+        return utils::to_string(self.get_draw_layer());
     });
 }
 

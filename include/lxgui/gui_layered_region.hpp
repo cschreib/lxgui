@@ -19,13 +19,6 @@ enum class layer {
 };
 
 /**
- * \brief Converts a string representation of a layer into the corresponding enumerator
- * \param layer_name The layer string (e.g., "ARTWORK")
- * \return The corresponding enumerator, or "ARTWORK" if parsing failed
- */
-layer parse_layer_type(const std::string& layer_name);
-
-/**
  * \brief A #region that can be rendered in a layer.
  * \details Layered regions can display content on the screen (texture,
  * texts, 3D models, ...) and must be contained inside a layer,
@@ -89,12 +82,6 @@ public:
      * \param layer_id The new layer
      */
     virtual void set_draw_layer(layer layer_id);
-
-    /**
-     * \brief Sets this layered_region's draw layer.
-     * \param layer_name The new layer
-     */
-    void set_draw_layer(const std::string& layer_name);
 
     /**
      * \brief Notifies the renderer of this region that it needs to be redrawn.

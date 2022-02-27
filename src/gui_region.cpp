@@ -120,16 +120,14 @@ std::string region::serialize(const std::string& tab) const {
 }
 
 void region::copy_from(const region& obj) {
-    // Inherit properties
     this->set_alpha(obj.get_alpha());
     this->set_shown(obj.is_shown());
     this->set_dimensions(obj.get_dimensions());
 
-    for (const auto& a : obj.get_point_list()) {
-        if (!a)
-            continue;
-
-        this->set_point(a->get_data());
+    for (const std::optional<anchor>& a : obj.get_point_list()) {
+        if (a) {
+            this->set_point(a->get_data());
+        }
     }
 }
 

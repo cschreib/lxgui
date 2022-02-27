@@ -1,4 +1,5 @@
 #include "lxgui/gui_check_button.hpp"
+
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -54,31 +55,33 @@ void check_button::copy_from(const region& obj) {
 }
 
 void check_button::check() {
-    if (!is_checked_) {
-        if (state_ == state::disabled) {
-            if (disabled_checked_texture_)
-                disabled_checked_texture_->show();
-            else if (checked_texture_)
-                checked_texture_->show();
-        } else {
-            if (checked_texture_)
-                checked_texture_->show();
-        }
+    if (is_checked_)
+        return;
 
-        is_checked_ = true;
+    if (state_ == state::disabled) {
+        if (disabled_checked_texture_)
+            disabled_checked_texture_->show();
+        else if (checked_texture_)
+            checked_texture_->show();
+    } else {
+        if (checked_texture_)
+            checked_texture_->show();
     }
+
+    is_checked_ = true;
 }
 
 void check_button::uncheck() {
-    if (is_checked_) {
-        if (disabled_checked_texture_)
-            disabled_checked_texture_->hide();
+    if (!is_checked_)
+        return;
 
-        if (checked_texture_)
-            checked_texture_->hide();
+    if (disabled_checked_texture_)
+        disabled_checked_texture_->hide();
 
-        is_checked_ = false;
-    }
+    if (checked_texture_)
+        checked_texture_->hide();
+
+    is_checked_ = false;
 }
 
 void check_button::disable() {

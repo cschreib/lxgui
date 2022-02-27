@@ -45,11 +45,7 @@ void status_bar::register_on_lua(sol::state& lua) {
     /** @function get_orientation
      */
     type.set_function("get_orientation", [](const status_bar& self) {
-        switch (self.get_orientation()) {
-        case status_bar::orientation::vertical: return "VERTICAL";
-        case status_bar::orientation::horizontal: return "HORIZONTAL";
-        default: return "";
-        }
+        return utils::to_string(self.get_orientation());
     });
 
     /** @function get_status_bar_color
@@ -81,10 +77,15 @@ void status_bar::register_on_lua(sol::state& lua) {
 
     /** @function set_orientation
      */
-    type.set_function(
-        "set_orientation",
-        member_function< // select the right overload for Lua
-            static_cast<void (status_bar::*)(const std::string&)>(&status_bar::set_orientation)>());
+    type.set_function("set_orientation", [](status_bar& self, std::string orientation_name) {
+        if (auto converted = utils::from_string<orientation>(orientation_name);
+            converted.has_value()) {
+            self.set_orientation(converted.value());
+        } else {
+            gui::out << gui::warning << "StatusBar:set_orientation: Unknown orientation: \""
+                     << orientation_name << "\"." << std::endl;
+        }
+    });
 
     /** @function set_status_bar_color
      */

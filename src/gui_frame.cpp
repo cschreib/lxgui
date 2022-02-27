@@ -76,18 +76,7 @@ std::string frame::serialize(const std::string& tab) const {
     str << base::serialize(tab);
     if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(renderer_))
         str << tab << "  # Man. render: " << frame_renderer->get_name() << "\n";
-    str << tab << "  # Strata     : ";
-    switch (strata_) {
-    case frame_strata::parent: str << "PARENT\n"; break;
-    case frame_strata::background: str << "BACKGROUND\n"; break;
-    case frame_strata::low: str << "LOW\n"; break;
-    case frame_strata::medium: str << "MEDIUM\n"; break;
-    case frame_strata::high: str << "HIGH\n"; break;
-    case frame_strata::dialog: str << "DIALOG\n"; break;
-    case frame_strata::fullscreen: str << "FULLSCREEN\n"; break;
-    case frame_strata::fullscreen_dialog: str << "FULLSCREEN_DIALOG\n"; break;
-    case frame_strata::tooltip: str << "TOOLTIP\n"; break;
-    }
+    str << tab << "  # Strata     : " << utils::to_string(strata_) << "\n";
     str << tab << "  # Level      : " << level_ << "\n";
     str << tab << "  # TopLevel   : " << is_top_level_;
     if (!is_top_level_ && get_top_level_parent())
@@ -179,16 +168,14 @@ std::string frame::serialize(const std::string& tab) const {
 }
 
 bool frame::can_use_script(const std::string& script_name) const {
-    return (script_name == "OnChar") || (script_name == "OnDragStart") ||
-           (script_name == "OnDragStop") || (script_name == "OnDragMove") ||
-           (script_name == "OnEnter") || (script_name == "OnEvent") ||
-           (script_name == "OnFocusGained") || (script_name == "OnFocusLost") ||
-           (script_name == "OnHide") || (script_name == "OnKeyDown") ||
-           (script_name == "OnKeyUp") || (script_name == "OnLeave") || (script_name == "OnLoad") ||
-           (script_name == "OnMouseDown") || (script_name == "OnMouseUp") ||
-           (script_name == "OnDoubleClick") || (script_name == "OnMouseWheel") ||
-           (script_name == "OnReceiveDrag") || (script_name == "OnShow") ||
-           (script_name == "OnSizeChanged") || (script_name == "OnUpdate");
+    return script_name == "OnChar" || script_name == "OnDragStart" || script_name == "OnDragStop" ||
+           script_name == "OnDragMove" || script_name == "OnEnter" || script_name == "OnEvent" ||
+           script_name == "OnFocusGained" || script_name == "OnFocusLost" ||
+           script_name == "OnHide" || script_name == "OnKeyDown" || script_name == "OnKeyUp" ||
+           script_name == "OnLeave" || script_name == "OnLoad" || script_name == "OnMouseDown" ||
+           script_name == "OnMouseUp" || script_name == "OnDoubleClick" ||
+           script_name == "OnMouseWheel" || script_name == "OnReceiveDrag" ||
+           script_name == "OnShow" || script_name == "OnSizeChanged" || script_name == "OnUpdate";
 }
 
 void frame::copy_from(const region& obj) {

@@ -2,6 +2,7 @@
 #define LXGUI_GUI_SLIDER_HPP
 
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_orientation.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
@@ -30,8 +31,6 @@ class slider : public frame {
     using base = frame;
 
 public:
-    enum class orientation { vertical, horizontal };
-
     /// Constructor.
     explicit slider(utils::control_block& block, manager& mgr);
 
@@ -93,12 +92,6 @@ public:
      * \param orient The orientation of this slider
      */
     void set_orientation(orientation orient);
-
-    /**
-     * \brief Sets the orientation of this slider.
-     * \param orientation_name The orientation of this slider ("VERTICAL" or "HORIZONTAL")
-     */
-    void set_orientation(const std::string& orientation_name);
 
     /**
      * \brief Returns the orientation of this slider.
@@ -167,12 +160,6 @@ public:
      * \param thumb_layer The layer
      */
     void set_thumb_draw_layer(layer thumb_layer);
-
-    /**
-     * \brief Sets the draw layer of this slider's thumb texture.
-     * \param thumb_layer_name The layer
-     */
-    void set_thumb_draw_layer(const std::string& thumb_layer_name);
 
     /**
      * \brief Returns the draw layer of this slider's thumb texture.

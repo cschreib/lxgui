@@ -82,25 +82,13 @@ void font_string::register_on_lua(sol::state& lua) {
     /** @function get_alignment_x
      */
     type.set_function("get_alignment_x", [](const font_string& self) {
-        alignment_x alignment = self.get_alignment_x();
-        switch (alignment) {
-        case alignment_x::left: return "LEFT";
-        case alignment_x::center: return "CENTER";
-        case alignment_x::right: return "RIGHT";
-        default: return "UNKNOWN";
-        }
+        return utils::to_string(self.get_alignment_x());
     });
 
     /** @function get_alignment_y
      */
     type.set_function("get_alignment_y", [](const font_string& self) {
-        alignment_y alignment = self.get_alignment_y();
-        switch (alignment) {
-        case alignment_y::top: return "TOP";
-        case alignment_y::middle: return "MIDDLE";
-        case alignment_y::bottom: return "BOTTOM";
-        default: return "UNKNOWN";
-        }
+        return utils::to_string(self.get_alignment_y());
     });
 
     /** @function get_shadow_color
@@ -156,31 +144,23 @@ void font_string::register_on_lua(sol::state& lua) {
 
     /** @function set_alignment_x
      */
-    type.set_function("set_alignment_x", [](font_string& self, const std::string& justify_h) {
-        if (justify_h == "LEFT")
-            self.set_alignment_x(alignment_x::left);
-        else if (justify_h == "CENTER")
-            self.set_alignment_x(alignment_x::center);
-        else if (justify_h == "RIGHT")
-            self.set_alignment_x(alignment_x::right);
-        else {
+    type.set_function("set_alignment_x", [](font_string& self, const std::string& align_h) {
+        if (auto converted = utils::from_string<alignment_x>(align_h); converted.has_value()) {
+            self.set_alignment_x(converted.value());
+        } else {
             gui::out << gui::warning << "font_string:set_alignment_x: "
-                     << "Unknown justify behavior: \"" << justify_h << "\"." << std::endl;
+                     << "Unknown alignment: \"" << align_h << "\"." << std::endl;
         }
     });
 
     /** @function set_alignment_y
      */
-    type.set_function("set_alignment_y", [](font_string& self, const std::string& justify_v) {
-        if (justify_v == "TOP")
-            self.set_alignment_y(alignment_y::top);
-        else if (justify_v == "MIDDLE")
-            self.set_alignment_y(alignment_y::middle);
-        else if (justify_v == "BOTTOM")
-            self.set_alignment_y(alignment_y::bottom);
-        else {
+    type.set_function("set_alignment_y", [](font_string& self, const std::string& align_v) {
+        if (auto converted = utils::from_string<alignment_y>(align_v); converted.has_value()) {
+            self.set_alignment_y(converted.value());
+        } else {
             gui::out << gui::warning << "font_string:set_alignment_y: "
-                     << "Unknown justify behavior: \"" << justify_v << "\"." << std::endl;
+                     << "Unknown alignment: \"" << align_v << "\"." << std::endl;
         }
     });
 

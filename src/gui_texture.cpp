@@ -33,12 +33,7 @@ std::string texture::serialize(const std::string& tab) const {
                 str << tab << "  #-###\n";
                 str << tab << "  |   # min color  : " << data.min_color << "\n";
                 str << tab << "  |   # max color  : " << data.max_color << "\n";
-                str << tab << "  |   # orientation: ";
-                switch (data.orient) {
-                case gradient::orientation::horizontal: str << "HORIZONTAL\n"; break;
-                case gradient::orientation::vertical: str << "VERTICAL\n"; break;
-                default: str << "<error>\n"; break;
-                }
+                str << tab << "  |   # orientation: " << utils::to_string(data.orient) << "\n";
                 str << tab << "  #-###\n";
             } else if constexpr (std::is_same_v<content_type, color>) {
                 str << tab << "  # Color      : " << data << "\n";
@@ -54,24 +49,8 @@ std::string texture::serialize(const std::string& tab) const {
     str << tab << "  |   # bottom-left : (" << quad_.v[3].uvs << ")\n";
     str << tab << "  #-###\n";
     str << tab << "  # Stretching: " << is_texture_stretching_enabled_ << "\n";
-
-    str << tab << "  # Blend mode : ";
-    switch (blend_mode_) {
-    case blend_mode::none: str << "NONE\n"; break;
-    case blend_mode::blend: str << "BLEND\n"; break;
-    case blend_mode::key: str << "KEY\n"; break;
-    case blend_mode::add: str << "ADD\n"; break;
-    case blend_mode::mod: str << "MOD\n"; break;
-    default: str << "<error>\n"; break;
-    }
-
-    str << tab << "  # Filter     : ";
-    switch (filter_) {
-    case material::filter::none: str << "NONE\n"; break;
-    case material::filter::linear: str << "LINEAR\n"; break;
-    default: str << "<error>\n"; break;
-    }
-
+    str << tab << "  # Blend mode : " << utils::to_string(blend_mode_) << "\n";
+    str << tab << "  # Filter     : " << utils::to_string(filter_) << "\n";
     str << tab << "  # Desaturated: " << is_desaturated_ << "\n";
 
     return str.str();
@@ -203,28 +182,6 @@ void texture::set_blend_mode(blend_mode mode) {
     notify_renderer_need_redraw();
 }
 
-void texture::set_blend_mode(const std::string& blend_mode_name) {
-    blend_mode mode = blend_mode::blend;
-
-    if (blend_mode_name == "BLEND")
-        mode = blend_mode::blend;
-    else if (blend_mode_name == "ADD")
-        mode = blend_mode::add;
-    else if (blend_mode_name == "MOD")
-        mode = blend_mode::mod;
-    else if (blend_mode_name == "KEY")
-        mode = blend_mode::key;
-    else if (blend_mode_name == "NONE")
-        mode = blend_mode::none;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
-                 << "Unknown blending: \"" << blend_mode_name << "\". Using \"BLEND\"."
-                 << std::endl;
-    }
-
-    set_blend_mode(mode);
-}
-
 void texture::set_filter_mode(material::filter filt) {
     if (filter_ == filt)
         return;
@@ -237,21 +194,6 @@ void texture::set_filter_mode(material::filter filt) {
         content_              = std::string{};
         set_texture(file_name);
     }
-}
-
-void texture::set_filter_mode(const std::string& filter_name) {
-    material::filter filt = material::filter::none;
-
-    if (filter_name == "NONE")
-        filt = material::filter::none;
-    else if (filter_name == "LINEAR")
-        filt = material::filter::linear;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
-                 << "Unknown filtering: \"" << filter_name << "\". Using \"NONE\"." << std::endl;
-    }
-
-    set_filter_mode(filt);
 }
 
 void texture::set_desaturated(bool is_desaturated) {
@@ -272,7 +214,7 @@ void texture::set_gradient(const gradient& g) {
 
     quad_.mat = nullptr;
 
-    if (g.orient == gradient::orientation::horizontal) {
+    if (g.orient == orientation::horizontal) {
         quad_.v[0].col = g.min_color;
         quad_.v[1].col = g.max_color;
         quad_.v[2].col = g.max_color;

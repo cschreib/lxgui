@@ -19,40 +19,39 @@ void font_string::render() const {
     if (!text_ || !is_ready_ || !is_visible())
         return;
 
-    float x = 0.0f, y = 0.0f;
+    vector2f pos;
 
     if (std::isinf(text_->get_box_width())) {
         switch (align_x_) {
-        case alignment_x::left: x = border_list_.left; break;
-        case alignment_x::center: x = (border_list_.left + border_list_.right) / 2; break;
-        case alignment_x::right: x = border_list_.right; break;
+        case alignment_x::left: pos.x = border_list_.left; break;
+        case alignment_x::center: pos.x = (border_list_.left + border_list_.right) / 2; break;
+        case alignment_x::right: pos.x = border_list_.right; break;
         }
     } else {
-        x = border_list_.left;
+        pos.x = border_list_.left;
     }
 
     if (std::isinf(text_->get_box_height())) {
         switch (align_y_) {
-        case alignment_y::top: y = border_list_.top; break;
-        case alignment_y::middle: y = (border_list_.top + border_list_.bottom) / 2; break;
-        case alignment_y::bottom: y = border_list_.bottom; break;
+        case alignment_y::top: pos.y = border_list_.top; break;
+        case alignment_y::middle: pos.y = (border_list_.top + border_list_.bottom) / 2; break;
+        case alignment_y::bottom: pos.y = border_list_.bottom; break;
         }
     } else {
-        y = border_list_.top;
+        pos.y = border_list_.top;
     }
 
-    x += offset_.x;
-    y += offset_.y;
+    pos += offset_;
 
     text_->set_alpha(get_effective_alpha());
 
     if (has_shadow_) {
         text_->set_color(shadow_color_, true);
-        text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y) + shadow_offset_)));
+        text_->render(matrix4f::translation(round_to_pixel(pos + shadow_offset_)));
     }
 
     text_->set_color(text_color_);
-    text_->render(matrix4f::translation(round_to_pixel(vector2f(x, y))));
+    text_->render(matrix4f::translation(round_to_pixel(pos)));
 }
 
 std::string font_string::serialize(const std::string& tab) const {
@@ -69,20 +68,8 @@ std::string font_string::serialize(const std::string& tab) const {
     str << tab << "  # Spacing    : " << spacing_ << "\n";
     str << tab << "  # Justify     :\n";
     str << tab << "  #-###\n";
-    str << tab << "  |   # horizontal: ";
-    switch (align_x_) {
-    case alignment_x::left: str << "LEFT\n"; break;
-    case alignment_x::center: str << "CENTER\n"; break;
-    case alignment_x::right: str << "RIGHT\n"; break;
-    default: str << "<error>\n"; break;
-    }
-    str << tab << "  |   # vertical  : ";
-    switch (align_y_) {
-    case alignment_y::top: str << "TOP\n"; break;
-    case alignment_y::middle: str << "MIDDLE\n"; break;
-    case alignment_y::bottom: str << "BOTTOM\n"; break;
-    default: str << "<error>\n"; break;
-    }
+    str << tab << "  |   # horizontal: " << utils::to_string(align_x_) << "\n";
+    str << tab << "  |   # vertical  : " << utils::to_string(align_y_) << "\n";
     str << tab << "  #-###\n";
     str << tab << "  # NonSpaceW. : " << non_space_wrap_enabled_ << "\n";
     if (has_shadow_) {

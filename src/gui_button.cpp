@@ -25,13 +25,8 @@ void button::create_glue() {
 }
 
 bool button::can_use_script(const std::string& script_name) const {
-    if (base::can_use_script(script_name))
-        return true;
-    else if (
-        (script_name == "OnClick") || (script_name == "OnEnable") || (script_name == "OnDisable"))
-        return true;
-    else
-        return false;
+    return base::can_use_script(script_name) || script_name == "OnClick" ||
+           script_name == "OnEnable" || script_name == "OnDisable";
 }
 
 void button::fire_script(const std::string& script_name, const event_data& data) {
@@ -269,153 +264,153 @@ void button::set_disabled_text(utils::observer_ptr<font_string> fstr) {
 }
 
 void button::disable() {
-    if (is_enabled()) {
-        state_ = state::disabled;
-        if (disabled_texture_) {
-            if (normal_texture_)
-                normal_texture_->hide();
-            if (pushed_texture_)
-                pushed_texture_->hide();
+    if (!is_enabled())
+        return;
 
-            disabled_texture_->show();
-        } else {
-            if (normal_texture_)
-                normal_texture_->show();
-            if (pushed_texture_)
-                pushed_texture_->hide();
-        }
+    state_ = state::disabled;
+    if (disabled_texture_) {
+        if (normal_texture_)
+            normal_texture_->hide();
+        if (pushed_texture_)
+            pushed_texture_->hide();
 
-        if (disabled_text_) {
-            if (normal_text_)
-                normal_text_->hide();
-
-            disabled_text_->show();
-            current_font_string_ = disabled_text_;
-        } else {
-            if (normal_text_)
-                normal_text_->show();
-
-            current_font_string_ = normal_text_;
-        }
-
-        unlight();
-
-        alive_checker checker(*this);
-        fire_script("OnDisable");
-        if (!checker.is_alive())
-            return;
+        disabled_texture_->show();
+    } else {
+        if (normal_texture_)
+            normal_texture_->show();
+        if (pushed_texture_)
+            pushed_texture_->hide();
     }
-}
 
-void button::enable() {
-    if (!is_enabled()) {
-        state_ = state::up;
-        if (disabled_texture_) {
-            if (normal_texture_)
-                normal_texture_->show();
-            if (pushed_texture_)
-                pushed_texture_->hide();
+    if (disabled_text_) {
+        if (normal_text_)
+            normal_text_->hide();
 
-            disabled_texture_->hide();
-        } else {
-            if (normal_texture_)
-                normal_texture_->show();
-            if (pushed_texture_)
-                pushed_texture_->hide();
-        }
-
+        disabled_text_->show();
+        current_font_string_ = disabled_text_;
+    } else {
         if (normal_text_)
             normal_text_->show();
 
         current_font_string_ = normal_text_;
-
-        if (disabled_text_)
-            disabled_text_->hide();
-
-        alive_checker checker(*this);
-        fire_script("OnEnable");
-        if (!checker.is_alive())
-            return;
     }
+
+    unlight();
+
+    fire_script("OnDisable");
+}
+
+void button::enable() {
+    if (is_enabled())
+        return;
+
+    state_ = state::up;
+    if (disabled_texture_) {
+        if (normal_texture_)
+            normal_texture_->show();
+        if (pushed_texture_)
+            pushed_texture_->hide();
+
+        disabled_texture_->hide();
+    } else {
+        if (normal_texture_)
+            normal_texture_->show();
+        if (pushed_texture_)
+            pushed_texture_->hide();
+    }
+
+    if (normal_text_)
+        normal_text_->show();
+
+    current_font_string_ = normal_text_;
+
+    if (disabled_text_)
+        disabled_text_->hide();
+
+    fire_script("OnEnable");
 }
 
 bool button::is_enabled() const {
-    return (state_ != state::disabled);
+    return state_ != state::disabled;
 }
 
 void button::push() {
-    if (is_enabled()) {
-        if (pushed_texture_) {
-            pushed_texture_->show();
-            if (normal_texture_)
-                normal_texture_->hide();
-        }
+    if (!is_enabled())
+        return;
 
-        if (highlight_text_)
-            highlight_text_->set_offset(pushed_text_offset_);
-        if (normal_text_)
-            normal_text_->set_offset(pushed_text_offset_);
-
-        state_ = state::down;
+    if (pushed_texture_) {
+        pushed_texture_->show();
+        if (normal_texture_)
+            normal_texture_->hide();
     }
+
+    if (highlight_text_)
+        highlight_text_->set_offset(pushed_text_offset_);
+    if (normal_text_)
+        normal_text_->set_offset(pushed_text_offset_);
+
+    state_ = state::down;
 }
 
 void button::release() {
-    if (is_enabled()) {
-        if (pushed_texture_) {
-            pushed_texture_->hide();
-            if (normal_texture_)
-                normal_texture_->show();
-        }
+    if (!is_enabled())
+        return;
 
-        if (highlight_text_)
-            highlight_text_->set_offset(vector2f(0, 0));
-        if (normal_text_)
-            normal_text_->set_offset(vector2f(0, 0));
-
-        state_ = state::up;
+    if (pushed_texture_) {
+        pushed_texture_->hide();
+        if (normal_texture_)
+            normal_texture_->show();
     }
+
+    if (highlight_text_)
+        highlight_text_->set_offset(vector2f(0, 0));
+    if (normal_text_)
+        normal_text_->set_offset(vector2f(0, 0));
+
+    state_ = state::up;
 }
 
 void button::highlight() {
-    if (!is_highlighted_) {
-        if (highlight_texture_) {
-            highlight_texture_->show();
-        }
+    if (is_highlighted_)
+        return;
 
-        if (highlight_text_) {
-            if (current_font_string_)
-                current_font_string_->hide();
-            current_font_string_ = highlight_text_;
-            current_font_string_->show();
-        }
-
-        is_highlighted_ = true;
+    if (highlight_texture_) {
+        highlight_texture_->show();
     }
+
+    if (highlight_text_) {
+        if (current_font_string_)
+            current_font_string_->hide();
+        current_font_string_ = highlight_text_;
+        current_font_string_->show();
+    }
+
+    is_highlighted_ = true;
 }
 
 void button::unlight() {
-    if (!is_highlight_locked_ && is_highlighted_) {
-        if (highlight_texture_) {
-            highlight_texture_->hide();
-        }
+    if (is_highlight_locked_ || !is_highlighted_)
+        return;
 
-        if (highlight_text_) {
-            if (current_font_string_)
-                current_font_string_->hide();
-
-            switch (state_) {
-            case state::up: current_font_string_ = normal_text_; break;
-            case state::down: current_font_string_ = normal_text_; break;
-            case state::disabled: current_font_string_ = disabled_text_; break;
-            }
-
-            if (current_font_string_)
-                current_font_string_->show();
-        }
-
-        is_highlighted_ = false;
+    if (highlight_texture_) {
+        highlight_texture_->hide();
     }
+
+    if (highlight_text_) {
+        if (current_font_string_)
+            current_font_string_->hide();
+
+        switch (state_) {
+        case state::up: current_font_string_ = normal_text_; break;
+        case state::down: current_font_string_ = normal_text_; break;
+        case state::disabled: current_font_string_ = disabled_text_; break;
+        }
+
+        if (current_font_string_)
+            current_font_string_->show();
+    }
+
+    is_highlighted_ = false;
 }
 
 button::state button::get_button_state() const {

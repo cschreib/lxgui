@@ -26,14 +26,8 @@ scroll_frame::~scroll_frame() {
 }
 
 bool scroll_frame::can_use_script(const std::string& script_name) const {
-    if (frame::can_use_script(script_name))
-        return true;
-    else if (
-        (script_name == "OnHorizontalScroll") || (script_name == "OnScrollRangeChanged") ||
-        (script_name == "OnVerticalScroll"))
-        return true;
-    else
-        return false;
+    return base::can_use_script(script_name) || script_name == "OnHorizontalScroll" ||
+           script_name == "OnScrollRangeChanged" || script_name == "OnVerticalScroll";
 }
 
 void scroll_frame::fire_script(const std::string& script_name, const event_data& data) {
@@ -119,19 +113,20 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
 }
 
 void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
-    if (scroll_.x != horizontal_scroll) {
-        scroll_.x = horizontal_scroll;
+    if (scroll_.x == horizontal_scroll)
+        return;
 
-        alive_checker checker(*this);
-        fire_script("OnHorizontalScroll");
-        if (!checker.is_alive())
-            return;
+    scroll_.x = horizontal_scroll;
 
-        scroll_child_->modify_point(point::top_left).offset = -scroll_;
-        scroll_child_->notify_borders_need_update();
+    alive_checker checker(*this);
+    fire_script("OnHorizontalScroll");
+    if (!checker.is_alive())
+        return;
 
-        redraw_scroll_render_target_flag_ = true;
-    }
+    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->notify_borders_need_update();
+
+    redraw_scroll_render_target_flag_ = true;
 }
 
 float scroll_frame::get_horizontal_scroll() const {
@@ -143,19 +138,20 @@ float scroll_frame::get_horizontal_scroll_range() const {
 }
 
 void scroll_frame::set_vertical_scroll(float vertical_scroll) {
-    if (scroll_.y != vertical_scroll) {
-        scroll_.y = vertical_scroll;
+    if (scroll_.y == vertical_scroll)
+        return;
 
-        alive_checker checker(*this);
-        fire_script("OnVerticalScroll");
-        if (!checker.is_alive())
-            return;
+    scroll_.y = vertical_scroll;
 
-        scroll_child_->modify_point(point::top_left).offset = -scroll_;
-        scroll_child_->notify_borders_need_update();
+    alive_checker checker(*this);
+    fire_script("OnVerticalScroll");
+    if (!checker.is_alive())
+        return;
 
-        redraw_scroll_render_target_flag_ = true;
-    }
+    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->notify_borders_need_update();
+
+    redraw_scroll_render_target_flag_ = true;
 }
 
 float scroll_frame::get_vertical_scroll() const {
