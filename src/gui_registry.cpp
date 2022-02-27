@@ -8,30 +8,30 @@ namespace lxgui::gui {
 
 bool registry::check_region_name(std::string_view name) const {
     if (utils::has_no_content(name)) {
-        gui::out << gui::error << "gui::registry : "
+        gui::out << gui::error << "gui::registry: "
                  << "Cannot create a region with a blank name." << std::endl;
         return false;
     }
 
     if (utils::is_number(name[0])) {
-        gui::out << gui::error << "gui::registry : "
-                 << "A region's name cannot start by a number : \"" << name << "\" is forbidden."
+        gui::out << gui::error << "gui::registry: "
+                 << "A region's name cannot start by a number: \"" << name << "\" is forbidden."
                  << std::endl;
         return false;
     }
 
     std::size_t pos = name.find("$");
     if (pos != name.npos && pos != 0) {
-        gui::out << gui::error << "gui::registry : "
-                 << "A region's name cannot contain the character '$' except at the begining : \""
+        gui::out << gui::error << "gui::registry: "
+                 << "A region's name cannot contain the character '$' except at the begining: \""
                  << name << "\" is forbidden." << std::endl;
         return false;
     }
 
     for (auto c : name) {
         if ((std::isalnum(c) == 0) && c != '_' && c != '$') {
-            gui::out << gui::error << "gui::registry : "
-                     << "A region's name can only contain alphanumeric symbols, or underscores : \""
+            gui::out << gui::error << "gui::registry: "
+                     << "A region's name can only contain alphanumeric symbols, or underscores: \""
                      << name << "\" is forbidden." << std::endl;
             return false;
         }
@@ -42,13 +42,13 @@ bool registry::check_region_name(std::string_view name) const {
 
 bool registry::add_region(utils::observer_ptr<region> obj) {
     if (!obj) {
-        gui::out << gui::error << "gui::registry : Adding a null region." << std::endl;
+        gui::out << gui::error << "gui::registry: Adding a null region." << std::endl;
         return false;
     }
 
     auto iter_named_obj = named_object_list_.find(obj->get_name());
     if (iter_named_obj != named_object_list_.end()) {
-        gui::out << gui::warning << "gui::registry : "
+        gui::out << gui::warning << "gui::registry: "
                  << "A region with the name \"" << obj->get_name() << "\" already exists."
                  << std::endl;
         return false;

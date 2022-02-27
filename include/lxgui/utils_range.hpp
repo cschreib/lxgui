@@ -35,15 +35,16 @@ struct reverse_range {
 /** \endcond
  */
 
-/// Reverse traversal
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::vector<int> v = { ... };
- *         for (int& i : utils::range::reverse(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int& i = *iter; ... }
- *         \endcode
+/**
+ * \brief Reverse traversal
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::vector<int> v = { ... };
+ *       for (int& i : utils::range::reverse(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int& i = *iter; ... }
+ * \endcode
  */
 template<typename T>
 range_impl::reverse_range<T> reverse(T& container) {
@@ -98,15 +99,16 @@ struct iterator_range {
 /** \endcond
  */
 
-/// Expose the iterator rather than the element
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::vector<int> v = { ... };
- *         for (auto iter : utils::range::iterator(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.begin(); iter != v.end(); ++iter) { ... }
- *         \endcode
+/**
+ * \brief Expose the iterator rather than the element
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::vector<int> v = { ... };
+ *       for (auto iter : utils::range::iterator(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.begin(); iter != v.end(); ++iter) { ... }
+ * \endcode
  */
 template<typename T>
 range_impl::iterator_range<T> iterator(T& container) {
@@ -142,15 +144,16 @@ struct reverse_iterator_range {
 /** \endcond
  */
 
-/// Expose the iterator rather than the element, with reverse traversal
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::vector<int> v = { ... };
- *         for (auto iter : utils::range::reverse_iterator(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { ... }
- *         \endcode
+/**
+ * \brief Expose the iterator rather than the element, with reverse traversal
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::vector<int> v = { ... };
+ *       for (auto iter : utils::range::reverse_iterator(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { ... }
+ * \endcode
  */
 template<typename T>
 range_impl::reverse_iterator_range<T> reverse_iterator(T& container) {
@@ -209,14 +212,15 @@ struct value_range {
 /** \endcond
  */
 
-/// Expose the value rather than the (key,value) pair
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::map<int,std::string> v = { ... };
- *         for (std::string& s : utils::range::value(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.begin(); iter != v.end(); ++iter) { std::string& s = iter->second; ...
+/**
+ * \brief Expose the value rather than the (key,value) pair
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::map<int,std::string> v = { ... };
+ *       for (std::string& s : utils::range::value(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.begin(); iter != v.end(); ++iter) { std::string& s = iter->second; ...
  * } \endcode
  */
 template<typename T>
@@ -257,14 +261,15 @@ struct reverse_value_range {
 /** \endcond
  */
 
-/// Expose the value rather than the (key,value) pair, with reverse traversal
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::map<int,std::string> v = { ... };
- *         for (std::string& s : utils::range::reverse_value(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { std::string& s = iter->second;
+/**
+ * \brief Expose the value rather than the (key,value) pair, with reverse traversal
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::map<int,std::string> v = { ... };
+ *       for (std::string& s : utils::range::reverse_value(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { std::string& s = iter->second;
  * ... } \endcode
  */
 template<typename T>
@@ -321,15 +326,16 @@ struct key_range {
 /** \endcond
  */
 
-/// Expose the key rather than the (key,value) pair
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::map<int,std::string> v = { ... };
- *         for (int k : utils::range::key(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.begin(); iter != v.end(); ++iter) { int k = iter->first; ... }
- *         \endcode
+/**
+ * \brief Expose the key rather than the (key,value) pair
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::map<int,std::string> v = { ... };
+ *       for (int k : utils::range::key(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.begin(); iter != v.end(); ++iter) { int k = iter->first; ... }
+ * \endcode
  */
 template<typename T>
 range_impl::key_range<T> key(T& container) {
@@ -366,15 +372,16 @@ struct reverse_key_range {
 /** \endcond
  */
 
-/// Expose the key rather than the (key,value) pair, with reverse traversal
-/** \param container The container to traverse
- *   \note Example usage:
- *         \code{.cpp}
- *         std::map<int,std::string> v = { ... };
- *         for (int k : utils::range::key(v)) { ... }
- *         // Equivalent to:
- *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int k = iter->first; ... }
- *         \endcode
+/**
+ * \brief Expose the key rather than the (key,value) pair, with reverse traversal
+ * \param container The container to traverse
+ * \note Example usage:
+ * \code{.cpp}
+ *       std::map<int,std::string> v = { ... };
+ *       for (int k : utils::range::key(v)) { ... }
+ *       // Equivalent to:
+ *       for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int k = iter->first; ... }
+ * \endcode
  */
 template<typename T>
 range_impl::reverse_key_range<T> reverse_key(T& container) {

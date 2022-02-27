@@ -28,12 +28,13 @@ class virtual_root;
 /// Loads and owns addons
 class addon_registry {
 public:
-    /// Constructor.
-    /** \param lua          The GUI Lua state
-     *   \param loc    The localizer class, to load new translation into
-     *   \param emitter The event emitter, to fire "addon loaded" events
-     *   \param r         The GUI root, to create new frames into
-     *   \param vr  The virtual root, to create new virtual frames into
+    /**
+     * \brief Constructor.
+     * \param lua The GUI Lua state
+     * \param loc The localizer class, to load new translation into
+     * \param emitter The event emitter, to fire "addon loaded" events
+     * \param r The GUI root, to create new frames into
+     * \param vr The virtual root, to create new virtual frames into
      */
     addon_registry(
         sol::state& lua, localizer& loc, event_emitter& emitter, root& r, virtual_root& vr);
@@ -43,25 +44,28 @@ public:
     addon_registry& operator=(const addon_registry&) = delete;
     addon_registry& operator=(addon_registry&&) = delete;
 
-    /// Parse all addons inside a directory.
-    /** \param directory The directory to load addons from
-     *   \note The directory must contain a file named addon.txt, and
-     *         listing all enabled (and possibly disabled) addons.
-     *         Each addon is then a sub-directory.
+    /**
+     * \brief Parse all addons inside a directory.
+     * \param directory The directory to load addons from
+     * \note The directory must contain a file named addon.txt, and
+     * listing all enabled (and possibly disabled) addons.
+     * Each addon is then a sub-directory.
      */
     void load_addon_directory(const std::string& directory);
 
-    /// Returns the addon that is being parsed.
-    /** \return The addon that is being parsed
+    /**
+     * \brief Returns the addon that is being parsed.
+     * \return The addon that is being parsed
      */
     const addon* get_current_addon();
 
-    /// Sets the current addon.
-    /** \param a The current addon
-     *   \note The current addon is used to set the addon of each new region.
-     *         This is normally set by the parser, while loading each addon.
-     *         For regions created manually, after the loading stage, this is
-     *         also set by @ref frame, before each call to a handler function.
+    /**
+     * \brief Sets the current addon.
+     * \param a The current addon
+     * \note The current addon is used to set the addon of each new region.
+     * This is normally set by the parser, while loading each addon.
+     * For regions created manually, after the loading stage, this is
+     * also set by @ref frame, before each call to a handler function.
      */
     void set_current_addon(const addon* a);
 

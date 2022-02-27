@@ -7,8 +7,8 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_renderer.cpp
     ${SRCROOT}/gui_gl_renderer_png.cpp
     ${SRCROOT}/gui_gl_material.cpp
-    ${SRCROOT}/gui_gl_rendertarget.cpp
-    ${SRCROOT}/gui_gl_vertexcache.cpp
+    ${SRCROOT}/gui_gl_render_target.cpp
+    ${SRCROOT}/gui_gl_vertex_cache.cpp
 )
 
 add_library(lxgui::gui::gl ALIAS lxgui-gl)

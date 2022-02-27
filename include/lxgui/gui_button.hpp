@@ -13,31 +13,32 @@ namespace lxgui::gui {
 class texture;
 class font_string;
 
-/// A #frame with a button that can be clicked.
-/** This class can handle three different states: "normal", "pushed"
- *   and "disabled". You can provide a different texture for each of
- *   these states, and two different fontstrings for "normal" and
- *   "disabled".
+/**
+ * \brief A #frame with a button that can be clicked.
+ * \details This class can handle three different states: "normal", "pushed"
+ * and "disabled". You can provide a different texture for each of
+ * these states, and two different fontstrings for "normal" and
+ * "disabled".
  *
- *   In addition, you can provide another texture/fontstring for the
- *   "highlight" state (when the mouse is over the button region).
+ * In addition, you can provide another texture/fontstring for the
+ * "highlight" state (when the mouse is over the button region).
  *
- *   Note that there is no fontstring for the "pushed" state: in this
- *   case, the "normal" font is rendered with a slight offset that you
- *   are free to define.
+ * Note that there is no fontstring for the "pushed" state: in this
+ * case, the "normal" font is rendered with a slight offset that you
+ * are free to define.
  *
- *   Note that a button has frame::enable_mouse set to `true` by
- *   default.
+ * Note that a button has frame::enable_mouse set to `true` by
+ * default.
  *
- *   __Events.__ Hard-coded events available to all buttons, in
- *   addition to those from frame:
+ * __Events.__ Hard-coded events available to all buttons, in
+ * addition to those from frame:
  *
- *   - `OnClick`: Triggered when the button is clicked, either when
- *   button::click is called, or just when a mouse button is pressed
- *   when the cursor is over the button.
- *   - `OnDoubleClick`: Triggered when the button is double-clicked.
- *   - `OnEnable`: Triggered by button::enable.
- *   - `OnDisable`: Triggered by button::disable.
+ * - `OnClick`: Triggered when the button is clicked, either when
+ * button::click is called, or just when a mouse button is pressed
+ * when the cursor is over the button.
+ * - `OnDoubleClick`: Triggered when the button is double-clicked.
+ * - `OnEnable`: Triggered by button::enable.
+ * - `OnDisable`: Triggered by button::disable.
  */
 class button : public frame {
     using base = frame;
@@ -48,253 +49,290 @@ public:
     /// Constructor.
     explicit button(utils::control_block& block, manager& mgr);
 
-    /// Prints all relevant information about this region in a string.
-    /** \param tab The offset to give to all lines
-     *   \return All relevant information about this region
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
+     * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
 
     /// Creates the associated Lua glue.
     void create_glue() override;
 
-    /// Returns 'true' if this button can use a script.
-    /** \param script_name The name of the script
-     *   \note This method can be overriden if needed.
+    /**
+     * \brief Returns 'true' if this button can use a script.
+     * \param script_name The name of the script
+     * \note This method can be overridden if needed.
      */
     bool can_use_script(const std::string& script_name) const override;
 
-    /// Calls a script.
-    /** \param script_name The name of the script
-     *   \param data       Stores scripts arguments
-     *   \note Triggered callbacks could destroy the frame. If you need
-     *         to use the frame again after calling this function, use
-     *         the helper class alive_checker.
+    /**
+     * \brief Calls a script.
+     * \param script_name The name of the script
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
      */
     void
     fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
-    /// Copies a region's parameters into this button (inheritance).
-    /** \param obj The region to copy
+    /**
+     * \brief Copies a region's parameters into this button (inheritance).
+     * \param obj The region to copy
      */
     void copy_from(const region& obj) override;
 
-    /// Sets this button's text.
-    /** \param content The new text
+    /**
+     * \brief Sets this button's text.
+     * \param content The new text
      */
     void set_text(const utils::ustring& content);
 
-    /// Returns this button's text.
-    /** \return This button's text
+    /**
+     * \brief Returns this button's text.
+     * \return This button's text
      */
     const utils::ustring& get_text() const;
 
-    /// Returns this button's normal texture.
-    /** \return This button's normal texture
+    /**
+     * \brief Returns this button's normal texture.
+     * \return This button's normal texture
      */
     const utils::observer_ptr<texture>& get_normal_texture() {
         return normal_texture_;
     }
 
-    /// Returns this button's normal texture.
-    /** \return This button's normal texture
+    /**
+     * \brief Returns this button's normal texture.
+     * \return This button's normal texture
      */
     utils::observer_ptr<const texture> get_normal_texture() const {
         return normal_texture_;
     }
 
-    /// Returns this button's pushed texture.
-    /** \return This button's pushed texture
+    /**
+     * \brief Returns this button's pushed texture.
+     * \return This button's pushed texture
      */
     const utils::observer_ptr<texture>& get_pushed_texture() {
         return pushed_texture_;
     }
 
-    /// Returns this button's pushed texture.
-    /** \return This button's pushed texture
+    /**
+     * \brief Returns this button's pushed texture.
+     * \return This button's pushed texture
      */
     utils::observer_ptr<const texture> get_pushed_texture() const {
         return pushed_texture_;
     }
 
-    /// Returns this button's disabled texture.
-    /** \return This button's disabled texture
+    /**
+     * \brief Returns this button's disabled texture.
+     * \return This button's disabled texture
      */
     const utils::observer_ptr<texture>& get_disabled_texture() {
         return disabled_texture_;
     }
 
-    /// Returns this button's disabled texture.
-    /** \return This button's disabled texture
+    /**
+     * \brief Returns this button's disabled texture.
+     * \return This button's disabled texture
      */
     utils::observer_ptr<const texture> get_disabled_texture() const {
         return disabled_texture_;
     }
 
-    /// Returns this button's highlight texture.
-    /** \return This button's highlight texture
+    /**
+     * \brief Returns this button's highlight texture.
+     * \return This button's highlight texture
      */
     const utils::observer_ptr<texture>& get_highlight_texture() {
         return highlight_texture_;
     }
 
-    /// Returns this button's highlight texture.
-    /** \return This button's highlight texture
+    /**
+     * \brief Returns this button's highlight texture.
+     * \return This button's highlight texture
      */
     utils::observer_ptr<const texture> get_highlight_texture() const {
         return highlight_texture_;
     }
 
-    /// Returns this button's normal text.
-    /** \return This button's normal text
+    /**
+     * \brief Returns this button's normal text.
+     * \return This button's normal text
      */
     const utils::observer_ptr<font_string>& get_normal_text() {
         return normal_text_;
     }
 
-    /// Returns this button's normal text.
-    /** \return This button's normal text
+    /**
+     * \brief Returns this button's normal text.
+     * \return This button's normal text
      */
     utils::observer_ptr<const font_string> get_normal_text() const {
         return normal_text_;
     }
 
-    /// Returns this button's highlight text.
-    /** \return This button's highlight text
+    /**
+     * \brief Returns this button's highlight text.
+     * \return This button's highlight text
      */
     const utils::observer_ptr<font_string>& get_highlight_text() {
         return highlight_text_;
     }
 
-    /// Returns this button's highlight text.
-    /** \return This button's highlight text
+    /**
+     * \brief Returns this button's highlight text.
+     * \return This button's highlight text
      */
     utils::observer_ptr<const font_string> get_highlight_text() const {
         return highlight_text_;
     }
 
-    /// Returns this button's disabled text.
-    /** \return This button's disabled text
+    /**
+     * \brief Returns this button's disabled text.
+     * \return This button's disabled text
      */
     const utils::observer_ptr<font_string>& get_disabled_text() {
         return disabled_text_;
     }
 
-    /// Returns this button's disabled text.
-    /** \return This button's disabled text
+    /**
+     * \brief Returns this button's disabled text.
+     * \return This button's disabled text
      */
     utils::observer_ptr<const font_string> get_disabled_text() const {
         return disabled_text_;
     }
 
-    /// Returns the currently displayed text object.
-    /** \return The currently displayed text object
+    /**
+     * \brief Returns the currently displayed text object.
+     * \return The currently displayed text object
      */
     const utils::observer_ptr<font_string>& get_current_font_string() {
         return current_font_string_;
     }
 
-    /// Returns the currently displayed text object.
-    /** \return The currently displayed text object
+    /**
+     * \brief Returns the currently displayed text object.
+     * \return The currently displayed text object
      */
     utils::observer_ptr<const font_string> get_current_font_string() const {
         return current_font_string_;
     }
 
-    /// Sets this button's normal texture.
-    /** \param tex The new texture
+    /**
+     * \brief Sets this button's normal texture.
+     * \param tex The new texture
      */
     void set_normal_texture(utils::observer_ptr<texture> tex);
 
-    /// Sets this button's pushed texture.
-    /** \param tex The new texture
+    /**
+     * \brief Sets this button's pushed texture.
+     * \param tex The new texture
      */
     void set_pushed_texture(utils::observer_ptr<texture> tex);
 
-    /// Sets this button's disabled texture.
-    /** \param tex The new texture
+    /**
+     * \brief Sets this button's disabled texture.
+     * \param tex The new texture
      */
     void set_disabled_texture(utils::observer_ptr<texture> tex);
 
-    /// Sets this button's highlight texture.
-    /** \param tex The new texture
+    /**
+     * \brief Sets this button's highlight texture.
+     * \param tex The new texture
      */
     void set_highlight_texture(utils::observer_ptr<texture> tex);
 
-    /// Sets this button's normal text.
-    /** \param fstr The new text object
+    /**
+     * \brief Sets this button's normal text.
+     * \param fstr The new text object
      */
     void set_normal_text(utils::observer_ptr<font_string> fstr);
 
-    /// Sets this button's highlight text.
-    /** \param fstr The new text object
+    /**
+     * \brief Sets this button's highlight text.
+     * \param fstr The new text object
      */
     void set_highlight_text(utils::observer_ptr<font_string> fstr);
 
-    /// Sets this button's disabled text.
-    /** \param fstr The new text object
+    /**
+     * \brief Sets this button's disabled text.
+     * \param fstr The new text object
      */
     void set_disabled_text(utils::observer_ptr<font_string> fstr);
 
-    /// Disables this button.
-    /** \note A disabled button doesn't receive any input.
+    /**
+     * \brief Disables this button.
+     * \note A disabled button doesn't receive any input.
      */
     virtual void disable();
 
     /// Enables this button.
     virtual void enable();
 
-    /// Checks if this button is enabled.
-    /** \return 'true' if this button is enabled
+    /**
+     * \brief Checks if this button is enabled.
+     * \return 'true' if this button is enabled
      */
     bool is_enabled() const;
 
-    /// Pushed this button.
-    /** \note This function only has a visual impact :
-     *         the OnClick() handler is not called.
+    /**
+     * \brief Pushed this button.
+     * \note This function only has a visual impact: the OnClick() handler is not called.
      */
     virtual void push();
 
-    /// Releases this button.
-    /** \note This function only has a visual impact :
-     *         the OnClick() handler is not called.
+    /**
+     * \brief Releases this button.
+     * \note This function only has a visual impact: the OnClick() handler is not called.
      */
     virtual void release();
 
-    /// Highlights this button.
-    /** \note The button will be highlighted even if the
-     *         mouse is not over it. It will stop when the
-     *         mouse leaves it.
+    /**
+     * \brief Highlights this button.
+     * \note The button will be highlighted even if the
+     * mouse is not over it. It will stop when the
+     * mouse leaves it.
      */
     virtual void highlight();
 
-    /// Unlights this button.
-    /** \note The button will be unlighted even if the
-     *         mouse is over it. It will highlight again
-     *         when the mouse leaves then enters its region.
+    /**
+     * \brief Unlights this button.
+     * \note The button will be unlighted even if the
+     * mouse is over it. It will highlight again
+     * when the mouse leaves then enters its region.
      */
     virtual void unlight();
 
-    /// Returns this button's state.
-    /** \return This button's state (see ButtonState)
+    /**
+     * \brief Returns this button's state.
+     * \return This button's state (see ButtonState)
      */
     state get_button_state() const;
 
-    /// Locks this button's highlighting.
-    /** \note The button will always be highlighted
-     *         until you call unlock_highlight().
+    /**
+     * \brief Locks this button's highlighting.
+     * \note The button will always be highlighted
+     * until you call unlock_highlight().
      */
     void lock_highlight();
 
     /// Unlocks this button's highlighting.
     void unlock_highlight();
 
-    /// Sets this button's pushed text offset.
-    /** \param offset The pushed text offset
+    /**
+     * \brief Sets this button's pushed text offset.
+     * \param offset The pushed text offset
      */
     void set_pushed_text_offset(const vector2f& offset);
 
-    /// Returns this button's pushed text offset.
-    /** \return This button's pushed text offset
+    /**
+     * \brief Returns this button's pushed text offset.
+     * \return This button's pushed text offset
      */
     const vector2f& get_pushed_text_offset() const;
 

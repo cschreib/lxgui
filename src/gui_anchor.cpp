@@ -1,7 +1,7 @@
 #include "lxgui/gui_anchor.hpp"
 
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_framerenderer.hpp"
+#include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region.hpp"
@@ -33,7 +33,7 @@ void anchor::update_parent_(region& object) {
     if (obj_parent) {
         utils::replace(parent_full_name, "$parent", obj_parent->get_lua_name());
     } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << " : "
+        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\", but '$parent' does not exist." << std::endl;
         return;
@@ -43,7 +43,7 @@ void anchor::update_parent_(region& object) {
         object.get_registry().get_region_by_name(parent_full_name);
 
     if (!new_parent) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << " : "
+        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
         return;
@@ -72,36 +72,36 @@ vector2f anchor::get_point(const region& object) const {
 
     vector2f parent_offset;
     switch (parent_point) {
-    case anchor_point::top_left:
+    case point::top_left:
         parent_offset.x = 0.0f;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::left:
+    case point::left:
         parent_offset.x = 0.0f;
         parent_offset.y = parent_size.y / 2.0f;
         break;
-    case anchor_point::bottom_left:
+    case point::bottom_left:
         parent_offset.x = 0.0f;
         parent_offset.y = parent_size.y;
         break;
-    case anchor_point::top:
+    case point::top:
         parent_offset.x = parent_size.x / 2.0f;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::center: parent_offset = parent_size / 2.0f; break;
-    case anchor_point::bottom:
+    case point::center: parent_offset = parent_size / 2.0f; break;
+    case point::bottom:
         parent_offset.x = parent_size.x / 2.0f;
         parent_offset.y = parent_size.y;
         break;
-    case anchor_point::top_right:
+    case point::top_right:
         parent_offset.x = parent_size.x;
         parent_offset.y = 0.0f;
         break;
-    case anchor_point::right:
+    case point::right:
         parent_offset.x = parent_size.x;
         parent_offset.y = parent_size.y / 2.0f;
         break;
-    case anchor_point::bottom_right:
+    case point::bottom_right:
         parent_offset.x = parent_size.x;
         parent_offset.y = parent_size.y;
         break;
@@ -113,62 +113,25 @@ vector2f anchor::get_point(const region& object) const {
 std::string anchor::serialize(const std::string& tab) const {
     std::stringstream str;
 
-    str << tab << "  |   # Point      : " << get_anchor_point_name(point) << "\n";
+    str << tab << "  |   # Point     : " << utils::to_string(object_point) << "\n";
     if (parent_)
-        str << tab << "  |   # Parent     : " << parent_->get_name();
+        str << tab << "  |   # Parent    : " << parent_->get_name();
     else
-        str << tab << "  |   # Parent     : none";
+        str << tab << "  |   # Parent    : none";
     if (!parent_name.empty())
-        str << " (raw name : " << parent_name << ")\n";
+        str << " (raw name: " << parent_name << ")\n";
     else
         str << "\n";
-    str << tab << "  |   # Rel. point : " << get_anchor_point_name(parent_point) << "\n";
+    str << tab << "  |   # Rel. point: " << utils::to_string(parent_point) << "\n";
     if (type == anchor_type::abs) {
-        str << tab << "  |   # Offset X   : " << offset.x << "\n";
-        str << tab << "  |   # Offset Y   : " << offset.y << "\n";
+        str << tab << "  |   # Offset X  : " << offset.x << "\n";
+        str << tab << "  |   # Offset Y  : " << offset.y << "\n";
     } else {
-        str << tab << "  |   # Offset X   : " << offset.x << " (rel)\n";
-        str << tab << "  |   # Offset Y   : " << offset.y << " (rel)\n";
+        str << tab << "  |   # Offset X  : " << offset.x << " (rel)\n";
+        str << tab << "  |   # Offset Y  : " << offset.y << " (rel)\n";
     }
 
     return str.str();
-}
-
-std::string anchor::get_anchor_point_name(anchor_point p) {
-    switch (p) {
-    case anchor_point::top_left: return "TOP_LEFT";
-    case anchor_point::top: return "TOP";
-    case anchor_point::top_right: return "TOP_RIGHT";
-    case anchor_point::right: return "RIGHT";
-    case anchor_point::bottom_right: return "BOTTOM_RIGHT";
-    case anchor_point::bottom: return "BOTTOM";
-    case anchor_point::bottom_left: return "BOTTOM_LEFT";
-    case anchor_point::left: return "LEFT";
-    case anchor_point::center: return "CENTER";
-    }
-    return "";
-}
-
-anchor_point anchor::get_anchor_point(const std::string& point_name) {
-    if (point_name == "TOP_LEFT")
-        return anchor_point::top_left;
-    else if (point_name == "TOP")
-        return anchor_point::top;
-    else if (point_name == "TOP_RIGHT")
-        return anchor_point::top_right;
-    else if (point_name == "RIGHT")
-        return anchor_point::right;
-    else if (point_name == "BOTTOM_RIGHT")
-        return anchor_point::bottom_right;
-    else if (point_name == "BOTTOM")
-        return anchor_point::bottom;
-    else if (point_name == "BOTTOM_LEFT")
-        return anchor_point::bottom_left;
-    else if (point_name == "LEFT")
-        return anchor_point::left;
-    else if (point_name == "CENTER")
-        return anchor_point::center;
-    return anchor_point::top_left;
 }
 
 } // namespace lxgui::gui

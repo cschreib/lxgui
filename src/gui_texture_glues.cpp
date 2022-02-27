@@ -1,4 +1,4 @@
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
@@ -7,32 +7,25 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{LayeredRegion} that can draw images and colored rectangles.
- *   This object contains either a texture taken from a file,
- *   or a plain color (possibly with a different color on each corner).
+ * This object contains either a texture taken from a file,
+ * or a plain color (possibly with a different color on each corner).
  *
- *   Inherits all methods from: @{Region}, @{LayeredRegion}.
+ * Inherits all methods from: @{Region}, @{LayeredRegion}.
  *
- *   Child classes: none.
- *   @classmod Texture
+ * Child classes: none.
+ * @classmod Texture
  */
 
 namespace lxgui::gui {
 
-sol::optional<gradient::orientation> get_gradient_orientation(const std::string& orientation_name) {
-    sol::optional<gradient::orientation> orientation;
-    if (orientation_name == "HORIZONTAL")
-        orientation = gradient::orientation::horizontal;
-    else if (orientation_name == "VERTICAL")
-        orientation = gradient::orientation::vertical;
-    else {
-        gui::out << gui::warning
-                 << "Texture:set_gradient : "
-                    "Unknown gradient orientation : \"" +
-                        orientation_name + "\"."
-                 << std::endl;
+std::optional<orientation> get_gradient_orientation(const std::string& orientation_name) {
+    auto orient = utils::from_string<orientation>(orientation_name);
+    if (!orient.has_value()) {
+        gui::out << gui::warning << "Texture:set_gradient: Unknown gradient orientation: \""
+                 << orientation_name << "\"." << std::endl;
     }
 
-    return orientation;
+    return orient;
 }
 
 void texture::register_on_lua(sol::state& lua) {
@@ -44,26 +37,13 @@ void texture::register_on_lua(sol::state& lua) {
     /** @function get_blend_mode
      */
     type.set_function("get_blend_mode", [](const texture& self) {
-        texture::blend_mode blend = self.get_blend_mode();
-        switch (blend) {
-        case texture::blend_mode::none: return "NONE";
-        case texture::blend_mode::blend: return "BLEND";
-        case texture::blend_mode::key: return "KEY";
-        case texture::blend_mode::add: return "ADD";
-        case texture::blend_mode::mod: return "MOD";
-        default: return "UNKNOWN";
-        }
+        return utils::to_string(self.get_blend_mode());
     });
 
     /** @function get_filter_mode
      */
     type.set_function("get_filter_mode", [](const texture& self) {
-        material::filter filt = self.get_filter_mode();
-        switch (filt) {
-        case material::filter::none: return "NONE";
-        case material::filter::linear: return "LINEAR";
-        default: return "UNKNOWN";
-        }
+        return utils::to_string(self.get_filter_mode());
     });
 
     /** @function get_tex_coord
@@ -102,41 +82,25 @@ void texture::register_on_lua(sol::state& lua) {
     /** @function set_blend_mode
      */
     type.set_function("set_blend_mode", [](texture& self, const std::string& blend_mode_name) {
-        texture::blend_mode blend;
-        if (blend_mode_name == "NONE")
-            blend = texture::blend_mode::none;
-        else if (blend_mode_name == "BLEND")
-            blend = texture::blend_mode::blend;
-        else if (blend_mode_name == "KEY")
-            blend = texture::blend_mode::key;
-        else if (blend_mode_name == "ADD")
-            blend = texture::blend_mode::add;
-        else if (blend_mode_name == "MOD")
-            blend = texture::blend_mode::mod;
-        else {
-            gui::out << gui::warning << "Texture:set_blend_mode : "
-                     << "Unknown blending mode : \"" + blend_mode_name + "\"." << std::endl;
-            return;
+        if (auto converted = utils::from_string<texture::blend_mode>(blend_mode_name);
+            converted.has_value()) {
+            self.set_blend_mode(converted.value());
+        } else {
+            gui::out << gui::warning << "Texture:set_blend_mode: "
+                     << "Unknown blending mode: \"" + blend_mode_name + "\"." << std::endl;
         }
-
-        self.set_blend_mode(blend);
     });
 
     /** @function set_filter_mode
      */
     type.set_function("set_filter_mode", [](texture& self, const std::string& filter_name) {
-        material::filter filt;
-        if (filter_name == "NONE")
-            filt = material::filter::none;
-        else if (filter_name == "LINEAR")
-            filt = material::filter::linear;
-        else {
-            gui::out << gui::warning << "Texture:set_filter_mode : "
-                     << "Unknown filtering mode : \"" + filter_name + "\"." << std::endl;
-            return;
+        if (auto converted = utils::from_string<material::filter>(filter_name);
+            converted.has_value()) {
+            self.set_filter_mode(converted.value());
+        } else {
+            gui::out << gui::warning << "Texture:set_filter_mode: "
+                     << "Unknown filtering mode: \"" + filter_name + "\"." << std::endl;
         }
-
-        self.set_filter_mode(filt);
     });
 
     /** @function set_desaturated
@@ -150,8 +114,7 @@ void texture::register_on_lua(sol::state& lua) {
         sol::overload(
             [](texture& self, const std::string& orientation_name, float min_r, float min_g,
                float min_b, float max_r, float max_g, float max_b) {
-                sol::optional<gradient::orientation> orientation =
-                    get_gradient_orientation(orientation_name);
+                auto orientation = get_gradient_orientation(orientation_name);
                 if (!orientation.has_value())
                     return;
 
@@ -160,8 +123,7 @@ void texture::register_on_lua(sol::state& lua) {
             },
             [](texture& self, const std::string& orientation_name, const std::string& min_color,
                const std::string& max_color) {
-                sol::optional<gradient::orientation> orientation =
-                    get_gradient_orientation(orientation_name);
+                auto orientation = get_gradient_orientation(orientation_name);
                 if (!orientation.has_value())
                     return;
 
@@ -176,8 +138,7 @@ void texture::register_on_lua(sol::state& lua) {
         sol::overload(
             [](texture& self, const std::string& orientation_name, float min_r, float min_g,
                float min_b, float min_a, float max_r, float max_g, float max_b, float max_a) {
-                sol::optional<gradient::orientation> orientation =
-                    get_gradient_orientation(orientation_name);
+                auto orientation = get_gradient_orientation(orientation_name);
                 if (!orientation.has_value())
                     return;
 
@@ -187,8 +148,7 @@ void texture::register_on_lua(sol::state& lua) {
             },
             [](texture& self, const std::string& orientation_name, const std::string& min_color,
                const std::string& max_color) {
-                sol::optional<gradient::orientation> orientation =
-                    get_gradient_orientation(orientation_name);
+                auto orientation = get_gradient_orientation(orientation_name);
                 if (!orientation.has_value())
                     return;
 

@@ -14,25 +14,26 @@
 
 namespace lxgui::input {
 
-/// The base class for input source implementation
-/** The implementation is responsible for generating the
- *   following low-level events:
- *    - @ref on_mouse_moved
- *    - @ref on_mouse_wheel
- *    - @ref on_mouse_pressed
- *    - @ref on_mouse_released
- *    - @ref on_key_pressed
- *    - @ref on_key_released
- *    - @ref on_text_entered
- *    - @ref on_window_resized
+/**
+ * \brief The base class for input source implementation
+ * \details The implementation is responsible for generating the
+ * following low-level events:
+ *  - @ref on_mouse_moved
+ *  - @ref on_mouse_wheel
+ *  - @ref on_mouse_pressed
+ *  - @ref on_mouse_released
+ *  - @ref on_key_pressed
+ *  - @ref on_key_released
+ *  - @ref on_text_entered
+ *  - @ref on_window_resized
  *
- *   These events are "raw", straight from the input implementation.
- *   They are meant to be consumed by the @ref input::dispatcher, which
- *   takes care of transforming them (apply scaling factors, etc.),
- *   and generating more complex events (drag, double-click, etc.).
- *   Therefore, do not use these events directly unless you are really
- *   after the raw input events, and prefer using @ref input::dispatcher
- *   instead.
+ * These events are "raw", straight from the input implementation.
+ * They are meant to be consumed by the @ref input::dispatcher, which
+ * takes care of transforming them (apply scaling factors, etc.),
+ * and generating more complex events (drag, double-click, etc.).
+ * Therefore, do not use these events directly unless you are really
+ * after the raw input events, and prefer using @ref input::dispatcher
+ * instead.
  */
 class source {
 public:
@@ -64,38 +65,43 @@ public:
     /// Returns the mouse state of this input source.
     const mouse_state& get_mouse_state() const;
 
-    /// Get the window size (in pixels)
-    /** \return The window size
+    /**
+     * \brief Get the window size (in pixels)
+     * \return The window size
      */
     const gui::vector2ui& get_window_dimensions() const;
 
-    /// Retrieve a copy of the clipboard content.
-    /** \return A copy of the clipboard content (empty string if clipboard is empty).
+    /**
+     * \brief Retrieve a copy of the clipboard content.
+     * \return A copy of the clipboard content (empty string if clipboard is empty).
      */
     virtual utils::ustring get_clipboard_content() = 0;
 
-    /// Replace the content of the clipboard.
-    /** \param content The new clipboard content
+    /**
+     * \brief Replace the content of the clipboard.
+     * \param content The new clipboard content
      */
     virtual void set_clipboard_content(const utils::ustring& content) = 0;
 
-    /// Sets the mouse cursor to a given image on disk.
-    /** \param file_name The cursor image
-     *   \param hot_spot The pixel position of the tip of the pointer in the image
-     *   \note Use reset_mouse_cursor() to set the cursor back to the default.
+    /**
+     * \brief Sets the mouse cursor to a given image on disk.
+     * \param file_name The cursor image
+     * \param hot_spot The pixel position of the tip of the pointer in the image
+     * \note Use reset_mouse_cursor() to set the cursor back to the default.
      */
     virtual void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) = 0;
 
     /// Sets the mouse cursor back to the default (arrow).
     virtual void reset_mouse_cursor() = 0;
 
-    /// Return the interface scaling factor suggested by the operating system.
-    /** \return The interface scaling factor suggested by the operating system
-     *   \note This is implementation-dependent; not all input implementations are able
-     *         to produce this hint, in which case the function always returns 1.
-     *         Consequently, it is recommended to not rely blindly on this hint, and
-     *         to offer a way for the user to change the scaling factor. But this can be used
-     *         for a good default value.
+    /**
+     * \brief Return the interface scaling factor suggested by the operating system.
+     * \return The interface scaling factor suggested by the operating system
+     * \note This is implementation-dependent; not all input implementations are able
+     * to produce this hint, in which case the function always returns 1.
+     * Consequently, it is recommended to not rely blindly on this hint, and
+     * to offer a way for the user to change the scaling factor. But this can be used
+     * for a good default value.
      */
     virtual float get_interface_scaling_factor_hint() const;
 

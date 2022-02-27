@@ -1,8 +1,8 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_keybinder.hpp"
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_key_binder.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -15,20 +15,16 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** Global functions for interacting with the GUI.
- *   The functions listed on this page are registered in the
- *   Lua state as globals, and as such are accessible from
- *   anywhere automatically. They offer various functionalities
- *   for creating or destroying @{Frame}s, and accessing a few
- *   other global properties or objects.
+ * The functions listed on this page are registered in the
+ * Lua state as globals, and as such are accessible from
+ * anywhere automatically. They offer various functionalities
+ * for creating or destroying @{Frame}s, and accessing a few
+ * other global properties or objects.
  *
- *   @module Manager
+ * @module Manager
  */
 
 namespace lxgui::gui {
-
-void manager::register_lua_glues(std::function<void(gui::manager&)> lua_regs) {
-    lua_regs_ = std::move(lua_regs);
-}
 
 void manager::create_lua_() {
     if (lua_)
@@ -80,16 +76,16 @@ void manager::create_lua_() {
     /** @function register_key_binding
      */
     lua.set_function("register_key_binding", [&](std::string id, sol::protected_function function) {
-        get_root().get_keybinder().register_key_binding(id, function);
+        get_root().get_key_binder().register_key_binding(id, function);
     });
 
     /** @function set_key_binding
      */
     lua.set_function("set_key_binding", [&](std::string id, sol::optional<std::string> key) {
         if (key.has_value())
-            get_root().get_keybinder().set_key_binding(id, key.value());
+            get_root().get_key_binder().set_key_binding(id, key.value());
         else
-            get_root().get_keybinder().remove_key_binding(id);
+            get_root().get_key_binder().remove_key_binding(id);
     });
 
     /** Closes the whole GUI and re-loads addons from files.
@@ -100,8 +96,8 @@ void manager::create_lua_() {
     lua.set_function("reload_ui", [&]() { reload_ui(); });
 
     /** Sets the global interface scaling factor.
-     *   @function set_interface_scaling_factor
-     *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
+     * @function set_interface_scaling_factor
+     * @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and
      * textures, etc.)
      */
     lua.set_function("set_interface_scaling_factor", [&](float scaling) {
@@ -109,22 +105,21 @@ void manager::create_lua_() {
     });
 
     /** Return the global interface scaling factor.
-     *   @function get_interface_scaling_factor
-     *   @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures,
+     * @function get_interface_scaling_factor
+     * @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures,
      * etc.)
      */
     lua.set_function(
         "get_interface_scaling_factor", [&]() { return get_interface_scaling_factor(); });
 
+    // Register localization functions
     localizer_->register_on_lua(lua);
 
-    // Base types
-    factory_->register_region_type<region>();
-    factory_->register_region_type<frame>();
-    factory_->register_region_type<layered_region>();
+    // Register all region types
+    factory_->register_on_lua(lua);
 
-    if (lua_regs_)
-        lua_regs_(*this);
+    // Register user callbacks
+    on_create_lua(lua);
 }
 
 } // namespace lxgui::gui

@@ -34,7 +34,7 @@ struct GLContext {
 
     explicit GLContext(SDL_Window* window) : context(SDL_GL_CreateContext(window)) {
         if (context == nullptr)
-            throw gui::exception("SDL_GL_CreateContext", "Coult not create OpenGL context.");
+            throw gui::exception("SDL_GL_CreateContext", "Could not create OpenGL context.");
     }
 
     ~GLContext() noexcept {
@@ -92,6 +92,9 @@ int main(int argc, char* argv[]) {
             std::make_unique<gui::gl::renderer>(input_source->get_window_dimensions());
 
         // Create the GUI manager
+        // NB: utils::owner_ptr is a lightweight, unique-ownership smart pointer similar to
+        // std::unique_ptr. The difference is that you can create "observer" pointers that can
+        // safely be checked for validity after the object is deleted (they will be null).
         utils::owner_ptr<gui::manager> manager = utils::make_owned<gui::manager>(
             // Provide the input source
             std::move(input_source),
@@ -136,7 +139,7 @@ int main(int argc, char* argv[]) {
                 static_cast<input::sdl::source&>(input_dispatcher.get_source()).on_sdl_event(event);
             }
 
-            // If the window is not focussed, do nothing and wait until focus comes back
+            // If the window is not focused, do nothing and wait until focus comes back
             if (!focus) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 continue;
@@ -168,7 +171,7 @@ int main(int argc, char* argv[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 

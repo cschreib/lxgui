@@ -7,8 +7,8 @@
 #include "lxgui/impl/gui_sfml_atlas.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
-#include "lxgui/impl/gui_sfml_rendertarget.hpp"
-#include "lxgui/impl/gui_sfml_vertexcache.hpp"
+#include "lxgui/impl/gui_sfml_render_target.hpp"
+#include "lxgui/impl/gui_sfml_vertex_cache.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -134,7 +134,7 @@ void renderer::render_cache_(
     const sfml::vertex_cache& sf_cache = static_cast<const sfml::vertex_cache&>(cache);
 
     // Note: the following will not work correctly, as vertex_cache has texture coordinates
-    // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
+    // normalized, but sf::RenderTarget::draw assumes coordinates in pixels.
     // Requires https://github.com/SFML/SFML/pull/1807
     sf::RenderStates state;
     // Premultiplied alpha
@@ -170,7 +170,7 @@ bool renderer::is_texture_vertex_color_supported() const {
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    const vector2ui& dimensions, const ub32color* pixel_data, material::filter filt) {
+    const vector2ui& dimensions, const color32* pixel_data, material::filter filt) {
     std::shared_ptr<sfml::material> tex =
         std::make_shared<sfml::material>(dimensions, false, material::wrap::repeat, filt);
 

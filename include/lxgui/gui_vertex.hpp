@@ -8,6 +8,7 @@
 
 namespace lxgui::gui {
 
+/// Holds position, texture coordinate, and color information for drawing
 struct vertex {
     vector2f pos;
     vector2f uvs;

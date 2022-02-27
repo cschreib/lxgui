@@ -1,19 +1,19 @@
 #include "lxgui/gui_button.hpp"
-#include "lxgui/gui_editbox.hpp"
+#include "lxgui/gui_edit_box.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_factory.hpp"
-#include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_root.hpp"
-#include "lxgui/gui_scrollframe.hpp"
+#include "lxgui/gui_scroll_frame.hpp"
 #include "lxgui/gui_slider.hpp"
-#include "lxgui/gui_statusbar.hpp"
+#include "lxgui/gui_status_bar.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/input_dispatcher.hpp"
 #include "lxgui/input_world_dispatcher.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <lxgui/extern_sol2_state.hpp>
@@ -209,7 +209,7 @@ void main_loop(void* type_erased_data) {
         emscripten_cancel_main_loop();
         return;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         emscripten_cancel_main_loop();
         return;
     }
@@ -405,25 +405,24 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
         manager->set_interface_scaling_factor(scale_factor);
 
-        // Load files :
+        // Register the needed region types
+        gui::factory& fac = manager->get_factory();
+        fac.register_region_type<gui::texture>();
+        fac.register_region_type<gui::font_string>();
+        fac.register_region_type<gui::button>();
+        fac.register_region_type<gui::slider>();
+        fac.register_region_type<gui::edit_box>();
+        fac.register_region_type<gui::scroll_frame>();
+        fac.register_region_type<gui::status_bar>();
+
+        // Load files:
         //  - first set the directory in which the interface is located
         manager->add_addon_directory("interface");
         //  - register Lua "glues" (C++ functions and classes callable from Lua)
-        manager->register_lua_glues([](gui::manager& mgr) {
+        manager->on_create_lua.connect([&](sol::state& lua) {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
-            //  - register the needed region types
-            gui::factory& fac = mgr.get_factory();
-            fac.register_region_type<gui::texture>();
-            fac.register_region_type<gui::font_string>();
-            fac.register_region_type<gui::button>();
-            fac.register_region_type<gui::slider>();
-            fac.register_region_type<gui::edit_box>();
-            fac.register_region_type<gui::scroll_frame>();
-            fac.register_region_type<gui::status_bar>();
-            //  - register additional lua functions
-            sol::state& lua = mgr.get_lua();
             lua.set_function("get_folder_list", [](const std::string& dir) {
                 return sol::as_table(utils::get_directory_list(dir));
             });
@@ -458,16 +457,15 @@ int main(int /*argc*/, char* /*argv*/[]) {
         // A "child" frame is owned by another frame.
         utils::observer_ptr<gui::frame> fps_frame;
         fps_frame = manager->get_root().create_root_frame<gui::frame>("FPSCounter");
-        fps_frame->set_point(gui::anchor_point::top_left);
+        fps_frame->set_point(gui::point::top_left);
         fps_frame->set_point(
-            gui::anchor_point::bottom_right, "FontstringTestFrameText",
-            gui::anchor_point::top_right);
+            gui::point::bottom_right, "FontstringTestFrameText", gui::point::top_right);
 
         // Create the FontString
         utils::observer_ptr<gui::font_string> fps_text;
         fps_text =
             fps_frame->create_layered_region<gui::font_string>(gui::layer::artwork, "$parentText");
-        fps_text->set_point(gui::anchor_point::bottom_right, gui::vector2f(0, -5));
+        fps_text->set_point(gui::point::bottom_right, gui::vector2f(0, -5));
         fps_text->set_font("interface/fonts/main.ttf", 15);
         fps_text->set_alignment_y(gui::alignment_y::bottom);
         fps_text->set_alignment_x(gui::alignment_x::right);
@@ -489,7 +487,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
             "if (self.timer > self.update_time) then"
             "    local fps = self.frames/self.timer;"
-            "    self.Text:set_text(\"FPS : \"..math.floor(fps));"
+            "    self.Text:set_text(\"FPS: \"..math.floor(fps));"
 
             "    self.timer = 0.0;"
             "    self.frames = 0;"
@@ -510,7 +508,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
                     if (auto txt = self.get_region<gui::font_string>("Text")) {
                         txt->set_text(
-                            U"(created in C++)\nFrame time (us) : " +
+                            U"(created in C++)\nFrame time (us): " +
                             utils::to_ustring(std::round(frame_time)));
                     }
 
@@ -594,7 +592,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 

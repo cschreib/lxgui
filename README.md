@@ -79,7 +79,13 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on:
+ - [Lua](http://www.lua.org/) (>5.1),
+ - [sol2](https://github.com/ThePhD/sol2) (included as a submodule),
+ - [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule),
+ - [magic_enum](https://github.com/Neargye/magic_enum) (included as a submodule),
+ - [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule),
+ - [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
 
 To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
 
@@ -287,10 +293,30 @@ utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
 // Grab a pointer to the SFML input source so we can feed events to it later
 input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
-    manager->get_input_dispatcher().get_source()
-);
+    manager->get_input_dispatcher().get_source());
 
-// Load GUI addons:
+// Register any required region classes to the GUI factory.
+// By default, only the base classes gui::region, gui::frame, and gui::layered_region
+// are registered. If you want to use more, you need to do this explicitly. This is
+// also where you would register your own region types, if any.
+gui::factory& factory = manager->get_factory();
+factory.register_region_type<gui::texture>();
+factory.register_region_type<gui::font_string>();
+factory.register_region_type<gui::button>();
+factory.register_region_type<gui::slider>();
+factory.register_region_type<gui::edit_box>();
+factory.register_region_type<gui::scroll_frame>();
+factory.register_region_type<gui::status_bar>();
+
+// Then register your own Lua "glues" (C++ classes and functions to expose to Lua)
+manager->on_create_lua.connect([](sol::state& lua) {
+    // This code might be called again later on, for example when one
+    // reloads the GUI (the Lua state is destroyed and created again).
+    // This is where you would register your own additional Lua "glue" functions, if needed.
+    // ...
+});
+
+// Then load GUI addons.
 // In lxgui, the GUI is formed of multiple modular "addons", each of which defines
 // the appearance and behavior of a specific GUI element (e.g., one addon for
 // the player status bars, one addon for the inventory, etc.).
@@ -298,35 +324,15 @@ input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
 
 //  - First set the directory in which the GUI addons are located
 manager->add_addon_directory("interface");
-//  - Then register Lua "glues" (C++ classes and functions to expose to Lua)
-manager->register_lua_glues([](gui::manager& mgr)
-{
-    // This code might be called again later on, for example when one
-    // reloads the GUI (the Lua state is destroyed and created again).
-    //  - register the needed region types
-    gui::factory& fac = mgr.get_factory();
-    fac.register_region_type<gui::texture>();
-    fac.register_region_type<gui::font_string>();
-    fac.register_region_type<gui::button>();
-    fac.register_region_type<gui::slider>();
-    fac.register_region_type<gui::edit_box>();
-    fac.register_region_type<gui::scroll_frame>();
-    fac.register_region_type<gui::status_bar>();
-    //  - register your own additional Lua "glue" functions, if needed.
-    // ...
-});
-
 //  - and eventually load all addons
 manager->load_ui();
 
 // Start the main loop
 sf::Clock clock;
-while (true)
-{
+while (true) {
     // Retrieve the window events
     sf::Event event;
-    while (window.pollEvent(event))
-    {
+    while (window.pollEvent(event)) {
         // Send these to the input source.
         sfml_source.on_sfml_event(event);
 
@@ -580,13 +586,13 @@ gui::root& root = manager->get_root();
 // NB: observer_ptr is a lightweight, non-owning smart pointer (vaguely similar to std::weak_ptr).
 utils::observer_ptr<gui::frame> frame =
     root.create_root_frame<gui::frame>("FPSCounter");
-frame->set_point(gui::anchor_point::TOP_LEFT);
-frame->set_point(gui::anchor_point::BOTTOM_RIGHT);
+frame->set_point(gui::point::TOP_LEFT);
+frame->set_point(gui::point::BOTTOM_RIGHT);
 
 // Create the FontString as a child region of the frame.
 utils::observer_ptr<gui::font_string> text =
     frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
-text->set_point(gui::anchor_point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
+text->set_point(gui::point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
 text->set_alignment_x(gui::alignment_x::RIGHT);
 text->set_alignment_y(gui::alignment_y::BOTTOM);

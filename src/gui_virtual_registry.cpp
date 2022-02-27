@@ -20,7 +20,7 @@ virtual_registry::get_virtual_region_list(std::string_view names) const {
         if (!obj) {
             bool exists_non_virtual = object_registry_->get_region_by_name(parent) != nullptr;
 
-            gui::out << gui::warning << "gui::manager : "
+            gui::out << gui::warning << "gui::manager: "
                      << "Cannot find inherited object \"" << parent << "\""
                      << std::string(exists_non_virtual ? " (object is not virtual)" : "")
                      << ". Inheritance skipped." << std::endl;

@@ -16,7 +16,7 @@ material::material(const vector2ui& dimensions, bool is_render_target, wrap wrp,
     if (dimensions_.x > sf::Texture::getMaximumSize() ||
         dimensions_.y > sf::Texture::getMaximumSize()) {
         throw gui::exception(
-            "gui::sfml::material", "Texture dimensions not supported by graphics card : (" +
+            "gui::sfml::material", "Texture dimensions not supported by graphics card: (" +
                                        utils::to_string(dimensions_.x) + " x " +
                                        utils::to_string(dimensions_.y) + ").");
     }
@@ -118,7 +118,7 @@ material::filter material::get_filter() const {
     return filter_;
 }
 
-void material::update_texture(const ub32color* data) {
+void material::update_texture(const color32* data) {
     if (is_render_target_)
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
 

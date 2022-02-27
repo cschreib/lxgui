@@ -1,5 +1,5 @@
-#ifndef LXGUI_KEYS_HPP
-#define LXGUI_KEYS_HPP
+#ifndef LXGUI_INPUT_KEYS_HPP
+#define LXGUI_INPUT_KEYS_HPP
 
 #include "lxgui/lxgui.hpp"
 
@@ -159,43 +159,48 @@ enum class key : std::uint8_t {
     k_maxkey       = 0xFF
 };
 
-/// Returns a standard English name for the provided mouse button.
-/** \param button_id The ID code of the mouse button
- *   \note This will return a standard English button name, e.g., "LeftButton" for the left mouse
- *         button. This can be used for string-based key identification in scripts, where key
- *         integer codes would be less usable, or for displaying debug or error messages.
+/**
+ * \brief Returns a standard English name for the provided mouse button.
+ * \param button_id The ID code of the mouse button
+ * \note This will return a standard English button name, e.g., "LeftButton" for the left mouse
+ * button. This can be used for string-based key identification in scripts, where key
+ * integer codes would be less usable, or for displaying debug or error messages.
  */
 std::string_view get_mouse_button_codename(mouse_button button_id);
 
-/// Returns the localizable name of the provided mouse button.
-/** \param button_id The ID code of the mouse button
- *   \return The localizable name of the provided mouse button
- *   \note This will return localizable button names, e.g., "{mouse_left}" for the left mouse
- *         button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
+/**
+ * \brief Returns the localizable name of the provided mouse button.
+ * \param button_id The ID code of the mouse button
+ * \return The localizable name of the provided mouse button
+ * \note This will return localizable button names, e.g., "{mouse_left}" for the left mouse
+ * button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
 std::string_view get_localizable_mouse_button_name(mouse_button button_id);
 
-/// Returns a standard English name for the provided key.
-/** \param key_id The key
- *   \return The name of the provided key
- *   \note This will return a standard English key name, e.g., "Enter" for the Enter key.
- *         This can be used for string-based key identification in scripts, where key integer
- *         codes would be less usable, or for displaying debug or error messages.
+/**
+ * \brief Returns a standard English name for the provided key.
+ * \param key_id The key
+ * \return The name of the provided key
+ * \note This will return a standard English key name, e.g., "Enter" for the Enter key.
+ * This can be used for string-based key identification in scripts, where key integer
+ * codes would be less usable, or for displaying debug or error messages.
  */
 std::string_view get_key_codename(key key_id);
 
-/// Returns the key code from the standard English name of a key.
-/** \param key_name The name of the key
- *   \return The key code
- *   \note The name of the key must be from get_key_codename().
+/**
+ * \brief Returns the key code from the standard English name of a key.
+ * \param key_name The name of the key
+ * \return The key code
+ * \note The name of the key must be from get_key_codename().
  */
 key get_key_from_codename(std::string_view key_name);
 
-/// Returns the localizable name of the provided key.
-/** \param key_id The key
- *   \return The localizable name of the provided key
- *   \note This will return localizable key names, e.g., "{key_enter}" for the Enter key.
- *         Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
+/**
+ * \brief Returns the localizable name of the provided key.
+ * \param key_id The key
+ * \return The localizable name of the provided key
+ * \note This will return localizable key names, e.g., "{key_enter}" for the Enter key.
+ * Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
 std::string_view get_localizable_key_name(key key_id);
 

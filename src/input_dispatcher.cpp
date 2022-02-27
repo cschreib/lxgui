@@ -1,8 +1,8 @@
 #include "lxgui/input_dispatcher.hpp"
 
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
-#include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_event_emitter.hpp"
+#include "lxgui/gui_event_receiver.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input_source.hpp"
 #include "lxgui/utils_exception.hpp"

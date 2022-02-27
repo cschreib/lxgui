@@ -23,32 +23,37 @@ public:
     registry& operator=(const registry&) = default;
     registry& operator=(registry&&) = default;
 
-    /// Checks the provided string is suitable for naming a region.
-    /** \param name The string to test
-     *   \return 'true' if the provided string can be the name of a region
+    /**
+     * \brief Checks the provided string is suitable for naming a region.
+     * \param name The string to test
+     * \return 'true' if the provided string can be the name of a region
      */
     bool check_region_name(std::string_view name) const;
 
-    /// Adds a region to be handled by this registry.
-    /** \param obj The object to add
-     *   \return 'false' if the name of the region was already taken
+    /**
+     * \brief Adds a region to be handled by this registry.
+     * \param obj The object to add
+     * \return 'false' if the name of the region was already taken
      */
     bool add_region(utils::observer_ptr<region> obj);
 
-    /// Removes a region from this registry.
-    /** \param obj The object to remove
+    /**
+     * \brief Removes a region from this registry.
+     * \param obj The object to remove
      */
     void remove_region(const region& obj);
 
-    /// Returns the region associated with the given name.
-    /** \param name    The name of the region you're after
-     *   \return The region associated with the given name, or nullptr if not found
+    /**
+     * \brief Returns the region associated with the given name.
+     * \param name The name of the region you're after
+     * \return The region associated with the given name, or nullptr if not found
      */
     utils::observer_ptr<const region> get_region_by_name(std::string_view name) const;
 
-    /// Returns the region associated with the given name.
-    /** \param name    The name of the region you're after
-     *   \return The region associated with the given name, or nullptr if not found
+    /**
+     * \brief Returns the region associated with the given name.
+     * \param name The name of the region you're after
+     * \return The region associated with the given name, or nullptr if not found
      */
     utils::observer_ptr<region> get_region_by_name(std::string_view name) {
         return utils::const_pointer_cast<region>(

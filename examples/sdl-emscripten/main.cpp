@@ -48,7 +48,7 @@ void main_loop(void* type_erased_data) try {
         static_cast<input::sdl::source&>(input_dispatcher.get_source()).on_sdl_event(event);
     }
 
-    // If the window is not focussed, do nothing and wait until focus comes back
+    // If the window is not focused, do nothing and wait until focus comes back
     if (!context.focus) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         return;
@@ -77,7 +77,7 @@ void main_loop(void* type_erased_data) try {
     emscripten_cancel_main_loop();
     return;
 } catch (...) {
-    std::cout << "# Error # : Unhandled exception !" << std::endl;
+    std::cout << "# Error #: Unhandled exception !" << std::endl;
     emscripten_cancel_main_loop();
     return;
 }
@@ -157,7 +157,7 @@ int main(int argc, char* argv[]) {
         std::cout << e.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
         return 1;
     }
 

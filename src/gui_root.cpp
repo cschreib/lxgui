@@ -95,9 +95,9 @@ void root::create_caching_render_target_() {
         else
             target_ = renderer_.create_render_target(screen_dimensions_);
     } catch (const utils::exception& e) {
-        gui::out << gui::error << "gui::root : "
-                 << "Unable to create render_target for GUI caching :\n"
-                 << e.get_description() << std::endl;
+        gui::out << gui::error << "gui::root: "
+                 << "Unable to create render_target for GUI caching: " << e.get_description()
+                 << std::endl;
 
         caching_enabled_ = false;
         return;
@@ -203,9 +203,9 @@ void root::update(float delta) {
                 renderer_.end();
             }
         } catch (const utils::exception& e) {
-            gui::out << gui::error << "gui::root : "
-                     << "Unable to create render_target for strata :\n"
-                     << e.get_description() << std::endl;
+            gui::out << gui::error << "gui::root: "
+                     << "Unable to create render_target for strata: " << e.get_description()
+                     << std::endl;
 
             caching_enabled_ = false;
         }
@@ -277,9 +277,9 @@ void root::start_moving(
             const bounds2f borders = moved_object_->get_borders();
 
             moved_object_->clear_all_points();
-            moved_object_->set_point(anchor_point::top_left, "", borders.top_left());
+            moved_object_->set_point(point::top_left, "", borders.top_left());
 
-            moved_anchor_ = &moved_object_->modify_point(anchor_point::top_left);
+            moved_anchor_ = &moved_object_->modify_point(point::top_left);
 
             movement_start_position_ = borders.top_left();
         }
@@ -295,7 +295,7 @@ bool root::is_moving(const region& obj) const {
     return moved_object_.get() == &obj;
 }
 
-void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
+void root::start_sizing(utils::observer_ptr<region> obj, point p) {
     moved_object_   = nullptr;
     sized_object_   = std::move(obj);
     mouse_movement_ = vector2f::zero;
@@ -303,40 +303,40 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
     if (sized_object_) {
         const bounds2f borders = sized_object_->get_borders();
 
-        anchor_point opposite_point = anchor_point::center;
-        vector2f     offset;
+        point    opposite_point = point::center;
+        vector2f offset;
 
-        switch (point) {
-        case anchor_point::top_left:
-        case anchor_point::top:
-            opposite_point           = anchor_point::bottom_right;
+        switch (p) {
+        case point::top_left:
+        case point::top:
+            opposite_point           = point::bottom_right;
             offset                   = borders.bottom_right();
             is_resizing_from_right_  = false;
             is_resizing_from_bottom_ = false;
             break;
-        case anchor_point::top_right:
-        case anchor_point::right:
-            opposite_point           = anchor_point::bottom_left;
+        case point::top_right:
+        case point::right:
+            opposite_point           = point::bottom_left;
             offset                   = borders.bottom_left();
             is_resizing_from_right_  = true;
             is_resizing_from_bottom_ = false;
             break;
-        case anchor_point::bottom_right:
-        case anchor_point::bottom:
-            opposite_point           = anchor_point::top_left;
+        case point::bottom_right:
+        case point::bottom:
+            opposite_point           = point::top_left;
             offset                   = borders.top_left();
             is_resizing_from_right_  = true;
             is_resizing_from_bottom_ = true;
             break;
-        case anchor_point::bottom_left:
-        case anchor_point::left:
-            opposite_point           = anchor_point::top_right;
+        case point::bottom_left:
+        case point::left:
+            opposite_point           = point::top_right;
             offset                   = borders.top_right();
             is_resizing_from_right_  = false;
             is_resizing_from_bottom_ = true;
             break;
-        case anchor_point::center:
-            gui::out << gui::error << "gui::manager : "
+        case point::center:
+            gui::out << gui::error << "gui::manager: "
                      << "Cannot resize \"" << sized_object_->get_name() << "\" from its center."
                      << std::endl;
             sized_object_ = nullptr;
@@ -344,14 +344,14 @@ void root::start_sizing(utils::observer_ptr<region> obj, anchor_point point) {
         }
 
         sized_object_->clear_all_points();
-        sized_object_->set_point(opposite_point, "", anchor_point::top_left, offset);
+        sized_object_->set_point(opposite_point, "", point::top_left, offset);
 
         resize_start_ = sized_object_->get_apparent_dimensions();
 
-        if (point == anchor_point::left || point == anchor_point::right) {
+        if (p == point::left || p == point::right) {
             is_resizing_width_  = true;
             is_resizing_height_ = false;
-        } else if (point == anchor_point::top || point == anchor_point::bottom) {
+        } else if (p == point::top || p == point::bottom) {
             is_resizing_width_  = false;
             is_resizing_height_ = true;
         } else {
@@ -403,9 +403,9 @@ void request_focus_to_list(
 }
 
 void root::request_focus(utils::observer_ptr<frame> receiver) {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     request_focus_to_list(std::move(receiver), focus_stack_);
-    auto new_focus = get_focussed_frame();
+    auto new_focus = get_focused_frame();
 
     if (old_focus != new_focus) {
         if (old_focus)
@@ -417,9 +417,9 @@ void root::request_focus(utils::observer_ptr<frame> receiver) {
 }
 
 void root::release_focus(const frame& receiver) {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     release_focus_to_list(receiver, focus_stack_);
-    auto new_focus = get_focussed_frame();
+    auto new_focus = get_focused_frame();
 
     if (old_focus != new_focus) {
         if (old_focus)
@@ -431,7 +431,7 @@ void root::release_focus(const frame& receiver) {
 }
 
 void root::clear_focus() {
-    auto old_focus = get_focussed_frame();
+    auto old_focus = get_focused_frame();
     focus_stack_.clear();
 
     if (old_focus)
@@ -439,10 +439,10 @@ void root::clear_focus() {
 }
 
 bool root::is_focused() const {
-    return get_focussed_frame() != nullptr;
+    return get_focused_frame() != nullptr;
 }
 
-utils::observer_ptr<const frame> root::get_focussed_frame() const {
+utils::observer_ptr<const frame> root::get_focused_frame() const {
     for (const auto& ptr : utils::range::reverse(focus_stack_)) {
         if (ptr)
             return ptr;
@@ -629,7 +629,7 @@ void root::on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos) 
 }
 
 void root::on_text_entered_(std::uint32_t c) {
-    if (auto focus = get_focussed_frame()) {
+    if (auto focus = get_focused_frame()) {
         event_data data;
         data.add(utils::unicode_to_utf8(utils::ustring(1, c)));
         data.add(c);
@@ -669,10 +669,10 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
 
     std::string key_name = get_key_name(key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed);
 
-    // First, give priority to the focussed frame
-    utils::observer_ptr<frame> topmost_frame = get_focussed_frame();
+    // First, give priority to the focused frame
+    utils::observer_ptr<frame> topmost_frame = get_focused_frame();
 
-    // If no focussed frame, look top-down for a frame that captures this key
+    // If no focused frame, look top-down for a frame that captures this key
     if (!topmost_frame) {
         topmost_frame = find_topmost_frame(
             [&](const frame& frame) { return frame.is_key_capture_enabled(key_name); });
@@ -696,9 +696,9 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     }
 
     if (is_down) {
-        // If no frame is found, try the keybinder
+        // If no frame is found, try the key_binder
         try {
-            if (get_keybinder().on_key_down(
+            if (get_key_binder().on_key_down(
                     key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {
                 return;
             }
@@ -724,7 +724,7 @@ void root::on_mouse_button_state_changed_(
     });
 
     if (is_down && !is_double_click) {
-        if (!hovered_frame || hovered_frame != get_focussed_frame())
+        if (!hovered_frame || hovered_frame != get_focused_frame())
             clear_focus();
     }
 

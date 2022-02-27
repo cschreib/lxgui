@@ -1,5 +1,5 @@
 #include "lxgui/gui_button.hpp"
-#include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
@@ -8,35 +8,35 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with a button that can be clicked.
- *   This class can handle three different states: "normal", "pushed"
- *   and "disabled". You can provide a different texture for each of
- *   these states, and two different fontstrings for "normal" and
- *   "disabled".
+ * This class can handle three different states: "normal", "pushed"
+ * and "disabled". You can provide a different texture for each of
+ * these states, and two different fontstrings for "normal" and
+ * "disabled".
  *
- *   In addition, you can provide another texture/fontstring for the
- *   "highlight" state (when the mouse is over the button region).
+ * In addition, you can provide another texture/fontstring for the
+ * "highlight" state (when the mouse is over the button region).
  *
- *   Note that there is no fontstring for the "pushed" state: in this
- *   case, the "normal" font is rendered with a slight offset that you
- *   are free to define.
+ * Note that there is no fontstring for the "pushed" state: in this
+ * case, the "normal" font is rendered with a slight offset that you
+ * are free to define.
  *
- *   Note that a @{Button} has @{Frame:enable_mouse} set to `true` by
- *   default.
+ * Note that a @{Button} has @{Frame:enable_mouse} set to `true` by
+ * default.
  *
- *   __Events.__ Hard-coded events available to all @{Button}s, in
- *   addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{Button}s, in
+ * addition to those from @{Frame}:
  *
- *   - `OnClick`: Triggered when the button is clicked, either when
- *   @{Button:click} is called, or just when a mouse button is pressed
- *   when the cursor is over the button.
- *   - `OnDoubleClick`: Triggered when the button is double-clicked.
- *   - `OnEnable`: Triggered by @{Button:enable}.
- *   - `OnDisable`: Triggered by @{Button:disable}.
+ * - `OnClick`: Triggered when the button is clicked, either when
+ * @{Button:click} is called, or just when a mouse button is pressed
+ * when the cursor is over the button.
+ * - `OnDoubleClick`: Triggered when the button is double-clicked.
+ * - `OnEnable`: Triggered by @{Button:enable}.
+ * - `OnDisable`: Triggered by @{Button:disable}.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: @{CheckButton}.
- *   @classmod Button
+ * Child classes: @{CheckButton}.
+ * @classmod Button
  */
 
 namespace lxgui::gui {
@@ -200,7 +200,7 @@ void button::register_on_lua(sol::state& lua) {
             self.release();
         } else {
             gui::out << gui::warning << "Button:set_button_state"
-                     << " : Unknown button state : \"" + state + "\"." << std::endl;
+                     << ": Unknown button state: \"" + state + "\"." << std::endl;
         }
     });
 

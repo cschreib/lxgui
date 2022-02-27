@@ -7,7 +7,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_vertexcache.hpp"
+#include "lxgui/gui_vertex_cache.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_range.hpp"
 
@@ -103,11 +103,14 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                         texture.width = texture.height = std::numeric_limits<float>::quiet_NaN();
 
                         if (words.size() == 2) {
-                            utils::from_string(words[1], texture.width);
+                            texture.width =
+                                utils::from_string<float>(words[1]).value_or(texture.width);
                             texture.height = texture.width;
                         } else if (words.size() > 2) {
-                            utils::from_string(words[1], texture.width);
-                            utils::from_string(words[2], texture.height);
+                            texture.width =
+                                utils::from_string<float>(words[1]).value_or(texture.width);
+                            texture.height =
+                                utils::from_string<float>(words[2]).value_or(texture.height);
                         }
 
                         content.push_back(texture);
@@ -606,7 +609,7 @@ void text::update_() const {
     if (max_line_nbr != 0) {
         auto manual_line_list = utils::cut_each(unicode_text_, U"\n");
         for (auto iter_manual : utils::range::iterator(manual_line_list)) {
-            DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
+            DEBUG_LOG("     Line: '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
             std::vector<parser::item> parsed_content =
@@ -689,7 +692,7 @@ void text::update_() const {
                         DEBUG_LOG("       Single word");
                         // There is only one word on this line, or word
                         // wrap is disabled. Anyway, this line is just
-                        // too long for the text box : our only option
+                        // too long for the text box: our only option
                         // is to truncate it.
                         if (ellipsis_enabled_) {
                             DEBUG_LOG("       Ellipsis");
@@ -707,7 +710,7 @@ void text::update_() const {
                             }
 
                             DEBUG_LOG(
-                                "       Char to erase : " + utils::to_string(chars_to_erase) +
+                                "       Char to erase: " + utils::to_string(chars_to_erase) +
                                 " / " + utils::to_string(line.content.size()));
 
                             line.content.erase(

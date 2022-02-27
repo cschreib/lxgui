@@ -1,10 +1,10 @@
 #include "lxgui/gui_addon_registry.hpp"
 
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_range.hpp"
 #include "lxgui/utils_std.hpp"
 #include "lxgui/utils_string.hpp"
@@ -62,10 +62,10 @@ void addon_registry::load_addon_toc_(
                     if (a.ui_version == lxgui_ui_version)
                         a.enabled = true;
                     else {
-                        gui::out << gui::warning << "gui::manager : "
+                        gui::out << gui::warning << "gui::manager: "
                                  << "Wrong UI version for \"" << addon_name
-                                 << "\" (got : " << a.ui_version
-                                 << ", expected : " << lxgui_ui_version << "). AddOn disabled."
+                                 << "\" (got: " << a.ui_version
+                                 << ", expected: " << lxgui_ui_version << "). AddOn disabled."
                                  << std::endl;
                         a.enabled = false;
                     }
@@ -91,7 +91,7 @@ void addon_registry::load_addon_toc_(
     }
 
     if (a.name.empty())
-        gui::out << gui::error << "gui::manager : Missing addon name in " << toc_file << "."
+        gui::out << gui::error << "gui::manager: Missing addon name in " << toc_file << "."
                  << std::endl;
     else
         addons[addon_name] = a;
@@ -232,8 +232,7 @@ void addon_registry::save_variables_(const addon& a) const noexcept {
     if (!a.saved_variable_list.empty()) {
         if (!utils::make_directory("saves/interface/" + a.main_directory)) {
             gui::out << gui::error
-                     << "gui::addon_registry : "
-                        "unable to create directory 'saves/interface/"
+                     << "gui::addon_registry: unable to create directory 'saves/interface/"
                      << a.main_directory << "'" << std::endl;
             return;
         }

@@ -28,11 +28,12 @@ class registry;
 class frame_renderer;
 class manager;
 
-/// Handles the creation of new UI objects.
-/** \note This is a low-level class, which is only meant to be used
- *         internally by the GUI. To create your own UI objects, use
- *         root::create_root_frame(), frame::create_child(), or
- *         frame::create_region().
+/**
+ * \brief Handles the creation of new UI objects.
+ * \note This is a low-level class, which is only meant to be used
+ * internally by the GUI. To create your own UI objects, use
+ * root::create_root_frame(), frame::create_child(), or
+ * frame::create_region().
  */
 class factory {
 private:
@@ -52,8 +53,9 @@ private:
     }
 
 public:
-    /// Constructor.
-    /** \param mgr The GUI manager
+    /**
+     * \brief Constructor.
+     * \param mgr The GUI manager
      */
     explicit factory(manager& mgr);
 
@@ -63,41 +65,45 @@ public:
     factory& operator=(const factory&) = delete;
     factory& operator=(factory&&) = delete;
 
-    /// Creates a new region.
-    /** \param reg The registry in which to register this object
-     *   \param attr     The attributes of the object
-     *   \return The new frame
-     *   \note This function takes care of the basic initializing: the
-     *         object is directly usable.
+    /**
+     * \brief Creates a new region.
+     * \param reg The registry in which to register this object
+     * \param attr The attributes of the object
+     * \return The new frame
+     * \note This function takes care of the basic initializing: the
+     * object is directly usable.
      */
     utils::owner_ptr<region> create_region(registry& reg, const region_core_attributes& attr);
 
-    /// Creates a new frame.
-    /** \param reg The registry in which to register this frame
-     *   \param rdr The frame_renderer that will render this frame
-     *   \param attr     The attributes of the frame
-     *   \return The new frame
-     *   \note This function takes care of the basic initializing: the
-     *         frame is directly usable. However, you still need to call
-     *         notify_loaded() when you are done with any extra initialization
-     *         you require on this frame. If you do not, the frame's OnLoad
-     *         callback will not fire.
+    /**
+     * \brief Creates a new frame.
+     * \param reg The registry in which to register this frame
+     * \param rdr The frame_renderer that will render this frame
+     * \param attr The attributes of the frame
+     * \return The new frame
+     * \note This function takes care of the basic initializing: the
+     * frame is directly usable. However, you still need to call
+     * notify_loaded() when you are done with any extra initialization
+     * you require on this frame. If you do not, the frame's OnLoad
+     * callback will not fire.
      */
     utils::owner_ptr<frame>
     create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr);
 
-    /// Creates a new layered_region.
-    /** \param reg The registry in which to register this region
-     *   \param attr     The attributes of the region
-     *   \return The new layered_region
-     *   \note This function takes care of the basic initializing: the
-     *         region is directly usable.
+    /**
+     * \brief Creates a new layered_region.
+     * \param reg The registry in which to register this region
+     * \param attr The attributes of the region
+     * \return The new layered_region
+     * \note This function takes care of the basic initializing: the
+     * region is directly usable.
      */
     utils::owner_ptr<layered_region>
     create_layered_region(registry& reg, const region_core_attributes& attr);
 
-    /// Registers a new object type.
-    /** \note Set the first template argument as the C++ type of this object.
+    /**
+     * \brief Registers a new object type.
+     * \note Set the first template argument as the C++ type of this object.
      */
     template<
         typename ObjectType,
@@ -111,18 +117,14 @@ public:
         else
             custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
 
-        ObjectType::register_on_lua(get_lua());
+        custom_lua_regs_[ObjectType::class_name] = &ObjectType::register_on_lua;
     }
 
-    /// Returns the GUI Lua state (sol wrapper).
-    /** \return The GUI Lua state
+    /**
+     * \brief Registers all region types on the provided Lua state
+     * \param lua The Lua state
      */
-    sol::state& get_lua();
-
-    /// Returns the GUI Lua state (sol wrapper).
-    /** \return The GUI Lua state
-     */
-    const sol::state& get_lua() const;
+    void register_on_lua(sol::state& lua);
 
 private:
     bool finalize_object_(registry& reg, region& object, const region_core_attributes& attr);
@@ -137,6 +139,7 @@ private:
     string_map<std::function<utils::owner_ptr<region>(manager&)>>         custom_object_list_;
     string_map<std::function<utils::owner_ptr<frame>(manager&)>>          custom_frame_list_;
     string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> custom_region_list_;
+    string_map<std::function<void(sol::state&)>>                          custom_lua_regs_;
 };
 
 } // namespace lxgui::gui

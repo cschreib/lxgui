@@ -2,7 +2,7 @@
 
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_range.hpp"
 #include "lxgui/utils_string.hpp"
 #include "lxgui/utils_variant.hpp"
@@ -89,8 +89,8 @@ localizer::localizer() {
     } catch (const std::exception& exception) {
         // Revert to C locale.
         locale_ = std::locale::classic();
-        gui::out << gui::error << "gui::locale : " << exception.what() << std::endl;
-        gui::out << gui::error << "gui::locale : reverting to default classic locale" << std::endl;
+        gui::out << gui::error << "gui::locale: " << exception.what() << std::endl;
+        gui::out << gui::error << "gui::locale: reverting to default classic locale" << std::endl;
     }
 
     // Find default languages.
@@ -125,7 +125,7 @@ void localizer::set_preferred_languages(const std::vector<std::string>& language
 #if 0
     // TODO implement more generic input checks
     // https://github.com/cschreib/lxgui/issues/98
-    for (const auto& language : languages) {
+    for (const auto& language: languages) {
         if (language.size() != 4) {
             throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
         }
@@ -742,13 +742,13 @@ void localizer::load_translations(const std::string& folder_path) {
 void localizer::load_translation_file(const std::string& file_name) try {
     auto result = lua_.safe_script_file(file_name);
     if (!result.valid()) {
-        gui::out << gui::error << "gui::locale : " << result.get<sol::error>().what() << std::endl;
+        gui::out << gui::error << "gui::locale: " << result.get<sol::error>().what() << std::endl;
         return;
     }
 
     sol::table table = lua_["localize"];
     if (table == sol::lua_nil) {
-        gui::out << gui::warning << "gui::locale : no 'localize' table in " << file_name
+        gui::out << gui::warning << "gui::locale: no 'localize' table in " << file_name
                  << std::endl;
         return;
     }
@@ -768,7 +768,7 @@ void localizer::load_translation_file(const std::string& file_name) try {
     // Keep a copy so variables/functions remain alive
     lua_["localize_" + std::to_string(std::hash<std::string>{}(file_name))] = table;
 } catch (const sol::error& err) {
-    gui::out << gui::error << "gui::locale : " << err.what() << std::endl;
+    gui::out << gui::error << "gui::locale: " << err.what() << std::endl;
     return;
 }
 
@@ -823,7 +823,7 @@ std::string localizer::localize(std::string_view key, sol::variadic_args args) c
                 auto result = item(args);
                 if (!result.valid()) {
                     gui::out << gui::error
-                             << "gui::locale : " << result.template get<sol::error>().what()
+                             << "gui::locale: " << result.template get<sol::error>().what()
                              << std::endl;
                     return std::string{key};
                 }

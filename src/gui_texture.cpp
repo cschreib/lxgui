@@ -1,13 +1,13 @@
 #include "lxgui/gui_texture.hpp"
 
-#include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
+#include "lxgui/gui_render_target.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_rendertarget.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 
 #include <sstream>
 
@@ -27,52 +27,31 @@ std::string texture::serialize(const std::string& tab) const {
             using content_type = std::decay_t<decltype(data)>;
 
             if constexpr (std::is_same_v<content_type, std::string>) {
-                str << tab << "  # File        : " << data << "\n";
+                str << tab << "  # File       : " << data << "\n";
             } else if constexpr (std::is_same_v<content_type, gradient>) {
                 str << tab << "  # Gradient    :\n";
                 str << tab << "  #-###\n";
-                str << tab << "  |   # min color   : " << data.min_color << "\n";
-                str << tab << "  |   # max color   : " << data.max_color << "\n";
-                str << tab << "  |   # orientation : ";
-                switch (data.orient) {
-                case gradient::orientation::horizontal: str << "HORIZONTAL\n"; break;
-                case gradient::orientation::vertical: str << "VERTICAL\n"; break;
-                default: str << "<error>\n"; break;
-                }
+                str << tab << "  |   # min color  : " << data.min_color << "\n";
+                str << tab << "  |   # max color  : " << data.max_color << "\n";
+                str << tab << "  |   # orientation: " << utils::to_string(data.orient) << "\n";
                 str << tab << "  #-###\n";
             } else if constexpr (std::is_same_v<content_type, color>) {
-                str << tab << "  # Color       : " << data << "\n";
+                str << tab << "  # Color      : " << data << "\n";
             }
         },
         content_);
 
     str << tab << "  # Tex. coord. :\n";
     str << tab << "  #-###\n";
-    str << tab << "  |   # top-left     : (" << quad_.v[0].uvs << ")\n";
-    str << tab << "  |   # top-right    : (" << quad_.v[1].uvs << ")\n";
-    str << tab << "  |   # bottom-right : (" << quad_.v[2].uvs << ")\n";
-    str << tab << "  |   # bottom-left  : (" << quad_.v[3].uvs << ")\n";
+    str << tab << "  |   # top-left    : (" << quad_.v[0].uvs << ")\n";
+    str << tab << "  |   # top-right   : (" << quad_.v[1].uvs << ")\n";
+    str << tab << "  |   # bottom-right: (" << quad_.v[2].uvs << ")\n";
+    str << tab << "  |   # bottom-left : (" << quad_.v[3].uvs << ")\n";
     str << tab << "  #-###\n";
-    str << tab << "  # Stretching : " << is_texture_stretching_enabled_ << "\n";
-
-    str << tab << "  # Blend mode  : ";
-    switch (blend_mode_) {
-    case blend_mode::none: str << "NONE\n"; break;
-    case blend_mode::blend: str << "BLEND\n"; break;
-    case blend_mode::key: str << "KEY\n"; break;
-    case blend_mode::add: str << "ADD\n"; break;
-    case blend_mode::mod: str << "MOD\n"; break;
-    default: str << "<error>\n"; break;
-    }
-
-    str << tab << "  # Filter      : ";
-    switch (filter_) {
-    case material::filter::none: str << "NONE\n"; break;
-    case material::filter::linear: str << "LINEAR\n"; break;
-    default: str << "<error>\n"; break;
-    }
-
-    str << tab << "  # Desaturated : " << is_desaturated_ << "\n";
+    str << tab << "  # Stretching: " << is_texture_stretching_enabled_ << "\n";
+    str << tab << "  # Blend mode : " << utils::to_string(blend_mode_) << "\n";
+    str << tab << "  # Filter     : " << utils::to_string(filter_) << "\n";
+    str << tab << "  # Desaturated: " << is_desaturated_ << "\n";
 
     return str.str();
 }
@@ -175,7 +154,7 @@ const std::string& texture::get_texture_file() const {
 
 color texture::get_vertex_color(std::size_t index) const {
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return color::white;
     }
@@ -189,7 +168,7 @@ bool texture::is_desaturated() const {
 
 void texture::set_blend_mode(blend_mode mode) {
     if (mode != blend_mode::blend) {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "texture::set_blend_mode other than \"BLEND\" is not yet implemented."
                  << std::endl;
         return;
@@ -201,28 +180,6 @@ void texture::set_blend_mode(blend_mode mode) {
     blend_mode_ = mode;
 
     notify_renderer_need_redraw();
-}
-
-void texture::set_blend_mode(const std::string& blend_mode_name) {
-    blend_mode mode = blend_mode::blend;
-
-    if (blend_mode_name == "BLEND")
-        mode = blend_mode::blend;
-    else if (blend_mode_name == "ADD")
-        mode = blend_mode::add;
-    else if (blend_mode_name == "MOD")
-        mode = blend_mode::mod;
-    else if (blend_mode_name == "KEY")
-        mode = blend_mode::key;
-    else if (blend_mode_name == "NONE")
-        mode = blend_mode::none;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Unknown blending : \"" << blend_mode_name << "\". Using \"BLEND\"."
-                 << std::endl;
-    }
-
-    set_blend_mode(mode);
 }
 
 void texture::set_filter_mode(material::filter filt) {
@@ -239,28 +196,13 @@ void texture::set_filter_mode(material::filter filt) {
     }
 }
 
-void texture::set_filter_mode(const std::string& filter_name) {
-    material::filter filt = material::filter::none;
-
-    if (filter_name == "NONE")
-        filt = material::filter::none;
-    else if (filter_name == "LINEAR")
-        filt = material::filter::linear;
-    else {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
-                 << "Unknown filtering : \"" << filter_name << "\". Using \"NONE\"." << std::endl;
-    }
-
-    set_filter_mode(filt);
-}
-
 void texture::set_desaturated(bool is_desaturated) {
     if (is_desaturated_ == is_desaturated)
         return;
 
     is_desaturated_ = is_desaturated;
     if (is_desaturated) {
-        gui::out << gui::warning << "gui::" << type_.back() << " : "
+        gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "Texture de-saturation is not yet implemented." << std::endl;
     }
 
@@ -272,7 +214,7 @@ void texture::set_gradient(const gradient& g) {
 
     quad_.mat = nullptr;
 
-    if (g.orient == gradient::orientation::horizontal) {
+    if (g.orient == orientation::horizontal) {
         quad_.v[0].col = g.min_color;
         quad_.v[1].col = g.max_color;
         quad_.v[2].col = g.max_color;
@@ -370,9 +312,9 @@ void texture::set_texture(const std::string& file_name) {
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << ": "
                  << "Cannot load file \"" << parsed_file << "\" for \"" << name_
-                 << "\".\nUsing white texture instead." << std::endl;
+                 << "\". Using white texture instead." << std::endl;
     }
 
     notify_renderer_need_redraw();
@@ -401,9 +343,8 @@ void texture::set_texture(std::shared_ptr<render_target> target) {
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << type_.back() << " : "
-                 << "Cannot create a texture from render target.\n"
-                    "Using white texture instead."
+        gui::out << gui::error << "gui::" << type_.back() << ": "
+                 << "Cannot create a texture from render target. Using white texture instead."
                  << std::endl;
     }
 
@@ -442,7 +383,7 @@ void texture::set_vertex_color(const color& c, std::size_t index) {
     }
 
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << " : "
+        gui::out << gui::error << "gui::" << type_.back() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return;
     }

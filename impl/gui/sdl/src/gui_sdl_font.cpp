@@ -95,8 +95,8 @@ font::font(
     vector2f  canvas_dimensions_float = vector2f(canvas_dimensions);
 
     std::size_t pitch          = 0;
-    ub32color*  texture_pixels = texture_->lock_pointer(&pitch);
-    std::fill(texture_pixels, texture_pixels + pitch * canvas_dimensions.y, ub32color(0, 0, 0, 0));
+    color32*    texture_pixels = texture_->lock_pointer(&pitch);
+    std::fill(texture_pixels, texture_pixels + pitch * canvas_dimensions.y, color32{0, 0, 0, 0});
 
     std::size_t x = 0, y = 0;
     std::size_t line_max_height = max_height;
@@ -115,7 +115,7 @@ font::font(
             ci.code_point      = code_point;
 
             if (code_point > std::numeric_limits<Uint16>::max()) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot load character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot load character " << code_point
                          << " because SDL_ttf only accepts 16bit code points." << std::endl;
                 break;
             }
@@ -124,14 +124,14 @@ font::font(
 
             int min_x = 0, max_x = 0, min_y = 0, max_y = 0, advance = 0;
             if (TTF_GlyphMetrics(fnt, alt_char, &min_x, &max_x, &min_y, &max_y, &advance) != 0) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot load character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot load character " << code_point
                          << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }
 
             SDL_Surface* glyph_surface = TTF_RenderGlyph_Blended(fnt, alt_char, color);
             if (!glyph_surface) {
-                gui::out << gui::warning << "gui::sdl::font : Cannot draw character " << code_point
+                gui::out << gui::warning << "gui::sdl::font: Cannot draw character " << code_point
                          << " in font \"" << font_file << "\"." << std::endl;
                 continue;
             }
@@ -156,8 +156,8 @@ font::font(
             // SDL_ttf outputs glyphs in BGRA (little-endian) and we use RGBA;
             // this is fine because we always render glyphs in white, and don't care about
             // the color information.
-            ub32color*  glyph_pixels = reinterpret_cast<ub32color*>(glyph_surface->pixels);
-            std::size_t glyph_pitch  = glyph_surface->pitch / sizeof(ub32color);
+            color32*    glyph_pixels = reinterpret_cast<color32*>(glyph_surface->pixels);
+            std::size_t glyph_pitch  = glyph_surface->pitch / sizeof(color32);
             for (std::size_t j = 0; j < glyph_height; ++j)
                 for (std::size_t i = 0; i < glyph_width; ++i)
                     texture_pixels[x + i + (y + j) * pitch] = glyph_pixels[i + j * glyph_pitch];

@@ -1,3 +1,4 @@
+#include "lxgui/gui_out.hpp"
 #include "lxgui/gui_region_tpl.hpp"
 #include "lxgui/gui_slider.hpp"
 #include "lxgui/gui_texture.hpp"
@@ -5,25 +6,25 @@
 #include <lxgui/extern_sol2_state.hpp>
 
 /** A @{Frame} with a movable texture.
- *   This frame contains a special texture, the "slider thumb".
- *   It can be moved along a single axis (X or Y) and its position
- *   can be used to represent a value (for configuration menus, or
- *   scroll bars).
+ * This frame contains a special texture, the "slider thumb".
+ * It can be moved along a single axis (X or Y) and its position
+ * can be used to represent a value (for configuration menus, or
+ * scroll bars).
  *
- *   __Events.__ Hard-coded events available to all @{Slider}s,
- *   in addition to those from @{Frame}:
+ * __Events.__ Hard-coded events available to all @{Slider}s,
+ * in addition to those from @{Frame}:
  *
- *   - `OnValueChanged`: Triggered whenever the value controlled by
- *   the slider changes. This is triggered whenever the user moves
- *   the slider thumb, and by @{Slider:set_value}. This can also be
- *   triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
- *   @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
- *   previous value would not satisfy the new constraints.
+ * - `OnValueChanged`: Triggered whenever the value controlled by
+ * the slider changes. This is triggered whenever the user moves
+ * the slider thumb, and by @{Slider:set_value}. This can also be
+ * triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
+ * @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
+ * previous value would not satisfy the new constraints.
  *
- *   Inherits all methods from: @{Region}, @{Frame}.
+ * Inherits all methods from: @{Region}, @{Frame}.
  *
- *   Child classes: none.
- *   @classmod Slider
+ * Child classes: none.
+ * @classmod Slider
  */
 
 namespace lxgui::gui {
@@ -56,11 +57,7 @@ void slider::register_on_lua(sol::state& lua) {
     /** @function get_orientation
      */
     type.set_function("get_orientation", [](const slider& self) {
-        switch (self.get_orientation()) {
-        case slider::orientation::vertical: return "VERTICAL";
-        case slider::orientation::horizontal: return "HORIZONTAL";
-        default: return "";
-        }
+        return utils::to_string(self.get_orientation());
     });
 
     /** @function get_thumb_texture
@@ -92,10 +89,15 @@ void slider::register_on_lua(sol::state& lua) {
 
     /** @function set_orientation
      */
-    type.set_function(
-        "set_orientation",
-        member_function< // select the right overload for Lua
-            static_cast<void (slider::*)(const std::string&)>(&slider::set_orientation)>());
+    type.set_function("set_orientation", [](slider& self, std::string orientation_name) {
+        if (auto converted = utils::from_string<orientation>(orientation_name);
+            converted.has_value()) {
+            self.set_orientation(converted.value());
+        } else {
+            gui::out << gui::warning << "Slider:set_orientation: Unknown orientation: \""
+                     << orientation_name << "\"." << std::endl;
+        }
+    });
 
     /** @function set_thumb_texture
      */

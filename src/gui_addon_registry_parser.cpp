@@ -1,13 +1,13 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_layout_node.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_root.hpp"
 #include "lxgui/gui_virtual_root.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <lxgui/extern_sol2_state.hpp>
@@ -103,7 +103,7 @@ void set_node(const file_line_mappings& file, layout_node& node, const pugi::xml
     for (const auto& attr : xml_node.attributes()) {
         std::string name = normalize_node_name(attr.name(), false);
         if (const auto* node_attr = node.try_get_attribute(name)) {
-            gui::out << gui::warning << location << " : attribute '" << name
+            gui::out << gui::warning << location << ": attribute '" << name
                      << "' duplicated; only first value will be used." << std::endl;
             node_attr->mark_as_not_accessed();
             continue;
@@ -158,7 +158,7 @@ void set_node(
             std::string attr_location =
                 file.get_location(elem_node.key().data() - tree.arena().data());
             if (const auto* node_attr = node.try_get_attribute(name)) {
-                gui::out << gui::warning << attr_location << " : attribute '" << name
+                gui::out << gui::warning << attr_location << ": attribute '" << name
                          << "' duplicated; only first value will be used." << std::endl;
                 gui::out << gui::warning << std::string(attr_location.size(), ' ')
                          << "   first occurence at: '" << std::endl;
@@ -184,7 +184,7 @@ void set_node(
             break;
         }
         default: {
-            gui::out << gui::warning << location << " : unsupported YAML node type: '"
+            gui::out << gui::warning << location << ": unsupported YAML node type: '"
                      << elem_node.type_str() << "'." << std::endl;
             break;
         }

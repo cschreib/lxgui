@@ -3,7 +3,7 @@
 #include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
-#include "lxgui/gui_rendertarget.hpp"
+#include "lxgui/gui_render_target.hpp"
 #include "lxgui/utils_string.hpp"
 
 namespace lxgui::gui {
@@ -24,8 +24,8 @@ void renderer::begin(std::shared_ptr<render_target> target) {
             } catch (const std::exception& e) {
                 gui::out << gui::warning << e.what() << std::endl;
                 gui::out << gui::warning
-                         << "gui::renderer : Failed to create caches for quad batching. "
-                            "Vertex caches will be disabled."
+                         << "gui::renderer: Failed to create caches for quad batching. Vertex "
+                            "caches will be disabled."
                          << std::endl;
 
                 vertex_cache_enabled_ = false;

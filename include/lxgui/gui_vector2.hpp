@@ -9,6 +9,7 @@
 
 namespace lxgui::gui {
 
+/// Holds 2D coordinates
 template<typename T>
 struct vector2 {
     using float_type = std::conditional_t<std::is_floating_point_v<T>, T, double>;
@@ -165,9 +166,13 @@ constexpr vector2<T> vector2<T>::unit_x(1, 0);
 template<typename T>
 constexpr vector2<T> vector2<T>::unit_y(0, 1);
 
-using vector2f  = vector2<float>;
-using vector2d  = vector2<double>;
-using vector2i  = vector2<std::ptrdiff_t>;
+/// Holds 2D coordinates (as floats)
+using vector2f = vector2<float>;
+/// Holds 2D coordinates (as doubles)
+using vector2d = vector2<double>;
+/// Holds 2D coordinates (as signed integers)
+using vector2i = vector2<std::ptrdiff_t>;
+/// Holds 2D coordinates (as unsigned integers)
 using vector2ui = vector2<std::size_t>;
 
 template<typename T>

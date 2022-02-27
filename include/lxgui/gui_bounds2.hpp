@@ -6,6 +6,10 @@
 
 namespace lxgui::gui {
 
+/**
+ * \brief Holds 2D bounds of a region.
+ * \details The bounds are stored as left, right, top, and bottom coordinates.
+ */
 template<typename T>
 struct bounds2 {
     constexpr bounds2() = default;
@@ -57,8 +61,8 @@ struct bounds2 {
         return vector2<T>(width(), height());
     }
 
-    bool contains(const vector2<T>& point) const {
-        return point.x >= left && point.x < right && point.y >= top && point.y < bottom;
+    bool contains(const vector2<T>& p) const {
+        return p.x >= left && p.x < right && p.y >= top && p.y < bottom;
     }
 
     bool overlaps(const bounds2<T>& quad) const {
@@ -146,7 +150,9 @@ bounds2<T> operator/(const bounds2<T>& quad, T scale) noexcept {
 template<typename T>
 const bounds2<T> bounds2<T>::zero(0, 0, 0, 0);
 
+/// Holds 2D bounds of a region (as floats).
 using bounds2f = bounds2<float>;
+/// Holds 2D bounds of a region (as signed integers).
 using bounds2i = bounds2<int>;
 
 template<typename O, typename T>

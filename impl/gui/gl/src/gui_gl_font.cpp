@@ -4,7 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
-#include "lxgui/utils_filesystem.hpp"
+#include "lxgui/utils_file_system.hpp"
 #include "lxgui/utils_string.hpp"
 
 #include <ft2build.h>
@@ -77,14 +77,14 @@ font::font(
     const std::vector<code_point_range>& code_points,
     char32_t                             default_code_point) :
     size_(size), default_code_point_(default_code_point) {
-    // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
+    // NOTE: Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org
     // ... and SFML
     // https://www.sfml-dev.org
     //
-    // Some tweaking has been done to improve the text quality :
+    // Some tweaking has been done to improve the text quality:
     //  - Disable hinting (FT_LOAD_NO_HINTING)
-    //  - Character width is calculated as : max(x_bearing + width, advance),
+    //  - Character width is calculated as: max(x_bearing + width, advance),
     //    since advance sometimes doesn't cover the whole glyph
     //    (typical example is the 'w' character, in Consolas:9).
 
@@ -101,27 +101,27 @@ font::font(
 
         if (FT_New_Face(ft, font_file.c_str(), 0, &face_) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + font_file + "\" : cannot load face.");
+                "gui::gl::font", "Error loading font: \"" + font_file + "\": cannot load face.");
         }
 
         if (outline > 0) {
             if (FT_Stroker_New(ft, &stroker) != 0) {
                 throw gui::exception(
                     "gui::gl::font",
-                    "Error loading font : \"" + font_file + "\" : cannot create stroker.");
+                    "Error loading font: \"" + font_file + "\": cannot create stroker.");
             }
         }
 
         if (FT_Select_Charmap(face_, FT_ENCODING_UNICODE) != 0) {
             throw gui::exception(
-                "gui::gl::font", "Error loading font : \"" + font_file +
-                                     "\" : cannot select Unicode character map.");
+                "gui::gl::font",
+                "Error loading font: \"" + font_file + "\": cannot select Unicode character map.");
         }
 
         if (FT_Set_Pixel_Sizes(face_, 0, size) != 0) {
             throw gui::exception(
                 "gui::gl::font",
-                "Error loading font : \"" + font_file + "\" : cannot set font size.");
+                "Error loading font: \"" + font_file + "\": cannot set font size.");
         }
 
         FT_Int32 load_flags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
@@ -189,8 +189,8 @@ font::font(
         if (final_width * final_height / 2 >= tex_size)
             final_height = final_height / 2;
 
-        std::vector<ub32color> data(final_width * final_height);
-        std::fill(data.begin(), data.end(), ub32color(0, 0, 0, 0));
+        std::vector<color32> data(final_width * final_height);
+        std::fill(data.begin(), data.end(), color32{0, 0, 0, 0});
 
         std::size_t x = 0, y = 0;
 
@@ -217,13 +217,13 @@ font::font(
                 ci.code_point      = code_point;
 
                 if (FT_Load_Char(face_, code_point, load_flags) != 0) {
-                    gui::out << gui::warning << "gui::gl::font : Cannot load character "
+                    gui::out << gui::warning << "gui::gl::font: Cannot load character "
                              << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
 
                 if (FT_Get_Glyph(face_->glyph, &glyph) != 0) {
-                    gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character "
+                    gui::out << gui::warning << "gui::gl::font: Cannot get glyph for character "
                              << code_point << " in font \"" << font_file << "\"." << std::endl;
                     continue;
                 }
@@ -249,12 +249,12 @@ font::font(
 
                 // Some characters do not have a bitmap, like white spaces.
                 // This is legal, and we should just have blank geometry for them.
-                const ub32color::chanel* buffer = bitmap.buffer;
+                const color32::chanel* buffer = bitmap.buffer;
                 if (buffer) {
                     for (std::size_t j = 0; j < bitmap.rows; ++j) {
                         std::size_t row_offset = (y + j) * final_width + x;
                         for (std::size_t i = 0; i < bitmap.width; ++i, ++buffer)
-                            data[i + row_offset] = ub32color(255, 255, 255, *buffer);
+                            data[i + row_offset] = color32{255, 255, 255, *buffer};
                     }
                 }
 
