@@ -79,7 +79,13 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on:
+ - [Lua](http://www.lua.org/) (>5.1),
+ - [sol2](https://github.com/ThePhD/sol2) (included as a submodule),
+ - [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule),
+ - [magic_enum](https://github.com/Neargye/magic_enum) (included as a submodule),
+ - [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule),
+ - [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
 
 To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
 
