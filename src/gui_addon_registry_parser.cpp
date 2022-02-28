@@ -1,5 +1,4 @@
 #include "lxgui/gui_addon_registry.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layout_node.hpp"

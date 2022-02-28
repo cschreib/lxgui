@@ -2,7 +2,6 @@
 
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame.hpp"

@@ -3,7 +3,6 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame_renderer.hpp"

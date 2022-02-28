@@ -256,7 +256,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_event.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_event_data.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event_emitter.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event_receiver.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_factory.cpp

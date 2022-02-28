@@ -1,6 +1,5 @@
 #include "lxgui/gui_button.hpp"
 #include "lxgui/gui_edit_box.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_localizer.hpp"

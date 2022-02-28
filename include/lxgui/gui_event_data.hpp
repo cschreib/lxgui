@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_EVENT_HPP
-#define LXGUI_GUI_EVENT_HPP
+#ifndef LXGUI_GUI_EVENT_DATA_HPP
+#define LXGUI_GUI_EVENT_DATA_HPP
 
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/lxgui.hpp"

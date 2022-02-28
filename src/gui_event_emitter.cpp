@@ -1,7 +1,5 @@
 #include "lxgui/gui_event_emitter.hpp"
 
-#include "lxgui/gui_event.hpp"
-
 namespace lxgui::gui {
 
 utils::connection

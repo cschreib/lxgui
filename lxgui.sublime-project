@@ -377,16 +377,16 @@
 					"shell_cmd": "make -j12 src/gui_edit_box_parser.s",
 				},
 				{
-					"name": "src/gui_event.o",
-					"shell_cmd": "make -j12 src/gui_event.o",
+					"name": "src/gui_event_data.o",
+					"shell_cmd": "make -j12 src/gui_event_data.o",
 				},
 				{
-					"name": "src/gui_event.i",
-					"shell_cmd": "make -j12 src/gui_event.i",
+					"name": "src/gui_event_data.i",
+					"shell_cmd": "make -j12 src/gui_event_data.i",
 				},
 				{
-					"name": "src/gui_event.s",
-					"shell_cmd": "make -j12 src/gui_event.s",
+					"name": "src/gui_event_data.s",
+					"shell_cmd": "make -j12 src/gui_event_data.s",
 				},
 				{
 					"name": "src/gui_event_emitter.o",

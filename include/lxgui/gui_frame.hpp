@@ -2,7 +2,6 @@
 #define LXGUI_GUI_FRAME_HPP
 
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_receiver.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
