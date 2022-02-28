@@ -83,9 +83,9 @@ Inheritance diagram for lxgui::gui::font:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1font.png" usemap="#lxgui::gui::font_map" alt=""/>
   <map id="lxgui::gui::font_map" name="lxgui::gui::font_map">
-<area href="classlxgui_1_1gui_1_1gl_1_1font.html" title="A texture containing characters." alt="lxgui::gui::gl::font" shape="rect" coords="0,56,116,80"/>
-<area href="classlxgui_1_1gui_1_1sdl_1_1font.html" title="A texture containing characters." alt="lxgui::gui::sdl::font" shape="rect" coords="126,56,242,80"/>
-<area href="classlxgui_1_1gui_1_1sfml_1_1font.html" title="A texture containing characters." alt="lxgui::gui::sfml::font" shape="rect" coords="252,56,368,80"/>
+<area href="classlxgui_1_1gui_1_1gl_1_1font.html" title="A texture containing characters This is the OpenGL implementation of the gui::font...." alt="lxgui::gui::gl::font" shape="rect" coords="0,56,116,80"/>
+<area href="classlxgui_1_1gui_1_1sdl_1_1font.html" title="A texture containing characters This is the SDL implementation of the gui::font. It uses SDL_ttf to r..." alt="lxgui::gui::sdl::font" shape="rect" coords="126,56,242,80"/>
+<area href="classlxgui_1_1gui_1_1sfml_1_1font.html" title="A texture containing characters This is the SFML implementation of the gui::font. It uses sf::Font to..." alt="lxgui::gui::sfml::font" shape="rect" coords="252,56,368,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A texture containing characters. </p>
 <p>This class is purely virtual. It needs to be implemented and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__font_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__font_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a84cbb12a499689e54d67cbb4b982f381"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84cbb12a499689e54d67cbb4b982f381">&#9670;&nbsp;</a></span>font()</h2>
@@ -340,7 +340,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uv coordinates of this character on the texture </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The uv coordinates are normalised, i.e. they range from 0 to 1. They are arranged as {u1, v1, u2, v2}. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The uv coordinates are normalized, i.e. they range from 0 to 1. They are arranged as {u1, v1, u2, v2}. </dd></dl>
 
 <p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#ad68e12c9704b66809a0bc981b3eb2a98">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a6ddaa98c9e02d43782e97c47592fd7ef">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a208753bf045b7e73543673f8ccc6a708">lxgui::gui::sfml::font</a>.</p>
 
@@ -485,7 +485,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

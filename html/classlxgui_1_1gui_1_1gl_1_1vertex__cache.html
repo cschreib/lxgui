@@ -75,7 +75,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="gui__gl__vertexcache_8hpp_source.html">gui_gl_vertexcache.hpp</a>&gt;</code></p>
+<p>An object representing cached vertex data on the GPU.  
+ <a href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="gui__gl__vertex__cache_8hpp_source.html">gui_gl_vertex_cache.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for lxgui::gui::gl::vertex_cache:</div>
 <div class="dyncontent">
@@ -91,7 +94,7 @@ Public Types</h2></td></tr>
 <tr class="memitem:a0354490e97b4d68ec0c2e1d5f5b3f6de"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">type</a> { <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea817d7d587258bac88b24567b17bdda87">type::triangles</a>, 
 <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea38d23f3ffe69419ef97502ab3d3dd66a">type::quads</a>
  }</td></tr>
-<tr class="memdesc:a0354490e97b4d68ec0c2e1d5f5b3f6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of vertex data contained in a <a class="el" href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html">vertex_cache</a>.  <a href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">More...</a><br /></td></tr>
+<tr class="memdesc:a0354490e97b4d68ec0c2e1d5f5b3f6de"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of vertex data contained in a <a class="el" href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html" title="An object representing cached vertex data on the GPU.">vertex_cache</a>.  <a href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">More...</a><br /></td></tr>
 <tr class="separator:a0354490e97b4d68ec0c2e1d5f5b3f6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -124,12 +127,13 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:acce997d264c98e25820951eaf3aa7a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A vertex cache stores vertices and indices that can be used to draw any shape on the screen. If the type is TRIANGLES, each group of 3 vertices forms a triangle, while if the type is QUADS, each group of 4 vertices forms a quad.</p>
+<div class="textblock"><p>An object representing cached vertex data on the GPU. </p>
+<p>A vertex cache stores vertices and indices that can be used to draw any shape on the screen. If the type is TRIANGLES, each group of 3 vertices forms a triangle, while if the type is QUADS, each group of 4 vertices forms a quad.</p>
 <p>Using this class enables more efficient rendering of large groups of sprites or quads that share the same material (texture). This is especially true if the data to render does not change often.</p>
 <p>A vertex cache can be rendered with gui::renderer::render_vertex_cache().</p>
 <dl class="section note"><dt>Note</dt><dd>This is an abstract class that must be inherited from and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__gl__vertexcache_8hpp_source.html#l00026">26</a> of file <a class="el" href="gui__gl__vertexcache_8hpp_source.html">gui_gl_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__gl__vertex__cache_8hpp_source.html#l00028">28</a> of file <a class="el" href="gui__gl__vertex__cache_8hpp_source.html">gui_gl_vertex_cache.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a0354490e97b4d68ec0c2e1d5f5b3f6de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0354490e97b4d68ec0c2e1d5f5b3f6de">&#9670;&nbsp;</a></span>type</h2>
@@ -151,7 +155,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The type of vertex data contained in a <a class="el" href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html">vertex_cache</a>. </p>
+<p>The type of vertex data contained in a <a class="el" href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html" title="An object representing cached vertex data on the GPU.">vertex_cache</a>. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0354490e97b4d68ec0c2e1d5f5b3f6dea817d7d587258bac88b24567b17bdda87"></a>triangles&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0354490e97b4d68ec0c2e1d5f5b3f6dea38d23f3ffe69419ef97502ab3d3dd66a"></a>quads&#160;</td><td class="fielddoc"><p>3 vertices per element </p>
@@ -159,7 +163,7 @@ Protected Attributes</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00031">31</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00032">32</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
 
 </div>
 </div>
@@ -430,17 +434,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00067">67</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00070">70</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__gl__vertexcache_8hpp_source.html">gui_gl_vertexcache.hpp</a></li>
+<li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__gl__vertex__cache_8hpp_source.html">gui_gl_vertex_cache.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

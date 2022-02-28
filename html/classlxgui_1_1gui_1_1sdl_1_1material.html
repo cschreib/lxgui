@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A class that holds rendering data.  
+<p>A class that holds rendering data This implementation can contain either a plain color or a real SDL_Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sdl::render_target</a> class to store the output data.  
  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a>&gt;</code></p>
@@ -148,25 +148,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abfaf1d7f046923aa3f514e3861d90392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the wrap mode of this texture.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#abfaf1d7f046923aa3f514e3861d90392">More...</a><br /></td></tr>
 <tr class="separator:abfaf1d7f046923aa3f514e3861d90392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d5e09c4d4589db5fa352665a381a0c5"><td class="memItemLeft" align="right" valign="top">SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a2d5e09c4d4589db5fa352665a381a0c5">get_texture</a> () const</td></tr>
-<tr class="memdesc:a2d5e09c4d4589db5fa352665a381a0c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SDL texture object.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a2d5e09c4d4589db5fa352665a381a0c5">More...</a><br /></td></tr>
+<tr class="memdesc:a2d5e09c4d4589db5fa352665a381a0c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SDL texture object. return The underlying SDL texture object.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a2d5e09c4d4589db5fa352665a381a0c5">More...</a><br /></td></tr>
 <tr class="separator:a2d5e09c4d4589db5fa352665a381a0c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1c2b67632b32b774b014bddf62c5215"><td class="memItemLeft" align="right" valign="top">SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#aa1c2b67632b32b774b014bddf62c5215">get_render_texture</a> ()</td></tr>
-<tr class="memdesc:aa1c2b67632b32b774b014bddf62c5215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SDL texture object (for render target).  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#aa1c2b67632b32b774b014bddf62c5215">More...</a><br /></td></tr>
+<tr class="memdesc:aa1c2b67632b32b774b014bddf62c5215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SDL texture object (for render target). return The underlying SDL texture object (for render target)  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#aa1c2b67632b32b774b014bddf62c5215">More...</a><br /></td></tr>
 <tr class="separator:aa1c2b67632b32b774b014bddf62c5215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3da5a51063b2e85158c918e3543925f"><td class="memItemLeft" align="right" valign="top">SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">get_renderer</a> ()</td></tr>
-<tr class="memdesc:ae3da5a51063b2e85158c918e3543925f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SDL renderer object that this material was created on.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">More...</a><br /></td></tr>
+<tr class="memdesc:ae3da5a51063b2e85158c918e3543925f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SDL renderer object that this material was created on. return The SDL renderer object that this material was created on.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">More...</a><br /></td></tr>
 <tr class="separator:ae3da5a51063b2e85158c918e3543925f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00996a2fdc6cf4b9318b3afcf095fa4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a00996a2fdc6cf4b9318b3afcf095fa4c">lock_pointer</a> (std::size_t *pitch=nullptr)</td></tr>
-<tr class="memdesc:a00996a2fdc6cf4b9318b3afcf095fa4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a00996a2fdc6cf4b9318b3afcf095fa4c">More...</a><br /></td></tr>
-<tr class="separator:a00996a2fdc6cf4b9318b3afcf095fa4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abefc29f28e8911abd720546746616f89"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#abefc29f28e8911abd720546746616f89">lock_pointer</a> (std::size_t *pitch=nullptr) const</td></tr>
-<tr class="memdesc:abefc29f28e8911abd720546746616f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#abefc29f28e8911abd720546746616f89">More...</a><br /></td></tr>
-<tr class="separator:abefc29f28e8911abd720546746616f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb358db65a2044f81e1d927d9a1ae908"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#aeb358db65a2044f81e1d927d9a1ae908">lock_pointer</a> (std::size_t *pitch=nullptr)</td></tr>
+<tr class="memdesc:aeb358db65a2044f81e1d927d9a1ae908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#aeb358db65a2044f81e1d927d9a1ae908">More...</a><br /></td></tr>
+<tr class="separator:aeb358db65a2044f81e1d927d9a1ae908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a058663c100bc84ae0f4646fc16ac3880"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a058663c100bc84ae0f4646fc16ac3880">lock_pointer</a> (std::size_t *pitch=nullptr) const</td></tr>
+<tr class="memdesc:a058663c100bc84ae0f4646fc16ac3880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a058663c100bc84ae0f4646fc16ac3880">More...</a><br /></td></tr>
+<tr class="separator:a058663c100bc84ae0f4646fc16ac3880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31bcfe714c7db412f861b4090ad74a83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a31bcfe714c7db412f861b4090ad74a83">unlock_pointer</a> () const</td></tr>
 <tr class="memdesc:a31bcfe714c7db412f861b4090ad74a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops modifying the texture data and update the texture in GPU memory.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a31bcfe714c7db412f861b4090ad74a83">More...</a><br /></td></tr>
 <tr class="separator:a31bcfe714c7db412f861b4090ad74a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fff7644bb539b487b7c4a89a725f97d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">get_canvas_uv</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;texture_uv, bool from_normalized) const</td></tr>
-<tr class="memdesc:a7fff7644bb539b487b7c4a89a725f97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns normalised UV coordinates on the canvas, given local UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">More...</a><br /></td></tr>
+<tr class="memdesc:a7fff7644bb539b487b7c4a89a725f97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns normalized UV coordinates on the canvas, given local UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">More...</a><br /></td></tr>
 <tr class="separator:a7fff7644bb539b487b7c4a89a725f97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bd4a49e2dcb1cc7e5de0a6be5f80190"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a5bd4a49e2dcb1cc7e5de0a6be5f80190">get_local_uv</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;canvas_uv, bool as_normalized) const</td></tr>
 <tr class="memdesc:a5bd4a49e2dcb1cc7e5de0a6be5f80190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns local UV coordinates on the texture, given canvas UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a5bd4a49e2dcb1cc7e5de0a6be5f80190">More...</a><br /></td></tr>
@@ -190,10 +190,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7bc09898192584f6963bd23291f6a0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class that holds rendering data. </p>
-<p>This implementation can contain either a plain color or a real SDL_Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sdl::render_target</a> class to store the output data. </p>
+<div class="textblock"><p>A class that holds rendering data This implementation can contain either a plain color or a real SDL_Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sdl::render_target</a> class to store the output data. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__material_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sdl__material_8hpp_source.html#l00024">24</a> of file <a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="abd57defc7bd316b1dbf3c9c4125ed5c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd57defc7bd316b1dbf3c9c4125ed5c6">&#9670;&nbsp;</a></span>filter</h2>
@@ -219,7 +218,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="abd57defc7bd316b1dbf3c9c4125ed5c6a9a932b3cb396238423eb2f33ec17d6aa"></a>linear&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00027">27</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +246,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a06057a88ec23992da5290ec7a7782e47aa597a055c00d084069e4bb23dc789ac9"></a>clamp&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00018">18</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -566,14 +565,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns normalised UV coordinates on the canvas, given local UV coordinates. </p>
+<p>Returns normalized UV coordinates on the canvas, given local UV coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture_uv</td><td>The original UV coordinates, local to this texture </td></tr>
-    <tr><td class="paramname">from_normalized</td><td>Set to 'true' if input coordinates are normalised to [0,1] and 'false' if input coordinates are in pixels </td></tr>
+    <tr><td class="paramname">from_normalized</td><td>Set to 'true' if input coordinates are normalized </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>Normalized coordinates range from 0 to 1, with 1 corresponding to the width/height of the texture, while non-normalized coordinates are in pixels. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00007">7</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
@@ -637,10 +637,11 @@ Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">canvas_uv</td><td>The canvas UV coordinates </td></tr>
-    <tr><td class="paramname">as_normalized</td><td>Set to 'true' if output coordinates should be normalised to [0,1] and 'false' if output coordinates should be in pixels </td></tr>
+    <tr><td class="paramname">as_normalized</td><td>Set to 'true' if output coordinates should be normalized </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>Normalized coordinates range from 0 to 1, with 1 corresponding to the width/height of the texture, while non-normalized coordinates are in pixels. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00020">20</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
@@ -719,8 +720,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the underlying SDL texture object (for render target). </p>
-<p>return The underlying SDL texture object (for render target) </p>
+<p>Returns the underlying SDL texture object (for render target). return The underlying SDL texture object (for render target) </p>
 
 </div>
 </div>
@@ -739,8 +739,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the SDL renderer object that this material was created on. </p>
-<p>return The SDL renderer object that this material was created on </p>
+<p>Returns the SDL renderer object that this material was created on. return The SDL renderer object that this material was created on. </p>
 
 </div>
 </div>
@@ -759,8 +758,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the underlying SDL texture object. </p>
-<p>return The underlying SDL texture object </p>
+<p>Returns the underlying SDL texture object. return The underlying SDL texture object. </p>
 
 </div>
 </div>
@@ -814,14 +812,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a00996a2fdc6cf4b9318b3afcf095fa4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00996a2fdc6cf4b9318b3afcf095fa4c">&#9670;&nbsp;</a></span>lock_pointer() <span class="overload">[1/2]</span></h2>
+<a id="aeb358db65a2044f81e1d927d9a1ae908"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb358db65a2044f81e1d927d9a1ae908">&#9670;&nbsp;</a></span>lock_pointer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a>* lxgui::gui::sdl::material::lock_pointer </td>
           <td>(</td>
           <td class="paramtype">std::size_t *&#160;</td>
           <td class="paramname"><em>pitch</em> = <code>nullptr</code></td><td>)</td>
@@ -842,14 +840,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abefc29f28e8911abd720546746616f89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abefc29f28e8911abd720546746616f89">&#9670;&nbsp;</a></span>lock_pointer() <span class="overload">[2/2]</span></h2>
+<a id="a058663c100bc84ae0f4646fc16ac3880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a058663c100bc84ae0f4646fc16ac3880">&#9670;&nbsp;</a></span>lock_pointer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
+          <td class="memname">const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a>* lxgui::gui::sdl::material::lock_pointer </td>
           <td>(</td>
           <td class="paramtype">std::size_t *&#160;</td>
           <td class="paramname"><em>pitch</em> = <code>nullptr</code></td><td>)</td>
@@ -1103,7 +1101,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00091">91</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00093">93</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1111,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

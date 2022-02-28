@@ -69,8 +69,8 @@ $(function() {
 <div class="title">input_keys.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_KEYS_HPP</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_KEYS_HPP</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_INPUT_KEYS_HPP</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_INPUT_KEYS_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/lxgui.hpp&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
@@ -230,31 +230,26 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7af6ca0cfbc2743a95fa4dcce40cbf4e0f">k_maxkey</a>       = 0xFF</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;};</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">get_mouse_button_codename</a>(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> button_id);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a1633737374505c9c27d13aeed989369d">get_localizable_mouse_button_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> button_id);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">get_mouse_button_codename</a>(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> button_id);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a1633737374505c9c27d13aeed989369d">get_localizable_mouse_button_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> button_id);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#af3c19793642bb63cb072a16d0e489f2b">get_key_codename</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> key_id);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> <a class="code" href="namespacelxgui_1_1input.html#a64532c2a37dab25f2515814c078488fd">get_key_from_codename</a>(std::string_view key_name);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a23f2a54bf2a6089bbb20408cbad74013">get_localizable_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> key_id);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">  202</a></span>&#160;constexpr std::size_t <a class="code" href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">mouse_button_number</a> = 3u;</div>
-<div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">  203</a></span>&#160;constexpr std::size_t <a class="code" href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">key_number</a>          = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7af6ca0cfbc2743a95fa4dcce40cbf4e0f">key::k_maxkey</a>);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;} <span class="comment">// namespace lxgui::input</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#af3c19793642bb63cb072a16d0e489f2b">get_key_codename</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> key_id);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> <a class="code" href="namespacelxgui_1_1input.html#a64532c2a37dab25f2515814c078488fd">get_key_from_codename</a>(std::string_view key_name);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;std::string_view <a class="code" href="namespacelxgui_1_1input.html#a23f2a54bf2a6089bbb20408cbad74013">get_localizable_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">key</a> key_id);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">  207</a></span>&#160;constexpr std::size_t <a class="code" href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">mouse_button_number</a> = 3u;</div>
+<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">  208</a></span>&#160;constexpr std::size_t <a class="code" href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">key_number</a>          = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7af6ca0cfbc2743a95fa4dcce40cbf4e0f">key::k_maxkey</a>);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;} <span class="comment">// namespace lxgui::input</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7aebcdb065470937b8825740834b36764b"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aebcdb065470937b8825740834b36764b">lxgui::input::key::k_mediaselect</a></div><div class="ttdeci">@ k_mediaselect</div><div class="ttdoc">Mail.</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a193c7803a0e7c659b80af591f9a213cc"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a193c7803a0e7c659b80af591f9a213cc">lxgui::input::key::k_e</a></div><div class="ttdeci">@ k_e</div></div>
-<div class="ttc" id="anamespacelxgui_1_1input_html_a68cd0c5c15c97e6f5f16296d14afaf83"><div class="ttname"><a href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">lxgui::input::key_number</a></div><div class="ttdeci">constexpr std::size_t key_number</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00203">input_keys.hpp:203</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1input_html_a68cd0c5c15c97e6f5f16296d14afaf83"><div class="ttname"><a href="namespacelxgui_1_1input.html#a68cd0c5c15c97e6f5f16296d14afaf83">lxgui::input::key_number</a></div><div class="ttdeci">constexpr std::size_t key_number</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00208">input_keys.hpp:208</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">lxgui::input::key</a></div><div class="ttdeci">key</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00013">input_keys.hpp:13</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a599426c413b3f1028778609aa1115f7e"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a599426c413b3f1028778609aa1115f7e">lxgui::input::key::k_numpadenter</a></div><div class="ttdeci">@ k_numpadenter</div><div class="ttdoc">Next Track.</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7aa300cf40d5bc4c09658d267af4b5051e"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aa300cf40d5bc4c09658d267af4b5051e">lxgui::input::key::k_playpause</a></div><div class="ttdeci">@ k_playpause</div><div class="ttdoc">Calculator.</div></div>
@@ -326,7 +321,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a79e565a07cd9e1a25af8aff883e5b785"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a79e565a07cd9e1a25af8aff883e5b785">lxgui::input::key::k_numpad_5</a></div><div class="ttdeci">@ k_numpad_5</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7aff5bb93b9b7fbbf1224ed70512ee32c4"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aff5bb93b9b7fbbf1224ed70512ee32c4">lxgui::input::key::k_numpad_0</a></div><div class="ttdeci">@ k_numpad_0</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a82b6ac8b125757db813f276391853dca"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a82b6ac8b125757db813f276391853dca">lxgui::input::key::k_lcontrol</a></div><div class="ttdeci">@ k_lcontrol</div><div class="ttdoc">Enter on main keyboard.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1input_html_a785f1bb99252ec43eef02e29ca1983d2"><div class="ttname"><a href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">lxgui::input::mouse_button_number</a></div><div class="ttdeci">constexpr std::size_t mouse_button_number</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00202">input_keys.hpp:202</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1input_html_a785f1bb99252ec43eef02e29ca1983d2"><div class="ttname"><a href="namespacelxgui_1_1input.html#a785f1bb99252ec43eef02e29ca1983d2">lxgui::input::mouse_button_number</a></div><div class="ttdeci">constexpr std::size_t mouse_button_number</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00207">input_keys.hpp:207</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a598f2d188e13c994d3ca15cec7cb87bc"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a598f2d188e13c994d3ca15cec7cb87bc">lxgui::input::key::k_2</a></div><div class="ttdeci">@ k_2</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a73558737f0b5fdd656d69e05d460c2b7"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a73558737f0b5fdd656d69e05d460c2b7">lxgui::input::key::k_websearch</a></div><div class="ttdeci">@ k_websearch</div><div class="ttdoc">System Wake.</div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7a41089bf5fbd1f7c6165a7c0981ffc34a"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a41089bf5fbd1f7c6165a7c0981ffc34a">lxgui::input::key::k_numlock</a></div><div class="ttdeci">@ k_numlock</div></div>
@@ -413,7 +408,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7af646f7cca2bd186d584156062d5711da"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7af646f7cca2bd186d584156062d5711da">lxgui::input::key::k_numpad_7</a></div><div class="ttdeci">@ k_numpad_7</div><div class="ttdoc">Scroll Lock.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

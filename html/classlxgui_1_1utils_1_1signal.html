@@ -83,7 +83,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:aeb7a0c23def33fb845500f0dcb2d92c3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">function_type</a> = std::function&lt; T &gt;</td></tr>
-<tr class="memdesc:aeb7a0c23def33fb845500f0dcb2d92c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the callable function stored in a slot.  <a href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">More...</a><br /></td></tr>
+<tr class="memdesc:aeb7a0c23def33fb845500f0dcb2d92c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the callable function stored in a slot. Can use any function/delegate type here, as long as it has a matching call operator. The function type does not need to be owning; in this case, the slot must be manually disconnected whenever the pointed function is destroyed.  <a href="classlxgui_1_1utils_1_1signal.html#aeb7a0c23def33fb845500f0dcb2d92c3">More...</a><br /></td></tr>
 <tr class="separator:aeb7a0c23def33fb845500f0dcb2d92c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f982d43c9f4a1f5a725daa635dd24bb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1signal.html#a1f982d43c9f4a1f5a725daa635dd24bb">slot_list_view</a> = <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">utils::view::adaptor</a>&lt; slot_list, slot_dereferencer, non_disconnected_filter &gt;</td></tr>
 <tr class="memdesc:a1f982d43c9f4a1f5a725daa635dd24bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the view returned by <a class="el" href="classlxgui_1_1utils_1_1signal.html#a16cee31ac11d51d9d79379c34fc80e9c" title="Return a constant view onto the connected slots.">slots()</a>.  <a href="classlxgui_1_1utils_1_1signal.html#a1f982d43c9f4a1f5a725daa635dd24bb">More...</a><br /></td></tr>
@@ -170,7 +170,7 @@ class lxgui::utils::signal&lt; T &gt;</h3>
 <div class="line"><span class="comment">// The last slot is automatically disconnected when out of scope.</span></div>
 <div class="line">sig(43); <span class="comment">// prints 43, then 86; val is not changed</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00141">141</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00142">142</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeb7a0c23def33fb845500f0dcb2d92c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb7a0c23def33fb845500f0dcb2d92c3">&#9670;&nbsp;</a></span>function_type</h2>
@@ -186,10 +186,9 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Type of the callable function stored in a slot. </p>
-<p>Can use any function/delegate type here, as long as it has a matching call operator. The function type does not need to be owning; in this case, the slot must be manually disconnected whenever the pointed function is destroyed. </p>
+<p>Type of the callable function stored in a slot. Can use any function/delegate type here, as long as it has a matching call operator. The function type does not need to be owning; in this case, the slot must be manually disconnected whenever the pointed function is destroyed. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00149">149</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00151">151</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -209,7 +208,7 @@ template&lt;typename T &gt; </div>
 
 <p>Type of the view returned by <a class="el" href="classlxgui_1_1utils_1_1signal.html#a16cee31ac11d51d9d79379c34fc80e9c" title="Return a constant view onto the connected slots.">slots()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00214">214</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00219">219</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +240,7 @@ template&lt;typename T &gt; </div>
 
 <p>Default constructor (no slot). </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00217">217</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00222">222</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +271,7 @@ template&lt;typename T &gt; </div>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00220">220</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00225">225</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +368,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A connection object, which can be used to disconnect the slot at any time. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If the returned connection object is discarded, the slot will remain connected for the entire lifetime of the signal, or until <a class="el" href="classlxgui_1_1utils_1_1signal.html#a3ca75cf09a5ea411494879b57c317350">disconnect_all</a> is called. If this is not desirable, store the returned connection, and disconnect the slot when it should no longer be called. The RAII helper class <a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html">scoped_connection</a> can do this safely. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00275">275</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00283">283</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -400,7 +399,7 @@ template&lt;typename T &gt; </div>
 
 <p>Disconnects all slots. </p>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00233">233</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00238">238</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -432,7 +431,7 @@ template&lt;typename T &gt; </div>
 <p>Check if this signal contains any slot. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if at least one slot is connected. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00252">252</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00258">258</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -472,7 +471,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00284">284</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00293">293</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -561,7 +560,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A constant view onto the connected slots </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not attempt to connect or disconnect slots while iterating over this view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00262">262</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utils__signal_8hpp_source.html#l00269">269</a> of file <a class="el" href="utils__signal_8hpp_source.html">utils_signal.hpp</a>.</p>
 
 </div>
 </div>
@@ -571,7 +570,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

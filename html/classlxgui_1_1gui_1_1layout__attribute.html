@@ -77,7 +77,7 @@ $(function() {
 <p>An attribute in a layout file.  
  <a href="classlxgui_1_1gui_1_1layout__attribute.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for lxgui::gui::layout_attribute:</div>
 <div class="dyncontent">
@@ -179,7 +179,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>An attribute in a layout file. </p>
 <p>This is a format-agnostic representation of a GUI layout, as read for example from an XML or YAML file. The GUI uses this class to de-couple the layout parsing format (XML, YAML, etc) from the actual parsed layout. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae7740a541ac5bf58c02024a7e25b1cbe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7740a541ac5bf58c02024a7e25b1cbe">&#9670;&nbsp;</a></span>layout_attribute() <span class="overload">[1/3]</span></h2>
@@ -284,7 +284,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Flag this node as "fully accessed" for later warnings; no check will be done. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00167">167</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00180">180</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -314,7 +314,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns the file from in which this node is located. </p>
 <dl class="section return"><dt>Returns</dt><dd>The file from in which this node is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00046">46</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00050">50</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -344,7 +344,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns the line number on which this node is located. </p>
 <dl class="section return"><dt>Returns</dt><dd>The line number on which this node is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00054">54</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00059">59</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -374,7 +374,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns this node's location in the file as {file}:{line}. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's location in the file as {file}:{line} </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00032">32</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00034">34</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -404,7 +404,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns this node's name. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00076">76</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00085">85</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -437,7 +437,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value converted to a specific type </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will throw if the value could not be converted. Use <a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#ac10727a4efa6618f6f4b8656357fb718" title="Returns this node&#39;s value as string, or a default value if empty.">get_value_or()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00107">107</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00119">119</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -466,7 +466,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00443">443</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00477">477</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -497,7 +497,7 @@ template&lt;&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value as string </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns an empty string if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00084">84</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00094">94</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -527,7 +527,7 @@ template&lt;&gt; </div>
 <p>Returns the line number on which this node's value is located. </p>
 <dl class="section return"><dt>Returns</dt><dd>The line number on which this node's value is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00065">65</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00072">72</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -557,7 +557,7 @@ template&lt;&gt; </div>
 <p>Returns this node's value location in the file as {file}:{line}. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's value location in the file as {file}:{line} </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00039">39</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00042">42</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +594,7 @@ template&lt;&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>This node's value as string, or a default value if empty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00093">93</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00104">104</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -628,7 +628,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value converted to a specific type, or a default value </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will return the default value if the value could not be converted. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00124">124</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00137">137</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -658,7 +658,7 @@ template&lt;typename T &gt; </div>
 <p>Check if this node should be bypassed for access checks. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this node should be bypassed, 'false' otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00181">181</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00196">196</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -687,7 +687,7 @@ template&lt;typename T &gt; </div>
 
 <p>Flag this node as "not accessed" for later warnings. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00162">162</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00175">175</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -775,7 +775,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00136">136</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00146">146</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -811,7 +811,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00150">150</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00162">162</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -847,7 +847,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00157">157</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00170">170</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -883,7 +883,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00143">143</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00154">154</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -913,7 +913,7 @@ template&lt;typename T &gt; </div>
 <p>Check if this node was accessed by the parser. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this node was accessed by the parser, 'false' otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00174">174</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00188">188</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -938,7 +938,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00192">192</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00207">207</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +962,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00191">191</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00206">206</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -986,7 +986,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00188">188</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00203">203</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1010,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00186">186</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00201">201</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +1034,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00187">187</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00202">202</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1058,17 +1058,17 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layoutnode_8hpp_source.html#l00189">189</a> of file <a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00204">204</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/lxgui/lxgui/include/lxgui/<a class="el" href="gui__layoutnode_8hpp_source.html">gui_layoutnode.hpp</a></li>
+<li>/home/runner/work/lxgui/lxgui/include/lxgui/<a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

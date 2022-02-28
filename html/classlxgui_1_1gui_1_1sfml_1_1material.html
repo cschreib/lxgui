@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A class that holds rendering data.  
+<p>A class that holds rendering data This implementation can contain either a plain color or a real sf::Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sfml::render_target</a> class to store the output data.  
  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="gui__sfml__material_8hpp_source.html">gui_sfml_material.hpp</a>&gt;</code></p>
@@ -144,17 +144,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a747c9475727997b4cc29e42d8b826d28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">filter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a747c9475727997b4cc29e42d8b826d28">get_filter</a> () const</td></tr>
 <tr class="memdesc:a747c9475727997b4cc29e42d8b826d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the filter mode of this texture.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#a747c9475727997b4cc29e42d8b826d28">More...</a><br /></td></tr>
 <tr class="separator:a747c9475727997b4cc29e42d8b826d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a170ed69c906f9b8c6e4db37f45a39a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a7a170ed69c906f9b8c6e4db37f45a39a">update_texture</a> (const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *data)</td></tr>
-<tr class="memdesc:a7a170ed69c906f9b8c6e4db37f45a39a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the texture that is in GPU memory.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#a7a170ed69c906f9b8c6e4db37f45a39a">More...</a><br /></td></tr>
-<tr class="separator:a7a170ed69c906f9b8c6e4db37f45a39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a650f0adb6a669fd888867515a78570c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a650f0adb6a669fd888867515a78570c7">update_texture</a> (const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *data)</td></tr>
+<tr class="memdesc:a650f0adb6a669fd888867515a78570c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the texture that is in GPU memory.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#a650f0adb6a669fd888867515a78570c7">More...</a><br /></td></tr>
+<tr class="separator:a650f0adb6a669fd888867515a78570c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83cf3aaee5072a5e84f5e20dc0100ea6"><td class="memItemLeft" align="right" valign="top">sf::RenderTexture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a83cf3aaee5072a5e84f5e20dc0100ea6">get_render_texture</a> ()</td></tr>
-<tr class="memdesc:a83cf3aaee5072a5e84f5e20dc0100ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SFML render texture object.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#a83cf3aaee5072a5e84f5e20dc0100ea6">More...</a><br /></td></tr>
+<tr class="memdesc:a83cf3aaee5072a5e84f5e20dc0100ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SFML render texture object. return The underlying SFML render texture object.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#a83cf3aaee5072a5e84f5e20dc0100ea6">More...</a><br /></td></tr>
 <tr class="separator:a83cf3aaee5072a5e84f5e20dc0100ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed2ee042088c7f5859c842c0e76dc91"><td class="memItemLeft" align="right" valign="top">const sf::Texture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#abed2ee042088c7f5859c842c0e76dc91">get_texture</a> () const</td></tr>
-<tr class="memdesc:abed2ee042088c7f5859c842c0e76dc91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SFML texture object.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#abed2ee042088c7f5859c842c0e76dc91">More...</a><br /></td></tr>
+<tr class="memdesc:abed2ee042088c7f5859c842c0e76dc91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SFML texture object. return The underlying SFML texture object.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#abed2ee042088c7f5859c842c0e76dc91">More...</a><br /></td></tr>
 <tr class="separator:abed2ee042088c7f5859c842c0e76dc91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fff7644bb539b487b7c4a89a725f97d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">get_canvas_uv</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;texture_uv, bool from_normalized) const</td></tr>
-<tr class="memdesc:a7fff7644bb539b487b7c4a89a725f97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns normalised UV coordinates on the canvas, given local UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">More...</a><br /></td></tr>
+<tr class="memdesc:a7fff7644bb539b487b7c4a89a725f97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns normalized UV coordinates on the canvas, given local UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a7fff7644bb539b487b7c4a89a725f97d">More...</a><br /></td></tr>
 <tr class="separator:a7fff7644bb539b487b7c4a89a725f97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bd4a49e2dcb1cc7e5de0a6be5f80190"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a5bd4a49e2dcb1cc7e5de0a6be5f80190">get_local_uv</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;canvas_uv, bool as_normalized) const</td></tr>
 <tr class="memdesc:a5bd4a49e2dcb1cc7e5de0a6be5f80190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns local UV coordinates on the texture, given canvas UV coordinates.  <a href="classlxgui_1_1gui_1_1material.html#a5bd4a49e2dcb1cc7e5de0a6be5f80190">More...</a><br /></td></tr>
@@ -175,10 +175,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7bc09898192584f6963bd23291f6a0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class that holds rendering data. </p>
-<p>This implementation can contain either a plain color or a real sf::Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sfml::render_target</a> class to store the output data. </p>
+<div class="textblock"><p>A class that holds rendering data This implementation can contain either a plain color or a real sf::Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sfml::render_target</a> class to store the output data. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__sfml__material_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__sfml__material_8hpp_source.html">gui_sfml_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sfml__material_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__sfml__material_8hpp_source.html">gui_sfml_material.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="abd57defc7bd316b1dbf3c9c4125ed5c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd57defc7bd316b1dbf3c9c4125ed5c6">&#9670;&nbsp;</a></span>filter</h2>
@@ -204,7 +203,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="abd57defc7bd316b1dbf3c9c4125ed5c6a9a932b3cb396238423eb2f33ec17d6aa"></a>linear&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00027">27</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +231,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a06057a88ec23992da5290ec7a7782e47aa597a055c00d084069e4bb23dc789ac9"></a>clamp&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00018">18</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -562,14 +561,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns normalised UV coordinates on the canvas, given local UV coordinates. </p>
+<p>Returns normalized UV coordinates on the canvas, given local UV coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture_uv</td><td>The original UV coordinates, local to this texture </td></tr>
-    <tr><td class="paramname">from_normalized</td><td>Set to 'true' if input coordinates are normalised to [0,1] and 'false' if input coordinates are in pixels </td></tr>
+    <tr><td class="paramname">from_normalized</td><td>Set to 'true' if input coordinates are normalized </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>Normalized coordinates range from 0 to 1, with 1 corresponding to the width/height of the texture, while non-normalized coordinates are in pixels. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00007">7</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
@@ -633,10 +633,11 @@ Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">canvas_uv</td><td>The canvas UV coordinates </td></tr>
-    <tr><td class="paramname">as_normalized</td><td>Set to 'true' if output coordinates should be normalised to [0,1] and 'false' if output coordinates should be in pixels </td></tr>
+    <tr><td class="paramname">as_normalized</td><td>Set to 'true' if output coordinates should be normalized </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>Normalized coordinates range from 0 to 1, with 1 corresponding to the width/height of the texture, while non-normalized coordinates are in pixels. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00020">20</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
@@ -687,8 +688,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the underlying SFML render texture object. </p>
-<p>return The underlying SFML render texture object </p>
+<p>Returns the underlying SFML render texture object. return The underlying SFML render texture object. </p>
 
 </div>
 </div>
@@ -707,8 +707,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the underlying SFML texture object. </p>
-<p>return The underlying SFML texture object </p>
+<p>Returns the underlying SFML texture object. return The underlying SFML texture object. </p>
 
 </div>
 </div>
@@ -904,8 +903,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a170ed69c906f9b8c6e4db37f45a39a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a170ed69c906f9b8c6e4db37f45a39a">&#9670;&nbsp;</a></span>update_texture()</h2>
+<a id="a650f0adb6a669fd888867515a78570c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a650f0adb6a669fd888867515a78570c7">&#9670;&nbsp;</a></span>update_texture()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -913,7 +912,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void lxgui::gui::sfml::material::update_texture </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
           <td></td>
         </tr>
@@ -982,7 +981,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00091">91</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00093">93</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -992,7 +991,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

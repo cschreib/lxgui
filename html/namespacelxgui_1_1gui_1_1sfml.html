@@ -76,16 +76,16 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas.html">atlas</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class that holds rendering data.  <a href="classlxgui_1_1gui_1_1sfml_1_1atlas.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class that holds rendering data This implementation can contain either a plain color or a real sf::Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sfml::render_target</a> class to store the output data.  <a href="classlxgui_1_1gui_1_1sfml_1_1atlas.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html">atlas_page</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single texture holding multiple materials for efficient rendering.  <a href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single texture holding multiple materials for efficient rendering This is an abstract class that must be implemented and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>.  <a href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html">font</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A texture containing characters.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A texture containing characters This is the SFML implementation of the <a class="el" href="classlxgui_1_1gui_1_1font.html" title="A texture containing characters.">gui::font</a>. It uses sf::Font to render glyphs and get character data.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html">material</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class that holds rendering data.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class that holds rendering data This implementation can contain either a plain color or a real sf::Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sfml::render_target</a> class to store the output data.  <a href="classlxgui_1_1gui_1_1sfml_1_1material.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html">render_target</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A place to render things (the screen, a texture, ...)  <a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#details">More...</a><br /></td></tr>
@@ -94,6 +94,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SFML implementation of rendering.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html">vertex_cache</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An object representing cached vertex data on the GPU.  <a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -133,7 +134,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:22 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

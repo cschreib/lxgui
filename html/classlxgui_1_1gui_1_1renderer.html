@@ -143,7 +143,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab5d55a87e425d9d3977b589ecb212e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the width/height of a texture atlas page (in pixels).  <a href="classlxgui_1_1gui_1_1renderer.html#ab5d55a87e425d9d3977b589ecb212e1b">More...</a><br /></td></tr>
 <tr class="separator:ab5d55a87e425d9d3977b589ecb212e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a830b0aedc489ceb2ca9f861b497bb569"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a830b0aedc489ceb2ca9f861b497bb569">get_num_texture_atlas_pages</a> () const</td></tr>
-<tr class="memdesc:a830b0aedc489ceb2ca9f861b497bb569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the total number of texture atlas pages curently in use.  <a href="classlxgui_1_1gui_1_1renderer.html#a830b0aedc489ceb2ca9f861b497bb569">More...</a><br /></td></tr>
+<tr class="memdesc:a830b0aedc489ceb2ca9f861b497bb569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the total number of texture atlas pages currently in use.  <a href="classlxgui_1_1gui_1_1renderer.html#a830b0aedc489ceb2ca9f861b497bb569">More...</a><br /></td></tr>
 <tr class="separator:a830b0aedc489ceb2ca9f861b497bb569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9392358704bdd9970e0def4ab06cc9f0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0">is_vertex_cache_supported</a> () const =0</td></tr>
 <tr class="memdesc:a9392358704bdd9970e0def4ab06cc9f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0">More...</a><br /></td></tr>
@@ -196,9 +196,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4631017c6c7443597ce872fd549966f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad4631017c6c7443597ce872fd549966f">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; target)</td></tr>
 <tr class="memdesc:ad4631017c6c7443597ce872fd549966f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from an entire render target.  <a href="classlxgui_1_1gui_1_1renderer.html#ad4631017c6c7443597ce872fd549966f">More...</a><br /></td></tr>
 <tr class="separator:ad4631017c6c7443597ce872fd549966f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53c1de46f53c553196317543acf2cad"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aa53c1de46f53c553196317543acf2cad">create_material</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a> &amp;dimensions, const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *pixel_data, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filt=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>)=0</td></tr>
-<tr class="memdesc:aa53c1de46f53c553196317543acf2cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from arbitrary pixel data.  <a href="classlxgui_1_1gui_1_1renderer.html#aa53c1de46f53c553196317543acf2cad">More...</a><br /></td></tr>
-<tr class="separator:aa53c1de46f53c553196317543acf2cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1af9aa51d27be981312c7470f430d627"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a1af9aa51d27be981312c7470f430d627">create_material</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a> &amp;dimensions, const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *pixel_data, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filt=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>)=0</td></tr>
+<tr class="memdesc:a1af9aa51d27be981312c7470f430d627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from arbitrary pixel data.  <a href="classlxgui_1_1gui_1_1renderer.html#a1af9aa51d27be981312c7470f430d627">More...</a><br /></td></tr>
+<tr class="separator:a1af9aa51d27be981312c7470f430d627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96ed3808422e8513680090e269001da9"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a96ed3808422e8513680090e269001da9">create_render_target</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a> &amp;dimensions, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filt=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>)=0</td></tr>
 <tr class="memdesc:a96ed3808422e8513680090e269001da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1renderer.html#a96ed3808422e8513680090e269001da9">More...</a><br /></td></tr>
 <tr class="separator:a96ed3808422e8513680090e269001da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -786,8 +786,8 @@ If an outline thickness other than zero is requested, only the outline itself wi
 
 </div>
 </div>
-<a id="aa53c1de46f53c553196317543acf2cad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa53c1de46f53c553196317543acf2cad">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/4]</span></h2>
+<a id="a1af9aa51d27be981312c7470f430d627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1af9aa51d27be981312c7470f430d627">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -804,7 +804,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1color32.html">color32</a> *&#160;</td>
           <td class="paramname"><em>pixel_data</em>, </td>
         </tr>
         <tr>
@@ -837,7 +837,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1702a367517da7476ef5b711d38d1eeb">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a01331cc522d4e2999714b7409f8d1e87">lxgui::gui::sfml::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a42b93961b3d9ac712ee7995e5df7f661">lxgui::gui::sdl::renderer</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6579b72a73adc10fcd5942d401646f2e">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a03dff80301da0fc6bab07aef777df16e">lxgui::gui::sfml::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a545a28068b95aff6a07af23ffecc55ab">lxgui::gui::sdl::renderer</a>.</p>
 
 </div>
 </div>
@@ -1229,8 +1229,8 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
       </table>
 </div><div class="memdoc">
 
-<p>Count the total number of texture atlas pages curently in use. </p>
-<dl class="section return"><dt>Returns</dt><dd>The total number of texture atlas pages curently in use </dd></dl>
+<p>Count the total number of texture atlas pages currently in use. </p>
+<dl class="section return"><dt>Returns</dt><dd>The total number of texture atlas pages currently in use </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
@@ -2000,7 +2000,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00446">446</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00485">485</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2024,7 +2024,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00447">447</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00486">486</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2048,7 +2048,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00445">445</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00484">484</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2059,7 +2059,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 20 2022 17:18:21 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

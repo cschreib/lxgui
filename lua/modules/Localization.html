@@ -62,30 +62,30 @@
 
 <h1>Module <code>Localization</code></h1>
 <p>Global functions for localization / translation of text.</p>
-<p>   The functions listed on this page are registered in the
-   Lua state as globals, and as such are accessible from
-   anywhere automatically. They provide all necessary functionalities
-   for selecting languages and translating text for display in the GUI.</p>
+<p> The functions listed on this page are registered in the
+ Lua state as globals, and as such are accessible from
+ anywhere automatically. They provide all necessary functionalities
+ for selecting languages and translating text for display in the GUI.</p>
 
-<p>   <strong>Translating text.</strong> When creating a button in the GUI, it is tempting to set its
-   displayed text directly like <code>button:set_text(&quot;Cancel&quot;)</code>, hence hard-coding the text
-   in the code. This works totally fine, provided that English is the only language you
-   only ever want to display to your users. If you want your game to be accessible to
-   users from countries where English is not the native language, you will want to
-   make that text translatable. This is what this module is for.</p>
+<p> <strong>Translating text.</strong> When creating a button in the GUI, it is tempting to set its
+ displayed text directly like <code>button:set_text(&quot;Cancel&quot;)</code>, hence hard-coding the text
+ in the code. This works totally fine, provided that English is the only language you
+ only ever want to display to your users. If you want your game to be accessible to
+ users from countries where English is not the native language, you will want to
+ make that text translatable. This is what this module is for.</p>
 
-<p>   <strong>Translatable string codes.</strong> The first change needed is to stop hard-coding <em>any</em>
-   form of text in your GUI code (be it in layout files or Lua code). All text should be
-   replaced by a "translatable string code", such as <code>&quot;{button_cancel}&quot;</code>. The purpose of
-   this code is to uniquely represent this string you need to display, without giving it
-   an actual content. The string <code>&quot;{button_cancel}&quot;</code> will not itself be displayed on the
-   screen; instead, the localization system will search for a translation of that string
-   and return the appropriate text (<code>&quot;Cancel&quot;</code> for English, <code>&quot;Annuler&quot;</code> for French,
-   etc.).</p>
+<p> <strong>Translatable string codes.</strong> The first change needed is to stop hard-coding <em>any</em>
+ form of text in your GUI code (be it in layout files or Lua code). All text should be
+ replaced by a "translatable string code", such as <code>&quot;{button_cancel}&quot;</code>. The purpose of
+ this code is to uniquely represent this string you need to display, without giving it
+ an actual content. The string <code>&quot;{button_cancel}&quot;</code> will not itself be displayed on the
+ screen; instead, the localization system will search for a translation of that string
+ and return the appropriate text (<code>&quot;Cancel&quot;</code> for English, <code>&quot;Annuler&quot;</code> for French,
+ etc.).</p>
 
-<p>   The translation is automatic when the string code is set in the layout file attributes,
-   like the <code>text</code> attribute of the <a href="../classes/FontString.html#">FontString</a> or <a href="../classes/Button.html#">Button</a> objects. This is only
-   appropriate for translations that do not require additional inputs (see below).</p>
+<p> The translation is automatic when the string code is set in the layout file attributes,
+ like the <code>text</code> attribute of the <a href="../classes/FontString.html#">FontString</a> or <a href="../classes/Button.html#">Button</a> objects. This is only
+ appropriate for translations that do not require additional inputs (see below).</p>
 
 
 <pre>
@@ -94,54 +94,54 @@
 &lt;/Button&gt;
 </pre>
 
-<p>   When setting the string code from Lua, e.g. by calling <code>set_text(&quot;...&quot;)</code>, the
-   translation needs to be explicit. This is done by calling the <a href="../modules/Localization.html#localize_string">localize_string</a>
-   function, for example:</p>
+<p> When setting the string code from Lua, e.g. by calling <code>set_text(&quot;...&quot;)</code>, the
+ translation needs to be explicit. This is done by calling the <a href="../modules/Localization.html#localize_string">localize_string</a>
+ function, for example:</p>
 
 
 <pre>
 button:set_text(localize_string(<span class="string">"{button_cancel}"</span>))
 </pre>
 
-<p>   <strong>Creating translations.</strong> Once all the GUI code uses translatable string codes, all
-   that remains is to write the translations for each string, in all the languages you
-   want to support. The translation system is easily extensible: it is possible to add
-   more languages or more translatable text at any point. Therefore, even if you are
-   lacking translators for all the languages you need, it is a good practice to start
-   writing at least the English translations (or whatever is your native language),
-   and add the rest later.</p>
+<p> <strong>Creating translations.</strong> Once all the GUI code uses translatable string codes, all
+ that remains is to write the translations for each string, in all the languages you
+ want to support. The translation system is easily extensible: it is possible to add
+ more languages or more translatable text at any point. Therefore, even if you are
+ lacking translators for all the languages you need, it is a good practice to start
+ writing at least the English translations (or whatever is your native language),
+ and add the rest later.</p>
 
-<p>   Each addon folder is automatically scanned for translations when the GUI is loaded.
-   Translation files are Lua scripts, with name <code>{lang}{REGION}.lua</code>, where <code>{lang}</code>
-   is a two-letter lowercase string identifying the language (e.g., <code>en</code> for English)
-   and <code>{REGION}</code> is a two-letter uppercase string identifying the regional dialect
-   of this language (e.g., <code>US</code> for United States, <code>GB</code> for Great Britain, etc.).
-   The currently configured languages (see the <a href="../modules/Localization.html#get_preferred_languages">get_preferred_languages</a> function)
-   determine which translation file gets loaded. If no translation file exists for the
-   preferred languages, the next best translation will be chosen by ignoring the
-   <code>{REGION}</code> code (i.e., if the preferred language is <code>enGB</code>, this enables automatic
-   fallback to <code>enUS</code> if <code>enGB</code> is not found). You can also add additional folders
-   to scan using the <a href="../modules/Localization.html#load_translations">load_translations</a> function, and load a specific translation file
-   using the <a href="../modules/Localization.html#load_translation_file">load_translation_file</a> function.</p>
+<p> Each addon folder is automatically scanned for translations when the GUI is loaded.
+ Translation files are Lua scripts, with name <code>{lang}{REGION}.lua</code>, where <code>{lang}</code>
+ is a two-letter lowercase string identifying the language (e.g., <code>en</code> for English)
+ and <code>{REGION}</code> is a two-letter uppercase string identifying the regional dialect
+ of this language (e.g., <code>US</code> for United States, <code>GB</code> for Great Britain, etc.).
+ The currently configured languages (see the <a href="../modules/Localization.html#get_preferred_languages">get_preferred_languages</a> function)
+ determine which translation file gets loaded. If no translation file exists for the
+ preferred languages, the next best translation will be chosen by ignoring the
+ <code>{REGION}</code> code (i.e., if the preferred language is <code>enGB</code>, this enables automatic
+ fallback to <code>enUS</code> if <code>enGB</code> is not found). You can also add additional folders
+ to scan using the <a href="../modules/Localization.html#load_translations">load_translations</a> function, and load a specific translation file
+ using the <a href="../modules/Localization.html#load_translation_file">load_translation_file</a> function.</p>
 
-<p>   The format of a translation file is simple. It must be a Lua script defining a
-   table named <code>localize</code>. Each entry in this table will add a new translation to
-   the translation database, which is global to the entire GUI (hence, a translation
-   defined in one addon can be reused in another addon). An entry in the table must be
-   a key + value pair, where the key is the translatable string code (stripped of its
-   surrounding braces <code>{}</code>) and the value is the translation. The translation can be
-   specified as a simple formatted string (see below), or as a full blown Lua function.</p>
+<p> The format of a translation file is simple. It must be a Lua script defining a
+ table named <code>localize</code>. Each entry in this table will add a new translation to
+ the translation database, which is global to the entire GUI (hence, a translation
+ defined in one addon can be reused in another addon). An entry in the table must be
+ a key + value pair, where the key is the translatable string code (stripped of its
+ surrounding braces <code>{}</code>) and the value is the translation. The translation can be
+ specified as a simple formatted string (see below), or as a full blown Lua function.</p>
 
-<p>   If a translatable string code is duplicated in two addons, it will get over-written
-   by whichever addon is loaded last.</p>
+<p> If a translatable string code is duplicated in two addons, it will get over-written
+ by whichever addon is loaded last.</p>
 
-<p>   <strong>Formatted translation strings.</strong> While most translation strings will be simple
-   static strings to be displayed as-is, such as <code>&quot;Cancel&quot;</code>, it is also possible to
-   display dynamic data inside the translated text. One example would be displaying
-   a message like "Player1 has lost 10 HP.". There are two dynamic elements in this
-   sentence, "Player1" and "10", which cannot be hard-coded into the translation.
-   To support this, the translation must be done explicitly in Lua, by supplying
-   these two dynamic values to the translation function. For example:</p>
+<p> <strong>Formatted translation strings.</strong> While most translation strings will be simple
+ static strings to be displayed as-is, such as <code>&quot;Cancel&quot;</code>, it is also possible to
+ display dynamic data inside the translated text. One example would be displaying
+ a message like "Player1 has lost 10 HP.". There are two dynamic elements in this
+ sentence, "Player1" and "10", which cannot be hard-coded into the translation.
+ To support this, the translation must be done explicitly in Lua, by supplying
+ these two dynamic values to the translation function. For example:</p>
 
 
 <pre>
@@ -150,53 +150,53 @@ button:set_text(localize_string(<span class="string">"{button_cancel}"</span>))
 message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>, player, hp_lost))
 </pre>
 
-<p>   The translation must then refer to these dynamic elements to include them in the
-   displayed test. Dynamic elements are always indicated with pairs of braces <code>{}</code>.
-   Inside the braces, you can supply additional modifiers which will affect how the
-   data is being displayed. This follows the <a href="https://fmt.dev/latest/syntax.html">&amp;</a>
-   syntax. For example, the message above can be represented with the string</p>
+<p> The translation must then refer to these dynamic elements to include them in the
+ displayed test. Dynamic elements are always indicated with pairs of braces <code>{}</code>.
+ Inside the braces, you can supply additional modifiers which will affect how the
+ data is being displayed. This follows the <a href="https://fmt.dev/latest/syntax.html">&amp;</a>
+ syntax. For example, the message above can be represented with the string</p>
 
 
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="string">"{} has lost {} HP."</span>,
 </pre>
 
-<p>   By default, dynamic elements will be displayed in the same order as they are
-   supplied to the <a href="../modules/Localization.html#localize_string">localize_string</a> function. You can override this by explicitly
-   specifying the position of the argument (recommended, even if the order
-   is the same):</p>
+<p> By default, dynamic elements will be displayed in the same order as they are
+ supplied to the <a href="../modules/Localization.html#localize_string">localize_string</a> function. You can override this by explicitly
+ specifying the position of the argument (recommended, even if the order
+ is the same):</p>
 
 
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1} HP."</span>,
 </pre>
 
-<p>   This allows re-using a single element multiple times, e.g.:</p>
+<p> This allows re-using a single element multiple times, e.g.:</p>
 
 
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1} HP ({0} is hurt!)."</span>,
 </pre>
 
-<p>   Numbers will be displayed with a very simple, locale-independent formatting
-   by default. This is fine for most uses (small integers), but might be confusing
-   when displaying fractional values, or very large numbers. In general, it is
-   preferable to rely on the user's locale for this, and this can be enabled
-   by the <code>L</code> modifier (recommended for displaying all numbers):</p>
+<p> Numbers will be displayed with a very simple, locale-independent formatting
+ by default. This is fine for most uses (small integers), but might be confusing
+ when displaying fractional values, or very large numbers. In general, it is
+ preferable to rely on the user's locale for this, and this can be enabled
+ by the <code>L</code> modifier (recommended for displaying all numbers):</p>
 
 
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1:L} HP."</span>,
 </pre>
 
-<p>   <strong>Translation functions.</strong> In some cases, the translation is too complex to
-   be supported with the formatting syntax described above. This includes cases
-   where a word needs to be modified based on gender, quantity, or other properties,
-   in ways very specific to the user's language.</p>
+<p> <strong>Translation functions.</strong> In some cases, the translation is too complex to
+ be supported with the formatting syntax described above. This includes cases
+ where a word needs to be modified based on gender, quantity, or other properties,
+ in ways very specific to the user's language.</p>
 
-<p>   This is where translation functions can be used instead of strings. Reusing the
-   example from the previous section, an equivalent as a translation function could
-   be:</p>
+<p> This is where translation functions can be used instead of strings. Reusing the
+ example from the previous section, an equivalent as a translation function could
+ be:</p>
 
 
 <pre>
@@ -205,7 +205,7 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 <span class="keyword">end</span>,
 </pre>
 
-<p>   Now, we can actually change the displayed text based on how much HP have been lost:</p>
+<p> Now, we can actually change the displayed text based on how much HP have been lost:</p>
 
 
 <pre>
@@ -220,28 +220,28 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 <span class="keyword">end</span>,
 </pre>
 
-<p>   By default, the numbers printed this way may not be identical to the ones obtained
-   from translation strings such as <code>&quot;{} has lost {} HP.&quot;</code>. This is because Lua
-   has its own number formatting rules. To ensure consistency with the rest of the
-   translations, you should use the <a href="../modules/Localization.html#format_string">format_string</a> function:</p>
+<p> By default, the numbers printed this way may not be identical to the ones obtained
+ from translation strings such as <code>&quot;{} has lost {} HP.&quot;</code>. This is because Lua
+ has its own number formatting rules. To ensure consistency with the rest of the
+ translations, you should use the <a href="../modules/Localization.html#format_string">format_string</a> function:</p>
 
 
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
     <span class="keyword">if</span> hp_lost &gt; <span class="number">10</span> <span class="keyword">then</span>
         <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
-             player, hp_lost)
+               player, hp_lost)
     <span class="keyword">elseif</span> hp_lost == <span class="number">0</span> <span class="keyword">then</span>
         <span class="keyword">return</span> format_string(<span class="string">"{0} has lost no HP. This had no effect."</span>,
-             player)
+               player)
     <span class="keyword">else</span>
         <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP."</span>, player, hp_lost)
     <span class="keyword">end</span>
 <span class="keyword">end</span>,
 </pre>
 
-<p>   This can be used to implement complex support language rules like adding an "s" to
-   plurals of nouns in French:</p>
+<p> This can be used to implement complex support language rules like adding an "s" to
+ plurals of nouns in French:</p>
 
 
 <pre>
@@ -284,31 +284,31 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 }
 </pre>
 
-<p>   <strong>Language selection.</strong> By default, the preferred languages are automatically detected
-   based on the environment and configuration of the operating system. The <code>LANGUAGE</code>
-   environment variable is scanned first, and can be used to set an ordered list of
-   preferred languages. This is commonly set on Linux and OSX systems, but rarely on
-   Windows. For Windows, if <code>LANGUAGE</code> is not set, the language configured in the operating
-   system is used. For other systems, the <code>LANG</code> environment variable is tried next. If
-   no language could be detected, the library falls back to US English. This automatic
-   detection can be overridden by calling <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>.</p>
+<p> <strong>Language selection.</strong> By default, the preferred languages are automatically detected
+ based on the environment and configuration of the operating system. The <code>LANGUAGE</code>
+ environment variable is scanned first, and can be used to set an ordered list of
+ preferred languages. This is commonly set on Linux and OSX systems, but rarely on
+ Windows. For Windows, if <code>LANGUAGE</code> is not set, the language configured in the operating
+ system is used. For other systems, the <code>LANG</code> environment variable is tried next. If
+ no language could be detected, the library falls back to US English. This automatic
+ detection can be overridden by calling <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>.</p>
 
-<p>   Once a language (or list of languages) is set, the GUI must be told which characters,
-   represented here as Unicode "code points", can be displayed on screen. This can be detected
-   automatically from the preferred languages by calling <a href="../modules/Localization.html#auto_detect_allowed_code_points">auto_detect_allowed_code_points</a>. This
-   function only needs to be called if the preferred languages were overridden with
-   <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>. If using the automatically-determined language from the environment
-   and operating system (see above), this is already done internally.</p>
+<p> Once a language (or list of languages) is set, the GUI must be told which characters,
+ represented here as Unicode "code points", can be displayed on screen. This can be detected
+ automatically from the preferred languages by calling <a href="../modules/Localization.html#auto_detect_allowed_code_points">auto_detect_allowed_code_points</a>. This
+ function only needs to be called if the preferred languages were overridden with
+ <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>. If using the automatically-determined language from the environment
+ and operating system (see above), this is already done internally.</p>
 
-<p>   If the automatic detection of the allowed code points is incomplete, or if additional code
-   points need to be displayed for any reason (game-specific lore, etc.), it is possible to add
-   more code points to the allowed list with <a href="../modules/Localization.html#add_allowed_code_points_for_language">add_allowed_code_points_for_language</a>,
-   <a href="../modules/Localization.html#add_allowed_code_points_for_group">add_allowed_code_points_for_group</a>, and <a href="../modules/Localization.html#add_allowed_code_points">add_allowed_code_points</a>. It is also possible to
-   reset the list of allowed code points using <a href="../modules/Localization.html#clear_allowed_code_points">clear_allowed_code_points</a>, in the event that
-   the automatic detection was completely wrong.</p>
+<p> If the automatic detection of the allowed code points is incomplete, or if additional code
+ points need to be displayed for any reason (game-specific lore, etc.), it is possible to add
+ more code points to the allowed list with <a href="../modules/Localization.html#add_allowed_code_points_for_language">add_allowed_code_points_for_language</a>,
+ <a href="../modules/Localization.html#add_allowed_code_points_for_group">add_allowed_code_points_for_group</a>, and <a href="../modules/Localization.html#add_allowed_code_points">add_allowed_code_points</a>. It is also possible to
+ reset the list of allowed code points using <a href="../modules/Localization.html#clear_allowed_code_points">clear_allowed_code_points</a>, in the event that
+ the automatic detection was completely wrong.</p>
 
-<p>   <strong>Encoding.</strong> The Lua API only supports UTF-8 encoding for strings and files. Please make
-   sure to only use this encoding when writing scripts and translation files.</p>
+<p> <strong>Encoding.</strong> The Lua API only supports UTF-8 encoding for strings and files. Please make
+ sure to only use this encoding when writing scripts and translation files.</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -401,12 +401,12 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Sets the preferred languages to display the GUI.
-   The languages must be listed in order of decreasing preference. They must be of the form
-   <code>{language}{REGION}</code> where <code>{language}</code> is a two-letter lower case word identifying the
-   main language, and <code>{REGION}</code> is a two-letter upper case word identifying the dialect or
-   regional variant of the language (e.g., "enUS" for United States of America English, and
-   "enGB" for Great Britain English). This change will not take effect until the GUI is
-   re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+ The languages must be listed in order of decreasing preference. They must be of the form
+ <code>{language}{REGION}</code> where <code>{language}</code> is a two-letter lower case word identifying the
+ main language, and <code>{REGION}</code> is a two-letter upper case word identifying the dialect or
+ regional variant of the language (e.g., "enUS" for United States of America English, and
+ "enGB" for Great Britain English). This change will not take effect until the GUI is
+ re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
 
 
     <h3>Parameters:</h3>
@@ -428,10 +428,10 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Removes all allowed code points.
-   After calling this function, it is highly recommended to always include at least
-   the Unicode groups "basic latin" (to render basic ASCII characters) and
-   "geometric shapes" (to render the "missing character" glyph).
-   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+ After calling this function, it is highly recommended to always include at least
+ the Unicode groups "basic latin" (to render basic ASCII characters) and
+ "geometric shapes" (to render the "missing character" glyph).
+ This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
 
 
 
@@ -446,7 +446,7 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Adds a new range to the set of allowed code points.
-   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+ This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
 
 
     <h3>Parameters:</h3>
@@ -472,11 +472,11 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Adds a new range to the set of allowed code points from a Unicode group.
-   The Unicode standard defines a set of code groups, which are contiguous
-   ranges of Unicode code points that are typically associated to a language
-   or a group of languages. This function knows about such groups and the
-   ranges of code point they correspond to, and is therefore more user-friendly.
-   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+ The Unicode standard defines a set of code groups, which are contiguous
+ ranges of Unicode code points that are typically associated to a language
+ or a group of languages. This function knows about such groups and the
+ ranges of code point they correspond to, and is therefore more user-friendly.
+ This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
 
 
     <h3>Parameters:</h3>
@@ -498,10 +498,10 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Adds a new range to the set of allowed code points for a given language.
-   Language codes are based on the ISO-639-1 standard, or later standards for those
-   languages which were not listed in ISO-639-1. They are always in lower case, and
-   typically composed of just two letters, but sometimes more.
-   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+ Language codes are based on the ISO-639-1 standard, or later standards for those
+ languages which were not listed in ISO-639-1. They are always in lower case, and
+ typically composed of just two letters, but sometimes more.
+ This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
 
 
     <h3>Parameters:</h3>
@@ -603,8 +603,8 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Translate a string or message, with arguments.
-   The arguments are passed as individual parameters after the string to translate.
-   There can be as many arguments are needed (including zero).
+ The arguments are passed as individual parameters after the string to translate.
+ There can be as many arguments are needed (including zero).
 
 
     <h3>Parameters:</h3>
@@ -635,8 +635,8 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     </dt>
     <dd>
     Format a string with arguments.
-   The arguments are passed as individual parameters after the string to translate.
-   There can be as many arguments are needed (including zero).
+ The arguments are passed as individual parameters after the string to translate.
+ There can be as many arguments are needed (including zero).
 
 
     <h3>Parameters:</h3>
@@ -669,7 +669,7 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-02-20 17:18:22 </i>
+<i style="float:right;">Last updated 2022-02-28 08:06:32 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
