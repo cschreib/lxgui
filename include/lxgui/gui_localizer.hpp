@@ -4,8 +4,8 @@
 #include "lxgui/gui_code_point_range.hpp"
 #include "lxgui/lxgui.hpp"
 
-#include <fmt/format.h>
 #include <locale>
+#include <lxgui/extern_fmt.hpp>
 #include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/extern_sol2_variadic_args.hpp>
 #include <string>
