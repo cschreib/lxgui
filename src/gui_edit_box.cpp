@@ -25,6 +25,7 @@ edit_box::edit_box(utils::control_block& block, manager& mgr) :
     iter_carret_pos_old_ = unicode_text_.begin();
 
     enable_mouse(true);
+    enable_keyboard(true);
     register_for_drag({"LeftButton"});
 }
 

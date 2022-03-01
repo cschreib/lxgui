@@ -99,7 +99,8 @@ using script_list_view = script_signal::slot_list_view;
  * However, some hard-coded events require explicit enabling. In particular:
  *
  * - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
- * focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
+ * frame::enable_keyboard, and either focus (see @ref frame::set_focus) or
+ * explicit key capture (@ref frame::enable_key_capture).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
  * - Events related to mouse move input (`OnEnter`, `OnLeave`)
@@ -152,7 +153,7 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
  * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
  * been registered for capture using @ref frame::enable_key_capture. If no
- * frame is focused, only the topmost frame with
+ * keyboard-enabled frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @ref key_binder). This event provides two arguments to the registered
@@ -162,7 +163,7 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
  * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
  * been registered for capture using @ref frame::enable_key_capture. If no
- * frame is focused, only the topmost frame with
+ * keyboard-enabled frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @ref key_binder). This event provides two arguments to the registered
@@ -357,15 +358,28 @@ public:
     void enable_mouse_wheel(bool is_mouse_wheel_enabled);
 
     /**
+     * \brief Sets if this frame can receive any keyboard input.
+     * \param is_keyboard_enabled 'true' to enable
+     * \note If enabled, specific keys must be enabled for capture to actually receive keybaord
+     * events.
+     * \see is_keyboard_enabled()
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     */
+    void enable_keyboard(bool is_keyboard_enabled);
+
+    /**
      * \brief Sets if this frame can receive keyboard input from a specific key.
      * \param key_name The key to capture
      * \param is_capture_enabled 'true' to enable
      * \note If the frame captures the key, other frames below it will not be able to receive
      * the input from this key. The format of the input key name is standard English,
-     * with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+     * with modifiers for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
      * "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
-     * simultaneously.
+     * simultaneously. Keyboard input must be enabled for capture to take place.
      * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
      */
     void enable_key_capture(const std::string& key_name, bool is_capture_enabled);
 
@@ -874,8 +888,19 @@ public:
      * \param key_name The key to check
      * \return 'true' if this frame can receive keyboard input from this key
      * \see enable_key_capture()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
      */
     bool is_key_capture_enabled(const std::string& key_name) const;
+
+    /**
+     * \brief Checks if this frame can receive any keyboard input.
+     * \return 'true' if this frame can receive any keyboard input
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     */
+    bool is_keyboard_enabled() const;
 
     /**
      * \brief Checks if this frame can be moved.
@@ -1433,6 +1458,7 @@ protected:
     bool is_mouse_click_enabled_ = false;
     bool is_mouse_move_enabled_  = false;
     bool is_mouse_wheel_enabled_ = false;
+    bool is_keyboard_enabled_    = false;
     bool is_movable_             = false;
     bool is_clamped_to_screen_   = false;
     bool is_resizable_           = false;

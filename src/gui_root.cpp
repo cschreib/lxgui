@@ -672,10 +672,11 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     // First, give priority to the focused frame
     utils::observer_ptr<frame> topmost_frame = get_focused_frame();
 
-    // If no focused frame, look top-down for a frame that captures this key
-    if (!topmost_frame) {
-        topmost_frame = find_topmost_frame(
-            [&](const frame& frame) { return frame.is_key_capture_enabled(key_name); });
+    // If no focused frame with keyboard enabled, look top-down for a frame that captures this key
+    if (!topmost_frame || !topmost_frame->is_keyboard_enabled()) {
+        topmost_frame = find_topmost_frame([&](const frame& frame) {
+            return frame.is_keyboard_enabled() && frame.is_key_capture_enabled(key_name);
+        });
     }
 
     // If a frame is found, capture input and return

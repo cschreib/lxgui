@@ -446,6 +446,10 @@ void frame::enable_mouse_wheel(bool is_mouse_wheel_enabled) {
     is_mouse_wheel_enabled_ = is_mouse_wheel_enabled;
 }
 
+void frame::enable_keyboard(bool is_keyboard_enabled) {
+    is_keyboard_enabled_ = is_keyboard_enabled;
+}
+
 void frame::enable_key_capture(const std::string& key_name, bool is_capture_enabled) {
     if (is_capture_enabled)
         reg_key_list_.erase(key_name);
@@ -787,6 +791,10 @@ bool frame::is_mouse_wheel_enabled() const {
 
 bool frame::is_registered_for_drag(const std::string& button_name) const {
     return reg_drag_list_.find(button_name) != reg_drag_list_.end();
+}
+
+bool frame::is_keyboard_enabled() const {
+    return is_keyboard_enabled_;
 }
 
 bool frame::is_key_capture_enabled(const std::string& key_name) const {

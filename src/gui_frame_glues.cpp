@@ -63,7 +63,8 @@
  * enabling. In particular:
  *
  * - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
- * focus, see @{Frame:set_focus}, or @{Frame:enable_key_capture}.
+ * @{Frame:enable_keyboard}, and either focus (see @{Frame:set_focus}) or
+ * explicit key capture (see @{Frame:enable_key_capture}).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
  * - Events related to mouse move input (`OnEnter`, `OnLeave`)
@@ -116,7 +117,7 @@
  * - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
  * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
  * been registered for capture using @{Frame:enable_key_capture}. If no
- * frame is focused, only the topmost frame with
+ * keyboard-enabled frame is focused, only the topmost frame with
  * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @{Manager:set_key_binding}). This event provides two arguments to the registered
@@ -126,7 +127,7 @@
  * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
  * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
  * been registered for capture using @{Frame:enable_key_capture}. If no
- * frame is focused, only the topmost frame with
+ * keyboard-enabled frame is focused, only the topmost frame with
  * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
  * @{Manager:set_key_binding}). This event provides two arguments to the registered
@@ -336,6 +337,10 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
 
+    /** @function enable_keyboard
+     */
+    type.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
+
     /** @function enable_key_capture
      */
     type.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
@@ -525,6 +530,10 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function is_mouse_wheel_enabled
      */
     type.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
+
+    /** @function is_keyboard_enabled
+     */
+    type.set_function("is_keyboard_enabled", member_function<&frame::is_keyboard_enabled>());
 
     /** @function is_key_capture_enabled
      */
