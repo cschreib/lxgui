@@ -409,6 +409,31 @@ if(LXGUI_BUILD_INPUT_SDL_IMPL)
 endif()
 
 ##############################################################################
+# Examples
+##############################################################################
+
+if(LXGUI_BUILD_GUI_GL_IMPL AND LXGUI_BUILD_INPUT_SDL_IMPL)
+    if (LXGUI_COMPILER_EMSCRIPTEN)
+        add_subdirectory(examples/opengl-sdl-emscripten)
+    else()
+        add_subdirectory(examples/opengl-sdl)
+    endif()
+endif()
+if(LXGUI_BUILD_GUI_GL_IMPL AND LXGUI_BUILD_INPUT_SFML_IMPL)
+    add_subdirectory(examples/opengl-sfml)
+endif()
+if(LXGUI_BUILD_GUI_SFML_IMPL AND LXGUI_BUILD_INPUT_SFML_IMPL)
+    add_subdirectory(examples/sfml)
+endif()
+if(LXGUI_BUILD_GUI_SDL_IMPL AND LXGUI_BUILD_INPUT_SDL_IMPL)
+    if (LXGUI_COMPILER_EMSCRIPTEN)
+        add_subdirectory(examples/sdl-emscripten)
+    else()
+        add_subdirectory(examples/sdl)
+    endif()
+endif()
+
+##############################################################################
 # Config file
 ##############################################################################
 

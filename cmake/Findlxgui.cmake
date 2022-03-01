@@ -39,6 +39,10 @@
 # lxgui::input::sdl, the SDL input implementation library
 # lxgui::input::sfml, the SFML input implementation library
 
+if(TARGET lxgui::lxgui)
+    return()
+endif()
+
 find_path(LXGUI_INCLUDE_DIR
     NAMES lxgui/lxgui.hpp DOC "Path to lxgui include directory."
     PATH_SUFFIXES include
