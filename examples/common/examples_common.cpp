@@ -81,8 +81,14 @@ void examples_setup_gui(gui::manager& manager) {
 
     // Load GUI elements from files:
     std::cout << " Reading gui files..." << std::endl;
+
     //  - set the directory in which the interface is located
     manager.add_addon_directory("interface");
+
+    //  - (optional) set the directory where global text translations are located;
+    //    you may not need this, as each addon will be parsed for its own translations
+    manager.add_localization_directory("locale");
+
     //  - and load all files
     manager.load_ui();
 

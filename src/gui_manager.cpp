@@ -116,6 +116,15 @@ void manager::clear_addon_directory_list() {
     gui_directory_list_.clear();
 }
 
+void manager::add_localization_directory(const std::string& directory) {
+    if (utils::find(localization_directory_list_, directory) == localization_directory_list_.end())
+        localization_directory_list_.push_back(directory);
+}
+
+void manager::clear_localization_directory_list() {
+    localization_directory_list_.clear();
+}
+
 sol::state& manager::get_lua() {
     return *lua_;
 }
@@ -127,6 +136,9 @@ const sol::state& manager::get_lua() const {
 void manager::read_files_() {
     if (is_loaded_ || addon_registry_)
         return;
+
+    for (const auto& directory : localization_directory_list_)
+        localizer_->load_translations(directory);
 
     addon_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());

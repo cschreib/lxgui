@@ -129,6 +129,24 @@ public:
     void clear_addon_directory_list();
 
     /**
+     * \brief Adds a new directory to be parsed for localization.
+     * \param directory The new directory
+     * \note If the UI is already loaded, this change will only take effect after
+     * the UI is reloaded, see reload_ui().
+     */
+    void add_localization_directory(const std::string& directory);
+
+    /**
+     * \brief Clears the localization directory list.
+     * \note This is useful whenever you need to reload a
+     * completely different UI (for example, when switching
+     * from your game's main menu to the real game).
+     * \note If the UI is already loaded, this change will only take effect after
+     * the UI is reloaded, see reload_ui().
+     */
+    void clear_localization_directory_list();
+
+    /**
      * \brief Triggers on each fresh Lua state (e.g., on startup or after a UI re-load).
      * \note This signal is useful if you need to create additionnal
      * resources on the Lua state before the GUI files are loaded.
@@ -394,6 +412,7 @@ private:
     float                    scaling_factor_      = 1.0f;
     float                    base_scaling_factor_ = 1.0f;
     bool                     enable_caching_      = false;
+    std::vector<std::string> localization_directory_list_;
     std::vector<std::string> gui_directory_list_;
 
     // Implementations

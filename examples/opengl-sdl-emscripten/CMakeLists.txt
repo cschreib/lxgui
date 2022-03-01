@@ -36,6 +36,8 @@ set(EMSCRIPTEN_USE_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s ALLOW_MEMORY_GROWTH=1")
 set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} ${LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN} ${LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN}")
 # Add "interface" folder to the preload-file list
 set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} --preload-file ${PROJECT_SOURCE_DIR}/../../bin/interface@interface")
+# Add "locale" folder to the preload-file list
+set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} --preload-file ${PROJECT_SOURCE_DIR}/../../bin/locale@locale")
 # Setup custom shell
 set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_USE_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/../common/emscripten_shell.html")
 
