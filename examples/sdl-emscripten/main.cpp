@@ -2,7 +2,6 @@
 
 #include <emscripten.h>
 #include <iostream>
-#include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/impl/gui_sdl.hpp>
 #include <lxgui/impl/input_sdl_source.hpp>

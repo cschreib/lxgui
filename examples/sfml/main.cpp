@@ -1,5 +1,8 @@
-#include <lxgui/gui_event.hpp>
+#include "examples_common.hpp"
+
 #include <lxgui/gui_out.hpp>
+#include <lxgui/impl/gui_sfml.hpp>
+#include <lxgui/impl/input_sfml_source.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
 
@@ -11,13 +14,9 @@
 #    endif
 #endif
 
-#include "examples_common.hpp"
-
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
-#include <lxgui/impl/gui_sfml.hpp>
-#include <lxgui/impl/input_sfml_source.hpp>
 #include <thread>
 
 using namespace lxgui;

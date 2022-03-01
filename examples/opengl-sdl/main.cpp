@@ -1,5 +1,9 @@
-#include <lxgui/gui_event.hpp>
+#include "examples_common.hpp"
+
+#include <lxgui/gui_exception.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/impl/gui_gl_renderer.hpp>
+#include <lxgui/impl/input_sdl_source.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/lxgui.hpp>
@@ -12,11 +16,7 @@
 #    endif
 #endif
 
-#include "examples_common.hpp"
-
 #include <iostream>
-#include <lxgui/impl/gui_gl_renderer.hpp>
-#include <lxgui/impl/input_sdl_source.hpp>
 #include <thread>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
