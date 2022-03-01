@@ -79,7 +79,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: ${{matrix.platform.cmakepp}} cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=`pwd`/../dependencies ${{matrix.platform.flags}}
+      run: ${{matrix.platform.cmakepp}} cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DLXGUI_BUILD_EXAMPLES=0 -DCMAKE_INSTALL_PREFIX=`pwd`/../dependencies ${{matrix.platform.flags}}
 
     - name: Build
       shell: bash
