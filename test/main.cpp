@@ -1,4 +1,5 @@
 #include "lxgui/gui_button.hpp"
+#include "lxgui/gui_check_button.hpp"
 #include "lxgui/gui_edit_box.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_font_string.hpp"
@@ -409,6 +410,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         fac.register_region_type<gui::texture>();
         fac.register_region_type<gui::font_string>();
         fac.register_region_type<gui::button>();
+        fac.register_region_type<gui::check_button>();
         fac.register_region_type<gui::slider>();
         fac.register_region_type<gui::edit_box>();
         fac.register_region_type<gui::scroll_frame>();

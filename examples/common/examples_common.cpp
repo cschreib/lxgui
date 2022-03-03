@@ -3,6 +3,7 @@
 #include <iostream>
 #include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/gui_button.hpp>
+#include <lxgui/gui_check_button.hpp>
 #include <lxgui/gui_edit_box.hpp>
 #include <lxgui/gui_factory.hpp>
 #include <lxgui/gui_font_string.hpp>
@@ -58,6 +59,7 @@ void examples_setup_gui(gui::manager& manager) {
     factory.register_region_type<gui::texture>();
     factory.register_region_type<gui::font_string>();
     factory.register_region_type<gui::button>();
+    factory.register_region_type<gui::check_button>();
     factory.register_region_type<gui::slider>();
     factory.register_region_type<gui::edit_box>();
     factory.register_region_type<gui::scroll_frame>();
