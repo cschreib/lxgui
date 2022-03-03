@@ -1,7 +1,7 @@
 #if defined(LXGUI_COMPILER_MSVC)
 #elif defined(LXGUI_COMPILER_GCC)
 #    pragma GCC diagnostic push
-#elif defined(LXGUI_COMPILER_CLANG)
+#elif defined(LXGUI_COMPILER_CLANG) || defined(LXGUI_COMPILER_EMSCRIPTEN)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdeprecated-dynamic-exception-spec"
 #endif

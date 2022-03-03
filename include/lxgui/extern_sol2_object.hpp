@@ -4,7 +4,7 @@
 #    pragma GCC diagnostic ignored "-Wshadow"
 #    pragma GCC diagnostic ignored "-Wsign-conversion"
 #    pragma GCC diagnostic ignored "-Wconversion"
-#elif defined(LXGUI_COMPILER_CLANG)
+#elif defined(LXGUI_COMPILER_CLANG) || defined(LXGUI_COMPILER_EMSCRIPTEN)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wshadow"
 #    pragma clang diagnostic ignored "-Wnewline-eof"
