@@ -37,8 +37,8 @@ frame::~frame() {
 
     if (!is_virtual_) {
         // Tell the renderer to no longer render this region
-        get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
-        renderer_ = nullptr;
+        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
+        frame_renderer_ = nullptr;
     }
 
     get_manager().get_root().notify_hovered_frame_dirty();
@@ -73,7 +73,7 @@ std::string frame::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(renderer_))
+    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(frame_renderer_))
         str << tab << "  # Man. render: " << frame_renderer->get_name() << "\n";
     str << tab << "  # Strata     : " << utils::to_string(strata_) << "\n";
     str << tab << "  # Level      : " << level_ << "\n";
@@ -365,7 +365,7 @@ void frame::check_position_() {
     }
 
     if (is_clamped_to_screen_) {
-        vector2f screen_dimensions = get_top_level_renderer()->get_target_dimensions();
+        vector2f screen_dimensions = get_top_level_frame_renderer()->get_target_dimensions();
 
         if (border_list_.right > screen_dimensions.x) {
             float width = border_list_.right - border_list_.left;
@@ -561,7 +561,7 @@ utils::observer_ptr<frame> frame::create_child(region_core_attributes attr) {
     attr.parent     = observer_from(this);
 
     auto new_frame = get_manager().get_factory().create_frame(
-        get_registry(), get_top_level_renderer().get(), attr);
+        get_registry(), get_top_level_frame_renderer().get(), attr);
 
     if (!new_frame)
         return nullptr;
@@ -587,8 +587,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
 
     if (!is_virtual_) {
         utils::observer_ptr<frame_renderer> old_top_level_renderer =
-            added_child->get_top_level_renderer();
-        utils::observer_ptr<frame_renderer> new_top_level_renderer = get_top_level_renderer();
+            added_child->get_top_level_frame_renderer();
+        utils::observer_ptr<frame_renderer> new_top_level_renderer = get_top_level_frame_renderer();
         if (old_top_level_renderer != new_top_level_renderer) {
             old_top_level_renderer->notify_rendered_frame(added_child, false);
             new_top_level_renderer->notify_rendered_frame(added_child, true);
@@ -625,9 +625,9 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
 
     bool notify_renderer = false;
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_frame_renderer();
         notify_renderer =
-            !child->get_renderer() && top_level_renderer.get() != &get_manager().get_root();
+            !child->get_frame_renderer() && top_level_renderer.get() != &get_manager().get_root();
         if (notify_renderer) {
             top_level_renderer->notify_rendered_frame(child, false);
             child->propagate_renderer_(false);
@@ -1094,7 +1094,7 @@ void frame::set_frame_strata(frame_strata strata_id) {
     std::swap(strata_, strata_id);
 
     if (strata_ != strata_id && !is_virtual_) {
-        get_top_level_renderer()->notify_frame_strata_changed(
+        get_top_level_frame_renderer()->notify_frame_strata_changed(
             observer_from(this), strata_id, strata_);
     }
 }
@@ -1156,7 +1156,8 @@ void frame::set_level(int level_id) {
     std::swap(level_id, level_);
 
     if (!is_virtual_) {
-        get_top_level_renderer()->notify_frame_level_changed(observer_from(this), level_id, level_);
+        get_top_level_frame_renderer()->notify_frame_level_changed(
+            observer_from(this), level_id, level_);
     }
 }
 
@@ -1239,7 +1240,7 @@ void frame::raise() {
         return;
 
     int  old_level          = level_;
-    auto top_level_renderer = get_top_level_renderer();
+    auto top_level_renderer = get_top_level_frame_renderer();
     level_                  = top_level_renderer->get_highest_level(strata_) + 1;
 
     if (level_ > old_level) {
@@ -1292,7 +1293,7 @@ void frame::add_level_(int amount) {
     level_ += amount;
 
     if (!is_virtual()) {
-        get_top_level_renderer()->notify_frame_level_changed(
+        get_top_level_frame_renderer()->notify_frame_level_changed(
             observer_from(this), old_level, level_);
     }
 
@@ -1331,38 +1332,38 @@ void frame::stop_sizing() {
 }
 
 void frame::propagate_renderer_(bool rendered) {
-    auto top_level_renderer = get_top_level_renderer();
+    auto top_level_renderer = get_top_level_frame_renderer();
     for (const auto& child : child_list_) {
         if (!child)
             continue;
 
-        if (!child->get_renderer())
+        if (!child->get_frame_renderer())
             top_level_renderer->notify_rendered_frame(child, rendered);
 
         child->propagate_renderer_(rendered);
     }
 }
 
-void frame::set_renderer(utils::observer_ptr<frame_renderer> rdr) {
-    if (rdr == renderer_)
+void frame::set_frame_renderer(utils::observer_ptr<frame_renderer> rdr) {
+    if (rdr == frame_renderer_)
         return;
 
-    get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
+    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
 
     propagate_renderer_(false);
 
-    renderer_ = std::move(rdr);
+    frame_renderer_ = std::move(rdr);
 
-    get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
+    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
 
     propagate_renderer_(true);
 }
 
-utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const {
-    if (renderer_)
-        return renderer_;
+utils::observer_ptr<const frame_renderer> frame::get_top_level_frame_renderer() const {
+    if (frame_renderer_)
+        return frame_renderer_;
     else if (parent_)
-        return parent_->get_top_level_renderer();
+        return parent_->get_top_level_frame_renderer();
     else
         return get_manager().get_root().observer_from_this();
 }
@@ -1429,7 +1430,7 @@ void frame::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
-    get_top_level_renderer()->notify_strata_needs_redraw(strata_);
+    get_top_level_frame_renderer()->notify_strata_needs_redraw(strata_);
 }
 
 void frame::notify_scaling_factor_updated() {

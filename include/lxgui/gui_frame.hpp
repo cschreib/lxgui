@@ -1267,41 +1267,41 @@ public:
      * \note If the renderer is set to nullptr, the frame will inherit the renderer of its
      * parent. If the frame has no parent, this will default to the gui::manager.
      */
-    void set_renderer(utils::observer_ptr<frame_renderer> rdr);
+    void set_frame_renderer(utils::observer_ptr<frame_renderer> rdr);
 
     /**
      * \brief Returns the renderer of this object, nullptr if none.
      * \return The renderer of this object, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_renderer() const {
-        return renderer_;
+    utils::observer_ptr<const frame_renderer> get_frame_renderer() const {
+        return frame_renderer_;
     }
 
     /**
      * \brief Returns the renderer of this object, nullptr if none.
      * \return The renderer of this object, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    const utils::observer_ptr<frame_renderer>& get_renderer() {
-        return renderer_;
+    const utils::observer_ptr<frame_renderer>& get_frame_renderer() {
+        return frame_renderer_;
     }
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_top_level_renderer() const final;
+    utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const final;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_renderer() {
+    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const frame*>(this)->get_top_level_renderer());
+            const_cast<const frame*>(this)->get_top_level_frame_renderer());
     }
 
     /**
@@ -1451,7 +1451,7 @@ protected:
     frame_strata strata_       = frame_strata::medium;
     bool         is_top_level_ = false;
 
-    utils::observer_ptr<frame_renderer> renderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> frame_renderer_ = nullptr;
 
     std::unique_ptr<backdrop> backdrop_;
 

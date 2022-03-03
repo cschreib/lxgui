@@ -249,21 +249,21 @@ void region::set_relative_dimensions(const vector2f& dimensions) {
     if (parent_)
         set_dimensions(dimensions * parent_->get_apparent_dimensions());
     else
-        set_dimensions(dimensions * get_top_level_renderer()->get_target_dimensions());
+        set_dimensions(dimensions * get_top_level_frame_renderer()->get_target_dimensions());
 }
 
 void region::set_relative_width(float rel_width) {
     if (parent_)
         set_width(rel_width * parent_->get_apparent_dimensions().x);
     else
-        set_width(rel_width * get_top_level_renderer()->get_target_dimensions().x);
+        set_width(rel_width * get_top_level_frame_renderer()->get_target_dimensions().x);
 }
 
 void region::set_relative_height(float rel_height) {
     if (parent_)
         set_height(rel_height * parent_->get_apparent_dimensions().y);
     else
-        set_height(rel_height * get_top_level_renderer()->get_target_dimensions().y);
+        set_height(rel_height * get_top_level_frame_renderer()->get_target_dimensions().y);
 }
 
 const vector2f& region::get_dimensions() const {
@@ -785,10 +785,10 @@ bool region::is_loaded() const {
     return is_loaded_;
 }
 
-utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const {
+utils::observer_ptr<const frame_renderer> region::get_top_level_frame_renderer() const {
     if (!parent_)
         return get_manager().get_root().observer_from_this();
-    return parent_->get_top_level_renderer();
+    return parent_->get_top_level_frame_renderer();
 }
 
 void region::notify_visible() {

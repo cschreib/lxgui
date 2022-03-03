@@ -71,7 +71,7 @@ void scroll_frame::copy_from(const region& obj) {
 
 void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
-        scroll_child_->set_renderer(nullptr);
+        scroll_child_->set_frame_renderer(nullptr);
         clear_strata_list_();
     } else if (!is_virtual() && !scroll_texture_) {
         // Create the scroll texture
@@ -100,7 +100,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
 
         scroll_child_->set_special();
         if (!is_virtual())
-            scroll_child_->set_renderer(observer_from(this));
+            scroll_child_->set_frame_renderer(observer_from(this));
 
         scroll_child_->clear_all_points();
         scroll_child_->set_point(point::top_left, get_name(), -scroll_);
