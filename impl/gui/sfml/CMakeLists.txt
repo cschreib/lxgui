@@ -24,7 +24,7 @@ target_include_directories(lxgui-sfml PUBLIC
 target_link_libraries(lxgui-sfml PUBLIC lxgui::lxgui)
 target_link_libraries(lxgui-sfml PUBLIC sfml::graphics)
 
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml*.hpp)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml_*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lxgui/impl)
 
 list(APPEND LXGUI_INSTALL_TARGETS lxgui-sfml)
