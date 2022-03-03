@@ -456,14 +456,19 @@ void root::clear_hovered_frame_() {
 }
 
 void root::set_hovered_frame_(utils::observer_ptr<frame> obj, const vector2f& mouse_pos) {
-    if (hovered_frame_ && obj != hovered_frame_)
-        hovered_frame_->notify_mouse_in_frame(false, mouse_pos);
+    if (obj == hovered_frame_)
+        return;
 
-    if (obj) {
-        hovered_frame_ = std::move(obj);
+    auto old_hovered_frame = hovered_frame_;
+    hovered_frame_         = std::move(obj);
+
+    if (old_hovered_frame) {
+        old_hovered_frame->notify_mouse_in_frame(false, mouse_pos);
+    }
+
+    if (hovered_frame_) {
         hovered_frame_->notify_mouse_in_frame(true, mouse_pos);
-    } else
-        clear_hovered_frame_();
+    }
 }
 
 void root::on_window_resized_(const vector2ui& dimensions) {

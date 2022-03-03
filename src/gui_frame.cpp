@@ -1479,25 +1479,21 @@ void frame::hide() {
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::notify_mouse_in_frame(bool mouse_inframe, const vector2f& /*position*/) {
+void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*position*/) {
+    if (mouse_in_frame == is_mouse_in_frame_)
+        return;
+
+    is_mouse_in_frame_ = mouse_in_frame;
+
     alive_checker checker(*this);
-
-    if (mouse_inframe) {
-        if (!is_mouse_in_frame_) {
-            fire_script("OnEnter");
-            if (!checker.is_alive())
-                return;
-        }
-
-        is_mouse_in_frame_ = true;
+    if (is_mouse_in_frame_) {
+        fire_script("OnEnter");
+        if (!checker.is_alive())
+            return;
     } else {
-        if (is_mouse_in_frame_) {
-            fire_script("OnLeave");
-            if (!checker.is_alive())
-                return;
-        }
-
-        is_mouse_in_frame_ = false;
+        fire_script("OnLeave");
+        if (!checker.is_alive())
+            return;
     }
 }
 
