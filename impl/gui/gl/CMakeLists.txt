@@ -33,7 +33,7 @@ else()
     target_link_options(lxgui-gl PUBLIC "SHELL:-s MIN_WEBGL_VERSION=2")
 endif()
 
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_gl_*.hpp)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_gl*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lxgui/impl)
 
 list(APPEND LXGUI_INSTALL_TARGETS lxgui-gl)
