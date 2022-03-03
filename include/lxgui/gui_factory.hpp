@@ -110,12 +110,44 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::region, ObjectType>::value>::type>
     void register_region_type() {
-        if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>)
+        if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>) {
             custom_region_list_[ObjectType::class_name] = &create_new_layered_region<ObjectType>;
-        else if constexpr (std::is_base_of_v<gui::frame, ObjectType>)
+        } else if constexpr (std::is_base_of_v<gui::frame, ObjectType>) {
             custom_frame_list_[ObjectType::class_name] = &create_new_frame<ObjectType>;
-        else
+        } else {
             custom_object_list_[ObjectType::class_name] = &create_new_object<ObjectType>;
+        }
+
+        custom_lua_regs_[ObjectType::class_name] = &ObjectType::register_on_lua;
+    }
+
+    /**
+     * \brief Registers a new object type.
+     * \param factory_func Factory function to call to create a new instance
+     * \note Set the first template argument as the C++ type of this object.
+     */
+    template<
+        typename ObjectType,
+        typename FunctionType,
+        typename Enable =
+            typename std::enable_if<std::is_base_of<gui::region, ObjectType>::value>::type>
+    void register_region_type(FunctionType&& factory_func) {
+        if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>) {
+            custom_region_list_[ObjectType::class_name] =
+                [factory_func = std::move(factory_func)](manager& mgr) {
+                    return factory_func(mgr);
+                };
+        } else if constexpr (std::is_base_of_v<gui::frame, ObjectType>) {
+            custom_frame_list_[ObjectType::class_name] =
+                [factory_func = std::move(factory_func)](manager& mgr) {
+                    return factory_func(mgr);
+                };
+        } else {
+            custom_object_list_[ObjectType::class_name] =
+                [factory_func = std::move(factory_func)](manager& mgr) {
+                    return factory_func(mgr);
+                };
+        }
 
         custom_lua_regs_[ObjectType::class_name] = &ObjectType::register_on_lua;
     }
