@@ -586,7 +586,7 @@ void root::on_drag_start_(input::mouse_button button, const vector2f& mouse_pos)
 
     std::string mouse_button = std::string(input::get_mouse_button_codename(button));
 
-    if (hovered_frame->is_registered_for_drag(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(mouse_button)) {
         event_data data;
         data.add(mouse_button);
         data.add(mouse_pos.x);
@@ -618,7 +618,7 @@ void root::on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos) 
 
     std::string mouse_button = std::string(input::get_mouse_button_codename(button));
 
-    if (hovered_frame->is_registered_for_drag(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(mouse_button)) {
         event_data data;
         data.add(mouse_button);
         data.add(mouse_pos.x);

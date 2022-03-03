@@ -126,7 +126,7 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnChar`: Triggered whenever a character is typed into the frame, and
  * the frame has focus (see @ref frame::set_focus).
  * - `OnDragStart`: Triggered when one of the mouse button registered for
- * dragging (see frame::register_for_drag) has been pressed inside the
+ * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
  * recorded.
  * - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
@@ -199,7 +199,7 @@ using script_list_view = script_signal::slot_list_view;
  * scroll *up* in a document).
  * - `OnReceiveDrag`: Triggered when the mouse pointer was previously
  * dragged onto the frame, and when one of the mouse button registered for
- * dragging (see frame::register_for_drag) is released. This enables
+ * dragging (see frame::enable_drag) is released. This enables
  * the "drop" in "drag and drop" operations.
  * - `OnShow`: Triggered when region::show is called, or when the frame
  * is shown indirectly (for example if its parent is itself shown). This
@@ -369,19 +369,39 @@ public:
     void enable_keyboard(bool is_keyboard_enabled);
 
     /**
-     * \brief Sets if this frame can receive keyboard input from a specific key.
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
      * \param key_name The key to capture
-     * \param is_capture_enabled 'true' to enable
      * \note If the frame captures the key, other frames below it will not be able to receive
      * the input from this key. The format of the input key name is standard English,
      * with modifiers for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
      * "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
      * simultaneously. Keyboard input must be enabled for capture to take place.
+     * \see disable_key_capture()
      * \see is_key_capture_enabled()
      * \see enable_keyboard()
      * \see is_keyboard_enabled()
      */
-    void enable_key_capture(const std::string& key_name, bool is_capture_enabled);
+    void enable_key_capture(const std::string& key_name);
+
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from a specific key.
+     * \param key_name The key to capture
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture(const std::string& key_name);
+
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from any key.
+     * \param key_name The key to capture
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture();
 
     /**
      * \brief Checks if this frame has a script defined.
@@ -881,7 +901,7 @@ public:
      * \param button_name The name of the mouse button to check
      * \return 'true' if this frame is registered for drag events with the provided mouse button
      */
-    bool is_registered_for_drag(const std::string& button_name) const;
+    bool is_drag_enabled(const std::string& button_name) const;
 
     /**
      * \brief Checks if this frame can receive keyboard input from a specific key.
@@ -1071,9 +1091,20 @@ public:
 
     /**
      * \brief Tells this frame to react to mouse drag.
-     * \param button_list The list of mouse button allowed
+     * \param button_name The mouse button to react to
      */
-    void register_for_drag(const std::vector<std::string>& button_list);
+    void enable_drag(const std::string& button_name);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag.
+     * \param button_name The mouse button to not react to
+     */
+    void disable_drag(const std::string& button_name);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag from any mouse button.
+     */
+    void disable_drag();
 
     /**
      * \brief Sets if this frame is clamped to screen.

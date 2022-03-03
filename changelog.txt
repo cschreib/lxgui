@@ -116,6 +116,7 @@ Other changes:
  - gui: renamed TOPLEFT to TOP_LEFT, BOTTOMRIGHT to BOTTOM_RIGHT, etc.
  - gui: renamed justifyH to alignX, justifyV to alignY
  - gui: renamed anchor_point to point
+ - gui: renamed register_for_drag to enable_drag
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()

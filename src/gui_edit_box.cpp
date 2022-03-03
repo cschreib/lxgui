@@ -26,7 +26,7 @@ edit_box::edit_box(utils::control_block& block, manager& mgr) :
 
     enable_mouse(true);
     enable_keyboard(true);
-    register_for_drag({"LeftButton"});
+    enable_drag("LeftButton");
 }
 
 bool edit_box::can_use_script(const std::string& script_name) const {

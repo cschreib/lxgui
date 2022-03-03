@@ -33,7 +33,7 @@ class texture;
  * password box (no encryption or other safety measure is used).
  *
  * Note that an edit_box has frame::enable_mouse set to `true`
- * and frame::register_for_drag set to `"LeftButton"` by default.
+ * and frame::enable_drag set to `"LeftButton"` by default.
  *
  * __Events.__ Hard-coded events available to all edit_boxes,
  * in addition to those from #frame:

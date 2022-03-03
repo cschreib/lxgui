@@ -450,11 +450,16 @@ void frame::enable_keyboard(bool is_keyboard_enabled) {
     is_keyboard_enabled_ = is_keyboard_enabled;
 }
 
-void frame::enable_key_capture(const std::string& key_name, bool is_capture_enabled) {
-    if (is_capture_enabled)
-        reg_key_list_.erase(key_name);
-    else
-        reg_key_list_.insert(key_name);
+void frame::enable_key_capture(const std::string& key_name) {
+    reg_key_list_.insert(key_name);
+}
+
+void frame::disable_key_capture(const std::string& key_name) {
+    reg_key_list_.erase(key_name);
+}
+
+void frame::disable_key_capture() {
+    reg_key_list_.clear();
 }
 
 void frame::notify_loaded() {
@@ -789,7 +794,7 @@ bool frame::is_mouse_wheel_enabled() const {
     return is_mouse_wheel_enabled_;
 }
 
-bool frame::is_registered_for_drag(const std::string& button_name) const {
+bool frame::is_drag_enabled(const std::string& button_name) const {
     return reg_drag_list_.find(button_name) != reg_drag_list_.end();
 }
 
@@ -1071,10 +1076,16 @@ void frame::unregister_event(const std::string& event_name) {
     event_receiver_.unregister_event(event_name);
 }
 
-void frame::register_for_drag(const std::vector<std::string>& button_list) {
+void frame::enable_drag(const std::string& button_name) {
+    reg_drag_list_.insert(button_name);
+}
+
+void frame::disable_drag(const std::string& button_name) {
+    reg_drag_list_.erase(button_name);
+}
+
+void frame::disable_drag() {
     reg_drag_list_.clear();
-    for (const auto& button : button_list)
-        reg_drag_list_.insert(button);
 }
 
 void frame::set_clamped_to_screen(bool is_clamped_to_screen) {

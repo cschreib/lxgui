@@ -149,7 +149,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self:register_for_drag("LeftButton");
+                        self:enable_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOM_RIGHT");
@@ -172,7 +172,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self:register_for_drag("LeftButton");
+                        self:enable_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOM_LEFT");
@@ -192,7 +192,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self:register_for_drag("LeftButton");
+                        self:enable_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
                         self:get_parent():start_sizing("LEFT");
@@ -212,7 +212,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self:register_for_drag("LeftButton");
+                        self:enable_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
                         self:get_parent():start_sizing("RIGHT");
@@ -232,7 +232,7 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self:register_for_drag("LeftButton");
+                        self:enable_drag("LeftButton");
                     </OnLoad>
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOM");

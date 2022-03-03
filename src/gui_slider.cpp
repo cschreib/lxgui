@@ -22,7 +22,7 @@ void step_value(float& value, float step) {
 slider::slider(utils::control_block& block, manager& mgr) : frame(block, mgr) {
     type_.push_back(class_name);
     enable_mouse(true);
-    register_for_drag({"LeftButton"});
+    enable_drag("LeftButton");
 }
 
 std::string slider::serialize(const std::string& tab) const {

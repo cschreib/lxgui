@@ -90,7 +90,7 @@
  * - `OnChar`: Triggered whenever a character is typed into the frame, and
  * the frame has focus (see @{Frame:set_focus}).
  * - `OnDragStart`: Triggered when one of the mouse button registered for
- * dragging (see @{Frame:register_for_drag}) has been pressed inside the
+ * dragging (see @{Frame:enable_drag}) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
  * recorded.
  * - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
@@ -170,7 +170,7 @@
  * scroll *up* in a document).
  * - `OnReceiveDrag`: Triggered when the mouse pointer was previously
  * dragged onto the frame, and when one of the mouse button registered for
- * dragging (see @{Frame:register_for_drag}) is released. This enables
+ * dragging (see @{Frame:enable_drag}) is released. This enables
  * the "drop" in "drag and drop" operations.
  * - `OnShow`: Triggered when @{Region:show} is called, or when the frame
  * is shown indirectly (for example if its parent is itself shown). This
@@ -344,6 +344,16 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function enable_key_capture
      */
     type.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
+
+    /** @function disable_key_capture
+     */
+    type.set_function("disable_key_capture", [](frame& self, sol::optional<std::string> key_name) {
+        if (key_name.has_value()) {
+            self.disable_key_capture(key_name.value());
+        } else {
+            self.disable_key_capture();
+        }
+    });
 
     /** @function get_backdrop
      */
@@ -563,22 +573,19 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("register_event", member_function<&frame::register_event>());
 
-    /** @function register_for_drag
+    /** @function enable_drag
      */
-    type.set_function(
-        "register_for_drag",
-        [](frame& self, sol::optional<std::string> button1, sol::optional<std::string> button2,
-           sol::optional<std::string> button3) {
-            std::vector<std::string> button_list;
-            if (button1.has_value())
-                button_list.push_back(button1.value());
-            if (button2.has_value())
-                button_list.push_back(button2.value());
-            if (button3.has_value())
-                button_list.push_back(button3.value());
+    type.set_function("enable_drag", member_function<&frame::enable_drag>());
 
-            self.register_for_drag(button_list);
-        });
+    /** @function disable_drag
+     */
+    type.set_function("disable_drag", [](frame& self, sol::optional<std::string> button_name) {
+        if (button_name.has_value()) {
+            self.disable_drag(button_name.value());
+        } else {
+            self.disable_drag();
+        }
+    });
 
     /** @function set_auto_focus
      */
