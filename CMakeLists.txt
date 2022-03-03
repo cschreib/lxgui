@@ -45,10 +45,6 @@ project(lxgui LANGUAGES CXX VERSION 2.0)
 
 # check compiler versions
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
-    # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
-    # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
-    # -g -fsanitize=address -s INITIAL_MEMORY=200MB
-    set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
     set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
@@ -341,6 +337,15 @@ if(LXGUI_ENABLE_YAML_PARSER)
 endif()
 if(LXGUI_PLATFORM_LINUX)
     target_link_libraries(lxgui PRIVATE m stdc++ stdc++fs)
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
+    # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
+    # -g -fsanitize=address -s INITIAL_MEMORY=200MB
+    target_compile_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+    target_link_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+    target_link_options(lxgui PUBLIC "SHELL:-s MAX_WEBGL_VERSION=3")
 endif()
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"

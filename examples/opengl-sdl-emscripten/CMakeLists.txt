@@ -31,17 +31,12 @@ target_link_libraries(lxgui-test-opengl-sdl-emscripten PRIVATE
 
 # Setup Emscripten-specific stuff
 # Setup compilation options
-set(EMSCRIPTEN_USE_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s ALLOW_MEMORY_GROWTH=1")
-# Setup dependencies
-set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} ${LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN} ${LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN}")
-# Add "interface" folder to the preload-file list
-set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} --preload-file ${PROJECT_SOURCE_DIR}/../../bin/interface@interface")
-# Add "locale" folder to the preload-file list
-set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} --preload-file ${PROJECT_SOURCE_DIR}/../../bin/locale@locale")
+target_link_options(lxgui-test-opengl-sdl-emscripten PRIVATE "SHELL:-s ALLOW_MEMORY_GROWTH=1")
 # Setup custom shell
-set(EMSCRIPTEN_LINK_FLAGS "${EMSCRIPTEN_USE_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/../common/emscripten_shell.html")
-
-set_target_properties(lxgui-test-opengl-sdl-emscripten PROPERTIES COMPILE_FLAGS ${EMSCRIPTEN_USE_FLAGS})
-set_target_properties(lxgui-test-opengl-sdl-emscripten PROPERTIES LINK_FLAGS ${EMSCRIPTEN_LINK_FLAGS})
+target_link_options(lxgui-test-opengl-sdl-emscripten PRIVATE "SHELL:--shell-file ${PROJECT_SOURCE_DIR}/../common/emscripten_shell.html")
+# Add "interface" folder to the preload-file list
+target_link_options(lxgui-test-opengl-sdl-emscripten PRIVATE "SHELL:--preload-file ${PROJECT_SOURCE_DIR}/../../bin/interface@interface")
+# Add "locale" folder to the preload-file list
+target_link_options(lxgui-test-opengl-sdl-emscripten PRIVATE "SHELL:--preload-file ${PROJECT_SOURCE_DIR}/../../bin/locale@locale")
 
 set(CMAKE_EXECUTABLE_SUFFIX .html)
