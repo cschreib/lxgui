@@ -340,7 +340,10 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function enable_key_capture
      */
-    type.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
+    type.set_function(
+        "enable_key_capture",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&)>(&frame::enable_key_capture)>());
 
     /** @function disable_key_capture
      */
@@ -572,7 +575,10 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function enable_drag
      */
-    type.set_function("enable_drag", member_function<&frame::enable_drag>());
+    type.set_function(
+        "enable_drag",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&)>(&frame::enable_drag)>());
 
     /** @function disable_drag
      */

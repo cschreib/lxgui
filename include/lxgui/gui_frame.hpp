@@ -6,6 +6,7 @@
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_region_attributes.hpp"
+#include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_signal.hpp"
@@ -381,14 +382,39 @@ public:
     void enable_key_capture(const std::string& key_name);
 
     /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_id The key to capture
+     * \note See @ref enable_key_capture(const std::string&) for more information.
+     * This overload only allows capturing a single key; for key combinations,
+     * please use the overload taking a string.
+     * \see disable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void enable_key_capture(input::key key_id);
+
+    /**
      * \brief Marks this frame as unable to receive keyboard input from a specific key.
-     * \param key_name The key to capture
+     * \param key_name The key for which to disable capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
      * \see enable_keyboard()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture(const std::string& key_name);
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from a specific key.
+     * \param key_id The key for which to disable capture
+     * \note See @ref disable_key_capture(const std::string&) for more information.
+     * This overload only allows capturing a single key; for key combinations,
+     * please use the overload taking a string.
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture(input::key key_id);
 
     /**
      * \brief Marks this frame as unable to receive keyboard input from any key.
@@ -1093,10 +1119,22 @@ public:
     void enable_drag(const std::string& button_name);
 
     /**
+     * \brief Tells this frame to react to mouse drag.
+     * \param button_id The mouse button to react to
+     */
+    void enable_drag(input::mouse_button button_id);
+
+    /**
      * \brief Tells this frame to not react to mouse drag.
      * \param button_name The mouse button to not react to
      */
     void disable_drag(const std::string& button_name);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag.
+     * \param button_id The mouse button to not react to
+     */
+    void disable_drag(input::mouse_button button_id);
 
     /**
      * \brief Tells this frame to not react to mouse drag from any mouse button.

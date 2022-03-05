@@ -455,8 +455,16 @@ void frame::enable_key_capture(const std::string& key_name) {
     reg_key_list_.insert(key_name);
 }
 
+void frame::enable_key_capture(input::key key_id) {
+    reg_key_list_.insert(std::string{input::get_key_codename(key_id)});
+}
+
 void frame::disable_key_capture(const std::string& key_name) {
     reg_key_list_.erase(key_name);
+}
+
+void frame::disable_key_capture(input::key key_id) {
+    reg_key_list_.erase(std::string{input::get_key_codename(key_id)});
 }
 
 void frame::disable_key_capture() {
@@ -1081,8 +1089,16 @@ void frame::enable_drag(const std::string& button_name) {
     reg_drag_list_.insert(button_name);
 }
 
+void frame::enable_drag(input::mouse_button button_id) {
+    reg_drag_list_.insert(std::string{input::get_mouse_button_codename(button_id)});
+}
+
 void frame::disable_drag(const std::string& button_name) {
     reg_drag_list_.erase(button_name);
+}
+
+void frame::disable_drag(input::mouse_button button_id) {
+    reg_drag_list_.erase(std::string{input::get_mouse_button_codename(button_id)});
 }
 
 void frame::disable_drag() {

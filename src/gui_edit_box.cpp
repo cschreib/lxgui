@@ -25,8 +25,9 @@ edit_box::edit_box(utils::control_block& block, manager& mgr) :
     iter_carret_pos_old_ = unicode_text_.begin();
 
     enable_mouse(true);
+    enable_drag(input::mouse_button::left);
+
     enable_keyboard(true);
-    enable_drag("LeftButton");
 }
 
 bool edit_box::can_use_script(const std::string& script_name) const {
