@@ -180,13 +180,18 @@ void source::on_sfml_event(const sf::Event& event) {
         window_dimensions_ = gui::vector2ui(event.size.width, event.size.height);
         on_window_resized(window_dimensions_);
     } else if (event.type == sf::Event::KeyPressed) {
-        key key                                              = from_sfml_(event.key.code);
-        keyboard_.is_key_down[static_cast<std::size_t>(key)] = true;
-        on_key_pressed(key);
+        key  key_id = from_sfml_(event.key.code);
+        bool repeat = keyboard_.is_key_down[static_cast<std::size_t>(key_id)];
+        keyboard_.is_key_down[static_cast<std::size_t>(key_id)] = true;
+        if (repeat) {
+            on_key_pressed_repeat(key_id);
+        } else {
+            on_key_pressed(key_id);
+        }
     } else if (event.type == sf::Event::KeyReleased) {
-        key key                                              = from_sfml_(event.key.code);
-        keyboard_.is_key_down[static_cast<std::size_t>(key)] = false;
-        on_key_released(key);
+        key key_id                                              = from_sfml_(event.key.code);
+        keyboard_.is_key_down[static_cast<std::size_t>(key_id)] = false;
+        on_key_released(key_id);
     } else if (event.type == sf::Event::MouseButtonPressed) {
         mouse_button button = mouse_from_sfml[event.mouseButton.button];
         mouse_.is_button_down[static_cast<std::size_t>(button)] = true;

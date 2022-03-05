@@ -103,12 +103,15 @@ void edit_box::update(float delta) {
 void edit_box::fire_script(const std::string& script_name, const event_data& data) {
     alive_checker checker(*this);
 
-    // Do not fire OnKeyUp/OnKeyDown events when typing
+    // Do not fire OnKeyUp/OnKeyRepeat/OnKeyDown events when typing
     bool bypass_event = false;
-    if (has_focus() && (script_name == "OnKeyUp" || script_name == "OnKeyDown"))
+    if (has_focus() &&
+        (script_name == "OnKeyUp" || script_name == "OnKeyDown" || script_name == "OnKeyRepeat")) {
         bypass_event = true;
-    if (!has_focus() && (script_name == "OnChar"))
+    }
+    if (!has_focus() && (script_name == "OnChar")) {
         bypass_event = true;
+    }
 
     if (!bypass_event) {
         base::fire_script(script_name, data);
@@ -118,8 +121,8 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
     if (script_name == "OnKeyDown" && has_focus()) {
         key  key_id           = data.get<key>(0);
-        bool shift_is_pressed = data.get<bool>(2);
-        bool ctrl_is_pressed  = data.get<bool>(3);
+        bool shift_is_pressed = data.get<bool>(1);
+        bool ctrl_is_pressed  = data.get<bool>(2);
 
         if (key_id == key::k_return || key_id == key::k_numpadenter) {
             fire_script("OnEnterPressed");

@@ -86,6 +86,7 @@ Other changes:
  - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
  - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
  - gui: added frame::enable_key_capture
+ - gui: added OnKeyRepeat frame event
  - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer

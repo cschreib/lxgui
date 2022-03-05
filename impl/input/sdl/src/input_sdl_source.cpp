@@ -210,17 +210,23 @@ void source::on_sdl_event(const SDL_Event& event) {
 
     switch (event.type) {
     case SDL_KEYDOWN: {
-        key key                                              = from_sdl_(event.key.keysym.sym);
-        keyboard_.is_key_down[static_cast<std::size_t>(key)] = true;
+        key key_id = from_sdl_(event.key.keysym.sym);
 
-        on_key_pressed(key);
+        keyboard_.is_key_down[static_cast<std::size_t>(key_id)] = true;
+
+        if (event.key.repeat != 0) {
+            on_key_pressed_repeat(key_id);
+        } else {
+            on_key_pressed(key_id);
+        }
         break;
     }
     case SDL_KEYUP: {
-        key key                                              = from_sdl_(event.key.keysym.sym);
-        keyboard_.is_key_down[static_cast<std::size_t>(key)] = false;
+        key key_id = from_sdl_(event.key.keysym.sym);
 
-        on_key_released(key);
+        keyboard_.is_key_down[static_cast<std::size_t>(key_id)] = false;
+
+        on_key_released(key_id);
         break;
     }
     case SDL_MOUSEBUTTONDOWN: [[fallthrough]];

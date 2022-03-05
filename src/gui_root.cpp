@@ -61,10 +61,13 @@ root::root(utils::control_block& block, manager& mgr) :
         }));
 
     connections_.push_back(input_dispatcher.on_key_pressed.connect(
-        [&](input::key key) { on_key_state_changed_(key, true); }));
+        [&](input::key key) { on_key_state_changed_(key, true, false); }));
+
+    connections_.push_back(input_dispatcher.on_key_pressed_repeat.connect(
+        [&](input::key key) { on_key_state_changed_(key, true, true); }));
 
     connections_.push_back(input_dispatcher.on_key_released.connect(
-        [&](input::key key) { on_key_state_changed_(key, false); }));
+        [&](input::key key) { on_key_state_changed_(key, false, false); }));
 }
 
 root::~root() {
@@ -666,7 +669,7 @@ get_key_name(input::key key_id, bool is_shift_pressed, bool is_ctrl_pressed, boo
     return name;
 }
 
-void root::on_key_state_changed_(input::key key_id, bool is_down) {
+void root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat) {
     const auto& input_dispatcher = get_manager().get_input_dispatcher();
     bool        is_shift_pressed = input_dispatcher.shift_is_pressed();
     bool        is_ctrl_pressed  = input_dispatcher.ctrl_is_pressed();
@@ -688,20 +691,25 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     if (topmost_frame) {
         event_data data;
         data.add(static_cast<std::underlying_type_t<input::key>>(key_id));
-        data.add(key_name);
         data.add(is_shift_pressed);
         data.add(is_ctrl_pressed);
         data.add(is_alt_pressed);
+        data.add(key_name);
 
-        if (is_down)
-            topmost_frame->fire_script("OnKeyDown", data);
-        else
+        if (is_down) {
+            if (is_repeat) {
+                topmost_frame->fire_script("OnKeyRepeat", data);
+            } else {
+                topmost_frame->fire_script("OnKeyDown", data);
+            }
+        } else {
             topmost_frame->fire_script("OnKeyUp", data);
+        }
 
         return;
     }
 
-    if (is_down) {
+    if (is_down && !is_repeat) {
         // If no frame is found, try the key_binder
         try {
             if (get_key_binder().on_key_down(
@@ -717,10 +725,15 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     }
 
     // Forward to the world
-    if (is_down)
-        world_input_dispatcher_.on_key_pressed(key_id);
-    else
+    if (is_down) {
+        if (is_repeat) {
+            world_input_dispatcher_.on_key_pressed_repeat(key_id);
+        } else {
+            world_input_dispatcher_.on_key_pressed(key_id);
+        }
+    } else {
         world_input_dispatcher_.on_key_released(key_id);
+    }
 }
 
 void root::on_mouse_button_state_changed_(

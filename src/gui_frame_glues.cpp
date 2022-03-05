@@ -62,8 +62,8 @@
  * or @{Frame:set_script}. However, some hard-coded events require explicit
  * enabling. In particular:
  *
- * - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
- * @{Frame:enable_keyboard}, and either focus (see @{Frame:set_focus}) or
+ * - Events related to keyboard input (`OnKeyDown`, `OnKeyRepeat`, `OnKeyUp`)
+ * require @{Frame:enable_keyboard}, and either focus (see @{Frame:set_focus}) or
  * explicit key capture (see @{Frame:enable_key_capture}).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
@@ -114,26 +114,20 @@
  * - `OnHide`: Triggered when @{Region:hide} is called, or when the frame
  * is hidden indirectly (for example if its parent is itself hidden). This
  * will only fire if the frame was previously shown.
- * - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
- * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
- * been registered for capture using @{Frame:enable_key_capture}. If no
+ * - `OnKeyDown`: Triggered when a keyboard key is pressed. Will only
+ * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+ * been registered for capture using @ref frame::enable_key_capture. If no
  * keyboard-enabled frame is focused, only the topmost frame with
- * @{Frame:enable_key_capture} will receive the event. If no frame has
+ * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @{Manager:set_key_binding}). This event provides two arguments to the registered
- * callback: a number identifying the key, and the human-readable name of the
- * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @{Manager:set_key_binding}.
- * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
- * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
- * been registered for capture using @{Frame:enable_key_capture}. If no
- * keyboard-enabled frame is focused, only the topmost frame with
- * @{Frame:enable_key_capture} will receive the event. If no frame has
- * captured the key, then the key is tested for existing key bindings (see
- * @{Manager:set_key_binding}). This event provides two arguments to the registered
- * callback: a number identifying the key, and the human-readable name of the
- * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @{Manager:set_key_binding}.
+ * @ref key_binder). This event provides two arguments to the registered
+ * callback: a number identifying the main key being pressed, three boolean flags
+ * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
+ * key combination being pressed (e.g., Shift+A).
+ * - `OnKeyRepeat`: Similar to `OnKeyDown`, but triggered when a key has been
+ * long-pressed and the operating system generated repeat events.
+ * - `OnKeyUp`: Similar to `OnKeyDown`, but triggered when a keyboard key is
+ * released.
  * - `OnLeave`: Triggered when the mouse pointer leaves the area of the
  * screen occupied by the frame. Note: this only takes into account the
  * position and size of the frame and its title region, but not the space

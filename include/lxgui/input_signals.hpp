@@ -83,6 +83,13 @@ public:
     utils::signal<void(input::key)> on_key_pressed;
 
     /**
+     * \brief Signal triggered when a keyboard key is long-pressed and repeats
+     * \details Arguments:
+     *  - keyboard key that generated this event
+     */
+    utils::signal<void(input::key)> on_key_pressed_repeat;
+
+    /**
      * \brief Signal triggered when a keyboard key is released
      * \details Arguments:
      *  - keyboard key that generated this event

@@ -28,6 +28,7 @@ class source;
  *  - @ref on_mouse_drag_start
  *  - @ref on_mouse_drag_stop
  *  - @ref on_key_pressed
+ *  - @ref on_key_pressed_repeat
  *  - @ref on_key_released
  *  - @ref on_text_entered
  *

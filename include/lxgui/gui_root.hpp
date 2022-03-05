@@ -300,7 +300,7 @@ private:
     void on_drag_start_(input::mouse_button button, const vector2f& mouse_pos);
     void on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos);
     void on_text_entered_(std::uint32_t c);
-    void on_key_state_changed_(input::key key, bool is_down);
+    void on_key_state_changed_(input::key key, bool is_down, bool is_repeat);
     void on_mouse_button_state_changed_(
         input::mouse_button button, bool is_down, bool is_double_click, const vector2f& mouse_pos);
 

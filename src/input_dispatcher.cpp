@@ -20,6 +20,11 @@ dispatcher::dispatcher(source& src) : source_(src) {
         on_key_pressed(key_id);
     }));
 
+    connections_.push_back(src.on_key_pressed_repeat.connect([&](key key_id) {
+        // Forward
+        on_key_pressed_repeat(key_id);
+    }));
+
     connections_.push_back(src.on_key_released.connect([&](key key_id) {
         // Forward
         on_key_released(key_id);
