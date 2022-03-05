@@ -21,18 +21,15 @@ namespace lxgui::gui {
 region::region(utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     utils::enable_observer_from_this<region>(block), manager_(mgr) {
 
-    type_.push_back(class_name);
-
     if (attr.is_virtual)
-        set_virtual();
+        set_virtual_();
 
     if (attr.parent)
         set_name_and_parent_(attr.name, attr.parent);
     else
         set_name_(attr.name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 }
 
 region::~region() {
@@ -531,7 +528,7 @@ bool region::is_virtual() const {
     return is_virtual_;
 }
 
-void region::set_virtual() {
+void region::set_virtual_() {
     is_virtual_ = true;
 }
 
@@ -765,10 +762,6 @@ void region::render() const {}
 
 sol::state& region::get_lua_() {
     return get_manager().get_lua();
-}
-
-void region::create_glue() {
-    create_glue_(static_cast<region*>(this));
 }
 
 void region::remove_glue() {

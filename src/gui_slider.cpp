@@ -21,10 +21,8 @@ void step_value(float& value, float step) {
 
 slider::slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     frame(block, mgr, attr) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 
     enable_mouse(true);
     enable_drag(input::mouse_button::left);
@@ -343,10 +341,6 @@ void slider::update_thumb_texture_() {
 void slider::notify_borders_need_update() {
     base::notify_borders_need_update();
     notify_thumb_texture_needs_update_();
-}
-
-void slider::create_glue() {
-    create_glue_(this);
 }
 
 void slider::notify_thumb_texture_needs_update_() {

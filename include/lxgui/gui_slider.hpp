@@ -188,9 +188,6 @@ public:
      */
     bool is_in_region(const vector2f& position) const override;
 
-    /// Returns this region's Lua glue.
-    void create_glue() override;
-
     /// Tells this region that its borders need updating.
     void notify_borders_need_update() override;
 

@@ -14,10 +14,8 @@ namespace lxgui::gui {
 font_string::font_string(
     utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     layered_region(block, mgr, attr) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 }
 
 void font_string::render() const {
@@ -83,10 +81,6 @@ std::string font_string::serialize(const std::string& tab) const {
     }
 
     return str.str();
-}
-
-void font_string::create_glue() {
-    create_glue_(this);
 }
 
 void font_string::copy_from(const region& obj) {

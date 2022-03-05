@@ -26,8 +26,7 @@ frame::frame(utils::control_block& block, manager& mgr, const frame_core_attribu
     base(block, mgr, attr), event_receiver_(mgr.get_event_emitter()), frame_renderer_(attr.rdr) {
     type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 
     if (!is_virtual_) {
         // Tell the renderer to render this region
@@ -71,10 +70,6 @@ void frame::render() const {
                 reg->render();
         }
     }
-}
-
-void frame::create_glue() {
-    create_glue_(this);
 }
 
 std::string frame::serialize(const std::string& tab) const {

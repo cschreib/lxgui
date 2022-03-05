@@ -12,20 +12,14 @@ namespace lxgui::gui {
 
 button::button(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     frame(block, mgr, attr) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 
     enable_mouse(true);
 }
 
 std::string button::serialize(const std::string& tab) const {
     return base::serialize(tab);
-}
-
-void button::create_glue() {
-    create_glue_(this);
 }
 
 bool button::can_use_script(const std::string& script_name) const {

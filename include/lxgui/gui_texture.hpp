@@ -222,9 +222,6 @@ public:
     void
     set_vertex_color(const color& c, std::size_t index = std::numeric_limits<std::size_t>::max());
 
-    /// Creates the associated Lua glue.
-    void create_glue() override;
-
     /**
      * \brief Parses data from a layout_node.
      * \param node The layout node

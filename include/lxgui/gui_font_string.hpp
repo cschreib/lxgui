@@ -282,9 +282,6 @@ public:
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
 
-    /// Creates the associated Lua glue.
-    void create_glue() override;
-
     /**
      * \brief Parses data from a layout_node.
      * \param node The layout node

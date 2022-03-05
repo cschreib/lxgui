@@ -43,9 +43,6 @@ public:
      */
     std::string serialize(const std::string& tab) const override;
 
-    /// Creates the associated Lua glue.
-    void create_glue() override;
-
     /**
      * \brief Removes this region from its parent and return an owning pointer.
      * \return An owning pointer to this region

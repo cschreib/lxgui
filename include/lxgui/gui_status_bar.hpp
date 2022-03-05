@@ -174,9 +174,6 @@ public:
      */
     bool is_reversed() const;
 
-    /// Returns this region's Lua glue.
-    void create_glue() override;
-
     /**
      * \brief Updates this region's logic.
      * \param delta Time spent since last update

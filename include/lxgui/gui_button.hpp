@@ -56,9 +56,6 @@ public:
      */
     std::string serialize(const std::string& tab) const override;
 
-    /// Creates the associated Lua glue.
-    void create_glue() override;
-
     /**
      * \brief Returns 'true' if this button can use a script.
      * \param script_name The name of the script

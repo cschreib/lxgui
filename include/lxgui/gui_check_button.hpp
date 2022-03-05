@@ -105,9 +105,6 @@ public:
      */
     void set_disabled_checked_texture(utils::observer_ptr<texture> tex);
 
-    /// Returns this region's Lua glue.
-    void create_glue() override;
-
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

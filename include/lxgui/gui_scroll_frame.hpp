@@ -167,9 +167,6 @@ public:
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
 
-    /// Returns this region's Lua glue.
-    void create_glue() override;
-
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

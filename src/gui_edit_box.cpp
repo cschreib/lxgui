@@ -19,10 +19,8 @@ namespace lxgui::gui {
 edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     frame(block, mgr, attr),
     carret_timer_(blink_period_, utils::periodic_timer::start_type::first_tick, false) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 
     iter_carret_pos_     = unicode_text_.begin();
     iter_carret_pos_old_ = unicode_text_.begin();
@@ -196,10 +194,6 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
         move_carret_at_({data.get<float>(1), data.get<float>(2)});
     }
-}
-
-void edit_box::create_glue() {
-    create_glue_(this);
 }
 
 void edit_box::set_text(const utils::ustring& content) {

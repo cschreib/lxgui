@@ -15,10 +15,8 @@ namespace lxgui::gui {
 
 texture::texture(utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     layered_region(block, mgr, attr), renderer_(mgr.get_renderer()) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 }
 
 std::string texture::serialize(const std::string& tab) const {
@@ -74,10 +72,6 @@ void texture::render() const {
     } else {
         renderer_.render_quad(quad_);
     }
-}
-
-void texture::create_glue() {
-    create_glue_(this);
 }
 
 void texture::copy_from(const region& obj) {

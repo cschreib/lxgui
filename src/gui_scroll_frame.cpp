@@ -14,10 +14,8 @@ namespace lxgui::gui {
 scroll_frame::scroll_frame(
     utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     frame(block, mgr, attr) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 }
 
 scroll_frame::~scroll_frame() {
@@ -286,10 +284,6 @@ void scroll_frame::notify_strata_needs_redraw(frame_strata strata_id) {
 
     redraw_scroll_render_target_flag_ = true;
     notify_renderer_need_redraw();
-}
-
-void scroll_frame::create_glue() {
-    create_glue_(this);
 }
 
 void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) {

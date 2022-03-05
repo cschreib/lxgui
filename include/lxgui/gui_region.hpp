@@ -573,12 +573,6 @@ public:
     bool is_virtual() const;
 
     /**
-     * \brief Makes this region virtual.
-     * \note See is_virtual().
-     */
-    void set_virtual();
-
-    /**
      * \brief Flags this object as "special".
      * \note Special objects are not automatically copied
      * in the frame inheritance process. They must be
@@ -709,9 +703,6 @@ public:
      */
     const registry& get_registry() const;
 
-    /// Creates the associated Lua glue.
-    virtual void create_glue();
-
     /// Removes the Lua glue.
     void remove_glue();
 
@@ -752,10 +743,16 @@ protected:
     sol::state& get_lua_();
 
     template<typename T>
-    void create_glue_(T* self);
+    void create_glue_(T& self);
 
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
+
+    /**
+     * \brief Makes this region virtual.
+     * \note See is_virtual().
+     */
+    void set_virtual_();
 
     /**
      * \brief Sets this region's name.
@@ -780,6 +777,14 @@ protected:
      * parent, call set_parent_().
      */
     void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
+
+    /**
+     * \brief Set up function to call in all derived class constructors.
+     * \param self A pointer to the derived `this`
+     * \param attr The region attributes provided to the constructor
+     */
+    template<typename T>
+    void initialize_(T& self, const region_core_attributes& attr);
 
     manager& manager_;
 

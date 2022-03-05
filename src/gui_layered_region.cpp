@@ -13,10 +13,8 @@ namespace lxgui::gui {
 layered_region::layered_region(
     utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     base(block, mgr, attr) {
-    type_.push_back(class_name);
 
-    if (!is_virtual())
-        create_glue();
+    initialize_(*this, attr);
 }
 
 std::string layered_region::serialize(const std::string& tab) const {
@@ -25,10 +23,6 @@ std::string layered_region::serialize(const std::string& tab) const {
     str << tab << "  # Layer      : " << utils::to_string(layer_) << "\n";
 
     return str.str();
-}
-
-void layered_region::create_glue() {
-    create_glue_(this);
 }
 
 utils::owner_ptr<region> layered_region::release_from_parent() {
