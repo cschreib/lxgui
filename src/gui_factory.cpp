@@ -86,9 +86,8 @@ bool factory::finalize_object_(registry& reg, region& object, const region_core_
             return false;
     }
 
-    // NB: this needs to be done after the region is fully constructed, since this
-    // requires calling virtual functions that cannot be called correctly from
-    // the constructor.
+    // NB: This needs to be done after the region is fully constructed, since this
+    // should override defaults set in any constructor.
     apply_inheritance_(object, attr);
 
     return true;
