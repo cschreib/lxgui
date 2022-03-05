@@ -1549,6 +1549,55 @@ protected:
     bool is_auto_focus_ = false;
 };
 
+/**
+ * \brief Helper class to simplify defining script handles for derived frame types.
+ * \details Any class inheriting from @ref frame should also inherit privately from
+ * this class, then bring @ref add_script and @ref set_script to the public scope.
+ * This simplifies the definition of new scripts from C++ code, without having to
+ * do explicit casts.
+ *
+ * For example:
+ *
+ * \code{cpp}
+ * class button : public frame, private add_script_for<button> {
+ *     friend add_script_for<button>; // necessary for downcast
+ *
+ * public:
+ *     // Bring in functions into public scope
+ *     using add_script_for<button>::add_script;
+ *     using add_script_for<button>::set_script;
+ * };
+ * \endcode
+ */
+template<typename T>
+struct add_script_for {
+    /// \copydoc lxgui::gui::frame::add_script(const std::string&, lxgui::gui::script_function, lxgui::gui::script_info)
+    template<typename Function>
+    utils::connection add_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+        return static_cast<frame*>(static_cast<T*>(this))
+            ->add_script(
+                script_name,
+                [handler = std::move(handler)](frame& self, const event_data& data) {
+                    handler(static_cast<T&>(self), data);
+                },
+                info);
+    }
+
+    /// \copydoc lxgui::gui::frame::set_script(const std::string&, lxgui::gui::script_function, lxgui::gui::script_info)
+    template<typename Function>
+    utils::connection set_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+        return static_cast<frame*>(static_cast<T*>(this))
+            ->set_script(
+                script_name,
+                [handler = std::move(handler)](frame& self, const event_data& data) {
+                    handler(static_cast<T&>(self), data);
+                },
+                info);
+    }
+};
+
 } // namespace lxgui::gui
 
 #endif

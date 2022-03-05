@@ -40,7 +40,8 @@ class font_string;
  * - `OnEnable`: Triggered by button::enable.
  * - `OnDisable`: Triggered by button::disable.
  */
-class button : public frame {
+class button : public frame, private add_script_for<button> {
+    friend add_script_for<button>;
     using base = frame;
 
 public:

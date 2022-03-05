@@ -59,7 +59,8 @@ class texture;
  * - `OnTextSet`: Triggered by edit_box::set_text. Will always be
  * followed by `OnTextChanged`.
  */
-class edit_box : public frame {
+class edit_box : public frame, private add_script_for<edit_box> {
+    friend add_script_for<edit_box>;
     using base = frame;
 
 public:

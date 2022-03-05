@@ -12,7 +12,8 @@ namespace lxgui::gui {
  * \details This region works exactly like a classic #button, but is has two
  * additional special textures for the check sign.
  */
-class check_button : public button {
+class check_button : public button, private add_script_for<check_button> {
+    friend add_script_for<check_button>;
     using base = button;
 
 public:

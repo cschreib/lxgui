@@ -32,7 +32,8 @@ class texture;
  * changes, or when the size of the scroll frame changes.
  * - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
  */
-class scroll_frame : public frame, public frame_renderer {
+class scroll_frame : public frame, public frame_renderer, private add_script_for<scroll_frame> {
+    friend add_script_for<scroll_frame>;
     using base = frame;
 
 public:

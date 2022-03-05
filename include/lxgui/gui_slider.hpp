@@ -27,7 +27,8 @@ class texture;
  * slider::set_min_max_values, and slider::set_value_step if the
  * previous value would not satisfy the new constraints.
  */
-class slider : public frame {
+class slider : public frame, private add_script_for<slider> {
+    friend add_script_for<slider>;
     using base = frame;
 
 public:

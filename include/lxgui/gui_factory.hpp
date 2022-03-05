@@ -82,7 +82,6 @@ public:
     /**
      * \brief Creates a new frame.
      * \param reg The registry in which to register this frame
-     * \param rdr The frame_renderer that will render this frame
      * \param attr The attributes of the frame
      * \return The new frame
      * \note This function takes care of the basic initializing: the
