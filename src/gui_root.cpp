@@ -548,6 +548,8 @@ void root::on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos) 
 
     if (dragged_frame_) {
         event_data data;
+        data.add(movement.x);
+        data.add(movement.y);
         data.add(mouse_pos.x);
         data.add(mouse_pos.y);
         dragged_frame_->fire_script("OnDragMove", data);

@@ -169,7 +169,7 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
         selection_end_pos_ = selection_start_pos_ =
             get_letter_id_at_(vector2f(data.get<float>(1), data.get<float>(2)));
     } else if (script_name == "OnDragMove") {
-        std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(0), data.get<float>(1)));
+        std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(2), data.get<float>(3)));
         if (pos != selection_end_pos_) {
             if (pos != std::numeric_limits<std::size_t>::max()) {
                 highlight_text(selection_start_pos_, pos);

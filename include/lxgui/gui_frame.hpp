@@ -130,7 +130,10 @@ using script_list_view = script_signal::slot_list_view;
  * area of the screen occupied by the frame, and a mouse movement is first
  * recorded.
  * - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
- * until `OnDragStop` is triggered.
+ * until `OnDragStop` is triggered. This event provides four argument to
+ * the registered callback: the amount of mouse movement in X and Y since the
+ * last call to `OnDragMove` (or since `OnDragStart` if this is the first call),
+ * and the mouse X and Y position.
  * - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
  * released.
  * - `OnEnter`: Triggered when the mouse pointer enters into the area of
