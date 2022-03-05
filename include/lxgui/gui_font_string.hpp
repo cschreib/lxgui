@@ -36,7 +36,8 @@ class font_string : public layered_region {
 
 public:
     /// Constructor.
-    explicit font_string(utils::control_block& block, manager& mgr);
+    explicit font_string(
+        utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

@@ -47,7 +47,7 @@ public:
     enum class state { up, down, disabled };
 
     /// Constructor.
-    explicit button(utils::control_block& block, manager& mgr);
+    explicit button(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

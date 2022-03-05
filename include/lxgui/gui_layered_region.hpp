@@ -33,7 +33,8 @@ class layered_region : public region {
 
 public:
     /// Constructor.
-    explicit layered_region(utils::control_block& block, manager& mgr);
+    explicit layered_region(
+        utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

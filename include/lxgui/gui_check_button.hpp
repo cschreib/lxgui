@@ -17,7 +17,8 @@ class check_button : public button {
 
 public:
     /// Constructor.
-    explicit check_button(utils::control_block& block, manager& mgr);
+    explicit check_button(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

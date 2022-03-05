@@ -16,10 +16,13 @@ using namespace lxgui::input;
 
 namespace lxgui::gui {
 
-edit_box::edit_box(utils::control_block& block, manager& mgr) :
-    frame(block, mgr),
+edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr),
     carret_timer_(blink_period_, utils::periodic_timer::start_type::first_tick, false) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 
     iter_carret_pos_     = unicode_text_.begin();
     iter_carret_pos_old_ = unicode_text_.begin();

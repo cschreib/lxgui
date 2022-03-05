@@ -10,8 +10,13 @@
 
 namespace lxgui::gui {
 
-button::button(utils::control_block& block, manager& mgr) : frame(block, mgr) {
+button::button(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
+
     enable_mouse(true);
 }
 

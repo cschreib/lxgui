@@ -26,7 +26,7 @@ public:
     enum class blend_mode { none, blend, key, add, mod };
 
     /// Constructor.
-    explicit texture(utils::control_block& block, manager& mgr);
+    explicit texture(utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

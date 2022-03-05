@@ -34,7 +34,8 @@ class status_bar : public frame {
 
 public:
     /// Constructor.
-    explicit status_bar(utils::control_block& block, manager& mgr);
+    explicit status_bar(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

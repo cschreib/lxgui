@@ -33,9 +33,9 @@ class renderer;
  * and is responsible for their lifetime, update, and rendering.
  */
 class root :
+    public utils::enable_observer_from_this<root>,
     public frame_renderer,
-    public frame_container,
-    public utils::enable_observer_from_this<root> {
+    public frame_container {
 public:
     /**
      * \brief Constructor.

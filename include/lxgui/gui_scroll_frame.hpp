@@ -37,7 +37,8 @@ class scroll_frame : public frame, public frame_renderer {
 
 public:
     /// Constructor.
-    explicit scroll_frame(utils::control_block& block, manager& mgr);
+    explicit scroll_frame(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /// Destructor.
     ~scroll_frame() override;

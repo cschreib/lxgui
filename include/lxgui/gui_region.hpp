@@ -5,6 +5,7 @@
 #include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_region_core_attributes.hpp"
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
@@ -157,7 +158,7 @@ class region : public utils::enable_observer_from_this<region> {
 
 public:
     /// Contructor.
-    explicit region(utils::control_block& block, manager& mgr);
+    explicit region(utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /// Destructor.
     ~region() override;

@@ -3,9 +3,9 @@
 
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event_receiver.hpp"
+#include "lxgui/gui_frame_core_attributes.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
-#include "lxgui/gui_region_attributes.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
@@ -276,7 +276,7 @@ public:
         utils::view::non_null_filter>;
 
     /// Constructor.
-    explicit frame(utils::control_block& block, manager& mgr);
+    explicit frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /// Destructor.
     ~frame() override;
@@ -528,7 +528,7 @@ public:
      * notify_loaded() when you are done with any extra initialization you require on
      * this frame. If you do not, the frame's OnLoad callback will not fire.
      */
-    utils::observer_ptr<frame> create_child(region_core_attributes attr);
+    utils::observer_ptr<frame> create_child(frame_core_attributes attr);
 
     /**
      * \brief Creates a new frame as child of this frame.
@@ -545,7 +545,7 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<FrameType> create_child(region_core_attributes attr) {
+    utils::observer_ptr<FrameType> create_child(frame_core_attributes attr) {
         attr.object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_child(std::move(attr)));
@@ -567,7 +567,7 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<FrameType> create_child(const std::string& name) {
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.name        = name;
         attr.object_type = FrameType::class_name;
 

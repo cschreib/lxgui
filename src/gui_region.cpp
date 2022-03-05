@@ -18,9 +18,21 @@
 
 namespace lxgui::gui {
 
-region::region(utils::control_block& block, manager& mgr) :
+region::region(utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     utils::enable_observer_from_this<region>(block), manager_(mgr) {
+
     type_.push_back(class_name);
+
+    if (attr.is_virtual)
+        set_virtual();
+
+    if (attr.parent)
+        set_name_and_parent_(attr.name, attr.parent);
+    else
+        set_name_(attr.name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 region::~region() {

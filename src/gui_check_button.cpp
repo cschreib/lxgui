@@ -8,8 +8,13 @@
 
 namespace lxgui::gui {
 
-check_button::check_button(utils::control_block& block, manager& mgr) : button(block, mgr) {
+check_button::check_button(
+    utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    button(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 std::string check_button::serialize(const std::string& tab) const {

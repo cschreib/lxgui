@@ -19,8 +19,13 @@ void step_value(float& value, float step) {
         value = std::round(value / step) * step;
 }
 
-slider::slider(utils::control_block& block, manager& mgr) : frame(block, mgr) {
+slider::slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
+
     enable_mouse(true);
     enable_drag("LeftButton");
 }

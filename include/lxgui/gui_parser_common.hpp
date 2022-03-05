@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_PARSER_COMMON_HPP
 #define LXGUI_GUI_PARSER_COMMON_HPP
 
-#include "lxgui/gui_region_attributes.hpp"
+#include "lxgui/gui_region_core_attributes.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"
 

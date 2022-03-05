@@ -64,7 +64,7 @@ class edit_box : public frame {
 
 public:
     /// Constructor.
-    explicit edit_box(utils::control_block& block, manager& mgr);
+    explicit edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Copies a region's parameters into this edit_box (inheritance).

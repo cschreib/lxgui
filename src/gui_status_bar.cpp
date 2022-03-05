@@ -15,8 +15,13 @@ std::array<float, 4> select_uvs(const std::array<float, 8>& uvs) {
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
-status_bar::status_bar(utils::control_block& block, manager& mgr) : frame(block, mgr) {
+status_bar::status_bar(
+    utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 std::string status_bar::serialize(const std::string& tab) const {

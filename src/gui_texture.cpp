@@ -13,9 +13,12 @@
 
 namespace lxgui::gui {
 
-texture::texture(utils::control_block& block, manager& mgr) :
-    layered_region(block, mgr), renderer_(mgr.get_renderer()) {
+texture::texture(utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
+    layered_region(block, mgr, attr), renderer_(mgr.get_renderer()) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 std::string texture::serialize(const std::string& tab) const {

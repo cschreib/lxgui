@@ -17,8 +17,8 @@
 namespace lxgui::gui {
 
 root::root(utils::control_block& block, manager& mgr) :
-    frame_container(mgr.get_factory(), object_registry_, this),
     utils::enable_observer_from_this<root>(block),
+    frame_container(mgr.get_factory(), object_registry_, observer_from_this()),
     manager_(mgr),
     renderer_(mgr.get_renderer()),
     world_input_dispatcher_(mgr.get_world_input_dispatcher()) {

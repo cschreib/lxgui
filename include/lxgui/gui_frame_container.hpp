@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_FRAME_CONTAINER_HPP
 #define LXGUI_GUI_FRAME_CONTAINER_HPP
 
-#include "lxgui/gui_region_attributes.hpp"
+#include "lxgui/gui_frame_core_attributes.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"
 #include "lxgui/utils_view.hpp"
@@ -50,7 +50,7 @@ public:
      * \param reg The registry in which new frames should be registered
      * \param rdr The frame_renderer that will render these frames (nullptr if none).
      */
-    explicit frame_container(factory& fac, registry& reg, frame_renderer* rdr);
+    explicit frame_container(factory& fac, registry& reg, utils::observer_ptr<frame_renderer> rdr);
 
     virtual ~frame_container()              = default;
     frame_container(const frame_container&) = delete;
@@ -68,10 +68,10 @@ public:
      * you require on this frame. If you do not, the frame's OnLoad
      * callback will not fire.
      */
-    utils::observer_ptr<frame> create_root_frame(region_core_attributes attr) {
+    utils::observer_ptr<frame> create_root_frame(frame_core_attributes attr) {
         attr.parent = nullptr;
 
-        return create_root_frame_(attr);
+        return create_root_frame_(std::move(attr));
     }
 
     /**
@@ -88,11 +88,11 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<frame> create_root_frame(region_core_attributes attr) {
+    utils::observer_ptr<frame> create_root_frame(frame_core_attributes attr) {
         attr.object_type = FrameType::CLASS_NAME;
         attr.parent      = nullptr;
 
-        return utils::static_pointer_cast<FrameType>(create_root_frame_(attr));
+        return utils::static_pointer_cast<FrameType>(create_root_frame_(std::move(attr)));
     }
 
     /**
@@ -110,11 +110,11 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<frame> create_root_frame(const std::string& name) {
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.name        = name;
         attr.object_type = FrameType::class_name;
 
-        return utils::static_pointer_cast<FrameType>(create_root_frame_(attr));
+        return utils::static_pointer_cast<FrameType>(create_root_frame_(std::move(attr)));
     }
 
     /**
@@ -184,14 +184,14 @@ public:
     }
 
 protected:
-    virtual utils::observer_ptr<frame> create_root_frame_(const region_core_attributes& attr);
+    virtual utils::observer_ptr<frame> create_root_frame_(frame_core_attributes attr);
 
     void clear_frames_();
 
 private:
-    factory&        factory_;
-    registry&       registry_;
-    frame_renderer* renderer_;
+    factory&                            factory_;
+    registry&                           registry_;
+    utils::observer_ptr<frame_renderer> renderer_;
 
     root_frame_list root_frames_;
 };

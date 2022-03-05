@@ -356,7 +356,7 @@ utils::observer_ptr<frame> frame::parse_child_(const layout_node& node, const st
         if (!type.empty())
             attr.object_type = type;
 
-        auto obj = create_child(attr);
+        auto obj = create_child(frame_core_attributes{attr});
         if (!obj)
             return nullptr;
 

@@ -22,6 +22,7 @@ namespace lxgui::gui {
 
 class region;
 struct region_core_attributes;
+struct frame_core_attributes;
 class layered_region;
 class frame;
 class registry;
@@ -38,18 +39,21 @@ class manager;
 class factory {
 private:
     template<typename T>
-    static utils::owner_ptr<region> create_new_object(manager& mgr) {
-        return utils::make_owned<T>(mgr);
+    static utils::owner_ptr<region>
+    create_new_object(manager& mgr, const region_core_attributes& attr) {
+        return utils::make_owned<T>(mgr, attr);
     }
 
     template<typename T>
-    static utils::owner_ptr<frame> create_new_frame(manager& mgr) {
-        return utils::make_owned<T>(mgr);
+    static utils::owner_ptr<frame>
+    create_new_frame(manager& mgr, const frame_core_attributes& attr) {
+        return utils::make_owned<T>(mgr, attr);
     }
 
     template<typename T>
-    static utils::owner_ptr<layered_region> create_new_layered_region(manager& mgr) {
-        return utils::make_owned<T>(mgr);
+    static utils::owner_ptr<layered_region>
+    create_new_layered_region(manager& mgr, const region_core_attributes& attr) {
+        return utils::make_owned<T>(mgr, attr);
     }
 
 public:
@@ -87,8 +91,7 @@ public:
      * you require on this frame. If you do not, the frame's OnLoad
      * callback will not fire.
      */
-    utils::owner_ptr<frame>
-    create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr);
+    utils::owner_ptr<frame> create_frame(registry& reg, const frame_core_attributes& attr);
 
     /**
      * \brief Creates a new layered_region.
@@ -134,18 +137,21 @@ public:
     void register_region_type(FunctionType&& factory_func) {
         if constexpr (std::is_base_of_v<gui::layered_region, ObjectType>) {
             custom_region_list_[ObjectType::class_name] =
-                [factory_func = std::move(factory_func)](manager& mgr) {
-                    return factory_func(mgr);
+                [factory_func =
+                     std::move(factory_func)](manager& mgr, const region_core_attributes& attr) {
+                    return factory_func(mgr, attr);
                 };
         } else if constexpr (std::is_base_of_v<gui::frame, ObjectType>) {
             custom_frame_list_[ObjectType::class_name] =
-                [factory_func = std::move(factory_func)](manager& mgr) {
-                    return factory_func(mgr);
+                [factory_func =
+                     std::move(factory_func)](manager& mgr, const frame_core_attributes& attr) {
+                    return factory_func(mgr, attr);
                 };
         } else {
             custom_object_list_[ObjectType::class_name] =
-                [factory_func = std::move(factory_func)](manager& mgr) {
-                    return factory_func(mgr);
+                [factory_func =
+                     std::move(factory_func)](manager& mgr, const region_core_attributes& attr) {
+                    return factory_func(mgr, attr);
                 };
         }
 
@@ -168,10 +174,17 @@ private:
     template<typename T>
     using string_map = std::unordered_map<std::string, T>;
 
-    string_map<std::function<utils::owner_ptr<region>(manager&)>>         custom_object_list_;
-    string_map<std::function<utils::owner_ptr<frame>(manager&)>>          custom_frame_list_;
-    string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> custom_region_list_;
-    string_map<std::function<void(sol::state&)>>                          custom_lua_regs_;
+    string_map<std::function<utils::owner_ptr<region>(manager&, const region_core_attributes&)>>
+        custom_object_list_;
+
+    string_map<std::function<utils::owner_ptr<frame>(manager&, const frame_core_attributes&)>>
+        custom_frame_list_;
+
+    string_map<
+        std::function<utils::owner_ptr<layered_region>(manager&, const region_core_attributes&)>>
+        custom_region_list_;
+
+    string_map<std::function<void(sol::state&)>> custom_lua_regs_;
 };
 
 } // namespace lxgui::gui

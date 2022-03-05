@@ -32,7 +32,7 @@ class slider : public frame {
 
 public:
     /// Constructor.
-    explicit slider(utils::control_block& block, manager& mgr);
+    explicit slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.

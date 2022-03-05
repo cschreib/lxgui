@@ -11,8 +11,13 @@
 
 namespace lxgui::gui {
 
-scroll_frame::scroll_frame(utils::control_block& block, manager& mgr) : frame(block, mgr) {
+scroll_frame::scroll_frame(
+    utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 scroll_frame::~scroll_frame() {
@@ -54,7 +59,7 @@ void scroll_frame::copy_from(const region& obj) {
     this->set_vertical_scroll(scroll_obj->get_vertical_scroll());
 
     if (const frame* other_child = scroll_obj->get_scroll_child().get()) {
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.object_type = other_child->get_object_type();
         attr.name        = other_child->get_raw_name();
         attr.inheritance = {scroll_obj->get_scroll_child()};

@@ -22,9 +22,17 @@
 
 namespace lxgui::gui {
 
-frame::frame(utils::control_block& block, manager& mgr) :
-    base(block, mgr), event_receiver_(mgr.get_event_emitter()) {
+frame::frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    base(block, mgr, attr), event_receiver_(mgr.get_event_emitter()), frame_renderer_(attr.rdr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
+
+    if (!is_virtual_) {
+        // Tell the renderer to render this region
+        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
+    }
 }
 
 frame::~frame() {
@@ -255,7 +263,7 @@ void frame::copy_from(const region& obj) {
         if (!child || child->is_special())
             continue;
 
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.object_type = child->get_object_type();
         attr.name        = child->get_raw_name();
         attr.inheritance = {child};
@@ -570,12 +578,11 @@ frame::create_layered_region(layer layer_id, region_core_attributes attr) {
     return add_region(std::move(reg));
 }
 
-utils::observer_ptr<frame> frame::create_child(region_core_attributes attr) {
+utils::observer_ptr<frame> frame::create_child(frame_core_attributes attr) {
     attr.is_virtual = is_virtual();
     attr.parent     = observer_from(this);
 
-    auto new_frame = get_manager().get_factory().create_frame(
-        get_registry(), get_top_level_frame_renderer().get(), attr);
+    auto new_frame = get_manager().get_factory().create_frame(get_registry(), attr);
 
     if (!new_frame)
         return nullptr;

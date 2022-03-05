@@ -11,8 +11,13 @@
 
 namespace lxgui::gui {
 
-font_string::font_string(utils::control_block& block, manager& mgr) : layered_region(block, mgr) {
+font_string::font_string(
+    utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
+    layered_region(block, mgr, attr) {
     type_.push_back(class_name);
+
+    if (!is_virtual())
+        create_glue();
 }
 
 void font_string::render() const {
