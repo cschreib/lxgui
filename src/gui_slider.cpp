@@ -27,7 +27,7 @@ slider::slider(utils::control_block& block, manager& mgr, const frame_core_attri
         create_glue();
 
     enable_mouse(true);
-    enable_drag("LeftButton");
+    enable_drag(input::mouse_button::left);
 }
 
 std::string slider::serialize(const std::string& tab) const {
