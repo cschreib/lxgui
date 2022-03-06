@@ -157,15 +157,13 @@ void manager::load_ui() {
     create_lua_();
     read_files_();
 
-    is_loaded_     = true;
-    close_ui_flag_ = false;
+    is_loaded_      = true;
+    close_ui_flag_  = false;
+    reload_ui_flag_ = false;
 }
 
 void manager::close_ui() {
-    if (is_updating_)
-        close_ui_flag_ = true;
-    else
-        close_ui_now();
+    close_ui_flag_ = true;
 }
 
 void manager::close_ui_now() {
@@ -184,13 +182,12 @@ void manager::close_ui_now() {
 
     is_loaded_          = false;
     is_first_iteration_ = true;
+    close_ui_flag_      = false;
+    reload_ui_flag_     = false;
 }
 
 void manager::reload_ui() {
-    if (is_updating_)
-        reload_ui_flag_ = true;
-    else
-        reload_ui_now();
+    reload_ui_flag_ = true;
 }
 
 void manager::reload_ui_now() {
@@ -199,8 +196,6 @@ void manager::reload_ui_now() {
     gui::out << "Done. Loading UI..." << std::endl;
     load_ui();
     gui::out << "Done." << std::endl;
-
-    reload_ui_flag_ = false;
 }
 
 void manager::render_ui() const {
@@ -216,8 +211,6 @@ bool manager::is_loaded() const {
 }
 
 void manager::update_ui(float delta) {
-    is_updating_ = true;
-
     DEBUG_LOG(" Update regions...");
     root_->update(delta);
 
@@ -229,12 +222,10 @@ void manager::update_ui(float delta) {
         root_->notify_hovered_frame_dirty();
     }
 
-    is_updating_ = false;
-
-    if (reload_ui_flag_)
-        reload_ui_now();
     if (close_ui_flag_)
         close_ui_now();
+    else if (reload_ui_flag_)
+        reload_ui_now();
 }
 
 std::string manager::print_ui() const {
