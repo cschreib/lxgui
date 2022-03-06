@@ -28,6 +28,9 @@ frame::frame(utils::control_block& block, manager& mgr, const frame_core_attribu
 
     initialize_(*this, attr);
 
+    if (parent_)
+        level_ = parent_->get_level() + 1;
+
     if (!is_virtual_) {
         // Tell the renderer to render this region
         get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
@@ -195,23 +198,13 @@ void frame::copy_from(const region& obj) {
     }
 
     this->set_frame_strata(frame_obj->get_frame_strata());
-
-    utils::observer_ptr<const frame> high_parent = observer_from(this);
-
-    for (int i = 0; i < frame_obj->get_level(); ++i) {
-        if (!high_parent->get_parent())
-            break;
-
-        high_parent = high_parent->get_parent();
-    }
-
-    this->set_level(high_parent->get_level() + frame_obj->get_level());
-
+    // NB: level is not inherited on purpose; this is difficult to make sense of
     this->set_top_level(frame_obj->is_top_level());
 
     this->enable_mouse_click(frame_obj->is_mouse_click_enabled());
     this->enable_mouse_move(frame_obj->is_mouse_move_enabled());
     this->enable_mouse_wheel(frame_obj->is_mouse_wheel_enabled());
+    this->enable_keyboard(frame_obj->is_keyboard_enabled());
 
     this->set_movable(frame_obj->is_movable());
     this->set_clamped_to_screen(frame_obj->is_clamped_to_screen());
@@ -240,8 +233,6 @@ void frame::copy_from(const region& obj) {
 
         new_art->notify_loaded();
     }
-
-    build_layer_list_flag_ = true;
 
     if (frame_obj->backdrop_) {
         backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
@@ -581,8 +572,6 @@ utils::observer_ptr<frame> frame::create_child(frame_core_attributes attr) {
 
     if (!new_frame)
         return nullptr;
-
-    new_frame->set_level(get_level() + 1);
 
     return add_child(std::move(new_frame));
 }
