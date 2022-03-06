@@ -602,9 +602,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
     child_list_.push_back(std::move(child));
 
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> old_top_level_renderer =
-            added_child->get_top_level_frame_renderer();
-        utils::observer_ptr<frame_renderer> new_top_level_renderer = get_top_level_frame_renderer();
+        auto old_top_level_renderer = added_child->get_top_level_frame_renderer();
+        auto new_top_level_renderer = get_top_level_frame_renderer();
         if (old_top_level_renderer != new_top_level_renderer) {
             old_top_level_renderer->notify_rendered_frame(added_child, false);
             new_top_level_renderer->notify_rendered_frame(added_child, true);
@@ -1269,21 +1268,24 @@ void frame::raise() {
     if (!is_top_level_)
         return;
 
-    int  old_level          = level_;
-    auto top_level_renderer = get_top_level_frame_renderer();
-    level_                  = top_level_renderer->get_highest_level(strata_) + 1;
+    int  old_level = level_;
+    auto rdr       = get_top_level_frame_renderer();
+    int  top_level = rdr->get_highest_level(strata_);
 
-    if (level_ > old_level) {
-        if (!is_virtual()) {
-            top_level_renderer->notify_frame_level_changed(observer_from(this), old_level, level_);
-        }
+    if (old_level == top_level) {
+        // This frame is already on top, nothing to do.
+        return;
+    }
 
-        int amount = level_ - old_level;
+    level_   = top_level + 1;
+    int diff = level_ - old_level;
 
-        for (auto& child : get_children())
-            child.add_level_(amount);
-    } else
-        level_ = old_level;
+    if (!is_virtual()) {
+        rdr->notify_frame_level_changed(observer_from(this), old_level, level_);
+    }
+
+    for (auto& child : get_children())
+        child.add_level_(diff);
 }
 
 void frame::enable_auto_focus(bool enable) {
