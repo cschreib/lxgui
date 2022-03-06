@@ -184,6 +184,9 @@ public:
      */
     void update(float delta) override;
 
+    using add_script_for<status_bar>::add_script;
+    using add_script_for<status_bar>::set_script;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

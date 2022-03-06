@@ -106,6 +106,9 @@ public:
      */
     void set_disabled_checked_texture(utils::observer_ptr<texture> tex);
 
+    using add_script_for<check_button>::add_script;
+    using add_script_for<check_button>::set_script;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

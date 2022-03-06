@@ -192,6 +192,9 @@ public:
     /// Tells this region that its borders need updating.
     void notify_borders_need_update() override;
 
+    using add_script_for<slider>::add_script;
+    using add_script_for<slider>::set_script;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

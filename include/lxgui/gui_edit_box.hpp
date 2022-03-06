@@ -339,6 +339,9 @@ public:
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
 
+    using add_script_for<edit_box>::add_script;
+    using add_script_for<edit_box>::set_script;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 

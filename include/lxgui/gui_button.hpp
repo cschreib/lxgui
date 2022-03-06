@@ -334,6 +334,9 @@ public:
      */
     const vector2f& get_pushed_text_offset() const;
 
+    using add_script_for<button>::add_script;
+    using add_script_for<button>::set_script;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 
