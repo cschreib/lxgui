@@ -15,9 +15,9 @@
             </OnLoad>
             <OnMouseDown>
                 local value = self:get_value();
-                if (arg1 == "LeftButton") then
+                if (arg2 == "LeftButton") then
                     value = value + 1;
-                elseif (arg1 == "RightButton") then
+                elseif (arg2 == "RightButton") then
                     value = value - 1;
                 end
 

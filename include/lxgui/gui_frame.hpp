@@ -129,14 +129,16 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnDragStart`: Triggered when one of the mouse button registered for
  * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
- * recorded.
+ * recorded. This event provides four argument to the registered callback:
+ * a number identifying the mouse button that started the drag, the human-readable
+ * name of this button, and the mouse X and Y position.
  * - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
  * until `OnDragStop` is triggered. This event provides four argument to
  * the registered callback: the amount of mouse movement in X and Y since the
  * last call to `OnDragMove` (or since `OnDragStart` if this is the first call),
  * and the mouse X and Y position.
- * - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
- * released.
+ * - `OnDragStop`: Similar to `OnDragStart`, but triggered when the mouse button
+ * is released after `OnDragStart`.
  * - `OnEnter`: Triggered when the mouse pointer enters into the area of
  * the screen occupied by the frame. Note: this only takes into account the
  * position and size of the frame and its title region, but not the space
@@ -160,7 +162,7 @@ using script_list_view = script_signal::slot_list_view;
  * keyboard-enabled frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides two arguments to the registered
+ * @ref key_binder). This event provides five arguments to the registered
  * callback: a number identifying the main key being pressed, three boolean flags
  * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
  * key combination being pressed (e.g., Shift+A).
@@ -179,22 +181,21 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnLoad`: Triggered just after the frame is created. This is where
  * you would normally register for events and specific inputs, set up
  * initial states for extra logic, or do localization.
- * - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
+ * - `OnMouseDown`: Triggered when a mouse button is pressed and this frame is
  * the topmost mouse-click-enabled frame under the mouse pointer. Will not
- * trigger if the frame is hidden. This event provides one argument to
- * the registered callback: a string identifying the mouse button
- * (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
- * - `OnMouseUp`: Triggered when any mouse button is released and this frame is
- * the topmost mouse-click-enabled frame under the mouse pointer. Will not
- * trigger if the frame is hidden. This event provides one argument to
- * the registered callback: a string identifying the mouse button
- * (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+ * trigger if the frame is hidden. This event provides four arguments to
+ * the registered callback: a number identifying the mouse button, a string
+ * containing the human-readable name of this button (`"LeftButton"`,
+ * `"RightButton"`, or `"MiddleButton"`), and the mouse X and Y position.
+ * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
+ * is released.
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
  * the topmost mouse-wheel-enabled frame under the mouse pointer. This event
- * provides one argument to the registered callback: a number indicating by
- * how many "notches" the wheel has turned in this event. A positive value
- * means the wheel has been moved "away" from the user (this would normally
- * scroll *up* in a document).
+ * provides three arguments to the registered callback. The first is a number
+ * indicating by how many "notches" the wheel has turned in this event. A
+ * positive value means the wheel has been moved "away" from the user (this
+ * would normally scroll *up* in a document). The other two arguments
+ * are the mouse X and Y position.
  * - `OnReceiveDrag`: Triggered when the mouse pointer was previously
  * dragged onto the frame, and when one of the mouse button registered for
  * dragging (see frame::enable_drag) is released. This enables

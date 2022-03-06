@@ -77,11 +77,11 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 
             float value;
             if (orientation_ == orientation::horizontal) {
-                float offset = data.get<float>(1) - border_list_.left;
+                float offset = data.get<float>(2) - border_list_.left;
                 value        = offset / apparent_size.x;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             } else {
-                float offset = data.get<float>(2) - border_list_.top;
+                float offset = data.get<float>(3) - border_list_.top;
                 value        = offset / apparent_size.y;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             }

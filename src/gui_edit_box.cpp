@@ -192,7 +192,7 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
         unlight_text();
 
-        move_carret_at_({data.get<float>(1), data.get<float>(2)});
+        move_carret_at_({data.get<float>(2), data.get<float>(3)});
     }
 }
 
