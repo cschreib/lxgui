@@ -27,8 +27,7 @@ class texture;
  * slider::set_min_max_values, and slider::set_value_step if the
  * previous value would not satisfy the new constraints.
  */
-class slider : public frame, private add_script_for<slider> {
-    friend add_script_for<slider>;
+class slider : public frame {
     using base = frame;
 
 public:
@@ -191,9 +190,6 @@ public:
 
     /// Tells this region that its borders need updating.
     void notify_borders_need_update() override;
-
-    using add_script_for<slider>::add_script;
-    using add_script_for<slider>::set_script;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

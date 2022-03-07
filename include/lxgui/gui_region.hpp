@@ -834,10 +834,39 @@ const ObjectType* down_cast(const region* self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
     if (self && !object && self->is_object_type(ObjectType::class_name)) {
         throw gui::exception(
-            self->type_.back(), "cannot use down_cast() to " + std::string(ObjectType::class_name) +
-                                    " as object is being destroyed");
+            self->get_object_type(), "cannot use down_cast() to " +
+                                         std::string(ObjectType::class_name) +
+                                         " as object is being destroyed");
     }
     return object;
+}
+
+/**
+ * \brief Obtain a reference to a derived class.
+ * \param self The reference to down cast
+ * \return A reference to a derived class
+ * \note Like dynamic_cast(), this will throw if this region
+ * is not of the requested type. It will also throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
+ */
+template<typename ObjectType>
+const ObjectType& down_cast(const region& self) {
+    const ObjectType* object = dynamic_cast<const ObjectType*>(self);
+    if (self && !object) {
+        if (self.is_object_type(ObjectType::class_name)) {
+            throw gui::exception(
+                self.get_object_type(), "cannot use down_cast() to " +
+                                            std::string(ObjectType::class_name) +
+                                            " as object is being destroyed");
+        } else {
+            throw gui::exception(
+                self.get_object_type(), "cannot use down_cast() to " +
+                                            std::string(ObjectType::class_name) +
+                                            " as object is not of the right type");
+        }
+    }
+    return *object;
 }
 
 /**
@@ -852,6 +881,20 @@ const ObjectType* down_cast(const region* self) {
 template<typename ObjectType>
 ObjectType* down_cast(region* self) {
     return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(self)));
+}
+
+/**
+ * \brief Obtain a reference to a derived class.
+ * \param self The reference to down cast
+ * \return A reference to a derived class
+ * \note Like dynamic_cast(), this will throw if this region
+ * is not of the requested type. It will also throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
+ */
+template<typename ObjectType>
+ObjectType& down_cast(region& self) {
+    return const_cast<ObjectType&>(down_cast<ObjectType>(const_cast<const region&>(self)));
 }
 
 /**

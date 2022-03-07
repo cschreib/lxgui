@@ -40,8 +40,7 @@ class font_string;
  * - `OnEnable`: Triggered by button::enable.
  * - `OnDisable`: Triggered by button::disable.
  */
-class button : public frame, private add_script_for<button> {
-    friend add_script_for<button>;
+class button : public frame {
     using base = frame;
 
 public:
@@ -333,9 +332,6 @@ public:
      * \return This button's pushed text offset
      */
     const vector2f& get_pushed_text_offset() const;
-
-    using add_script_for<button>::add_script;
-    using add_script_for<button>::set_script;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

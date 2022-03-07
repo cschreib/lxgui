@@ -32,8 +32,7 @@ class texture;
  * changes, or when the size of the scroll frame changes.
  * - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
  */
-class scroll_frame : public frame, public frame_renderer, private add_script_for<scroll_frame> {
-    friend add_script_for<scroll_frame>;
+class scroll_frame : public frame, public frame_renderer {
     using base = frame;
 
 public:
@@ -167,9 +166,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    using add_script_for<scroll_frame>::add_script;
-    using add_script_for<scroll_frame>::set_script;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

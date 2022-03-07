@@ -29,8 +29,7 @@ class texture;
  * This can also be triggered by status_bar::set_min_max_values if
  * the previous value would not satisfy the new constraints.
  */
-class status_bar : public frame, private add_script_for<status_bar> {
-    friend add_script_for<status_bar>;
+class status_bar : public frame {
     using base = frame;
 
 public:
@@ -183,9 +182,6 @@ public:
      * the helper class alive_checker.
      */
     void update(float delta) override;
-
-    using add_script_for<status_bar>::add_script;
-    using add_script_for<status_bar>::set_script;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

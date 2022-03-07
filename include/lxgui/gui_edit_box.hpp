@@ -59,8 +59,7 @@ class texture;
  * - `OnTextSet`: Triggered by edit_box::set_text. Will always be
  * followed by `OnTextChanged`.
  */
-class edit_box : public frame, private add_script_for<edit_box> {
-    friend add_script_for<edit_box>;
+class edit_box : public frame {
     using base = frame;
 
 public:
@@ -338,9 +337,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    using add_script_for<edit_box>::add_script;
-    using add_script_for<edit_box>::set_script;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

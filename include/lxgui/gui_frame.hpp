@@ -9,6 +9,7 @@
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
+#include "lxgui/utils_meta.hpp"
 #include "lxgui/utils_signal.hpp"
 #include "lxgui/utils_view.hpp"
 
@@ -983,6 +984,7 @@ public:
      * \param content The content of the script, as Lua code
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note The script_info parameter is used only for displaying error messages.
      * This function is meant to be used by the layout file parser. If you want to
      * manually define your own script handlers, prefer the other overloads.
@@ -998,6 +1000,7 @@ public:
      * \param handler The handler of the script, as a Lua function
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a Lua function to be called for the event specified in script_name.
      * This provides more flexibility compared to using C++ function, but also has a
      * larger overhead. If performance is a concern, prefer the other overload taking a
@@ -1028,11 +1031,61 @@ public:
     }
 
     /**
+     * \brief Adds an additional handler script to this frame (executed after existing scripts).
+     * \param script_name The name of the script (e.g., "OnEvent")
+     * \param handler The handler of the script, as a C++ function (see below for expected signature)
+     * \param info The location where this script has been defined
+     * \return A connection object, to disable the script if needed.
+     *
+     * \note This defines a C++ function to be called for the event specified in \p script_name.
+     * This provides the best performance, but lacks direct access to the Lua
+     * environment. If this is required, prefer the other overload taking a Lua function
+     * instead.
+     *
+     * \note This overload enables taking handler scripts with a `self` parameter of type other than
+     * \ref frame, for example:
+     * \begin_code{cpp}
+     * add_script([](button& self, const event_data& data) { ... });
+     * \end_code
+     * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
+     * will be reported. However this has a cost; if you are sure of the type and want to bypass
+     * this cost, just supply the `self` type as the first template argument to this function:
+     * \begin_code{cpp}
+     * add_script<button>([](button& self, const event_data& data) { ... });
+     * \end_code
+     */
+    template<typename DerivedType = void, typename Function>
+    utils::connection add_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+        constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+        using derived_type = std::decay_t<std::conditional_t<
+            use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+        constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
+        return add_script(
+            script_name,
+            script_function(
+                [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    if constexpr (use_no_cast) {
+                        handler(self, data);
+                    } else if constexpr (use_automatic_cast) {
+                        handler(down_cast<derived_type>(self), data);
+                    } else {
+                        handler(static_cast<derived_type&>(self), data);
+                    }
+                }),
+            info);
+    }
+
+    /**
      * \brief Sets a new handler script for this frame (replacing existing scripts).
      * \param script_name The name of the script (e.g., "OnEvent")
      * \param content The content of the script, as Lua code
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note The script_info parameter is used only for displaying error messages.
      * This function is meant to be used by the layout file parser. If you want to
      * manually define your own script handlers, prefer the other overloads.
@@ -1048,6 +1101,7 @@ public:
      * \param handler The handler of the script, as a Lua function
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a Lua function to be called for the event specified in script_name.
      * This provides more flexibility compared to using C++ function, but also has a
      * larger overhead. If performance is a concern, prefer the other overload taking a
@@ -1066,6 +1120,7 @@ public:
      * \param handler The handler of the script, as a C++ function of signature \ref script_signature
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a C++ function to be called for the event specified in script_name.
      * This provides the best performance, but lacks direct access to the Lua
      * environment. If this is required, prefer the other overload taking a Lua function
@@ -1074,6 +1129,55 @@ public:
     utils::connection set_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
         return define_script_(script_name, std::move(handler), false, info);
+    }
+
+    /**
+     * \brief Sets a new handler script for this frame (replacing existing scripts).
+     * \param script_name The name of the script (e.g., "OnEvent")
+     * \param handler The handler of the script, as a C++ function of signature \ref script_signature
+     * \param info The location where this script has been defined
+     * \return A connection object, to disable the script if needed.
+     *
+     * \note This defines a C++ function to be called for the event specified in script_name.
+     * This provides the best performance, but lacks direct access to the Lua
+     * environment. If this is required, prefer the other overload taking a Lua function
+     * instead.
+     *
+     * \note This overload enables taking handler scripts with a `self` parameter of type other than
+     * \ref frame, for example:
+     * \begin_code{cpp}
+     * add_script([](button& self, const event_data& data) { ... });
+     * \end_code
+     * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
+     * will be reported. However this has a cost; if you are sure of the type and want to bypass
+     * this cost, just supply the `self` type as the first template argument to this function:
+     * \begin_code{cpp}
+     * add_script<button>([](button& self, const event_data& data) { ... });
+     * \end_code
+     */
+    template<typename DerivedType = void, typename Function>
+    utils::connection set_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+        constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+        using derived_type = std::decay_t<std::conditional_t<
+            use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+        constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
+        return set_script(
+            script_name,
+            script_function(
+                [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    if constexpr (use_no_cast) {
+                        handler(self, data);
+                    } else if constexpr (use_automatic_cast) {
+                        handler(down_cast<derived_type>(self), data);
+                    } else {
+                        handler(static_cast<derived_type&>(self), data);
+                    }
+                }),
+            info);
     }
 
     /**
@@ -1548,55 +1652,6 @@ protected:
 
     bool is_focused_    = false;
     bool is_auto_focus_ = false;
-};
-
-/**
- * \brief Helper class to simplify defining script handles for derived frame types.
- * \details Any class inheriting from @ref frame should also inherit privately from
- * this class, then bring @ref add_script and @ref set_script to the public scope.
- * This simplifies the definition of new scripts from C++ code, without having to
- * do explicit casts.
- *
- * For example:
- *
- * \code{cpp}
- * class button : public frame, private add_script_for<button> {
- *     friend add_script_for<button>; // necessary for downcast
- *
- * public:
- *     // Bring in functions into public scope
- *     using add_script_for<button>::add_script;
- *     using add_script_for<button>::set_script;
- * };
- * \endcode
- */
-template<typename T>
-struct add_script_for {
-    /// \copydoc lxgui::gui::frame::add_script(const std::string&, lxgui::gui::script_function, lxgui::gui::script_info)
-    template<typename Function>
-    utils::connection add_script(
-        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
-        return static_cast<frame*>(static_cast<T*>(this))
-            ->add_script(
-                script_name,
-                [handler = std::move(handler)](frame& self, const event_data& data) {
-                    handler(static_cast<T&>(self), data);
-                },
-                info);
-    }
-
-    /// \copydoc lxgui::gui::frame::set_script(const std::string&, lxgui::gui::script_function, lxgui::gui::script_info)
-    template<typename Function>
-    utils::connection set_script(
-        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
-        return static_cast<frame*>(static_cast<T*>(this))
-            ->set_script(
-                script_name,
-                [handler = std::move(handler)](frame& self, const event_data& data) {
-                    handler(static_cast<T&>(self), data);
-                },
-                info);
-    }
 };
 
 } // namespace lxgui::gui
