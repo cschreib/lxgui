@@ -44,7 +44,7 @@ jobs:
         run: unzip windows-dependencies-${{env.compiler}}-${{env.arch}}.zip
       
       - name: Configure CMake
-        run: cmake -B ${{ env.build }} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/dependencies -DCMAKE_PREFIX_PATH=${{github.workspace}}/dependencies -A x64
+        run: cmake -B ${{ env.build }} -DLXGUI_BUILD_EXAMPLES=0 -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/dependencies -DCMAKE_PREFIX_PATH=${{github.workspace}}/dependencies -A x64
 
       # Build is required as generated source files are used
       #- name: Build CMake
