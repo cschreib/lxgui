@@ -169,7 +169,7 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
         update_carret_position_();
     } else if (script_name == "OnDragStart") {
         selection_end_pos_ = selection_start_pos_ =
-            get_letter_id_at_(vector2f(data.get<float>(1), data.get<float>(2)));
+            get_letter_id_at_(vector2f(data.get<float>(2), data.get<float>(3)));
     } else if (script_name == "OnDragMove") {
         std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(2), data.get<float>(3)));
         if (pos != selection_end_pos_) {

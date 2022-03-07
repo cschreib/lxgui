@@ -54,7 +54,7 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 
     if (script_name == "OnDragStart") {
         if (thumb_texture_ &&
-            thumb_texture_->is_in_region({data.get<float>(1), data.get<float>(2)})) {
+            thumb_texture_->is_in_region({data.get<float>(2), data.get<float>(3)})) {
             anchor& a = thumb_texture_->modify_point(point::center);
 
             get_manager().get_root().start_moving(
