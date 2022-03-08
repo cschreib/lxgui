@@ -1057,17 +1057,18 @@ public:
     template<typename DerivedType = void, typename Function>
     utils::connection add_script(
         const std::string& script_name, Function&& handler, script_info info = script_info{}) {
-        constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
-
-        using derived_type = std::decay_t<std::conditional_t<
-            use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
-
-        constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
 
         return add_script(
             script_name,
             script_function(
                 [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+                    using derived_type = std::decay_t<std::conditional_t<
+                        use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+                    constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
                     if constexpr (use_no_cast) {
                         handler(self, data);
                     } else if constexpr (use_automatic_cast) {
@@ -1158,17 +1159,18 @@ public:
     template<typename DerivedType = void, typename Function>
     utils::connection set_script(
         const std::string& script_name, Function&& handler, script_info info = script_info{}) {
-        constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
-
-        using derived_type = std::decay_t<std::conditional_t<
-            use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
-
-        constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
 
         return set_script(
             script_name,
             script_function(
                 [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+                    using derived_type = std::decay_t<std::conditional_t<
+                        use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+                    constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
                     if constexpr (use_no_cast) {
                         handler(self, data);
                     } else if constexpr (use_automatic_cast) {
