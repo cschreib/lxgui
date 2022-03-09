@@ -222,10 +222,13 @@ void manager::update_ui(float delta) {
         root_->notify_hovered_frame_dirty();
     }
 
-    if (close_ui_flag_)
+    if (close_ui_flag_) {
         close_ui_now();
-    else if (reload_ui_flag_)
+    } else if (reload_ui_flag_) {
         reload_ui_now();
+        // Call update again, otherwise we call render() with no prior update() call.
+        update_ui(0.0);
+    }
 }
 
 std::string manager::print_ui() const {
