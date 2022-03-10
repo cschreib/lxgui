@@ -78,6 +78,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacelxgui_1_1utils_1_1impl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils_1_1impl.html">impl</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui_1_1utils_1_1range"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils_1_1range.html">range</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui_1_1utils_1_1view"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils_1_1view.html">view</a></td></tr>
@@ -108,6 +110,9 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:aa48fba030a2374e71546d365c7c0f821"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa48fba030a2374e71546d365c7c0f821">string_vector</a> = std::vector&lt; std::string &gt;</td></tr>
 <tr class="separator:aa48fba030a2374e71546d365c7c0f821"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5aa39d9017c4252a8f43aca1e8e746"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aef5aa39d9017c4252a8f43aca1e8e746"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aef5aa39d9017c4252a8f43aca1e8e746">first_function_argument</a> = typename <a class="el" href="structlxgui_1_1utils_1_1impl_1_1first__function__argument__.html">impl::first_function_argument_</a>&lt; decltype(&amp;std::decay_t&lt; T &gt;::operator())&gt;::type</td></tr>
+<tr class="separator:aef5aa39d9017c4252a8f43aca1e8e746"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a> = oup::observable_sealed_ptr&lt; T &gt;</td></tr>
 <tr class="separator:a9b701a0588e6924943ea55e0620732b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +184,24 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="utils__observer_8hpp_source.html#l00021">21</a> of file <a class="el" href="utils__observer_8hpp_source.html">utils_observer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aef5aa39d9017c4252a8f43aca1e8e746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef5aa39d9017c4252a8f43aca1e8e746">&#9670;&nbsp;</a></span>first_function_argument</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1utils.html#aef5aa39d9017c4252a8f43aca1e8e746">lxgui::utils::first_function_argument</a> = typedef typename <a class="el" href="structlxgui_1_1utils_1_1impl_1_1first__function__argument__.html">impl::first_function_argument_</a>&lt;decltype(&amp;std::decay_t&lt;T&gt;::operator())&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utils__meta_8hpp_source.html#l00032">32</a> of file <a class="el" href="utils__meta_8hpp_source.html">utils_meta.hpp</a>.</p>
 
 </div>
 </div>
@@ -619,7 +642,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 10 2022 08:33:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

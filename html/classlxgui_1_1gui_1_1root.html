@@ -86,8 +86,8 @@ Inheritance diagram for lxgui::gui::root:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1root.png" usemap="#lxgui::gui::root_map" alt=""/>
   <map id="lxgui::gui::root_map" name="lxgui::gui::root_map">
-<area href="classlxgui_1_1gui_1_1frame__renderer.html" title="Abstract class for layering and rendering frames." alt="lxgui::gui::frame_renderer" shape="rect" coords="0,0,240,24"/>
-<area href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames." alt="lxgui::gui::frame_container" shape="rect" coords="250,0,490,24"/>
+<area href="classlxgui_1_1gui_1_1frame__renderer.html" title="Abstract class for layering and rendering frames." alt="lxgui::gui::frame_renderer" shape="rect" coords="250,0,490,24"/>
+<area href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames." alt="lxgui::gui::frame_container" shape="rect" coords="500,0,740,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -234,13 +234,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac9a19231d180a50a8d00e882fc4b1c1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ac9a19231d180a50a8d00e882fc4b1c1e">get_highest_level</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> strata_id) const</td></tr>
 <tr class="memdesc:ac9a19231d180a50a8d00e882fc4b1c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the highest level on the provided strata.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#ac9a19231d180a50a8d00e882fc4b1c1e">More...</a><br /></td></tr>
 <tr class="separator:ac9a19231d180a50a8d00e882fc4b1c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeda430ae4195de7803c3594db688a6f"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#abeda430ae4195de7803c3594db688a6f">create_root_frame</a> (<a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> attr)</td></tr>
-<tr class="memdesc:abeda430ae4195de7803c3594db688a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame, ready for use, and owned by this <a class="el" href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames.">frame_container</a>.  <a href="classlxgui_1_1gui_1_1frame__container.html#abeda430ae4195de7803c3594db688a6f">More...</a><br /></td></tr>
-<tr class="separator:abeda430ae4195de7803c3594db688a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a575e3289ccc46b08e36195f3eaac191f"><td class="memTemplParams" colspan="2">template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, FrameType&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:a575e3289ccc46b08e36195f3eaac191f"><td class="memTemplItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#a575e3289ccc46b08e36195f3eaac191f">create_root_frame</a> (<a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> attr)</td></tr>
-<tr class="memdesc:a575e3289ccc46b08e36195f3eaac191f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame, ready for use, and owned by this <a class="el" href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames.">frame_container</a>.  <a href="classlxgui_1_1gui_1_1frame__container.html#a575e3289ccc46b08e36195f3eaac191f">More...</a><br /></td></tr>
-<tr class="separator:a575e3289ccc46b08e36195f3eaac191f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9eea67df68588f690d91f5e49058c6d"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#ae9eea67df68588f690d91f5e49058c6d">create_root_frame</a> (<a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a> attr)</td></tr>
+<tr class="memdesc:ae9eea67df68588f690d91f5e49058c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame, ready for use, and owned by this <a class="el" href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames.">frame_container</a>.  <a href="classlxgui_1_1gui_1_1frame__container.html#ae9eea67df68588f690d91f5e49058c6d">More...</a><br /></td></tr>
+<tr class="separator:ae9eea67df68588f690d91f5e49058c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afab0c7498936478c565be1e98bc2ae62"><td class="memTemplParams" colspan="2">template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, FrameType&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:afab0c7498936478c565be1e98bc2ae62"><td class="memTemplItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#afab0c7498936478c565be1e98bc2ae62">create_root_frame</a> (<a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a> attr)</td></tr>
+<tr class="memdesc:afab0c7498936478c565be1e98bc2ae62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame, ready for use, and owned by this <a class="el" href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames.">frame_container</a>.  <a href="classlxgui_1_1gui_1_1frame__container.html#afab0c7498936478c565be1e98bc2ae62">More...</a><br /></td></tr>
+<tr class="separator:afab0c7498936478c565be1e98bc2ae62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b1329a40eea598e8ea10444e1e908d4"><td class="memTemplParams" colspan="2">template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, FrameType&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:a2b1329a40eea598e8ea10444e1e908d4"><td class="memTemplItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#a2b1329a40eea598e8ea10444e1e908d4">create_root_frame</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:a2b1329a40eea598e8ea10444e1e908d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame, ready for use, and owned by this <a class="el" href="classlxgui_1_1gui_1_1frame__container.html" title="Container of frames.">frame_container</a>.  <a href="classlxgui_1_1gui_1_1frame__container.html#a2b1329a40eea598e8ea10444e1e908d4">More...</a><br /></td></tr>
@@ -287,8 +287,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a713ee47c975043fea5472cbe26db5883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae041843d6bca9bf014645adfab7aaf81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ae041843d6bca9bf014645adfab7aaf81">render_strata_</a> (const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;strata_obj) const</td></tr>
 <tr class="separator:ae041843d6bca9bf014645adfab7aaf81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c825f34bf0a2b04683c507dd8326718"><td class="memItemLeft" align="right" valign="top">virtual utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#a2c825f34bf0a2b04683c507dd8326718">create_root_frame_</a> (const <a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> &amp;attr)</td></tr>
-<tr class="separator:a2c825f34bf0a2b04683c507dd8326718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a9fdc1232486d1b533b99682150d596"><td class="memItemLeft" align="right" valign="top">virtual utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#a2a9fdc1232486d1b533b99682150d596">create_root_frame_</a> (<a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a> attr)</td></tr>
+<tr class="separator:a2a9fdc1232486d1b533b99682150d596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56e240634efa271e9310d80861e609ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__container.html#a56e240634efa271e9310d80861e609ed">clear_frames_</a> ()</td></tr>
 <tr class="separator:a56e240634efa271e9310d80861e609ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -460,7 +460,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00070">70</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00073">73</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -550,7 +550,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Raw pointer to the frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00023">23</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00027">27</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -647,7 +647,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Release all requested focus. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00433">433</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00436">436</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -674,7 +674,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00059">59</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00063">63</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -745,8 +745,8 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 </div>
 </div>
-<a id="abeda430ae4195de7803c3594db688a6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abeda430ae4195de7803c3594db688a6f">&#9670;&nbsp;</a></span>create_root_frame() <span class="overload">[2/3]</span></h2>
+<a id="ae9eea67df68588f690d91f5e49058c6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9eea67df68588f690d91f5e49058c6d">&#9670;&nbsp;</a></span>create_root_frame() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -757,7 +757,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
         <tr>
           <td class="memname">utils::observer_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>&gt; lxgui::gui::frame_container::create_root_frame </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a>&#160;</td>
           <td class="paramname"><em>attr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -783,8 +783,8 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 </div>
 </div>
-<a id="a575e3289ccc46b08e36195f3eaac191f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a575e3289ccc46b08e36195f3eaac191f">&#9670;&nbsp;</a></span>create_root_frame() <span class="overload">[3/3]</span></h2>
+<a id="afab0c7498936478c565be1e98bc2ae62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afab0c7498936478c565be1e98bc2ae62">&#9670;&nbsp;</a></span>create_root_frame() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -797,7 +797,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
         <tr>
           <td class="memname">utils::observer_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>&gt; lxgui::gui::frame_container::create_root_frame </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a>&#160;</td>
           <td class="paramname"><em>attr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -823,8 +823,8 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 </div>
 </div>
-<a id="a2c825f34bf0a2b04683c507dd8326718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c825f34bf0a2b04683c507dd8326718">&#9670;&nbsp;</a></span>create_root_frame_()</h2>
+<a id="a2a9fdc1232486d1b533b99682150d596"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a9fdc1232486d1b533b99682150d596">&#9670;&nbsp;</a></span>create_root_frame_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -835,7 +835,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
         <tr>
           <td class="memname">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; lxgui::gui::frame_container::create_root_frame_ </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1frame__core__attributes.html">frame_core_attributes</a>&#160;</td>
           <td class="paramname"><em>attr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -847,7 +847,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00015">15</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00017">17</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -876,7 +876,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1root.html#a7f6a98ee1d377260420c1e2c2b70c687" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00224">224</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00227">227</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -980,7 +980,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Clean deleted entries from the frame list. </p>
 <dl class="section note"><dt>Note</dt><dd>This must not be called while the root frames are being iterated on. All this does is free up "nullptr" entries from the list, to speed up future iteration. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00052">52</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00056">56</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1152,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Returns the currently focused frame (nullptr if none). </p>
 <dl class="section return"><dt>Returns</dt><dd>The currently focused frame (nullptr if none) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00445">445</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00448">448</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1459,7 +1459,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Returns the root frame list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root frame list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00044">44</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00048">48</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -1519,7 +1519,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aca493f290a6e2ed762758a0773e35d33">lxgui::gui::frame_renderer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00075">75</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1569,7 +1569,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>'true' if interface caching is enabled </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1root.html#a7f6a98ee1d377260420c1e2c2b70c687" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00229">229</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00232">232</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1623,7 +1623,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>'true' if input is focused </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See set_focus() for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00441">441</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00444">444</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1683,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to move </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00294">294</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00297">297</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1712,7 +1712,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to be resized </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00368">368</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00371">371</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1841,7 +1841,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 <p>Notifies the root that it should update the hovered frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00257">257</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00260">260</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -1911,7 +1911,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 <p>Tells this object that the global interface scaling factor has changed. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00233">233</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00236">236</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2051,7 +2051,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00419">419</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00422">422</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2164,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the previously owned frame, ignore it to destroy it. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00029">29</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__container_8cpp_source.html#l00033">33</a> of file <a class="el" href="gui__frame__container_8cpp_source.html">gui_frame_container.cpp</a>.</p>
 
 </div>
 </div>
@@ -2185,7 +2185,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 
 <p>Renders the UI into the current render target. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00079">79</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00082">82</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2242,7 +2242,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function will forward all keyboard events to the new receiver. This is useful to implement an edit box: the user can type letters using keys that can be bound to special actions in the game, and these should be prevented from happening. This can be achieved by calling this function and using the edit box as second argument, which will ensure that input events are only sent to the edit box exclusively. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00405">405</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00408">408</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2323,7 +2323,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Movement is handled by the root, you don't need to do anything except calling <a class="el" href="classlxgui_1_1gui_1_1root.html#ad893dc50189a792d868aa10b8a1baa9a" title="Stops movement for the current object.">stop_moving()</a> when you are done. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00261">261</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00264">264</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2363,7 +2363,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Resizing is handled by the root, you don't need to do anything except calling <a class="el" href="classlxgui_1_1gui_1_1root.html#a61b9c65f78f6d28e417edb3484182296" title="Stops sizing for the current object.">stop_sizing()</a> when you are done. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00298">298</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00301">301</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2385,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Stops movement for the current object. </p>
 <dl class="section note"><dt>Note</dt><dd>Does nothing if no object is being moved </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00289">289</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00292">292</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2407,7 +2407,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Stops sizing for the current object. </p>
 <dl class="section note"><dt>Note</dt><dd>Does nothing if no object is being resized </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00364">364</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00367">367</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2429,7 +2429,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <p>Toggles interface caching. </p>
 <dl class="section note"><dt>Note</dt><dd>Disabled by default. Enabling this will most likely improve performances, at the expense of higher GPU memory usage. The UI will be cached into large render targets, which are only redrawn when the UI changes, rather than redrawn on each frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00215">215</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00218">218</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2457,7 +2457,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00142">142</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__root_8cpp_source.html#l00145">145</a> of file <a class="el" href="gui__root_8cpp_source.html">gui_root.cpp</a>.</p>
 
 </div>
 </div>
@@ -2517,7 +2517,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 10 2022 08:33:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

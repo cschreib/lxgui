@@ -122,6 +122,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a988e9a08c2d2273f8035232397ed791d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a988e9a08c2d2273f8035232397ed791d">clear_addon_directory_list</a> ()</td></tr>
 <tr class="memdesc:a988e9a08c2d2273f8035232397ed791d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the addon directory list.  <a href="classlxgui_1_1gui_1_1manager.html#a988e9a08c2d2273f8035232397ed791d">More...</a><br /></td></tr>
 <tr class="separator:a988e9a08c2d2273f8035232397ed791d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a5bc74635c09c9da00035ec8b773dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a05a5bc74635c09c9da00035ec8b773dd">add_localization_directory</a> (const std::string &amp;directory)</td></tr>
+<tr class="memdesc:a05a5bc74635c09c9da00035ec8b773dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new directory to be parsed for localization.  <a href="classlxgui_1_1gui_1_1manager.html#a05a5bc74635c09c9da00035ec8b773dd">More...</a><br /></td></tr>
+<tr class="separator:a05a5bc74635c09c9da00035ec8b773dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97a38faa7def893185dc56f19643ce5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a97a38faa7def893185dc56f19643ce5a">clear_localization_directory_list</a> ()</td></tr>
+<tr class="memdesc:a97a38faa7def893185dc56f19643ce5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the localization directory list.  <a href="classlxgui_1_1gui_1_1manager.html#a97a38faa7def893185dc56f19643ce5a">More...</a><br /></td></tr>
+<tr class="separator:a97a38faa7def893185dc56f19643ce5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68847af709d8dc29cdc8079747500be1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a68847af709d8dc29cdc8079747500be1">print_ui</a> () const</td></tr>
 <tr class="memdesc:a68847af709d8dc29cdc8079747500be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints debug information in the log file.  <a href="classlxgui_1_1gui_1_1manager.html#a68847af709d8dc29cdc8079747500be1">More...</a><br /></td></tr>
 <tr class="separator:a68847af709d8dc29cdc8079747500be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,13 +135,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3fe660a79c7db0d0f5a5d9b201a2d478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the UI.  <a href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478">More...</a><br /></td></tr>
 <tr class="separator:a3fe660a79c7db0d0f5a5d9b201a2d478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3661877269b651d8405649342ca28d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d">close_ui</a> ()</td></tr>
-<tr class="memdesc:a7c3661877269b651d8405649342ca28d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>).  <a href="classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d">More...</a><br /></td></tr>
+<tr class="memdesc:a7c3661877269b651d8405649342ca28d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI safely (at the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>).  <a href="classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d">More...</a><br /></td></tr>
 <tr class="separator:a7c3661877269b651d8405649342ca28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa49c004b3745febbaf02653f11bb6a31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31">close_ui_now</a> ()</td></tr>
 <tr class="memdesc:aa49c004b3745febbaf02653f11bb6a31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI (immediately).  <a href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31">More...</a><br /></td></tr>
 <tr class="separator:aa49c004b3745febbaf02653f11bb6a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac127aaccb23425d206053dbb491a7fb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2">reload_ui</a> ()</td></tr>
-<tr class="memdesc:ac127aaccb23425d206053dbb491a7fb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI and load it again (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>).  <a href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2">More...</a><br /></td></tr>
+<tr class="memdesc:ac127aaccb23425d206053dbb491a7fb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI and load it again safely (at the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>).  <a href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2">More...</a><br /></td></tr>
 <tr class="separator:ac127aaccb23425d206053dbb491a7fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a619911ce1963c2713a45f748fd00a0de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a619911ce1963c2713a45f748fd00a0de">reload_ui_now</a> ()</td></tr>
 <tr class="memdesc:a619911ce1963c2713a45f748fd00a0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the UI and load it again (immediately).  <a href="classlxgui_1_1gui_1_1manager.html#a619911ce1963c2713a45f748fd00a0de">More...</a><br /></td></tr>
@@ -269,7 +275,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00037">37</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00036">36</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -298,7 +304,7 @@ Public Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00067">67</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00066">66</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -378,9 +384,38 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00111">111</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00110">110</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a05a5bc74635c09c9da00035ec8b773dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05a5bc74635c09c9da00035ec8b773dd">&#9670;&nbsp;</a></span>add_localization_directory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::manager::add_localization_directory </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a new directory to be parsed for localization. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">directory</td><td>The new directory </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00119">119</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -402,9 +437,33 @@ Public Attributes</h2></td></tr>
 <p>Clears the addon directory list. </p>
 <dl class="section note"><dt>Note</dt><dd>This is useful whenever you need to reload a completely different UI (for example, when switching from your game's main menu to the real game). </dd>
 <dd>
-If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a>. </dd></dl>
+If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00116">116</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00115">115</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a97a38faa7def893185dc56f19643ce5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97a38faa7def893185dc56f19643ce5a">&#9670;&nbsp;</a></span>clear_localization_directory_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::manager::clear_localization_directory_list </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clears the localization directory list. </p>
+<dl class="section note"><dt>Note</dt><dd>This is useful whenever you need to reload a completely different UI (for example, when switching from your game's main menu to the real game). </dd>
+<dd>
+If the UI is already loaded, this change will only take effect after the UI is reloaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -423,10 +482,10 @@ If the UI is already loaded, this change will only take effect after the UI is r
       </table>
 </div><div class="memdoc">
 
-<p>Closes the UI (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>). </p>
-<dl class="section note"><dt>Note</dt><dd>The actual closing may be deferred if called from within <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to close the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31" title="Closes the UI (immediately).">close_ui_now()</a>. </dd></dl>
+<p>Closes the UI safely (at the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>The actual closing will be deferred until the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to close the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31" title="Closes the UI (immediately).">close_ui_now()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00165">165</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +508,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section note"><dt>Note</dt><dd>All regions will be deleted, and the Lua state will be closed. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not call this function while the manager is running <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a> (i.e., do not call this directly from a frame's callback, C++ or Lua). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00160">160</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00169">169</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -478,7 +537,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00092">92</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00091">91</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -508,7 +567,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the addon registry, which keeps track of loaded addons. </p>
 <dl class="section return"><dt>Returns</dt><dd>The registry object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00362">362</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00383">383</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -538,7 +597,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the addon registry, which keeps track of loaded addons. </p>
 <dl class="section return"><dt>Returns</dt><dd>The registry object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00370">370</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00391">391</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -568,7 +627,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the gui event emitter. </p>
 <dl class="section return"><dt>Returns</dt><dd>The gui event emitter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00290">290</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00311">311</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -598,7 +657,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the gui event emitter. </p>
 <dl class="section return"><dt>Returns</dt><dd>The gui event emitter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00282">282</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00303">303</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -628,7 +687,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI object factory, which is used to create new objects. </p>
 <dl class="section return"><dt>Returns</dt><dd>The factory object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00346">346</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00367">367</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -658,7 +717,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI object factory, which is used to create new objects. </p>
 <dl class="section return"><dt>Returns</dt><dd>The factory object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00354">354</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00375">375</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -688,7 +747,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00258">258</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00279">279</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -718,7 +777,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00250">250</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00271">271</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -741,7 +800,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section return"><dt>Returns</dt><dd>The current UI scaling factor </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#a35ce0c6de8043c278194d07396208fd3" title="Sets the global UI scaling factor.">set_interface_scaling_factor()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00088">88</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00087">87</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -771,7 +830,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the object used for localizing strings. </p>
 <dl class="section return"><dt>Returns</dt><dd>The current localizer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00298">298</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00319">319</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -801,7 +860,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the object used for localizing strings. </p>
 <dl class="section return"><dt>Returns</dt><dd>The current localizer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00306">306</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00327">327</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -823,7 +882,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the GUI Lua state (sol wrapper). </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00120">120</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00128">128</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -873,7 +932,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the renderer implementation. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer implementation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00226">226</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00247">247</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -903,7 +962,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the renderer implementation. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer implementation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00218">218</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00239">239</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -933,7 +992,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI root object, which contains root frames. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00314">314</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00335">335</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -963,7 +1022,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI root object, which contains root frames. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00322">322</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00343">343</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -993,7 +1052,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI root object, which contains root frames. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00330">330</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00351">351</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +1082,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the UI root object, which contains root frames. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00338">338</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00359">359</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1112,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the window in which this gui is being displayed. </p>
 <dl class="section return"><dt>Returns</dt><dd>The window in which this gui is being displayed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00242">242</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00263">263</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1083,7 +1142,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the window in which this gui is being displayed. </p>
 <dl class="section return"><dt>Returns</dt><dd>The window in which this gui is being displayed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00234">234</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00255">255</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1172,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00274">274</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00295">295</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1143,7 +1202,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00266">266</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00287">287</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1166,7 +1225,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section return"><dt>Returns</dt><dd>'true' if interface caching is enabled </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles interface caching.">toggle_caching()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00104">104</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00103">103</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1188,7 +1247,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Checks if the UI has been loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the UI has being loaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00203">203</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00211">211</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1208,9 +1267,9 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </div><div class="memdoc">
 
 <p>Loads the UI. </p>
-<dl class="section note"><dt>Note</dt><dd>Creates the Lua state and loads addon files (if any). Calling this function if the UI is already loaded will have no effect. If your intent is to re-load the UI, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a> instead. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Creates the Lua state and loads addon files (if any). Calling this function if the UI is already loaded will have no effect. If your intent is to re-load the UI, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a> instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00139">139</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00150">150</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1284,7 +1343,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Prints debug information in the log file. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1region.html#af58306c135d7e6fd87e0429f6213690d" title="Prints all relevant information about this region in a string.">region::serialize()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00229">229</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00234">234</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1303,10 +1362,10 @@ If the UI is already loaded, this change will only take effect after the UI is r
       </table>
 </div><div class="memdoc">
 
-<p>Closes the UI and load it again (at the end of the current or next <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>). </p>
-<dl class="section note"><dt>Note</dt><dd>The actual re-loading may be deferred if called from within <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to reload the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a619911ce1963c2713a45f748fd00a0de" title="Closes the UI and load it again (immediately).">reload_ui_now()</a>. </dd></dl>
+<p>Closes the UI and load it again safely (at the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>The actual re-loading will be deferred until the end of <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a>, therefore it is safe to call this function at any time. If you need to reload the UI without delay, use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a619911ce1963c2713a45f748fd00a0de" title="Closes the UI and load it again (immediately).">reload_ui_now()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00178">178</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00189">189</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1329,7 +1388,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#aa49c004b3745febbaf02653f11bb6a31" title="Closes the UI (immediately).">close_ui_now()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI.">load_ui()</a>. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Do not call this function while the manager is running <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e" title="Updates this manager and its regions.">update_ui()</a> (i.e., do not call this directly from a frame's callback, C++ or Lua). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00185">185</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00193">193</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1349,8 +1408,9 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </div><div class="memdoc">
 
 <p>Renders the UI into the current render target. </p>
+<dl class="section note"><dt>Note</dt><dd>This should be called after <a class="el" href="classlxgui_1_1gui_1_1manager.html#afa66a05f97d9fb56cc03fb434ca42a0e">update_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00195">195</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00203">203</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1379,7 +1439,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This value determines how to convert sizing units or position coordinates into actual number of pixels. By default, units specified for sizes and positions are 1:1 mapping with pixels on the screen. If designing the UI on a "traditional" display (say, 1080p resolution monitor), the UI will not scale correctly when running on high-DPI displays unless the scaling factor is adjusted accordingly. The value of the scaling factor should be the ratio DPI_target/DPI_dev, where DPI_dev is the DPI of the display used for development, and DPI_target is the DPI of the display used to run the program. In addition, the scaling factor can also be used to improve accessibility of the interface to users with poorer eye sight, which would benefit from larger font sizes and larger icons. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00071">71</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00070">70</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1401,7 +1461,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 <p>Toggles interface caching. </p>
 <dl class="section note"><dt>Note</dt><dd>Disabled by default. Enabling this will most likely improve performances, at the expense of higher GPU memory usage. The UI will be cached into large render targets, which are only redrawn when the UI changes, rather than redrawn on each frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00098">98</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00097">97</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1429,7 +1489,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00207">207</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00215">215</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1447,9 +1507,9 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </div><div class="memdoc">
 
 <p>Triggers on each fresh Lua state (e.g., on startup or after a UI re-load). </p>
-<dl class="section note"><dt>Note</dt><dd>This signal is useful if you need to create additionnal resources on the Lua state before the GUI files are loaded. This signal will be triggered each time the Lua state is created (e.g., when the GUI is re-loaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again (at the end of the current or next update_ui()).">reload_ui()</a>). If the UI is already loaded, any new callback connected to this signal will only take effect after the UI is reloaded. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This signal is useful if you need to create additionnal resources on the Lua state before the GUI files are loaded. This signal will be triggered each time the Lua state is created (e.g., when the GUI is re-loaded, see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the UI and load it again safely (at the end of update_ui()).">reload_ui()</a>). If the UI is already loaded, any new callback connected to this signal will only take effect after the UI is reloaded. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00139">139</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00157">157</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1520,7 @@ If the UI is already loaded, this change will only take effect after the UI is r
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 28 2022 08:06:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 10 2022 08:33:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

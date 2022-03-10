@@ -62,6 +62,8 @@
 
 <h1>Class <code>Frame</code></h1>
 <p>A <a href="../classes/Region.html#">Region</a> that can contain other regions and react to events.</p>
+<p>
+
 <p> This class, which is at the core of the UI design, can contain
  other <a href="../classes/Frame.html#">Frame</a>s as "children", and <a href="../classes/LayeredRegion.html#">LayeredRegion</a>s sorted by layers
  (text, images, ...). A frame can also react to events, and register
@@ -112,8 +114,9 @@
  enabling. In particular:</p>
 
 <ul>
-    <li>Events related to keyboard input (<code>OnKeyDown</code>, <code>OnKeyUp</code>) require
-    focus, see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>, or <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>.</li>
+    <li>Events related to keyboard input (<code>OnKeyDown</code>, <code>OnKeyRepeat</code>, <code>OnKeyUp</code>)
+    require <a href="../classes/Frame.html#Frame:enable_keyboard">Frame:enable_keyboard</a>, and either focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or
+    explicit key capture (see <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>).</li>
     <li>Events related to mouse click input (<code>OnDragStart</code>, <code>OnDragStop</code>,
     <code>OnMouseUp</code>, <code>OnMouseDown</code>) require <a href="../classes/Frame.html#Frame:enable_mouse_click">Frame:enable_mouse_click</a>.</li>
     <li>Events related to mouse move input (<code>OnEnter</code>, <code>OnLeave</code>)
@@ -141,13 +144,18 @@
     <li><code>OnChar</code>: Triggered whenever a character is typed into the frame, and
     the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>).</li>
     <li><code>OnDragStart</code>: Triggered when one of the mouse button registered for
-    dragging (see <a href="../classes/Frame.html#Frame:register_for_drag">Frame:register_for_drag</a>) has been pressed inside the
+    dragging (see frame::enable_drag) has been pressed inside the
     area of the screen occupied by the frame, and a mouse movement is first
-    recorded.</li>
+    recorded. This event provides four argument to the registered callback:
+    a number identifying the mouse button that started the drag, the human-readable
+    name of this button, and the mouse X and Y position.</li>
     <li><code>OnDragMove</code>: Triggered after <code>OnDragStart</code>, each time the mouse moves,
-    until <code>OnDragStop</code> is triggered.</li>
-    <li><code>OnDragStop</code>: Triggered after <code>OnDragStart</code>, when the mouse button is
-    released.</li>
+    until <code>OnDragStop</code> is triggered. This event provides four argument to
+    the registered callback: the amount of mouse movement in X and Y since the
+    last call to <code>OnDragMove</code> (or since <code>OnDragStart</code> if this is the first call),
+    and the mouse X and Y position.</li>
+    <li><code>OnDragStop</code>: Similar to <code>OnDragStart</code>, but triggered when the mouse button
+    is released after <code>OnDragStart</code>.</li>
     <li><code>OnEnter</code>: Triggered when the mouse pointer enters into the area of
     the screen occupied by the frame. Note: this only takes into account the
     position and size of the frame and its title region, but not the space
@@ -165,114 +173,12 @@
     <li><code>OnHide</code>: Triggered when <a href="../classes/Region.html#Region:hide">Region:hide</a> is called, or when the frame
     is hidden indirectly (for example if its parent is itself hidden). This
     will only fire if the frame was previously shown.</li>
-    <li><code>OnKeyDown</code>: Triggered when any keyboard key is pressed. Will only
-    trigger if the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or if the key has
-    been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>. If no
-    frame is focused, only the topmost frame with
-    <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
-    captured the key, then the key is tested for existing key bindings (see
-    <a href="../modules/Manager.html#set_key_binding">Manager:set_key_binding</a>). This event provides two arguments to the registered
-    callback: a number identifying the key, and the human-readable name of the
-    key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-    the <a href="../modules/Manager.html#set_key_binding">Manager:set_key_binding</a>.</li>
-    <li><code>OnKeyUp</code>: Triggered when any keyboard key is released. Will only
-    trigger if the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or if the key has
-    been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>. If no
-    frame is focused, only the topmost frame with
-    <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
-    captured the key, then the key is tested for existing key bindings (see
-    <a href="../modules/Manager.html#set_key_binding">Manager:set_key_binding</a>). This event provides two arguments to the registered
-    callback: a number identifying the key, and the human-readable name of the
-    key. If you need to react to simultaneous key presses (e.g., Shift+A), use
-    the <a href="../modules/Manager.html#set_key_binding">Manager:set_key_binding</a>.</li>
-    <li><code>OnLeave</code>: Triggered when the mouse pointer leaves the area of the
-    screen occupied by the frame. Note: this only takes into account the
-    position and size of the frame and its title region, but not the space
-    occupied by its children or layered regions. Will not trigger if the
-    frame is hidden, unless the frame was just hidden with the mouse
-    previously inside the frame. Finally, this <em>will</em> trigger whenever
-    the mouse enters another mouse-enabled frame with a higher level/strata,
-    even if the mouse is still technically within this frame's region.</li>
-    <li><code>OnLoad</code>: Triggered just after the frame is created. This is where
-    you would normally register for events and specific inputs, set up
-    initial states for extra logic, or do localization. When this event is
-    triggered, you can assume that all the frame's regions and children
-    have already been loaded. The same is true for other frames and regions
-    that are defined <em>earlier</em> in the same layout file, and those that are
-    defined in an addon listed <em>earlier</em> than the current addon in the
-    'addons.txt' file. In all other cases, frames or regions will not yet
-    be loaded when <code>OnLoad</code> is called, hence they cannot be refered to
-    (directly or indirectly).</li>
-    <li><code>OnMouseDown</code>: Triggered when any mouse button is pressedand this frame is
-    the topmost mouse-click-enabled frame under the mouse pointer. Will not
-    trigger if the frame is hidden. This event provides one argument to
-    the registered callback: a string identifying the mouse button
-    (<code>&quot;LeftButton&quot;</code>, <code>&quot;RightButton&quot;</code>, or <code>&quot;MiddleButton&quot;</code>).</li>
-    <li><code>OnMouseUp</code>: Triggered when any mouse button is releasedand this frame is
-    the topmost mouse-click-enabled frame under the mouse pointer. Will not
-    trigger if the frame is hidden. This event provides one argument to
-    the registered callback: a string identifying the mouse button
-    (<code>&quot;LeftButton&quot;</code>, <code>&quot;RightButton&quot;</code>, or <code>&quot;MiddleButton&quot;</code>).</li>
-    <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved and this frame is
-    the topmost mouse-wheel-enabled frame under the mouse pointer. This event
-    provides one argument to the registered callback: a number indicating by
-    how many "notches" the wheel has turned in this event. A positive value
-    means the wheel has been moved "away" from the user (this would normally
-    scroll <em>up</em> in a document).</li>
-    <li><code>OnReceiveDrag</code>: Triggered when the mouse pointer was previously
-    dragged onto the frame, and when one of the mouse button registered for
-    dragging (see <a href="../classes/Frame.html#Frame:register_for_drag">Frame:register_for_drag</a>) is released. This enables
-    the "drop" in "drag and drop" operations.</li>
-    <li><code>OnShow</code>: Triggered when <a href="../classes/Region.html#Region:show">Region:show</a> is called, or when the frame
-    is shown indirectly (for example if its parent is itself shown). This
-    will only fire if the frame was previously hidden.</li>
-    <li><code>OnSizeChanged</code>: Triggered whenever the size of the frame changes, either
-    directly or indirectly. Be very careful not to call any function that could
-    change the size of the frame inside this callback, as this would generate
-    an infinite loop.</li>
-    <li><code>OnUpdate</code>: Triggered on every tick of the game loop. This event provides
-    one argument to the registered callback: a floating point number indicating
-    how much time has passed since the last call to <code>OnUpdate</code> (in seconds).
-    For optimal performance, prefer using other events types whenever possible.
-    <code>OnUpdate</code> callbacks will be executed over and over again, and can quickly
-    consume a lot of resources if user unreasonably. If you have to use
-    <code>OnUpdate</code>, you can mitigate performance problems by artificially reducing
-    the update rate: let the callback function only accumulate the time passed,
-    and wait until enough time has passed (say, half a second) to execute any
-    expensive operation. Then reset the accumulated time, and wait again.</li>
+    <li><code>OnKeyDown</code>: Triggered when a keyboard key is pressed. Will only
+    trigger if the frame has focus (see @ref frame::set<em>focus) or if the key has
+    been registered for capture using @ref frame::enable</em>key_capture. If no
+    keyboard-enabled frame is focused, only the topmost frame with</li>
 </ul>
-
-<p> Generic events fired natively by lxgui:</p>
-
-<ul>
-    <li><code>&quot;LUA_ERROR&quot;</code>: Triggered whenever a callback function or an addon script
-    file generates a Lua error. This event provides one argument to the
-    registered callback: a string containing the error message.</li>
-    <li><code>&quot;ADDON_LOADED&quot;</code>: Triggered when an addon is fully loaded. This event
-    provides one argument to the registered callback: a string containing the
-    name of the loaded addon.</li>
-    <li><code>&quot;ENTERING_WORLD&quot;</code>: Triggered once at the start of the program, at the
-    end of the first update tick.</li>
-</ul>
-
-<p> <strong>Virtual frames.</strong> Virtual frames are not displayed on the screen,
- and technically are not part of the interface. They are only available
- as "templates" that can be reused by other (virtual or non-virtual)
- frames. This is useful for defining a few frame templates with a
- particular style, and then reuse these templates across the interface
- to ensure a consistent look. When inheriting from a virtual frame,
- the inheriting frame will copy all the registered callbacks, all the
- child frames, and all the layered regions of the virtual frame.</p>
-
-<p> This inheritance mechanism can be chained: a virtual frame itself can
- inherit from another virtual frame. It is also possible to inherit from
- multiple virtual frames at once, which will copy their respective content
- in the order they are specified.</p>
-
-<p> Inherits all methods from: <a href="../classes/Region.html#">Region</a>.</p>
-
-<p> Child classes: <a href="../classes/Button.html#">Button</a>, <a href="../classes/CheckButton.html#">CheckButton</a>, <a href="../classes/EditBox.html#">EditBox</a>,
- <a href="../classes/ScrollFrame.html#">ScrollFrame</a>, <a href="../classes/Slider.html#">Slider</a>, <a href="../classes/StatusBar.html#">StatusBar</a>.</p>
+</p>
 
 
 <h2><a href="#Methods">Methods</a></h2>
@@ -344,7 +250,19 @@
 </td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Frame:enable_keyboard">Frame:enable_keyboard()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Frame:enable_key_capture">Frame:enable_key_capture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_key_capture">Frame:disable_key_capture()</a></td>
 	<td class="summary">
 
 </td>
@@ -494,6 +412,12 @@
 </td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Frame:is_keyboard_enabled">Frame:is_keyboard_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Frame:is_key_capture_enabled">Frame:is_key_capture_enabled()</a></td>
 	<td class="summary">
 
@@ -536,7 +460,13 @@
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:register_for_drag">Frame:register_for_drag()</a></td>
+	<td class="name" nowrap><a href="#Frame:enable_drag">Frame:enable_drag()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_drag">Frame:disable_drag()</a></td>
 	<td class="summary">
 
 </td>
@@ -877,8 +807,40 @@
 
 </dd>
     <dt>
+    <a name = "Frame:enable_keyboard"></a>
+    <strong>Frame:enable_keyboard()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:enable_key_capture"></a>
     <strong>Frame:enable_key_capture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_key_capture"></a>
+    <strong>Frame:disable_key_capture()</strong>
     </dt>
     <dd>
 
@@ -1277,6 +1239,22 @@
 
 </dd>
     <dt>
+    <a name = "Frame:is_keyboard_enabled"></a>
+    <strong>Frame:is_keyboard_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:is_key_capture_enabled"></a>
     <strong>Frame:is_key_capture_enabled()</strong>
     </dt>
@@ -1389,8 +1367,24 @@
 
 </dd>
     <dt>
-    <a name = "Frame:register_for_drag"></a>
-    <strong>Frame:register_for_drag()</strong>
+    <a name = "Frame:enable_drag"></a>
+    <strong>Frame:enable_drag()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_drag"></a>
+    <strong>Frame:disable_drag()</strong>
     </dt>
     <dd>
 
@@ -1811,7 +1805,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-02-28 08:06:32 </i>
+<i style="float:right;">Last updated 2022-03-10 08:33:15 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
