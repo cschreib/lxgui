@@ -208,7 +208,10 @@ public:
      */
     bool is_loaded() const;
 
-    /// Renders the UI into the current render target.
+    /**
+     * \brief Renders the UI into the current render target.
+     * \note This should be called after @ref update_ui().
+     */
     void render_ui() const;
 
     /**
