@@ -1,5 +1,8 @@
-#include <lxgui/gui_event.hpp>
+#include "examples_common.hpp"
+
 #include <lxgui/gui_out.hpp>
+#include <lxgui/impl/gui_gl_renderer.hpp>
+#include <lxgui/impl/input_sfml_source.hpp>
 #include <lxgui/input_dispatcher.hpp>
 #include <lxgui/input_world_dispatcher.hpp>
 #include <lxgui/lxgui.hpp>
@@ -12,12 +15,8 @@
 #    endif
 #endif
 
-#include "examples_common.hpp"
-
 #include <SFML/Window.hpp>
 #include <iostream>
-#include <lxgui/impl/gui_gl_renderer.hpp>
-#include <lxgui/impl/input_sfml_source.hpp>
 #include <thread>
 #if defined(LXGUI_PLATFORM_OSX)
 #    include <OpenGL/gl.h>

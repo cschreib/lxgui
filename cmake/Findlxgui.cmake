@@ -25,12 +25,6 @@
 # LXGUI_INPUT_SDL_INCLUDE_DIRS, the list of all include directories required to use the SDL input implementation library.
 # LXGUI_INPUT_SDL_FOUND, true if both LXGUI_FOUND and LXGUI_INPUT_SDL_LIBRARY have been found.
 #
-# When compiling with Emscripten, the module further defines:
-# LXGUI_EMSCRIPTEN_FLAGS, the compiler/linker flags to add to the Emscripten command
-# LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the OpenGL GUI implementation.
-# LXGUI_GUI_SDL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the SDL GUI implementation.
-# LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the SDL input implementation.
-#
 # Finally, the module exports the following targets:
 # lxgui::lxgui, the core library
 # lxgui::gui::gl, the OpenGL implementation library
@@ -38,6 +32,10 @@
 # lxgui::gui::sfml, the SFML implementation library
 # lxgui::input::sdl, the SDL input implementation library
 # lxgui::input::sfml, the SFML input implementation library
+
+if(TARGET lxgui::lxgui)
+    return()
+endif()
 
 find_path(LXGUI_INCLUDE_DIR
     NAMES lxgui/lxgui.hpp DOC "Path to lxgui include directory."
@@ -185,7 +183,6 @@ set(LXGUI_LIBRARIES ${LXGUI_LIBRARY})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(LXGUI_EMSCRIPTEN TRUE)
-    set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0")
 else()
     set(LXGUI_EMSCRIPTEN FALSE)
 endif()
@@ -209,6 +206,11 @@ if(LXGUI_FOUND)
         endif()
         if(LXGUI_ENABLE_YAML_PARSER)
             target_link_libraries(lxgui::lxgui INTERFACE ryml::ryml)
+        endif()
+        if(LXGUI_EMSCRIPTEN)
+            target_compile_options(lxgui::lxgui INTERFACE "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+            target_link_options(lxgui::lxgui INTERFACE "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+            target_link_options(lxgui::lxgui INTERFACE "SHELL:-s MAX_WEBGL_VERSION=3")
         endif()
     endif()
 
@@ -242,8 +244,6 @@ if(LXGUI_FOUND)
                 set(LXGUI_GUI_GL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_GUI_GL_LIBRARIES ${LXGUI_GUI_GL_LIBRARY})
 
-                set(LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_LIBPNG=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=3")
-
                 mark_as_advanced(LXGUI_GUI_GL_FOUND)
             else()
                 message(ERROR ": the OpenGL implementation of the GUI requires freetype")
@@ -262,6 +262,10 @@ if(LXGUI_FOUND)
                 target_link_libraries(lxgui::gui::gl INTERFACE OpenGL::GL)
                 target_link_libraries(lxgui::gui::gl INTERFACE PNG::PNG)
                 target_link_libraries(lxgui::gui::gl INTERFACE GLEW::GLEW)
+            else()
+                target_compile_options(lxgui::gui::gl INTERFACE "SHELL:-s USE_LIBPNG=1")
+                target_link_options(lxgui::gui::gl INTERFACE "SHELL:-s USE_LIBPNG=1")
+                target_link_options(lxgui::gui::gl INTERFACE "SHELL:-s MIN_WEBGL_VERSION=2")
             endif()
         endif()
     endif()
@@ -352,7 +356,6 @@ if(LXGUI_FOUND)
 
             set(LXGUI_GUI_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
             set(LXGUI_GUI_SDL_LIBRARIES ${LXGUI_GUI_SDL_LIBRARY})
-            set(LXGUI_GUI_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2 -s MIN_WEBGL_VERSION=1")
         endif()
 
         if(LXGUI_GUI_SDL_FOUND AND NOT TARGET lxgui::gui::sdl)
@@ -365,6 +368,16 @@ if(LXGUI_FOUND)
                 target_link_libraries(lxgui::gui::sdl INTERFACE SDL2::SDL2)
                 target_link_libraries(lxgui::gui::sdl INTERFACE SDL2::image)
                 target_link_libraries(lxgui::gui::sdl INTERFACE SDL2::TTF)
+            else()
+                target_compile_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL=2")
+                target_compile_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL_IMAGE=2")
+                target_compile_options(lxgui::gui::sdl INTERFACE "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
+                target_compile_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL_TTF=2")
+                target_link_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL=2")
+                target_link_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL_IMAGE=2")
+                target_link_options(lxgui::gui::sdl INTERFACE "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
+                target_link_options(lxgui::gui::sdl INTERFACE "SHELL:-s USE_SDL_TTF=2")
+                target_link_options(lxgui::gui::sdl INTERFACE "SHELL:-s MIN_WEBGL_VERSION=1")
             endif()
         endif()
     endif()
@@ -388,7 +401,6 @@ if(LXGUI_FOUND)
 
             set(LXGUI_INPUT_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
             set(LXGUI_INPUT_SDL_LIBRARIES ${LXGUI_INPUT_SDL_LIBRARY})
-            set(LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
         endif()
 
         if(LXGUI_INPUT_SDL_FOUND AND NOT TARGET lxgui::input::sdl)
@@ -400,6 +412,13 @@ if(LXGUI_FOUND)
             if(NOT LXGUI_EMSCRIPTEN)
                 target_link_libraries(lxgui::input::sdl INTERFACE SDL2::SDL2)
                 target_link_libraries(lxgui::input::sdl INTERFACE SDL2::image)
+            else()
+                target_compile_options(lxgui::input::sdl INTERFACE "SHELL:-s USE_SDL=2")
+                target_compile_options(lxgui::input::sdl INTERFACE "SHELL:-s USE_SDL_IMAGE=2")
+                target_compile_options(lxgui::input::sdl INTERFACE "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
+                target_link_options(lxgui::input::sdl INTERFACE "SHELL:-s USE_SDL=2")
+                target_link_options(lxgui::input::sdl INTERFACE "SHELL:-s USE_SDL_IMAGE=2")
+                target_link_options(lxgui::input::sdl INTERFACE "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
             endif()
         endif()
     endif()

@@ -17,8 +17,8 @@
 namespace lxgui::gui {
 
 root::root(utils::control_block& block, manager& mgr) :
-    frame_container(mgr.get_factory(), object_registry_, this),
     utils::enable_observer_from_this<root>(block),
+    frame_container(mgr.get_factory(), object_registry_, observer_from_this()),
     manager_(mgr),
     renderer_(mgr.get_renderer()),
     world_input_dispatcher_(mgr.get_world_input_dispatcher()) {
@@ -61,10 +61,13 @@ root::root(utils::control_block& block, manager& mgr) :
         }));
 
     connections_.push_back(input_dispatcher.on_key_pressed.connect(
-        [&](input::key key) { on_key_state_changed_(key, true); }));
+        [&](input::key key) { on_key_state_changed_(key, true, false); }));
+
+    connections_.push_back(input_dispatcher.on_key_pressed_repeat.connect(
+        [&](input::key key) { on_key_state_changed_(key, true, true); }));
 
     connections_.push_back(input_dispatcher.on_key_released.connect(
-        [&](input::key key) { on_key_state_changed_(key, false); }));
+        [&](input::key key) { on_key_state_changed_(key, false, false); }));
 }
 
 root::~root() {
@@ -456,14 +459,19 @@ void root::clear_hovered_frame_() {
 }
 
 void root::set_hovered_frame_(utils::observer_ptr<frame> obj, const vector2f& mouse_pos) {
-    if (hovered_frame_ && obj != hovered_frame_)
-        hovered_frame_->notify_mouse_in_frame(false, mouse_pos);
+    if (obj == hovered_frame_)
+        return;
 
-    if (obj) {
-        hovered_frame_ = std::move(obj);
+    auto old_hovered_frame = hovered_frame_;
+    hovered_frame_         = std::move(obj);
+
+    if (old_hovered_frame) {
+        old_hovered_frame->notify_mouse_in_frame(false, mouse_pos);
+    }
+
+    if (hovered_frame_) {
         hovered_frame_->notify_mouse_in_frame(true, mouse_pos);
-    } else
-        clear_hovered_frame_();
+    }
 }
 
 void root::on_window_resized_(const vector2ui& dimensions) {
@@ -540,6 +548,8 @@ void root::on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos) 
 
     if (dragged_frame_) {
         event_data data;
+        data.add(movement.x);
+        data.add(movement.y);
         data.add(mouse_pos.x);
         data.add(mouse_pos.y);
         dragged_frame_->fire_script("OnDragMove", data);
@@ -569,14 +579,14 @@ void root::on_mouse_wheel_(float wheel_scroll, const vector2f& mouse_pos) {
     hovered_frame->fire_script("OnMouseWheel", data);
 }
 
-void root::on_drag_start_(input::mouse_button button, const vector2f& mouse_pos) {
+void root::on_drag_start_(input::mouse_button button_id, const vector2f& mouse_pos) {
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& obj) {
         return obj.is_in_region(mouse_pos) && obj.is_mouse_click_enabled();
     });
 
     if (!hovered_frame) {
         // Forward to the world
-        world_input_dispatcher_.on_mouse_drag_start(button, mouse_pos);
+        world_input_dispatcher_.on_mouse_drag_start(button_id, mouse_pos);
         return;
     }
 
@@ -584,10 +594,11 @@ void root::on_drag_start_(input::mouse_button button, const vector2f& mouse_pos)
         hovered_frame->start_moving();
     }
 
-    std::string mouse_button = std::string(input::get_mouse_button_codename(button));
+    std::string mouse_button = std::string(input::get_mouse_button_codename(button_id));
 
-    if (hovered_frame->is_registered_for_drag(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(mouse_button)) {
         event_data data;
+        data.add(static_cast<std::underlying_type_t<input::key>>(button_id));
         data.add(mouse_button);
         data.add(mouse_pos.x);
         data.add(mouse_pos.y);
@@ -597,7 +608,7 @@ void root::on_drag_start_(input::mouse_button button, const vector2f& mouse_pos)
     }
 }
 
-void root::on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos) {
+void root::on_drag_stop_(input::mouse_button button_id, const vector2f& mouse_pos) {
     stop_moving();
     stop_sizing();
 
@@ -612,14 +623,15 @@ void root::on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos) 
 
     if (!hovered_frame) {
         // Forward to the world
-        world_input_dispatcher_.on_mouse_drag_stop(button, mouse_pos);
+        world_input_dispatcher_.on_mouse_drag_stop(button_id, mouse_pos);
         return;
     }
 
-    std::string mouse_button = std::string(input::get_mouse_button_codename(button));
+    std::string mouse_button = std::string(input::get_mouse_button_codename(button_id));
 
-    if (hovered_frame->is_registered_for_drag(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(mouse_button)) {
         event_data data;
+        data.add(static_cast<std::underlying_type_t<input::key>>(button_id));
         data.add(mouse_button);
         data.add(mouse_pos.x);
         data.add(mouse_pos.y);
@@ -661,7 +673,7 @@ get_key_name(input::key key_id, bool is_shift_pressed, bool is_ctrl_pressed, boo
     return name;
 }
 
-void root::on_key_state_changed_(input::key key_id, bool is_down) {
+void root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat) {
     const auto& input_dispatcher = get_manager().get_input_dispatcher();
     bool        is_shift_pressed = input_dispatcher.shift_is_pressed();
     bool        is_ctrl_pressed  = input_dispatcher.ctrl_is_pressed();
@@ -672,30 +684,36 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     // First, give priority to the focused frame
     utils::observer_ptr<frame> topmost_frame = get_focused_frame();
 
-    // If no focused frame, look top-down for a frame that captures this key
-    if (!topmost_frame) {
-        topmost_frame = find_topmost_frame(
-            [&](const frame& frame) { return frame.is_key_capture_enabled(key_name); });
+    // If no focused frame with keyboard enabled, look top-down for a frame that captures this key
+    if (!topmost_frame || !topmost_frame->is_keyboard_enabled()) {
+        topmost_frame = find_topmost_frame([&](const frame& frame) {
+            return frame.is_keyboard_enabled() && frame.is_key_capture_enabled(key_name);
+        });
     }
 
     // If a frame is found, capture input and return
     if (topmost_frame) {
         event_data data;
         data.add(static_cast<std::underlying_type_t<input::key>>(key_id));
-        data.add(key_name);
         data.add(is_shift_pressed);
         data.add(is_ctrl_pressed);
         data.add(is_alt_pressed);
+        data.add(key_name);
 
-        if (is_down)
-            topmost_frame->fire_script("OnKeyDown", data);
-        else
+        if (is_down) {
+            if (is_repeat) {
+                topmost_frame->fire_script("OnKeyRepeat", data);
+            } else {
+                topmost_frame->fire_script("OnKeyDown", data);
+            }
+        } else {
             topmost_frame->fire_script("OnKeyUp", data);
+        }
 
         return;
     }
 
-    if (is_down) {
+    if (is_down && !is_repeat) {
         // If no frame is found, try the key_binder
         try {
             if (get_key_binder().on_key_down(
@@ -711,14 +729,19 @@ void root::on_key_state_changed_(input::key key_id, bool is_down) {
     }
 
     // Forward to the world
-    if (is_down)
-        world_input_dispatcher_.on_key_pressed(key_id);
-    else
+    if (is_down) {
+        if (is_repeat) {
+            world_input_dispatcher_.on_key_pressed_repeat(key_id);
+        } else {
+            world_input_dispatcher_.on_key_pressed(key_id);
+        }
+    } else {
         world_input_dispatcher_.on_key_released(key_id);
+    }
 }
 
 void root::on_mouse_button_state_changed_(
-    input::mouse_button button, bool is_down, bool is_double_click, const vector2f& mouse_pos) {
+    input::mouse_button button_id, bool is_down, bool is_double_click, const vector2f& mouse_pos) {
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& frame) {
         return frame.is_in_region(mouse_pos) && frame.is_mouse_click_enabled();
     });
@@ -731,16 +754,17 @@ void root::on_mouse_button_state_changed_(
     if (!hovered_frame) {
         // Forward to the world
         if (is_double_click)
-            world_input_dispatcher_.on_mouse_double_clicked(button, mouse_pos);
+            world_input_dispatcher_.on_mouse_double_clicked(button_id, mouse_pos);
         else if (is_down)
-            world_input_dispatcher_.on_mouse_pressed(button, mouse_pos);
+            world_input_dispatcher_.on_mouse_pressed(button_id, mouse_pos);
         else
-            world_input_dispatcher_.on_mouse_released(button, mouse_pos);
+            world_input_dispatcher_.on_mouse_released(button_id, mouse_pos);
         return;
     }
 
     event_data data;
-    data.add(std::string(input::get_mouse_button_codename(button)));
+    data.add(static_cast<std::underlying_type_t<input::key>>(button_id));
+    data.add(std::string(input::get_mouse_button_codename(button_id)));
     data.add(mouse_pos.x);
     data.add(mouse_pos.y);
 

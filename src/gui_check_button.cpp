@@ -8,8 +8,11 @@
 
 namespace lxgui::gui {
 
-check_button::check_button(utils::control_block& block, manager& mgr) : button(block, mgr) {
-    type_.push_back(class_name);
+check_button::check_button(
+    utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    button(block, mgr, attr) {
+
+    initialize_(*this, attr);
 }
 
 std::string check_button::serialize(const std::string& tab) const {
@@ -139,10 +142,6 @@ void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> tex
     }
 
     disabled_checked_texture_->set_shown(is_checked() && state_ == state::disabled);
-}
-
-void check_button::create_glue() {
-    create_glue_(this);
 }
 
 } // namespace lxgui::gui

@@ -1,7 +1,6 @@
-
-#include "lxgui/gui_event.hpp"
-#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_key_binder.hpp"
+
+#include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input_dispatcher.hpp"
 #include "lxgui/utils_std.hpp"

@@ -34,7 +34,8 @@ class status_bar : public frame {
 
 public:
     /// Constructor.
-    explicit status_bar(utils::control_block& block, manager& mgr);
+    explicit status_bar(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -172,9 +173,6 @@ public:
      * \return 'true' if it is the case
      */
     bool is_reversed() const;
-
-    /// Returns this region's Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Updates this region's logic.

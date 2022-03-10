@@ -6,6 +6,7 @@
 #include "lxgui/utils_exception.hpp"
 #include "lxgui/utils_string.hpp"
 #include "lxgui/utils_view.hpp"
+#include "lxgui/gui_out.hpp"
 
 #include <string>
 #include <string_view>
@@ -97,19 +98,6 @@ public:
     }
 
     /**
-     * \brief Returns this node's value as string, or a default value if empty.
-     * \param fallback The fallback value if the node has no value
-     * \return This node's value as string, or a default value if empty
-     */
-    std::string_view get_value_or(std::string_view fallback) const noexcept {
-        accessed_ = true;
-        if (value_.empty())
-            return fallback;
-        else
-            return value_;
-    }
-
-    /**
      * \brief Returns this node's value converted to a specific type.
      * \return This node's value converted to a specific type
      * \note Will throw if the value could not be converted. Use get_value_or()
@@ -135,8 +123,16 @@ public:
      */
     template<typename T>
     T get_value_or(T fallback) const noexcept {
-        accessed_ = true;
-        return utils::from_string<T>(value_).value_or(fallback);
+        accessed_  = true;
+        auto value = utils::from_string<T>(value_);
+        if (!value.has_value()) {
+            gui::out << gui::warning << std::string(get_location())
+                     << ": could not parse value for '" << std::string(name_) << "': '"
+                     << std::string(value_) << "'; using '" << utils::to_string(fallback) << "'"
+                     << std::endl;
+            return fallback;
+        }
+        return value.value();
     }
 
     /**
@@ -394,7 +390,7 @@ public:
     get_attribute_value_or(std::string_view name, std::string_view fallback) const noexcept {
         accessed_ = true;
         if (const auto* attr = try_get_attribute(name))
-            return attr->get_value_or(fallback);
+            return attr->get_value();
         else
             return fallback;
     }

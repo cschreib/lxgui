@@ -85,6 +85,8 @@ Other changes:
  - gui: added gion::is_loaded() and clarify the semantic
  - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
  - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
+ - gui: added frame::enable_key_capture
+ - gui: added OnKeyRepeat frame event
  - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -115,6 +117,7 @@ Other changes:
  - gui: renamed TOPLEFT to TOP_LEFT, BOTTOMRIGHT to BOTTOM_RIGHT, etc.
  - gui: renamed justifyH to alignX, justifyV to alignY
  - gui: renamed anchor_point to point
+ - gui: renamed register_for_drag to enable_drag
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()
@@ -133,7 +136,6 @@ Other changes:
  - gui: removed frame::is_mouse_enabled; use is_mouse_click_enabled and is_mouse_move_enabled
  - gui: removed frame::is_in_frame; use is_in_region instead
  - gui: removed frame::register_all_events and unregister_all_events
- - gui: removed frame::enable_keyboard, use enable_key_capture instead
  - gui: removed event class; generic events are now only using event_data
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")

@@ -47,7 +47,7 @@ void manager::create_lua_() {
         "create_frame",
         [&](const std::string& type, const std::string& name, sol::optional<frame&> parent,
             sol::optional<std::string> inheritance) -> sol::object {
-            region_core_attributes attr;
+            frame_core_attributes attr;
             attr.name        = name;
             attr.object_type = type;
             if (inheritance.has_value()) {

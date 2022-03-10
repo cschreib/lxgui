@@ -33,7 +33,7 @@ class texture;
  * password box (no encryption or other safety measure is used).
  *
  * Note that an edit_box has frame::enable_mouse set to `true`
- * and frame::register_for_drag set to `"LeftButton"` by default.
+ * and frame::enable_drag set to `"LeftButton"` by default.
  *
  * __Events.__ Hard-coded events available to all edit_boxes,
  * in addition to those from #frame:
@@ -64,7 +64,7 @@ class edit_box : public frame {
 
 public:
     /// Constructor.
-    explicit edit_box(utils::control_block& block, manager& mgr);
+    explicit edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Copies a region's parameters into this edit_box (inheritance).
@@ -337,9 +337,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    /// Returns this region's Lua glue.
-    void create_glue() override;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

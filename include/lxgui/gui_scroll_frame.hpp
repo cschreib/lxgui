@@ -37,7 +37,8 @@ class scroll_frame : public frame, public frame_renderer {
 
 public:
     /// Constructor.
-    explicit scroll_frame(utils::control_block& block, manager& mgr);
+    explicit scroll_frame(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /// Destructor.
     ~scroll_frame() override;
@@ -165,9 +166,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    /// Returns this region's Lua glue.
-    void create_glue() override;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

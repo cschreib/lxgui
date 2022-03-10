@@ -3,8 +3,8 @@
 #include <iostream>
 #include <lxgui/extern_sol2_state.hpp>
 #include <lxgui/gui_button.hpp>
+#include <lxgui/gui_check_button.hpp>
 #include <lxgui/gui_edit_box.hpp>
-#include <lxgui/gui_event.hpp>
 #include <lxgui/gui_factory.hpp>
 #include <lxgui/gui_font_string.hpp>
 #include <lxgui/gui_out.hpp>
@@ -59,6 +59,7 @@ void examples_setup_gui(gui::manager& manager) {
     factory.register_region_type<gui::texture>();
     factory.register_region_type<gui::font_string>();
     factory.register_region_type<gui::button>();
+    factory.register_region_type<gui::check_button>();
     factory.register_region_type<gui::slider>();
     factory.register_region_type<gui::edit_box>();
     factory.register_region_type<gui::scroll_frame>();
@@ -82,8 +83,14 @@ void examples_setup_gui(gui::manager& manager) {
 
     // Load GUI elements from files:
     std::cout << " Reading gui files..." << std::endl;
+
     //  - set the directory in which the interface is located
     manager.add_addon_directory("interface");
+
+    //  - (optional) set the directory where global text translations are located;
+    //    you may not need this, as each addon will be parsed for its own translations
+    manager.add_localization_directory("locale");
+
     //  - and load all files
     manager.load_ui();
 

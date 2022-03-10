@@ -33,7 +33,8 @@ class layered_region : public region {
 
 public:
     /// Constructor.
-    explicit layered_region(utils::control_block& block, manager& mgr);
+    explicit layered_region(
+        utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -41,9 +42,6 @@ public:
      * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
-
-    /// Creates the associated Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Removes this region from its parent and return an owning pointer.

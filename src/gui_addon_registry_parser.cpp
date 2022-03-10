@@ -1,5 +1,4 @@
 #include "lxgui/gui_addon_registry.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layout_node.hpp"
@@ -255,18 +254,19 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
                 add_on.directory + "/" + node.get_attribute_value<std::string>("file"), add_on);
         } else {
             try {
-                auto attr = parse_core_attributes(
-                    root_.get_registry(), virtual_root_.get_registry(), node, nullptr);
+                auto attr = frame_core_attributes{parse_core_attributes(
+                    root_.get_registry(), virtual_root_.get_registry(), node, nullptr)};
 
                 utils::observer_ptr<frame> obj;
                 auto parent = attr.parent; // copy here to prevent use-after-move
                 if (parent) {
                     obj = parent->create_child(std::move(attr));
                 } else {
-                    if (attr.is_virtual)
+                    if (attr.is_virtual) {
                         obj = virtual_root_.create_root_frame(std::move(attr));
-                    else
+                    } else {
                         obj = root_.create_root_frame(std::move(attr));
+                    }
                 }
 
                 if (!obj)

@@ -14,6 +14,8 @@ virtual_registry::get_virtual_region_list(std::string_view names) const {
     std::vector<utils::observer_ptr<const region>> inheritance;
     for (auto parent : utils::cut(names, ",")) {
         parent = utils::trim(parent, ' ');
+        if (utils::has_no_content(parent))
+            continue;
 
         utils::observer_ptr<const region> obj = get_region_by_name(parent);
 

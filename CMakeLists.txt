@@ -26,6 +26,7 @@ lxgui_set_option(LXGUI_BUILD_GUI_SDL_IMPL TRUE BOOL "Build the SDL gui implement
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SDL_IMPL TRUE BOOL "Build the SDL input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
+lxgui_set_option(LXGUI_BUILD_EXAMPLES TRUE BOOL "Build the example programs")
 lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_FMT TRUE BOOL "Build the fmtlib dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false, will search for it in the system)")
@@ -44,10 +45,6 @@ project(lxgui LANGUAGES CXX VERSION 2.0)
 
 # check compiler versions
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
-    # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
-    # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
-    # -g -fsanitize=address -s INITIAL_MEMORY=200MB
-    set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
     set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
@@ -256,7 +253,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_edit_box_parser.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_event.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_event_data.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event_emitter.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_event_receiver.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_factory.cpp
@@ -342,18 +339,23 @@ if(LXGUI_PLATFORM_LINUX)
     target_link_libraries(lxgui PRIVATE m stdc++ stdc++fs)
 endif()
 
-configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
-               "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
+    # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
+    # -g -fsanitize=address -s INITIAL_MEMORY=200MB
+    target_compile_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+    target_link_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+    target_link_options(lxgui PUBLIC "SHELL:-s MAX_WEBGL_VERSION=3")
+endif()
 
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
+configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
+               "${PROJECT_BINARY_DIR}/lxgui/lxgui.hpp")
+
+target_include_directories(lxgui PUBLIC $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>)
+
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
-install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
-install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/extern*.hpp)
-install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
-install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
+install(FILES "${PROJECT_BINARY_DIR}/lxgui/lxgui.hpp" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 
 set(LXGUI_INSTALL_TARGETS lxgui)
 
@@ -405,6 +407,33 @@ if(LXGUI_BUILD_INPUT_SDL_IMPL)
     else()
         message(ERROR ": the SDL implementation of the input requires the SDL library")
         set(LXGUI_BUILD_INPUT_SDL_IMPL FALSE)
+    endif()
+endif()
+
+##############################################################################
+# Examples
+##############################################################################
+
+if(LXGUI_BUILD_EXAMPLES)
+    if(LXGUI_BUILD_GUI_GL_IMPL AND LXGUI_BUILD_INPUT_SDL_IMPL)
+        if (LXGUI_COMPILER_EMSCRIPTEN)
+            add_subdirectory(examples/opengl-sdl-emscripten)
+        else()
+            add_subdirectory(examples/opengl-sdl)
+        endif()
+    endif()
+    if(LXGUI_BUILD_GUI_GL_IMPL AND LXGUI_BUILD_INPUT_SFML_IMPL)
+        add_subdirectory(examples/opengl-sfml)
+    endif()
+    if(LXGUI_BUILD_GUI_SFML_IMPL AND LXGUI_BUILD_INPUT_SFML_IMPL)
+        add_subdirectory(examples/sfml)
+    endif()
+    if(LXGUI_BUILD_GUI_SDL_IMPL AND LXGUI_BUILD_INPUT_SDL_IMPL)
+        if (LXGUI_COMPILER_EMSCRIPTEN)
+            add_subdirectory(examples/sdl-emscripten)
+        else()
+            add_subdirectory(examples/sdl)
+        endif()
     endif()
 endif()
 

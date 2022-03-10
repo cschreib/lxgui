@@ -5,6 +5,7 @@
 #include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_exception.hpp"
+#include "lxgui/gui_region_core_attributes.hpp"
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
@@ -157,7 +158,7 @@ class region : public utils::enable_observer_from_this<region> {
 
 public:
     /// Contructor.
-    explicit region(utils::control_block& block, manager& mgr);
+    explicit region(utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /// Destructor.
     ~region() override;
@@ -572,12 +573,6 @@ public:
     bool is_virtual() const;
 
     /**
-     * \brief Makes this region virtual.
-     * \note See is_virtual().
-     */
-    void set_virtual();
-
-    /**
      * \brief Flags this object as "special".
      * \note Special objects are not automatically copied
      * in the frame inheritance process. They must be
@@ -597,18 +592,18 @@ public:
     /**
      * \brief Returns the renderer of this object or its parents.
      * \return The renderer of this object or its parents
-     * \note For more information, see frame::set_renderer().
+     * \note For more information, see frame::set_frame_renderer().
      */
-    virtual utils::observer_ptr<const frame_renderer> get_top_level_renderer() const;
+    virtual utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see frame::set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_renderer() {
+    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const region*>(this)->get_top_level_renderer());
+            const_cast<const region*>(this)->get_top_level_frame_renderer());
     }
 
     /**
@@ -708,9 +703,6 @@ public:
      */
     const registry& get_registry() const;
 
-    /// Creates the associated Lua glue.
-    virtual void create_glue();
-
     /// Removes the Lua glue.
     void remove_glue();
 
@@ -751,10 +743,16 @@ protected:
     sol::state& get_lua_();
 
     template<typename T>
-    void create_glue_(T* self);
+    void create_glue_(T& self);
 
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
+
+    /**
+     * \brief Makes this region virtual.
+     * \note See is_virtual().
+     */
+    void set_virtual_();
 
     /**
      * \brief Sets this region's name.
@@ -779,6 +777,14 @@ protected:
      * parent, call set_parent_().
      */
     void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
+
+    /**
+     * \brief Set up function to call in all derived class constructors.
+     * \param self A pointer to the derived `this`
+     * \param attr The region attributes provided to the constructor
+     */
+    template<typename T>
+    void initialize_(T& self, const region_core_attributes& attr);
 
     manager& manager_;
 
@@ -828,10 +834,39 @@ const ObjectType* down_cast(const region* self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
     if (self && !object && self->is_object_type(ObjectType::class_name)) {
         throw gui::exception(
-            self->type_.back(), "cannot use down_cast() to " + std::string(ObjectType::class_name) +
-                                    " as object is being destroyed");
+            self->get_object_type(), "cannot use down_cast() to " +
+                                         std::string(ObjectType::class_name) +
+                                         " as object is being destroyed");
     }
     return object;
+}
+
+/**
+ * \brief Obtain a reference to a derived class.
+ * \param self The reference to down cast
+ * \return A reference to a derived class
+ * \note Like dynamic_cast(), this will throw if this region
+ * is not of the requested type. It will also throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
+ */
+template<typename ObjectType>
+const ObjectType& down_cast(const region& self) {
+    const ObjectType* object = dynamic_cast<const ObjectType*>(self);
+    if (self && !object) {
+        if (self.is_object_type(ObjectType::class_name)) {
+            throw gui::exception(
+                self.get_object_type(), "cannot use down_cast() to " +
+                                            std::string(ObjectType::class_name) +
+                                            " as object is being destroyed");
+        } else {
+            throw gui::exception(
+                self.get_object_type(), "cannot use down_cast() to " +
+                                            std::string(ObjectType::class_name) +
+                                            " as object is not of the right type");
+        }
+    }
+    return *object;
 }
 
 /**
@@ -846,6 +881,20 @@ const ObjectType* down_cast(const region* self) {
 template<typename ObjectType>
 ObjectType* down_cast(region* self) {
     return const_cast<ObjectType*>(down_cast<ObjectType>(const_cast<const region*>(self)));
+}
+
+/**
+ * \brief Obtain a reference to a derived class.
+ * \param self The reference to down cast
+ * \return A reference to a derived class
+ * \note Like dynamic_cast(), this will throw if this region
+ * is not of the requested type. It will also throw if the cast
+ * failed because the derived class destructor has already been
+ * called. This indicates a programming error.
+ */
+template<typename ObjectType>
+ObjectType& down_cast(region& self) {
+    return const_cast<ObjectType&>(down_cast<ObjectType>(const_cast<const region&>(self)));
 }
 
 /**

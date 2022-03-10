@@ -47,7 +47,7 @@ public:
     enum class state { up, down, disabled };
 
     /// Constructor.
-    explicit button(utils::control_block& block, manager& mgr);
+    explicit button(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -55,9 +55,6 @@ public:
      * \return All relevant information about this region
      */
     std::string serialize(const std::string& tab) const override;
-
-    /// Creates the associated Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Returns 'true' if this button can use a script.

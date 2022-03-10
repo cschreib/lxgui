@@ -3,7 +3,6 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame_renderer.hpp"
@@ -23,9 +22,19 @@
 
 namespace lxgui::gui {
 
-frame::frame(utils::control_block& block, manager& mgr) :
-    base(block, mgr), event_receiver_(mgr.get_event_emitter()) {
+frame::frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    base(block, mgr, attr), event_receiver_(mgr.get_event_emitter()), frame_renderer_(attr.rdr) {
     type_.push_back(class_name);
+
+    initialize_(*this, attr);
+
+    if (parent_)
+        level_ = parent_->get_level() + 1;
+
+    if (!is_virtual_) {
+        // Tell the renderer to render this region
+        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
+    }
 }
 
 frame::~frame() {
@@ -38,8 +47,8 @@ frame::~frame() {
 
     if (!is_virtual_) {
         // Tell the renderer to no longer render this region
-        get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
-        renderer_ = nullptr;
+        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
+        frame_renderer_ = nullptr;
     }
 
     get_manager().get_root().notify_hovered_frame_dirty();
@@ -66,15 +75,11 @@ void frame::render() const {
     }
 }
 
-void frame::create_glue() {
-    create_glue_(this);
-}
-
 std::string frame::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(renderer_))
+    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(frame_renderer_))
         str << tab << "  # Man. render: " << frame_renderer->get_name() << "\n";
     str << tab << "  # Strata     : " << utils::to_string(strata_) << "\n";
     str << tab << "  # Level      : " << level_ << "\n";
@@ -172,10 +177,11 @@ bool frame::can_use_script(const std::string& script_name) const {
            script_name == "OnDragMove" || script_name == "OnEnter" || script_name == "OnEvent" ||
            script_name == "OnFocusGained" || script_name == "OnFocusLost" ||
            script_name == "OnHide" || script_name == "OnKeyDown" || script_name == "OnKeyUp" ||
-           script_name == "OnLeave" || script_name == "OnLoad" || script_name == "OnMouseDown" ||
-           script_name == "OnMouseUp" || script_name == "OnDoubleClick" ||
-           script_name == "OnMouseWheel" || script_name == "OnReceiveDrag" ||
-           script_name == "OnShow" || script_name == "OnSizeChanged" || script_name == "OnUpdate";
+           script_name == "OnKeyRepeat" || script_name == "OnLeave" || script_name == "OnLoad" ||
+           script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
+           script_name == "OnDoubleClick" || script_name == "OnMouseWheel" ||
+           script_name == "OnReceiveDrag" || script_name == "OnShow" ||
+           script_name == "OnSizeChanged" || script_name == "OnUpdate";
 }
 
 void frame::copy_from(const region& obj) {
@@ -192,23 +198,13 @@ void frame::copy_from(const region& obj) {
     }
 
     this->set_frame_strata(frame_obj->get_frame_strata());
-
-    utils::observer_ptr<const frame> high_parent = observer_from(this);
-
-    for (int i = 0; i < frame_obj->get_level(); ++i) {
-        if (!high_parent->get_parent())
-            break;
-
-        high_parent = high_parent->get_parent();
-    }
-
-    this->set_level(high_parent->get_level() + frame_obj->get_level());
-
+    // NB: level is not inherited on purpose; this is difficult to make sense of
     this->set_top_level(frame_obj->is_top_level());
 
     this->enable_mouse_click(frame_obj->is_mouse_click_enabled());
     this->enable_mouse_move(frame_obj->is_mouse_move_enabled());
     this->enable_mouse_wheel(frame_obj->is_mouse_wheel_enabled());
+    this->enable_keyboard(frame_obj->is_keyboard_enabled());
 
     this->set_movable(frame_obj->is_movable());
     this->set_clamped_to_screen(frame_obj->is_clamped_to_screen());
@@ -238,8 +234,6 @@ void frame::copy_from(const region& obj) {
         new_art->notify_loaded();
     }
 
-    build_layer_list_flag_ = true;
-
     if (frame_obj->backdrop_) {
         backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
         backdrop_->copy_from(*frame_obj->backdrop_);
@@ -255,7 +249,7 @@ void frame::copy_from(const region& obj) {
         if (!child || child->is_special())
             continue;
 
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.object_type = child->get_object_type();
         attr.name        = child->get_raw_name();
         attr.inheritance = {child};
@@ -366,7 +360,7 @@ void frame::check_position_() {
     }
 
     if (is_clamped_to_screen_) {
-        vector2f screen_dimensions = get_top_level_renderer()->get_target_dimensions();
+        vector2f screen_dimensions = get_top_level_frame_renderer()->get_target_dimensions();
 
         if (border_list_.right > screen_dimensions.x) {
             float width = border_list_.right - border_list_.left;
@@ -447,11 +441,28 @@ void frame::enable_mouse_wheel(bool is_mouse_wheel_enabled) {
     is_mouse_wheel_enabled_ = is_mouse_wheel_enabled;
 }
 
-void frame::enable_key_capture(const std::string& key_name, bool is_capture_enabled) {
-    if (is_capture_enabled)
-        reg_key_list_.erase(key_name);
-    else
-        reg_key_list_.insert(key_name);
+void frame::enable_keyboard(bool is_keyboard_enabled) {
+    is_keyboard_enabled_ = is_keyboard_enabled;
+}
+
+void frame::enable_key_capture(const std::string& key_name) {
+    reg_key_list_.insert(key_name);
+}
+
+void frame::enable_key_capture(input::key key_id) {
+    reg_key_list_.insert(std::string{input::get_key_codename(key_id)});
+}
+
+void frame::disable_key_capture(const std::string& key_name) {
+    reg_key_list_.erase(key_name);
+}
+
+void frame::disable_key_capture(input::key key_id) {
+    reg_key_list_.erase(std::string{input::get_key_codename(key_id)});
+}
+
+void frame::disable_key_capture() {
+    reg_key_list_.clear();
 }
 
 void frame::notify_loaded() {
@@ -553,17 +564,14 @@ frame::create_layered_region(layer layer_id, region_core_attributes attr) {
     return add_region(std::move(reg));
 }
 
-utils::observer_ptr<frame> frame::create_child(region_core_attributes attr) {
+utils::observer_ptr<frame> frame::create_child(frame_core_attributes attr) {
     attr.is_virtual = is_virtual();
     attr.parent     = observer_from(this);
 
-    auto new_frame = get_manager().get_factory().create_frame(
-        get_registry(), get_top_level_renderer().get(), attr);
+    auto new_frame = get_manager().get_factory().create_frame(get_registry(), attr);
 
     if (!new_frame)
         return nullptr;
-
-    new_frame->set_level(get_level() + 1);
 
     return add_child(std::move(new_frame));
 }
@@ -583,9 +591,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
     child_list_.push_back(std::move(child));
 
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> old_top_level_renderer =
-            added_child->get_top_level_renderer();
-        utils::observer_ptr<frame_renderer> new_top_level_renderer = get_top_level_renderer();
+        auto old_top_level_renderer = added_child->get_top_level_frame_renderer();
+        auto new_top_level_renderer = get_top_level_frame_renderer();
         if (old_top_level_renderer != new_top_level_renderer) {
             old_top_level_renderer->notify_rendered_frame(added_child, false);
             new_top_level_renderer->notify_rendered_frame(added_child, true);
@@ -622,9 +629,9 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
 
     bool notify_renderer = false;
     if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_frame_renderer();
         notify_renderer =
-            !child->get_renderer() && top_level_renderer.get() != &get_manager().get_root();
+            !child->get_frame_renderer() && top_level_renderer.get() != &get_manager().get_root();
         if (notify_renderer) {
             top_level_renderer->notify_rendered_frame(child, false);
             child->propagate_renderer_(false);
@@ -786,8 +793,12 @@ bool frame::is_mouse_wheel_enabled() const {
     return is_mouse_wheel_enabled_;
 }
 
-bool frame::is_registered_for_drag(const std::string& button_name) const {
+bool frame::is_drag_enabled(const std::string& button_name) const {
     return reg_drag_list_.find(button_name) != reg_drag_list_.end();
+}
+
+bool frame::is_keyboard_enabled() const {
+    return is_keyboard_enabled_;
 }
 
 bool frame::is_key_capture_enabled(const std::string& key_name) const {
@@ -1064,10 +1075,24 @@ void frame::unregister_event(const std::string& event_name) {
     event_receiver_.unregister_event(event_name);
 }
 
-void frame::register_for_drag(const std::vector<std::string>& button_list) {
+void frame::enable_drag(const std::string& button_name) {
+    reg_drag_list_.insert(button_name);
+}
+
+void frame::enable_drag(input::mouse_button button_id) {
+    reg_drag_list_.insert(std::string{input::get_mouse_button_codename(button_id)});
+}
+
+void frame::disable_drag(const std::string& button_name) {
+    reg_drag_list_.erase(button_name);
+}
+
+void frame::disable_drag(input::mouse_button button_id) {
+    reg_drag_list_.erase(std::string{input::get_mouse_button_codename(button_id)});
+}
+
+void frame::disable_drag() {
     reg_drag_list_.clear();
-    for (const auto& button : button_list)
-        reg_drag_list_.insert(button);
 }
 
 void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
@@ -1087,7 +1112,7 @@ void frame::set_frame_strata(frame_strata strata_id) {
     std::swap(strata_, strata_id);
 
     if (strata_ != strata_id && !is_virtual_) {
-        get_top_level_renderer()->notify_frame_strata_changed(
+        get_top_level_frame_renderer()->notify_frame_strata_changed(
             observer_from(this), strata_id, strata_);
     }
 }
@@ -1149,7 +1174,8 @@ void frame::set_level(int level_id) {
     std::swap(level_id, level_);
 
     if (!is_virtual_) {
-        get_top_level_renderer()->notify_frame_level_changed(observer_from(this), level_id, level_);
+        get_top_level_frame_renderer()->notify_frame_level_changed(
+            observer_from(this), level_id, level_);
     }
 }
 
@@ -1231,21 +1257,24 @@ void frame::raise() {
     if (!is_top_level_)
         return;
 
-    int  old_level          = level_;
-    auto top_level_renderer = get_top_level_renderer();
-    level_                  = top_level_renderer->get_highest_level(strata_) + 1;
+    int  old_level = level_;
+    auto rdr       = get_top_level_frame_renderer();
+    int  top_level = rdr->get_highest_level(strata_);
 
-    if (level_ > old_level) {
-        if (!is_virtual()) {
-            top_level_renderer->notify_frame_level_changed(observer_from(this), old_level, level_);
-        }
+    if (old_level == top_level) {
+        // This frame is already on top, nothing to do.
+        return;
+    }
 
-        int amount = level_ - old_level;
+    level_   = top_level + 1;
+    int diff = level_ - old_level;
 
-        for (auto& child : get_children())
-            child.add_level_(amount);
-    } else
-        level_ = old_level;
+    if (!is_virtual()) {
+        rdr->notify_frame_level_changed(observer_from(this), old_level, level_);
+    }
+
+    for (auto& child : get_children())
+        child.add_level_(diff);
 }
 
 void frame::enable_auto_focus(bool enable) {
@@ -1285,7 +1314,7 @@ void frame::add_level_(int amount) {
     level_ += amount;
 
     if (!is_virtual()) {
-        get_top_level_renderer()->notify_frame_level_changed(
+        get_top_level_frame_renderer()->notify_frame_level_changed(
             observer_from(this), old_level, level_);
     }
 
@@ -1324,38 +1353,38 @@ void frame::stop_sizing() {
 }
 
 void frame::propagate_renderer_(bool rendered) {
-    auto top_level_renderer = get_top_level_renderer();
+    auto top_level_renderer = get_top_level_frame_renderer();
     for (const auto& child : child_list_) {
         if (!child)
             continue;
 
-        if (!child->get_renderer())
+        if (!child->get_frame_renderer())
             top_level_renderer->notify_rendered_frame(child, rendered);
 
         child->propagate_renderer_(rendered);
     }
 }
 
-void frame::set_renderer(utils::observer_ptr<frame_renderer> rdr) {
-    if (rdr == renderer_)
+void frame::set_frame_renderer(utils::observer_ptr<frame_renderer> rdr) {
+    if (rdr == frame_renderer_)
         return;
 
-    get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
+    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
 
     propagate_renderer_(false);
 
-    renderer_ = std::move(rdr);
+    frame_renderer_ = std::move(rdr);
 
-    get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
+    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
 
     propagate_renderer_(true);
 }
 
-utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const {
-    if (renderer_)
-        return renderer_;
+utils::observer_ptr<const frame_renderer> frame::get_top_level_frame_renderer() const {
+    if (frame_renderer_)
+        return frame_renderer_;
     else if (parent_)
-        return parent_->get_top_level_renderer();
+        return parent_->get_top_level_frame_renderer();
     else
         return get_manager().get_root().observer_from_this();
 }
@@ -1422,7 +1451,7 @@ void frame::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
-    get_top_level_renderer()->notify_strata_needs_redraw(strata_);
+    get_top_level_frame_renderer()->notify_strata_needs_redraw(strata_);
 }
 
 void frame::notify_scaling_factor_updated() {
@@ -1460,25 +1489,21 @@ void frame::hide() {
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::notify_mouse_in_frame(bool mouse_inframe, const vector2f& /*position*/) {
+void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*position*/) {
+    if (mouse_in_frame == is_mouse_in_frame_)
+        return;
+
+    is_mouse_in_frame_ = mouse_in_frame;
+
     alive_checker checker(*this);
-
-    if (mouse_inframe) {
-        if (!is_mouse_in_frame_) {
-            fire_script("OnEnter");
-            if (!checker.is_alive())
-                return;
-        }
-
-        is_mouse_in_frame_ = true;
+    if (is_mouse_in_frame_) {
+        fire_script("OnEnter");
+        if (!checker.is_alive())
+            return;
     } else {
-        if (is_mouse_in_frame_) {
-            fire_script("OnLeave");
-            if (!checker.is_alive())
-                return;
-        }
-
-        is_mouse_in_frame_ = false;
+        fire_script("OnLeave");
+        if (!checker.is_alive())
+            return;
     }
 }
 

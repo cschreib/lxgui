@@ -3,14 +3,13 @@
 #    pragma GCC diagnostic push
 #elif defined(LXGUI_COMPILER_CLANG) || defined(LXGUI_COMPILER_EMSCRIPTEN)
 #    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wextra-semi-stmt"
+#    pragma clang diagnostic ignored "-Wsigned-enum-bitfield"
 #    if __clang_major__ >= 13
 #        pragma clang diagnostic ignored "-Wreserved-identifier"
 #    endif
 #endif
 
-#include <ryml.hpp>
-#include <ryml_std.hpp>
+#include <fmt/format.h>
 
 #if defined(LXGUI_COMPILER_MSVC)
 #elif defined(LXGUI_COMPILER_GCC)

@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_REGION_ATTRIBUTES_HPP
-#define LXGUI_GUI_REGION_ATTRIBUTES_HPP
+#ifndef LXGUI_GUI_REGION_CORE_ATTRIBUTES_HPP
+#define LXGUI_GUI_REGION_CORE_ATTRIBUTES_HPP
 
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"

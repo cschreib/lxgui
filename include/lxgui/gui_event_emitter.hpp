@@ -1,7 +1,7 @@
 #ifndef LXGUI_GUI_EVENT_EMITTER_HPP
 #define LXGUI_GUI_EVENT_EMITTER_HPP
 
-#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_event_data.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_signal.hpp"
 
@@ -9,8 +9,6 @@
 #include <unordered_map>
 
 namespace lxgui::gui {
-
-class event;
 
 /// Signature of event handler.
 using event_handler_signature = void(const event_data&);

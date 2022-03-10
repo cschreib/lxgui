@@ -1,7 +1,6 @@
 #include "lxgui/gui_edit_box.hpp"
 
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -17,16 +16,19 @@ using namespace lxgui::input;
 
 namespace lxgui::gui {
 
-edit_box::edit_box(utils::control_block& block, manager& mgr) :
-    frame(block, mgr),
+edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr),
     carret_timer_(blink_period_, utils::periodic_timer::start_type::first_tick, false) {
-    type_.push_back(class_name);
+
+    initialize_(*this, attr);
 
     iter_carret_pos_     = unicode_text_.begin();
     iter_carret_pos_old_ = unicode_text_.begin();
 
     enable_mouse(true);
-    register_for_drag({"LeftButton"});
+    enable_drag(input::mouse_button::left);
+
+    enable_keyboard(true);
 }
 
 bool edit_box::can_use_script(const std::string& script_name) const {
@@ -103,12 +105,15 @@ void edit_box::update(float delta) {
 void edit_box::fire_script(const std::string& script_name, const event_data& data) {
     alive_checker checker(*this);
 
-    // Do not fire OnKeyUp/OnKeyDown events when typing
+    // Do not fire OnKeyUp/OnKeyRepeat/OnKeyDown events when typing
     bool bypass_event = false;
-    if (has_focus() && (script_name == "OnKeyUp" || script_name == "OnKeyDown"))
+    if (has_focus() &&
+        (script_name == "OnKeyUp" || script_name == "OnKeyDown" || script_name == "OnKeyRepeat")) {
         bypass_event = true;
-    if (!has_focus() && (script_name == "OnChar"))
+    }
+    if (!has_focus() && (script_name == "OnChar")) {
         bypass_event = true;
+    }
 
     if (!bypass_event) {
         base::fire_script(script_name, data);
@@ -118,8 +123,8 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
     if (script_name == "OnKeyDown" && has_focus()) {
         key  key_id           = data.get<key>(0);
-        bool shift_is_pressed = data.get<bool>(2);
-        bool ctrl_is_pressed  = data.get<bool>(3);
+        bool shift_is_pressed = data.get<bool>(1);
+        bool ctrl_is_pressed  = data.get<bool>(2);
 
         if (key_id == key::k_return || key_id == key::k_numpadenter) {
             fire_script("OnEnterPressed");
@@ -164,9 +169,9 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
         update_carret_position_();
     } else if (script_name == "OnDragStart") {
         selection_end_pos_ = selection_start_pos_ =
-            get_letter_id_at_(vector2f(data.get<float>(1), data.get<float>(2)));
+            get_letter_id_at_(vector2f(data.get<float>(2), data.get<float>(3)));
     } else if (script_name == "OnDragMove") {
-        std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(0), data.get<float>(1)));
+        std::size_t pos = get_letter_id_at_(vector2f(data.get<float>(2), data.get<float>(3)));
         if (pos != selection_end_pos_) {
             if (pos != std::numeric_limits<std::size_t>::max()) {
                 highlight_text(selection_start_pos_, pos);
@@ -187,12 +192,8 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
         unlight_text();
 
-        move_carret_at_({data.get<float>(1), data.get<float>(2)});
+        move_carret_at_({data.get<float>(2), data.get<float>(3)});
     }
-}
-
-void edit_box::create_glue() {
-    create_glue_(this);
 }
 
 void edit_box::set_text(const utils::ustring& content) {

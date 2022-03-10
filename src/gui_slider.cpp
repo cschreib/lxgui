@@ -1,7 +1,6 @@
 #include "lxgui/gui_slider.hpp"
 
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -20,10 +19,13 @@ void step_value(float& value, float step) {
         value = std::round(value / step) * step;
 }
 
-slider::slider(utils::control_block& block, manager& mgr) : frame(block, mgr) {
-    type_.push_back(class_name);
+slider::slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
+
+    initialize_(*this, attr);
+
     enable_mouse(true);
-    register_for_drag({"LeftButton"});
+    enable_drag(input::mouse_button::left);
 }
 
 std::string slider::serialize(const std::string& tab) const {
@@ -52,7 +54,7 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 
     if (script_name == "OnDragStart") {
         if (thumb_texture_ &&
-            thumb_texture_->is_in_region({data.get<float>(1), data.get<float>(2)})) {
+            thumb_texture_->is_in_region({data.get<float>(2), data.get<float>(3)})) {
             anchor& a = thumb_texture_->modify_point(point::center);
 
             get_manager().get_root().start_moving(
@@ -75,11 +77,11 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 
             float value;
             if (orientation_ == orientation::horizontal) {
-                float offset = data.get<float>(1) - border_list_.left;
+                float offset = data.get<float>(2) - border_list_.left;
                 value        = offset / apparent_size.x;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             } else {
-                float offset = data.get<float>(2) - border_list_.top;
+                float offset = data.get<float>(3) - border_list_.top;
                 value        = offset / apparent_size.y;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             }
@@ -339,10 +341,6 @@ void slider::update_thumb_texture_() {
 void slider::notify_borders_need_update() {
     base::notify_borders_need_update();
     notify_thumb_texture_needs_update_();
-}
-
-void slider::create_glue() {
-    create_glue_(this);
 }
 
 void slider::notify_thumb_texture_needs_update_() {

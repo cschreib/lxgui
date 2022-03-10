@@ -32,7 +32,7 @@ class slider : public frame {
 
 public:
     /// Constructor.
-    explicit slider(utils::control_block& block, manager& mgr);
+    explicit slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -187,9 +187,6 @@ public:
      * or its thumb texture
      */
     bool is_in_region(const vector2f& position) const override;
-
-    /// Returns this region's Lua glue.
-    void create_glue() override;
 
     /// Tells this region that its borders need updating.
     void notify_borders_need_update() override;

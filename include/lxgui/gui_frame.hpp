@@ -2,13 +2,14 @@
 #define LXGUI_GUI_FRAME_HPP
 
 #include "lxgui/gui_backdrop.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_receiver.hpp"
+#include "lxgui/gui_frame_core_attributes.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
-#include "lxgui/gui_region_attributes.hpp"
+#include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
+#include "lxgui/utils_meta.hpp"
 #include "lxgui/utils_signal.hpp"
 #include "lxgui/utils_view.hpp"
 
@@ -99,8 +100,9 @@ using script_list_view = script_signal::slot_list_view;
  * do in general is register a callback function using frame::set_script.
  * However, some hard-coded events require explicit enabling. In particular:
  *
- * - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
- * focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
+ * - Events related to keyboard input (`OnKeyDown`, `OnKeyRepeat`, `OnKeyUp`)
+ * require frame::enable_keyboard, and either focus (see @ref frame::set_focus) or
+ * explicit key capture (@ref frame::enable_key_capture).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
  * - Events related to mouse move input (`OnEnter`, `OnLeave`)
@@ -126,13 +128,18 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnChar`: Triggered whenever a character is typed into the frame, and
  * the frame has focus (see @ref frame::set_focus).
  * - `OnDragStart`: Triggered when one of the mouse button registered for
- * dragging (see frame::register_for_drag) has been pressed inside the
+ * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
- * recorded.
+ * recorded. This event provides four argument to the registered callback:
+ * a number identifying the mouse button that started the drag, the human-readable
+ * name of this button, and the mouse X and Y position.
  * - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
- * until `OnDragStop` is triggered.
- * - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
- * released.
+ * until `OnDragStop` is triggered. This event provides four argument to
+ * the registered callback: the amount of mouse movement in X and Y since the
+ * last call to `OnDragMove` (or since `OnDragStart` if this is the first call),
+ * and the mouse X and Y position.
+ * - `OnDragStop`: Similar to `OnDragStart`, but triggered when the mouse button
+ * is released after `OnDragStart`.
  * - `OnEnter`: Triggered when the mouse pointer enters into the area of
  * the screen occupied by the frame. Note: this only takes into account the
  * position and size of the frame and its title region, but not the space
@@ -150,26 +157,20 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnHide`: Triggered when region::hide is called, or when the frame
  * is hidden indirectly (for example if its parent is itself hidden). This
  * will only fire if the frame was previously shown.
- * - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+ * - `OnKeyDown`: Triggered when a keyboard key is pressed. Will only
  * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
  * been registered for capture using @ref frame::enable_key_capture. If no
- * frame is focused, only the topmost frame with
+ * keyboard-enabled frame is focused, only the topmost frame with
  * @ref frame::enable_key_capture will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides two arguments to the registered
- * callback: a number identifying the key, and the human-readable name of the
- * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @ref key_binder.
- * - `OnKeyUp`: Triggered when any keyboard key is released. Will only
- * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
- * been registered for capture using @ref frame::enable_key_capture. If no
- * frame is focused, only the topmost frame with
- * @ref frame::enable_key_capture will receive the event. If no frame has
- * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides two arguments to the registered
- * callback: a number identifying the key, and the human-readable name of the
- * key. If you need to react to simultaneous key presses (e.g., Shift+A), use
- * the @ref key_binder.
+ * @ref key_binder). This event provides five arguments to the registered
+ * callback: a number identifying the main key being pressed, three boolean flags
+ * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
+ * key combination being pressed (e.g., Shift+A).
+ * - `OnKeyRepeat`: Similar to `OnKeyDown`, but triggered when a key has been
+ * long-pressed and the operating system generated repeat events.
+ * - `OnKeyUp`: Similar to `OnKeyDown`, but triggered when a keyboard key is
+ * released.
  * - `OnLeave`: Triggered when the mouse pointer leaves the area of the
  * screen occupied by the frame. Note: this only takes into account the
  * position and size of the frame and its title region, but not the space
@@ -181,25 +182,24 @@ using script_list_view = script_signal::slot_list_view;
  * - `OnLoad`: Triggered just after the frame is created. This is where
  * you would normally register for events and specific inputs, set up
  * initial states for extra logic, or do localization.
- * - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
+ * - `OnMouseDown`: Triggered when a mouse button is pressed and this frame is
  * the topmost mouse-click-enabled frame under the mouse pointer. Will not
- * trigger if the frame is hidden. This event provides one argument to
- * the registered callback: a string identifying the mouse button
- * (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
- * - `OnMouseUp`: Triggered when any mouse button is released and this frame is
- * the topmost mouse-click-enabled frame under the mouse pointer. Will not
- * trigger if the frame is hidden. This event provides one argument to
- * the registered callback: a string identifying the mouse button
- * (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+ * trigger if the frame is hidden. This event provides four arguments to
+ * the registered callback: a number identifying the mouse button, a string
+ * containing the human-readable name of this button (`"LeftButton"`,
+ * `"RightButton"`, or `"MiddleButton"`), and the mouse X and Y position.
+ * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
+ * is released.
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
  * the topmost mouse-wheel-enabled frame under the mouse pointer. This event
- * provides one argument to the registered callback: a number indicating by
- * how many "notches" the wheel has turned in this event. A positive value
- * means the wheel has been moved "away" from the user (this would normally
- * scroll *up* in a document).
+ * provides three arguments to the registered callback. The first is a number
+ * indicating by how many "notches" the wheel has turned in this event. A
+ * positive value means the wheel has been moved "away" from the user (this
+ * would normally scroll *up* in a document). The other two arguments
+ * are the mouse X and Y position.
  * - `OnReceiveDrag`: Triggered when the mouse pointer was previously
  * dragged onto the frame, and when one of the mouse button registered for
- * dragging (see frame::register_for_drag) is released. This enables
+ * dragging (see frame::enable_drag) is released. This enables
  * the "drop" in "drag and drop" operations.
  * - `OnShow`: Triggered when region::show is called, or when the frame
  * is shown indirectly (for example if its parent is itself shown). This
@@ -278,7 +278,7 @@ public:
         utils::view::non_null_filter>;
 
     /// Constructor.
-    explicit frame(utils::control_block& block, manager& mgr);
+    explicit frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /// Destructor.
     ~frame() override;
@@ -358,17 +358,75 @@ public:
     void enable_mouse_wheel(bool is_mouse_wheel_enabled);
 
     /**
-     * \brief Sets if this frame can receive keyboard input from a specific key.
-     * \param key_name The key to capture
-     * \param is_capture_enabled 'true' to enable
-     * \note If the frame captures the key, other frames below it will not be able to receive
-     * the input from this key. The format of the input key name is standard English,
-     * with modifies for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
-     * "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
-     * simultaneously.
+     * \brief Sets if this frame can receive any keyboard input.
+     * \param is_keyboard_enabled 'true' to enable
+     * \note If enabled, specific keys must be enabled for capture to actually receive keybaord
+     * events.
+     * \see is_keyboard_enabled()
+     * \see enable_key_capture()
      * \see is_key_capture_enabled()
      */
-    void enable_key_capture(const std::string& key_name, bool is_capture_enabled);
+    void enable_keyboard(bool is_keyboard_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_name The key to capture
+     * \note If the frame captures the key, other frames below it will not be able to receive
+     * the input from this key. The format of the input key name is standard English,
+     * with modifiers for the "Control" (Ctrl), "Shift", and "Alt" keys. For example,
+     * "Ctrl-Shift-C" corresponds to the Ctrl, Shift, and C keys being pressed
+     * simultaneously. Keyboard input must be enabled for capture to take place.
+     * \see disable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void enable_key_capture(const std::string& key_name);
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_id The key to capture
+     * \note See @ref enable_key_capture(const std::string&) for more information.
+     * This overload only allows capturing a single key; for key combinations,
+     * please use the overload taking a string.
+     * \see disable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void enable_key_capture(input::key key_id);
+
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from a specific key.
+     * \param key_name The key for which to disable capture
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture(const std::string& key_name);
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from a specific key.
+     * \param key_id The key for which to disable capture
+     * \note See @ref disable_key_capture(const std::string&) for more information.
+     * This overload only allows capturing a single key; for key combinations,
+     * please use the overload taking a string.
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture(input::key key_id);
+
+    /**
+     * \brief Marks this frame as unable to receive keyboard input from any key.
+     * \param key_name The key to capture
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
+     */
+    void disable_key_capture();
 
     /**
      * \brief Checks if this frame has a script defined.
@@ -472,7 +530,7 @@ public:
      * notify_loaded() when you are done with any extra initialization you require on
      * this frame. If you do not, the frame's OnLoad callback will not fire.
      */
-    utils::observer_ptr<frame> create_child(region_core_attributes attr);
+    utils::observer_ptr<frame> create_child(frame_core_attributes attr);
 
     /**
      * \brief Creates a new frame as child of this frame.
@@ -489,7 +547,7 @@ public:
         typename FrameType,
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
-    utils::observer_ptr<FrameType> create_child(region_core_attributes attr) {
+    utils::observer_ptr<FrameType> create_child(frame_core_attributes attr) {
         attr.object_type = FrameType::class_name;
 
         return utils::static_pointer_cast<FrameType>(create_child(std::move(attr)));
@@ -511,7 +569,7 @@ public:
         typename Enable =
             typename std::enable_if<std::is_base_of<gui::frame, FrameType>::value>::type>
     utils::observer_ptr<FrameType> create_child(const std::string& name) {
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.name        = name;
         attr.object_type = FrameType::class_name;
 
@@ -868,15 +926,26 @@ public:
      * \param button_name The name of the mouse button to check
      * \return 'true' if this frame is registered for drag events with the provided mouse button
      */
-    bool is_registered_for_drag(const std::string& button_name) const;
+    bool is_drag_enabled(const std::string& button_name) const;
 
     /**
      * \brief Checks if this frame can receive keyboard input from a specific key.
      * \param key_name The key to check
      * \return 'true' if this frame can receive keyboard input from this key
      * \see enable_key_capture()
+     * \see enable_keyboard()
+     * \see is_keyboard_enabled()
      */
     bool is_key_capture_enabled(const std::string& key_name) const;
+
+    /**
+     * \brief Checks if this frame can receive any keyboard input.
+     * \return 'true' if this frame can receive any keyboard input
+     * \see enable_key_capture()
+     * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     */
+    bool is_keyboard_enabled() const;
 
     /**
      * \brief Checks if this frame can be moved.
@@ -915,6 +984,7 @@ public:
      * \param content The content of the script, as Lua code
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note The script_info parameter is used only for displaying error messages.
      * This function is meant to be used by the layout file parser. If you want to
      * manually define your own script handlers, prefer the other overloads.
@@ -930,6 +1000,7 @@ public:
      * \param handler The handler of the script, as a Lua function
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a Lua function to be called for the event specified in script_name.
      * This provides more flexibility compared to using C++ function, but also has a
      * larger overhead. If performance is a concern, prefer the other overload taking a
@@ -960,11 +1031,62 @@ public:
     }
 
     /**
+     * \brief Adds an additional handler script to this frame (executed after existing scripts).
+     * \param script_name The name of the script (e.g., "OnEvent")
+     * \param handler The handler of the script, as a C++ function (see below for expected signature)
+     * \param info The location where this script has been defined
+     * \return A connection object, to disable the script if needed.
+     *
+     * \note This defines a C++ function to be called for the event specified in \p script_name.
+     * This provides the best performance, but lacks direct access to the Lua
+     * environment. If this is required, prefer the other overload taking a Lua function
+     * instead.
+     *
+     * \note This overload enables taking handler scripts with a `self` parameter of type other than
+     * \ref frame, for example:
+     * \begin_code{cpp}
+     * add_script([](button& self, const event_data& data) { ... });
+     * \end_code
+     * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
+     * will be reported. However this has a cost; if you are sure of the type and want to bypass
+     * this cost, just supply the `self` type as the first template argument to this function:
+     * \begin_code{cpp}
+     * add_script<button>([](button& self, const event_data& data) { ... });
+     * \end_code
+     */
+    template<typename DerivedType = void, typename Function>
+    utils::connection add_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+
+        return add_script(
+            script_name,
+            script_function(
+                [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+                    using derived_type = std::decay_t<std::conditional_t<
+                        use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+                    constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
+                    if constexpr (use_no_cast) {
+                        handler(self, data);
+                    } else if constexpr (use_automatic_cast) {
+                        handler(down_cast<derived_type>(self), data);
+                    } else {
+                        handler(static_cast<derived_type&>(self), data);
+                    }
+                }),
+            info);
+    }
+
+    /**
      * \brief Sets a new handler script for this frame (replacing existing scripts).
      * \param script_name The name of the script (e.g., "OnEvent")
      * \param content The content of the script, as Lua code
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note The script_info parameter is used only for displaying error messages.
      * This function is meant to be used by the layout file parser. If you want to
      * manually define your own script handlers, prefer the other overloads.
@@ -980,6 +1102,7 @@ public:
      * \param handler The handler of the script, as a Lua function
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a Lua function to be called for the event specified in script_name.
      * This provides more flexibility compared to using C++ function, but also has a
      * larger overhead. If performance is a concern, prefer the other overload taking a
@@ -998,6 +1121,7 @@ public:
      * \param handler The handler of the script, as a C++ function of signature \ref script_signature
      * \param info The location where this script has been defined
      * \return A connection object, to disable the script if needed.
+     *
      * \note This defines a C++ function to be called for the event specified in script_name.
      * This provides the best performance, but lacks direct access to the Lua
      * environment. If this is required, prefer the other overload taking a Lua function
@@ -1006,6 +1130,56 @@ public:
     utils::connection set_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
         return define_script_(script_name, std::move(handler), false, info);
+    }
+
+    /**
+     * \brief Sets a new handler script for this frame (replacing existing scripts).
+     * \param script_name The name of the script (e.g., "OnEvent")
+     * \param handler The handler of the script, as a C++ function of signature \ref script_signature
+     * \param info The location where this script has been defined
+     * \return A connection object, to disable the script if needed.
+     *
+     * \note This defines a C++ function to be called for the event specified in script_name.
+     * This provides the best performance, but lacks direct access to the Lua
+     * environment. If this is required, prefer the other overload taking a Lua function
+     * instead.
+     *
+     * \note This overload enables taking handler scripts with a `self` parameter of type other than
+     * \ref frame, for example:
+     * \begin_code{cpp}
+     * add_script([](button& self, const event_data& data) { ... });
+     * \end_code
+     * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
+     * will be reported. However this has a cost; if you are sure of the type and want to bypass
+     * this cost, just supply the `self` type as the first template argument to this function:
+     * \begin_code{cpp}
+     * add_script<button>([](button& self, const event_data& data) { ... });
+     * \end_code
+     */
+    template<typename DerivedType = void, typename Function>
+    utils::connection set_script(
+        const std::string& script_name, Function&& handler, script_info info = script_info{}) {
+
+        return set_script(
+            script_name,
+            script_function(
+                [handler = std::move(handler)](frame& self, const event_data& data) mutable {
+                    constexpr bool use_automatic_cast = std::is_same_v<DerivedType, void>;
+
+                    using derived_type = std::decay_t<std::conditional_t<
+                        use_automatic_cast, utils::first_function_argument<Function>, DerivedType>>;
+
+                    constexpr bool use_no_cast = std::is_same_v<derived_type, frame>;
+
+                    if constexpr (use_no_cast) {
+                        handler(self, data);
+                    } else if constexpr (use_automatic_cast) {
+                        handler(down_cast<derived_type>(self), data);
+                    } else {
+                        handler(static_cast<derived_type&>(self), data);
+                    }
+                }),
+            info);
     }
 
     /**
@@ -1047,9 +1221,32 @@ public:
 
     /**
      * \brief Tells this frame to react to mouse drag.
-     * \param button_list The list of mouse button allowed
+     * \param button_name The mouse button to react to
      */
-    void register_for_drag(const std::vector<std::string>& button_list);
+    void enable_drag(const std::string& button_name);
+
+    /**
+     * \brief Tells this frame to react to mouse drag.
+     * \param button_id The mouse button to react to
+     */
+    void enable_drag(input::mouse_button button_id);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag.
+     * \param button_name The mouse button to not react to
+     */
+    void disable_drag(const std::string& button_name);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag.
+     * \param button_id The mouse button to not react to
+     */
+    void disable_drag(input::mouse_button button_id);
+
+    /**
+     * \brief Tells this frame to not react to mouse drag from any mouse button.
+     */
+    void disable_drag();
 
     /**
      * \brief Sets if this frame is clamped to screen.
@@ -1243,41 +1440,41 @@ public:
      * \note If the renderer is set to nullptr, the frame will inherit the renderer of its
      * parent. If the frame has no parent, this will default to the gui::manager.
      */
-    void set_renderer(utils::observer_ptr<frame_renderer> rdr);
+    void set_frame_renderer(utils::observer_ptr<frame_renderer> rdr);
 
     /**
      * \brief Returns the renderer of this object, nullptr if none.
      * \return The renderer of this object, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_renderer() const {
-        return renderer_;
+    utils::observer_ptr<const frame_renderer> get_frame_renderer() const {
+        return frame_renderer_;
     }
 
     /**
      * \brief Returns the renderer of this object, nullptr if none.
      * \return The renderer of this object, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    const utils::observer_ptr<frame_renderer>& get_renderer() {
-        return renderer_;
+    const utils::observer_ptr<frame_renderer>& get_frame_renderer() {
+        return frame_renderer_;
     }
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_top_level_renderer() const final;
+    utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const final;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
-     * \note For more information, see set_renderer().
+     * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_renderer() {
+    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const frame*>(this)->get_top_level_renderer());
+            const_cast<const frame*>(this)->get_top_level_frame_renderer());
     }
 
     /**
@@ -1347,9 +1544,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    /// Creates the associated Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Parses data from a layout_node.
@@ -1427,13 +1621,14 @@ protected:
     frame_strata strata_       = frame_strata::medium;
     bool         is_top_level_ = false;
 
-    utils::observer_ptr<frame_renderer> renderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> frame_renderer_ = nullptr;
 
     std::unique_ptr<backdrop> backdrop_;
 
     bool is_mouse_click_enabled_ = false;
     bool is_mouse_move_enabled_  = false;
     bool is_mouse_wheel_enabled_ = false;
+    bool is_keyboard_enabled_    = false;
     bool is_movable_             = false;
     bool is_clamped_to_screen_   = false;
     bool is_resizable_           = false;

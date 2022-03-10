@@ -78,8 +78,8 @@ void warn_for_not_accessed_node(const layout_node& node) {
             continue;
 
         if (!attr.was_accessed()) {
-            gui::out << gui::warning << node.get_location() << ": "
-                     << "attribute '" << node.get_name()
+            gui::out << gui::warning << attr.get_location() << ": "
+                     << "attribute '" << attr.get_name()
                      << "' was not read by parser; check its name is spelled correctly and that it "
                         "is at the right location."
                      << std::endl;

@@ -9,7 +9,6 @@
 
 namespace lxgui::gui {
 
-class event;
 class event_emitter;
 
 /**

@@ -11,8 +11,11 @@
 
 namespace lxgui::gui {
 
-scroll_frame::scroll_frame(utils::control_block& block, manager& mgr) : frame(block, mgr) {
-    type_.push_back(class_name);
+scroll_frame::scroll_frame(
+    utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
+
+    initialize_(*this, attr);
 }
 
 scroll_frame::~scroll_frame() {
@@ -54,7 +57,7 @@ void scroll_frame::copy_from(const region& obj) {
     this->set_vertical_scroll(scroll_obj->get_vertical_scroll());
 
     if (const frame* other_child = scroll_obj->get_scroll_child().get()) {
-        region_core_attributes attr;
+        frame_core_attributes attr;
         attr.object_type = other_child->get_object_type();
         attr.name        = other_child->get_raw_name();
         attr.inheritance = {scroll_obj->get_scroll_child()};
@@ -71,7 +74,7 @@ void scroll_frame::copy_from(const region& obj) {
 
 void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
-        scroll_child_->set_renderer(nullptr);
+        scroll_child_->set_frame_renderer(nullptr);
         clear_strata_list_();
     } else if (!is_virtual() && !scroll_texture_) {
         // Create the scroll texture
@@ -100,10 +103,11 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
 
         scroll_child_->set_special();
         if (!is_virtual())
-            scroll_child_->set_renderer(observer_from(this));
+            scroll_child_->set_frame_renderer(observer_from(this));
 
         scroll_child_->clear_all_points();
-        scroll_child_->set_point(point::top_left, get_name(), -scroll_);
+        if (!is_virtual())
+            scroll_child_->set_point(point::top_left, get_name(), -scroll_);
 
         update_scroll_range_();
         update_scroll_range_flag_ = false;
@@ -280,10 +284,6 @@ void scroll_frame::notify_strata_needs_redraw(frame_strata strata_id) {
 
     redraw_scroll_render_target_flag_ = true;
     notify_renderer_need_redraw();
-}
-
-void scroll_frame::create_glue() {
-    create_glue_(this);
 }
 
 void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) {

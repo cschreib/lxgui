@@ -17,7 +17,8 @@ class check_button : public button {
 
 public:
     /// Constructor.
-    explicit check_button(utils::control_block& block, manager& mgr);
+    explicit check_button(
+        utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -103,9 +104,6 @@ public:
      * \param tex The new texture
      */
     void set_disabled_checked_texture(utils::observer_ptr<texture> tex);
-
-    /// Returns this region's Lua glue.
-    void create_glue() override;
 
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);

@@ -18,9 +18,18 @@
 
 namespace lxgui::gui {
 
-region::region(utils::control_block& block, manager& mgr) :
+region::region(utils::control_block& block, manager& mgr, const region_core_attributes& attr) :
     utils::enable_observer_from_this<region>(block), manager_(mgr) {
-    type_.push_back(class_name);
+
+    if (attr.is_virtual)
+        set_virtual_();
+
+    if (attr.parent)
+        set_name_and_parent_(attr.name, attr.parent);
+    else
+        set_name_(attr.name);
+
+    initialize_(*this, attr);
 }
 
 region::~region() {
@@ -249,21 +258,21 @@ void region::set_relative_dimensions(const vector2f& dimensions) {
     if (parent_)
         set_dimensions(dimensions * parent_->get_apparent_dimensions());
     else
-        set_dimensions(dimensions * get_top_level_renderer()->get_target_dimensions());
+        set_dimensions(dimensions * get_top_level_frame_renderer()->get_target_dimensions());
 }
 
 void region::set_relative_width(float rel_width) {
     if (parent_)
         set_width(rel_width * parent_->get_apparent_dimensions().x);
     else
-        set_width(rel_width * get_top_level_renderer()->get_target_dimensions().x);
+        set_width(rel_width * get_top_level_frame_renderer()->get_target_dimensions().x);
 }
 
 void region::set_relative_height(float rel_height) {
     if (parent_)
         set_height(rel_height * parent_->get_apparent_dimensions().y);
     else
-        set_height(rel_height * get_top_level_renderer()->get_target_dimensions().y);
+        set_height(rel_height * get_top_level_frame_renderer()->get_target_dimensions().y);
 }
 
 const vector2f& region::get_dimensions() const {
@@ -519,7 +528,7 @@ bool region::is_virtual() const {
     return is_virtual_;
 }
 
-void region::set_virtual() {
+void region::set_virtual_() {
     is_virtual_ = true;
 }
 
@@ -755,10 +764,6 @@ sol::state& region::get_lua_() {
     return get_manager().get_lua();
 }
 
-void region::create_glue() {
-    create_glue_(static_cast<region*>(this));
-}
-
 void region::remove_glue() {
     get_lua_().globals()[lua_name_] = sol::lua_nil;
 }
@@ -785,10 +790,10 @@ bool region::is_loaded() const {
     return is_loaded_;
 }
 
-utils::observer_ptr<const frame_renderer> region::get_top_level_renderer() const {
+utils::observer_ptr<const frame_renderer> region::get_top_level_frame_renderer() const {
     if (!parent_)
         return get_manager().get_root().observer_from_this();
-    return parent_->get_top_level_renderer();
+    return parent_->get_top_level_frame_renderer();
 }
 
 void region::notify_visible() {

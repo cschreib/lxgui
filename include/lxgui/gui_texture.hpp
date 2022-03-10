@@ -26,7 +26,7 @@ public:
     enum class blend_mode { none, blend, key, add, mod };
 
     /// Constructor.
-    explicit texture(utils::control_block& block, manager& mgr);
+    explicit texture(utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -221,9 +221,6 @@ public:
      */
     void
     set_vertex_color(const color& c, std::size_t index = std::numeric_limits<std::size_t>::max());
-
-    /// Creates the associated Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Parses data from a layout_node.

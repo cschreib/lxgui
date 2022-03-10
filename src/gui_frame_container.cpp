@@ -2,6 +2,7 @@
 
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"
@@ -9,11 +10,14 @@
 
 namespace lxgui::gui {
 
-frame_container::frame_container(factory& fac, registry& reg, frame_renderer* rdr) :
+frame_container::frame_container(
+    factory& fac, registry& reg, utils::observer_ptr<frame_renderer> rdr) :
     factory_(fac), registry_(reg), renderer_(rdr) {}
 
-utils::observer_ptr<frame> frame_container::create_root_frame_(const region_core_attributes& attr) {
-    auto new_frame = factory_.create_frame(registry_, renderer_, attr);
+utils::observer_ptr<frame> frame_container::create_root_frame_(frame_core_attributes attr) {
+    attr.rdr = renderer_;
+
+    auto new_frame = factory_.create_frame(registry_, attr);
     if (!new_frame)
         return nullptr;
 

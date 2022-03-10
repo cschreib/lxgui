@@ -23,6 +23,7 @@ namespace lxgui::input {
  *  - @ref on_mouse_pressed
  *  - @ref on_mouse_released
  *  - @ref on_key_pressed
+ *  - @ref on_key_pressed_repeat
  *  - @ref on_key_released
  *  - @ref on_text_entered
  *  - @ref on_window_resized
@@ -105,14 +106,73 @@ public:
      */
     virtual float get_interface_scaling_factor_hint() const;
 
+    /**
+     * \brief Signal triggered when the mouse moves
+     * \details Arguments:
+     *  - mouse motion that generated this event, in pixels
+     *  - mouse position, in pixels
+     */
     utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
-    utils::signal<void(float, const gui::vector2f&)>                on_mouse_wheel;
-    utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_pressed;
-    utils::signal<void(input::mouse_button, const gui::vector2f&)>  on_mouse_released;
-    utils::signal<void(input::key)>                                 on_key_pressed;
-    utils::signal<void(input::key)>                                 on_key_released;
-    utils::signal<void(std::uint32_t)>                              on_text_entered;
-    utils::signal<void(const gui::vector2ui&)>                      on_window_resized;
+
+    /**
+     * \brief Signal triggered when the mouse wheel is moved
+     * \details Arguments:
+     *  - mouse wheel motion that generated this event
+     *  - mouse position, in pixels
+     */
+    utils::signal<void(float, const gui::vector2f&)> on_mouse_wheel;
+
+    /**
+     * \brief Signal triggered when a mouse button is pressed
+     * \details Arguments:
+     *  - mouse button that generated this event
+     *  - mouse position, in pixels
+     */
+    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_pressed;
+
+    /**
+     * \brief Signal triggered when a mouse button is released
+     * \details Arguments:
+     *  - mouse button that generated this event
+     *  - mouse position, in pixels
+     */
+    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_released;
+
+    /**
+     * \brief Signal triggered when a keyboard key is pressed
+     * \details Arguments:
+     *  - keyboard key that generated this event
+     */
+    utils::signal<void(input::key)> on_key_pressed;
+
+    /**
+     * \brief Signal triggered when a keyboard key is long-pressed and repeats
+     * \details Arguments:
+     *  - keyboard key that generated this event
+     */
+    utils::signal<void(input::key)> on_key_pressed_repeat;
+
+    /**
+     * \brief Signal triggered when a keyboard key is released
+     * \details Arguments:
+     *  - keyboard key that generated this event
+     */
+    utils::signal<void(input::key)> on_key_released;
+
+    /**
+     * \brief Signal triggered when text is entered
+     * \details Arguments:
+     *  - Unicode UTF-32 code point of the typed character
+     * \note The event will trigger repeatedly if more than one character is generated.
+     */
+    utils::signal<void(std::uint32_t)> on_text_entered;
+
+    /**
+     * \brief Signal triggered whenever the window is resized or changes resolution.
+     * \details Arguments:
+     *  - New size of the window, in pixels
+     */
+    utils::signal<void(const gui::vector2ui&)> on_window_resized;
 
 protected:
     key_state   keyboard_;

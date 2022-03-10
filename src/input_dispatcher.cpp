@@ -1,6 +1,5 @@
 #include "lxgui/input_dispatcher.hpp"
 
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_event_receiver.hpp"
 #include "lxgui/gui_out.hpp"
@@ -19,6 +18,11 @@ dispatcher::dispatcher(source& src) : source_(src) {
         key_pressed_time_[static_cast<std::size_t>(key_id)] = timer::now();
         // Forward
         on_key_pressed(key_id);
+    }));
+
+    connections_.push_back(src.on_key_pressed_repeat.connect([&](key key_id) {
+        // Forward
+        on_key_pressed_repeat(key_id);
     }));
 
     connections_.push_back(src.on_key_released.connect([&](key key_id) {

@@ -22,20 +22,17 @@ utils::owner_ptr<region> factory::create_region(registry& reg, const region_core
         return nullptr;
     }
 
-    utils::owner_ptr<region> new_object = iter->second(manager_);
+    utils::owner_ptr<region> new_object = iter->second(manager_, attr);
     if (!new_object)
         return nullptr;
 
     if (!finalize_object_(reg, *new_object, attr))
         return nullptr;
 
-    apply_inheritance_(*new_object, attr);
-
     return new_object;
 }
 
-utils::owner_ptr<frame>
-factory::create_frame(registry& reg, frame_renderer* rdr, const region_core_attributes& attr) {
+utils::owner_ptr<frame> factory::create_frame(registry& reg, const frame_core_attributes& attr) {
     if (!reg.check_region_name(attr.name))
         return nullptr;
 
@@ -46,17 +43,12 @@ factory::create_frame(registry& reg, frame_renderer* rdr, const region_core_attr
         return nullptr;
     }
 
-    utils::owner_ptr<frame> new_frame = iter->second(manager_);
+    utils::owner_ptr<frame> new_frame = iter->second(manager_, attr);
     if (!new_frame)
         return nullptr;
 
     if (!finalize_object_(reg, *new_frame, attr))
         return nullptr;
-
-    if (rdr && !new_frame->is_virtual())
-        rdr->notify_rendered_frame(new_frame, true);
-
-    apply_inheritance_(*new_frame, attr);
 
     return new_frame;
 }
@@ -73,14 +65,12 @@ factory::create_layered_region(registry& reg, const region_core_attributes& attr
         return nullptr;
     }
 
-    utils::owner_ptr<layered_region> new_region = iter->second(manager_);
+    utils::owner_ptr<layered_region> new_region = iter->second(manager_, attr);
     if (!new_region)
         return nullptr;
 
     if (!finalize_object_(reg, *new_region, attr))
         return nullptr;
-
-    apply_inheritance_(*new_region, attr);
 
     return new_region;
 }
@@ -91,21 +81,14 @@ void factory::register_on_lua(sol::state& lua) {
 }
 
 bool factory::finalize_object_(registry& reg, region& object, const region_core_attributes& attr) {
-    if (attr.is_virtual)
-        object.set_virtual();
-
-    if (attr.parent)
-        object.set_name_and_parent_(attr.name, attr.parent);
-    else
-        object.set_name_(attr.name);
-
     if (!object.is_virtual() || attr.parent == nullptr) {
         if (!reg.add_region(observer_from(&object)))
             return false;
     }
 
-    if (!object.is_virtual())
-        object.create_glue();
+    // NB: This needs to be done after the region is fully constructed, since this
+    // should override defaults set in any constructor.
+    apply_inheritance_(object, attr);
 
     return true;
 }

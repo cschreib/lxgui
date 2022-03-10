@@ -76,7 +76,11 @@ public:
      */
     source& get_source();
 
-    /// Signal triggered whenever the window is resized or changes resolution.
+    /**
+     * \brief Signal triggered whenever the window is resized or changes resolution.
+     * \details Arguments:
+     *  - New size of the window, in pixels
+     */
     utils::signal<void(const gui::vector2ui&)> on_window_resized;
 
 private:

@@ -1,6 +1,6 @@
 #include "lxgui/gui_button.hpp"
+#include "lxgui/gui_check_button.hpp"
 #include "lxgui/gui_edit_box.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_localizer.hpp"
@@ -410,15 +410,21 @@ int main(int /*argc*/, char* /*argv*/[]) {
         fac.register_region_type<gui::texture>();
         fac.register_region_type<gui::font_string>();
         fac.register_region_type<gui::button>();
+        fac.register_region_type<gui::check_button>();
         fac.register_region_type<gui::slider>();
         fac.register_region_type<gui::edit_box>();
         fac.register_region_type<gui::scroll_frame>();
         fac.register_region_type<gui::status_bar>();
 
         // Load files:
-        //  - first set the directory in which the interface is located
+        //  - first set the directory in which the interface is located,
         manager->add_addon_directory("interface");
-        //  - register Lua "glues" (C++ functions and classes callable from Lua)
+
+        //  - then (optionally) set the directory where global text translations are located;
+        //    you may not need this, as each addon will be parsed for its own translations,
+        manager->add_localization_directory("locale");
+
+        //  - register Lua "glues" (C++ functions and classes callable from Lua),
         manager->on_create_lua.connect([&](sol::state& lua) {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
@@ -431,7 +437,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
             });
         });
 
-        //  - and load all files
+        //  - and load all files.
         std::cout << " Reading gui files..." << std::endl;
         manager->load_ui();
 

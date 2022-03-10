@@ -62,7 +62,7 @@ public:
      * \note The format of the `key_name` parameter is any key name as returned from @ref
      * input::get_key_codename(), preceded by optional modifiers (any
      * combination of "Shift-", "Ctrl-", "Alt-"). This corresponds to the key name given
-     * to frames in the "OnKeyDown" and "OnKeyUp" scripts.
+     * to frames in the "OnKeyDown", "OnKeyRepeat", and "OnKeyUp" scripts.
      */
     void set_key_binding(std::string_view name, std::string_view key_name);
 

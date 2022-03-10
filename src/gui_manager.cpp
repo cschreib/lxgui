@@ -2,7 +2,6 @@
 
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_frame.hpp"
@@ -117,6 +116,15 @@ void manager::clear_addon_directory_list() {
     gui_directory_list_.clear();
 }
 
+void manager::add_localization_directory(const std::string& directory) {
+    if (utils::find(localization_directory_list_, directory) == localization_directory_list_.end())
+        localization_directory_list_.push_back(directory);
+}
+
+void manager::clear_localization_directory_list() {
+    localization_directory_list_.clear();
+}
+
 sol::state& manager::get_lua() {
     return *lua_;
 }
@@ -128,6 +136,9 @@ const sol::state& manager::get_lua() const {
 void manager::read_files_() {
     if (is_loaded_ || addon_registry_)
         return;
+
+    for (const auto& directory : localization_directory_list_)
+        localizer_->load_translations(directory);
 
     addon_registry_ = std::make_unique<addon_registry>(
         get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
@@ -146,15 +157,13 @@ void manager::load_ui() {
     create_lua_();
     read_files_();
 
-    is_loaded_     = true;
-    close_ui_flag_ = false;
+    is_loaded_      = true;
+    close_ui_flag_  = false;
+    reload_ui_flag_ = false;
 }
 
 void manager::close_ui() {
-    if (is_updating_)
-        close_ui_flag_ = true;
-    else
-        close_ui_now();
+    close_ui_flag_ = true;
 }
 
 void manager::close_ui_now() {
@@ -173,13 +182,12 @@ void manager::close_ui_now() {
 
     is_loaded_          = false;
     is_first_iteration_ = true;
+    close_ui_flag_      = false;
+    reload_ui_flag_     = false;
 }
 
 void manager::reload_ui() {
-    if (is_updating_)
-        reload_ui_flag_ = true;
-    else
-        reload_ui_now();
+    reload_ui_flag_ = true;
 }
 
 void manager::reload_ui_now() {
@@ -187,9 +195,9 @@ void manager::reload_ui_now() {
     close_ui_now();
     gui::out << "Done. Loading UI..." << std::endl;
     load_ui();
+    // Call update again, otherwise we may call render() with no prior update() call.
+    update_ui(0.0);
     gui::out << "Done." << std::endl;
-
-    reload_ui_flag_ = false;
 }
 
 void manager::render_ui() const {
@@ -205,8 +213,6 @@ bool manager::is_loaded() const {
 }
 
 void manager::update_ui(float delta) {
-    is_updating_ = true;
-
     DEBUG_LOG(" Update regions...");
     root_->update(delta);
 
@@ -218,12 +224,11 @@ void manager::update_ui(float delta) {
         root_->notify_hovered_frame_dirty();
     }
 
-    is_updating_ = false;
-
-    if (reload_ui_flag_)
-        reload_ui_now();
-    if (close_ui_flag_)
+    if (close_ui_flag_) {
         close_ui_now();
+    } else if (reload_ui_flag_) {
+        reload_ui_now();
+    }
 }
 
 std::string manager::print_ui() const {

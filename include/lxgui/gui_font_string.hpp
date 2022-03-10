@@ -36,7 +36,8 @@ class font_string : public layered_region {
 
 public:
     /// Constructor.
-    explicit font_string(utils::control_block& block, manager& mgr);
+    explicit font_string(
+        utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -280,9 +281,6 @@ public:
 
     /// Tells this region that the global interface scaling factor has changed.
     void notify_scaling_factor_updated() override;
-
-    /// Creates the associated Lua glue.
-    void create_glue() override;
 
     /**
      * \brief Parses data from a layout_node.

@@ -129,6 +129,24 @@ public:
     void clear_addon_directory_list();
 
     /**
+     * \brief Adds a new directory to be parsed for localization.
+     * \param directory The new directory
+     * \note If the UI is already loaded, this change will only take effect after
+     * the UI is reloaded, see reload_ui().
+     */
+    void add_localization_directory(const std::string& directory);
+
+    /**
+     * \brief Clears the localization directory list.
+     * \note This is useful whenever you need to reload a
+     * completely different UI (for example, when switching
+     * from your game's main menu to the real game).
+     * \note If the UI is already loaded, this change will only take effect after
+     * the UI is reloaded, see reload_ui().
+     */
+    void clear_localization_directory_list();
+
+    /**
      * \brief Triggers on each fresh Lua state (e.g., on startup or after a UI re-load).
      * \note This signal is useful if you need to create additionnal
      * resources on the Lua state before the GUI files are loaded.
@@ -153,8 +171,8 @@ public:
     void load_ui();
 
     /**
-     * \brief Closes the UI (at the end of the current or next update_ui()).
-     * \note The actual closing may be deferred if called from within update_ui(),
+     * \brief Closes the UI safely (at the end of update_ui()).
+     * \note The actual closing will be deferred until the end of update_ui(),
      * therefore it is safe to call this function at any time. If you need to
      * close the UI without delay, use close_ui_now().
      */
@@ -169,8 +187,8 @@ public:
     void close_ui_now();
 
     /**
-     * \brief Closes the UI and load it again (at the end of the current or next update_ui()).
-     * \note The actual re-loading may be deferred if called from within update_ui(),
+     * \brief Closes the UI and load it again safely (at the end of update_ui()).
+     * \note The actual re-loading will be deferred until the end of update_ui(),
      * therefore it is safe to call this function at any time. If you need to
      * reload the UI without delay, use reload_ui_now().
      */
@@ -190,7 +208,10 @@ public:
      */
     bool is_loaded() const;
 
-    /// Renders the UI into the current render target.
+    /**
+     * \brief Renders the UI into the current render target.
+     * \note This should be called after @ref update_ui().
+     */
     void render_ui() const;
 
     /**
@@ -394,6 +415,7 @@ private:
     float                    scaling_factor_      = 1.0f;
     float                    base_scaling_factor_ = 1.0f;
     bool                     enable_caching_      = false;
+    std::vector<std::string> localization_directory_list_;
     std::vector<std::string> gui_directory_list_;
 
     // Implementations
@@ -418,7 +440,6 @@ private:
     bool reload_ui_flag_     = false;
     bool close_ui_flag_      = false;
     bool is_first_iteration_ = true;
-    bool is_updating_        = false;
 };
 
 } // namespace lxgui::gui

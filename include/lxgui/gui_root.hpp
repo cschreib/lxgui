@@ -33,9 +33,9 @@ class renderer;
  * and is responsible for their lifetime, update, and rendering.
  */
 class root :
+    public utils::enable_observer_from_this<root>,
     public frame_renderer,
-    public frame_container,
-    public utils::enable_observer_from_this<root> {
+    public frame_container {
 public:
     /**
      * \brief Constructor.
@@ -297,12 +297,15 @@ private:
     void on_window_resized_(const vector2ui& dimensions);
     void on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos);
     void on_mouse_wheel_(float wheel_scroll, const vector2f& mouse_pos);
-    void on_drag_start_(input::mouse_button button, const vector2f& mouse_pos);
-    void on_drag_stop_(input::mouse_button button, const vector2f& mouse_pos);
+    void on_drag_start_(input::mouse_button button_id, const vector2f& mouse_pos);
+    void on_drag_stop_(input::mouse_button button_id, const vector2f& mouse_pos);
     void on_text_entered_(std::uint32_t c);
-    void on_key_state_changed_(input::key key, bool is_down);
+    void on_key_state_changed_(input::key key, bool is_down, bool is_repeat);
     void on_mouse_button_state_changed_(
-        input::mouse_button button, bool is_down, bool is_double_click, const vector2f& mouse_pos);
+        input::mouse_button button_id,
+        bool                is_down,
+        bool                is_double_click,
+        const vector2f&     mouse_pos);
 
     manager&                 manager_;
     renderer&                renderer_;

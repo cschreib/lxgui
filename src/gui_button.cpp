@@ -1,7 +1,6 @@
 #include "lxgui/gui_button.hpp"
 
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -11,17 +10,16 @@
 
 namespace lxgui::gui {
 
-button::button(utils::control_block& block, manager& mgr) : frame(block, mgr) {
-    type_.push_back(class_name);
+button::button(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
+    frame(block, mgr, attr) {
+
+    initialize_(*this, attr);
+
     enable_mouse(true);
 }
 
 std::string button::serialize(const std::string& tab) const {
     return base::serialize(tab);
-}
-
-void button::create_glue() {
-    create_glue_(this);
 }
 
 bool button::can_use_script(const std::string& script_name) const {

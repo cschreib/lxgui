@@ -1,4 +1,4 @@
-#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_event_data.hpp"
 
 namespace lxgui::gui {
 
