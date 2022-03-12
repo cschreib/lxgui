@@ -67,7 +67,7 @@
  * explicit key capture (see @{Frame:enable_key_capture}).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
- * - Events related to mouse move input (`OnEnter`, `OnLeave`)
+ * - Events related to mouse move input (`OnEnter`, `OnLeave`, `OnMouseMove`)
  * require @{Frame:enable_mouse_move}.
  * - Events related to mouse wheel input (`OnMouseWheel`) require
  * @{Frame:enable_mouse_wheel}.
@@ -150,6 +150,11 @@
  * the registered callback: a number identifying the mouse button, a string
  * containing the human-readable name of this button (`"LeftButton"`,
  * `"RightButton"`, or `"MiddleButton"`), and the mouse X and Y position.
+ * - `OnMouseMove`: Triggered when the mouse moves over this frame, after
+ * `OnEnter` and until `OnLeave`. This event provides four argument to
+ * the registered callback: the amount of mouse movement in X and Y since the
+ * last call to `OnMouseMove` (or since the last position before the mouse
+ * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
  * is released.
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is

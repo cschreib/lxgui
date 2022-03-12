@@ -179,9 +179,9 @@ bool frame::can_use_script(const std::string& script_name) const {
            script_name == "OnHide" || script_name == "OnKeyDown" || script_name == "OnKeyUp" ||
            script_name == "OnKeyRepeat" || script_name == "OnLeave" || script_name == "OnLoad" ||
            script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
-           script_name == "OnDoubleClick" || script_name == "OnMouseWheel" ||
-           script_name == "OnReceiveDrag" || script_name == "OnShow" ||
-           script_name == "OnSizeChanged" || script_name == "OnUpdate";
+           script_name == "OnMouseMove" || script_name == "OnDoubleClick" ||
+           script_name == "OnMouseWheel" || script_name == "OnReceiveDrag" ||
+           script_name == "OnShow" || script_name == "OnSizeChanged" || script_name == "OnUpdate";
 }
 
 void frame::copy_from(const region& obj) {
