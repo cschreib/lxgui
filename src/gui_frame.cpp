@@ -482,15 +482,67 @@ void frame::notify_layers_need_update() {
 }
 
 void frame::set_parent_(utils::observer_ptr<frame> parent) {
-    const auto old_effective_strata = get_effective_frame_strata();
+    auto* raw_new_parent  = parent.get();
+    auto* raw_prev_parent = get_parent().get();
+
+    if (!is_virtual()) {
+        if (raw_prev_parent) {
+            // Remove shortcut to child
+            std::string raw_name = get_raw_name();
+            if (utils::starts_with(raw_name, "$parent")) {
+                raw_name.erase(0, std::string("$parent").size());
+                sol::state& lua                                = get_lua_();
+                lua[raw_prev_parent->get_lua_name()][raw_name] = sol::lua_nil;
+            }
+        }
+
+        const auto old_top_level_renderer = get_top_level_frame_renderer();
+        old_top_level_renderer->notify_rendered_frame(observer_from(this), false);
+        propagate_renderer_(false);
+    }
 
     base::set_parent_(parent);
 
-    const auto new_effective_strata = get_effective_frame_strata();
+    if (!is_virtual()) {
+        // Notify visibility
+        if (raw_new_parent) {
+            if (raw_new_parent->is_visible() && is_shown())
+                notify_visible();
+            else
+                notify_invisible();
+        } else {
+            if (is_shown())
+                notify_visible();
+            else
+                notify_invisible();
+        }
 
-    if (!is_virtual() && new_effective_strata != old_effective_strata) {
-        get_top_level_frame_renderer()->notify_frame_strata_changed(
-            observer_from(this), old_effective_strata, new_effective_strata);
+        if (raw_new_parent) {
+            // Add shortcut to child as entry in Lua table
+            std::string raw_name = get_raw_name();
+            if (utils::starts_with(raw_name, "$parent")) {
+                raw_name.erase(0, std::string("$parent").size());
+                auto& lua                                     = get_lua_();
+                lua[raw_new_parent->get_lua_name()][raw_name] = lua[get_lua_name()];
+            }
+        }
+
+        const auto new_top_level_renderer = get_top_level_frame_renderer();
+        new_top_level_renderer->notify_rendered_frame(observer_from(this), true);
+        propagate_renderer_(true);
+    }
+}
+
+void frame::notify_frame_strata_changed_(frame_strata old_strata_id, frame_strata new_strata_id) {
+    get_top_level_frame_renderer()->notify_frame_strata_changed(
+        observer_from(this), old_strata_id, new_strata_id);
+
+    for (const auto& child : child_list_) {
+        if (!child)
+            continue;
+
+        if (child->get_frame_strata() == frame_strata::parent)
+            child->notify_frame_strata_changed_(old_strata_id, new_strata_id);
     }
 }
 
@@ -596,30 +648,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
 
     child->set_parent_(observer_from(this));
 
-    if (is_visible() && child->is_shown())
-        child->notify_visible();
-    else
-        child->notify_invisible();
-
     utils::observer_ptr<frame> added_child = child;
     child_list_.push_back(std::move(child));
-
-    if (!is_virtual_) {
-        auto old_top_level_renderer = added_child->get_top_level_frame_renderer();
-        auto new_top_level_renderer = get_top_level_frame_renderer();
-        if (old_top_level_renderer != new_top_level_renderer) {
-            old_top_level_renderer->notify_rendered_frame(added_child, false);
-            new_top_level_renderer->notify_rendered_frame(added_child, true);
-        }
-
-        // Add shortcut to child as entry in Lua table
-        std::string raw_name = added_child->get_raw_name();
-        if (utils::starts_with(raw_name, "$parent")) {
-            raw_name.erase(0, std::string("$parent").size());
-            auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[added_child->get_lua_name()];
-        }
-    }
 
     return added_child;
 }
@@ -641,33 +671,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
     // NB: the iterator is not removed yet; it will be removed later in update().
     auto removed_child = std::move(*iter);
 
-    bool notify_renderer = false;
-    if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_frame_renderer();
-        notify_renderer =
-            !child->get_frame_renderer() && top_level_renderer.get() != &get_manager().get_root();
-        if (notify_renderer) {
-            top_level_renderer->notify_rendered_frame(child, false);
-            child->propagate_renderer_(false);
-        }
-    }
-
     removed_child->set_parent_(nullptr);
-
-    if (!is_virtual_) {
-        if (notify_renderer) {
-            get_manager().get_root().notify_rendered_frame(child, true);
-            child->propagate_renderer_(true);
-        }
-
-        // Remove shortcut to child
-        std::string raw_name = removed_child->get_raw_name();
-        if (utils::starts_with(raw_name, "$parent")) {
-            raw_name.erase(0, std::string("$parent").size());
-            sol::state& lua               = get_lua_();
-            lua[get_lua_name()][raw_name] = sol::lua_nil;
-        }
-    }
 
     return removed_child;
 }
@@ -1132,8 +1136,7 @@ void frame::set_frame_strata(frame_strata strata_id) {
     const auto new_effective_strata = get_effective_frame_strata();
 
     if (!is_virtual() && new_effective_strata != old_effective_strata) {
-        get_top_level_frame_renderer()->notify_frame_strata_changed(
-            observer_from(this), old_effective_strata, new_effective_strata);
+        notify_frame_strata_changed_(old_effective_strata, new_effective_strata);
     }
 }
 

@@ -1585,6 +1585,7 @@ protected:
 
     void add_level_(int amount);
 
+    void notify_frame_strata_changed_(frame_strata old_strata_id, frame_strata new_strata_id);
     void propagate_renderer_(bool rendered);
 
     void update_borders_() override;
