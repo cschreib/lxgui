@@ -103,7 +103,7 @@ protected:
 
     void render_strata_(const strata& strata_obj) const;
 
-    std::array<strata, 8> strata_list_;
+    std::array<strata, 9> strata_list_;
     bool                  strata_list_updated_ = false;
 };
 
