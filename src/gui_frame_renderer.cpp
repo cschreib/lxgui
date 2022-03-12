@@ -16,32 +16,18 @@ struct strata_comparator {
 
     bool operator()(const utils::observer_ptr<frame>& f1, frame_strata s2) const {
         frame* rf1 = f1.get();
-        if (!rf1)
-            return false;
-
         return operator()(rf1->get_effective_frame_strata(), s2);
     }
 
     bool operator()(frame_strata s1, const utils::observer_ptr<frame>& f2) const {
         frame* rf2 = f2.get();
-        if (!rf2)
-            return true;
-
         return operator()(s1, rf2->get_effective_frame_strata());
     }
 
     bool
     operator()(const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const {
-
         frame* rf1 = f1.get();
         frame* rf2 = f2.get();
-
-        if (!rf1 && !rf2)
-            return f1.raw_get() < f2.raw_get();
-        if (!rf1)
-            return false;
-        if (!rf2)
-            return true;
 
         return operator()(rf1->get_effective_frame_strata(), rf2->get_effective_frame_strata());
     }
@@ -52,13 +38,6 @@ bool frame_renderer::frame_comparator::operator()(
 
     frame* rf1 = f1.get();
     frame* rf2 = f2.get();
-
-    if (!rf1 && !rf2)
-        return f1.raw_get() < f2.raw_get();
-    if (!rf1)
-        return false;
-    if (!rf2)
-        return true;
 
     using int_type        = std::underlying_type_t<frame_strata>;
     const auto strata_id1 = static_cast<int_type>(rf1->get_effective_frame_strata());
@@ -171,7 +150,8 @@ utils::observer_ptr<const frame>
 frame_renderer::find_topmost_frame(const std::function<bool(const frame&)>& predicate) const {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
     for (const auto& obj : utils::range::reverse(sorted_frame_list_)) {
-        if (const frame* raw_ptr = obj.get(); raw_ptr && raw_ptr->is_visible()) {
+        // NB: can use raw_get because we know frames ask to not be rendered before deletion
+        if (const frame* raw_ptr = obj.raw_get(); raw_ptr->is_visible()) {
             if (auto topmost = raw_ptr->find_topmost_frame(predicate))
                 return topmost;
         }
@@ -185,12 +165,9 @@ int frame_renderer::get_highest_level(frame_strata strata_id) const {
     auto begin = sorted_frame_list_.begin() + range.first;
     auto last  = sorted_frame_list_.begin() + range.second;
 
-    while (last != begin) {
+    if (last != begin) {
         --last;
-
-        if (const frame* raw_ptr = last->get()) {
-            return raw_ptr->get_level();
-        }
+        return (*last)->get_level();
     }
 
     return 0;
@@ -201,9 +178,8 @@ void frame_renderer::render_strata_(const strata& strata_obj) const {
     auto end   = sorted_frame_list_.begin() + strata_obj.range.second;
 
     for (auto iter = begin; iter != end; ++iter) {
-        if (const frame* raw_ptr = iter->get()) {
-            raw_ptr->render();
-        }
+        // NB: can use raw_get because we know frames ask to not be rendered before deletion
+        iter->raw_get()->render();
     }
 }
 
