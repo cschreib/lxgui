@@ -731,10 +731,15 @@ void region::notify_borders_need_update() {
     if (is_virtual())
         return;
 
+    const bool old_ready       = is_ready_;
+    const auto old_border_list = border_list_;
+
     update_borders_();
 
-    for (const auto& object : anchored_object_list_)
-        object->notify_borders_need_update();
+    if (border_list_ != old_border_list || is_ready_ != old_ready) {
+        for (const auto& object : anchored_object_list_)
+            object->notify_borders_need_update();
+    }
 }
 
 void region::notify_scaling_factor_updated() {
