@@ -7,7 +7,8 @@
 namespace lxgui::gui {
 
 // For debugging only
-std::size_t count_frames(const std::array<strata, 8>& strata_list) {
+template<typename T>
+std::size_t count_frames(const T& strata_list) {
     std::size_t count = 0;
     for (std::size_t strata_id = 0; strata_id < strata_list.size(); ++strata_id) {
         for (const auto& level_obj : utils::range::value(strata_list[strata_id].level_list)) {
@@ -19,7 +20,8 @@ std::size_t count_frames(const std::array<strata, 8>& strata_list) {
 }
 
 // For debugging only
-void print_frames(const std::array<strata, 8>& strata_list) {
+template<typename T>
+void print_frames(const T& strata_list) {
     for (std::size_t strata_id = 0; strata_id < strata_list.size(); ++strata_id) {
         if (strata_list[strata_id].level_list.empty())
             continue;
