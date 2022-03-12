@@ -44,8 +44,8 @@ void frame::parse_attributes_(const layout_node& node) {
         set_movable(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("resizable"))
         set_resizable(attr->get_value<bool>());
-
-    set_frame_strata(node.get_attribute_value_or<std::string>("frameStrata", "PARENT"));
+    if (const layout_attribute* attr = node.try_get_attribute("frameStrata"))
+        set_frame_strata(attr->get_value<frame_strata>());
 
     if (const layout_attribute* attr = node.try_get_attribute("frameLevel")) {
         if (!is_virtual_) {

@@ -28,8 +28,9 @@ frame::frame(utils::control_block& block, manager& mgr, const frame_core_attribu
 
     initialize_(*this, attr);
 
-    if (parent_)
+    if (parent_) {
         level_ = parent_->get_level() + 1;
+    }
 
     if (!is_virtual_) {
         // Tell the renderer to render this region
@@ -480,6 +481,19 @@ void frame::notify_layers_need_update() {
     build_layer_list_flag_ = true;
 }
 
+void frame::set_parent_(utils::observer_ptr<frame> parent) {
+    const auto old_effective_strata = get_effective_frame_strata();
+
+    base::set_parent_(parent);
+
+    const auto new_effective_strata = get_effective_frame_strata();
+
+    if (!is_virtual() && new_effective_strata != old_effective_strata) {
+        get_top_level_frame_renderer()->notify_frame_strata_changed(
+            observer_from(this), old_effective_strata, new_effective_strata);
+    }
+}
+
 bool frame::has_script(const std::string& script_name) const {
     const auto iter = signal_list_.find(script_name);
     if (iter == signal_list_.end())
@@ -686,6 +700,17 @@ int frame::get_level() const {
 
 frame_strata frame::get_frame_strata() const {
     return strata_;
+}
+
+frame_strata frame::get_effective_frame_strata() const {
+    if (strata_ != frame_strata::parent)
+        return strata_;
+
+    if (const auto* parent = get_parent().get())
+        return parent->get_effective_frame_strata();
+
+    // Default if frame_strata::parent and no parent set.
+    return frame_strata::medium;
 }
 
 utils::observer_ptr<const frame> frame::get_top_level_parent() const {
@@ -1100,58 +1125,16 @@ void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
 }
 
 void frame::set_frame_strata(frame_strata strata_id) {
-    if (strata_id == frame_strata::parent) {
-        if (!is_virtual_) {
-            if (parent_)
-                strata_id = parent_->get_frame_strata();
-            else
-                strata_id = frame_strata::medium;
-        }
-    }
+    const auto old_effective_strata = get_effective_frame_strata();
 
-    std::swap(strata_, strata_id);
+    strata_ = strata_id;
 
-    if (strata_ != strata_id && !is_virtual_) {
+    const auto new_effective_strata = get_effective_frame_strata();
+
+    if (!is_virtual() && new_effective_strata != old_effective_strata) {
         get_top_level_frame_renderer()->notify_frame_strata_changed(
-            observer_from(this), strata_id, strata_);
+            observer_from(this), old_effective_strata, new_effective_strata);
     }
-}
-
-void frame::set_frame_strata(const std::string& strata_name) {
-    frame_strata strata_id;
-
-    if (strata_name == "BACKGROUND")
-        strata_id = frame_strata::background;
-    else if (strata_name == "LOW")
-        strata_id = frame_strata::low;
-    else if (strata_name == "MEDIUM")
-        strata_id = frame_strata::medium;
-    else if (strata_name == "HIGH")
-        strata_id = frame_strata::high;
-    else if (strata_name == "DIALOG")
-        strata_id = frame_strata::dialog;
-    else if (strata_name == "FULLSCREEN")
-        strata_id = frame_strata::fullscreen;
-    else if (strata_name == "FULLSCREEN_DIALOG")
-        strata_id = frame_strata::fullscreen_dialog;
-    else if (strata_name == "TOOLTIP")
-        strata_id = frame_strata::tooltip;
-    else if (strata_name == "PARENT") {
-        if (is_virtual_) {
-            strata_id = frame_strata::parent;
-        } else {
-            if (parent_)
-                strata_id = parent_->get_frame_strata();
-            else
-                strata_id = frame_strata::medium;
-        }
-    } else {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << ": Unknown strata: \"" + strata_name + "\"." << std::endl;
-        return;
-    }
-
-    set_frame_strata(strata_id);
 }
 
 void frame::set_backdrop(std::unique_ptr<backdrop> bdrop) {

@@ -16,8 +16,8 @@ namespace lxgui::gui {
 class frame;
 
 enum class frame_strata {
-    parent     = -1,
-    background = 0,
+    parent,
+    background,
     low,
     medium,
     high,
@@ -26,8 +26,6 @@ enum class frame_strata {
     fullscreen_dialog,
     tooltip
 };
-
-struct strata;
 
 /// Contains gui::frame
 struct level {

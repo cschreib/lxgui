@@ -25,9 +25,9 @@ region::region(utils::control_block& block, manager& mgr, const region_core_attr
         set_virtual_();
 
     if (attr.parent)
-        set_name_and_parent_(attr.name, attr.parent);
-    else
-        set_name_(attr.name);
+        set_parent_(attr.parent);
+
+    set_name_(attr.name);
 
     initialize_(*this, attr);
 }
@@ -325,29 +325,14 @@ void region::set_parent_(utils::observer_ptr<frame> parent) {
         return;
     }
 
-    if (parent_ != parent) {
-        parent_ = std::move(parent);
-
-        if (!is_virtual_)
-            notify_borders_need_update();
-    }
-}
-
-void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent) {
-    if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
-                 << std::endl;
-        return;
-    }
-
-    if (parent_ == parent && name == name_)
+    if (parent_ == parent)
         return;
 
     parent_ = std::move(parent);
-    set_name_(name);
 
-    if (!is_virtual_)
+    if (!is_virtual()) {
         notify_borders_need_update();
+    }
 }
 
 utils::owner_ptr<region> region::release_from_parent() {

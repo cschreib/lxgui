@@ -439,26 +439,14 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function get_frame_strata
      */
-    type.set_function("get_frame_strata", [](const frame& self) -> sol::optional<std::string> {
-        frame_strata strata_id = self.get_frame_strata();
-        if (strata_id == frame_strata::background)
-            return std::string("BACKGROUND");
-        else if (strata_id == frame_strata::low)
-            return std::string("LOW");
-        else if (strata_id == frame_strata::medium)
-            return std::string("MEDIUM");
-        else if (strata_id == frame_strata::high)
-            return std::string("HIGH");
-        else if (strata_id == frame_strata::dialog)
-            return std::string("DIALOG");
-        else if (strata_id == frame_strata::fullscreen)
-            return std::string("FULLSCREEN");
-        else if (strata_id == frame_strata::fullscreen_dialog)
-            return std::string("FULLSCREEN_DIALOG");
-        else if (strata_id == frame_strata::tooltip)
-            return std::string("TOOLTIP");
-        else
-            return {};
+    type.set_function("get_frame_strata", [](const frame& self) {
+        return utils::to_string(self.get_frame_strata());
+    });
+
+    /** @function get_frame_strata
+     */
+    type.set_function("get_effective_frame_strata", [](const frame& self) {
+        return utils::to_string(self.get_effective_frame_strata());
     });
 
     /** @function get_frame_type
@@ -672,10 +660,14 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function set_frame_strata
      */
-    type.set_function(
-        "set_frame_strata",
-        member_function< // select the right overload for Lua
-            static_cast<void (frame::*)(const std::string&)>(&frame::set_frame_strata)>());
+    type.set_function("set_frame_strata", [](frame& self, const std::string& strata_name) {
+        if (auto converted = utils::from_string<frame_strata>(strata_name); converted.has_value()) {
+            self.set_frame_strata(converted.value());
+        } else {
+            gui::out << gui::warning << "Frame.set_frame_strata: "
+                     << "Unknown strata type: \"" << strata_name << "\"." << std::endl;
+        }
+    });
 
     /** @function set_hit_rect_insets
      */

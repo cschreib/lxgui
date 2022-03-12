@@ -756,6 +756,12 @@ public:
     frame_strata get_frame_strata() const;
 
     /**
+     * \brief Returns this frame's effective strata.
+     * \return This frame's strata, or its parent's effective strata if frame_strata::parent.
+     */
+    frame_strata get_effective_frame_strata() const;
+
+    /**
      * \brief Returns this frame's top-level parent.
      * \return This frame's top-level parent
      */
@@ -1267,12 +1273,6 @@ public:
     void set_frame_strata(frame_strata strata_id);
 
     /**
-     * \brief Sets this frame's strata.
-     * \param strata_name The new strata
-     */
-    void set_frame_strata(const std::string& strata_name);
-
-    /**
      * \brief Sets this frames' backdrop.
      * \param bdrop The new backdrop
      */
@@ -1589,6 +1589,13 @@ protected:
 
     void update_borders_() override;
 
+    /**
+     * \brief Changes this region's parent.
+     * \param parent The new parent
+     * \note Default is nullptr.
+     */
+    void set_parent_(utils::observer_ptr<frame> parent) override;
+
     utils::connection define_script_(
         const std::string& script_name,
         const std::string& content,
@@ -1623,7 +1630,7 @@ protected:
     std::set<std::string> reg_key_list_;
 
     int          level_        = 0;
-    frame_strata strata_       = frame_strata::medium;
+    frame_strata strata_       = frame_strata::parent;
     bool         is_top_level_ = false;
 
     utils::observer_ptr<frame_renderer> frame_renderer_ = nullptr;

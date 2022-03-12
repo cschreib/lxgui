@@ -767,16 +767,7 @@ protected:
      * \param parent The new parent
      * \note Default is nullptr.
      */
-    void set_parent_(utils::observer_ptr<frame> parent);
-
-    /**
-     * \brief Sets this region's name and parent at once.
-     * \param name This region's name
-     * \param parent The new parent
-     * \note The name can only be set once. If you need to just change the
-     * parent, call set_parent_().
-     */
-    void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
+    virtual void set_parent_(utils::observer_ptr<frame> parent);
 
     /**
      * \brief Set up function to call in all derived class constructors.

@@ -43,15 +43,10 @@ void frame_renderer::notify_strata_needs_redraw(frame_strata strata_id) {
 }
 
 void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) {
-
     if (!obj)
         return;
 
-    if (obj->get_frame_strata() == frame_strata::parent) {
-        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
-    }
-
-    const auto frame_strata = obj->get_frame_strata();
+    const auto frame_strata = obj->get_effective_frame_strata();
     auto&      strata       = strata_list_[static_cast<std::size_t>(frame_strata)];
 
     if (rendered)
@@ -82,11 +77,7 @@ void frame_renderer::notify_frame_strata_changed(
 void frame_renderer::notify_frame_level_changed(
     const utils::observer_ptr<frame>& obj, int old_level, int new_level) {
 
-    if (obj->get_frame_strata() == frame_strata::parent) {
-        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
-    }
-
-    const auto strata_id  = obj->get_frame_strata();
+    const auto strata_id  = obj->get_effective_frame_strata();
     auto&      strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
     auto&      level_list = strata_obj.level_list;
 
