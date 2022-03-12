@@ -46,8 +46,12 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
     if (!obj)
         return;
 
-    const auto frame_strata = obj->get_effective_frame_strata();
-    auto&      strata       = strata_list_[static_cast<std::size_t>(frame_strata)];
+    const auto strata_id = obj->get_effective_frame_strata();
+    if (strata_id == frame_strata::parent) {
+        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
+    }
+
+    auto& strata = strata_list_[static_cast<std::size_t>(strata_id)];
 
     if (rendered)
         add_to_strata_list_(strata, obj);
