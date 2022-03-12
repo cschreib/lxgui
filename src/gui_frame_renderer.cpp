@@ -6,33 +6,83 @@
 
 namespace lxgui::gui {
 
-// For debugging only
-template<typename T>
-std::size_t count_frames(const T& strata_list) {
-    std::size_t count = 0;
-    for (std::size_t strata_id = 0; strata_id < strata_list.size(); ++strata_id) {
-        for (const auto& level_obj : utils::range::value(strata_list[strata_id].level_list)) {
-            count += level_obj.frame_list.size();
-        }
+struct strata_comparator {
+    bool operator()(frame_strata s1, frame_strata s2) const {
+        using int_type        = std::underlying_type_t<frame_strata>;
+        const auto strata_id1 = static_cast<int_type>(s1);
+        const auto strata_id2 = static_cast<int_type>(s2);
+        return strata_id1 < strata_id2;
     }
 
-    return count;
+    bool operator()(const utils::observer_ptr<frame>& f1, frame_strata s2) const {
+        frame* rf1 = f1.get();
+        if (!rf1)
+            return false;
+
+        return operator()(rf1->get_effective_frame_strata(), s2);
+    }
+
+    bool operator()(frame_strata s1, const utils::observer_ptr<frame>& f2) const {
+        frame* rf2 = f2.get();
+        if (!rf2)
+            return true;
+
+        return operator()(s1, rf2->get_effective_frame_strata());
+    }
+
+    bool
+    operator()(const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const {
+
+        frame* rf1 = f1.get();
+        frame* rf2 = f2.get();
+
+        if (!rf1 && !rf2)
+            return f1.raw_get() < f2.raw_get();
+        if (!rf1)
+            return false;
+        if (!rf2)
+            return true;
+
+        return operator()(rf1->get_effective_frame_strata(), rf2->get_effective_frame_strata());
+    }
+};
+
+bool frame_renderer::frame_comparator::operator()(
+    const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const {
+
+    frame* rf1 = f1.get();
+    frame* rf2 = f2.get();
+
+    if (!rf1 && !rf2)
+        return f1.raw_get() < f2.raw_get();
+    if (!rf1)
+        return false;
+    if (!rf2)
+        return true;
+
+    using int_type        = std::underlying_type_t<frame_strata>;
+    const auto strata_id1 = static_cast<int_type>(rf1->get_effective_frame_strata());
+    const auto strata_id2 = static_cast<int_type>(rf2->get_effective_frame_strata());
+
+    if (strata_id1 < strata_id2)
+        return true;
+    if (strata_id1 > strata_id2)
+        return false;
+
+    const auto level1 = rf1->get_level();
+    const auto level2 = rf2->get_level();
+
+    if (level1 < level2)
+        return true;
+    if (level1 > level2)
+        return false;
+
+    return rf1 < rf2;
 }
 
-// For debugging only
-template<typename T>
-void print_frames(const T& strata_list) {
-    for (std::size_t strata_id = 0; strata_id < strata_list.size(); ++strata_id) {
-        if (strata_list[strata_id].level_list.empty())
-            continue;
-        gui::out << "strata[" << strata_id << "]" << std::endl;
-        for (const auto& level_obj : strata_list[strata_id].level_list) {
-            if (level_obj.second.frame_list.empty())
-                continue;
-            gui::out << "  level[" << level_obj.first << "]" << std::endl;
-            for (const auto& obj : level_obj.second.frame_list)
-                gui::out << "    " << obj.get() << " " << obj->get_name() << std::endl;
-        }
+frame_renderer::frame_renderer() {
+    for (std::size_t i = 0; i < strata_list_.size(); ++i) {
+        strata_list_[i].id = static_cast<frame_strata>(i);
     }
 }
 
@@ -53,71 +103,77 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
-    auto& strata = strata_list_[static_cast<std::size_t>(strata_id)];
+    if (rendered) {
+        auto [iter, inserted] = sorted_frame_list_.insert(obj);
+        if (!inserted) {
+            // Frame was already registered...
+            return;
+        }
+    } else {
+        sorted_frame_list_.erase(obj);
+    }
 
-    if (rendered)
-        add_to_strata_list_(strata, obj);
-    else
-        remove_from_strata_list_(strata, obj);
+    for (std::size_t i = 0; i < strata_list_.size(); ++i) {
+        strata_list_[i].range = get_strata_range_(static_cast<frame_strata>(i));
+    }
 
+    const auto frame_strata = obj->get_effective_frame_strata();
+    auto&      strata       = strata_list_[static_cast<std::size_t>(frame_strata)];
+
+    frame_list_updated_ = true;
     notify_strata_needs_redraw_(strata);
 }
 
 void frame_renderer::notify_frame_strata_changed(
-    const utils::observer_ptr<frame>& obj, frame_strata old_strata_id, frame_strata new_strata_id) {
+    const utils::observer_ptr<frame>& /*obj*/,
+    frame_strata old_strata_id,
+    frame_strata new_strata_id) {
 
-    if (old_strata_id == frame_strata::parent || new_strata_id == frame_strata::parent) {
-        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
+    std::stable_sort(sorted_frame_list_.begin(), sorted_frame_list_.end(), frame_comparator{});
+
+    for (std::size_t i = 0; i < strata_list_.size(); ++i) {
+        strata_list_[i].range = get_strata_range_(static_cast<frame_strata>(i));
     }
 
     auto& old_strata = strata_list_[static_cast<std::size_t>(old_strata_id)];
     auto& new_strata = strata_list_[static_cast<std::size_t>(new_strata_id)];
 
-    remove_from_strata_list_(old_strata, obj);
-    add_to_strata_list_(new_strata, obj);
-
+    frame_list_updated_ = true;
     notify_strata_needs_redraw_(old_strata);
     notify_strata_needs_redraw_(new_strata);
 }
 
+std::pair<std::size_t, std::size_t>
+frame_renderer::get_strata_range_(frame_strata strata_id) const {
+    auto range = std::equal_range(
+        sorted_frame_list_.begin(), sorted_frame_list_.end(), strata_id, strata_comparator{});
+
+    return {range.first - sorted_frame_list_.begin(), range.second - sorted_frame_list_.begin()};
+}
+
 void frame_renderer::notify_frame_level_changed(
-    const utils::observer_ptr<frame>& obj, int old_level, int new_level) {
+    const utils::observer_ptr<frame>& obj, int /*old_level*/, int /*new_level*/) {
 
-    const auto strata_id  = obj->get_effective_frame_strata();
-    auto&      strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
-    auto&      level_list = strata_obj.level_list;
+    const auto strata_id = obj->get_effective_frame_strata();
 
-    if (auto iter_old = level_list.find(old_level); iter_old != level_list.end()) {
-        remove_from_level_list_(iter_old->second, obj);
+    auto& strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
 
-        if (iter_old->second.frame_list.empty())
-            strata_obj.level_list.erase(iter_old);
-    }
+    auto begin = sorted_frame_list_.begin() + strata_obj.range.first;
+    auto last  = sorted_frame_list_.begin() + strata_obj.range.second;
 
-    auto iter_new = level_list.find(new_level);
-    if (iter_new == level_list.end()) {
-        iter_new = level_list.insert(std::make_pair(new_level, level{})).first;
-    }
+    std::stable_sort(begin, last, frame_comparator{});
 
-    add_to_level_list_(iter_new->second, obj);
-
-    strata_list_updated_ = true;
+    frame_list_updated_ = true;
     notify_strata_needs_redraw_(strata_obj);
 }
 
 utils::observer_ptr<const frame>
 frame_renderer::find_topmost_frame(const std::function<bool(const frame&)>& predicate) const {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
-    for (const auto& strata_obj : utils::range::reverse(strata_list_)) {
-        for (const auto& level_obj : utils::range::reverse_value(strata_obj.level_list)) {
-            for (const auto& obj : utils::range::reverse(level_obj.frame_list)) {
-                if (const frame* raw_ptr = obj.get()) {
-                    if (raw_ptr->is_visible()) {
-                        if (auto topmost = raw_ptr->find_topmost_frame(predicate))
-                            return topmost;
-                    }
-                }
-            }
+    for (const auto& obj : utils::range::reverse(sorted_frame_list_)) {
+        if (const frame* raw_ptr = obj.get(); raw_ptr && raw_ptr->is_visible()) {
+            if (auto topmost = raw_ptr->find_topmost_frame(predicate))
+                return topmost;
         }
     }
 
@@ -125,85 +181,43 @@ frame_renderer::find_topmost_frame(const std::function<bool(const frame&)>& pred
 }
 
 int frame_renderer::get_highest_level(frame_strata strata_id) const {
-    const auto& strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
-    if (!strata_obj.level_list.empty())
-        return strata_obj.level_list.rbegin()->first;
+    auto range = strata_list_[static_cast<std::size_t>(strata_id)].range;
+    auto begin = sorted_frame_list_.begin() + range.first;
+    auto last  = sorted_frame_list_.begin() + range.second;
+
+    while (last != begin) {
+        --last;
+
+        if (const frame* raw_ptr = last->get()) {
+            return raw_ptr->get_level();
+        }
+    }
 
     return 0;
 }
 
-void frame_renderer::add_to_strata_list_(
-    strata& strata_obj, const utils::observer_ptr<frame>& obj) {
-
-    int  new_level = obj->get_level();
-    auto iter_new  = strata_obj.level_list.find(new_level);
-    if (iter_new == strata_obj.level_list.end()) {
-        iter_new = strata_obj.level_list.insert(std::make_pair(new_level, level{})).first;
-    }
-
-    add_to_level_list_(iter_new->second, obj);
-
-    strata_list_updated_ = true;
-    notify_strata_needs_redraw_(strata_obj);
-}
-
-void frame_renderer::remove_from_strata_list_(
-    strata& strata_obj, const utils::observer_ptr<frame>& obj) {
-
-    auto iter = strata_obj.level_list.find(obj->get_level());
-    if (iter == strata_obj.level_list.end()) {
-        throw gui::exception("gui::frame_renderer", "frame not found in this strata and level");
-    }
-
-    remove_from_level_list_(iter->second, obj);
-
-    if (iter->second.frame_list.empty())
-        strata_obj.level_list.erase(iter);
-
-    strata_list_updated_ = true;
-    notify_strata_needs_redraw_(strata_obj);
-}
-
-void frame_renderer::add_to_level_list_(level& level_obj, const utils::observer_ptr<frame>& obj) {
-
-    level_obj.frame_list.push_back(obj);
-}
-
-void frame_renderer::remove_from_level_list_(
-    level& level_obj, const utils::observer_ptr<frame>& obj) {
-
-    auto iter = std::find(level_obj.frame_list.begin(), level_obj.frame_list.end(), obj);
-    if (iter == level_obj.frame_list.end()) {
-        throw gui::exception("gui::frame_renderer", "frame not found in this strata and level");
-    }
-
-    level_obj.frame_list.erase(iter);
-}
-
 void frame_renderer::render_strata_(const strata& strata_obj) const {
-    for (const auto& level_obj : utils::range::value(strata_obj.level_list)) {
-        for (const auto& obj : level_obj.frame_list) {
-            obj->render();
+    auto begin = sorted_frame_list_.begin() + strata_obj.range.first;
+    auto end   = sorted_frame_list_.begin() + strata_obj.range.second;
+
+    for (auto iter = begin; iter != end; ++iter) {
+        if (const frame* raw_ptr = iter->get()) {
+            raw_ptr->render();
         }
     }
 }
 
 void frame_renderer::clear_strata_list_() {
-    for (auto& strata_obj : strata_list_) {
-        strata_obj.level_list.clear();
-        strata_obj.target      = nullptr;
-        strata_obj.redraw_flag = true;
-    }
-
-    strata_list_updated_ = true;
+    sorted_frame_list_.clear();
+    frame_list_updated_ = true;
 }
 
 bool frame_renderer::has_strata_list_changed_() const {
-    return strata_list_updated_;
+    return frame_list_updated_;
 }
 
 void frame_renderer::reset_strata_list_changed_flag_() {
-    strata_list_updated_ = false;
+    frame_list_updated_ = false;
 }
 
 } // namespace lxgui::gui
