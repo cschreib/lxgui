@@ -101,11 +101,10 @@ protected:
     void render_strata_(const strata& strata_obj) const;
 
     struct frame_comparator {
-        bool operator()(
-            const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const;
+        bool operator()(const frame* f1, const frame* f2) const;
     };
 
-    using frame_list_type     = utils::sorted_vector<utils::observer_ptr<frame>, frame_comparator>;
+    using frame_list_type     = utils::sorted_vector<frame*, frame_comparator>;
     using frame_list_iterator = frame_list_type::iterator;
 
     std::pair<std::size_t, std::size_t> get_strata_range_(frame_strata strata_id) const;

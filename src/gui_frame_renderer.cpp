@@ -14,49 +14,38 @@ struct strata_comparator {
         return strata_id1 < strata_id2;
     }
 
-    bool operator()(const utils::observer_ptr<frame>& f1, frame_strata s2) const {
-        frame* rf1 = f1.get();
-        return operator()(rf1->get_effective_frame_strata(), s2);
+    bool operator()(const frame* f1, frame_strata s2) const {
+        return operator()(f1->get_effective_frame_strata(), s2);
     }
 
-    bool operator()(frame_strata s1, const utils::observer_ptr<frame>& f2) const {
-        frame* rf2 = f2.get();
-        return operator()(s1, rf2->get_effective_frame_strata());
+    bool operator()(frame_strata s1, const frame* f2) const {
+        return operator()(s1, f2->get_effective_frame_strata());
     }
 
-    bool
-    operator()(const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const {
-        frame* rf1 = f1.get();
-        frame* rf2 = f2.get();
-
-        return operator()(rf1->get_effective_frame_strata(), rf2->get_effective_frame_strata());
+    bool operator()(const frame* f1, const frame* f2) const {
+        return operator()(f1->get_effective_frame_strata(), f2->get_effective_frame_strata());
     }
 };
 
-bool frame_renderer::frame_comparator::operator()(
-    const utils::observer_ptr<frame>& f1, const utils::observer_ptr<frame>& f2) const {
-
-    frame* rf1 = f1.get();
-    frame* rf2 = f2.get();
-
+bool frame_renderer::frame_comparator::operator()(const frame* f1, const frame* f2) const {
     using int_type        = std::underlying_type_t<frame_strata>;
-    const auto strata_id1 = static_cast<int_type>(rf1->get_effective_frame_strata());
-    const auto strata_id2 = static_cast<int_type>(rf2->get_effective_frame_strata());
+    const auto strata_id1 = static_cast<int_type>(f1->get_effective_frame_strata());
+    const auto strata_id2 = static_cast<int_type>(f2->get_effective_frame_strata());
 
     if (strata_id1 < strata_id2)
         return true;
     if (strata_id1 > strata_id2)
         return false;
 
-    const auto level1 = rf1->get_level();
-    const auto level2 = rf2->get_level();
+    const auto level1 = f1->get_level();
+    const auto level2 = f2->get_level();
 
     if (level1 < level2)
         return true;
     if (level1 > level2)
         return false;
 
-    return rf1 < rf2;
+    return f1 < f2;
 }
 
 frame_renderer::frame_renderer() {
@@ -83,13 +72,13 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
     }
 
     if (rendered) {
-        auto [iter, inserted] = sorted_frame_list_.insert(obj);
+        auto [iter, inserted] = sorted_frame_list_.insert(obj.get());
         if (!inserted) {
             // Frame was already registered...
             return;
         }
     } else {
-        sorted_frame_list_.erase(obj);
+        sorted_frame_list_.erase(obj.get());
     }
 
     for (std::size_t i = 0; i < strata_list_.size(); ++i) {
@@ -149,10 +138,9 @@ void frame_renderer::notify_frame_level_changed(
 utils::observer_ptr<const frame>
 frame_renderer::find_topmost_frame(const std::function<bool(const frame&)>& predicate) const {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
-    for (const auto& obj : utils::range::reverse(sorted_frame_list_)) {
-        // NB: can use raw_get because we know frames ask to not be rendered before deletion
-        if (const frame* raw_ptr = obj.raw_get(); raw_ptr->is_visible()) {
-            if (auto topmost = raw_ptr->find_topmost_frame(predicate))
+    for (const auto* obj : utils::range::reverse(sorted_frame_list_)) {
+        if (obj->is_visible()) {
+            if (auto topmost = obj->find_topmost_frame(predicate))
                 return topmost;
         }
     }
@@ -178,8 +166,7 @@ void frame_renderer::render_strata_(const strata& strata_obj) const {
     auto end   = sorted_frame_list_.begin() + strata_obj.range.second;
 
     for (auto iter = begin; iter != end; ++iter) {
-        // NB: can use raw_get because we know frames ask to not be rendered before deletion
-        iter->raw_get()->render();
+        (*iter)->render();
     }
 }
 
