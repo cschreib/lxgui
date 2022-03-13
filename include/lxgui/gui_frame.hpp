@@ -18,6 +18,7 @@
 #include <limits>
 #include <list>
 #include <lxgui/extern_sol2_protected_function.hpp>
+#include <optional>
 #include <set>
 #include <unordered_map>
 #include <vector>
@@ -752,9 +753,10 @@ public:
 
     /**
      * \brief Returns this frame's strata.
-     * \return This frame's strata
+     * \return This frame's strata, or nullopt if the strata is inherited from the parent.
+     * \note See get_effective_frame_strata() to obtain the actual strata of this frame.
      */
-    frame_strata get_frame_strata() const;
+    std::optional<frame_strata> get_frame_strata() const;
 
     /**
      * \brief Returns this frame's effective strata.
@@ -1269,9 +1271,9 @@ public:
 
     /**
      * \brief Sets this frame's strata.
-     * \param strata_id The new strata
+     * \param strata_id The new strata, or nullopt to inherit strata from parent
      */
-    void set_frame_strata(frame_strata strata_id);
+    void set_frame_strata(std::optional<frame_strata> strata_id);
 
     /**
      * \brief Sets this frames' backdrop.
@@ -1471,16 +1473,16 @@ public:
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const final;
+    utils::observer_ptr<const frame_renderer> get_effective_frame_renderer() const final;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
+    utils::observer_ptr<frame_renderer> get_effective_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const frame*>(this)->get_top_level_frame_renderer());
+            const_cast<const frame*>(this)->get_effective_frame_renderer());
     }
 
     /**
@@ -1586,8 +1588,18 @@ protected:
 
     void add_level_(int amount);
 
-    void notify_frame_strata_changed_(frame_strata old_strata_id, frame_strata new_strata_id);
-    void propagate_renderer_(bool rendered);
+    utils::observer_ptr<const frame_renderer> compute_top_level_frame_renderer_() const;
+
+    utils::observer_ptr<frame_renderer> compute_top_level_frame_renderer_() {
+        return utils::const_pointer_cast<frame_renderer>(
+            const_cast<const frame*>(this)->compute_top_level_frame_renderer_());
+    }
+
+    frame_strata compute_effective_frame_strata_() const;
+
+    void notify_frame_strata_changed_(frame_strata new_strata_id);
+
+    void notify_frame_renderer_changed_(const utils::observer_ptr<frame_renderer>& new_renderer);
 
     void update_borders_() override;
 
@@ -1631,11 +1643,13 @@ protected:
     std::set<std::string> reg_drag_list_;
     std::set<std::string> reg_key_list_;
 
-    int          level_        = 0;
-    frame_strata strata_       = frame_strata::parent;
-    bool         is_top_level_ = false;
+    int                         level_ = 0;
+    std::optional<frame_strata> strata_;
+    frame_strata                effective_strata_ = frame_strata::medium;
+    bool                        is_top_level_     = false;
 
-    utils::observer_ptr<frame_renderer> frame_renderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> frame_renderer_           = nullptr;
+    utils::observer_ptr<frame_renderer> effective_frame_renderer_ = nullptr;
 
     std::unique_ptr<backdrop> backdrop_;
 

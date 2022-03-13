@@ -593,16 +593,16 @@ public:
      * \return The renderer of this object or its parents
      * \note For more information, see frame::set_frame_renderer().
      */
-    virtual utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const;
+    virtual utils::observer_ptr<const frame_renderer> get_effective_frame_renderer() const;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see frame::set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
+    utils::observer_ptr<frame_renderer> get_effective_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const region*>(this)->get_top_level_frame_renderer());
+            const_cast<const region*>(this)->get_effective_frame_renderer());
     }
 
     /**

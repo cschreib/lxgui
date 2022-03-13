@@ -16,7 +16,6 @@ namespace lxgui::gui {
 class frame;
 
 enum class frame_strata {
-    parent,
     background,
     low,
     medium,

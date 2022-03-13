@@ -74,6 +74,7 @@ void scroll_frame::copy_from(const region& obj) {
 
 void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
+        // TODO: is this really needed now?
         scroll_child_->set_frame_renderer(nullptr);
         clear_strata_list_();
     } else if (!is_virtual() && !scroll_texture_) {

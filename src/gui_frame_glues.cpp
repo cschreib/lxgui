@@ -439,8 +439,12 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function get_frame_strata
      */
-    type.set_function("get_frame_strata", [](const frame& self) {
-        return utils::to_string(self.get_frame_strata());
+    type.set_function("get_frame_strata", [](const frame& self) -> sol::optional<std::string> {
+        auto strata_id = self.get_frame_strata();
+        if (strata_id.has_value())
+            return utils::to_string(strata_id.value());
+        else
+            return sol::nullopt;
     });
 
     /** @function get_frame_strata
@@ -660,12 +664,17 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function set_frame_strata
      */
-    type.set_function("set_frame_strata", [](frame& self, const std::string& strata_name) {
-        if (auto converted = utils::from_string<frame_strata>(strata_name); converted.has_value()) {
-            self.set_frame_strata(converted.value());
+    type.set_function("set_frame_strata", [](frame& self, sol::optional<std::string> strata_name) {
+        if (!strata_name.has_value()) {
+            self.set_frame_strata(std::nullopt);
         } else {
-            gui::out << gui::warning << "Frame.set_frame_strata: "
-                     << "Unknown strata type: \"" << strata_name << "\"." << std::endl;
+            if (auto converted = utils::from_string<frame_strata>(strata_name.value());
+                converted.has_value()) {
+                self.set_frame_strata(converted.value());
+            } else {
+                gui::out << gui::warning << "Frame.set_frame_strata: "
+                         << "Unknown strata type: \"" << strata_name.value() << "\"." << std::endl;
+            }
         }
     });
 

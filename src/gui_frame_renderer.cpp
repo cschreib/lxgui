@@ -3,8 +3,29 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_range.hpp"
+#include "lxgui/utils_string.hpp"
 
 namespace lxgui::gui {
+
+template<typename T>
+void check_sorted(const T& list) {
+    gui::out << "----------" << std::endl;
+    for (auto iter = list.begin(); iter != list.end(); ++iter) {
+        gui::out << " - " << (*iter)->get_name() << ": "
+                 << utils::to_string((*iter)->get_effective_frame_strata()) << ", "
+                 << (*iter)->get_level() << std::endl;
+
+        if (iter != list.begin()) {
+            gui::out << " is greater than last? " << list.comparator()(*(iter - 1), *iter)
+                     << std::endl;
+        }
+    }
+    gui::out << "----------" << std::endl;
+
+    if (!std::is_sorted(list.begin(), list.end(), list.comparator())) {
+        throw gui::exception("frame_renderer", "Frame list not sorted!!");
+    }
+}
 
 struct strata_comparator {
     bool operator()(frame_strata s1, frame_strata s2) const {
@@ -66,19 +87,18 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
     if (!obj)
         return;
 
-    const auto strata_id = obj->get_effective_frame_strata();
-    if (strata_id == frame_strata::parent) {
-        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
-    }
-
     if (rendered) {
         auto [iter, inserted] = sorted_frame_list_.insert(obj.get());
         if (!inserted) {
-            // Frame was already registered...
-            return;
+            throw gui::exception("frame_renderer", "Frame was already in this renderer");
         }
     } else {
-        sorted_frame_list_.erase(obj.get());
+        auto iter = sorted_frame_list_.find(obj.get());
+        if (iter == sorted_frame_list_.end()) {
+            throw gui::exception("frame_renderer", "Could not find frame in this renderer");
+        }
+
+        sorted_frame_list_.erase(iter);
     }
 
     for (std::size_t i = 0; i < strata_list_.size(); ++i) {
@@ -97,7 +117,8 @@ void frame_renderer::notify_frame_strata_changed(
     frame_strata old_strata_id,
     frame_strata new_strata_id) {
 
-    std::stable_sort(sorted_frame_list_.begin(), sorted_frame_list_.end(), frame_comparator{});
+    std::stable_sort(
+        sorted_frame_list_.begin(), sorted_frame_list_.end(), sorted_frame_list_.comparator());
 
     for (std::size_t i = 0; i < strata_list_.size(); ++i) {
         strata_list_[i].range = get_strata_range_(static_cast<frame_strata>(i));
@@ -129,7 +150,7 @@ void frame_renderer::notify_frame_level_changed(
     auto begin = sorted_frame_list_.begin() + strata_obj.range.first;
     auto last  = sorted_frame_list_.begin() + strata_obj.range.second;
 
-    std::stable_sort(begin, last, frame_comparator{});
+    std::stable_sort(begin, last, sorted_frame_list_.comparator());
 
     frame_list_updated_ = true;
     notify_strata_needs_redraw_(strata_obj);

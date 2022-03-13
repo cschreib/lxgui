@@ -59,7 +59,7 @@ vector2f anchor::get_point(const region& object) const {
         parent_pos  = raw_parent->get_borders().top_left();
         parent_size = raw_parent->get_apparent_dimensions();
     } else {
-        parent_size = object.get_top_level_frame_renderer()->get_target_dimensions();
+        parent_size = object.get_effective_frame_renderer()->get_target_dimensions();
     }
 
     vector2f offset_abs;

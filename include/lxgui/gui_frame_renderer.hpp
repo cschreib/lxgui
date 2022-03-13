@@ -8,6 +8,7 @@
 #include "lxgui/utils_sorted_vector.hpp"
 
 #include <functional>
+#include <magic_enum.hpp>
 
 namespace lxgui::gui {
 
@@ -109,9 +110,11 @@ protected:
 
     std::pair<std::size_t, std::size_t> get_strata_range_(frame_strata strata_id) const;
 
-    std::array<strata, 9> strata_list_;
-    frame_list_type       sorted_frame_list_;
-    bool                  frame_list_updated_ = false;
+    static constexpr std::size_t num_strata = magic_enum::enum_count<frame_strata>();
+
+    std::array<strata, num_strata> strata_list_;
+    frame_list_type                sorted_frame_list_;
+    bool                           frame_list_updated_ = false;
 };
 
 } // namespace lxgui::gui
