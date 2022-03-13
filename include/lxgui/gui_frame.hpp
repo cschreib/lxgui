@@ -6,6 +6,7 @@
 #include "lxgui/gui_frame_core_attributes.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_strata.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"

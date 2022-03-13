@@ -6,7 +6,6 @@
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/gui_region_core_attributes.hpp"
-#include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"

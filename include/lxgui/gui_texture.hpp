@@ -13,6 +13,7 @@
 namespace lxgui::gui {
 
 class renderer;
+class render_target;
 
 /**
  * \brief A layered_region that can draw images and colored rectangles.
