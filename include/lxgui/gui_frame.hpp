@@ -18,6 +18,7 @@
 #include <limits>
 #include <list>
 #include <lxgui/extern_sol2_protected_function.hpp>
+#include <magic_enum.hpp>
 #include <optional>
 #include <set>
 #include <unordered_map>
@@ -1633,7 +1634,7 @@ protected:
     child_list  child_list_;
     region_list region_list_;
 
-    static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::enum_size);
+    static constexpr std::size_t num_layers = magic_enum::enum_count<layer>();
 
     std::array<layer_container, num_layers> layer_list_;
 
