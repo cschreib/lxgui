@@ -693,13 +693,6 @@ frame::const_child_list_view frame::get_children() const {
     return const_child_list_view(child_list_);
 }
 
-float frame::get_effective_alpha() const {
-    if (parent_)
-        return alpha_ * parent_->get_effective_alpha();
-    else
-        return alpha_;
-}
-
 float frame::get_effective_scale() const {
     if (parent_)
         return scale_ * parent_->get_effective_scale();

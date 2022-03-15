@@ -735,12 +735,6 @@ public:
     }
 
     /**
-     * \brief Calculates effective alpha.
-     * \return Effective alpha (alpha*parent->alpha)
-     */
-    float get_effective_alpha() const;
-
-    /**
      * \brief Calculates effective scale.
      * \return Effective scale (scale*parent->scale)
      */
