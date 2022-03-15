@@ -1509,7 +1509,16 @@ void frame::update_borders_() {
     check_position_();
 
     if (border_list_ != old_border_list || is_ready_ != old_ready) {
+        if (border_list_.width() != old_border_list.width() ||
+            border_list_.height() != old_border_list.height()) {
+            alive_checker checker(*this);
+            fire_script("OnSizeChanged");
+            if (!checker.is_alive())
+                return;
+        }
+
         get_manager().get_root().notify_hovered_frame_dirty();
+
         if (backdrop_)
             backdrop_->notify_borders_updated();
     }
@@ -1590,15 +1599,6 @@ void frame::update(float delta) {
                 ++iter_list;
             }
         }
-    }
-
-    vector2f new_size = get_apparent_dimensions();
-    if (old_size_ != new_size) {
-        fire_script("OnSizeChanged");
-        if (!checker.is_alive())
-            return;
-
-        old_size_ = new_size;
     }
 }
 

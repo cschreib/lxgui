@@ -1667,8 +1667,6 @@ protected:
     float min_height_ = 0.0f;
     float max_height_ = std::numeric_limits<float>::infinity();
 
-    vector2f old_size_;
-
     float scale_ = 1.0f;
 
     bool is_mouse_in_frame_ = false;
