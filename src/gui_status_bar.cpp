@@ -77,7 +77,15 @@ void status_bar::set_min_value(float min_value) {
     if (min_value_ > max_value_)
         min_value_ = max_value_;
 
-    value_ = std::clamp(value_, min_value_, max_value_);
+    const auto old_value = value_;
+    value_               = std::clamp(value_, min_value_, max_value_);
+
+    if (value_ != old_value) {
+        alive_checker checker(*this);
+        fire_script("OnValueChanged", {value_});
+        if (!checker.is_alive())
+            return;
+    }
 
     notify_bar_texture_needs_update_();
 }
@@ -90,7 +98,15 @@ void status_bar::set_max_value(float max_value) {
     if (max_value_ < min_value_)
         max_value_ = min_value_;
 
-    value_ = std::clamp(value_, min_value_, max_value_);
+    const auto old_value = value_;
+    value_               = std::clamp(value_, min_value_, max_value_);
+
+    if (value_ != old_value) {
+        alive_checker checker(*this);
+        fire_script("OnValueChanged", {value_});
+        if (!checker.is_alive())
+            return;
+    }
 
     notify_bar_texture_needs_update_();
 }
@@ -102,7 +118,15 @@ void status_bar::set_min_max_values(float min_value, float max_value) {
     min_value_ = std::min(min_value, max_value);
     max_value_ = std::max(min_value, max_value);
 
-    value_ = std::clamp(value_, min_value_, max_value_);
+    const auto old_value = value_;
+    value_               = std::clamp(value_, min_value_, max_value_);
+
+    if (value_ != old_value) {
+        alive_checker checker(*this);
+        fire_script("OnValueChanged", {value_});
+        if (!checker.is_alive())
+            return;
+    }
 
     notify_bar_texture_needs_update_();
 }
@@ -114,13 +138,21 @@ void status_bar::set_value(float value) {
         return;
 
     value_ = value;
+
+    alive_checker checker(*this);
+    fire_script("OnValueChanged", {value_});
+    if (!checker.is_alive())
+        return;
+
     notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_bar_draw_layer(layer bar_layer) {
     bar_layer_ = bar_layer;
-    if (bar_texture_)
+
+    if (bar_texture_) {
         bar_texture_->set_draw_layer(bar_layer_);
+    }
 }
 
 void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
@@ -133,10 +165,11 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
 
     std::string parent = bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
-    if (is_reversed_)
+    if (is_reversed_) {
         bar_texture_->set_point(point::top_right, parent);
-    else
+    } else {
         bar_texture_->set_point(point::bottom_left, parent);
+    }
 
     initial_text_coords_ = select_uvs(bar_texture_->get_tex_coord());
     notify_bar_texture_needs_update_();
@@ -164,13 +197,15 @@ void status_bar::set_reversed(bool reversed) {
     is_reversed_ = reversed;
 
     if (bar_texture_) {
-        if (is_reversed_)
+        if (is_reversed_) {
             bar_texture_->set_point(point::top_right);
-        else
+        } else {
             bar_texture_->set_point(point::bottom_left);
+        }
 
-        if (!is_virtual_)
+        if (!is_virtual_) {
             bar_texture_->notify_borders_need_update();
+        }
     }
 }
 
@@ -215,41 +250,34 @@ void status_bar::create_bar_texture_() {
     set_bar_texture(bar_texture);
 }
 
-void status_bar::update(float delta) {
-    if (update_bar_texture_flag_ && bar_texture_) {
-        float coef = (value_ - min_value_) / (max_value_ - min_value_);
+void status_bar::notify_bar_texture_needs_update_() {
+    if (!bar_texture_)
+        return;
 
-        if (orientation_ == orientation::horizontal)
-            bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
-        else
-            bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
+    float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
-        std::array<float, 4> uvs = initial_text_coords_;
-        if (orientation_ == orientation::horizontal) {
-            if (is_reversed_)
-                uvs[0] = (uvs[0] - uvs[2]) * coef + uvs[2];
-            else
-                uvs[2] = (uvs[2] - uvs[0]) * coef + uvs[0];
-        } else {
-            if (is_reversed_)
-                uvs[3] = (uvs[3] - uvs[1]) * coef + uvs[1];
-            else
-                uvs[1] = (uvs[1] - uvs[3]) * coef + uvs[3];
-        }
-
-        bar_texture_->set_tex_rect(uvs);
-
-        update_bar_texture_flag_ = false;
+    if (orientation_ == orientation::horizontal) {
+        bar_texture_->set_relative_dimensions(vector2f(coef, 1.0f));
+    } else {
+        bar_texture_->set_relative_dimensions(vector2f(1.0f, coef));
     }
 
-    alive_checker checker(*this);
-    base::update(delta);
-    if (!checker.is_alive())
-        return;
-}
+    std::array<float, 4> uvs = initial_text_coords_;
+    if (orientation_ == orientation::horizontal) {
+        if (is_reversed_) {
+            uvs[0] = (uvs[0] - uvs[2]) * coef + uvs[2];
+        } else {
+            uvs[2] = (uvs[2] - uvs[0]) * coef + uvs[0];
+        }
+    } else {
+        if (is_reversed_) {
+            uvs[3] = (uvs[3] - uvs[1]) * coef + uvs[1];
+        } else {
+            uvs[1] = (uvs[1] - uvs[3]) * coef + uvs[3];
+        }
+    }
 
-void status_bar::notify_bar_texture_needs_update_() {
-    update_bar_texture_flag_ = true;
+    bar_texture_->set_tex_rect(uvs);
 }
 
 } // namespace lxgui::gui
