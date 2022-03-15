@@ -48,6 +48,7 @@ frame::~frame() {
     // Children must be destroyed first
     child_list_.clear();
     region_list_.clear();
+    title_region_ = nullptr;
 
     if (!is_virtual_) {
         // Tell the renderer to no longer render this region
@@ -63,17 +64,18 @@ void frame::render() const {
     if (!is_visible_ || !is_ready_)
         return;
 
-    if (backdrop_)
+    if (backdrop_) {
         backdrop_->render();
+    }
 
     // Render child regions
     for (const auto& layer : layer_list_) {
-        if (layer.is_disabled)
+        if (layer.is_disabled) {
             continue;
+        }
 
         for (const auto& reg : layer.region_list) {
-            if (reg->is_shown())
-                reg->render();
+            reg->render();
         }
     }
 }
@@ -1514,42 +1516,35 @@ void frame::update_borders_() {
 }
 
 void frame::update(float delta) {
-//#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-#define DEBUG_LOG(msg)
-
     alive_checker checker(*this);
 
-    DEBUG_LOG("  ~");
     base::update(delta);
-    DEBUG_LOG("   #");
 
     if (build_layer_list_flag_) {
-        DEBUG_LOG("   Build layers");
         // Clear layers' content
         for (auto& layer : layer_list_)
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
         for (const auto& reg : region_list_) {
-            if (reg && reg->get_object_type() != "font_string")
+            if (reg && !reg->is_object_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
+            }
         }
 
         for (const auto& reg : region_list_) {
-            if (reg && reg->get_object_type() == "font_string")
+            if (reg && reg->is_object_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
+            }
         }
 
         build_layer_list_flag_ = false;
     }
 
     if (is_visible()) {
-        DEBUG_LOG("   On update");
-        event_data data;
-        data.add(delta);
-        fire_script("OnUpdate", data);
+        fire_script("OnUpdate", {delta});
         if (!checker.is_alive())
             return;
     }
@@ -1558,9 +1553,9 @@ void frame::update(float delta) {
         title_region_->update(delta);
 
     // Update regions
-    DEBUG_LOG("   Update regions");
-    for (auto& obj : get_regions())
+    for (auto& obj : get_regions()) {
         obj.update(delta);
+    }
 
     // Remove deleted regions
     {
@@ -1571,7 +1566,6 @@ void frame::update(float delta) {
     }
 
     // Update children
-    DEBUG_LOG("   Update children");
     for (auto& child : get_children()) {
         child.update(delta);
         if (!checker.is_alive())
@@ -1587,24 +1581,25 @@ void frame::update(float delta) {
     }
 
     // Remove empty handlers
-    for (auto iter_list = signal_list_.begin(); iter_list != signal_list_.end();) {
-        if (iter_list->second.empty())
-            iter_list = signal_list_.erase(iter_list);
-        else
-            ++iter_list;
+    {
+        auto iter_list = signal_list_.begin();
+        while (iter_list != signal_list_.end()) {
+            if (iter_list->second.empty()) {
+                iter_list = signal_list_.erase(iter_list);
+            } else {
+                ++iter_list;
+            }
+        }
     }
 
     vector2f new_size = get_apparent_dimensions();
     if (old_size_ != new_size) {
-        DEBUG_LOG("   On size changed");
         fire_script("OnSizeChanged");
         if (!checker.is_alive())
             return;
 
         old_size_ = new_size;
     }
-
-    DEBUG_LOG("   .");
 }
 
 } // namespace lxgui::gui
