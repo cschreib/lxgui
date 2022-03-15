@@ -103,10 +103,9 @@ void addon_registry::load_addon_files_(const addon& a) {
     for (const auto& file : a.file_list) {
         const std::string extension = utils::get_file_extension(file);
         if (extension == ".lua") {
-            try {
-                lua_.do_file(file);
-            } catch (const sol::error& e) {
-                std::string err = e.what();
+            auto result = lua_.do_file(file);
+            if (!result.valid()) {
+                std::string err = result.get<sol::error>().what();
                 gui::out << gui::error << err << std::endl;
                 event_emitter_.fire_event("LUA_ERROR", {err});
             }
@@ -117,11 +116,11 @@ void addon_registry::load_addon_files_(const addon& a) {
 
     std::string saved_variables_file =
         "saves/interface/" + a.main_directory + "/" + a.name + ".lua";
+
     if (utils::file_exists(saved_variables_file)) {
-        try {
-            lua_.do_file(saved_variables_file);
-        } catch (const sol::error& e) {
-            std::string err = e.what();
+        auto result = lua_.do_file(saved_variables_file);
+        if (!result.valid()) {
+            std::string err = result.get<sol::error>().what();
             gui::out << gui::error << err << std::endl;
             event_emitter_.fire_event("LUA_ERROR", {err});
         }
