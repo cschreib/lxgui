@@ -42,8 +42,9 @@ void scroll_frame::fire_script(const std::string& script_name, const event_data&
     if (!checker.is_alive())
         return;
 
-    if (script_name == "OnSizeChanged")
+    if (script_name == "OnSizeChanged") {
         rebuild_scroll_render_target_flag_ = true;
+    }
 }
 
 void scroll_frame::copy_from(const region& obj) {
@@ -111,7 +112,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
             scroll_child_->set_point(point::top_left, get_name(), -scroll_);
 
         update_scroll_range_();
-        update_scroll_range_flag_ = false;
     }
 
     redraw_scroll_render_target_flag_ = true;
@@ -177,21 +177,13 @@ void scroll_frame::update(float delta) {
     if (!checker.is_alive())
         return;
 
-    if (scroll_child_ && old_child_size != scroll_child_->get_apparent_dimensions()) {
-        update_scroll_range_flag_         = true;
-        redraw_scroll_render_target_flag_ = true;
-    }
+    update_scroll_range_();
 
     if (is_visible()) {
         if (rebuild_scroll_render_target_flag_ && scroll_texture_) {
             rebuild_scroll_render_target_();
             rebuild_scroll_render_target_flag_ = false;
             redraw_scroll_render_target_flag_  = true;
-        }
-
-        if (update_scroll_range_flag_) {
-            update_scroll_range_();
-            update_scroll_range_flag_ = false;
         }
 
         if (scroll_child_ && scroll_render_target_ && redraw_scroll_render_target_flag_) {
@@ -204,6 +196,7 @@ void scroll_frame::update(float delta) {
 void scroll_frame::update_scroll_range_() {
     const vector2f apparent_size       = get_apparent_dimensions();
     const vector2f child_apparent_size = scroll_child_->get_apparent_dimensions();
+    const auto     old_scroll_range    = scroll_range_;
 
     scroll_range_ = child_apparent_size - apparent_size;
 
@@ -212,7 +205,7 @@ void scroll_frame::update_scroll_range_() {
     if (scroll_range_.y < 0)
         scroll_range_.y = 0;
 
-    if (!is_virtual()) {
+    if (!is_virtual() && scroll_range_ != old_scroll_range) {
         alive_checker checker(*this);
         fire_script("OnScrollRangeChanged");
         if (!checker.is_alive())
@@ -239,7 +232,6 @@ void scroll_frame::rebuild_scroll_render_target_() {
     if (scroll_render_target_) {
         scroll_render_target_->set_dimensions(scaled_size);
         scroll_texture_->set_tex_rect(std::array<float, 4>{0.0f, 0.0f, 1.0f, 1.0f});
-        update_scroll_range_flag_ = true;
     } else {
         auto& renderer        = get_manager().get_renderer();
         scroll_render_target_ = renderer.create_render_target(scaled_size);
