@@ -546,22 +546,25 @@ bool region::make_borders_(float& min, float& max, float center, float size) con
         if (!std::isinf(size) && size > 0.0f && !std::isinf(center)) {
             min = center - size / 2.0f;
             max = center + size / 2.0f;
-        } else
+        } else {
             return false;
+        }
     } else if (std::isinf(max)) {
-        if (!std::isinf(size) && size > 0.0f)
+        if (!std::isinf(size) && size > 0.0f) {
             max = min + size;
-        else if (!std::isinf(center))
+        } else if (!std::isinf(center)) {
             max = min + 2.0f * (center - min);
-        else
+        } else {
             return false;
+        }
     } else if (std::isinf(min)) {
-        if (!std::isinf(size) && size > 0.0f)
+        if (!std::isinf(size) && size > 0.0f) {
             min = max - size;
-        else if (!std::isinf(center))
+        } else if (!std::isinf(center)) {
             min = max - 2.0f * (max - center);
-        else
+        } else {
             return false;
+        }
     }
 
     return true;
@@ -652,20 +655,26 @@ void region::update_borders_() {
         DEBUG_LOG("    y_center=" + utils::to_string(y_center));
 
         DEBUG_LOG("  Make borders");
-        if (!make_borders_(top, bottom, y_center, rounded_height))
+        if (!make_borders_(top, bottom, y_center, rounded_height)) {
             is_ready_ = false;
-        if (!make_borders_(left, right, x_center, rounded_width))
+        }
+
+        if (!make_borders_(left, right, x_center, rounded_width)) {
             is_ready_ = false;
+        }
 
         if (is_ready_) {
-            if (right < left)
+            if (right < left) {
                 right = left + 1;
-            if (bottom < top)
+            }
+            if (bottom < top) {
                 bottom = top + 1;
+            }
 
             border_list_ = bounds2f(left, right, top, bottom);
-        } else
+        } else {
             border_list_ = bounds2f::zero;
+        }
     } else {
         border_list_ = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
         is_ready_    = false;
