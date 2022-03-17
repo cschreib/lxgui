@@ -66,9 +66,12 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classlxgui_1_1gui_1_1frame__renderer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::gui::frame_renderer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -90,11 +93,16 @@ Inheritance diagram for lxgui::gui::frame_renderer:</div>
   </map>
 </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1frame__renderer_1_1frame__comparator.html">frame_comparator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a33a2f8e55b4ba2cf9241f8b91c01954a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a33a2f8e55b4ba2cf9241f8b91c01954a">frame_renderer</a> ()=default</td></tr>
-<tr class="memdesc:a33a2f8e55b4ba2cf9241f8b91c01954a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a33a2f8e55b4ba2cf9241f8b91c01954a">More...</a><br /></td></tr>
-<tr class="separator:a33a2f8e55b4ba2cf9241f8b91c01954a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee335d637e8fcf60f22f107210ebf31c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aee335d637e8fcf60f22f107210ebf31c">frame_renderer</a> ()</td></tr>
+<tr class="memdesc:aee335d637e8fcf60f22f107210ebf31c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#aee335d637e8fcf60f22f107210ebf31c">More...</a><br /></td></tr>
+<tr class="separator:aee335d637e8fcf60f22f107210ebf31c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60762bff4b8888bb16df42d2b4c5e7df"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a60762bff4b8888bb16df42d2b4c5e7df">~frame_renderer</a> ()=default</td></tr>
 <tr class="memdesc:a60762bff4b8888bb16df42d2b4c5e7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a60762bff4b8888bb16df42d2b4c5e7df">More...</a><br /></td></tr>
 <tr class="separator:a60762bff4b8888bb16df42d2b4c5e7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,16 +139,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac9a19231d180a50a8d00e882fc4b1c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the highest level on the provided strata.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#ac9a19231d180a50a8d00e882fc4b1c1e">More...</a><br /></td></tr>
 <tr class="separator:ac9a19231d180a50a8d00e882fc4b1c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a91bfd4c26dcf166b90651c2611c7a9d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a91bfd4c26dcf166b90651c2611c7a9d8">frame_list_type</a> = <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *, <a class="el" href="structlxgui_1_1gui_1_1frame__renderer_1_1frame__comparator.html">frame_comparator</a> &gt;</td></tr>
+<tr class="separator:a91bfd4c26dcf166b90651c2611c7a9d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a57f4a39a3079dfb2c245585a9dcc01"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a6a57f4a39a3079dfb2c245585a9dcc01">frame_list_iterator</a> = <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#a9a4be03215c0441f516a38ddf1b81c82">frame_list_type::iterator</a></td></tr>
+<tr class="separator:a6a57f4a39a3079dfb2c245585a9dcc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa24b7dd72c9222498447a9f0fdd5648d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aa24b7dd72c9222498447a9f0fdd5648d">add_to_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;strata_obj, const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;obj)</td></tr>
-<tr class="separator:aa24b7dd72c9222498447a9f0fdd5648d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67a3d2c9bb4d589acea95c16a4db9a7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a67a3d2c9bb4d589acea95c16a4db9a7d">remove_from_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;strata_obj, const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;obj)</td></tr>
-<tr class="separator:a67a3d2c9bb4d589acea95c16a4db9a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add3f70f4ec4ee41851e8f962aabbc851"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#add3f70f4ec4ee41851e8f962aabbc851">add_to_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;level_obj, const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;obj)</td></tr>
-<tr class="separator:add3f70f4ec4ee41851e8f962aabbc851"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2a422ccb5883472a433708aab673b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#abc2a422ccb5883472a433708aab673b2">remove_from_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;level_obj, const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;obj)</td></tr>
-<tr class="separator:abc2a422ccb5883472a433708aab673b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac71ba9991745f6d4112f64c353829bfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ac71ba9991745f6d4112f64c353829bfa">clear_strata_list_</a> ()</td></tr>
 <tr class="separator:ac71ba9991745f6d4112f64c353829bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a071267901b73cb56ccad565aaf5b51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a7a071267901b73cb56ccad565aaf5b51">has_strata_list_changed_</a> () const</td></tr>
@@ -151,21 +158,30 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a713ee47c975043fea5472cbe26db5883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae041843d6bca9bf014645adfab7aaf81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ae041843d6bca9bf014645adfab7aaf81">render_strata_</a> (const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;strata_obj) const</td></tr>
 <tr class="separator:ae041843d6bca9bf014645adfab7aaf81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78f2b5548c2aba4743d7cfb2c90dc670"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::size_t, std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a78f2b5548c2aba4743d7cfb2c90dc670">get_strata_range_</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> strata_id) const</td></tr>
+<tr class="separator:a78f2b5548c2aba4743d7cfb2c90dc670"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a6628a193e722876582ce44caf4ad2d76"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a></td></tr>
-<tr class="separator:a6628a193e722876582ce44caf4ad2d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b831c4c08e6560113aff8cf92097f94"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a9b831c4c08e6560113aff8cf92097f94">strata_list_updated_</a> = false</td></tr>
-<tr class="separator:a9b831c4c08e6560113aff8cf92097f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a358ad3131ca8c1e5997f97548ac2e6fb"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a966eda21c018cc98c3901d6487e7c8be">num_strata</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a></td></tr>
+<tr class="separator:a358ad3131ca8c1e5997f97548ac2e6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68d092e5bd372505b09359ccd1a20210"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a91bfd4c26dcf166b90651c2611c7a9d8">frame_list_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a68d092e5bd372505b09359ccd1a20210">sorted_frame_list_</a></td></tr>
+<tr class="separator:a68d092e5bd372505b09359ccd1a20210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac667aae6a0db1907bb2d731e2d2b9d3e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ac667aae6a0db1907bb2d731e2d2b9d3e">frame_list_updated_</a> = false</td></tr>
+<tr class="separator:ac667aae6a0db1907bb2d731e2d2b9d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a966eda21c018cc98c3901d6487e7c8be"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a966eda21c018cc98c3901d6487e7c8be">num_strata</a> = magic_enum::enum_count&lt;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&gt;()</td></tr>
+<tr class="separator:a966eda21c018cc98c3901d6487e7c8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract class for layering and rendering frames. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00018">18</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a33a2f8e55b4ba2cf9241f8b91c01954a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33a2f8e55b4ba2cf9241f8b91c01954a">&#9670;&nbsp;</a></span>frame_renderer() <span class="overload">[1/3]</span></h2>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a6a57f4a39a3079dfb2c245585a9dcc01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a57f4a39a3079dfb2c245585a9dcc01">&#9670;&nbsp;</a></span>frame_list_iterator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,20 +190,63 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
+          <td class="memname">using <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a6a57f4a39a3079dfb2c245585a9dcc01">lxgui::gui::frame_renderer::frame_list_iterator</a> =  <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#a9a4be03215c0441f516a38ddf1b81c82">frame_list_type::iterator</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00109">109</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a91bfd4c26dcf166b90651c2611c7a9d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91bfd4c26dcf166b90651c2611c7a9d8">&#9670;&nbsp;</a></span>frame_list_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a91bfd4c26dcf166b90651c2611c7a9d8">lxgui::gui::frame_renderer::frame_list_type</a> =  <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt;<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>*, <a class="el" href="structlxgui_1_1gui_1_1frame__renderer_1_1frame__comparator.html">frame_comparator</a>&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00108">108</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aee335d637e8fcf60f22f107210ebf31c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee335d637e8fcf60f22f107210ebf31c">&#9670;&nbsp;</a></span>frame_renderer() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
           <td class="memname">lxgui::gui::frame_renderer::frame_renderer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00072">72</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -271,82 +330,6 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="add3f70f4ec4ee41851e8f962aabbc851"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add3f70f4ec4ee41851e8f962aabbc851">&#9670;&nbsp;</a></span>add_to_level_list_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame_renderer::add_to_level_list_ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;&#160;</td>
-          <td class="paramname"><em>level_obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00170">170</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aa24b7dd72c9222498447a9f0fdd5648d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa24b7dd72c9222498447a9f0fdd5648d">&#9670;&nbsp;</a></span>add_to_strata_list_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame_renderer::add_to_strata_list_ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
-          <td class="paramname"><em>strata_obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00138">138</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
-
-</div>
-</div>
 <a id="ac71ba9991745f6d4112f64c353829bfa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac71ba9991745f6d4112f64c353829bfa">&#9670;&nbsp;</a></span>clear_strata_list_()</h2>
 
@@ -407,7 +390,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The topmost frame, or nullptr if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00082">82</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00084">84</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -436,7 +419,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The topmost frame, or nullptr if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00112">112</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00160">160</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -465,7 +448,35 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest level on the provided strata </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00130">130</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00172">172</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a78f2b5548c2aba4743d7cfb2c90dc670"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78f2b5548c2aba4743d7cfb2c90dc670">&#9670;&nbsp;</a></span>get_strata_range_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; std::size_t, std::size_t &gt; lxgui::gui::frame_renderer::get_strata_range_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&#160;</td>
+          <td class="paramname"><em>strata_id</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00136">136</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -522,7 +533,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00204">204</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00199">199</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -576,7 +587,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00082">82</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -630,7 +641,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00065">65</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00115">115</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -679,7 +690,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a9fb2abd197fa4ebf567c99651e43fce2">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00045">45</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00086">86</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -711,7 +722,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ac50fc36686772bb20ec2eb5fd9c74db9">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00041">41</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00082">82</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -739,7 +750,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00037">37</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -795,82 +806,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abc2a422ccb5883472a433708aab673b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc2a422ccb5883472a433708aab673b2">&#9670;&nbsp;</a></span>remove_from_level_list_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame_renderer::remove_from_level_list_ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;&#160;</td>
-          <td class="paramname"><em>level_obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00175">175</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a67a3d2c9bb4d589acea95c16a4db9a7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67a3d2c9bb4d589acea95c16a4db9a7d">&#9670;&nbsp;</a></span>remove_from_strata_list_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame_renderer::remove_from_strata_list_ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
-          <td class="paramname"><em>strata_obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
-
-</div>
-</div>
 <a id="ae041843d6bca9bf014645adfab7aaf81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae041843d6bca9bf014645adfab7aaf81">&#9670;&nbsp;</a></span>render_strata_()</h2>
 
@@ -895,7 +830,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00186">186</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00185">185</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -922,13 +857,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00208">208</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8cpp_source.html#l00203">203</a> of file <a class="el" href="gui__frame__renderer_8cpp_source.html">gui_frame_renderer.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6628a193e722876582ce44caf4ad2d76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6628a193e722876582ce44caf4ad2d76">&#9670;&nbsp;</a></span>strata_list_</h2>
+<a id="ac667aae6a0db1907bb2d731e2d2b9d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac667aae6a0db1907bb2d731e2d2b9d3e">&#9670;&nbsp;</a></span>frame_list_updated_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -937,7 +872,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8&gt; lxgui::gui::frame_renderer::strata_list_</td>
+          <td class="memname">bool lxgui::gui::frame_renderer::frame_list_updated_ = false</td>
         </tr>
       </table>
   </td>
@@ -947,12 +882,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00106">106</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00117">117</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a9b831c4c08e6560113aff8cf92097f94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b831c4c08e6560113aff8cf92097f94">&#9670;&nbsp;</a></span>strata_list_updated_</h2>
+<a id="a966eda21c018cc98c3901d6487e7c8be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a966eda21c018cc98c3901d6487e7c8be">&#9670;&nbsp;</a></span>num_strata</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -961,7 +896,31 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::frame_renderer::strata_list_updated_ = false</td>
+          <td class="memname">constexpr std::size_t lxgui::gui::frame_renderer::num_strata = magic_enum::enum_count&lt;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00113">113</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a68d092e5bd372505b09359ccd1a20210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68d092e5bd372505b09359ccd1a20210">&#9670;&nbsp;</a></span>sorted_frame_list_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a91bfd4c26dcf166b90651c2611c7a9d8">frame_list_type</a> lxgui::gui::frame_renderer::sorted_frame_list_</td>
         </tr>
       </table>
   </td>
@@ -971,7 +930,31 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00107">107</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00116">116</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a358ad3131ca8c1e5997f97548ac2e6fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a358ad3131ca8c1e5997f97548ac2e6fb">&#9670;&nbsp;</a></span>strata_list_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a966eda21c018cc98c3901d6487e7c8be">num_strata</a>&gt; lxgui::gui::frame_renderer::strata_list_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame__renderer_8hpp_source.html#l00115">115</a> of file <a class="el" href="gui__frame__renderer_8hpp_source.html">gui_frame_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -982,7 +965,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 10 2022 08:33:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 17 2022 08:26:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

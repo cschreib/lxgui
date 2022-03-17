@@ -156,7 +156,7 @@ $(function() {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (caching_enabled_) {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        renderer_.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a401c8d35b1d89c1ca558ab07dc9e2d65">render_quad</a>(screen_quad_);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>) {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#ae041843d6bca9bf014645adfab7aaf81">render_strata_</a>(s);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
@@ -232,7 +232,7 @@ $(function() {
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        DEBUG_LOG(<span class="stringliteral">&quot; Redraw strata...&quot;</span>);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>) {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordflow">if</span> (s.redraw_flag) {</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    <span class="keywordflow">if</span> (!s.target)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        create_strata_cache_render_target_(s);</div>
@@ -270,7 +270,7 @@ $(function() {
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                target_-&gt;clear(<a class="code" href="classlxgui_1_1gui_1_1color.html#afa85b6ae4d8ed6c06fbe728b7696f59f">color::empty</a>);</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; <a class="code" href="structlxgui_1_1gui_1_1strata.html">strata</a> : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; <a class="code" href="structlxgui_1_1gui_1_1strata.html">strata</a> : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>) {</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                    renderer_.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a401c8d35b1d89c1ca558ab07dc9e2d65">render_quad</a>(<a class="code" href="structlxgui_1_1gui_1_1strata.html">strata</a>.<a class="code" href="structlxgui_1_1gui_1_1strata.html#a0aa4269c84bd1f17bbd382b01c1605a6">target_quad</a>);</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                }</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
@@ -290,7 +290,7 @@ $(function() {
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    caching_enabled_ = !caching_enabled_;</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">if</span> (caching_enabled_) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>)</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>)</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            s.redraw_flag = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;}</div>
@@ -312,7 +312,7 @@ $(function() {
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">if</span> (target_)</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        create_caching_render_target_();</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>) {</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; s : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>) {</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="keywordflow">if</span> (s.target)</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            create_strata_cache_render_target_(s);</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    }</div>
@@ -559,7 +559,7 @@ $(function() {
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    <span class="keywordflow">if</span> (target_)</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;        create_caching_render_target_();</div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160; </div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; strata : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">strata_list_</a>) {</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; strata : <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">strata_list_</a>) {</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordflow">if</span> (strata.target)</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;            create_strata_cache_render_target_(strata);</div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    }</div>
@@ -626,250 +626,257 @@ $(function() {
 <div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;        dragged_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnDragMove&quot;</span>, data);</div>
 <div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    }</div>
 <div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160; </div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame_) {</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a9a861c078fff770a24ec6962fa19adac">on_mouse_moved</a>(movement, mouse_pos);</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;    }</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;}</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160; </div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="keywordtype">void</span> root::on_mouse_wheel_(<span class="keywordtype">float</span> wheel_scroll, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_wheel_enabled();</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;    });</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160; </div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a0f82e8268b00875e6997882f931fe921">on_mouse_wheel</a>(wheel_scroll, mouse_pos);</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    }</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160; </div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    event_data data;</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    data.add(wheel_scroll);</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    data.add(mouse_pos.x);</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    data.add(mouse_pos.y);</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseWheel&quot;</span>, data);</div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;}</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="keywordflow">if</span> (hovered_frame_) {</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        event_data data;</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;        data.add(movement.x);</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;        data.add(movement.y);</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;        data.add(mouse_pos.x);</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;        data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;        hovered_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnMouseMove&quot;</span>, data);</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a9a861c078fff770a24ec6962fa19adac">on_mouse_moved</a>(movement, mouse_pos);</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;    }</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;}</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160; </div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;<span class="keywordtype">void</span> root::on_mouse_wheel_(<span class="keywordtype">float</span> wheel_scroll, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_wheel_enabled();</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    });</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160; </div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a0f82e8268b00875e6997882f931fe921">on_mouse_wheel</a>(wheel_scroll, mouse_pos);</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    }</div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160; </div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="keywordtype">void</span> root::on_drag_start_(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_click_enabled();</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    });</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160; </div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#aadfc59bc66df0f1391b1b952938308a8">on_mouse_drag_start</a>(button_id, mouse_pos);</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    }</div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160; </div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">auto</span>* reg = hovered_frame-&gt;get_title_region().get(); reg &amp;&amp; reg-&gt;is_in_region(mouse_pos)) {</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        hovered_frame-&gt;start_moving();</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    }</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160; </div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    std::string <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> = std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id));</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160; </div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    <span class="keywordflow">if</span> (hovered_frame-&gt;is_drag_enabled(mouse_button)) {</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;        event_data data;</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        data.add(mouse_button);</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        data.add(mouse_pos.x);</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    event_data data;</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    data.add(wheel_scroll);</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    data.add(mouse_pos.x);</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;    hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseWheel&quot;</span>, data);</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;}</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160; </div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="keywordtype">void</span> root::on_drag_start_(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_click_enabled();</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    });</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160; </div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#aadfc59bc66df0f1391b1b952938308a8">on_mouse_drag_start</a>(button_id, mouse_pos);</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;    }</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160; </div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">auto</span>* reg = hovered_frame-&gt;get_title_region().get(); reg &amp;&amp; reg-&gt;is_in_region(mouse_pos)) {</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        hovered_frame-&gt;start_moving();</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    }</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160; </div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    std::string <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> = std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id));</div>
 <div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160; </div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        dragged_frame_ = std::move(hovered_frame);</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        dragged_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnDragStart&quot;</span>, data);</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    }</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;}</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160; </div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="keywordtype">void</span> root::on_drag_stop_(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1root.html#ad893dc50189a792d868aa10b8a1baa9a">stop_moving</a>();</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1root.html#a61b9c65f78f6d28e417edb3484182296">stop_sizing</a>();</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; </div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    <span class="keywordflow">if</span> (dragged_frame_) {</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        dragged_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnDragStop&quot;</span>);</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        dragged_frame_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    }</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160; </div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_click_enabled();</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    });</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160; </div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#ab779314e95921c4eba6225aa09ae4ae4">on_mouse_drag_stop</a>(button_id, mouse_pos);</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    }</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160; </div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    std::string <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> = std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id));</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160; </div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    <span class="keywordflow">if</span> (hovered_frame-&gt;is_drag_enabled(mouse_button)) {</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;        event_data data;</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        data.add(mouse_button);</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;        data.add(mouse_pos.x);</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;    <span class="keywordflow">if</span> (hovered_frame-&gt;is_drag_enabled(mouse_button)) {</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        event_data data;</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        data.add(mouse_button);</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        data.add(mouse_pos.x);</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160; </div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        dragged_frame_ = std::move(hovered_frame);</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        dragged_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnDragStart&quot;</span>, data);</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    }</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;}</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160; </div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;<span class="keywordtype">void</span> root::on_drag_stop_(<a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1root.html#ad893dc50189a792d868aa10b8a1baa9a">stop_moving</a>();</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1root.html#a61b9c65f78f6d28e417edb3484182296">stop_sizing</a>();</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160; </div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    <span class="keywordflow">if</span> (dragged_frame_) {</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        dragged_frame_-&gt;fire_script(<span class="stringliteral">&quot;OnDragStop&quot;</span>);</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        dragged_frame_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    }</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160; </div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; obj) {</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        <span class="keywordflow">return</span> obj.is_in_region(mouse_pos) &amp;&amp; obj.is_mouse_click_enabled();</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    });</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160; </div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#ab779314e95921c4eba6225aa09ae4ae4">on_mouse_drag_stop</a>(button_id, mouse_pos);</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    }</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160; </div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    std::string <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">mouse_button</a> = std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id));</div>
 <div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160; </div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnReceiveDrag&quot;</span>, data);</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    }</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;}</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160; </div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;<span class="keywordtype">void</span> root::on_text_entered_(std::uint32_t c) {</div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">auto</span> focus = <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>()) {</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        event_data data;</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        data.add(utils::unicode_to_utf8(utils::ustring(1, c)));</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        data.add(c);</div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160; </div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        focus-&gt;fire_script(<span class="stringliteral">&quot;OnChar&quot;</span>, data);</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#afc2e576ac27a794c89f16c53946e3f8a">on_text_entered</a>(c);</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    }</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;}</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <span class="keywordflow">if</span> (hovered_frame-&gt;is_drag_enabled(mouse_button)) {</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        event_data data;</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        data.add(mouse_button);</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        data.add(mouse_pos.x);</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160; </div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnReceiveDrag&quot;</span>, data);</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    }</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;}</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160; </div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;<span class="keywordtype">void</span> root::on_text_entered_(std::uint32_t c) {</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">auto</span> focus = <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>()) {</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        event_data data;</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        data.add(utils::unicode_to_utf8(utils::ustring(1, c)));</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        data.add(c);</div>
 <div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160; </div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;std::string</div>
-<div class="line"><a name="l00657"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">  657</a></span>&#160;<a class="code" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">get_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">input::key</a> key_id, <span class="keywordtype">bool</span> is_shift_pressed, <span class="keywordtype">bool</span> is_ctrl_pressed, <span class="keywordtype">bool</span> is_alt_pressed) {</div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    std::string name;</div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160; </div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;    <span class="keywordflow">if</span> (key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a82b6ac8b125757db813f276391853dca">input::key::k_lcontrol</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7adc6c41a2c4b1fa108563794923d6d0b2">input::key::k_rcontrol</a> &amp;&amp;</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aef3e42541a10375405a1e0d096077589">input::key::k_lshift</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7ac6d03871005b9475d64b0ddaee0754f3">input::key::k_rshift</a> &amp;&amp;</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aa8c85a6c0baf401b402b5ebfbd35405a">input::key::k_lmenu</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7ae1ff0d7ac319ee528908fbea9222deb3">input::key::k_rmenu</a>) {</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        <span class="keywordflow">if</span> (is_ctrl_pressed)</div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;            name = <span class="stringliteral">&quot;Ctrl-&quot;</span>;</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">if</span> (is_alt_pressed)</div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;            name.append(<span class="stringliteral">&quot;Alt-&quot;</span>);</div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        <span class="keywordflow">if</span> (is_shift_pressed)</div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;            name.append(<span class="stringliteral">&quot;Shift-&quot;</span>);</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;    }</div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160; </div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;    name.append(<a class="code" href="namespacelxgui_1_1input.html#af3c19793642bb63cb072a16d0e489f2b">input::get_key_codename</a>(key_id));</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160; </div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;    <span class="keywordflow">return</span> name;</div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;}</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="keywordtype">void</span> root::on_key_state_changed_(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">input::key</a> key_id, <span class="keywordtype">bool</span> is_down, <span class="keywordtype">bool</span> is_repeat) {</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; input_dispatcher = <a class="code" href="classlxgui_1_1gui_1_1root.html#af5638f29eb32cbb0b359f3393dbba9ec">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a546fb903e1a3fec028946f18fcb93809">get_input_dispatcher</a>();</div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    <span class="keywordtype">bool</span>        is_shift_pressed = input_dispatcher.<a class="code" href="classlxgui_1_1input_1_1dispatcher.html#a5a1998297490a4dff822d93e0ef3334a">shift_is_pressed</a>();</div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    <span class="keywordtype">bool</span>        is_ctrl_pressed  = input_dispatcher.ctrl_is_pressed();</div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    <span class="keywordtype">bool</span>        is_alt_pressed   = input_dispatcher.alt_is_pressed();</div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160; </div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    std::string key_name = <a class="code" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">get_key_name</a>(key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed);</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160; </div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;    <span class="comment">// First, give priority to the focused frame</span></div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    utils::observer_ptr&lt;frame&gt; topmost_frame = <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>();</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160; </div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    <span class="comment">// If no focused frame with keyboard enabled, look top-down for a frame that captures this key</span></div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    <span class="keywordflow">if</span> (!topmost_frame || !topmost_frame-&gt;is_keyboard_enabled()) {</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        topmost_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; frame) {</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;            <span class="keywordflow">return</span> frame.is_keyboard_enabled() &amp;&amp; frame.is_key_capture_enabled(key_name);</div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        });</div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    }</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        focus-&gt;fire_script(<span class="stringliteral">&quot;OnChar&quot;</span>, data);</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#afc2e576ac27a794c89f16c53946e3f8a">on_text_entered</a>(c);</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;    }</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;}</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160; </div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;std::string</div>
+<div class="line"><a name="l00664"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">  664</a></span>&#160;<a class="code" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">get_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">input::key</a> key_id, <span class="keywordtype">bool</span> is_shift_pressed, <span class="keywordtype">bool</span> is_ctrl_pressed, <span class="keywordtype">bool</span> is_alt_pressed) {</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    std::string name;</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160; </div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;    <span class="keywordflow">if</span> (key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7a82b6ac8b125757db813f276391853dca">input::key::k_lcontrol</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7adc6c41a2c4b1fa108563794923d6d0b2">input::key::k_rcontrol</a> &amp;&amp;</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aef3e42541a10375405a1e0d096077589">input::key::k_lshift</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7ac6d03871005b9475d64b0ddaee0754f3">input::key::k_rshift</a> &amp;&amp;</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7aa8c85a6c0baf401b402b5ebfbd35405a">input::key::k_lmenu</a> &amp;&amp; key_id != <a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7ae1ff0d7ac319ee528908fbea9222deb3">input::key::k_rmenu</a>) {</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        <span class="keywordflow">if</span> (is_ctrl_pressed)</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;            name = <span class="stringliteral">&quot;Ctrl-&quot;</span>;</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        <span class="keywordflow">if</span> (is_alt_pressed)</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;            name.append(<span class="stringliteral">&quot;Alt-&quot;</span>);</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        <span class="keywordflow">if</span> (is_shift_pressed)</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;            name.append(<span class="stringliteral">&quot;Shift-&quot;</span>);</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;    }</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160; </div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    name.append(<a class="code" href="namespacelxgui_1_1input.html#af3c19793642bb63cb072a16d0e489f2b">input::get_key_codename</a>(key_id));</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160; </div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    <span class="keywordflow">return</span> name;</div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;}</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160; </div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="keywordtype">void</span> root::on_key_state_changed_(<a class="code" href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">input::key</a> key_id, <span class="keywordtype">bool</span> is_down, <span class="keywordtype">bool</span> is_repeat) {</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; input_dispatcher = <a class="code" href="classlxgui_1_1gui_1_1root.html#af5638f29eb32cbb0b359f3393dbba9ec">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a546fb903e1a3fec028946f18fcb93809">get_input_dispatcher</a>();</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    <span class="keywordtype">bool</span>        is_shift_pressed = input_dispatcher.<a class="code" href="classlxgui_1_1input_1_1dispatcher.html#a5a1998297490a4dff822d93e0ef3334a">shift_is_pressed</a>();</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;    <span class="keywordtype">bool</span>        is_ctrl_pressed  = input_dispatcher.ctrl_is_pressed();</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    <span class="keywordtype">bool</span>        is_alt_pressed   = input_dispatcher.alt_is_pressed();</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160; </div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;    std::string key_name = <a class="code" href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">get_key_name</a>(key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed);</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160; </div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    <span class="comment">// First, give priority to the focused frame</span></div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    utils::observer_ptr&lt;frame&gt; topmost_frame = <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>();</div>
 <div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160; </div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    <span class="comment">// If a frame is found, capture input and return</span></div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="keywordflow">if</span> (topmost_frame) {</div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        event_data data;</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(key_id));</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        data.add(is_shift_pressed);</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        data.add(is_ctrl_pressed);</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        data.add(is_alt_pressed);</div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        data.add(key_name);</div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160; </div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        <span class="keywordflow">if</span> (is_down) {</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;            <span class="keywordflow">if</span> (is_repeat) {</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;                topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyRepeat&quot;</span>, data);</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;                topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyDown&quot;</span>, data);</div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;            }</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;            topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyUp&quot;</span>, data);</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        }</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160; </div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    }</div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160; </div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    <span class="keywordflow">if</span> (is_down &amp;&amp; !is_repeat) {</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        <span class="comment">// If no frame is found, try the key_binder</span></div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1root.html#a81fe68ced65c232374c9d60cebe5dbd1">get_key_binder</a>().on_key_down(</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;                    key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {</div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;            }</div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;            std::string err = e.what();</div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; err &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1root.html#af5638f29eb32cbb0b359f3393dbba9ec">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a13725a49412fe8b65137eaee72fefb0f">get_event_emitter</a>().<a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">fire_event</a>(<span class="stringliteral">&quot;LUA_ERROR&quot;</span>, {err});</div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        }</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    }</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160; </div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    <span class="keywordflow">if</span> (is_down) {</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        <span class="keywordflow">if</span> (is_repeat) {</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a5edcb76428736fd512cc5e6b8ffe2698">on_key_pressed_repeat</a>(key_id);</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#add0f56f4999aa9ab2cdd9826bc6002a1">on_key_pressed</a>(key_id);</div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        }</div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a6f19eb989a64c790376d2431ac2fa091">on_key_released</a>(key_id);</div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    }</div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;}</div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160; </div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="keywordtype">void</span> root::on_mouse_button_state_changed_(</div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keywordtype">bool</span> is_down, <span class="keywordtype">bool</span> is_double_click, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; frame) {</div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        <span class="keywordflow">return</span> frame.is_in_region(mouse_pos) &amp;&amp; frame.is_mouse_click_enabled();</div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    });</div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160; </div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    <span class="keywordflow">if</span> (is_down &amp;&amp; !is_double_click) {</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        <span class="keywordflow">if</span> (!hovered_frame || hovered_frame != <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>())</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1root.html#aa90695a882b6d8cbac4cf6cce13a83cb">clear_focus</a>();</div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    }</div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160; </div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        <span class="comment">// Forward to the world</span></div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        <span class="keywordflow">if</span> (is_double_click)</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a683617fcaf277f24dc5aec04c03d8eb3">on_mouse_double_clicked</a>(button_id, mouse_pos);</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_down)</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#aed84c4d247d35d3c79cd67bd8d239845">on_mouse_pressed</a>(button_id, mouse_pos);</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a0b9a187ed9ecea608176c17040f2c897">on_mouse_released</a>(button_id, mouse_pos);</div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    }</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160; </div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    event_data data;</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    data.add(std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id)));</div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    data.add(mouse_pos.x);</div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    data.add(mouse_pos.y);</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160; </div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <span class="keywordflow">if</span> (is_double_click) {</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnDoubleClicked&quot;</span>, data);</div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_down) {</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">auto</span>* top_level = hovered_frame-&gt;get_top_level_parent().get())</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;            top_level-&gt;raise();</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160; </div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseDown&quot;</span>, data);</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseUp&quot;</span>, data);</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    }</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;}</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160; </div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    <span class="comment">// If no focused frame with keyboard enabled, look top-down for a frame that captures this key</span></div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="keywordflow">if</span> (!topmost_frame || !topmost_frame-&gt;is_keyboard_enabled()) {</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        topmost_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; frame) {</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;            <span class="keywordflow">return</span> frame.is_keyboard_enabled() &amp;&amp; frame.is_key_capture_enabled(key_name);</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        });</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    }</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160; </div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <span class="comment">// If a frame is found, capture input and return</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    <span class="keywordflow">if</span> (topmost_frame) {</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        event_data data;</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(key_id));</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;        data.add(is_shift_pressed);</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;        data.add(is_ctrl_pressed);</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;        data.add(is_alt_pressed);</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;        data.add(key_name);</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160; </div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;        <span class="keywordflow">if</span> (is_down) {</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">if</span> (is_repeat) {</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;                topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyRepeat&quot;</span>, data);</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;                topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyDown&quot;</span>, data);</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;            }</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;            topmost_frame-&gt;fire_script(<span class="stringliteral">&quot;OnKeyUp&quot;</span>, data);</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        }</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    }</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    <span class="keywordflow">if</span> (is_down &amp;&amp; !is_repeat) {</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        <span class="comment">// If no frame is found, try the key_binder</span></div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1root.html#a81fe68ced65c232374c9d60cebe5dbd1">get_key_binder</a>().on_key_down(</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;                    key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;            }</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;            std::string err = e.what();</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; err &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1root.html#af5638f29eb32cbb0b359f3393dbba9ec">get_manager</a>().<a class="code" href="classlxgui_1_1gui_1_1manager.html#a13725a49412fe8b65137eaee72fefb0f">get_event_emitter</a>().<a class="code" href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">fire_event</a>(<span class="stringliteral">&quot;LUA_ERROR&quot;</span>, {err});</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        }</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    }</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160; </div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;    <span class="keywordflow">if</span> (is_down) {</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        <span class="keywordflow">if</span> (is_repeat) {</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a5edcb76428736fd512cc5e6b8ffe2698">on_key_pressed_repeat</a>(key_id);</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#add0f56f4999aa9ab2cdd9826bc6002a1">on_key_pressed</a>(key_id);</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        }</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a6f19eb989a64c790376d2431ac2fa091">on_key_released</a>(key_id);</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    }</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;}</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160; </div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="keywordtype">void</span> root::on_mouse_button_state_changed_(</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    <a class="code" href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">input::mouse_button</a> button_id, <span class="keywordtype">bool</span> is_down, <span class="keywordtype">bool</span> is_double_click, <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mouse_pos) {</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    utils::observer_ptr&lt;frame&gt; hovered_frame = <a class="code" href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">find_topmost_frame</a>([&amp;](<span class="keyword">const</span> frame&amp; frame) {</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        <span class="keywordflow">return</span> frame.is_in_region(mouse_pos) &amp;&amp; frame.is_mouse_click_enabled();</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    });</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160; </div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keywordflow">if</span> (is_down &amp;&amp; !is_double_click) {</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        <span class="keywordflow">if</span> (!hovered_frame || hovered_frame != <a class="code" href="classlxgui_1_1gui_1_1root.html#ae90b2c74ee58f0927f2e48faf4c382cd">get_focused_frame</a>())</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1root.html#aa90695a882b6d8cbac4cf6cce13a83cb">clear_focus</a>();</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    }</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160; </div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="keywordflow">if</span> (!hovered_frame) {</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;        <span class="comment">// Forward to the world</span></div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;        <span class="keywordflow">if</span> (is_double_click)</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a683617fcaf277f24dc5aec04c03d8eb3">on_mouse_double_clicked</a>(button_id, mouse_pos);</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_down)</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#aed84c4d247d35d3c79cd67bd8d239845">on_mouse_pressed</a>(button_id, mouse_pos);</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            world_input_dispatcher_.<a class="code" href="classlxgui_1_1input_1_1signals.html#a0b9a187ed9ecea608176c17040f2c897">on_mouse_released</a>(button_id, mouse_pos);</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    }</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    event_data data;</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    data.add(<span class="keyword">static_cast&lt;</span>std::underlying_type_t&lt;input::key&gt;<span class="keyword">&gt;</span>(button_id));</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    data.add(std::string(<a class="code" href="namespacelxgui_1_1input.html#a42e995fce9fbf9af12574a14eb153474">input::get_mouse_button_codename</a>(button_id)));</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    data.add(mouse_pos.x);</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    data.add(mouse_pos.y);</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160; </div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    <span class="keywordflow">if</span> (is_double_click) {</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnDoubleClicked&quot;</span>, data);</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_down) {</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">auto</span>* top_level = hovered_frame-&gt;get_top_level_parent().get())</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;            top_level-&gt;raise();</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160; </div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseDown&quot;</span>, data);</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;        hovered_frame-&gt;fire_script(<span class="stringliteral">&quot;OnMouseUp&quot;</span>, data);</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    }</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;}</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160; </div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_a683617fcaf277f24dc5aec04c03d8eb3"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#a683617fcaf277f24dc5aec04c03d8eb3">lxgui::input::signals::on_mouse_double_clicked</a></div><div class="ttdeci">utils::signal&lt; void(input::mouse_button, const gui::vector2f &amp;)&gt; on_mouse_double_clicked</div><div class="ttdoc">Signal triggered when a mouse button is double clicked.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00060">input_signals.hpp:60</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html">lxgui::gui::frame</a></div><div class="ttdoc">A region that can contain other regions and react to events.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l00242">gui_frame.hpp:242</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html">lxgui::gui::frame</a></div><div class="ttdoc">A region that can contain other regions and react to events.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l00250">gui_frame.hpp:250</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7">lxgui::input::key</a></div><div class="ttdeci">key</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00013">input_keys.hpp:13</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a353160478d17c0b1026ee9f19a6e750e"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a353160478d17c0b1026ee9f19a6e750e">lxgui::gui::frame::is_in_region</a></div><div class="ttdeci">bool is_in_region(const vector2f &amp;position) const override</div><div class="ttdoc">Checks if the provided coordinates are inside this frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00764">gui_frame.cpp:764</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a353160478d17c0b1026ee9f19a6e750e"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a353160478d17c0b1026ee9f19a6e750e">lxgui::gui::frame::is_in_region</a></div><div class="ttdeci">bool is_in_region(const vector2f &amp;position) const override</div><div class="ttdoc">Checks if the provided coordinates are inside this frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00801">gui_frame.cpp:801</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a4995da64ec923f6c8bd52a63ffc5fc71"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a4995da64ec923f6c8bd52a63ffc5fc71">lxgui::gui::release_focus_to_list</a></div><div class="ttdeci">void release_focus_to_list(const frame &amp;receiver, std::vector&lt; utils::observer_ptr&lt; frame &gt;&gt; &amp;list)</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00375">gui_root.cpp:375</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_abf2ac19edd1a7ce40ebf7a29b96ecf48"><div class="ttname"><a href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">lxgui::gui::error</a></div><div class="ttdeci">const std::string error</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_aa0bfcb8be33cde990987e8e6bb08cd59"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#aa0bfcb8be33cde990987e8e6bb08cd59">lxgui::gui::bounds2::top_right</a></div><div class="ttdeci">vector2&lt; T &gt; top_right() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00036">gui_bounds2.hpp:36</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_add0f56f4999aa9ab2cdd9826bc6002a1"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#add0f56f4999aa9ab2cdd9826bc6002a1">lxgui::input::signals::on_key_pressed</a></div><div class="ttdeci">utils::signal&lt; void(input::key)&gt; on_key_pressed</div><div class="ttdoc">Signal triggered when a keyboard key is pressed.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00083">input_signals.hpp:83</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a67c9e76e9b8193bc3dc1b67c1f255f3ba9dd4e461268c8034f5c8564e155c67a6"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3ba9dd4e461268c8034f5c8564e155c67a6">lxgui::gui::constraint::x</a></div><div class="ttdeci">@ x</div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1strata_html_a0aa4269c84bd1f17bbd382b01c1605a6"><div class="ttname"><a href="structlxgui_1_1gui_1_1strata.html#a0aa4269c84bd1f17bbd382b01c1605a6">lxgui::gui::strata::target_quad</a></div><div class="ttdeci">quad target_quad</div><div class="ttdef"><b>Definition:</b> <a href="gui__strata_8hpp_source.html#l00042">gui_strata.hpp:42</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1strata_html_a0aa4269c84bd1f17bbd382b01c1605a6"><div class="ttname"><a href="structlxgui_1_1gui_1_1strata.html#a0aa4269c84bd1f17bbd382b01c1605a6">lxgui::gui::strata::target_quad</a></div><div class="ttdeci">quad target_quad</div><div class="ttdef"><b>Definition:</b> <a href="gui__strata_8hpp_source.html#l00035">gui_strata.hpp:35</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a6d25e8ea5c2430c52225937f67b88ff1"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a6d25e8ea5c2430c52225937f67b88ff1">lxgui::gui::manager::get_window</a></div><div class="ttdeci">const input::window &amp; get_window() const</div><div class="ttdoc">Returns the window in which this gui is being displayed.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00255">gui_manager.hpp:255</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a67c9e76e9b8193bc3dc1b67c1f255f3b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3b">lxgui::gui::constraint</a></div><div class="ttdeci">constraint</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00029">gui_anchor.hpp:29</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a23a225ed5b4ef15043b4fea71268d0c1"><div class="ttname"><a href="namespacelxgui_1_1input.html#a23a225ed5b4ef15043b4fea71268d0c1">lxgui::input::mouse_button</a></div><div class="ttdeci">mouse_button</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8hpp_source.html#l00011">input_keys.hpp:11</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_ab7e336bf2f97139b9fe385c7e82cf2c4"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#ab7e336bf2f97139b9fe385c7e82cf2c4">lxgui::gui::frame::is_mouse_move_enabled</a></div><div class="ttdeci">bool is_mouse_move_enabled() const</div><div class="ttdoc">Checks if this frame can receive mouse movement input.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00788">gui_frame.cpp:788</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a3e222f71beed87cea80f8fd182d65dc2"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a3e222f71beed87cea80f8fd182d65dc2">lxgui::gui::frame_renderer::reset_strata_list_changed_flag_</a></div><div class="ttdeci">void reset_strata_list_changed_flag_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00208">gui_frame_renderer.cpp:208</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_ab7e336bf2f97139b9fe385c7e82cf2c4"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#ab7e336bf2f97139b9fe385c7e82cf2c4">lxgui::gui::frame::is_mouse_move_enabled</a></div><div class="ttdeci">bool is_mouse_move_enabled() const</div><div class="ttdoc">Checks if this frame can receive mouse movement input.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l00825">gui_frame.cpp:825</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a3e222f71beed87cea80f8fd182d65dc2"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a3e222f71beed87cea80f8fd182d65dc2">lxgui::gui::frame_renderer::reset_strata_list_changed_flag_</a></div><div class="ttdeci">void reset_strata_list_changed_flag_()</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00203">gui_frame_renderer.cpp:203</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a253c9dc62f3613a256263b3f68265bfc"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a253c9dc62f3613a256263b3f68265bfc">lxgui::gui::root::notify_scaling_factor_updated</a></div><div class="ttdeci">void notify_scaling_factor_updated()</div><div class="ttdoc">Tells this object that the global interface scaling factor has changed.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00236">gui_root.cpp:236</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a7a071267901b73cb56ccad565aaf5b51"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a7a071267901b73cb56ccad565aaf5b51">lxgui::gui::frame_renderer::has_strata_list_changed_</a></div><div class="ttdeci">bool has_strata_list_changed_() const</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00204">gui_frame_renderer.cpp:204</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a7a071267901b73cb56ccad565aaf5b51"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a7a071267901b73cb56ccad565aaf5b51">lxgui::gui::frame_renderer::has_strata_list_changed_</a></div><div class="ttdeci">bool has_strata_list_changed_() const</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00199">gui_frame_renderer.cpp:199</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a67c9e76e9b8193bc3dc1b67c1f255f3ba334c4a4c42fdb79d7ebc3e73b517e6f8"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3ba334c4a4c42fdb79d7ebc3e73b517e6f8">lxgui::gui::constraint::none</a></div><div class="ttdeci">@ none</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_af5638f29eb32cbb0b359f3393dbba9ec"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#af5638f29eb32cbb0b359f3393dbba9ec">lxgui::gui::root::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns the manager instance associated with this root.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8hpp_source.html#l00244">gui_root.hpp:244</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a13725a49412fe8b65137eaee72fefb0f"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a13725a49412fe8b65137eaee72fefb0f">lxgui::gui::manager::get_event_emitter</a></div><div class="ttdeci">const event_emitter &amp; get_event_emitter() const</div><div class="ttdoc">Returns the gui event emitter.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00303">gui_manager.hpp:303</a></div></div>
@@ -884,12 +891,12 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a44717f8222e8f3fbad18f29bfdcf8c07"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a44717f8222e8f3fbad18f29bfdcf8c07">lxgui::gui::renderer::set_view</a></div><div class="ttdeci">void set_view(const matrix4f &amp;view_matrix)</div><div class="ttdoc">Sets the view matrix to use when rendering (viewport).</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00048">gui_renderer.cpp:48</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_aa90695a882b6d8cbac4cf6cce13a83cb"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#aa90695a882b6d8cbac4cf6cce13a83cb">lxgui::gui::root::clear_focus</a></div><div class="ttdeci">void clear_focus()</div><div class="ttdoc">Release all requested focus.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00436">gui_root.cpp:436</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1utils_html_a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><div class="ttname"><a href="namespacelxgui_1_1utils.html#a86e5a9f30c68e6ff7bd20ce1c3e88cb1">lxgui::utils::find_if</a></div><div class="ttdeci">auto find_if(C &amp;v, T &amp;&amp;f)</div><div class="ttdef"><b>Definition:</b> <a href="utils__std_8hpp_source.html#l00019">utils_std.hpp:19</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a6628a193e722876582ce44caf4ad2d76"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a6628a193e722876582ce44caf4ad2d76">lxgui::gui::frame_renderer::strata_list_</a></div><div class="ttdeci">std::array&lt; strata, 8 &gt; strata_list_</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8hpp_source.html#l00106">gui_frame_renderer.hpp:106</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aef94717d3dd9acdb534568e4801add9dab28354b543375bfa94dabaeda722927f"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9dab28354b543375bfa94dabaeda722927f">lxgui::gui::point::top</a></div><div class="ttdeci">@ top</div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_a0b9a187ed9ecea608176c17040f2c897"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#a0b9a187ed9ecea608176c17040f2c897">lxgui::input::signals::on_mouse_released</a></div><div class="ttdeci">utils::signal&lt; void(input::mouse_button, const gui::vector2f &amp;)&gt; on_mouse_released</div><div class="ttdoc">Signal triggered when a mouse button is released.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00052">input_signals.hpp:52</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a765b97a49b066b6f9ad97c731a4baec4"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a765b97a49b066b6f9ad97c731a4baec4">lxgui::gui::root::get_target_dimensions</a></div><div class="ttdeci">vector2f get_target_dimensions() const override</div><div class="ttdoc">Returns the width and height of this renderer's main render target (e.g., screen).</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00078">gui_root.cpp:78</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1dispatcher_html_adbf4ffa2e7c31b98da63008b336b4deb"><div class="ttname"><a href="classlxgui_1_1input_1_1dispatcher.html#adbf4ffa2e7c31b98da63008b336b4deb">lxgui::input::dispatcher::get_mouse_position</a></div><div class="ttdeci">gui::vector2f get_mouse_position() const</div><div class="ttdoc">Returns the position of the mouse in pixels.</div><div class="ttdef"><b>Definition:</b> <a href="input__dispatcher_8cpp_source.html#l00160">input_dispatcher.cpp:160</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a358ad3131ca8c1e5997f97548ac2e6fb"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a358ad3131ca8c1e5997f97548ac2e6fb">lxgui::gui::frame_renderer::strata_list_</a></div><div class="ttdeci">std::array&lt; strata, num_strata &gt; strata_list_</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8hpp_source.html#l00115">gui_frame_renderer.hpp:115</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_aabc779e00038624ecab58085b1a24e41"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#aabc779e00038624ecab58085b1a24e41">lxgui::gui::root::is_focused</a></div><div class="ttdeci">bool is_focused() const</div><div class="ttdoc">Checks whether keyboard input is focused somewhere, to prevent multiple inputs.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00444">gui_root.cpp:444</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_a20da5929e634a47b874aa131b44c8cd7adc6c41a2c4b1fa108563794923d6d0b2"><div class="ttname"><a href="namespacelxgui_1_1input.html#a20da5929e634a47b874aa131b44c8cd7adc6c41a2c4b1fa108563794923d6d0b2">lxgui::input::key::k_rcontrol</a></div><div class="ttdeci">@ k_rcontrol</div><div class="ttdoc">Enter on numeric keypad.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a6c05b5fb0375bd4a51d89b7b690a96ea"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a6c05b5fb0375bd4a51d89b7b690a96ea">lxgui::gui::root::request_focus</a></div><div class="ttdeci">void request_focus(utils::observer_ptr&lt; frame &gt; receiver)</div><div class="ttdoc">Sets whether keyboard input should be focused.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00408">gui_root.cpp:408</a></div></div>
@@ -897,12 +904,12 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html">lxgui::gui::anchor</a></div><div class="ttdoc">Stores a position for a UI region.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00097">gui_anchor.hpp:97</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aef94717d3dd9acdb534568e4801add9da46d3836487c2110c695e52750c5d76e4"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9da46d3836487c2110c695e52750c5d76e4">lxgui::gui::point::top_left</a></div><div class="ttdeci">@ top_left</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_a50f333013e056929c9953afa016ae6cb"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb">lxgui::gui::vector2&lt; float &gt;::zero</a></div><div class="ttdeci">static const vector2 zero</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00149">gui_vector2.hpp:149</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_aee885733cb0377f0c2c9a8f21ed1c812"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">lxgui::gui::get_key_name</a></div><div class="ttdeci">std::string get_key_name(input::key key_id, bool is_shift_pressed, bool is_ctrl_pressed, bool is_alt_pressed)</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00657">gui_root.cpp:657</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_aee885733cb0377f0c2c9a8f21ed1c812"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aee885733cb0377f0c2c9a8f21ed1c812">lxgui::gui::get_key_name</a></div><div class="ttdeci">std::string get_key_name(input::key key_id, bool is_shift_pressed, bool is_ctrl_pressed, bool is_alt_pressed)</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00664">gui_root.cpp:664</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_af8901d105d610e97ba788499ae1f37c3"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#af8901d105d610e97ba788499ae1f37c3">lxgui::gui::root::enable_caching</a></div><div class="ttdeci">void enable_caching(bool enable)</div><div class="ttdoc">Enables or disables interface caching.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00227">gui_root.cpp:227</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html"><div class="ttname"><a href="namespacelxgui_1_1gui.html">lxgui::gui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00020">gui_addon_registry.cpp:20</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdoc">Holds 2D coordinates (as floats)</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00170">gui_vector2.hpp:170</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1input_html_af3c19793642bb63cb072a16d0e489f2b"><div class="ttname"><a href="namespacelxgui_1_1input.html#af3c19793642bb63cb072a16d0e489f2b">lxgui::input::get_key_codename</a></div><div class="ttdeci">std::string_view get_key_codename(key key_id)</div><div class="ttdoc">Returns a standard English name for the provided key.</div><div class="ttdef"><b>Definition:</b> <a href="input__keys_8cpp_source.html#l00023">input_keys.cpp:23</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html">lxgui::gui::region</a></div><div class="ttdoc">The base class of all elements in the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8hpp_source.html#l00155">gui_region.hpp:155</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html">lxgui::gui::region</a></div><div class="ttdoc">The base class of all elements in the GUI.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8hpp_source.html#l00154">gui_region.hpp:154</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aef94717d3dd9acdb534568e4801add9da811882fecd5c7618d7099ebbd39ea254"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9da811882fecd5c7618d7099ebbd39ea254">lxgui::gui::point::left</a></div><div class="ttdeci">@ left</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a81fe68ced65c232374c9d60cebe5dbd1"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a81fe68ced65c232374c9d60cebe5dbd1">lxgui::gui::root::get_key_binder</a></div><div class="ttdeci">key_binder &amp; get_key_binder()</div><div class="ttdoc">Returns the key_binder object, which enables binding global actions to key presses.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8hpp_source.html#l00276">gui_root.hpp:276</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aef94717d3dd9acdb534568e4801add9d"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">lxgui::gui::point</a></div><div class="ttdeci">point</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00017">gui_anchor.hpp:17</a></div></div>
@@ -930,7 +937,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__emitter_html_a16a7f9f9893d488c5060c69dde851e0f"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__emitter.html#a16a7f9f9893d488c5060c69dde851e0f">lxgui::gui::event_emitter::fire_event</a></div><div class="ttdeci">void fire_event(const std::string &amp;event_name, event_data data=event_data{})</div><div class="ttdoc">Emmit a new event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event__emitter_8cpp_source.html#l00010">gui_event_emitter.cpp:10</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_a9a861c078fff770a24ec6962fa19adac"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#a9a861c078fff770a24ec6962fa19adac">lxgui::input::signals::on_mouse_moved</a></div><div class="ttdeci">utils::signal&lt; void(const gui::vector2f &amp;, const gui::vector2f &amp;)&gt; on_mouse_moved</div><div class="ttdoc">Signal triggered when the mouse moves.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00028">input_signals.hpp:28</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a3c85265c0b14c9bfecbcdcc28730ff82"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">lxgui::gui::manager::get_interface_scaling_factor</a></div><div class="ttdeci">float get_interface_scaling_factor() const</div><div class="ttdoc">Returns the current UI scaling factor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l00087">gui_manager.cpp:87</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1strata_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1strata.html">lxgui::gui::strata</a></div><div class="ttdoc">Contains gui::level.</div><div class="ttdef"><b>Definition:</b> <a href="gui__strata_8hpp_source.html#l00038">gui_strata.hpp:38</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1strata_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1strata.html">lxgui::gui::strata</a></div><div class="ttdoc">Contains frames sorted by level.</div><div class="ttdef"><b>Definition:</b> <a href="gui__strata_8hpp_source.html#l00030">gui_strata.hpp:30</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_aadfc59bc66df0f1391b1b952938308a8"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#aadfc59bc66df0f1391b1b952938308a8">lxgui::input::signals::on_mouse_drag_start</a></div><div class="ttdeci">utils::signal&lt; void(input::mouse_button, const gui::vector2f &amp;)&gt; on_mouse_drag_start</div><div class="ttdoc">Signal triggered when the mouse starts a drag operation.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00068">input_signals.hpp:68</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_a6f19eb989a64c790376d2431ac2fa091"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#a6f19eb989a64c790376d2431ac2fa091">lxgui::input::signals::on_key_released</a></div><div class="ttdeci">utils::signal&lt; void(input::key)&gt; on_key_released</div><div class="ttdoc">Signal triggered when a keyboard key is released.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00097">input_signals.hpp:97</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_ab0ef6966104f7309f01f607e52a4af9e"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e">lxgui::gui::renderer::begin</a></div><div class="ttdeci">void begin(std::shared_ptr&lt; render_target &gt; target=nullptr)</div><div class="ttdoc">Begins rendering on a particular render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00011">gui_renderer.cpp:11</a></div></div>
@@ -940,7 +947,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a09d2a2e697313883eea7b937d8aac4a3"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a09d2a2e697313883eea7b937d8aac4a3">lxgui::gui::root::root</a></div><div class="ttdeci">root(utils::control_block &amp;block, manager &amp;mgr)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00019">gui_root.cpp:19</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a4609cf52ec0d91ba54a6fb92f789a8a6"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a4609cf52ec0d91ba54a6fb92f789a8a6">lxgui::gui::anchor::offset</a></div><div class="ttdeci">vector2f offset</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00092">gui_anchor.hpp:92</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a7c4e6881d53bc0776a462df4fb30d13b"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">lxgui::gui::frame_renderer::find_topmost_frame</a></div><div class="ttdeci">utils::observer_ptr&lt; const frame &gt; find_topmost_frame(const std::function&lt; bool(const frame &amp;)&gt; &amp;predicate) const</div><div class="ttdoc">Find the top-most frame matching the provided predicate.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00112">gui_frame_renderer.cpp:112</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_a7c4e6881d53bc0776a462df4fb30d13b"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#a7c4e6881d53bc0776a462df4fb30d13b">lxgui::gui::frame_renderer::find_topmost_frame</a></div><div class="ttdeci">utils::observer_ptr&lt; const frame &gt; find_topmost_frame(const std::function&lt; bool(const frame &amp;)&gt; &amp;predicate) const</div><div class="ttdoc">Find the top-most frame matching the provided predicate.</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00160">gui_frame_renderer.cpp:160</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_a1bf29d908c87661102d7c7cda4ae6068"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#a1bf29d908c87661102d7c7cda4ae6068">lxgui::gui::bounds2::bottom_left</a></div><div class="ttdeci">vector2&lt; T &gt; bottom_left() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00044">gui_bounds2.hpp:44</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00044">gui_manager.hpp:44</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_afa85b6ae4d8ed6c06fbe728b7696f59f"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#afa85b6ae4d8ed6c06fbe728b7696f59f">lxgui::gui::color::empty</a></div><div class="ttdeci">static const color empty</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00042">gui_color.hpp:42</a></div></div>
@@ -957,7 +964,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_ad9e1739b7731a7bead5a80e03641849f"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#ad9e1739b7731a7bead5a80e03641849f">lxgui::gui::root::release_focus</a></div><div class="ttdeci">void release_focus(const frame &amp;receiver)</div><div class="ttdoc">Give up focus of keyboard input.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00422">gui_root.cpp:422</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1signals_html_a0f82e8268b00875e6997882f931fe921"><div class="ttname"><a href="classlxgui_1_1input_1_1signals.html#a0f82e8268b00875e6997882f931fe921">lxgui::input::signals::on_mouse_wheel</a></div><div class="ttdeci">utils::signal&lt; void(float, const gui::vector2f &amp;)&gt; on_mouse_wheel</div><div class="ttdoc">Signal triggered when the mouse wheel is moved.</div><div class="ttdef"><b>Definition:</b> <a href="input__signals_8hpp_source.html#l00036">input_signals.hpp:36</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_a86b76e54317f3736bbf16e3a74581a07"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#a86b76e54317f3736bbf16e3a74581a07">lxgui::gui::root::notify_hovered_frame_dirty</a></div><div class="ttdeci">void notify_hovered_frame_dirty()</div><div class="ttdoc">Notifies the root that it should update the hovered frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00260">gui_root.cpp:260</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_ae041843d6bca9bf014645adfab7aaf81"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#ae041843d6bca9bf014645adfab7aaf81">lxgui::gui::frame_renderer::render_strata_</a></div><div class="ttdeci">void render_strata_(const strata &amp;strata_obj) const</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00186">gui_frame_renderer.cpp:186</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame__renderer_html_ae041843d6bca9bf014645adfab7aaf81"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame__renderer.html#ae041843d6bca9bf014645adfab7aaf81">lxgui::gui::frame_renderer::render_strata_</a></div><div class="ttdeci">void render_strata_(const strata &amp;strata_obj) const</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__renderer_8cpp_source.html#l00185">gui_frame_renderer.cpp:185</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html">lxgui::gui::root</a></div><div class="ttdoc">Root of the UI object hierarchy.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8hpp_source.html#l00035">gui_root.hpp:35</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html_a31cd409ce15d4167a2c252860498eeb2"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html#a31cd409ce15d4167a2c252860498eeb2">lxgui::gui::vector2::y</a></div><div class="ttdeci">T y</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00154">gui_vector2.hpp:154</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1root_html_ad622dc37858ef7bdd33426425914af0d"><div class="ttname"><a href="classlxgui_1_1gui_1_1root.html#ad622dc37858ef7bdd33426425914af0d">lxgui::gui::root::start_sizing</a></div><div class="ttdeci">void start_sizing(utils::observer_ptr&lt; region &gt; obj, point p)</div><div class="ttdoc">Starts manually resizing a region with the mouse.</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00301">gui_root.cpp:301</a></div></div>
@@ -971,7 +978,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a183f7027d7ff5b7e387482963170408e"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a183f7027d7ff5b7e387482963170408e">lxgui::gui::request_focus_to_list</a></div><div class="ttdeci">void request_focus_to_list(utils::observer_ptr&lt; frame &gt; receiver, std::vector&lt; utils::observer_ptr&lt; frame &gt;&gt; &amp;list)</div><div class="ttdef"><b>Definition:</b> <a href="gui__root_8cpp_source.html#l00395">gui_root.cpp:395</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 10 2022 08:33:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 17 2022 08:26:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

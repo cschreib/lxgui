@@ -73,15 +73,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Contains <a class="el" href="structlxgui_1_1gui_1_1level.html" title="Contains gui::frame.">gui::level</a>.  
+<p>Contains frames sorted by level.  
  <a href="structlxgui_1_1gui_1_1strata.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aab37b54d4f760dce9495a212e1e41832"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, <a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html#aab37b54d4f760dce9495a212e1e41832">level_list</a></td></tr>
-<tr class="separator:aab37b54d4f760dce9495a212e1e41832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad650559829fec13db789dfb7cb5ced8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html#ad650559829fec13db789dfb7cb5ced8c">id</a></td></tr>
+<tr class="separator:ad650559829fec13db789dfb7cb5ced8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71dbd0ddec570c4ce27e6fb654877610"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::size_t, std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html#a71dbd0ddec570c4ce27e6fb654877610">range</a></td></tr>
+<tr class="separator:a71dbd0ddec570c4ce27e6fb654877610"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4258bdf72b2e08e069dd525468c77397"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html#a4258bdf72b2e08e069dd525468c77397">redraw_flag</a> = true</td></tr>
 <tr class="separator:a4258bdf72b2e08e069dd525468c77397"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59080a361f2f8c19849cd32ba72ddfbe"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html#a59080a361f2f8c19849cd32ba72ddfbe">target</a></td></tr>
@@ -90,23 +92,39 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a0aa4269c84bd1f17bbd382b01c1605a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contains <a class="el" href="structlxgui_1_1gui_1_1level.html" title="Contains gui::frame.">gui::level</a>. </p>
+<div class="textblock"><p>Contains frames sorted by level. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00038">38</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00030">30</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="aab37b54d4f760dce9495a212e1e41832"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab37b54d4f760dce9495a212e1e41832">&#9670;&nbsp;</a></span>level_list</h2>
+<a id="ad650559829fec13db789dfb7cb5ced8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad650559829fec13db789dfb7cb5ced8c">&#9670;&nbsp;</a></span>id</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;int, <a class="el" href="structlxgui_1_1gui_1_1level.html">level</a>&gt; lxgui::gui::strata::level_list</td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> lxgui::gui::strata::id</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00039">39</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00031">31</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a71dbd0ddec570c4ce27e6fb654877610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71dbd0ddec570c4ce27e6fb654877610">&#9670;&nbsp;</a></span>range</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;std::size_t, std::size_t&gt; lxgui::gui::strata::range</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00032">32</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
 
 </div>
 </div>
@@ -122,7 +140,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00040">40</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00033">33</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
 
 </div>
 </div>
@@ -138,7 +156,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00041">41</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00034">34</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
 
 </div>
 </div>
@@ -154,7 +172,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00042">42</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00035">35</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
 
 </div>
 </div>
@@ -164,7 +182,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 10 2022 08:33:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 17 2022 08:26:31 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

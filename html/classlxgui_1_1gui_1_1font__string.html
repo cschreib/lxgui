@@ -396,12 +396,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#acccc9f78644f2fb1aec45bf4f9a8502f">is_special</a> () const</td></tr>
 <tr class="memdesc:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is special.  <a href="classlxgui_1_1gui_1_1region.html#acccc9f78644f2fb1aec45bf4f9a8502f">More...</a><br /></td></tr>
 <tr class="separator:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cc70f1b4e36195df5a10c3f0f5ef09"><td class="memItemLeft" align="right" valign="top">virtual utils::observer_ptr&lt; const <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ad7cc70f1b4e36195df5a10c3f0f5ef09">get_top_level_frame_renderer</a> () const</td></tr>
-<tr class="memdesc:ad7cc70f1b4e36195df5a10c3f0f5ef09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents.  <a href="classlxgui_1_1gui_1_1region.html#ad7cc70f1b4e36195df5a10c3f0f5ef09">More...</a><br /></td></tr>
-<tr class="separator:ad7cc70f1b4e36195df5a10c3f0f5ef09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6baed36eca1cfeb9c38343de42d663a9"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a6baed36eca1cfeb9c38343de42d663a9">get_top_level_frame_renderer</a> ()</td></tr>
-<tr class="memdesc:a6baed36eca1cfeb9c38343de42d663a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents, nullptr if none.  <a href="classlxgui_1_1gui_1_1region.html#a6baed36eca1cfeb9c38343de42d663a9">More...</a><br /></td></tr>
-<tr class="separator:a6baed36eca1cfeb9c38343de42d663a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="memItemLeft" align="right" valign="top">virtual utils::observer_ptr&lt; const <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a12f016877aedbe9e89d8ca3a49a12fcc">get_effective_frame_renderer</a> () const</td></tr>
+<tr class="memdesc:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents.  <a href="classlxgui_1_1gui_1_1region.html#a12f016877aedbe9e89d8ca3a49a12fcc">More...</a><br /></td></tr>
+<tr class="separator:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab093dc625a8fb3ac1d04f77d6e78103"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aab093dc625a8fb3ac1d04f77d6e78103">get_effective_frame_renderer</a> ()</td></tr>
+<tr class="memdesc:aab093dc625a8fb3ac1d04f77d6e78103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents, nullptr if none.  <a href="classlxgui_1_1gui_1_1region.html#aab093dc625a8fb3ac1d04f77d6e78103">More...</a><br /></td></tr>
+<tr class="separator:aab093dc625a8fb3ac1d04f77d6e78103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08c7df00832541a06014d52112dc00cb"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a08c7df00832541a06014d52112dc00cb">get_anchored_objects</a> () const</td></tr>
 <tr class="memdesc:a08c7df00832541a06014d52112dc00cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the list of all objects that are anchored to this one.  <a href="classlxgui_1_1gui_1_1region.html#a08c7df00832541a06014d52112dc00cb">More...</a><br /></td></tr>
 <tr class="separator:a08c7df00832541a06014d52112dc00cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -484,12 +484,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:af9c3e592b47752a45b6311250e86ad5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af9c3e592b47752a45b6311250e86ad5e">set_name_</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:af9c3e592b47752a45b6311250e86ad5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this region's name.  <a href="classlxgui_1_1gui_1_1region.html#af9c3e592b47752a45b6311250e86ad5e">More...</a><br /></td></tr>
 <tr class="separator:af9c3e592b47752a45b6311250e86ad5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09fb22a0fb7e675eaa250676addd8b8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a09fb22a0fb7e675eaa250676addd8b8f">set_parent_</a> (utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; parent)</td></tr>
+<tr class="memitem:a09fb22a0fb7e675eaa250676addd8b8f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a09fb22a0fb7e675eaa250676addd8b8f">set_parent_</a> (utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; parent)</td></tr>
 <tr class="memdesc:a09fb22a0fb7e675eaa250676addd8b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this region's parent.  <a href="classlxgui_1_1gui_1_1region.html#a09fb22a0fb7e675eaa250676addd8b8f">More...</a><br /></td></tr>
 <tr class="separator:a09fb22a0fb7e675eaa250676addd8b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acddaf351f2e7dd759cd7b5beb08cd04e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#acddaf351f2e7dd759cd7b5beb08cd04e">set_name_and_parent_</a> (const std::string &amp;name, utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; parent)</td></tr>
-<tr class="memdesc:acddaf351f2e7dd759cd7b5beb08cd04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this region's name and parent at once.  <a href="classlxgui_1_1gui_1_1region.html#acddaf351f2e7dd759cd7b5beb08cd04e">More...</a><br /></td></tr>
-<tr class="separator:acddaf351f2e7dd759cd7b5beb08cd04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25c2bdef4770fdb762e0ab8b657276af"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a25c2bdef4770fdb762e0ab8b657276af"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a25c2bdef4770fdb762e0ab8b657276af">initialize_</a> (T &amp;self, const <a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> &amp;attr)</td></tr>
 <tr class="memdesc:a25c2bdef4770fdb762e0ab8b657276af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up function to call in all derived class constructors.  <a href="classlxgui_1_1gui_1_1region.html#a25c2bdef4770fdb762e0ab8b657276af">More...</a><br /></td></tr>
@@ -631,7 +628,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Anchored objects get their borders automatically updated whenever this object's borders are updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00535">535</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00520">520</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -706,7 +703,7 @@ Protected Attributes</h2></td></tr>
 <p>Removes all anchors. </p>
 <dl class="section note"><dt>Note</dt><dd>This region and its children won't be visible until you define at least one anchor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00389">389</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00374">374</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -811,7 +808,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Useful to detect circular references. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00477">477</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00462">462</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -841,7 +838,7 @@ template&lt;typename T &gt; </div>
 <p>Forcefully removes this region from the GUI. </p>
 <dl class="section warning"><dt>Warning</dt><dd>After calling this function, any pointer to the object is invalidated! Only call this function if you need the object to be destroyed early, before its parent (if any) would itself be destroyed. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00357">357</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00342">342</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -901,7 +898,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This frame's addon </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns "nullptr" if the frame has been created by Lua code and wasn't assigned a parent. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00832">832</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00822">822</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1002,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the list of all objects that are anchored to this one. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of all objects that are anchored to this one </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00781">781</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00771">771</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1066,7 +1063,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's borders. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's borders </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00385">385</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00370">370</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1096,7 +1093,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this region's bottom border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this region's bottom border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00381">381</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00366">366</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1123,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the position of this region's center. </p>
 <dl class="section return"><dt>Returns</dt><dd>The position of this region's center </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00365">365</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00350">350</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1222,6 +1219,70 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aab093dc625a8fb3ac1d04f77d6e78103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab093dc625a8fb3ac1d04f77d6e78103">&#9670;&nbsp;</a></span>get_effective_frame_renderer() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">utils::observer_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a>&gt; lxgui::gui::region::get_effective_frame_renderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the renderer of this object or its parents, nullptr if none. </p>
+<dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents, nullptr if none </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00603">603</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a12f016877aedbe9e89d8ca3a49a12fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f016877aedbe9e89d8ca3a49a12fcc">&#9670;&nbsp;</a></span>get_effective_frame_renderer() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">utils::observer_ptr&lt; const <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt; lxgui::gui::region::get_effective_frame_renderer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the renderer of this object or its parents. </p>
+<dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ad6dfd9f7cac8c9b8e13f518d5f9a3511">lxgui::gui::frame</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00783">783</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a8302bc8b00237865afacecf84b287c22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8302bc8b00237865afacecf84b287c22">&#9670;&nbsp;</a></span>get_font_height()</h2>
 
@@ -1292,7 +1353,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this region's left border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this region's left border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00369">369</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00354">354</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1341,7 +1402,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00763">763</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00753">753</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1427,7 +1488,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00682">682</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00681">681</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1518,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00690">690</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00689">689</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1517,7 +1578,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the number of defined anchors. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of defined anchors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00493">493</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00478">478</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1630,7 +1691,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00238">238</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00237">237</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1660,7 +1721,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00230">230</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00229">229</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1697,7 +1758,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the anchor, nullptr if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00513">513</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00498">498</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1727,7 +1788,7 @@ template&lt;typename T &gt; </div>
 <p>Returns all of this region's anchors. </p>
 <dl class="section return"><dt>Returns</dt><dd>All of this region's anchors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00523">523</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00508">508</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1788,7 +1849,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the UI object registry, which keeps track of all objects in the UI. </p>
 <dl class="section return"><dt>Returns</dt><dd>The registry object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00839">839</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00829">829</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1846,7 +1907,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this region's right border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this region's right border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00373">373</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00358">358</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2102,71 +2163,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this region's top border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this region's top border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00377">377</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a6baed36eca1cfeb9c38343de42d663a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6baed36eca1cfeb9c38343de42d663a9">&#9670;&nbsp;</a></span>get_top_level_frame_renderer() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">utils::observer_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a>&gt; lxgui::gui::region::get_top_level_frame_renderer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the renderer of this object or its parents, nullptr if none. </p>
-<dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents, nullptr if none </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00604">604</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ad7cc70f1b4e36195df5a10c3f0f5ef09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7cc70f1b4e36195df5a10c3f0f5ef09">&#9670;&nbsp;</a></span>get_top_level_frame_renderer() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">utils::observer_ptr&lt; const <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt; lxgui::gui::region::get_top_level_frame_renderer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the renderer of this object or its parents. </p>
-<dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#af192a3972d615318dc34cf3bac3be19d">lxgui::gui::frame</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00362">362</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2422,7 +2419,7 @@ template&lt;typename T &gt; </div>
 <p>Checks if this region has been fully loaded. </p>
 <dl class="section note"><dt>Note</dt><dd>A region that is not fully loaded still has all its core attributes set, hence can be considered as "fully constructed" from a C++ point of view. However, semantically, the object may need further steps to be complete, as designed by the UI designer. Therefore, form the UI's point of view, a region is considered "complete" only if <a class="el" href="classlxgui_1_1gui_1_1region.html#ac0f02311f39f8f4940c70a43457c063b" title="Checks if this region has been fully loaded.">is_loaded()</a> returns 'true' (see notifu_loaded()). Only then can the region, e.g., react to or generate events. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00779">779</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2454,7 +2451,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region is of the provided type. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is of the provided type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00413">413</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00412">412</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -2574,7 +2571,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this object is special </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1region.html#ae913615c67021b1ec74d1bc92c5d8fa5" title="Flags this object as &quot;special&quot;.">set_special()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00775">775</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00765">765</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2605,7 +2602,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is virtual </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>A virtual region will not be displayed on the screen, but can serve as a template to create new GUI elements (it is then "inherited", although note that this has no connection to C++ inheritance). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00527">527</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00512">512</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2687,7 +2684,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00559">559</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00544">544</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2725,7 +2722,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the anchor, will throw if this point has no anchor. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>After you have modified the anchor, you must call <a class="el" href="classlxgui_1_1gui_1_1region.html#ac51cd3dbce43ef7984ebf48740dc9f90" title="Tells this region that its borders need updating.">notify_borders_need_update()</a> to ensure that the object's borders are properly updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00503">503</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00488">488</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2756,7 +2753,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a10b8051cabf41924b470aa7ae4c4fd13">lxgui::gui::slider</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00745">745</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00730">730</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2788,7 +2785,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a161fd7168a710ecd30728a0349e139ed">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2820,7 +2817,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00775">775</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2915,7 +2912,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a675523de3fd90beebc7fe87853c1b879">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00799">799</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3037,7 +3034,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The modified file name </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>All file names must be relative to the current working directory (typically, the application's executable path), but sometimes it is more convenient and maintainable to specify a path that is relative to the addon directory. This can be achieved by simply putting "|" in front of a file name, which will then be interpreted as relative to the addon directory. This function takes care of this transformation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00807">807</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3165,7 +3162,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00585">585</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00570">570</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3262,7 +3259,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1region.html#a956d919c0a6b97732520f341081b1757" title="Notifies this region that another one is anchored to it.">add_anchored_object()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00539">539</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00524">524</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3291,7 +3288,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Removes the Lua glue. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00767">767</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00757">757</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3370,7 +3367,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the nearest physical pixel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00552">552</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00537">537</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3418,7 +3415,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the nearest physical pixel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00547">547</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00532">532</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3493,7 +3490,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00822">822</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00812">812</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3586,7 +3583,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00409">409</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00394">394</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3623,7 +3620,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00433">433</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00418">418</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3911,57 +3908,9 @@ template&lt;typename ObjectType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Can only be called once. If you need to set both the name and the parent at the same time (typically, at creation), use <a class="el" href="classlxgui_1_1gui_1_1region.html#acddaf351f2e7dd759cd7b5beb08cd04e" title="Sets this region&#39;s name and parent at once.">set_name_and_parent_()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Can only be called once. If you need to set both the name and the parent at the same time (typically, at creation), use set_name_and_parent_(). </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00300">300</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="acddaf351f2e7dd759cd7b5beb08cd04e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acddaf351f2e7dd759cd7b5beb08cd04e">&#9670;&nbsp;</a></span>set_name_and_parent_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::region::set_name_and_parent_ </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td>
-          <td class="paramname"><em>parent</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets this region's name and parent at once. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>This region's name </td></tr>
-    <tr><td class="paramname">parent</td><td>The new parent </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>The name can only be set once. If you need to just change the parent, call <a class="el" href="classlxgui_1_1gui_1_1region.html#a09fb22a0fb7e675eaa250676addd8b8f" title="Changes this region&#39;s parent.">set_parent_()</a>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00336">336</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4071,7 +4020,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -4084,6 +4033,8 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Default is nullptr. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ab7d771971b72294a3033b8373ba4cdd4">lxgui::gui::frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00321">321</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -4123,7 +4074,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00491">491</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00490">490</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4159,7 +4110,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00443">443</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00428">428</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4447,7 +4398,7 @@ template&lt;typename... Args&gt; </div>
 <p>Flags this object as "special". </p>
 <dl class="section note"><dt>Note</dt><dd>Special objects are not automatically copied in the frame inheritance process. They must be explicitly copied by the derived class (example: Button will have to copy its button textures itself). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00771">771</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00761">761</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4534,7 +4485,7 @@ template&lt;typename... Args&gt; </div>
 <p>Makes this region virtual. </p>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1region.html#a2dd964ca00fbbc11c66a7a4bca2e403f" title="Checks if this region is virtual.">is_virtual()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00531">531</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00516">516</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4680,9 +4631,9 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#af009d04eb75bedec66afa63355c0106c">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ab41250297f9fe0cd284d1b1a726b9b3c">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a90522a88d49826c0945584f4feb9bb44">lxgui::gui::edit_box</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a334a1885fd6f92dd30d85372f3c950df">lxgui::gui::scroll_frame</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#af009d04eb75bedec66afa63355c0106c">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a90522a88d49826c0945584f4feb9bb44">lxgui::gui::edit_box</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a334a1885fd6f92dd30d85372f3c950df">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00759">759</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00749">749</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4709,7 +4660,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00709">709</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00694">694</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -4734,7 +4685,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00791">791</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00781">781</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4758,7 +4709,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00812">812</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4782,7 +4733,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00807">807</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4806,7 +4757,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00818">818</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00808">808</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4830,7 +4781,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4878,7 +4829,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00809">809</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00799">799</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4902,7 +4853,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00816">816</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00806">806</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4926,7 +4877,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00796">796</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00786">786</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4950,7 +4901,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4974,7 +4925,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4998,7 +4949,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00813">813</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5022,7 +4973,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5046,7 +4997,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00801">801</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00791">791</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5070,7 +5021,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00814">814</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00804">804</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5094,7 +5045,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00104">104</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00096">96</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5118,7 +5069,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00820">820</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5142,7 +5093,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00795">795</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5166,7 +5117,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00779">779</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5190,7 +5141,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00783">783</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5214,7 +5165,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5238,7 +5189,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00808">808</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5262,7 +5213,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00794">794</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00784">784</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5286,7 +5237,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00805">805</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00795">795</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -5298,7 +5249,7 @@ template&lt;typename... Args&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 10 2022 08:33:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 17 2022 08:26:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
