@@ -28,12 +28,16 @@ frame::frame(utils::control_block& block, manager& mgr, const frame_core_attribu
 
     initialize_(*this, attr);
 
-    if (parent_)
+    if (parent_) {
         level_ = parent_->get_level() + 1;
+    }
+
+    effective_frame_renderer_ = compute_top_level_frame_renderer_();
+    effective_strata_         = compute_effective_frame_strata_();
 
     if (!is_virtual_) {
         // Tell the renderer to render this region
-        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
+        get_effective_frame_renderer()->notify_rendered_frame(observer_from(this), true);
     }
 }
 
@@ -44,11 +48,11 @@ frame::~frame() {
     // Children must be destroyed first
     child_list_.clear();
     region_list_.clear();
+    title_region_ = nullptr;
 
     if (!is_virtual_) {
         // Tell the renderer to no longer render this region
-        get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
-        frame_renderer_ = nullptr;
+        get_effective_frame_renderer()->notify_rendered_frame(observer_from(this), false);
     }
 
     get_manager().get_root().notify_hovered_frame_dirty();
@@ -60,17 +64,18 @@ void frame::render() const {
     if (!is_visible_ || !is_ready_)
         return;
 
-    if (backdrop_)
+    if (backdrop_) {
         backdrop_->render();
+    }
 
     // Render child regions
     for (const auto& layer : layer_list_) {
-        if (layer.is_disabled)
+        if (layer.is_disabled) {
             continue;
+        }
 
         for (const auto& reg : layer.region_list) {
-            if (reg->is_shown())
-                reg->render();
+            reg->render();
         }
     }
 }
@@ -79,9 +84,10 @@ std::string frame::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << base::serialize(tab);
-    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(frame_renderer_))
+    if (auto frame_renderer = utils::dynamic_pointer_cast<frame>(effective_frame_renderer_))
         str << tab << "  # Man. render: " << frame_renderer->get_name() << "\n";
-    str << tab << "  # Strata     : " << utils::to_string(strata_) << "\n";
+    str << tab << "  # Strata     : "
+        << (strata_.has_value() ? utils::to_string(strata_.value()) : "parent") << "\n";
     str << tab << "  # Level      : " << level_ << "\n";
     str << tab << "  # TopLevel   : " << is_top_level_;
     if (!is_top_level_ && get_top_level_parent())
@@ -179,9 +185,9 @@ bool frame::can_use_script(const std::string& script_name) const {
            script_name == "OnHide" || script_name == "OnKeyDown" || script_name == "OnKeyUp" ||
            script_name == "OnKeyRepeat" || script_name == "OnLeave" || script_name == "OnLoad" ||
            script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
-           script_name == "OnDoubleClick" || script_name == "OnMouseWheel" ||
-           script_name == "OnReceiveDrag" || script_name == "OnShow" ||
-           script_name == "OnSizeChanged" || script_name == "OnUpdate";
+           script_name == "OnMouseMove" || script_name == "OnDoubleClick" ||
+           script_name == "OnMouseWheel" || script_name == "OnReceiveDrag" ||
+           script_name == "OnShow" || script_name == "OnSizeChanged" || script_name == "OnUpdate";
 }
 
 void frame::copy_from(const region& obj) {
@@ -360,7 +366,7 @@ void frame::check_position_() {
     }
 
     if (is_clamped_to_screen_) {
-        vector2f screen_dimensions = get_top_level_frame_renderer()->get_target_dimensions();
+        vector2f screen_dimensions = get_effective_frame_renderer()->get_target_dimensions();
 
         if (border_list_.right > screen_dimensions.x) {
             float width = border_list_.right - border_list_.left;
@@ -480,6 +486,77 @@ void frame::notify_layers_need_update() {
     build_layer_list_flag_ = true;
 }
 
+void frame::set_parent_(utils::observer_ptr<frame> parent) {
+    auto* raw_new_parent  = parent.get();
+    auto* raw_prev_parent = get_parent().get();
+
+    if (!is_virtual()) {
+        if (raw_prev_parent) {
+            // Remove shortcut to child
+            std::string raw_name = get_raw_name();
+            if (utils::starts_with(raw_name, "$parent")) {
+                raw_name.erase(0, std::string("$parent").size());
+                sol::state& lua                                = get_lua_();
+                lua[raw_prev_parent->get_lua_name()][raw_name] = sol::lua_nil;
+            }
+        }
+    }
+
+    base::set_parent_(parent);
+
+    if (!is_virtual()) {
+        // Notify visibility
+        if (raw_new_parent) {
+            if (raw_new_parent->is_visible() && is_shown())
+                notify_visible();
+            else
+                notify_invisible();
+        } else {
+            if (is_shown())
+                notify_visible();
+            else
+                notify_invisible();
+        }
+
+        if (raw_new_parent) {
+            // Add shortcut to child as entry in Lua table
+            std::string raw_name = get_raw_name();
+            if (utils::starts_with(raw_name, "$parent")) {
+                raw_name.erase(0, std::string("$parent").size());
+                auto& lua                                     = get_lua_();
+                lua[raw_new_parent->get_lua_name()][raw_name] = lua[get_lua_name()];
+            }
+        }
+
+        const auto new_top_level_renderer = compute_top_level_frame_renderer_();
+        if (new_top_level_renderer != effective_frame_renderer_) {
+            notify_frame_renderer_changed_(new_top_level_renderer);
+        }
+
+        const auto new_strata = compute_effective_frame_strata_();
+        if (new_strata != effective_strata_) {
+            notify_frame_strata_changed_(new_strata);
+        }
+    }
+}
+
+void frame::notify_frame_strata_changed_(frame_strata new_strata_id) {
+    const auto old_strata = effective_strata_;
+
+    effective_strata_ = new_strata_id;
+
+    get_effective_frame_renderer()->notify_frame_strata_changed(
+        observer_from(this), old_strata, effective_strata_);
+
+    for (const auto& child : child_list_) {
+        if (!child)
+            continue;
+
+        if (!child->get_frame_strata().has_value())
+            child->notify_frame_strata_changed_(new_strata_id);
+    }
+}
+
 bool frame::has_script(const std::string& script_name) const {
     const auto iter = signal_list_.find(script_name);
     if (iter == signal_list_.end())
@@ -582,30 +659,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> child) {
 
     child->set_parent_(observer_from(this));
 
-    if (is_visible() && child->is_shown())
-        child->notify_visible();
-    else
-        child->notify_invisible();
-
     utils::observer_ptr<frame> added_child = child;
     child_list_.push_back(std::move(child));
-
-    if (!is_virtual_) {
-        auto old_top_level_renderer = added_child->get_top_level_frame_renderer();
-        auto new_top_level_renderer = get_top_level_frame_renderer();
-        if (old_top_level_renderer != new_top_level_renderer) {
-            old_top_level_renderer->notify_rendered_frame(added_child, false);
-            new_top_level_renderer->notify_rendered_frame(added_child, true);
-        }
-
-        // Add shortcut to child as entry in Lua table
-        std::string raw_name = added_child->get_raw_name();
-        if (utils::starts_with(raw_name, "$parent")) {
-            raw_name.erase(0, std::string("$parent").size());
-            auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[added_child->get_lua_name()];
-        }
-    }
 
     return added_child;
 }
@@ -627,33 +682,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
     // NB: the iterator is not removed yet; it will be removed later in update().
     auto removed_child = std::move(*iter);
 
-    bool notify_renderer = false;
-    if (!is_virtual_) {
-        utils::observer_ptr<frame_renderer> top_level_renderer = get_top_level_frame_renderer();
-        notify_renderer =
-            !child->get_frame_renderer() && top_level_renderer.get() != &get_manager().get_root();
-        if (notify_renderer) {
-            top_level_renderer->notify_rendered_frame(child, false);
-            child->propagate_renderer_(false);
-        }
-    }
-
     removed_child->set_parent_(nullptr);
-
-    if (!is_virtual_) {
-        if (notify_renderer) {
-            get_manager().get_root().notify_rendered_frame(child, true);
-            child->propagate_renderer_(true);
-        }
-
-        // Remove shortcut to child
-        std::string raw_name = removed_child->get_raw_name();
-        if (utils::starts_with(raw_name, "$parent")) {
-            raw_name.erase(0, std::string("$parent").size());
-            sol::state& lua               = get_lua_();
-            lua[get_lua_name()][raw_name] = sol::lua_nil;
-        }
-    }
 
     return removed_child;
 }
@@ -664,13 +693,6 @@ frame::child_list_view frame::get_children() {
 
 frame::const_child_list_view frame::get_children() const {
     return const_child_list_view(child_list_);
-}
-
-float frame::get_effective_alpha() const {
-    if (parent_)
-        return alpha_ * parent_->get_effective_alpha();
-    else
-        return alpha_;
 }
 
 float frame::get_effective_scale() const {
@@ -684,8 +706,23 @@ int frame::get_level() const {
     return level_;
 }
 
-frame_strata frame::get_frame_strata() const {
+std::optional<frame_strata> frame::get_frame_strata() const {
     return strata_;
+}
+
+frame_strata frame::get_effective_frame_strata() const {
+    return effective_strata_;
+}
+
+frame_strata frame::compute_effective_frame_strata_() const {
+    if (strata_.has_value())
+        return strata_.value();
+
+    if (parent_ && parent_->get_effective_frame_renderer() == get_effective_frame_renderer())
+        return parent_->get_effective_frame_strata();
+
+    // Default if no defined strata and no parent set.
+    return frame_strata::medium;
 }
 
 utils::observer_ptr<const frame> frame::get_top_level_parent() const {
@@ -1099,59 +1136,14 @@ void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
     is_clamped_to_screen_ = is_clamped_to_screen;
 }
 
-void frame::set_frame_strata(frame_strata strata_id) {
-    if (strata_id == frame_strata::parent) {
-        if (!is_virtual_) {
-            if (parent_)
-                strata_id = parent_->get_frame_strata();
-            else
-                strata_id = frame_strata::medium;
-        }
+void frame::set_frame_strata(std::optional<frame_strata> strata_id) {
+    strata_ = strata_id;
+
+    const auto new_effective_strata = compute_effective_frame_strata_();
+
+    if (!is_virtual() && new_effective_strata != effective_strata_) {
+        notify_frame_strata_changed_(new_effective_strata);
     }
-
-    std::swap(strata_, strata_id);
-
-    if (strata_ != strata_id && !is_virtual_) {
-        get_top_level_frame_renderer()->notify_frame_strata_changed(
-            observer_from(this), strata_id, strata_);
-    }
-}
-
-void frame::set_frame_strata(const std::string& strata_name) {
-    frame_strata strata_id;
-
-    if (strata_name == "BACKGROUND")
-        strata_id = frame_strata::background;
-    else if (strata_name == "LOW")
-        strata_id = frame_strata::low;
-    else if (strata_name == "MEDIUM")
-        strata_id = frame_strata::medium;
-    else if (strata_name == "HIGH")
-        strata_id = frame_strata::high;
-    else if (strata_name == "DIALOG")
-        strata_id = frame_strata::dialog;
-    else if (strata_name == "FULLSCREEN")
-        strata_id = frame_strata::fullscreen;
-    else if (strata_name == "FULLSCREEN_DIALOG")
-        strata_id = frame_strata::fullscreen_dialog;
-    else if (strata_name == "TOOLTIP")
-        strata_id = frame_strata::tooltip;
-    else if (strata_name == "PARENT") {
-        if (is_virtual_) {
-            strata_id = frame_strata::parent;
-        } else {
-            if (parent_)
-                strata_id = parent_->get_frame_strata();
-            else
-                strata_id = frame_strata::medium;
-        }
-    } else {
-        gui::out << gui::warning << "gui::" << type_.back()
-                 << ": Unknown strata: \"" + strata_name + "\"." << std::endl;
-        return;
-    }
-
-    set_frame_strata(strata_id);
 }
 
 void frame::set_backdrop(std::unique_ptr<backdrop> bdrop) {
@@ -1174,7 +1166,7 @@ void frame::set_level(int level_id) {
     std::swap(level_id, level_);
 
     if (!is_virtual_) {
-        get_top_level_frame_renderer()->notify_frame_level_changed(
+        get_effective_frame_renderer()->notify_frame_level_changed(
             observer_from(this), level_id, level_);
     }
 }
@@ -1258,8 +1250,8 @@ void frame::raise() {
         return;
 
     int  old_level = level_;
-    auto rdr       = get_top_level_frame_renderer();
-    int  top_level = rdr->get_highest_level(strata_);
+    auto rdr       = get_effective_frame_renderer();
+    int  top_level = rdr->get_highest_level(get_effective_frame_strata());
 
     if (old_level == top_level) {
         // This frame is already on top, nothing to do.
@@ -1314,7 +1306,7 @@ void frame::add_level_(int amount) {
     level_ += amount;
 
     if (!is_virtual()) {
-        get_top_level_frame_renderer()->notify_frame_level_changed(
+        get_effective_frame_renderer()->notify_frame_level_changed(
             observer_from(this), old_level, level_);
     }
 
@@ -1352,16 +1344,16 @@ void frame::stop_sizing() {
         get_manager().get_root().stop_sizing();
 }
 
-void frame::propagate_renderer_(bool rendered) {
-    auto top_level_renderer = get_top_level_frame_renderer();
+void frame::notify_frame_renderer_changed_(
+    const utils::observer_ptr<frame_renderer>& new_renderer) {
+
+    effective_frame_renderer_->notify_rendered_frame(observer_from(this), false);
+    effective_frame_renderer_ = new_renderer;
+    effective_frame_renderer_->notify_rendered_frame(observer_from(this), true);
+
     for (const auto& child : child_list_) {
-        if (!child)
-            continue;
-
-        if (!child->get_frame_renderer())
-            top_level_renderer->notify_rendered_frame(child, rendered);
-
-        child->propagate_renderer_(rendered);
+        if (auto* raw_ptr = child.get(); raw_ptr && !raw_ptr->get_frame_renderer())
+            child->notify_frame_renderer_changed_(new_renderer);
     }
 }
 
@@ -1369,22 +1361,23 @@ void frame::set_frame_renderer(utils::observer_ptr<frame_renderer> rdr) {
     if (rdr == frame_renderer_)
         return;
 
-    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), false);
+    frame_renderer_                   = std::move(rdr);
+    const auto new_effective_renderer = compute_top_level_frame_renderer_();
 
-    propagate_renderer_(false);
-
-    frame_renderer_ = std::move(rdr);
-
-    get_top_level_frame_renderer()->notify_rendered_frame(observer_from(this), true);
-
-    propagate_renderer_(true);
+    if (effective_frame_renderer_ != new_effective_renderer) {
+        notify_frame_renderer_changed_(new_effective_renderer);
+    }
 }
 
-utils::observer_ptr<const frame_renderer> frame::get_top_level_frame_renderer() const {
+utils::observer_ptr<const frame_renderer> frame::get_effective_frame_renderer() const {
+    return effective_frame_renderer_;
+}
+
+utils::observer_ptr<const frame_renderer> frame::compute_top_level_frame_renderer_() const {
     if (frame_renderer_)
         return frame_renderer_;
     else if (parent_)
-        return parent_->get_top_level_frame_renderer();
+        return parent_->get_effective_frame_renderer();
     else
         return get_manager().get_root().observer_from_this();
 }
@@ -1451,7 +1444,7 @@ void frame::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
-    get_top_level_frame_renderer()->notify_strata_needs_redraw(strata_);
+    get_effective_frame_renderer()->notify_strata_needs_redraw(get_effective_frame_strata());
 }
 
 void frame::notify_scaling_factor_updated() {
@@ -1516,49 +1509,51 @@ void frame::update_borders_() {
     check_position_();
 
     if (border_list_ != old_border_list || is_ready_ != old_ready) {
+        if (border_list_.width() != old_border_list.width() ||
+            border_list_.height() != old_border_list.height()) {
+            alive_checker checker(*this);
+            fire_script("OnSizeChanged");
+            if (!checker.is_alive())
+                return;
+        }
+
         get_manager().get_root().notify_hovered_frame_dirty();
+
         if (backdrop_)
             backdrop_->notify_borders_updated();
     }
 }
 
 void frame::update(float delta) {
-//#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-#define DEBUG_LOG(msg)
-
     alive_checker checker(*this);
 
-    DEBUG_LOG("  ~");
     base::update(delta);
-    DEBUG_LOG("   #");
 
     if (build_layer_list_flag_) {
-        DEBUG_LOG("   Build layers");
         // Clear layers' content
         for (auto& layer : layer_list_)
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
         for (const auto& reg : region_list_) {
-            if (reg && reg->get_object_type() != "font_string")
+            if (reg && !reg->is_object_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
+            }
         }
 
         for (const auto& reg : region_list_) {
-            if (reg && reg->get_object_type() == "font_string")
+            if (reg && reg->is_object_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
+            }
         }
 
         build_layer_list_flag_ = false;
     }
 
     if (is_visible()) {
-        DEBUG_LOG("   On update");
-        event_data data;
-        data.add(delta);
-        fire_script("OnUpdate", data);
+        fire_script("OnUpdate", {delta});
         if (!checker.is_alive())
             return;
     }
@@ -1567,9 +1562,9 @@ void frame::update(float delta) {
         title_region_->update(delta);
 
     // Update regions
-    DEBUG_LOG("   Update regions");
-    for (auto& obj : get_regions())
+    for (auto& obj : get_regions()) {
         obj.update(delta);
+    }
 
     // Remove deleted regions
     {
@@ -1580,7 +1575,6 @@ void frame::update(float delta) {
     }
 
     // Update children
-    DEBUG_LOG("   Update children");
     for (auto& child : get_children()) {
         child.update(delta);
         if (!checker.is_alive())
@@ -1596,24 +1590,16 @@ void frame::update(float delta) {
     }
 
     // Remove empty handlers
-    for (auto iter_list = signal_list_.begin(); iter_list != signal_list_.end();) {
-        if (iter_list->second.empty())
-            iter_list = signal_list_.erase(iter_list);
-        else
-            ++iter_list;
+    {
+        auto iter_list = signal_list_.begin();
+        while (iter_list != signal_list_.end()) {
+            if (iter_list->second.empty()) {
+                iter_list = signal_list_.erase(iter_list);
+            } else {
+                ++iter_list;
+            }
+        }
     }
-
-    vector2f new_size = get_apparent_dimensions();
-    if (old_size_ != new_size) {
-        DEBUG_LOG("   On size changed");
-        fire_script("OnSizeChanged");
-        if (!checker.is_alive())
-            return;
-
-        old_size_ = new_size;
-    }
-
-    DEBUG_LOG("   .");
 }
 
 } // namespace lxgui::gui

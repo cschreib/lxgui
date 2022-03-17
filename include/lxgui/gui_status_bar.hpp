@@ -174,15 +174,6 @@ public:
      */
     bool is_reversed() const;
 
-    /**
-     * \brief Updates this region's logic.
-     * \param delta Time spent since last update
-     * \note Triggered callbacks could destroy the frame. If you need
-     * to use the frame again after calling this function, use
-     * the helper class alive_checker.
-     */
-    void update(float delta) override;
-
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 
@@ -194,8 +185,6 @@ protected:
 
     void parse_attributes_(const layout_node& node) override;
     void parse_all_nodes_before_children_(const layout_node& node) override;
-
-    bool update_bar_texture_flag_ = false;
 
     orientation orientation_ = orientation::horizontal;
     bool        is_reversed_ = false;

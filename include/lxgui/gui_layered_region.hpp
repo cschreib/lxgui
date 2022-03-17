@@ -8,15 +8,7 @@
 namespace lxgui::gui {
 
 /// ID of a layer for rendering inside a frame.
-enum class layer {
-    background  = 0,
-    border      = 1,
-    artwork     = 2,
-    overlay     = 3,
-    highlight   = 4,
-    specialhigh = 5,
-    enum_size
-};
+enum class layer { background, border, artwork, overlay, highlight, special_high };
 
 /**
  * \brief A #region that can be rendered in a layer.

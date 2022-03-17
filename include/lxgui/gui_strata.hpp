@@ -16,8 +16,7 @@ namespace lxgui::gui {
 class frame;
 
 enum class frame_strata {
-    parent     = -1,
-    background = 0,
+    background,
     low,
     medium,
     high,
@@ -27,19 +26,13 @@ enum class frame_strata {
     tooltip
 };
 
-struct strata;
-
-/// Contains gui::frame
-struct level {
-    std::vector<utils::observer_ptr<frame>> frame_list;
-};
-
-/// Contains gui::level
+/// Contains frames sorted by level
 struct strata {
-    std::map<int, level>           level_list;
-    bool                           redraw_flag = true;
-    std::shared_ptr<render_target> target;
-    quad                           target_quad;
+    frame_strata                        id;
+    std::pair<std::size_t, std::size_t> range;
+    bool                                redraw_flag = true;
+    std::shared_ptr<render_target>      target;
+    quad                                target_quad;
 };
 
 } // namespace lxgui::gui

@@ -25,9 +25,9 @@ region::region(utils::control_block& block, manager& mgr, const region_core_attr
         set_virtual_();
 
     if (attr.parent)
-        set_name_and_parent_(attr.name, attr.parent);
-    else
-        set_name_(attr.name);
+        set_parent_(attr.parent);
+
+    set_name_(attr.name);
 
     initialize_(*this, attr);
 }
@@ -258,21 +258,21 @@ void region::set_relative_dimensions(const vector2f& dimensions) {
     if (parent_)
         set_dimensions(dimensions * parent_->get_apparent_dimensions());
     else
-        set_dimensions(dimensions * get_top_level_frame_renderer()->get_target_dimensions());
+        set_dimensions(dimensions * get_effective_frame_renderer()->get_target_dimensions());
 }
 
 void region::set_relative_width(float rel_width) {
     if (parent_)
         set_width(rel_width * parent_->get_apparent_dimensions().x);
     else
-        set_width(rel_width * get_top_level_frame_renderer()->get_target_dimensions().x);
+        set_width(rel_width * get_effective_frame_renderer()->get_target_dimensions().x);
 }
 
 void region::set_relative_height(float rel_height) {
     if (parent_)
         set_height(rel_height * parent_->get_apparent_dimensions().y);
     else
-        set_height(rel_height * get_top_level_frame_renderer()->get_target_dimensions().y);
+        set_height(rel_height * get_effective_frame_renderer()->get_target_dimensions().y);
 }
 
 const vector2f& region::get_dimensions() const {
@@ -325,29 +325,14 @@ void region::set_parent_(utils::observer_ptr<frame> parent) {
         return;
     }
 
-    if (parent_ != parent) {
-        parent_ = std::move(parent);
-
-        if (!is_virtual_)
-            notify_borders_need_update();
-    }
-}
-
-void region::set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent) {
-    if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
-                 << std::endl;
-        return;
-    }
-
-    if (parent_ == parent && name == name_)
+    if (parent_ == parent)
         return;
 
     parent_ = std::move(parent);
-    set_name_(name);
 
-    if (!is_virtual_)
+    if (!is_virtual()) {
         notify_borders_need_update();
+    }
 }
 
 utils::owner_ptr<region> region::release_from_parent() {
@@ -746,10 +731,15 @@ void region::notify_borders_need_update() {
     if (is_virtual())
         return;
 
+    const bool old_ready       = is_ready_;
+    const auto old_border_list = border_list_;
+
     update_borders_();
 
-    for (const auto& object : anchored_object_list_)
-        object->notify_borders_need_update();
+    if (border_list_ != old_border_list || is_ready_ != old_ready) {
+        for (const auto& object : anchored_object_list_)
+            object->notify_borders_need_update();
+    }
 }
 
 void region::notify_scaling_factor_updated() {
@@ -790,10 +780,10 @@ bool region::is_loaded() const {
     return is_loaded_;
 }
 
-utils::observer_ptr<const frame_renderer> region::get_top_level_frame_renderer() const {
+utils::observer_ptr<const frame_renderer> region::get_effective_frame_renderer() const {
     if (!parent_)
         return get_manager().get_root().observer_from_this();
-    return parent_->get_top_level_frame_renderer();
+    return parent_->get_effective_frame_renderer();
 }
 
 void region::notify_visible() {

@@ -187,7 +187,6 @@ protected:
 
     bool                           rebuild_scroll_render_target_flag_ = false;
     bool                           redraw_scroll_render_target_flag_  = false;
-    bool                           update_scroll_range_flag_          = false;
     std::shared_ptr<render_target> scroll_render_target_;
 
     utils::observer_ptr<texture> scroll_texture_ = nullptr;

@@ -5,8 +5,10 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_observer.hpp"
+#include "lxgui/utils_sorted_vector.hpp"
 
 #include <functional>
+#include <magic_enum.hpp>
 
 namespace lxgui::gui {
 
@@ -18,7 +20,7 @@ class color;
 class frame_renderer {
 public:
     /// Default constructor
-    frame_renderer() = default;
+    frame_renderer();
 
     /// Destructor
     virtual ~frame_renderer() = default;
@@ -92,10 +94,6 @@ public:
     int get_highest_level(frame_strata strata_id) const;
 
 protected:
-    void add_to_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& obj);
-    void remove_from_strata_list_(strata& strata_obj, const utils::observer_ptr<frame>& obj);
-    void add_to_level_list_(level& level_obj, const utils::observer_ptr<frame>& obj);
-    void remove_from_level_list_(level& level_obj, const utils::observer_ptr<frame>& obj);
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();
@@ -103,8 +101,20 @@ protected:
 
     void render_strata_(const strata& strata_obj) const;
 
-    std::array<strata, 8> strata_list_;
-    bool                  strata_list_updated_ = false;
+    struct frame_comparator {
+        bool operator()(const frame* f1, const frame* f2) const;
+    };
+
+    using frame_list_type     = utils::sorted_vector<frame*, frame_comparator>;
+    using frame_list_iterator = frame_list_type::iterator;
+
+    std::pair<std::size_t, std::size_t> get_strata_range_(frame_strata strata_id) const;
+
+    static constexpr std::size_t num_strata = magic_enum::enum_count<frame_strata>();
+
+    std::array<strata, num_strata> strata_list_;
+    frame_list_type                sorted_frame_list_;
+    bool                           frame_list_updated_ = false;
 };
 
 } // namespace lxgui::gui

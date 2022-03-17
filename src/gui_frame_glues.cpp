@@ -67,7 +67,7 @@
  * explicit key capture (see @{Frame:enable_key_capture}).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
- * - Events related to mouse move input (`OnEnter`, `OnLeave`)
+ * - Events related to mouse move input (`OnEnter`, `OnLeave`, `OnMouseMove`)
  * require @{Frame:enable_mouse_move}.
  * - Events related to mouse wheel input (`OnMouseWheel`) require
  * @{Frame:enable_mouse_wheel}.
@@ -150,6 +150,11 @@
  * the registered callback: a number identifying the mouse button, a string
  * containing the human-readable name of this button (`"LeftButton"`,
  * `"RightButton"`, or `"MiddleButton"`), and the mouse X and Y position.
+ * - `OnMouseMove`: Triggered when the mouse moves over this frame, after
+ * `OnEnter` and until `OnLeave`. This event provides four argument to
+ * the registered callback: the amount of mouse movement in X and Y since the
+ * last call to `OnMouseMove` (or since the last position before the mouse
+ * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
  * is released.
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
@@ -435,25 +440,17 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function get_frame_strata
      */
     type.set_function("get_frame_strata", [](const frame& self) -> sol::optional<std::string> {
-        frame_strata strata_id = self.get_frame_strata();
-        if (strata_id == frame_strata::background)
-            return std::string("BACKGROUND");
-        else if (strata_id == frame_strata::low)
-            return std::string("LOW");
-        else if (strata_id == frame_strata::medium)
-            return std::string("MEDIUM");
-        else if (strata_id == frame_strata::high)
-            return std::string("HIGH");
-        else if (strata_id == frame_strata::dialog)
-            return std::string("DIALOG");
-        else if (strata_id == frame_strata::fullscreen)
-            return std::string("FULLSCREEN");
-        else if (strata_id == frame_strata::fullscreen_dialog)
-            return std::string("FULLSCREEN_DIALOG");
-        else if (strata_id == frame_strata::tooltip)
-            return std::string("TOOLTIP");
+        auto strata_id = self.get_frame_strata();
+        if (strata_id.has_value())
+            return utils::to_string(strata_id.value());
         else
-            return {};
+            return sol::nullopt;
+    });
+
+    /** @function get_frame_strata
+     */
+    type.set_function("get_effective_frame_strata", [](const frame& self) {
+        return utils::to_string(self.get_effective_frame_strata());
     });
 
     /** @function get_frame_type
@@ -667,10 +664,19 @@ void frame::register_on_lua(sol::state& lua) {
 
     /** @function set_frame_strata
      */
-    type.set_function(
-        "set_frame_strata",
-        member_function< // select the right overload for Lua
-            static_cast<void (frame::*)(const std::string&)>(&frame::set_frame_strata)>());
+    type.set_function("set_frame_strata", [](frame& self, sol::optional<std::string> strata_name) {
+        if (!strata_name.has_value()) {
+            self.set_frame_strata(std::nullopt);
+        } else {
+            if (auto converted = utils::from_string<frame_strata>(strata_name.value());
+                converted.has_value()) {
+                self.set_frame_strata(converted.value());
+            } else {
+                gui::out << gui::warning << "Frame.set_frame_strata: "
+                         << "Unknown strata type: \"" << strata_name.value() << "\"." << std::endl;
+            }
+        }
+    });
 
     /** @function set_hit_rect_insets
      */

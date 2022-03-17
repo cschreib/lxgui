@@ -555,7 +555,14 @@ void root::on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos) 
         dragged_frame_->fire_script("OnDragMove", data);
     }
 
-    if (!hovered_frame_) {
+    if (hovered_frame_) {
+        event_data data;
+        data.add(movement.x);
+        data.add(movement.y);
+        data.add(mouse_pos.x);
+        data.add(mouse_pos.y);
+        hovered_frame_->fire_script("OnMouseMove", data);
+    } else {
         // Forward to the world
         world_input_dispatcher_.on_mouse_moved(movement, mouse_pos);
     }

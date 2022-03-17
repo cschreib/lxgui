@@ -6,7 +6,6 @@
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/gui_region_core_attributes.hpp"
-#include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
@@ -594,16 +593,16 @@ public:
      * \return The renderer of this object or its parents
      * \note For more information, see frame::set_frame_renderer().
      */
-    virtual utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const;
+    virtual utils::observer_ptr<const frame_renderer> get_effective_frame_renderer() const;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see frame::set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
+    utils::observer_ptr<frame_renderer> get_effective_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const region*>(this)->get_top_level_frame_renderer());
+            const_cast<const region*>(this)->get_effective_frame_renderer());
     }
 
     /**
@@ -767,16 +766,7 @@ protected:
      * \param parent The new parent
      * \note Default is nullptr.
      */
-    void set_parent_(utils::observer_ptr<frame> parent);
-
-    /**
-     * \brief Sets this region's name and parent at once.
-     * \param name This region's name
-     * \param parent The new parent
-     * \note The name can only be set once. If you need to just change the
-     * parent, call set_parent_().
-     */
-    void set_name_and_parent_(const std::string& name, utils::observer_ptr<frame> parent);
+    virtual void set_parent_(utils::observer_ptr<frame> parent);
 
     /**
      * \brief Set up function to call in all derived class constructors.

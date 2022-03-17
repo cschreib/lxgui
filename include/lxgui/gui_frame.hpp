@@ -6,6 +6,7 @@
 #include "lxgui/gui_frame_core_attributes.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_strata.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
@@ -17,6 +18,8 @@
 #include <limits>
 #include <list>
 #include <lxgui/extern_sol2_protected_function.hpp>
+#include <magic_enum.hpp>
+#include <optional>
 #include <set>
 #include <unordered_map>
 #include <vector>
@@ -105,7 +108,7 @@ using script_list_view = script_signal::slot_list_view;
  * explicit key capture (@ref frame::enable_key_capture).
  * - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
  * `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
- * - Events related to mouse move input (`OnEnter`, `OnLeave`)
+ * - Events related to mouse move input (`OnEnter`, `OnLeave`, `OnMouseMove`)
  * require frame::enable_mouse_move.
  * - Events related to mouse wheel input (`OnMouseWheel`) require
  * frame::enable_mouse_wheel.
@@ -188,6 +191,11 @@ using script_list_view = script_signal::slot_list_view;
  * the registered callback: a number identifying the mouse button, a string
  * containing the human-readable name of this button (`"LeftButton"`,
  * `"RightButton"`, or `"MiddleButton"`), and the mouse X and Y position.
+ * - `OnMouseMove`: Triggered when the mouse moves over this frame, after
+ * `OnEnter` and until `OnLeave`. This event provides four argument to
+ * the registered callback: the amount of mouse movement in X and Y since the
+ * last call to `OnMouseMove` (or since the last position before the mouse
+ * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
  * is released.
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
@@ -727,12 +735,6 @@ public:
     }
 
     /**
-     * \brief Calculates effective alpha.
-     * \return Effective alpha (alpha*parent->alpha)
-     */
-    float get_effective_alpha() const;
-
-    /**
      * \brief Calculates effective scale.
      * \return Effective scale (scale*parent->scale)
      */
@@ -746,9 +748,16 @@ public:
 
     /**
      * \brief Returns this frame's strata.
-     * \return This frame's strata
+     * \return This frame's strata, or nullopt if the strata is inherited from the parent.
+     * \note See get_effective_frame_strata() to obtain the actual strata of this frame.
      */
-    frame_strata get_frame_strata() const;
+    std::optional<frame_strata> get_frame_strata() const;
+
+    /**
+     * \brief Returns this frame's effective strata.
+     * \return This frame's strata, or its parent's effective strata if frame_strata::parent.
+     */
+    frame_strata get_effective_frame_strata() const;
 
     /**
      * \brief Returns this frame's top-level parent.
@@ -1257,15 +1266,9 @@ public:
 
     /**
      * \brief Sets this frame's strata.
-     * \param strata_id The new strata
+     * \param strata_id The new strata, or nullopt to inherit strata from parent
      */
-    void set_frame_strata(frame_strata strata_id);
-
-    /**
-     * \brief Sets this frame's strata.
-     * \param strata_name The new strata
-     */
-    void set_frame_strata(const std::string& strata_name);
+    void set_frame_strata(std::optional<frame_strata> strata_id);
 
     /**
      * \brief Sets this frames' backdrop.
@@ -1465,16 +1468,16 @@ public:
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<const frame_renderer> get_top_level_frame_renderer() const final;
+    utils::observer_ptr<const frame_renderer> get_effective_frame_renderer() const final;
 
     /**
      * \brief Returns the renderer of this object or its parents, nullptr if none.
      * \return The renderer of this object or its parents, nullptr if none
      * \note For more information, see @ref set_frame_renderer().
      */
-    utils::observer_ptr<frame_renderer> get_top_level_frame_renderer() {
+    utils::observer_ptr<frame_renderer> get_effective_frame_renderer() {
         return utils::const_pointer_cast<frame_renderer>(
-            const_cast<const frame*>(this)->get_top_level_frame_renderer());
+            const_cast<const frame*>(this)->get_effective_frame_renderer());
     }
 
     /**
@@ -1580,9 +1583,27 @@ protected:
 
     void add_level_(int amount);
 
-    void propagate_renderer_(bool rendered);
+    utils::observer_ptr<const frame_renderer> compute_top_level_frame_renderer_() const;
+
+    utils::observer_ptr<frame_renderer> compute_top_level_frame_renderer_() {
+        return utils::const_pointer_cast<frame_renderer>(
+            const_cast<const frame*>(this)->compute_top_level_frame_renderer_());
+    }
+
+    frame_strata compute_effective_frame_strata_() const;
+
+    void notify_frame_strata_changed_(frame_strata new_strata_id);
+
+    void notify_frame_renderer_changed_(const utils::observer_ptr<frame_renderer>& new_renderer);
 
     void update_borders_() override;
+
+    /**
+     * \brief Changes this region's parent.
+     * \param parent The new parent
+     * \note Default is nullptr.
+     */
+    void set_parent_(utils::observer_ptr<frame> parent) override;
 
     utils::connection define_script_(
         const std::string& script_name,
@@ -1607,7 +1628,7 @@ protected:
     child_list  child_list_;
     region_list region_list_;
 
-    static constexpr std::size_t num_layers = static_cast<std::size_t>(layer::enum_size);
+    static constexpr std::size_t num_layers = magic_enum::enum_count<layer>();
 
     std::array<layer_container, num_layers> layer_list_;
 
@@ -1617,11 +1638,13 @@ protected:
     std::set<std::string> reg_drag_list_;
     std::set<std::string> reg_key_list_;
 
-    int          level_        = 0;
-    frame_strata strata_       = frame_strata::medium;
-    bool         is_top_level_ = false;
+    int                         level_ = 0;
+    std::optional<frame_strata> strata_;
+    frame_strata                effective_strata_ = frame_strata::medium;
+    bool                        is_top_level_     = false;
 
-    utils::observer_ptr<frame_renderer> frame_renderer_ = nullptr;
+    utils::observer_ptr<frame_renderer> frame_renderer_           = nullptr;
+    utils::observer_ptr<frame_renderer> effective_frame_renderer_ = nullptr;
 
     std::unique_ptr<backdrop> backdrop_;
 
@@ -1643,8 +1666,6 @@ protected:
     float max_width_  = std::numeric_limits<float>::infinity();
     float min_height_ = 0.0f;
     float max_height_ = std::numeric_limits<float>::infinity();
-
-    vector2f old_size_;
 
     float scale_ = 1.0f;
 

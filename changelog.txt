@@ -211,6 +211,7 @@ Other changes:
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
  - gui: fixed missing 'const' for region::render()
+ - gui: fixed status_bar not firing OnValueChanged
 
 v1.2.0:
  - added support for MSVC 2010

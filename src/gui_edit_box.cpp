@@ -121,7 +121,7 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
             return;
     }
 
-    if (script_name == "OnKeyDown" && has_focus()) {
+    if ((script_name == "OnKeyDown" || script_name == "OnKeyRepeat") && has_focus()) {
         key  key_id           = data.get<key>(0);
         bool shift_is_pressed = data.get<bool>(1);
         bool ctrl_is_pressed  = data.get<bool>(2);

@@ -242,10 +242,9 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
             std::string script_file =
                 add_on.directory + "/" + node.get_attribute_value<std::string>("file");
 
-            try {
-                lua_.do_file(script_file);
-            } catch (const sol::error& e) {
-                std::string err = e.what();
+            auto result = lua_.do_file(script_file);
+            if (!result.valid()) {
+                std::string err = result.get<sol::error>().what();
                 gui::out << gui::error << err << std::endl;
                 event_emitter_.fire_event("LUA_ERROR", {err});
             }

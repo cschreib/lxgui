@@ -44,8 +44,8 @@ void frame::parse_attributes_(const layout_node& node) {
         set_movable(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("resizable"))
         set_resizable(attr->get_value<bool>());
-
-    set_frame_strata(node.get_attribute_value_or<std::string>("frameStrata", "PARENT"));
+    if (const layout_attribute* attr = node.try_get_attribute("frameStrata"))
+        set_frame_strata(attr->get_value<frame_strata>());
 
     if (const layout_attribute* attr = node.try_get_attribute("frameLevel")) {
         if (!is_virtual_) {
@@ -57,8 +57,13 @@ void frame::parse_attributes_(const layout_node& node) {
                      << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
+
     if (const layout_attribute* attr = node.try_get_attribute("enableMouse"))
         enable_mouse(attr->get_value<bool>());
+    if (const layout_attribute* attr = node.try_get_attribute("enableMouseMove"))
+        enable_mouse_move(attr->get_value<bool>());
+    if (const layout_attribute* attr = node.try_get_attribute("enableMouseClick"))
+        enable_mouse_click(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseWheel"))
         enable_mouse_wheel(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableKeyboard"))
