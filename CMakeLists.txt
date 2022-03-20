@@ -241,6 +241,9 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_addon_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_addon_registry_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_anchor.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_animated_texture.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_animated_texture_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_animated_texture_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_atlas.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_backdrop.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_button.cpp
