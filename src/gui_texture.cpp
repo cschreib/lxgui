@@ -58,6 +58,8 @@ std::string texture::serialize(const std::string& tab) const {
 }
 
 void texture::render() const {
+    base::render();
+
     if (!is_visible())
         return;
 

@@ -61,7 +61,9 @@ frame::~frame() {
 }
 
 void frame::render() const {
-    if (!is_visible_ || !is_ready_)
+    base::render();
+
+    if (!is_visible() || !is_ready_)
         return;
 
     if (backdrop_) {

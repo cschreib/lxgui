@@ -19,6 +19,8 @@ font_string::font_string(
 }
 
 void font_string::render() const {
+    base::render();
+
     if (!text_ || !is_ready_ || !is_visible())
         return;
 
