@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <lxgui/extern_sol2_state.hpp>
+#include <lxgui/gui_animated_texture.hpp>
 #include <lxgui/gui_button.hpp>
 #include <lxgui/gui_check_button.hpp>
 #include <lxgui/gui_edit_box.hpp>
@@ -57,6 +58,7 @@ void examples_setup_gui(gui::manager& manager) {
     // also where you would register your own region types, if any.
     gui::factory& factory = manager.get_factory();
     factory.register_region_type<gui::texture>();
+    factory.register_region_type<gui::animated_texture>();
     factory.register_region_type<gui::font_string>();
     factory.register_region_type<gui::button>();
     factory.register_region_type<gui::check_button>();

@@ -182,7 +182,21 @@ void animated_texture::set_vertex_color(const color& c, std::size_t index) {
 }
 
 void animated_texture::update_tex_coords_() {
-    // TODO
+    if (!quad_.mat)
+        return;
+
+    const int size  = static_cast<int>(quad_.mat->get_rect().height());
+    const int steps = static_cast<int>(quad_.mat->get_rect().width()) / size;
+
+    int left = size * std::clamp(static_cast<int>(std::round(state_ * steps - 0.5)), 0, steps - 1);
+
+    auto top_left     = quad_.mat->get_canvas_uv(vector2f(left, 0.0f), false);
+    auto bottom_right = quad_.mat->get_canvas_uv(vector2f(left + size, size), false);
+
+    quad_.v[0].uvs = top_left;
+    quad_.v[1].uvs = vector2f(bottom_right.x, top_left.y);
+    quad_.v[2].uvs = bottom_right;
+    quad_.v[3].uvs = vector2f(top_left.x, bottom_right.y);
 }
 
 void animated_texture::update_borders_() {

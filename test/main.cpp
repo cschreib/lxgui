@@ -1,3 +1,4 @@
+#include "lxgui/gui_animated_texture.hpp"
 #include "lxgui/gui_button.hpp"
 #include "lxgui/gui_check_button.hpp"
 #include "lxgui/gui_edit_box.hpp"
@@ -408,6 +409,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
         // Register the needed region types
         gui::factory& fac = manager->get_factory();
         fac.register_region_type<gui::texture>();
+        fac.register_region_type<gui::animated_texture>();
         fac.register_region_type<gui::font_string>();
         fac.register_region_type<gui::button>();
         fac.register_region_type<gui::check_button>();

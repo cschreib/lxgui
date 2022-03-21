@@ -21,6 +21,12 @@
                         <MaxColor r="1" g="0.7"/>
                     </Gradient>
                 </Texture>
+                <AnimatedTexture name="$parentTexture3" file="|animated_texture.png" speed="5">
+                    <Size><AbsDimension x="25" y="25"/></Size>
+                    <Anchors>
+                        <Anchor point="BOTTOM_LEFT" relativeTo="$parentTexture1" relativePoint="BOTTOM_RIGHT"/>
+                    </Anchors>
+                </AnimatedTexture>
             </Layer>
         </Layers>
     </Frame>

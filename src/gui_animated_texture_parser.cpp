@@ -7,8 +7,6 @@ namespace lxgui::gui {
 
 void animated_texture::parse_layout(const layout_node& node) {
     layered_region::parse_layout(node);
-
-    // TODO
 }
 
 void animated_texture::parse_attributes_(const layout_node& node) {
@@ -17,7 +15,14 @@ void animated_texture::parse_attributes_(const layout_node& node) {
     if (const layout_attribute* attr = node.try_get_attribute("file"))
         set_texture(attr->get_value<std::string>());
 
-    // TODO
+    if (const layout_attribute* attr = node.try_get_attribute("speed"))
+        set_speed(attr->get_value<float>());
+
+    if (const layout_attribute* attr = node.try_get_attribute("state"))
+        set_state(attr->get_value<float>());
+
+    if (const layout_attribute* attr = node.try_get_attribute("paused"))
+        set_paused(attr->get_value<bool>());
 }
 
 } // namespace lxgui::gui

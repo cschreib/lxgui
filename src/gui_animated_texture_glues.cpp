@@ -23,6 +23,18 @@ void animated_texture::register_on_lua(sol::state& lua) {
         sol::meta_function::index, member_function<&animated_texture::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&animated_texture::set_lua_member_>());
 
+    /** @function get_speed
+     */
+    type.set_function("get_speed", member_function<&animated_texture::get_speed>());
+
+    /** @function get_speed
+     */
+    type.set_function("get_state", member_function<&animated_texture::get_state>());
+
+    /** @function is_paused
+     */
+    type.set_function("is_paused", member_function<&animated_texture::is_paused>());
+
     /** @function get_texture
      */
     type.set_function("get_texture", member_function<&animated_texture::get_texture_file>());
@@ -33,6 +45,18 @@ void animated_texture::register_on_lua(sol::state& lua) {
         color color = self.get_vertex_color(index);
         return std::make_tuple(color.r, color.g, color.b, color.a);
     });
+
+    /** @function set_speed
+     */
+    type.set_function("set_speed", member_function<&animated_texture::set_speed>());
+
+    /** @function set_speed
+     */
+    type.set_function("set_state", member_function<&animated_texture::set_state>());
+
+    /** @function set_paused
+     */
+    type.set_function("set_paused", member_function<&animated_texture::set_paused>());
 
     /** @function set_texture
      */
