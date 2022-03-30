@@ -134,7 +134,7 @@ constexpr auto member_function() {
 
 template<typename T>
 void region::create_glue_(T& self) {
-    get_lua_().globals()[lua_name_] = observer_from(&self);
+    get_lua_().globals()[get_name()] = observer_from(&self);
 }
 
 template<typename T>

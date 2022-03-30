@@ -209,16 +209,9 @@ public:
     const std::string& get_name() const;
 
     /**
-     * \brief Returns this region's Lua name.
-     * \return This region's Lua name
-     */
-    const std::string& get_lua_name() const;
-
-    /**
      * \brief Returns this region's raw name.
      * \return This region's raw name
-     * \note This is the name of the region before "$parent"
-     * has been replaced by its parent's name.
+     * \note This is the name of the region before "$parent" has been replaced by its parent's name.
      */
     const std::string& get_raw_name() const;
 
@@ -781,7 +774,6 @@ protected:
 
     std::string name_;
     std::string raw_name_;
-    std::string lua_name_;
 
     utils::observer_ptr<frame> parent_ = nullptr;
 

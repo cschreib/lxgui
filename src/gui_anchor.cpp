@@ -31,7 +31,7 @@ void anchor::update_parent_(region& object) {
 
     std::string parent_full_name = parent_name;
     if (obj_parent) {
-        utils::replace(parent_full_name, "$parent", obj_parent->get_lua_name());
+        utils::replace(parent_full_name, "$parent", obj_parent->get_name());
     } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
         gui::out << gui::error << "gui::" << object.get_object_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""

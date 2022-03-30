@@ -67,7 +67,7 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_normal_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_normal_texture()};
 
         auto tex =
@@ -82,7 +82,7 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_pushed_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_pushed_texture()};
 
         auto tex =
@@ -97,7 +97,7 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_highlight_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_highlight_texture()};
 
         auto tex =
@@ -112,7 +112,7 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_disabled_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_disabled_texture()};
 
         auto tex =
@@ -127,7 +127,7 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_normal_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_normal_text()};
 
         auto fstr =
@@ -142,7 +142,7 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_highlight_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_highlight_text()};
 
         auto fstr =
@@ -157,7 +157,7 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_disabled_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_disabled_text()};
 
         auto fstr =

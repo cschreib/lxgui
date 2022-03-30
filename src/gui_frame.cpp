@@ -292,8 +292,8 @@ void frame::create_title_region() {
 
     if (!title_region->is_virtual()) {
         // Add shortcut to region as entry in Lua table
-        auto& lua                          = get_lua_();
-        lua[get_lua_name()]["TitleRegion"] = lua[title_region->get_lua_name()];
+        auto& lua                      = get_lua_();
+        lua[get_name()]["TitleRegion"] = lua[title_region->get_name()];
     }
 
     title_region_ = std::move(title_region);
@@ -498,8 +498,8 @@ void frame::set_parent_(utils::observer_ptr<frame> parent) {
             std::string raw_name = get_raw_name();
             if (utils::starts_with(raw_name, "$parent")) {
                 raw_name.erase(0, std::string("$parent").size());
-                sol::state& lua                                = get_lua_();
-                lua[raw_prev_parent->get_lua_name()][raw_name] = sol::lua_nil;
+                sol::state& lua                            = get_lua_();
+                lua[raw_prev_parent->get_name()][raw_name] = sol::lua_nil;
             }
         }
     }
@@ -525,8 +525,8 @@ void frame::set_parent_(utils::observer_ptr<frame> parent) {
             std::string raw_name = get_raw_name();
             if (utils::starts_with(raw_name, "$parent")) {
                 raw_name.erase(0, std::string("$parent").size());
-                auto& lua                                     = get_lua_();
-                lua[raw_new_parent->get_lua_name()][raw_name] = lua[get_lua_name()];
+                auto& lua                                 = get_lua_();
+                lua[raw_new_parent->get_name()][raw_name] = lua[get_name()];
             }
         }
 
@@ -584,8 +584,8 @@ utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_r
         std::string raw_name = added_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
-            auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[added_region->get_lua_name()];
+            auto& lua                 = get_lua_();
+            lua[get_name()][raw_name] = lua[added_region->get_name()];
         }
     }
 
@@ -620,8 +620,8 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
         std::string raw_name = removed_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
-            sol::state& lua               = get_lua_();
-            lua[get_lua_name()][raw_name] = sol::lua_nil;
+            sol::state& lua           = get_lua_();
+            lua[get_name()][raw_name] = sol::lua_nil;
         }
     }
 
@@ -984,7 +984,7 @@ utils::connection frame::define_script_(
         }
 
         // Get a reference to self
-        sol::object self_lua = lua[self.get_lua_name()];
+        sol::object self_lua = lua[self.get_name()];
         if (self_lua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
@@ -1012,7 +1012,7 @@ utils::connection frame::define_script_(
         // Register the function so it can be called directly from Lua
         std::string adjusted_name = get_adjusted_script_name(script_name);
 
-        get_lua_()[get_lua_name()][adjusted_name].set_function(
+        get_lua_()[get_name()][adjusted_name].set_function(
             [=](frame& self, sol::variadic_args v_args) {
                 event_data data;
                 for (auto&& arg : v_args) {
@@ -1059,8 +1059,8 @@ void frame::remove_script(const std::string& script_name) {
     iter_h->second.disconnect_all();
 
     if (!is_virtual()) {
-        std::string adjusted_name                 = get_adjusted_script_name(script_name);
-        get_lua_()[get_lua_name()][adjusted_name] = sol::lua_nil;
+        std::string adjusted_name             = get_adjusted_script_name(script_name);
+        get_lua_()[get_name()][adjusted_name] = sol::lua_nil;
     }
 }
 

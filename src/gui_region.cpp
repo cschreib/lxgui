@@ -97,7 +97,6 @@ std::string region::serialize(const std::string& tab) const {
         << std::string(is_ready_ ? "ready" : "not ready")
         << std::string(is_manually_inherited_ ? ", manually inherited" : "") << ")\n";
     str << tab << "  # Raw name   : " << raw_name_ << "\n";
-    str << tab << "  # Lua name   : " << lua_name_ << "\n";
     str << tab << "  # Type       : " << type_.back() << "\n";
     if (parent_)
         str << tab << "  # Parent     : " << parent_->get_name() << "\n";
@@ -142,10 +141,6 @@ void region::copy_from(const region& obj) {
 
 const std::string& region::get_name() const {
     return name_;
-}
-
-const std::string& region::get_lua_name() const {
-    return lua_name_;
 }
 
 const std::string& region::get_raw_name() const {
@@ -299,19 +294,16 @@ bool region::is_in_region(const vector2f& position) const {
 
 void region::set_name_(const std::string& name) {
     if (name_.empty()) {
-        name_ = lua_name_ = raw_name_ = name;
+        name_ = raw_name_ = name;
         if (utils::starts_with(name_, "$parent")) {
             if (parent_)
-                utils::replace(lua_name_, "$parent", parent_->get_lua_name());
+                utils::replace(name_, "$parent", parent_->get_name());
             else {
                 gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
                          << "\" has no parent" << std::endl;
-                utils::replace(lua_name_, "$parent", "");
+                utils::replace(name_, "$parent", "");
             }
         }
-
-        if (!is_virtual_)
-            name_ = lua_name_;
     } else {
         gui::out << gui::warning << "gui::" << type_.back() << ": "
                  << "set_name() can only be called once." << std::endl;
@@ -764,7 +756,7 @@ sol::state& region::get_lua_() {
 }
 
 void region::remove_glue() {
-    get_lua_().globals()[lua_name_] = sol::lua_nil;
+    get_lua_().globals()[get_name()] = sol::lua_nil;
 }
 
 void region::set_manually_inherited(bool manually_inherited) {

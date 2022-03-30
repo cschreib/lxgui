@@ -64,7 +64,7 @@ void manager::create_lua_() {
             if (new_frame) {
                 new_frame->set_addon(get_addon_registry()->get_current_addon());
                 new_frame->notify_loaded();
-                return get_lua()[new_frame->get_lua_name()];
+                return get_lua()[new_frame->get_name()];
             } else
                 return sol::lua_nil;
         });

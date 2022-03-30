@@ -106,7 +106,7 @@ void slider::copy_from(const region& obj) {
 
     if (const texture* thumb = slider_obj->get_thumb_texture().get()) {
         region_core_attributes attr;
-        attr.name        = thumb->get_name();
+        attr.name        = thumb->get_raw_name();
         attr.inheritance = {slider_obj->get_thumb_texture()};
 
         auto tex = this->create_layered_region<texture>(thumb->get_draw_layer(), std::move(attr));

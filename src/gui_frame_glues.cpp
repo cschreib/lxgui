@@ -419,7 +419,7 @@ void frame::register_on_lua(sol::state& lua) {
 
         auto lua_state = sol::state_view(this_lua);
         for (const auto& child : self.get_children()) {
-            children.push_back(lua_state[child.get_lua_name()]);
+            children.push_back(lua_state[child.get_name()]);
         }
 
         return sol::as_table(std::move(children));
@@ -498,7 +498,7 @@ void frame::register_on_lua(sol::state& lua) {
                 return sol::lua_nil;
 
             std::string adjusted_name = get_adjusted_script_name(script_name);
-            return self.get_manager().get_lua()[self.get_lua_name()][adjusted_name];
+            return self.get_manager().get_lua()[self.get_name()][adjusted_name];
         });
 
     /** @function get_title_region

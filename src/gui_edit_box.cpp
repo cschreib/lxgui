@@ -58,7 +58,7 @@ void edit_box::copy_from(const region& obj) {
 
     if (const font_string* fs = box_obj->get_font_string().get()) {
         region_core_attributes attr;
-        attr.name        = fs->get_name();
+        attr.name        = fs->get_raw_name();
         attr.inheritance = {box_obj->get_font_string()};
 
         auto fnt = this->create_layered_region<font_string>(fs->get_draw_layer(), std::move(attr));

@@ -202,7 +202,7 @@ void region::register_on_lua(sol::state& lua) {
     type.set_function("get_parent", [](region& self) {
         sol::object parent;
         if (auto* self_parent = self.get_parent().get())
-            parent = self.get_manager().get_lua()[self_parent->get_lua_name()];
+            parent = self.get_manager().get_lua()[self_parent->get_name()];
         return parent;
     });
 

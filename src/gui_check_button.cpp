@@ -28,7 +28,7 @@ void check_button::copy_from(const region& obj) {
 
     if (const texture* checked_texture = button_obj->get_checked_texture().get()) {
         region_core_attributes attr;
-        attr.name        = checked_texture->get_name();
+        attr.name        = checked_texture->get_raw_name();
         attr.inheritance = {button_obj->get_checked_texture()};
 
         auto tex = this->create_layered_region<texture>(
@@ -43,7 +43,7 @@ void check_button::copy_from(const region& obj) {
 
     if (const texture* disabled_texture = button_obj->get_disabled_checked_texture().get()) {
         region_core_attributes attr;
-        attr.name        = disabled_texture->get_name();
+        attr.name        = disabled_texture->get_raw_name();
         attr.inheritance = {button_obj->get_disabled_checked_texture()};
 
         auto tex = this->create_layered_region<texture>(

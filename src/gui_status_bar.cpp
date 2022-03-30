@@ -55,7 +55,7 @@ void status_bar::copy_from(const region& obj) {
 
     if (const texture* bar = bar_obj->get_bar_texture().get()) {
         region_core_attributes attr;
-        attr.name        = bar->get_name();
+        attr.name        = bar->get_raw_name();
         attr.inheritance = {bar_obj->get_bar_texture()};
 
         auto bar_texture =
