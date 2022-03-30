@@ -66,7 +66,7 @@ void scroll_frame::copy_from(const region& obj) {
         utils::observer_ptr<frame> scroll_child = create_child(std::move(attr));
 
         if (scroll_child) {
-            scroll_child->set_special();
+            scroll_child->set_manually_inherited(true);
             scroll_child->notify_loaded();
             this->set_scroll_child(remove_child(scroll_child));
         }
@@ -86,7 +86,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
         if (!scroll_texture)
             return;
 
-        scroll_texture->set_special();
+        scroll_texture->set_manually_inherited(true);
         scroll_texture->set_all_points(observer_from(this));
 
         if (scroll_render_target_)
@@ -103,7 +103,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
         add_child(std::move(obj));
 
-        scroll_child_->set_special();
+        scroll_child_->set_manually_inherited(true);
         if (!is_virtual())
             scroll_child_->set_frame_renderer(observer_from(this));
 

@@ -17,7 +17,7 @@ void check_button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_checked_texture(utils::static_pointer_cast<texture>(tex));
         }
 
@@ -34,7 +34,7 @@ void check_button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_disabled_checked_texture(utils::static_pointer_cast<texture>(tex));
         }
 

@@ -29,7 +29,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_normal_texture(utils::static_pointer_cast<texture>(tex));
         }
 
@@ -46,7 +46,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_pushed_texture(utils::static_pointer_cast<texture>(tex));
         }
 
@@ -63,7 +63,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_disabled_texture(utils::static_pointer_cast<texture>(tex));
         }
 
@@ -80,7 +80,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             set_highlight_texture(utils::static_pointer_cast<texture>(tex));
         }
 
@@ -97,7 +97,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             set_normal_text(utils::static_pointer_cast<font_string>(fstr));
         }
 
@@ -114,7 +114,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             set_highlight_text(utils::static_pointer_cast<font_string>(fstr));
         }
 
@@ -131,7 +131,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             set_disabled_text(utils::static_pointer_cast<font_string>(fstr));
         }
 

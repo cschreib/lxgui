@@ -35,7 +35,7 @@ void check_button::copy_from(const region& obj) {
             checked_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_checked_texture(tex);
         }
@@ -50,7 +50,7 @@ void check_button::copy_from(const region& obj) {
             disabled_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_disabled_checked_texture(tex);
         }

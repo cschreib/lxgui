@@ -53,7 +53,7 @@ void edit_box::parse_font_string_node_(const layout_node& node) {
 
         auto fstr = parse_region_(defaulted, "ARTWORK", "FontString");
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             set_font_string(utils::static_pointer_cast<font_string>(fstr));
         }
 

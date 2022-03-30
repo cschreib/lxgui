@@ -62,7 +62,7 @@ void status_bar::copy_from(const region& obj) {
             this->create_layered_region<texture>(bar->get_draw_layer(), std::move(attr));
 
         if (bar_texture) {
-            bar_texture->set_special();
+            bar_texture->set_manually_inherited(true);
             bar_texture->notify_loaded();
             this->set_bar_texture(bar_texture);
         }
@@ -245,7 +245,7 @@ void status_bar::create_bar_texture_() {
     if (!bar_texture)
         return;
 
-    bar_texture->set_special();
+    bar_texture->set_manually_inherited(true);
     bar_texture->notify_loaded();
     set_bar_texture(bar_texture);
 }

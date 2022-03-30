@@ -572,21 +572,20 @@ public:
     bool is_virtual() const;
 
     /**
-     * \brief Flags this object as "special".
-     * \note Special objects are not automatically copied
-     * in the frame inheritance process. They must be
-     * explicitly copied by the derived class
-     * (example: Button will have to copy its button
-     * textures itself).
+     * \brief Flags this region as manually inherited or not.
+     * \note By default, all regions are automatically inherited. This is generally the desired
+     * behavior for regions defined by the user, but it is less desirable for "special" or
+     * "internal" regions necessary for the proper operation of some region types (e.g., the texture
+     * used by a button), which need special treatment or registration.
      */
-    void set_special();
+    void set_manually_inherited(bool manually_inherited);
 
     /**
-     * \brief Checks if this object is special.
-     * \return 'true' if this object is special
-     * \note For more information, see set_special().
+     * \brief Checks if this object is manually inherited.
+     * \return 'true' if this object is manually inherited
+     * \note For more information, see set_manually_inherited().
      */
-    bool is_special() const;
+    bool is_manually_inherited() const;
 
     /**
      * \brief Returns the renderer of this object or its parents.
@@ -787,10 +786,10 @@ protected:
 
     utils::observer_ptr<frame> parent_ = nullptr;
 
-    bool is_special_ = false;
-    bool is_virtual_ = false;
-    bool is_loaded_  = false;
-    bool is_ready_   = true;
+    bool is_manually_inherited_ = false;
+    bool is_virtual_            = false;
+    bool is_loaded_             = false;
+    bool is_ready_              = true;
 
     std::vector<std::string> type_;
 

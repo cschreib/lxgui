@@ -112,7 +112,7 @@ void slider::copy_from(const region& obj) {
         auto tex = this->create_layered_region<texture>(thumb->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_thumb_texture(tex);
         }

@@ -93,9 +93,9 @@ region::~region() {
 std::string region::serialize(const std::string& tab) const {
     std::ostringstream str;
 
-    str << tab << "  # Name       : " << name_
-        << " (" + std::string(is_ready_ ? "ready" : "not ready") +
-               std::string(is_special_ ? ", special)\n" : ")\n");
+    str << tab << "  # Name       : " << name_ << " ("
+        << std::string(is_ready_ ? "ready" : "not ready")
+        << std::string(is_manually_inherited_ ? ", manually inherited" : "") << ")\n";
     str << tab << "  # Raw name   : " << raw_name_ << "\n";
     str << tab << "  # Lua name   : " << lua_name_ << "\n";
     str << tab << "  # Type       : " << type_.back() << "\n";
@@ -767,12 +767,12 @@ void region::remove_glue() {
     get_lua_().globals()[lua_name_] = sol::lua_nil;
 }
 
-void region::set_special() {
-    is_special_ = true;
+void region::set_manually_inherited(bool manually_inherited) {
+    is_manually_inherited_ = manually_inherited;
 }
 
-bool region::is_special() const {
-    return is_special_;
+bool region::is_manually_inherited() const {
+    return is_manually_inherited_;
 }
 
 void region::notify_renderer_need_redraw() {}

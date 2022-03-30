@@ -74,7 +74,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_normal_texture(tex);
         }
@@ -89,7 +89,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_pushed_texture(tex);
         }
@@ -104,7 +104,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_highlight_texture(tex);
         }
@@ -119,7 +119,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_disabled_texture(tex);
         }
@@ -134,7 +134,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_normal_text(fstr);
         }
@@ -149,7 +149,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_highlight_text(fstr);
         }
@@ -164,7 +164,7 @@ void button::copy_from(const region& obj) {
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_disabled_text(fstr);
         }

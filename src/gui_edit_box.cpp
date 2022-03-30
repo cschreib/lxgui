@@ -64,7 +64,7 @@ void edit_box::copy_from(const region& obj) {
         auto fnt = this->create_layered_region<font_string>(fs->get_draw_layer(), std::move(attr));
 
         if (fnt) {
-            fnt->set_special();
+            fnt->set_manually_inherited(true);
             fnt->notify_loaded();
             this->set_font_string(fnt);
         }
@@ -598,7 +598,7 @@ void edit_box::create_font_string_() {
     if (!fnt)
         return;
 
-    fnt->set_special();
+    fnt->set_manually_inherited(true);
     fnt->notify_loaded();
     set_font_string(fnt);
 }
@@ -611,7 +611,7 @@ void edit_box::create_highlight_() {
     if (!highlight)
         return;
 
-    highlight->set_special();
+    highlight->set_manually_inherited(true);
 
     highlight->set_point(point::top, vector2f(0.0f, text_insets_.top));
     highlight->set_point(point::bottom, vector2f(0.0f, -text_insets_.bottom));
@@ -631,7 +631,7 @@ void edit_box::create_carret_() {
         if (!carret)
             return;
 
-        carret->set_special();
+        carret->set_manually_inherited(true);
 
         carret->set_point(point::center, point::left, vector2f(text_insets_.left - 1.0f, 0.0f));
 

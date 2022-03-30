@@ -227,7 +227,7 @@ void frame::copy_from(const region& obj) {
     this->set_scale(frame_obj->get_scale());
 
     for (const auto& art : frame_obj->region_list_) {
-        if (!art || art->is_special())
+        if (!art || art->is_manually_inherited())
             continue;
 
         region_core_attributes attr;
@@ -254,7 +254,7 @@ void frame::copy_from(const region& obj) {
     }
 
     for (const auto& child : frame_obj->child_list_) {
-        if (!child || child->is_special())
+        if (!child || child->is_manually_inherited())
             continue;
 
         frame_core_attributes attr;
@@ -288,7 +288,7 @@ void frame::create_title_region() {
     if (!title_region)
         return;
 
-    title_region->set_special();
+    title_region->set_manually_inherited(true);
 
     if (!title_region->is_virtual()) {
         // Add shortcut to region as entry in Lua table
