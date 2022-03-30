@@ -811,7 +811,7 @@ $(function() {
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;}</div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160; </div>
 <div class="line"><a name="l00742"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1localizer.html#af32d1917fd61d9ad4417093ac1198bd6">  742</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1localizer.html#af32d1917fd61d9ad4417093ac1198bd6">localizer::load_translation_file</a>(<span class="keyword">const</span> std::string&amp; file_name) <span class="keyword">try</span> {</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keyword">auto</span> result = lua_.safe_script_file(file_name);</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keyword">auto</span> result = lua_.do_file(file_name);</div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <span class="keywordflow">if</span> (!result.valid()) {</div>
 <div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::locale: &quot;</span> &lt;&lt; result.get&lt;sol::error&gt;().what() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        <span class="keywordflow">return</span>;</div>
@@ -948,7 +948,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1localizer_html_ac2f22a1c01c67122f51862292e4deb5a"><div class="ttname"><a href="classlxgui_1_1gui_1_1localizer.html#ac2f22a1c01c67122f51862292e4deb5a">lxgui::gui::localizer::set_locale</a></div><div class="ttdeci">void set_locale(const std::locale &amp;locale)</div><div class="ttdoc">Changes the current locale (used to format numbers).</div><div class="ttdef"><b>Definition:</b> <a href="gui__localizer_8cpp_source.html#l00116">gui_localizer.cpp:116</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 17 2022 08:26:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

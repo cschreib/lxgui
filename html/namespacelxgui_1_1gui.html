@@ -103,6 +103,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw data of an anchor (value type)  <a href="structlxgui_1_1gui_1_1anchor__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1animated__texture.html">animated_texture</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A region that can be rendered in a layer.">layered_region</a> that can draw animated sequences.  <a href="classlxgui_1_1gui_1_1animated__texture.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1atlas.html">atlas</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class that holds multiple materials for efficient rendering.  <a href="classlxgui_1_1gui_1_1atlas.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -489,6 +492,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1df48e0db5891e9f7ff368ec3650cc7f"><td class="memTemplItemLeft" align="right" valign="top">utils::observer_ptr&lt; ObjectType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1df48e0db5891e9f7ff368ec3650cc7f">observer_from</a> (ObjectType *self)</td></tr>
 <tr class="memdesc:a1df48e0db5891e9f7ff368ec3650cc7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain an observer pointer from a raw pointer (typically 'this')  <a href="namespacelxgui_1_1gui.html#a1df48e0db5891e9f7ff368ec3650cc7f">More...</a><br /></td></tr>
 <tr class="separator:a1df48e0db5891e9f7ff368ec3650cc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c93bef73f2804204c6ee1a5eb4c8068"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7c93bef73f2804204c6ee1a5eb4c8068"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a7c93bef73f2804204c6ee1a5eb4c8068">sol_lua_check_access</a> (sol::types&lt; T &gt;, lua_State *lua, int index, sol::stack::record &amp;)</td></tr>
+<tr class="separator:a7c93bef73f2804204c6ee1a5eb4c8068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef5fc224478a6f6d3f2df7142610a37"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a6ef5fc224478a6f6d3f2df7142610a37">get_object</a> (<a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> &amp;mgr, const std::variant&lt; std::string, <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> * &gt; &amp;parent)</td></tr>
 <tr class="separator:a6ef5fc224478a6f6d3f2df7142610a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a178d47db6a83ee723c7fc83adf1b56bd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -1376,7 +1382,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00054">54</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00056">56</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1414,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00075">75</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00077">77</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
 
 </div>
 </div>
@@ -1488,7 +1494,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00875">875</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00877">877</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1524,7 +1530,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00915">915</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00917">917</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1582,7 +1588,7 @@ template&lt;auto T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00128">128</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00130">130</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
 
 </div>
 </div>
@@ -2750,6 +2756,50 @@ template&lt;typename O , typename T &gt; </div>
 
 </div>
 </div>
+<a id="a7c93bef73f2804204c6ee1a5eb4c8068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c93bef73f2804204c6ee1a5eb4c8068">&#9670;&nbsp;</a></span>sol_lua_check_access()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::sol_lua_check_access </td>
+          <td>(</td>
+          <td class="paramtype">sol::types&lt; T &gt;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">lua_State *&#160;</td>
+          <td class="paramname"><em>lua</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::stack::record &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00037">37</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a5d3c543fb8d5636e3cb212b170f5a993"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d3c543fb8d5636e3cb212b170f5a993">&#9670;&nbsp;</a></span>step_value()</h2>
 
@@ -2858,7 +2908,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 17 2022 08:26:30 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
