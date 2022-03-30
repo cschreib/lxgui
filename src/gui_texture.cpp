@@ -395,10 +395,10 @@ void texture::set_vertex_color(const color& c, std::size_t index) {
 void texture::update_borders_() {
     base::update_borders_();
 
-    quad_.v[0].pos = border_list_.top_left();
-    quad_.v[1].pos = border_list_.top_right();
-    quad_.v[2].pos = border_list_.bottom_right();
-    quad_.v[3].pos = border_list_.bottom_left();
+    quad_.v[0].pos = borders_.top_left();
+    quad_.v[1].pos = borders_.top_right();
+    quad_.v[2].pos = borders_.bottom_right();
+    quad_.v[3].pos = borders_.bottom_left();
 }
 
 } // namespace lxgui::gui

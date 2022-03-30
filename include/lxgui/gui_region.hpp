@@ -794,8 +794,8 @@ protected:
 
     std::array<std::optional<anchor>, 9>     anchor_list_;
     std::vector<utils::observer_ptr<region>> previous_anchor_parent_list_;
-    bounds2<bool>                            defined_border_list_;
-    bounds2f                                 border_list_;
+    bounds2<bool>                            defined_borders_;
+    bounds2f                                 borders_;
 
     float alpha_      = 1.0f;
     bool  is_shown_   = true;

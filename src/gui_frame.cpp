@@ -355,62 +355,62 @@ void frame::set_height(float abs_height) {
 }
 
 void frame::check_position_() {
-    if (border_list_.right - border_list_.left < min_width_) {
-        border_list_.right = border_list_.left + min_width_;
-    } else if (border_list_.right - border_list_.left > max_width_) {
-        border_list_.right = border_list_.left + max_width_;
+    if (borders_.right - borders_.left < min_width_) {
+        borders_.right = borders_.left + min_width_;
+    } else if (borders_.right - borders_.left > max_width_) {
+        borders_.right = borders_.left + max_width_;
     }
 
-    if (border_list_.bottom - border_list_.top < min_height_) {
-        border_list_.bottom = border_list_.top + min_height_;
-    } else if (border_list_.bottom - border_list_.top > max_height_) {
-        border_list_.bottom = border_list_.top + max_height_;
+    if (borders_.bottom - borders_.top < min_height_) {
+        borders_.bottom = borders_.top + min_height_;
+    } else if (borders_.bottom - borders_.top > max_height_) {
+        borders_.bottom = borders_.top + max_height_;
     }
 
     if (is_clamped_to_screen_) {
         vector2f screen_dimensions = get_effective_frame_renderer()->get_target_dimensions();
 
-        if (border_list_.right > screen_dimensions.x) {
-            float width = border_list_.right - border_list_.left;
+        if (borders_.right > screen_dimensions.x) {
+            float width = borders_.right - borders_.left;
             if (width > screen_dimensions.x) {
-                border_list_.left  = 0;
-                border_list_.right = screen_dimensions.x;
+                borders_.left  = 0;
+                borders_.right = screen_dimensions.x;
             } else {
-                border_list_.right = screen_dimensions.x;
-                border_list_.left  = screen_dimensions.x - width;
+                borders_.right = screen_dimensions.x;
+                borders_.left  = screen_dimensions.x - width;
             }
         }
 
-        if (border_list_.left < 0) {
-            float width = border_list_.right - border_list_.left;
-            if (border_list_.right - border_list_.left > screen_dimensions.x) {
-                border_list_.left  = 0;
-                border_list_.right = screen_dimensions.x;
+        if (borders_.left < 0) {
+            float width = borders_.right - borders_.left;
+            if (borders_.right - borders_.left > screen_dimensions.x) {
+                borders_.left  = 0;
+                borders_.right = screen_dimensions.x;
             } else {
-                border_list_.left  = 0;
-                border_list_.right = width;
+                borders_.left  = 0;
+                borders_.right = width;
             }
         }
 
-        if (border_list_.bottom > screen_dimensions.y) {
-            float height = border_list_.bottom - border_list_.top;
+        if (borders_.bottom > screen_dimensions.y) {
+            float height = borders_.bottom - borders_.top;
             if (height > screen_dimensions.y) {
-                border_list_.top    = 0;
-                border_list_.bottom = screen_dimensions.y;
+                borders_.top    = 0;
+                borders_.bottom = screen_dimensions.y;
             } else {
-                border_list_.bottom = screen_dimensions.y;
-                border_list_.top    = screen_dimensions.y - height;
+                borders_.bottom = screen_dimensions.y;
+                borders_.top    = screen_dimensions.y - height;
             }
         }
 
-        if (border_list_.top < 0) {
-            float height = border_list_.bottom - border_list_.top;
+        if (borders_.top < 0) {
+            float height = borders_.bottom - borders_.top;
             if (height > screen_dimensions.y) {
-                border_list_.top    = 0;
-                border_list_.bottom = screen_dimensions.y;
+                borders_.top    = 0;
+                borders_.bottom = screen_dimensions.y;
             } else {
-                border_list_.top    = 0;
-                border_list_.bottom = height;
+                borders_.top    = 0;
+                borders_.bottom = height;
             }
         }
     }
@@ -804,10 +804,10 @@ bool frame::is_in_region(const vector2f& position) const {
     if (title_region_ && title_region_->is_in_region(position))
         return true;
 
-    bool is_in_x_range = border_list_.left + abs_hit_rect_inset_list_.left <= position.x &&
-                         position.x <= border_list_.right - abs_hit_rect_inset_list_.right - 1.0f;
-    bool is_in_y_range = border_list_.top + abs_hit_rect_inset_list_.top <= position.y &&
-                         position.y <= border_list_.bottom - abs_hit_rect_inset_list_.bottom - 1.0f;
+    bool is_in_x_range = borders_.left + abs_hit_rect_inset_list_.left <= position.x &&
+                         position.x <= borders_.right - abs_hit_rect_inset_list_.right - 1.0f;
+    bool is_in_y_range = borders_.top + abs_hit_rect_inset_list_.top <= position.y &&
+                         position.y <= borders_.bottom - abs_hit_rect_inset_list_.bottom - 1.0f;
 
     return is_in_x_range && is_in_y_range;
 }
@@ -1504,15 +1504,15 @@ void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*positio
 
 void frame::update_borders_() {
     const bool old_ready       = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     base::update_borders_();
 
     check_position_();
 
-    if (border_list_ != old_border_list || is_ready_ != old_ready) {
-        if (border_list_.width() != old_border_list.width() ||
-            border_list_.height() != old_border_list.height()) {
+    if (borders_ != old_border_list || is_ready_ != old_ready) {
+        if (borders_.width() != old_border_list.width() ||
+            borders_.height() != old_border_list.height()) {
             alive_checker checker(*this);
             fire_script("OnSizeChanged");
             if (!checker.is_alive())

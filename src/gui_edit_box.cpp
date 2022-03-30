@@ -891,13 +891,13 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& position) const {
 
     const text* text = font_string_->get_text_object();
 
-    float local_x = position.x - border_list_.left - text_insets_.left;
-    // float local_y = position.y - border_list_.top  - text_insets_.top;
+    float local_x = position.x - borders_.left - text_insets_.left;
+    // float local_y = position.y - borders_.top  - text_insets_.top;
 
     if (!is_multi_line_) {
-        if (position.x < border_list_.left + text_insets_.left)
+        if (position.x < borders_.left + text_insets_.left)
             return display_pos_;
-        else if (position.x > border_list_.right - text_insets_.right)
+        else if (position.x > borders_.right - text_insets_.right)
             return displayed_text_.size() + display_pos_;
 
         std::size_t num_letters =

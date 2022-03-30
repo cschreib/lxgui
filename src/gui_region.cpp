@@ -65,15 +65,15 @@ region::~region() {
                 new_anchor.offset        = a.offset;
 
                 switch (a.parent_point) {
-                case point::top_left: new_anchor.offset += border_list_.top_left(); break;
-                case point::top: new_anchor.offset.y += border_list_.top; break;
-                case point::top_right: new_anchor.offset += border_list_.top_right(); break;
-                case point::right: new_anchor.offset.x += border_list_.right; break;
-                case point::bottom_right: new_anchor.offset += border_list_.bottom_right(); break;
-                case point::bottom: new_anchor.offset.y += border_list_.bottom; break;
-                case point::bottom_left: new_anchor.offset += border_list_.bottom_left(); break;
-                case point::left: new_anchor.offset.x += border_list_.left; break;
-                case point::center: new_anchor.offset += border_list_.center(); break;
+                case point::top_left: new_anchor.offset += borders_.top_left(); break;
+                case point::top: new_anchor.offset.y += borders_.top; break;
+                case point::top_right: new_anchor.offset += borders_.top_right(); break;
+                case point::right: new_anchor.offset.x += borders_.right; break;
+                case point::bottom_right: new_anchor.offset += borders_.bottom_right(); break;
+                case point::bottom: new_anchor.offset.y += borders_.bottom; break;
+                case point::bottom_left: new_anchor.offset += borders_.bottom_left(); break;
+                case point::left: new_anchor.offset.x += borders_.left; break;
+                case point::center: new_anchor.offset += borders_.center(); break;
                 }
 
                 obj->set_point(new_anchor);
@@ -115,10 +115,10 @@ std::string region::serialize(const std::string& tab) const {
     }
     str << tab << "  # Borders :\n";
     str << tab << "  |-###\n";
-    str << tab << "  |   # left  : " << border_list_.left << "\n";
-    str << tab << "  |   # top   : " << border_list_.top << "\n";
-    str << tab << "  |   # right : " << border_list_.right << "\n";
-    str << tab << "  |   # bottom: " << border_list_.bottom << "\n";
+    str << tab << "  |   # left  : " << borders_.left << "\n";
+    str << tab << "  |   # top   : " << borders_.top << "\n";
+    str << tab << "  |   # right : " << borders_.right << "\n";
+    str << tab << "  |   # bottom: " << borders_.bottom << "\n";
     str << tab << "  |-###\n";
     str << tab << "  # Alpha      : " << alpha_ << "\n";
     str << tab << "  # Shown      : " << is_shown_ << "\n";
@@ -280,21 +280,21 @@ const vector2f& region::get_dimensions() const {
 }
 
 vector2f region::get_apparent_dimensions() const {
-    return vector2f(border_list_.width(), border_list_.height());
+    return vector2f(borders_.width(), borders_.height());
 }
 
 bool region::is_apparent_width_defined() const {
-    return dimensions_.x > 0.0f || (defined_border_list_.left && defined_border_list_.right);
+    return dimensions_.x > 0.0f || (defined_borders_.left && defined_borders_.right);
 }
 
 bool region::is_apparent_height_defined() const {
-    return dimensions_.y > 0.0f || (defined_border_list_.top && defined_border_list_.bottom);
+    return dimensions_.y > 0.0f || (defined_borders_.top && defined_borders_.bottom);
 }
 
 bool region::is_in_region(const vector2f& position) const {
     return (
-        (border_list_.left <= position.x && position.x <= border_list_.right - 1) &&
-        (border_list_.top <= position.y && position.y <= border_list_.bottom - 1));
+        (borders_.left <= position.x && position.x <= borders_.right - 1) &&
+        (borders_.top <= position.y && position.y <= borders_.bottom - 1));
 }
 
 void region::set_name_(const std::string& name) {
@@ -348,27 +348,27 @@ void region::destroy() {
 }
 
 vector2f region::get_center() const {
-    return border_list_.center();
+    return borders_.center();
 }
 
 float region::get_left() const {
-    return border_list_.left;
+    return borders_.left;
 }
 
 float region::get_right() const {
-    return border_list_.right;
+    return borders_.right;
 }
 
 float region::get_top() const {
-    return border_list_.top;
+    return borders_.top;
 }
 
 float region::get_bottom() const {
-    return border_list_.bottom;
+    return borders_.bottom;
 }
 
 const bounds2f& region::get_borders() const {
-    return border_list_;
+    return borders_;
 }
 
 void region::clear_all_points() {
@@ -381,7 +381,7 @@ void region::clear_all_points() {
     }
 
     if (had_anchors) {
-        defined_border_list_ = bounds2<bool>(false, false, false, false);
+        defined_borders_ = bounds2<bool>(false, false, false, false);
 
         if (!is_virtual_) {
             update_anchors_();
@@ -406,7 +406,7 @@ void region::set_all_points(const std::string& obj_name) {
     anchor_list_[static_cast<int>(point::bottom_right)].emplace(
         *this, anchor_data(point::bottom_right, obj_name));
 
-    defined_border_list_ = bounds2<bool>(true, true, true, true);
+    defined_borders_ = bounds2<bool>(true, true, true, true);
 
     if (!is_virtual_) {
         update_anchors_();
@@ -430,25 +430,25 @@ void region::set_point(const anchor_data& a) {
 
     switch (a.object_point) {
     case point::top_left:
-        defined_border_list_.top  = true;
-        defined_border_list_.left = true;
+        defined_borders_.top  = true;
+        defined_borders_.left = true;
         break;
-    case point::top: defined_border_list_.top = true; break;
+    case point::top: defined_borders_.top = true; break;
     case point::top_right:
-        defined_border_list_.top   = true;
-        defined_border_list_.right = true;
+        defined_borders_.top   = true;
+        defined_borders_.right = true;
         break;
-    case point::right: defined_border_list_.right = true; break;
+    case point::right: defined_borders_.right = true; break;
     case point::bottom_right:
-        defined_border_list_.bottom = true;
-        defined_border_list_.right  = true;
+        defined_borders_.bottom = true;
+        defined_borders_.right  = true;
         break;
-    case point::bottom: defined_border_list_.bottom = true; break;
+    case point::bottom: defined_borders_.bottom = true; break;
     case point::bottom_left:
-        defined_border_list_.bottom = true;
-        defined_border_list_.left   = true;
+        defined_borders_.bottom = true;
+        defined_borders_.left   = true;
         break;
-    case point::left: defined_border_list_.left = true; break;
+    case point::left: defined_borders_.left = true; break;
     default: break;
     }
 
@@ -632,7 +632,7 @@ void region::update_borders_() {
     DEBUG_LOG("  Update anchors for " + lua_name_);
 
     const bool old_is_ready    = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     is_ready_ = true;
 
@@ -671,27 +671,27 @@ void region::update_borders_() {
                 bottom = top + 1;
             }
 
-            border_list_ = bounds2f(left, right, top, bottom);
+            borders_ = bounds2f(left, right, top, bottom);
         } else {
-            border_list_ = bounds2f::zero;
+            borders_ = bounds2f::zero;
         }
     } else {
-        border_list_ = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
-        is_ready_    = false;
+        borders_  = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
+        is_ready_ = false;
     }
 
     DEBUG_LOG("  Final borders");
-    border_list_.left   = round_to_pixel(border_list_.left);
-    border_list_.right  = round_to_pixel(border_list_.right);
-    border_list_.top    = round_to_pixel(border_list_.top);
-    border_list_.bottom = round_to_pixel(border_list_.bottom);
+    borders_.left   = round_to_pixel(borders_.left);
+    borders_.right  = round_to_pixel(borders_.right);
+    borders_.top    = round_to_pixel(borders_.top);
+    borders_.bottom = round_to_pixel(borders_.bottom);
 
-    DEBUG_LOG("    left=" + utils::to_string(border_list_.left));
-    DEBUG_LOG("    right=" + utils::to_string(border_list_.right));
-    DEBUG_LOG("    top=" + utils::to_string(border_list_.top));
-    DEBUG_LOG("    bottom=" + utils::to_string(border_list_.bottom));
+    DEBUG_LOG("    left=" + utils::to_string(borders_.left));
+    DEBUG_LOG("    right=" + utils::to_string(borders_.right));
+    DEBUG_LOG("    top=" + utils::to_string(borders_.top));
+    DEBUG_LOG("    bottom=" + utils::to_string(borders_.bottom));
 
-    if (border_list_ != old_border_list || is_ready_ != old_is_ready) {
+    if (borders_ != old_border_list || is_ready_ != old_is_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
@@ -741,11 +741,11 @@ void region::notify_borders_need_update() {
         return;
 
     const bool old_ready       = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     update_borders_();
 
-    if (border_list_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_ready_ != old_ready) {
         for (const auto& object : anchored_object_list_)
             object->notify_borders_need_update();
     }
