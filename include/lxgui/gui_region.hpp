@@ -270,14 +270,14 @@ public:
      * \note Its parent must be shown for it to appear on
      * the screen.
      */
-    virtual void show();
+    void show();
 
     /**
      * \brief hides this region.
      * \note All its children won't be visible on the screen
      * anymore, even if they are still marked as shown.
      */
-    virtual void hide();
+    void hide();
 
     /**
      * \brief shows/hides this region.
@@ -296,7 +296,7 @@ public:
      * \brief Checks if this region can be seen on the screen.
      * \return 'true' if this region can be seen on the screen
      */
-    virtual bool is_visible() const;
+    bool is_visible() const;
 
     /**
      * \brief Changes this region's absolute dimensions (in pixels).

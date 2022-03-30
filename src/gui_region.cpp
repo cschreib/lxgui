@@ -789,10 +789,12 @@ utils::observer_ptr<const frame_renderer> region::get_effective_frame_renderer()
 
 void region::notify_visible() {
     is_visible_ = true;
+    notify_renderer_need_redraw();
 }
 
 void region::notify_invisible() {
     is_visible_ = false;
+    notify_renderer_need_redraw();
 }
 
 std::string region::parse_file_name(const std::string& file_name) const {

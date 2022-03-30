@@ -42,26 +42,6 @@ public:
     utils::owner_ptr<region> release_from_parent() override;
 
     /**
-     * \brief shows this region.
-     * \note Its parent must be shown for it to appear on
-     * the screen.
-     */
-    void show() override;
-
-    /**
-     * \brief hides this region.
-     * \note All its children won't be visible on the screen
-     * anymore, even if they are still marked as shown.
-     */
-    void hide() override;
-
-    /**
-     * \brief Checks if this region can be seen on the screen.
-     * \return 'true' if this region can be seen on the screen
-     */
-    bool is_visible() const override;
-
-    /**
      * \brief Returns this layered_region's draw layer.
      * \return this layered_region's draw layer
      */

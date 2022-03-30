@@ -1415,7 +1415,7 @@ void frame::notify_visible() {
     if (!checker.is_alive())
         return;
 
-    notify_renderer_need_redraw();
+    get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::notify_invisible() {
@@ -1439,7 +1439,7 @@ void frame::notify_invisible() {
     if (!checker.is_alive())
         return;
 
-    notify_renderer_need_redraw();
+    get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::notify_renderer_need_redraw() {
@@ -1460,28 +1460,6 @@ void frame::notify_scaling_factor_updated() {
 
     for (auto& obj : get_regions())
         obj.notify_scaling_factor_updated();
-}
-
-void frame::show() {
-    if (is_shown_)
-        return;
-
-    bool was_visible = is_visible_;
-    base::show();
-
-    if (!was_visible)
-        get_manager().get_root().notify_hovered_frame_dirty();
-}
-
-void frame::hide() {
-    if (!is_shown_)
-        return;
-
-    bool was_visible = is_visible_;
-    base::hide();
-
-    if (was_visible)
-        get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*position*/) {

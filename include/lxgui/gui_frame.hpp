@@ -1395,20 +1395,6 @@ public:
     void stop_sizing();
 
     /**
-     * \brief shows this region.
-     * \note Its parent must be shown for it to appear on
-     * the screen.
-     */
-    void show() override;
-
-    /**
-     * \brief hides this region.
-     * \note All its children won't be visible on the screen
-     * anymore, even if they are still marked as shown.
-     */
-    void hide() override;
-
-    /**
      * \brief Enables automatic focus when this frame is shown or raised.
      * \param enable 'true' to enable auto focus
      */
