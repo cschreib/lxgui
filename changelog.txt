@@ -18,6 +18,7 @@ Major changes:
  - gui: added texture atlases to speed up rendering
  - gui: added quad batching to speed up rendering
  - gui: added localizer class for handling languages, translations, and string formatting
+ - gui: added animated_texture region type for animated textures
  - gui: font_string can now render icons/smileys mixed with the rendered text
  - gui: fonts are no longer limited to the first 255 unicode characters
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:

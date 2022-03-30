@@ -31,14 +31,18 @@ struct unique_usertype_traits<lxgui::utils::observer_ptr<T>> {
 /** \endcond
  */
 
+namespace lxgui::gui {
+
 template<typename T>
 void sol_lua_check_access(
     sol::types<T>, lua_State* lua, int index, sol::stack::record& /*tracking*/) {
     // NB: not sure why, but using tracking here leads to issues later on, so
     // ignore it for now.
 
-    sol::optional<lxgui::utils::observer_ptr<T>&> optional =
-        sol::stack::check_get<lxgui::utils::observer_ptr<T>&>(
+    using RegionType = std::remove_pointer_t<T>;
+
+    sol::optional<lxgui::utils::observer_ptr<RegionType>&> optional =
+        sol::stack::check_get<lxgui::utils::observer_ptr<RegionType>&>(
             lua, index, sol::no_panic /*, tracking*/);
 
     if (!optional.has_value())
@@ -47,8 +51,6 @@ void sol_lua_check_access(
     if (optional->expired())
         throw sol::error("object has been deleted");
 }
-
-namespace lxgui::gui {
 
 inline utils::observer_ptr<region>
 get_object(manager& mgr, const std::variant<std::string, region*>& parent) {

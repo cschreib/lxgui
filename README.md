@@ -35,7 +35,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Platform independent**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **High-DPI aware**. The interface can be scaled by an arbitrary factor when rendered on the screen. This can be used to improve accessibility for visually-impaired users.
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
-* **Fully extensible**. Except for the base GUI region types, every region type is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New region types can be added easily in your own code without modifying lxgui.
+* **Fully extensible**. Except for the base GUI region types, every region type is designed to be used as a plugin: `gui::texture`, `gui::font_string`, `gui::button`, `gui::edit_box`, ... New region types can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly in C++ if the flexibility of the layout+script files is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
@@ -48,6 +48,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **layered_region**: can be rendered on the screen as part of a draw layer.
 * **frame**: can contain layered_regions (sorted by layer) and other frames, and respond to events.
 * **texture**: can render a texture file, a gradient, or a plain color.
+* **animated_texture**: can render an animated texture (multiple frames stored in the same texture file).
 * **font_string**: can render text.
 * **button**: a click-able frame with several states: normal, pushed, highlight.
 * **check_button**: a button with a check box.

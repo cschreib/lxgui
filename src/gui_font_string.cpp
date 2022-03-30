@@ -19,6 +19,8 @@ font_string::font_string(
 }
 
 void font_string::render() const {
+    base::render();
+
     if (!text_ || !is_ready_ || !is_visible())
         return;
 
@@ -439,31 +441,39 @@ void font_string::update_borders_() {
         if (std::isinf(box_width))
             box_width = text_->get_width();
 
-        if (!make_borders_(top, bottom, y_center, box_height))
+        if (!make_borders_(top, bottom, y_center, box_height)) {
             is_ready_ = false;
-        if (!make_borders_(left, right, x_center, box_width))
+        }
+
+        if (!make_borders_(left, right, x_center, box_width)) {
             is_ready_ = false;
+        }
 
         if (is_ready_) {
-            if (right < left)
+            if (right < left) {
                 right = left + 1.0f;
-            if (bottom < top)
+            }
+            if (bottom < top) {
                 bottom = top + 1.0f;
+            }
 
             border_list_.left   = left;
             border_list_.right  = right;
             border_list_.top    = top;
             border_list_.bottom = bottom;
-        } else
+        } else {
             border_list_ = bounds2f::zero;
+        }
     } else {
         float box_width = get_dimensions().x;
-        if (box_width == 0.0)
+        if (box_width == 0.0) {
             box_width = text_->get_width();
+        }
 
         float box_height = get_dimensions().y;
-        if (box_height == 0.0)
+        if (box_height == 0.0) {
             box_height = text_->get_height();
+        }
 
         border_list_ = bounds2f(0.0, 0.0, box_width, box_height);
         is_ready_    = false;

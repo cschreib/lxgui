@@ -1,6 +1,6 @@
 [submodule "sol2"]
 	path = extern/sol2
-	url = https://github.com/ThePhD/sol2.git
+	url = https://github.com/cschreib/sol2.git
 [submodule "utfcpp"]
 	path = extern/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git

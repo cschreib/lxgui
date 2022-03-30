@@ -2,8 +2,8 @@ ui:
   frame:
     name: TextureTestFrame
     anchors:
-      - point: TOPLEFT
-      - point: BOTTOMRIGHT
+      - point: TOP_LEFT
+      - point: BOTTOM_RIGHT
 
     layers:
       layer:
@@ -12,14 +12,22 @@ ui:
           name: $parentTexture1
           file: "|texture.png"
           anchors:
-            - point: BOTTOMLEFT
+            - point: BOTTOM_LEFT
 
         texture:
           name: $parentTexture2
           size: {abs_dimension: {x: 50, y: 50}}
           anchors:
-            - {point: BOTTOMLEFT, relative_to: $parentTexture1, relative_point: TOPLEFT}
+            - {point: BOTTOM_LEFT, relative_to: $parentTexture1, relative_point: TOP_LEFT}
           gradient:
             orientation: HORIZONTAL
             min_color: {r: 0.7, g: 1}
             max_color: {r: 1, g: 0.7}
+
+        animated_texture:
+          name: $parentTexture3
+          size: {abs_dimension: {x: 25, y: 25}}
+          file: "|animated_texture.png"
+          speed: 5
+          anchors:
+            - {point: BOTTOM_LEFT, relative_to: $parentTexture1, relative_point: BOTTOM_RIGHT}
