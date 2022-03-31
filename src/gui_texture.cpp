@@ -153,7 +153,7 @@ const std::string& texture::get_texture_file() const {
 
 color texture::get_vertex_color(std::size_t index) const {
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return color::white;
     }
@@ -167,7 +167,7 @@ bool texture::is_desaturated() const {
 
 void texture::set_blend_mode(blend_mode mode) {
     if (mode != blend_mode::blend) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "texture::set_blend_mode other than \"BLEND\" is not yet implemented."
                  << std::endl;
         return;
@@ -201,7 +201,7 @@ void texture::set_desaturated(bool is_desaturated) {
 
     is_desaturated_ = is_desaturated;
     if (is_desaturated) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "Texture de-saturation is not yet implemented." << std::endl;
     }
 
@@ -311,7 +311,7 @@ void texture::set_texture(const std::string& file_name) {
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Cannot load file \"" << parsed_file << "\" for \"" << name_
                  << "\". Using white texture instead." << std::endl;
     }
@@ -342,7 +342,7 @@ void texture::set_texture(std::shared_ptr<render_target> target) {
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Cannot create a texture from render target. Using white texture instead."
                  << std::endl;
     }
@@ -382,7 +382,7 @@ void texture::set_vertex_color(const color& c, std::size_t index) {
     }
 
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return;
     }

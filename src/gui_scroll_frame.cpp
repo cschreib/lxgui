@@ -59,7 +59,7 @@ void scroll_frame::copy_from(const region& obj) {
 
     if (const frame* other_child = scroll_obj->get_scroll_child().get()) {
         frame_core_attributes attr;
-        attr.object_type = other_child->get_object_type();
+        attr.object_type = other_child->get_region_type();
         attr.name        = other_child->get_raw_name();
         attr.inheritance = {scroll_obj->get_scroll_child()};
 

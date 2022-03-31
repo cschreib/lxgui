@@ -388,29 +388,23 @@ public:
      * \brief Returns the type of this region.
      * \return The type of this region
      */
-    const std::string& get_object_type() const;
+    const std::string& get_region_type() const;
 
     /**
      * \brief Checks if this region is of the provided type.
      * \param type_name The type to test
      * \return 'true' if this region is of the provided type
      */
-    bool is_object_type(const std::string& type_name) const;
+    bool is_region_type(const std::string& type_name) const;
 
     /**
      * \brief Checks if this region is of the provided type.
      * \return 'true' if this region is of the provided type
      */
     template<typename ObjectType>
-    bool is_object_type() const {
-        return is_object_type(ObjectType::class_name);
+    bool is_region_type() const {
+        return is_region_type(ObjectType::class_name);
     }
-
-    /**
-     * \brief Returns an array containing all the types of this region.
-     * \return An array containing all the types of this region
-     */
-    const std::vector<std::string>& get_object_type_list() const;
 
     /**
      * \brief Returns the vertical position of this region's bottom border.
@@ -812,9 +806,9 @@ protected:
 template<typename ObjectType>
 const ObjectType* down_cast(const region* self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
-    if (self && !object && self->is_object_type(ObjectType::class_name)) {
+    if (self && !object && self->is_region_type(ObjectType::class_name)) {
         throw gui::exception(
-            self->get_object_type(), "cannot use down_cast() to " +
+            self->get_region_type(), "cannot use down_cast() to " +
                                          std::string(ObjectType::class_name) +
                                          " as object is being destroyed");
     }
@@ -834,14 +828,14 @@ template<typename ObjectType>
 const ObjectType& down_cast(const region& self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
     if (self && !object) {
-        if (self.is_object_type(ObjectType::class_name)) {
+        if (self.is_region_type(ObjectType::class_name)) {
             throw gui::exception(
-                self.get_object_type(), "cannot use down_cast() to " +
+                self.get_region_type(), "cannot use down_cast() to " +
                                             std::string(ObjectType::class_name) +
                                             " as object is being destroyed");
         } else {
             throw gui::exception(
-                self.get_object_type(), "cannot use down_cast() to " +
+                self.get_region_type(), "cannot use down_cast() to " +
                                             std::string(ObjectType::class_name) +
                                             " as object is not of the right type");
         }

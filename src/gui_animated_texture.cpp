@@ -102,7 +102,7 @@ const std::string& animated_texture::get_texture_file() const {
 
 color animated_texture::get_vertex_color(std::size_t index) const {
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return color::white;
     }
@@ -152,7 +152,7 @@ void animated_texture::set_texture(const std::string& file_name) {
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
     } else {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Cannot load file \"" << file_ << "\" for \"" << name_
                  << "\". Using white animated_texture instead." << std::endl;
     }
@@ -171,7 +171,7 @@ void animated_texture::set_vertex_color(const color& c, std::size_t index) {
     }
 
     if (index >= 4) {
-        gui::out << gui::error << "gui::" << type_.back() << ": "
+        gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Vertex index out of bound (" << index << ")." << std::endl;
         return;
     }

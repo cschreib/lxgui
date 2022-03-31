@@ -97,7 +97,7 @@ std::string region::serialize(const std::string& tab) const {
         << std::string(is_ready_ ? "ready" : "not ready")
         << std::string(is_manually_inherited_ ? ", manually inherited" : "") << ")\n";
     str << tab << "  # Raw name   : " << raw_name_ << "\n";
-    str << tab << "  # Type       : " << type_.back() << "\n";
+    str << tab << "  # Type       : " << get_region_type() << "\n";
     if (parent_)
         str << tab << "  # Parent     : " << parent_->get_name() << "\n";
     else
@@ -147,15 +147,11 @@ const std::string& region::get_raw_name() const {
     return raw_name_;
 }
 
-const std::string& region::get_object_type() const {
+const std::string& region::get_region_type() const {
     return type_.back();
 }
 
-const std::vector<std::string>& region::get_object_type_list() const {
-    return type_;
-}
-
-bool region::is_object_type(const std::string& type_name) const {
+bool region::is_region_type(const std::string& type_name) const {
     return utils::find(type_, type_name) != type_.end();
 }
 
@@ -299,20 +295,20 @@ void region::set_name_(const std::string& name) {
             if (parent_)
                 utils::replace(name_, "$parent", parent_->get_name());
             else {
-                gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
+                gui::out << gui::warning << "gui::" << get_region_type() << ": \"" << name_
                          << "\" has no parent" << std::endl;
                 utils::replace(name_, "$parent", "");
             }
         }
     } else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "set_name() can only be called once." << std::endl;
     }
 }
 
 void region::set_parent_(utils::observer_ptr<frame> parent) {
     if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
+        gui::out << gui::error << "gui::" << get_region_type() << ": Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
@@ -385,8 +381,8 @@ void region::clear_all_points() {
 
 void region::set_all_points(const std::string& obj_name) {
     if (obj_name == name_) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
-                 << std::endl;
+        gui::out << gui::error << "gui::" << get_region_type()
+                 << ": Cannot call set_all_points(this)." << std::endl;
         return;
     }
 
@@ -409,8 +405,8 @@ void region::set_all_points(const std::string& obj_name) {
 
 void region::set_all_points(const utils::observer_ptr<region>& obj) {
     if (obj == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
-                 << std::endl;
+        gui::out << gui::error << "gui::" << get_region_type()
+                 << ": Cannot call set_all_points(this)." << std::endl;
         return;
     }
 
@@ -701,7 +697,8 @@ void region::update_anchors_() {
         utils::observer_ptr<region> obj = a->get_parent();
         if (obj) {
             if (obj->depends_on(*this)) {
-                gui::out << gui::error << "gui::" << type_.back() << ": Cyclic anchor dependency ! "
+                gui::out << gui::error << "gui::" << get_region_type()
+                         << ": Cyclic anchor dependency ! "
                          << "\"" << name_ << "\" and \"" << obj->get_name()
                          << "\" depend on eachothers (directly or indirectly). \""
                          << utils::to_string(a->object_point) << "\" anchor removed." << std::endl;
@@ -814,7 +811,7 @@ std::string region::parse_file_name(const std::string& file_name) const {
 
 void region::set_addon(const addon* a) {
     if (addon_) {
-        gui::out << gui::warning << "gui::" << type_.back()
+        gui::out << gui::warning << "gui::" << get_region_type()
                  << ": set_addon() can only be called once." << std::endl;
         return;
     }

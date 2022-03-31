@@ -154,16 +154,16 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_name", member_function<&region::get_name>());
 
-    /** @function get_object_type
+    /** @function get_region_type
      */
-    type.set_function("get_object_type", member_function<&region::get_object_type>());
+    type.set_function("get_region_type", member_function<&region::get_region_type>());
 
-    /** @function is_object_type
+    /** @function is_region_type
      */
     type.set_function(
-        "is_object_type",
+        "is_region_type",
         member_function< // select the right overload for Lua
-            static_cast<bool (region::*)(const std::string&) const>(&region::is_object_type)>());
+            static_cast<bool (region::*)(const std::string&) const>(&region::is_region_type)>());
 
     /** @function set_alpha
      */
@@ -269,14 +269,14 @@ void region::register_on_lua(sol::state& lua) {
         utils::observer_ptr<frame> parent_obj = get_object<frame>(self.get_manager(), parent);
 
         if (parent_obj) {
-            if (self.is_object_type<frame>())
+            if (self.is_region_type<frame>())
                 parent_obj->add_child(
                     utils::static_pointer_cast<frame>(self.release_from_parent()));
             else
                 parent_obj->add_region(
                     utils::static_pointer_cast<layered_region>(self.release_from_parent()));
         } else {
-            if (self.is_object_type<frame>()) {
+            if (self.is_region_type<frame>()) {
                 self.get_manager().get_root().add_root_frame(
                     utils::static_pointer_cast<frame>(self.release_from_parent()));
             } else

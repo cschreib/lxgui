@@ -24,7 +24,6 @@ namespace lxgui::gui {
 
 frame::frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     base(block, mgr, attr), event_receiver_(mgr.get_event_emitter()), frame_renderer_(attr.rdr) {
-    type_.push_back(class_name);
 
     initialize_(*this, attr);
 
@@ -231,7 +230,7 @@ void frame::copy_from(const region& obj) {
             continue;
 
         region_core_attributes attr;
-        attr.object_type = art->get_object_type();
+        attr.object_type = art->get_region_type();
         attr.name        = art->get_raw_name();
         attr.inheritance = {art};
 
@@ -258,7 +257,7 @@ void frame::copy_from(const region& obj) {
             continue;
 
         frame_core_attributes attr;
-        attr.object_type = child->get_object_type();
+        attr.object_type = child->get_region_type();
         attr.name        = child->get_raw_name();
         attr.inheritance = {child};
 
@@ -272,7 +271,7 @@ void frame::copy_from(const region& obj) {
 
 void frame::create_title_region() {
     if (title_region_) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
+        gui::out << gui::warning << "gui::" << get_region_type() << ": \"" << name_
                  << "\" already has a title region." << std::endl;
         return;
     }
@@ -602,7 +601,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
     auto iter = utils::find_if(region_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == region_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "Trying to remove \"" << reg->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -675,7 +674,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
     auto   iter = utils::find_if(child_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == child_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "Trying to remove \"" << child->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -752,10 +751,6 @@ backdrop& frame::get_or_create_backdrop() {
         backdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
 
     return *backdrop_;
-}
-
-const std::string& frame::get_frame_type() const {
-    return type_.back();
 }
 
 const bounds2f& frame::get_abs_hit_rect_insets() const {
@@ -1043,7 +1038,7 @@ utils::connection frame::define_script_(
 script_list_view frame::get_script(const std::string& script_name) const {
     auto iter_h = signal_list_.find(script_name);
     if (iter_h == signal_list_.end())
-        throw gui::exception(type_.back(), "no script registered for " + script_name);
+        throw gui::exception(get_region_type(), "no script registered for " + script_name);
 
     return iter_h->second.slots();
 }
@@ -1516,14 +1511,14 @@ void frame::update(float delta) {
 
         // Fill layers with regions (with font_string rendered last within the same layer)
         for (const auto& reg : region_list_) {
-            if (reg && !reg->is_object_type("font_string")) {
+            if (reg && !reg->is_region_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }
         }
 
         for (const auto& reg : region_list_) {
-            if (reg && reg->is_object_type("font_string")) {
+            if (reg && reg->is_region_type("font_string")) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }

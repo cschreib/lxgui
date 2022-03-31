@@ -793,12 +793,6 @@ public:
     backdrop& get_or_create_backdrop();
 
     /**
-     * \brief Returns this frame's type.
-     * \return This frame's type (Frame, Slider, ...)
-     */
-    const std::string& get_frame_type() const;
-
-    /**
      * \brief Returns this frame's absolute hit rect insets.
      * \return This frame's absolute hit rect insets
      */

@@ -33,7 +33,7 @@ void anchor::update_parent_(region& object) {
     if (obj_parent) {
         utils::replace(parent_full_name, "$parent", obj_parent->get_name());
     } else if (parent_full_name.find("$parent") != parent_full_name.npos) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
+        gui::out << gui::error << "gui::" << object.get_region_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\", but '$parent' does not exist." << std::endl;
         return;
@@ -43,7 +43,7 @@ void anchor::update_parent_(region& object) {
         object.get_registry().get_region_by_name(parent_full_name);
 
     if (!new_parent) {
-        gui::out << gui::error << "gui::" << object.get_object_type() << ": "
+        gui::out << gui::error << "gui::" << object.get_region_type() << ": "
                  << "region \"" << object.get_name() << "\" tries to anchor to \""
                  << parent_full_name << "\" but this region does not (yet?) exist." << std::endl;
         return;
