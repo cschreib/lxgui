@@ -994,6 +994,8 @@ public:
      */
     utils::connection add_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, content, true, info);
     }
 
@@ -1013,6 +1015,8 @@ public:
         const std::string&      script_name,
         sol::protected_function handler,
         script_info             info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), true, info);
     }
 
@@ -1030,6 +1034,8 @@ public:
      */
     utils::connection add_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), true, info);
     }
 
@@ -1096,6 +1102,8 @@ public:
      */
     utils::connection set_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, content, false, info);
     }
 
@@ -1115,6 +1123,8 @@ public:
         const std::string&      script_name,
         sol::protected_function handler,
         script_info             info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), false, info);
     }
 
@@ -1132,6 +1142,8 @@ public:
      */
     utils::connection set_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), false, info);
     }
 
@@ -1584,6 +1596,8 @@ protected:
      * \note Default is nullptr.
      */
     void set_parent_(utils::observer_ptr<frame> parent) override;
+
+    bool check_script_(const std::string& script_name) const;
 
     utils::connection define_script_(
         const std::string& script_name,

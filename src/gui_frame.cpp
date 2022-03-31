@@ -922,11 +922,23 @@ std::string hijack_sol_error_message(
     return new_error;
 }
 
+bool frame::check_script_(const std::string& script_name) const {
+    if (!can_use_script(script_name)) {
+        gui::out << gui::error << get_region_type() << ": "
+                 << "\"" << get_name() << "\" cannot use script \"" << script_name << "\"."
+                 << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 utils::connection frame::define_script_(
     const std::string& script_name,
     const std::string& content,
     bool               append,
     const script_info& info) {
+
     // Create the Lua function from the provided string
     sol::state& lua = get_lua_();
 
@@ -1003,6 +1015,7 @@ utils::connection frame::define_script_(
     script_function    handler,
     bool               append,
     const script_info& /*info*/) {
+
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
         std::string adjusted_name = get_adjusted_script_name(script_name);
