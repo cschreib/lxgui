@@ -453,10 +453,6 @@ void frame::register_on_lua(sol::state& lua) {
         return utils::to_string(self.get_effective_frame_strata());
     });
 
-    /** @function get_frame_type
-     */
-    type.set_function("get_frame_type", member_function<&frame::get_frame_type>());
-
     /** @function get_hit_rect_insets
      */
     type.set_function("get_hit_rect_insets", [](const frame& self) {
@@ -519,12 +515,6 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function is_clamped_to_screen
      */
     type.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
-
-    /** @function is_frame_type
-     */
-    type.set_function("is_frame_type", [](const frame& self, const std::string& type_name) {
-        return self.is_object_type(type_name);
-    });
 
     /** @function is_mouse_click_enabled
      */
