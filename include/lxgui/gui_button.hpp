@@ -41,9 +41,9 @@ class font_string;
  * - `OnDisable`: Triggered by button::disable.
  */
 class button : public frame {
+public:
     using base = frame;
 
-public:
     enum class state { up, down, disabled };
 
     /// Constructor.
@@ -341,6 +341,8 @@ public:
 protected:
     void parse_attributes_(const layout_node& node) override;
     void parse_all_nodes_before_children_(const layout_node& node) override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     state state_               = state::up;
     bool  is_highlighted_      = false;

@@ -280,4 +280,8 @@ void status_bar::notify_bar_texture_needs_update_() {
     bar_texture_->set_tex_rect(uvs);
 }
 
+const std::vector<std::string>& status_bar::get_type_list_() const {
+    return get_type_list_impl_<status_bar>();
+}
+
 } // namespace lxgui::gui

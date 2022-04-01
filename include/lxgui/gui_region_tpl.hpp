@@ -139,10 +139,26 @@ void region::create_glue_(T& self) {
 
 template<typename T>
 void region::initialize_(T& self, const region_core_attributes& /*attr*/) {
-    type_.push_back(T::class_name);
-
     if (!is_virtual())
         create_glue_(self);
+}
+
+template<typename T>
+const std::vector<std::string>& region::get_type_list_impl_() {
+    if constexpr (std::is_same_v<T, region>) {
+        static const std::vector<std::string> type = {region::class_name};
+
+        return type;
+    } else {
+        static const std::vector<std::string> type = []() {
+            using base = typename T::base;
+            auto list  = get_type_list_impl_<base>();
+            list.push_back(T::class_name);
+            return list;
+        }();
+
+        return type;
+    }
 }
 
 } // namespace lxgui::gui

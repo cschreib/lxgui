@@ -292,4 +292,8 @@ vector2f scroll_frame::get_target_dimensions() const {
     return get_apparent_dimensions();
 }
 
+const std::vector<std::string>& scroll_frame::get_type_list_() const {
+    return get_type_list_impl_<scroll_frame>();
+}
+
 } // namespace lxgui::gui

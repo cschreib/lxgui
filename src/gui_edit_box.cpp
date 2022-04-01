@@ -1118,4 +1118,8 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
     }
 }
 
+const std::vector<std::string>& edit_box::get_type_list_() const {
+    return get_type_list_impl_<edit_box>();
+}
+
 } // namespace lxgui::gui

@@ -208,4 +208,8 @@ void animated_texture::update_borders_() {
     quad_.v[3].pos = borders_.bottom_left();
 }
 
+const std::vector<std::string>& animated_texture::get_type_list_() const {
+    return get_type_list_impl_<animated_texture>();
+}
+
 } // namespace lxgui::gui

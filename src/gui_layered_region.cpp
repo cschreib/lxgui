@@ -52,4 +52,8 @@ void layered_region::notify_renderer_need_redraw() {
         parent_->notify_renderer_need_redraw();
 }
 
+const std::vector<std::string>& layered_region::get_type_list_() const {
+    return get_type_list_impl_<layered_region>();
+}
+
 } // namespace lxgui::gui

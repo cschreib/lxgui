@@ -248,9 +248,9 @@ using script_list_view = script_signal::slot_list_view;
  * child frames, and all the layered regions of the virtual frame.
  */
 class frame : public region {
+public:
     using base = region;
 
-public:
     /**
      * \brief Type of the frame child list (internal).
      * \note Constraints on the choice container type:
@@ -1565,6 +1565,8 @@ protected:
     virtual void parse_layers_node_(const layout_node& node);
     virtual void parse_frames_node_(const layout_node& node);
     virtual void parse_scripts_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     utils::observer_ptr<layered_region>
     parse_region_(const layout_node& node, const std::string& layer_name, const std::string& type);

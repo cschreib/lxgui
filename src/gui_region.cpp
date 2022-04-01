@@ -148,11 +148,12 @@ const std::string& region::get_raw_name() const {
 }
 
 const std::string& region::get_region_type() const {
-    return type_.back();
+    return get_type_list_().back();
 }
 
 bool region::is_region_type(const std::string& type_name) const {
-    return utils::find(type_, type_name) != type_.end();
+    const auto& type_list = get_type_list_();
+    return utils::find(type_list, type_name) != type_list.end();
 }
 
 float region::get_alpha() const {
@@ -834,6 +835,10 @@ registry& region::get_registry() {
 const registry& region::get_registry() const {
     return is_virtual() ? get_manager().get_virtual_root().get_registry()
                         : get_manager().get_root().get_registry();
+}
+
+const std::vector<std::string>& region::get_type_list_() const {
+    return get_type_list_impl_<region>();
 }
 
 } // namespace lxgui::gui

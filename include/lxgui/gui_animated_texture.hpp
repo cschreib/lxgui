@@ -15,9 +15,9 @@ class renderer;
  * \details This object contains an animated texture taken from a file.
  */
 class animated_texture : public layered_region {
+public:
     using base = layered_region;
 
-public:
     /// Constructor.
     explicit animated_texture(
         utils::control_block& block, manager& mgr, const region_core_attributes& attr);
@@ -133,6 +133,8 @@ private:
 
     void update_tex_coords_();
     void update_borders_() override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     std::string file_;
 

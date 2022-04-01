@@ -95,7 +95,7 @@ bool factory::finalize_object_(registry& reg, region& object, const region_core_
 
 void factory::apply_inheritance_(region& object, const region_core_attributes& attr) {
     for (const auto& base : attr.inheritance) {
-        if (!object.is_region_type(base->get_region_type())) {
+        if (!object.is_region_type(*base)) {
             gui::out << gui::warning << "gui::factory: "
                      << "\"" << object.get_name() << "\" (" << object.get_region_type()
                      << ") cannot inherit from \"" << base->get_name() << "\" ("

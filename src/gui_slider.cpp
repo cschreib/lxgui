@@ -347,4 +347,8 @@ void slider::notify_thumb_texture_needs_update_() {
     update_thumb_texture_();
 }
 
+const std::vector<std::string>& slider::get_type_list_() const {
+    return get_type_list_impl_<slider>();
+}
+
 } // namespace lxgui::gui

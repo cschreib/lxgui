@@ -491,4 +491,8 @@ void font_string::update_borders_() {
     DEBUG_LOG("  @");
 }
 
+const std::vector<std::string>& font_string::get_type_list_() const {
+    return get_type_list_impl_<font_string>();
+}
+
 } // namespace lxgui::gui

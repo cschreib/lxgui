@@ -407,6 +407,14 @@ public:
     }
 
     /**
+     * \brief Checks if this region is of a type equal or derived from the supplied region.
+     * \return 'true' if this region is of a type equal or derived from the supplied region
+     */
+    bool is_region_type(const region& obj) const {
+        return is_region_type(obj.get_region_type());
+    }
+
+    /**
      * \brief Returns the vertical position of this region's bottom border.
      * \return The vertical position of this region's bottom border
      */
@@ -730,6 +738,11 @@ protected:
     template<typename T>
     void create_glue_(T& self);
 
+    template<typename T>
+    static const std::vector<std::string>& get_type_list_impl_();
+
+    virtual const std::vector<std::string>& get_type_list_() const;
+
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
 
@@ -775,8 +788,6 @@ protected:
     bool is_virtual_            = false;
     bool is_loaded_             = false;
     bool is_ready_              = true;
-
-    std::vector<std::string> type_;
 
     std::array<std::optional<anchor>, 9>     anchor_list_;
     std::vector<utils::observer_ptr<region>> previous_anchor_parent_list_;
@@ -909,7 +920,7 @@ utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& object) 
  * \param self The raw pointer to get an observer from
  * \return The observer pointer.
  * \note This returns the same things as self->observer_from_this(),
- * but returning a pointer to the most-derived type known form the
+ * but returning a pointer to the most-derived type known from the
  * input pointer.
  */
 template<typename ObjectType>

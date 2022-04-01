@@ -144,4 +144,8 @@ void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> tex
     disabled_checked_texture_->set_shown(is_checked() && state_ == state::disabled);
 }
 
+const std::vector<std::string>& check_button::get_type_list_() const {
+    return get_type_list_impl_<check_button>();
+}
+
 } // namespace lxgui::gui

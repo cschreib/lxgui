@@ -401,4 +401,8 @@ void texture::update_borders_() {
     quad_.v[3].pos = borders_.bottom_left();
 }
 
+const std::vector<std::string>& texture::get_type_list_() const {
+    return get_type_list_impl_<texture>();
+}
+
 } // namespace lxgui::gui

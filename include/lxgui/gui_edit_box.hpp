@@ -60,9 +60,9 @@ class texture;
  * followed by `OnTextChanged`.
  */
 class edit_box : public frame {
+public:
     using base = frame;
 
-public:
     /// Constructor.
     explicit edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
@@ -348,6 +348,8 @@ protected:
     void parse_all_nodes_before_children_(const layout_node& node) override;
     void parse_font_string_node_(const layout_node& node);
     void parse_text_insets_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     void create_font_string_();
     void create_highlight_();

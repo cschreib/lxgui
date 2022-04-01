@@ -21,9 +21,9 @@ class render_target;
  * or a plain color (possibly with a different color on each corner).
  */
 class texture : public layered_region {
+public:
     using base = layered_region;
 
-public:
     enum class blend_mode { none, blend, key, add, mod };
 
     /// Constructor.
@@ -238,6 +238,8 @@ private:
     void parse_attributes_(const layout_node& node) override;
     void parse_tex_coords_node_(const layout_node& node);
     void parse_gradient_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     void update_dimensions_from_tex_coord_();
     void update_borders_() override;

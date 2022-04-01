@@ -436,4 +436,8 @@ const vector2f& button::get_pushed_text_offset() const {
     return pushed_text_offset_;
 }
 
+const std::vector<std::string>& button::get_type_list_() const {
+    return get_type_list_impl_<button>();
+}
+
 } // namespace lxgui::gui

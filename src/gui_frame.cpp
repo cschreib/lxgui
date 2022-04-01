@@ -5,6 +5,7 @@
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -1523,15 +1524,16 @@ void frame::update(float delta) {
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
+        // TODO: This is bad; the frame class should not know about font_string, see #.
         for (const auto& reg : region_list_) {
-            if (reg && !reg->is_region_type("font_string")) {
+            if (reg && !reg->is_region_type<font_string>()) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }
         }
 
         for (const auto& reg : region_list_) {
-            if (reg && reg->is_region_type("font_string")) {
+            if (reg && reg->is_region_type<font_string>()) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }
@@ -1588,6 +1590,10 @@ void frame::update(float delta) {
             }
         }
     }
+}
+
+const std::vector<std::string>& frame::get_type_list_() const {
+    return get_type_list_impl_<frame>();
 }
 
 } // namespace lxgui::gui

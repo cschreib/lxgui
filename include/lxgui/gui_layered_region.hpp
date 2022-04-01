@@ -21,9 +21,9 @@ enum class layer { background, border, artwork, overlay, highlight, special_high
  * must be taken care of by the parent frame.
  */
 class layered_region : public region {
+public:
     using base = region;
 
-public:
     /// Constructor.
     explicit layered_region(
         utils::control_block& block, manager& mgr, const region_core_attributes& attr);
@@ -72,6 +72,8 @@ public:
 
 protected:
     void parse_attributes_(const layout_node& node) override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     layer layer_ = layer::artwork;
 };
