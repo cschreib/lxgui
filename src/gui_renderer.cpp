@@ -42,13 +42,19 @@ void renderer::end() {
     end_();
 }
 
-void renderer::reset_batch_count() {
-    last_frame_batch_count_ = batch_count_;
-    batch_count_            = 0;
+void renderer::reset_counters() {
+    last_frame_batch_count_  = batch_count_;
+    last_frame_vertex_count_ = vertex_count_;
+    batch_count_             = 0;
+    vertex_count_            = 0;
 }
 
 std::size_t renderer::get_batch_count() const {
     return last_frame_batch_count_;
+}
+
+std::size_t renderer::get_vertex_count() const {
+    return last_frame_vertex_count_;
 }
 
 void renderer::set_view(const matrix4f& view_matrix) {
@@ -87,6 +93,7 @@ void renderer::render_quads(
 
     if (!is_quad_batching_enabled()) {
         // Render immediately
+        vertex_count_ += quad_list.size() * 4;
         render_quads_(mat, quad_list);
         return;
     }
@@ -130,6 +137,8 @@ void renderer::flush_quad_batch() {
     if (cache.data.empty())
         return;
 
+    vertex_count_ += cache.data.size() * 4;
+
     if (cache.cache) {
         cache.cache->update(cache.data[0].data(), cache.data.size() * 4);
         render_cache_(current_material_, *cache.cache, matrix4f::identity);
@@ -152,6 +161,8 @@ void renderer::render_cache(
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
     }
+
+    vertex_count_ += cache.get_num_vertex() * 4;
 
     render_cache_(mat, cache, model_transform);
 }

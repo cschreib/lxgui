@@ -57,7 +57,7 @@ void main_loop(void* type_erased_data) try {
     }
 
     // Reset batch count (for analytics only, optional)
-    context.manager->get_renderer().reset_batch_count();
+    context.manager->get_renderer().reset_counters();
 
     // Update the gui
     SDL_GL_MakeCurrent(context.window, context.gl_context);

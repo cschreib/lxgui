@@ -166,7 +166,7 @@ void main_loop(void* type_erased_data) {
 #endif
 
         // Reset batch count (for analytics only, optional)
-        context.manager->get_renderer().reset_batch_count();
+        context.manager->get_renderer().reset_counters();
 
         // Update the gui
         timing_clock::time_point start = timing_clock::now();

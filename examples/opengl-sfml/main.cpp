@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
             }
 
             // Reset batch count (for analytics only, optional)
-            manager->get_renderer().reset_batch_count();
+            manager->get_renderer().reset_counters();
 
             // Update the gui
             manager->update_ui(delta);
