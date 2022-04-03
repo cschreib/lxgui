@@ -120,12 +120,12 @@
  * is hidden indirectly (for example if its parent is itself hidden). This
  * will only fire if the frame was previously shown.
  * - `OnKeyDown`: Triggered when a keyboard key is pressed. Will only
- * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
- * been registered for capture using @ref frame::enable_key_capture. If no
+ * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+ * been registered for capture using @{Frame:enable_key_capture}. If no
  * keyboard-enabled frame is focused, only the topmost frame with
- * @ref frame::enable_key_capture will receive the event. If no frame has
+ * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides five arguments to the registered
+ * @{Manager.register_key_binding}). This event provides five arguments to the registered
  * callback: a number identifying the main key being pressed, three boolean flags
  * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
  * key combination being pressed (e.g., Shift+A).
