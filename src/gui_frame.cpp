@@ -770,21 +770,21 @@ vector2f frame::get_min_dimensions() const {
     return vector2f(min_width_, min_height_);
 }
 
-std::size_t frame::get_num_children() const {
+std::size_t frame::get_child_count() const {
     return std::count_if(
         child_list_.begin(), child_list_.end(), [](const auto& child) { return child != nullptr; });
 }
 
-std::size_t frame::get_rough_num_children() const {
+std::size_t frame::get_child_count_upper_bound() const {
     return child_list_.size();
 }
 
-std::size_t frame::get_num_regions() const {
+std::size_t frame::get_layered_region_count() const {
     return std::count_if(
         region_list_.begin(), region_list_.end(), [](const auto& reg) { return reg != nullptr; });
 }
 
-std::size_t frame::get_rough_num_regions() const {
+std::size_t frame::get_layered_region_count_upper_bound() const {
     return region_list_.size();
 }
 
@@ -983,7 +983,7 @@ utils::connection frame::define_script_(
         std::vector<sol::object> lua_args;
 
         // Set arguments
-        for (std::size_t i = 0; i < args.get_num_param(); ++i) {
+        for (std::size_t i = 0; i < args.get_param_count(); ++i) {
             const utils::variant& arg = args.get(i);
             if (std::holds_alternative<utils::empty>(arg))
                 lua_args.emplace_back(sol::lua_nil);
@@ -1076,7 +1076,7 @@ void frame::remove_script(const std::string& script_name) {
 void frame::on_event_(std::string_view event_name, const event_data& event) {
     event_data data;
     data.add(std::string(event_name));
-    for (std::size_t i = 0; i < event.get_num_param(); ++i)
+    for (std::size_t i = 0; i < event.get_param_count(); ++i)
         data.add(event.get(i));
 
     fire_script("OnEvent", data);

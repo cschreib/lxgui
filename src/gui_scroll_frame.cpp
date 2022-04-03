@@ -107,9 +107,9 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
         if (!is_virtual())
             scroll_child_->set_frame_renderer(observer_from(this));
 
-        scroll_child_->clear_all_points();
+        scroll_child_->clear_all_anchors();
         if (!is_virtual())
-            scroll_child_->set_point(point::top_left, get_name(), -scroll_);
+            scroll_child_->set_anchor(point::top_left, get_name(), -scroll_);
 
         update_scroll_range_();
     }
@@ -128,7 +128,7 @@ void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
     if (!checker.is_alive())
         return;
 
-    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->modify_anchor(point::top_left).offset = -scroll_;
     scroll_child_->notify_borders_need_update();
 
     redraw_scroll_render_target_flag_ = true;
@@ -153,7 +153,7 @@ void scroll_frame::set_vertical_scroll(float vertical_scroll) {
     if (!checker.is_alive())
         return;
 
-    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->modify_anchor(point::top_left).offset = -scroll_;
     scroll_child_->notify_borders_need_update();
 
     redraw_scroll_render_target_flag_ = true;

@@ -70,7 +70,7 @@ public:
      * \brief Returns the number of vertices stored in this cache.
      * \return The number of vertices stored in this cache
      */
-    std::size_t get_num_vertex() const {
+    std::size_t get_vertex_count() const {
         return num_vertex_;
     }
 

@@ -54,13 +54,13 @@ region::~region() {
                 continue;
 
             std::vector<point> anchored_point_list;
-            for (const auto& a : obj->get_point_list()) {
+            for (const auto& a : obj->get_anchors()) {
                 if (a && a->get_parent().get() == this)
                     anchored_point_list.push_back(a->object_point);
             }
 
             for (const auto& p : anchored_point_list) {
-                const anchor& a          = obj->get_point(p);
+                const anchor& a          = obj->get_anchor(p);
                 anchor_data   new_anchor = anchor_data(p, "", point::top_left);
                 new_anchor.offset        = a.offset;
 
@@ -76,7 +76,7 @@ region::~region() {
                 case point::center: new_anchor.offset += borders_.center(); break;
                 }
 
-                obj->set_point(new_anchor);
+                obj->set_anchor(new_anchor);
             }
         }
 
@@ -100,7 +100,7 @@ std::string region::serialize(const std::string& tab) const {
         str << tab << "  # Parent     : " << parent_->get_name() << "\n";
     else
         str << tab << "  # Parent     : none\n";
-    str << tab << "  # Num anchors: " << get_num_point() << "\n";
+    str << tab << "  # Num anchors: " << get_anchor_count() << "\n";
     if (!anchor_list_.empty()) {
         str << tab << "  |-###\n";
         for (const auto& a : anchor_list_) {
@@ -130,9 +130,9 @@ void region::copy_from(const region& obj) {
     this->set_shown(obj.is_shown());
     this->set_dimensions(obj.get_dimensions());
 
-    for (const std::optional<anchor>& a : obj.get_point_list()) {
+    for (const std::optional<anchor>& a : obj.get_anchors()) {
         if (a) {
-            this->set_point(a->get_data());
+            this->set_anchor(a->get_data());
         }
     }
 }
@@ -358,7 +358,7 @@ const bounds2f& region::get_borders() const {
     return borders_;
 }
 
-void region::clear_all_points() {
+void region::clear_all_anchors() {
     bool had_anchors = false;
     for (auto& a : anchor_list_) {
         if (a) {
@@ -404,7 +404,7 @@ void region::set_all_points(const std::string& obj_name) {
         return;
     }
 
-    clear_all_points();
+    clear_all_anchors();
 
     auto& top_left     = anchor_list_[static_cast<int>(point::top_left)];
     auto& bottom_right = anchor_list_[static_cast<int>(point::bottom_right)];
@@ -466,7 +466,7 @@ void set_defined_borders(bounds2<bool>& defined_borders, point p, bool defined) 
     }
 }
 
-void region::set_point(const anchor_data& a) {
+void region::set_anchor(const anchor_data& a) {
     auto& modified_anchor = anchor_list_[static_cast<int>(a.object_point)];
     auto  previous_parent = modified_anchor.has_value() ? modified_anchor->get_parent() : nullptr;
 
@@ -512,7 +512,7 @@ bool region::depends_on(const region& obj) const {
     return false;
 }
 
-std::size_t region::get_num_point() const {
+std::size_t region::get_anchor_count() const {
     std::size_t num_anchors = 0u;
     for (const auto& a : anchor_list_) {
         if (a)
@@ -522,27 +522,27 @@ std::size_t region::get_num_point() const {
     return num_anchors;
 }
 
-anchor& region::modify_point(point p) {
+anchor& region::modify_anchor(point p) {
     auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
-            "region", "Cannot modify a point that does not exist. Use set_point() first.");
+            "region", "Cannot modify a point that does not exist. Use set_anchor() first.");
     }
 
     return *a;
 }
 
-const anchor& region::get_point(point p) const {
+const anchor& region::get_anchor(point p) const {
     const auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
-            "region", "Cannot get a point that does not exist. Use set_point() first.");
+            "region", "Cannot get an anchor that does not exist. Use set_anchor() first.");
     }
 
     return *a;
 }
 
-const std::array<std::optional<anchor>, 9>& region::get_point_list() const {
+const std::array<std::optional<anchor>, 9>& region::get_anchors() const {
     return anchor_list_;
 }
 

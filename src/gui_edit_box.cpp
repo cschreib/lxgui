@@ -256,22 +256,22 @@ void edit_box::highlight_text(std::size_t start, std::size_t end, bool force_upd
                     left = left - display_pos_;
 
                 float left_pos = text_insets_.left;
-                if (left < text->get_num_letters())
+                if (left < text->get_letter_count())
                     left_pos += text->get_letter_quad(left)[0].pos.x;
 
                 right           = right - display_pos_;
                 float right_pos = text_insets_.left;
                 if (right < displayed_text_.size()) {
-                    if (right < text->get_num_letters())
+                    if (right < text->get_letter_count())
                         right_pos += text->get_letter_quad(right)[0].pos.x;
                 } else {
                     right = displayed_text_.size() - 1;
-                    if (right < text->get_num_letters())
+                    if (right < text->get_letter_count())
                         right_pos += text->get_letter_quad(right)[2].pos.x;
                 }
 
-                highlight_->set_point(point::left, name_, vector2f(left_pos, 0));
-                highlight_->set_point(point::right, name_, point::left, vector2f(right_pos, 0));
+                highlight_->set_anchor(point::left, name_, vector2f(left_pos, 0));
+                highlight_->set_anchor(point::right, name_, point::left, vector2f(right_pos, 0));
 
                 highlight_->show();
             } else
@@ -358,7 +358,7 @@ std::size_t edit_box::get_max_letters() const {
     return max_letters_;
 }
 
-std::size_t edit_box::get_num_letters() const {
+std::size_t edit_box::get_letter_count() const {
     return unicode_text_.size();
 }
 
@@ -519,9 +519,9 @@ void edit_box::set_text_insets(const bounds2f& insets) {
     text_insets_ = insets;
 
     if (font_string_) {
-        font_string_->clear_all_points();
-        font_string_->set_point(point::top_left, text_insets_.top_left());
-        font_string_->set_point(point::bottom_right, -text_insets_.bottom_right());
+        font_string_->clear_all_anchors();
+        font_string_->set_anchor(point::top_left, text_insets_.top_left());
+        font_string_->set_anchor(point::bottom_right, -text_insets_.bottom_right());
 
         update_displayed_text_();
         update_font_string_();
@@ -572,10 +572,10 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> fstr) {
     font_string_->set_word_wrap(is_multi_line_, is_multi_line_);
 
     font_string_->set_dimensions(vector2f(0, 0));
-    font_string_->clear_all_points();
+    font_string_->clear_all_anchors();
 
-    font_string_->set_point(point::top_left, text_insets_.top_left());
-    font_string_->set_point(point::bottom_right, -text_insets_.bottom_right());
+    font_string_->set_anchor(point::top_left, text_insets_.top_left());
+    font_string_->set_anchor(point::bottom_right, -text_insets_.bottom_right());
 
     font_string_->enable_formatting(false);
 
@@ -613,8 +613,8 @@ void edit_box::create_highlight_() {
 
     highlight->set_manually_inherited(true);
 
-    highlight->set_point(point::top, vector2f(0.0f, text_insets_.top));
-    highlight->set_point(point::bottom, vector2f(0.0f, -text_insets_.bottom));
+    highlight->set_anchor(point::top, vector2f(0.0f, text_insets_.top));
+    highlight->set_anchor(point::bottom, vector2f(0.0f, -text_insets_.bottom));
 
     highlight->set_solid_color(highlight_color_);
 
@@ -633,7 +633,7 @@ void edit_box::create_carret_() {
 
         carret->set_manually_inherited(true);
 
-        carret->set_point(point::center, point::left, vector2f(text_insets_.left - 1.0f, 0.0f));
+        carret->set_anchor(point::center, point::left, vector2f(text_insets_.left - 1.0f, 0.0f));
 
         carret->notify_loaded();
         carret_ = carret;
@@ -727,7 +727,7 @@ void edit_box::update_carret_position_() {
         default: p = point::left; break;
         }
 
-        carret_->set_point(point::center, p, vector2f(offset, 0.0f));
+        carret_->set_anchor(point::center, p, vector2f(offset, 0.0f));
     } else {
         text*                    text = font_string_->get_text_object();
         utils::ustring::iterator iter_display_carret;
@@ -784,22 +784,22 @@ void edit_box::update_carret_position_() {
                 displayed_text_.begin() + (iter_carret_pos_ - unicode_text_.begin()) - display_pos_;
         }
 
-        float y_offset = static_cast<float>((text->get_num_lines() - 1)) *
+        float y_offset = static_cast<float>((text->get_line_count() - 1)) *
                          (text->get_line_height() * text->get_line_spacing());
 
         std::size_t index = iter_display_carret - displayed_text_.begin();
 
         float x_offset = text_insets_.left;
         if (index < displayed_text_.size()) {
-            if (index < text->get_num_letters())
+            if (index < text->get_letter_count())
                 x_offset += text->get_letter_quad(index)[0].pos.x;
         } else {
             index = displayed_text_.size() - 1;
-            if (index < text->get_num_letters())
+            if (index < text->get_letter_count())
                 x_offset += text->get_letter_quad(index)[2].pos.x;
         }
 
-        carret_->set_point(point::center, point::left, vector2f(x_offset, y_offset));
+        carret_->set_anchor(point::center, point::left, vector2f(x_offset, y_offset));
     }
 
     carret_timer_.zero();
@@ -813,7 +813,7 @@ bool edit_box::add_char_(char32_t c) {
     if (is_text_selected_)
         remove_char_();
 
-    if (get_num_letters() >= max_letters_)
+    if (get_letter_count() >= max_letters_)
         return false;
 
     // TODO: use localizer for these checks, if possible
@@ -901,7 +901,7 @@ std::size_t edit_box::get_letter_id_at_(const vector2f& position) const {
             return displayed_text_.size() + display_pos_;
 
         std::size_t num_letters =
-            std::min<std::size_t>(text->get_num_letters(), displayed_text_.size());
+            std::min<std::size_t>(text->get_letter_count(), displayed_text_.size());
 
         for (std::size_t index = 0u; index < num_letters; ++index) {
             const auto& quad = text->get_letter_quad(index);
@@ -1006,7 +1006,7 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
         }
     } else if (key_id == key::k_end) {
         std::size_t previous_carret_pos = get_cursor_position();
-        set_cursor_position(get_num_letters());
+        set_cursor_position(get_letter_count());
 
         if (shift_is_pressed) {
             if (is_text_selected_)

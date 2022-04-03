@@ -455,7 +455,7 @@ public:
      * \note This region and its children won't be visible until you
      * define at least one anchor.
      */
-    void clear_all_points();
+    void clear_all_anchors();
 
     /**
      * \brief Adjusts this regions anchors to fit the provided region.
@@ -475,17 +475,17 @@ public:
      * \brief Adds/replaces an anchor.
      * \param a The anchor to add
      */
-    void set_point(const anchor_data& a);
+    void set_anchor(const anchor_data& a);
 
     /**
      * \brief Adds/replaces an anchor.
      * \param args Argument to construct a new anchor_data
      */
     template<typename... Args>
-    void set_point(Args&&... args) {
-        constexpr auto set_point_overload =
-            static_cast<void (region::*)(const anchor_data&)>(&region::set_point);
-        (this->*set_point_overload)(anchor_data{std::forward<Args>(args)...});
+    void set_anchor(Args&&... args) {
+        constexpr auto set_anchor_overload =
+            static_cast<void (region::*)(const anchor_data&)>(&region::set_anchor);
+        (this->*set_anchor_overload)(anchor_data{std::forward<Args>(args)...});
     }
 
     /**
@@ -499,7 +499,7 @@ public:
      * \brief Returns the number of defined anchors.
      * \return The number of defined anchors
      */
-    std::size_t get_num_point() const;
+    std::size_t get_anchor_count() const;
 
     /**
      * \brief Returns one of this region's anchor to modify it.
@@ -508,20 +508,20 @@ public:
      * \note After you have modified the anchor, you must call notify_borders_need_update() to
      * ensure that the object's borders are properly updated.
      */
-    anchor& modify_point(point p);
+    anchor& modify_anchor(point p);
 
     /**
      * \brief Returns one of this region's anchor.
      * \param p The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(point p) const;
+    const anchor& get_anchor(point p) const;
 
     /**
      * \brief Returns all of this region's anchors.
      * \return All of this region's anchors
      */
-    const std::array<std::optional<anchor>, 9>& get_point_list() const;
+    const std::array<std::optional<anchor>, 9>& get_anchors() const;
 
     /**
      * \brief Round an absolute position on screen to the nearest physical pixel.

@@ -161,14 +161,14 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
         return;
 
     bar_texture_->set_draw_layer(bar_layer_);
-    bar_texture_->clear_all_points();
+    bar_texture_->clear_all_anchors();
 
     std::string parent = bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
     if (is_reversed_) {
-        bar_texture_->set_point(point::top_right, parent);
+        bar_texture_->set_anchor(point::top_right, parent);
     } else {
-        bar_texture_->set_point(point::bottom_left, parent);
+        bar_texture_->set_anchor(point::bottom_left, parent);
     }
 
     initial_text_coords_ = select_uvs(bar_texture_->get_tex_coord());
@@ -198,9 +198,9 @@ void status_bar::set_reversed(bool reversed) {
 
     if (bar_texture_) {
         if (is_reversed_) {
-            bar_texture_->set_point(point::top_right);
+            bar_texture_->set_anchor(point::top_right);
         } else {
-            bar_texture_->set_point(point::bottom_left);
+            bar_texture_->set_anchor(point::bottom_left);
         }
 
         if (!is_virtual_) {

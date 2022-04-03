@@ -819,36 +819,36 @@ public:
     /**
      * \brief Returns the number of children of this frame.
      * \return The number of children of this frame
-     * \note If only an approximate number is acceptable, use get_rough_num_children(),
+     * \note If only an approximate number is acceptable, use get_child_count_upper_bound(),
      * which is faster.
      */
-    std::size_t get_num_children() const;
+    std::size_t get_child_count() const;
 
     /**
      * \brief Returns the approximate number of children of this frame.
      * \return The approximate number of children of this frame
      * \note The returned number is an *upper bound* on the actual number of children.
      * This can be used to reserve enough space for memory allocations.
-     * If the exact number of children is required, use get_num_children().
+     * If the exact number of children is required, use get_child_count().
      */
-    std::size_t get_rough_num_children() const;
+    std::size_t get_child_count_upper_bound() const;
 
     /**
-     * \brief Returns the number of regions of this frame.
-     * \return The number of regions of this frame
-     * \note If only an approximate number is acceptable, use get_rough_num_regions(),
+     * \brief Returns the number of layered regions of this frame.
+     * \return The number of layered regions of this frame
+     * \note If only an approximate number is acceptable, use get_layered_region_count_upper_bound(),
      * which is faster.
      */
-    std::size_t get_num_regions() const;
+    std::size_t get_layered_region_count() const;
 
     /**
      * \brief Returns the approximate number of regions of this frame.
      * \return The approximate number of regions of this frame
      * \note The returned number is an *upper bound* on the actual number of regions.
      * This can be used to reserve enough space for memory allocations.
-     * If the exact number of regions is required, use get_num_regions().
+     * If the exact number of regions is required, use get_layered_region_count().
      */
-    std::size_t get_rough_num_regions() const;
+    std::size_t get_layered_region_count_upper_bound() const;
 
     /**
      * \brief Returns this frame's scale.

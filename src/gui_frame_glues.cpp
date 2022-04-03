@@ -415,7 +415,7 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_children", [](sol::this_state this_lua, const frame& self) {
         std::vector<sol::object> children;
-        children.reserve(self.get_rough_num_children());
+        children.reserve(self.get_child_count_upper_bound());
 
         auto lua_state = sol::state_view(this_lua);
         for (const auto& child : self.get_children()) {
@@ -474,13 +474,14 @@ void frame::register_on_lua(sol::state& lua) {
         return std::make_tuple(min.x, min.y);
     });
 
-    /** @function get_num_children
+    /** @function get_child_count
      */
-    type.set_function("get_num_children", member_function<&frame::get_num_children>());
+    type.set_function("get_child_count", member_function<&frame::get_child_count>());
 
-    /** @function get_num_regions
+    /** @function get_layered_region_count
      */
-    type.set_function("get_num_regions", member_function<&frame::get_num_regions>());
+    type.set_function(
+        "get_layered_region_count", member_function<&frame::get_layered_region_count>());
 
     /** @function get_scale
      */

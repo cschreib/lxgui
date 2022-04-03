@@ -129,7 +129,7 @@ public:
      * \brief Count the total number of texture atlas pages currently in use.
      * \return The total number of texture atlas pages currently in use
      */
-    std::size_t get_num_texture_atlas_pages() const;
+    std::size_t get_texture_atlas_page_count() const;
 
     /**
      * \brief Checks if the renderer supports vertex caches.

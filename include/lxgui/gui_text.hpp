@@ -167,7 +167,7 @@ public:
      * \brief Returns the number of text lines.
      * \return The number of text lines
      */
-    std::size_t get_num_lines() const;
+    std::size_t get_line_count() const;
 
     /**
      * \brief Returns the length of a provided string.
@@ -317,11 +317,11 @@ public:
      * \return The number of letters currently displayed
      * \note This function may update the quad cache as needed.
      */
-    std::size_t get_num_letters() const;
+    std::size_t get_letter_count() const;
 
     /**
      * \brief Returns the quad for the letter at the provided index (position, texture coords, color).
-     * \param index The index of the letter (0: first letter); must be less than get_num_letters().
+     * \param index The index of the letter (0: first letter); must be less than get_letter_count().
      * \return The quad of the specified letter
      * \note The vertex positions in the quad do not account for the rendering position
      * provided to render(). The first letter always has its top-left corner as

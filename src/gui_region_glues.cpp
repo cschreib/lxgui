@@ -174,9 +174,9 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_alpha", member_function<&region::set_alpha>());
 
-    /** @function clear_all_points
+    /** @function clear_all_anchors
      */
-    type.set_function("clear_all_points", member_function<&region::clear_all_points>());
+    type.set_function("clear_all_anchors", member_function<&region::clear_all_anchors>());
 
     /** @function get_bottom
      */
@@ -198,9 +198,9 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_left", member_function<&region::get_left>());
 
-    /** @function get_num_point
+    /** @function get_anchor_count
      */
-    type.set_function("get_num_point", member_function<&region::get_num_point>());
+    type.set_function("get_anchor_count", member_function<&region::get_anchor_count>());
 
     /** @function get_parent
      */
@@ -211,9 +211,9 @@ void region::register_on_lua(sol::state& lua) {
         return parent;
     });
 
-    /** @function get_point
+    /** @function get_anchor
      */
-    type.set_function("get_point", [](const region& self, sol::optional<std::size_t> p) {
+    type.set_function("get_anchor", [](const region& self, sol::optional<std::size_t> p) {
         point point_value = point::top_left;
         if (p.has_value()) {
             if (p.value() > static_cast<std::size_t>(point::center))
@@ -222,7 +222,7 @@ void region::register_on_lua(sol::state& lua) {
             point_value = static_cast<point>(p.value());
         }
 
-        const anchor& a = self.get_point(point_value);
+        const anchor& a = self.get_anchor(point_value);
 
         return std::make_tuple(
             utils::to_string(a.object_point), a.get_parent(), utils::to_string(a.parent_point),
@@ -289,13 +289,13 @@ void region::register_on_lua(sol::state& lua) {
         }
     });
 
-    /** @function set_point
+    /** @function set_anchor
      */
     type.set_function(
-        "set_point", [](region& self, const std::string& point_name,
-                        sol::optional<std::variant<std::string, region*>> parent,
-                        sol::optional<std::string> relative_point, sol::optional<float> x_offset,
-                        sol::optional<float> y_offset) {
+        "set_anchor", [](region& self, const std::string& point_name,
+                         sol::optional<std::variant<std::string, region*>> parent,
+                         sol::optional<std::string> relative_point, sol::optional<float> x_offset,
+                         sol::optional<float> y_offset) {
             // point
             point p = utils::from_string<point>(point_name).value();
 
@@ -321,7 +321,7 @@ void region::register_on_lua(sol::state& lua) {
             float abs_x = x_offset.value_or(0.0f);
             float abs_y = y_offset.value_or(0.0f);
 
-            self.set_point(
+            self.set_anchor(
                 p, parent_obj ? parent_obj->get_name() : "", parent_point, vector2f(abs_x, abs_y));
         });
 
@@ -357,7 +357,7 @@ void region::register_on_lua(sol::state& lua) {
             float rel_x = x_offset.value_or(0.0f);
             float rel_y = y_offset.value_or(0.0f);
 
-            self.set_point(
+            self.set_anchor(
                 p, parent_obj ? parent_obj->get_name() : "", parent_point, vector2f(rel_x, rel_y),
                 anchor_type::rel);
         });

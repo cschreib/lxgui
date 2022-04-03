@@ -59,7 +59,7 @@
                 self.timer = self.update_time;
                 self.total_fps = 0;
                 self.frames = 0;
-                FontstringTestFrameText:set_point("BOTTOM_RIGHT", self, "TOP_RIGHT", -2, -5);
+                FontstringTestFrameText:set_anchor("BOTTOM_RIGHT", self, "TOP_RIGHT", -2, -5);
             </OnLoad>
             <OnUpdate>
                 if (arg1 == 0) then arg1 = 0.1; end

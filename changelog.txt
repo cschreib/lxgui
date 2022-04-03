@@ -120,6 +120,9 @@ Other changes:
  - gui: renamed anchor_point to point
  - gui: renamed register_for_drag to enable_drag
  - gui: renamed get_object_type to get_region_type
+ - gui: renamed clear_all_points to clear_all_anchors
+ - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
+ - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()

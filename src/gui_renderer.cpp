@@ -162,7 +162,7 @@ void renderer::render_cache(
         flush_quad_batch();
     }
 
-    vertex_count_ += cache.get_num_vertex() * 4;
+    vertex_count_ += cache.get_vertex_count() * 4;
 
     render_cache_(mat, cache, model_transform);
 }
@@ -259,11 +259,11 @@ void renderer::set_texture_atlas_page_size(std::size_t page_size) {
     texture_atlas_page_size_ = page_size;
 }
 
-std::size_t renderer::get_num_texture_atlas_pages() const {
+std::size_t renderer::get_texture_atlas_page_count() const {
     std::size_t count = 0;
 
     for (const auto& page : atlas_list_) {
-        count += page.second->get_num_pages();
+        count += page.second->get_page_count();
     }
 
     return count;

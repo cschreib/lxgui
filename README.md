@@ -587,13 +587,13 @@ gui::root& root = manager->get_root();
 // NB: observer_ptr is a lightweight, non-owning smart pointer (vaguely similar to std::weak_ptr).
 utils::observer_ptr<gui::frame> frame =
     root.create_root_frame<gui::frame>("FPSCounter");
-frame->set_point(gui::point::TOP_LEFT);
-frame->set_point(gui::point::BOTTOM_RIGHT);
+frame->set_anchor(gui::point::TOP_LEFT);
+frame->set_anchor(gui::point::BOTTOM_RIGHT);
 
 // Create the FontString as a child region of the frame.
 utils::observer_ptr<gui::font_string> text =
     frame->create_layered_region<gui::font_string>(gui::layer::ARTWORK, "$parentText");
-text->set_point(gui::point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
+text->set_anchor(gui::point::BOTTOM_RIGHT, gui::vector2f{-5, -5});
 text->set_font("interface/fonts/main.ttf", 12);
 text->set_alignment_x(gui::alignment_x::RIGHT);
 text->set_alignment_y(gui::alignment_y::BOTTOM);

@@ -408,7 +408,7 @@ float text::get_text_height() const {
     return height;
 }
 
-std::size_t text::get_num_lines() const {
+std::size_t text::get_line_count() const {
     update_();
     return num_lines_;
 }
@@ -1003,7 +1003,7 @@ quad text::create_letter_quad(char32_t c) const {
     return output;
 }
 
-std::size_t text::get_num_letters() const {
+std::size_t text::get_letter_count() const {
     update_();
     return quad_list_.size();
 }
