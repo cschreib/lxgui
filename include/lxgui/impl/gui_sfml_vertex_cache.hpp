@@ -58,7 +58,6 @@ public:
     const sf::VertexBuffer& get_impl() const;
 
 private:
-    std::size_t      num_vertex_ = 0u;
     sf::VertexBuffer buffer_;
 };
 

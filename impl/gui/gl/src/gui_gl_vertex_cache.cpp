@@ -87,6 +87,7 @@ void vertex_cache::update_indices(const std::uint32_t* vertex_indices, std::size
     }
 
     current_size_index_ = num_indices;
+    num_vertex_         = current_size_index_;
 }
 
 void vertex_cache::update_indices_if_grow(
@@ -96,6 +97,7 @@ void vertex_cache::update_indices_if_grow(
     } else {
         // Cheap resize, do not update indices
         current_size_index_ = num_indices;
+        num_vertex_         = current_size_index_;
     }
 }
 

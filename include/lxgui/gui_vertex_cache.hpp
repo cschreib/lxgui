@@ -66,8 +66,17 @@ public:
      */
     virtual void update(const vertex* vertex_data, std::size_t num_vertex) = 0;
 
+    /**
+     * \brief Returns the number of vertices stored in this cache.
+     * \return The number of vertices stored in this cache
+     */
+    std::size_t get_num_vertex() const {
+        return num_vertex_;
+    }
+
 protected:
-    type type_ = type::triangles;
+    type        type_       = type::triangles;
+    std::size_t num_vertex_ = 0;
 };
 
 } // namespace lxgui::gui

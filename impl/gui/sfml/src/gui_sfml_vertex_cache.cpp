@@ -55,10 +55,6 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     }
 }
 
-std::size_t vertex_cache::get_num_vertex() const {
-    return num_vertex_;
-}
-
 const sf::VertexBuffer& vertex_cache::get_impl() const {
     return buffer_;
 }
