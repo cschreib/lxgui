@@ -35,7 +35,9 @@ public:
      * \param outline_fnt The font to use for outlines
      */
     explicit text(
-        renderer& rdr, std::shared_ptr<font> fnt, std::shared_ptr<font> outline_fnt = nullptr);
+        renderer&                   rdr,
+        std::shared_ptr<const font> fnt,
+        std::shared_ptr<const font> outline_fnt = nullptr);
 
     // Non-copiable, non-movable
     text(const text&) = delete;
@@ -358,7 +360,7 @@ private:
     float round_to_pixel_(
         float value, utils::rounding_method method = utils::rounding_method::nearest) const;
 
-    std::array<vertex, 4> create_letter_quad_(gui::font& font, char32_t c) const;
+    std::array<vertex, 4> create_letter_quad_(const gui::font& font, char32_t c) const;
     std::array<vertex, 4> create_letter_quad_(char32_t c) const;
     std::array<vertex, 4> create_outline_letter_quad_(char32_t c) const;
 
@@ -380,9 +382,9 @@ private:
     alignment_x align_x_                = alignment_x::left;
     alignment_y align_y_                = alignment_y::middle;
 
-    std::shared_ptr<font> font_;
-    std::shared_ptr<font> outline_font_;
-    utils::ustring        unicode_text_;
+    std::shared_ptr<const font> font_;
+    std::shared_ptr<const font> outline_font_;
+    utils::ustring              unicode_text_;
 
     mutable bool        update_cache_flag_ = false;
     mutable float       width_             = 0.0f;

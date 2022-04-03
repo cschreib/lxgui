@@ -280,7 +280,8 @@ float get_string_width(const text& txt, const std::vector<item>& content) {
 /** \endcond
  */
 
-text::text(renderer& rdr, std::shared_ptr<font> fnt, std::shared_ptr<font> outline_font) :
+text::text(
+    renderer& rdr, std::shared_ptr<const font> fnt, std::shared_ptr<const font> outline_font) :
     renderer_(rdr), font_(std::move(fnt)), outline_font_(std::move(outline_font)) {
 
     if (!font_)
@@ -968,7 +969,7 @@ void text::update_() const {
     update_cache_flag_ = false;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(gui::font& font, char32_t c) const {
+std::array<vertex, 4> text::create_letter_quad_(const gui::font& font, char32_t c) const {
     bounds2f quad = font.get_character_bounds(c) * scaling_factor_;
 
     std::array<vertex, 4> vertex_list;
