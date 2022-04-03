@@ -99,7 +99,7 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                     const auto words = utils::cut(extracted, ":");
                     if (!words.empty()) {
                         texture texture;
-                        texture.mat   = renderer.create_material(std::string{words[0]});
+                        texture.mat = renderer.create_atlas_material("GUI", std::string{words[0]});
                         texture.width = texture.height = std::numeric_limits<float>::quiet_NaN();
 
                         if (words.size() == 2) {
