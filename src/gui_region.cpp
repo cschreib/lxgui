@@ -78,8 +78,6 @@ region::~region() {
 
                 obj->set_point(new_anchor);
             }
-
-            obj->update_anchors_();
         }
 
         remove_glue();
@@ -364,20 +362,39 @@ void region::clear_all_points() {
     bool had_anchors = false;
     for (auto& a : anchor_list_) {
         if (a) {
+            if (!is_virtual_) {
+                if (auto parent = a->get_parent()) {
+                    parent->remove_anchored_object(*this);
+                }
+            }
+
             a.reset();
             had_anchors = true;
         }
     }
 
-    if (had_anchors) {
-        defined_borders_ = bounds2<bool>(false, false, false, false);
+    defined_borders_ = bounds2<bool>(false, false, false, false);
 
-        if (!is_virtual_) {
-            update_anchors_();
-            notify_borders_need_update();
-            notify_renderer_need_redraw();
+    if (had_anchors || !is_virtual_) {
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+    }
+}
+
+bool check_cyclic_anchors(const region& self, anchor& a) {
+    if (utils::observer_ptr<region> other = a.get_parent()) {
+        if (other->depends_on(self)) {
+            gui::out << gui::error << "gui::" << self.get_region_type()
+                     << ": Cyclic anchor dependency ! "
+                     << "\"" << self.get_name() << "\" and \"" << other->get_name()
+                     << "\" depend on eachothers (directly or indirectly). \""
+                     << utils::to_string(a.object_point) << "\" anchor removed." << std::endl;
+
+            return false;
         }
     }
+
+    return true;
 }
 
 void region::set_all_points(const std::string& obj_name) {
@@ -389,16 +406,25 @@ void region::set_all_points(const std::string& obj_name) {
 
     clear_all_points();
 
-    anchor_list_[static_cast<int>(point::top_left)].emplace(
-        *this, anchor_data(point::top_left, obj_name));
+    auto& top_left     = anchor_list_[static_cast<int>(point::top_left)];
+    auto& bottom_right = anchor_list_[static_cast<int>(point::bottom_right)];
 
-    anchor_list_[static_cast<int>(point::bottom_right)].emplace(
-        *this, anchor_data(point::bottom_right, obj_name));
+    top_left.emplace(*this, anchor_data(point::top_left, obj_name));
+
+    if (!check_cyclic_anchors(*this, top_left.value())) {
+        top_left = std::nullopt;
+        return;
+    }
+
+    bottom_right.emplace(*this, anchor_data(point::bottom_right, obj_name));
 
     defined_borders_ = bounds2<bool>(true, true, true, true);
 
     if (!is_virtual_) {
-        update_anchors_();
+        if (auto* parent = top_left->get_parent().get()) {
+            parent->add_anchored_object(*this);
+        }
+
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -414,35 +440,57 @@ void region::set_all_points(const utils::observer_ptr<region>& obj) {
     set_all_points(obj ? obj->get_name() : "");
 }
 
-void region::set_point(const anchor_data& a) {
-    anchor_list_[static_cast<int>(a.object_point)].emplace(*this, a);
-
-    switch (a.object_point) {
+void set_defined_borders(bounds2<bool>& defined_borders, point p, bool defined) {
+    switch (p) {
     case point::top_left:
-        defined_borders_.top  = true;
-        defined_borders_.left = true;
+        defined_borders.top  = defined;
+        defined_borders.left = defined;
         break;
-    case point::top: defined_borders_.top = true; break;
+    case point::top: defined_borders.top = defined; break;
     case point::top_right:
-        defined_borders_.top   = true;
-        defined_borders_.right = true;
+        defined_borders.top   = defined;
+        defined_borders.right = defined;
         break;
-    case point::right: defined_borders_.right = true; break;
+    case point::right: defined_borders.right = defined; break;
     case point::bottom_right:
-        defined_borders_.bottom = true;
-        defined_borders_.right  = true;
+        defined_borders.bottom = defined;
+        defined_borders.right  = defined;
         break;
-    case point::bottom: defined_borders_.bottom = true; break;
+    case point::bottom: defined_borders.bottom = defined; break;
     case point::bottom_left:
-        defined_borders_.bottom = true;
-        defined_borders_.left   = true;
+        defined_borders.bottom = defined;
+        defined_borders.left   = defined;
         break;
-    case point::left: defined_borders_.left = true; break;
+    case point::left: defined_borders.left = defined; break;
     default: break;
+    }
+}
+
+void region::set_point(const anchor_data& a) {
+    auto& modified_anchor = anchor_list_[static_cast<int>(a.object_point)];
+    auto  previous_parent = modified_anchor.has_value() ? modified_anchor->get_parent() : nullptr;
+
+    modified_anchor.emplace(*this, a);
+
+    set_defined_borders(defined_borders_, a.object_point, true);
+
+    auto new_parent = modified_anchor->get_parent();
+    if (new_parent != previous_parent) {
+        if (previous_parent) {
+            previous_parent->remove_anchored_object(*this);
+        }
+
+        if (new_parent) {
+            if (!check_cyclic_anchors(*this, modified_anchor.value())) {
+                modified_anchor.reset();
+                set_defined_borders(defined_borders_, a.object_point, false);
+            } else {
+                new_parent->add_anchored_object(*this);
+            }
+        }
     }
 
     if (!is_virtual_) {
-        update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -687,43 +735,6 @@ void region::update_borders_() {
 
     DEBUG_LOG("  @");
 #undef DEBUG_LOG
-}
-
-void region::update_anchors_() {
-    std::vector<utils::observer_ptr<region>> anchor_parent_list;
-    for (auto& a : anchor_list_) {
-        if (!a)
-            continue;
-
-        utils::observer_ptr<region> obj = a->get_parent();
-        if (obj) {
-            if (obj->depends_on(*this)) {
-                gui::out << gui::error << "gui::" << get_region_type()
-                         << ": Cyclic anchor dependency ! "
-                         << "\"" << name_ << "\" and \"" << obj->get_name()
-                         << "\" depend on eachothers (directly or indirectly). \""
-                         << utils::to_string(a->object_point) << "\" anchor removed." << std::endl;
-
-                a.reset();
-                continue;
-            }
-
-            if (utils::find(anchor_parent_list, obj) == anchor_parent_list.end())
-                anchor_parent_list.push_back(obj);
-        }
-    }
-
-    for (const auto& parent : previous_anchor_parent_list_) {
-        if (utils::find(anchor_parent_list, parent) == anchor_parent_list.end())
-            parent->remove_anchored_object(*this);
-    }
-
-    for (const auto& parent : anchor_parent_list) {
-        if (utils::find(previous_anchor_parent_list_, parent) == previous_anchor_parent_list_.end())
-            parent->add_anchored_object(*this);
-    }
-
-    previous_anchor_parent_list_ = std::move(anchor_parent_list);
 }
 
 void region::notify_borders_need_update() {

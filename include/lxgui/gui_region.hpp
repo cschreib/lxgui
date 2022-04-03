@@ -731,7 +731,6 @@ protected:
     bool make_borders_(float& min, float& max, float center, float size) const;
 
     virtual void update_borders_();
-    virtual void update_anchors_();
 
     sol::state&       get_lua_();
     const sol::state& get_lua_() const;
@@ -790,10 +789,9 @@ protected:
     bool is_loaded_             = false;
     bool is_ready_              = true;
 
-    std::array<std::optional<anchor>, 9>     anchor_list_;
-    std::vector<utils::observer_ptr<region>> previous_anchor_parent_list_;
-    bounds2<bool>                            defined_borders_;
-    bounds2f                                 borders_;
+    std::array<std::optional<anchor>, 9> anchor_list_;
+    bounds2<bool>                        defined_borders_;
+    bounds2f                             borders_;
 
     float alpha_      = 1.0f;
     bool  is_shown_   = true;
