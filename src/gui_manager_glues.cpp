@@ -37,7 +37,9 @@ void manager::create_lua_() {
 
     auto& lua = *lua_;
 
-    lua.globals()["_METADATA_"] = sol::table(lua.lua_state(), sol::create);
+    // This table is used to store Lua members of regions.
+    // See region::set_lua_member_.
+    lua.globals()["_METADATA"] = sol::table(lua.lua_state(), sol::create);
 
     /** @function log
      */
