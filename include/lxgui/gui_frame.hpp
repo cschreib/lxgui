@@ -1053,15 +1053,15 @@ public:
      *
      * \note This overload enables taking handler scripts with a `self` parameter of type other than
      * \ref frame, for example:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
      * will be reported. However this has a cost; if you are sure of the type and want to bypass
      * this cost, just supply the `self` type as the first template argument to this function:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script<button>([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      */
     template<typename DerivedType = void, typename Function>
     utils::connection add_script(
@@ -1161,15 +1161,15 @@ public:
      *
      * \note This overload enables taking handler scripts with a `self` parameter of type other than
      * \ref frame, for example:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
      * will be reported. However this has a cost; if you are sure of the type and want to bypass
      * this cost, just supply the `self` type as the first template argument to this function:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script<button>([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      */
     template<typename DerivedType = void, typename Function>
     utils::connection set_script(
