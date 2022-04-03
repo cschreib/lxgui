@@ -67,14 +67,14 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_normal_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_normal_texture()};
 
         auto tex =
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_normal_texture(tex);
         }
@@ -82,14 +82,14 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_pushed_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_pushed_texture()};
 
         auto tex =
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_pushed_texture(tex);
         }
@@ -97,14 +97,14 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_highlight_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_highlight_texture()};
 
         auto tex =
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_highlight_texture(tex);
         }
@@ -112,14 +112,14 @@ void button::copy_from(const region& obj) {
 
     if (const texture* other_texture = button_obj->get_disabled_texture().get()) {
         region_core_attributes attr;
-        attr.name        = other_texture->get_name();
+        attr.name        = other_texture->get_raw_name();
         attr.inheritance = {button_obj->get_disabled_texture()};
 
         auto tex =
             this->create_layered_region<texture>(other_texture->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_disabled_texture(tex);
         }
@@ -127,14 +127,14 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_normal_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_normal_text()};
 
         auto fstr =
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_normal_text(fstr);
         }
@@ -142,14 +142,14 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_highlight_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_highlight_text()};
 
         auto fstr =
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_highlight_text(fstr);
         }
@@ -157,14 +157,14 @@ void button::copy_from(const region& obj) {
 
     if (const font_string* other_text = button_obj->get_disabled_text().get()) {
         region_core_attributes attr;
-        attr.name        = other_text->get_name();
+        attr.name        = other_text->get_raw_name();
         attr.inheritance = {button_obj->get_disabled_text()};
 
         auto fstr =
             this->create_layered_region<font_string>(other_text->get_draw_layer(), std::move(attr));
 
         if (fstr) {
-            fstr->set_special();
+            fstr->set_manually_inherited(true);
             fstr->notify_loaded();
             this->set_disabled_text(fstr);
         }
@@ -434,6 +434,10 @@ void button::set_pushed_text_offset(const vector2f& offset) {
 
 const vector2f& button::get_pushed_text_offset() const {
     return pushed_text_offset_;
+}
+
+const std::vector<std::string>& button::get_type_list_() const {
+    return get_type_list_impl_<button>();
 }
 
 } // namespace lxgui::gui

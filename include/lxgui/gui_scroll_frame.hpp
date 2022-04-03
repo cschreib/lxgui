@@ -33,9 +33,9 @@ class texture;
  * - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
  */
 class scroll_frame : public frame, public frame_renderer {
+public:
     using base = frame;
 
-public:
     /// Constructor.
     explicit scroll_frame(
         utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
@@ -175,6 +175,8 @@ public:
 protected:
     void         parse_all_nodes_before_children_(const layout_node& node) override;
     virtual void parse_scroll_child_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     void update_scroll_range_();
     void rebuild_scroll_render_target_();

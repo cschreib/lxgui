@@ -60,9 +60,9 @@ class texture;
  * followed by `OnTextChanged`.
  */
 class edit_box : public frame {
+public:
     using base = frame;
 
-public:
     /// Constructor.
     explicit edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
@@ -141,14 +141,14 @@ public:
     /**
      * \brief Returns the current position of the cursor.
      * \return The position of the cursor (0: before first character,
-                get_num-letters(): after last character).
+                get_letter_count(): after last character).
     */
     std::size_t get_cursor_position() const;
 
     /**
      * \brief Moves the cursor to a chosen position.
      * \param pos The new cursor position (0: before first character,
-                     get_num-letters(): after last character).
+                     get_letter_count(): after last character).
     */
     void set_cursor_position(std::size_t pos);
 
@@ -168,7 +168,7 @@ public:
      * \brief Returns the number of letters in the content.
      * \return The number of letters in the content
      */
-    std::size_t get_num_letters() const;
+    std::size_t get_letter_count() const;
 
     /**
      * \brief Sets the carret's blink speed.
@@ -348,6 +348,8 @@ protected:
     void parse_all_nodes_before_children_(const layout_node& node) override;
     void parse_font_string_node_(const layout_node& node);
     void parse_text_insets_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     void create_font_string_();
     void create_highlight_();

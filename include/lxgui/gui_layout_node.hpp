@@ -1,12 +1,12 @@
 #ifndef LXGUI_GUI_LAYOUT_NODE_HPP
 #define LXGUI_GUI_LAYOUT_NODE_HPP
 
+#include "lxgui/gui_out.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_exception.hpp"
 #include "lxgui/utils_string.hpp"
 #include "lxgui/utils_view.hpp"
-#include "lxgui/gui_out.hpp"
 
 #include <string>
 #include <string_view>
@@ -225,7 +225,7 @@ public:
      * \brief Returns the number of children of this node.
      * \return The number of children of this node
      */
-    std::size_t get_children_count() const noexcept {
+    std::size_t get_child_count() const noexcept {
         return child_list_.size();
     }
 

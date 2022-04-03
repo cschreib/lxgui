@@ -120,12 +120,12 @@
  * is hidden indirectly (for example if its parent is itself hidden). This
  * will only fire if the frame was previously shown.
  * - `OnKeyDown`: Triggered when a keyboard key is pressed. Will only
- * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
- * been registered for capture using @ref frame::enable_key_capture. If no
+ * trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+ * been registered for capture using @{Frame:enable_key_capture}. If no
  * keyboard-enabled frame is focused, only the topmost frame with
- * @ref frame::enable_key_capture will receive the event. If no frame has
+ * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides five arguments to the registered
+ * @{Manager.register_key_binding}). This event provides five arguments to the registered
  * callback: a number identifying the main key being pressed, three boolean flags
  * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
  * key combination being pressed (e.g., Shift+A).
@@ -415,11 +415,11 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_children", [](sol::this_state this_lua, const frame& self) {
         std::vector<sol::object> children;
-        children.reserve(self.get_rough_num_children());
+        children.reserve(self.get_child_count_upper_bound());
 
         auto lua_state = sol::state_view(this_lua);
         for (const auto& child : self.get_children()) {
-            children.push_back(lua_state[child.get_lua_name()]);
+            children.push_back(lua_state[child.get_name()]);
         }
 
         return sol::as_table(std::move(children));
@@ -453,10 +453,6 @@ void frame::register_on_lua(sol::state& lua) {
         return utils::to_string(self.get_effective_frame_strata());
     });
 
-    /** @function get_frame_type
-     */
-    type.set_function("get_frame_type", member_function<&frame::get_frame_type>());
-
     /** @function get_hit_rect_insets
      */
     type.set_function("get_hit_rect_insets", [](const frame& self) {
@@ -478,13 +474,14 @@ void frame::register_on_lua(sol::state& lua) {
         return std::make_tuple(min.x, min.y);
     });
 
-    /** @function get_num_children
+    /** @function get_child_count
      */
-    type.set_function("get_num_children", member_function<&frame::get_num_children>());
+    type.set_function("get_child_count", member_function<&frame::get_child_count>());
 
-    /** @function get_num_regions
+    /** @function get_layered_region_count
      */
-    type.set_function("get_num_regions", member_function<&frame::get_num_regions>());
+    type.set_function(
+        "get_layered_region_count", member_function<&frame::get_layered_region_count>());
 
     /** @function get_scale
      */
@@ -498,7 +495,7 @@ void frame::register_on_lua(sol::state& lua) {
                 return sol::lua_nil;
 
             std::string adjusted_name = get_adjusted_script_name(script_name);
-            return self.get_manager().get_lua()[self.get_lua_name()][adjusted_name];
+            return self.get_manager().get_lua()[self.get_name()][adjusted_name];
         });
 
     /** @function get_title_region
@@ -519,12 +516,6 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function is_clamped_to_screen
      */
     type.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
-
-    /** @function is_frame_type
-     */
-    type.set_function("is_frame_type", [](const frame& self, const std::string& type_name) {
-        return self.is_object_type(type_name);
-    });
 
     /** @function is_mouse_click_enabled
      */
@@ -730,13 +721,6 @@ void frame::register_on_lua(sol::state& lua) {
     type.set_function(
         "set_script", [](frame& self, const std::string& script_name,
                          sol::optional<sol::protected_function> script) {
-            if (!self.can_use_script(script_name)) {
-                gui::out << gui::error << self.get_frame_type() << ": "
-                         << "\"" << self.get_name() << "\" cannot use script \"" << script_name
-                         << "\"." << std::endl;
-                return;
-            }
-
             if (script.has_value())
                 self.set_script(script_name, script.value());
             else

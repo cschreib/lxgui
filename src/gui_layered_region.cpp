@@ -32,24 +32,6 @@ utils::owner_ptr<region> layered_region::release_from_parent() {
     return parent_->remove_region(utils::static_pointer_cast<layered_region>(observer_from_this()));
 }
 
-void layered_region::show() {
-    if (!is_shown_) {
-        is_shown_ = true;
-        notify_renderer_need_redraw();
-    }
-}
-
-void layered_region::hide() {
-    if (is_shown_) {
-        is_shown_ = false;
-        notify_renderer_need_redraw();
-    }
-}
-
-bool layered_region::is_visible() const {
-    return parent_->is_visible() && is_shown_;
-}
-
 layer layered_region::get_draw_layer() const {
     return layer_;
 }
@@ -68,6 +50,10 @@ void layered_region::notify_renderer_need_redraw() {
 
     if (parent_)
         parent_->notify_renderer_need_redraw();
+}
+
+const std::vector<std::string>& layered_region::get_type_list_() const {
+    return get_type_list_impl_<layered_region>();
 }
 
 } // namespace lxgui::gui

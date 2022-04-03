@@ -54,32 +54,30 @@ region::~region() {
                 continue;
 
             std::vector<point> anchored_point_list;
-            for (const auto& a : obj->get_point_list()) {
+            for (const auto& a : obj->get_anchors()) {
                 if (a && a->get_parent().get() == this)
                     anchored_point_list.push_back(a->object_point);
             }
 
             for (const auto& p : anchored_point_list) {
-                const anchor& a          = obj->get_point(p);
+                const anchor& a          = obj->get_anchor(p);
                 anchor_data   new_anchor = anchor_data(p, "", point::top_left);
                 new_anchor.offset        = a.offset;
 
                 switch (a.parent_point) {
-                case point::top_left: new_anchor.offset += border_list_.top_left(); break;
-                case point::top: new_anchor.offset.y += border_list_.top; break;
-                case point::top_right: new_anchor.offset += border_list_.top_right(); break;
-                case point::right: new_anchor.offset.x += border_list_.right; break;
-                case point::bottom_right: new_anchor.offset += border_list_.bottom_right(); break;
-                case point::bottom: new_anchor.offset.y += border_list_.bottom; break;
-                case point::bottom_left: new_anchor.offset += border_list_.bottom_left(); break;
-                case point::left: new_anchor.offset.x += border_list_.left; break;
-                case point::center: new_anchor.offset += border_list_.center(); break;
+                case point::top_left: new_anchor.offset += borders_.top_left(); break;
+                case point::top: new_anchor.offset.y += borders_.top; break;
+                case point::top_right: new_anchor.offset += borders_.top_right(); break;
+                case point::right: new_anchor.offset.x += borders_.right; break;
+                case point::bottom_right: new_anchor.offset += borders_.bottom_right(); break;
+                case point::bottom: new_anchor.offset.y += borders_.bottom; break;
+                case point::bottom_left: new_anchor.offset += borders_.bottom_left(); break;
+                case point::left: new_anchor.offset.x += borders_.left; break;
+                case point::center: new_anchor.offset += borders_.center(); break;
                 }
 
-                obj->set_point(new_anchor);
+                obj->set_anchor(new_anchor);
             }
-
-            obj->update_anchors_();
         }
 
         remove_glue();
@@ -93,17 +91,16 @@ region::~region() {
 std::string region::serialize(const std::string& tab) const {
     std::ostringstream str;
 
-    str << tab << "  # Name       : " << name_
-        << " (" + std::string(is_ready_ ? "ready" : "not ready") +
-               std::string(is_special_ ? ", special)\n" : ")\n");
+    str << tab << "  # Name       : " << name_ << " ("
+        << std::string(is_ready_ ? "ready" : "not ready")
+        << std::string(is_manually_inherited_ ? ", manually inherited" : "") << ")\n";
     str << tab << "  # Raw name   : " << raw_name_ << "\n";
-    str << tab << "  # Lua name   : " << lua_name_ << "\n";
-    str << tab << "  # Type       : " << type_.back() << "\n";
+    str << tab << "  # Type       : " << get_region_type() << "\n";
     if (parent_)
         str << tab << "  # Parent     : " << parent_->get_name() << "\n";
     else
         str << tab << "  # Parent     : none\n";
-    str << tab << "  # Num anchors: " << get_num_point() << "\n";
+    str << tab << "  # Num anchors: " << get_anchor_count() << "\n";
     if (!anchor_list_.empty()) {
         str << tab << "  |-###\n";
         for (const auto& a : anchor_list_) {
@@ -115,10 +112,10 @@ std::string region::serialize(const std::string& tab) const {
     }
     str << tab << "  # Borders :\n";
     str << tab << "  |-###\n";
-    str << tab << "  |   # left  : " << border_list_.left << "\n";
-    str << tab << "  |   # top   : " << border_list_.top << "\n";
-    str << tab << "  |   # right : " << border_list_.right << "\n";
-    str << tab << "  |   # bottom: " << border_list_.bottom << "\n";
+    str << tab << "  |   # left  : " << borders_.left << "\n";
+    str << tab << "  |   # top   : " << borders_.top << "\n";
+    str << tab << "  |   # right : " << borders_.right << "\n";
+    str << tab << "  |   # bottom: " << borders_.bottom << "\n";
     str << tab << "  |-###\n";
     str << tab << "  # Alpha      : " << alpha_ << "\n";
     str << tab << "  # Shown      : " << is_shown_ << "\n";
@@ -133,9 +130,9 @@ void region::copy_from(const region& obj) {
     this->set_shown(obj.is_shown());
     this->set_dimensions(obj.get_dimensions());
 
-    for (const std::optional<anchor>& a : obj.get_point_list()) {
+    for (const std::optional<anchor>& a : obj.get_anchors()) {
         if (a) {
-            this->set_point(a->get_data());
+            this->set_anchor(a->get_data());
         }
     }
 }
@@ -144,24 +141,17 @@ const std::string& region::get_name() const {
     return name_;
 }
 
-const std::string& region::get_lua_name() const {
-    return lua_name_;
-}
-
 const std::string& region::get_raw_name() const {
     return raw_name_;
 }
 
-const std::string& region::get_object_type() const {
-    return type_.back();
+const std::string& region::get_region_type() const {
+    return get_type_list_().back();
 }
 
-const std::vector<std::string>& region::get_object_type_list() const {
-    return type_;
-}
-
-bool region::is_object_type(const std::string& type_name) const {
-    return utils::find(type_, type_name) != type_.end();
+bool region::is_region_type(const std::string& type_name) const {
+    const auto& type_list = get_type_list_();
+    return utils::find(type_list, type_name) != type_list.end();
 }
 
 float region::get_alpha() const {
@@ -280,47 +270,44 @@ const vector2f& region::get_dimensions() const {
 }
 
 vector2f region::get_apparent_dimensions() const {
-    return vector2f(border_list_.width(), border_list_.height());
+    return vector2f(borders_.width(), borders_.height());
 }
 
 bool region::is_apparent_width_defined() const {
-    return dimensions_.x > 0.0f || (defined_border_list_.left && defined_border_list_.right);
+    return dimensions_.x > 0.0f || (defined_borders_.left && defined_borders_.right);
 }
 
 bool region::is_apparent_height_defined() const {
-    return dimensions_.y > 0.0f || (defined_border_list_.top && defined_border_list_.bottom);
+    return dimensions_.y > 0.0f || (defined_borders_.top && defined_borders_.bottom);
 }
 
 bool region::is_in_region(const vector2f& position) const {
     return (
-        (border_list_.left <= position.x && position.x <= border_list_.right - 1) &&
-        (border_list_.top <= position.y && position.y <= border_list_.bottom - 1));
+        (borders_.left <= position.x && position.x <= borders_.right - 1) &&
+        (borders_.top <= position.y && position.y <= borders_.bottom - 1));
 }
 
 void region::set_name_(const std::string& name) {
     if (name_.empty()) {
-        name_ = lua_name_ = raw_name_ = name;
+        name_ = raw_name_ = name;
         if (utils::starts_with(name_, "$parent")) {
             if (parent_)
-                utils::replace(lua_name_, "$parent", parent_->get_lua_name());
+                utils::replace(name_, "$parent", parent_->get_name());
             else {
-                gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
+                gui::out << gui::warning << "gui::" << get_region_type() << ": \"" << name_
                          << "\" has no parent" << std::endl;
-                utils::replace(lua_name_, "$parent", "");
+                utils::replace(name_, "$parent", "");
             }
         }
-
-        if (!is_virtual_)
-            name_ = lua_name_;
     } else {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "set_name() can only be called once." << std::endl;
     }
 }
 
 void region::set_parent_(utils::observer_ptr<frame> parent) {
     if (parent == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_parent(this)."
+        gui::out << gui::error << "gui::" << get_region_type() << ": Cannot call set_parent(this)."
                  << std::endl;
         return;
     }
@@ -348,112 +335,162 @@ void region::destroy() {
 }
 
 vector2f region::get_center() const {
-    return border_list_.center();
+    return borders_.center();
 }
 
 float region::get_left() const {
-    return border_list_.left;
+    return borders_.left;
 }
 
 float region::get_right() const {
-    return border_list_.right;
+    return borders_.right;
 }
 
 float region::get_top() const {
-    return border_list_.top;
+    return borders_.top;
 }
 
 float region::get_bottom() const {
-    return border_list_.bottom;
+    return borders_.bottom;
 }
 
 const bounds2f& region::get_borders() const {
-    return border_list_;
+    return borders_;
 }
 
-void region::clear_all_points() {
+void region::clear_all_anchors() {
     bool had_anchors = false;
     for (auto& a : anchor_list_) {
         if (a) {
+            if (!is_virtual_) {
+                if (auto parent = a->get_parent()) {
+                    parent->remove_anchored_object(*this);
+                }
+            }
+
             a.reset();
             had_anchors = true;
         }
     }
 
-    if (had_anchors) {
-        defined_border_list_ = bounds2<bool>(false, false, false, false);
+    defined_borders_ = bounds2<bool>(false, false, false, false);
 
-        if (!is_virtual_) {
-            update_anchors_();
-            notify_borders_need_update();
-            notify_renderer_need_redraw();
-        }
-    }
-}
-
-void region::set_all_points(const std::string& obj_name) {
-    if (obj_name == name_) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
-                 << std::endl;
-        return;
-    }
-
-    clear_all_points();
-
-    anchor_list_[static_cast<int>(point::top_left)].emplace(
-        *this, anchor_data(point::top_left, obj_name));
-
-    anchor_list_[static_cast<int>(point::bottom_right)].emplace(
-        *this, anchor_data(point::bottom_right, obj_name));
-
-    defined_border_list_ = bounds2<bool>(true, true, true, true);
-
-    if (!is_virtual_) {
-        update_anchors_();
+    if (had_anchors || !is_virtual_) {
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
 
-void region::set_all_points(const utils::observer_ptr<region>& obj) {
-    if (obj == observer_from_this()) {
-        gui::out << gui::error << "gui::" << type_.back() << ": Cannot call set_all_points(this)."
-                 << std::endl;
+bool check_cyclic_anchors(const region& self, anchor& a) {
+    if (utils::observer_ptr<region> other = a.get_parent()) {
+        if (other->depends_on(self)) {
+            gui::out << gui::error << "gui::" << self.get_region_type()
+                     << ": Cyclic anchor dependency ! "
+                     << "\"" << self.get_name() << "\" and \"" << other->get_name()
+                     << "\" depend on eachothers (directly or indirectly). \""
+                     << utils::to_string(a.object_point) << "\" anchor removed." << std::endl;
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void region::set_all_anchors(const std::string& obj_name) {
+    if (obj_name == name_) {
+        gui::out << gui::error << "gui::" << get_region_type()
+                 << ": Cannot call set_all_anchors(this)." << std::endl;
         return;
     }
 
-    set_all_points(obj ? obj->get_name() : "");
+    clear_all_anchors();
+
+    auto& top_left     = anchor_list_[static_cast<int>(point::top_left)];
+    auto& bottom_right = anchor_list_[static_cast<int>(point::bottom_right)];
+
+    top_left.emplace(*this, anchor_data(point::top_left, obj_name));
+
+    if (!check_cyclic_anchors(*this, top_left.value())) {
+        top_left = std::nullopt;
+        return;
+    }
+
+    bottom_right.emplace(*this, anchor_data(point::bottom_right, obj_name));
+
+    defined_borders_ = bounds2<bool>(true, true, true, true);
+
+    if (!is_virtual_) {
+        if (auto* parent = top_left->get_parent().get()) {
+            parent->add_anchored_object(*this);
+        }
+
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+    }
 }
 
-void region::set_point(const anchor_data& a) {
-    anchor_list_[static_cast<int>(a.object_point)].emplace(*this, a);
+void region::set_all_anchors(const utils::observer_ptr<region>& obj) {
+    if (obj == observer_from_this()) {
+        gui::out << gui::error << "gui::" << get_region_type()
+                 << ": Cannot call set_all_anchors(this)." << std::endl;
+        return;
+    }
 
-    switch (a.object_point) {
+    set_all_anchors(obj ? obj->get_name() : "");
+}
+
+void set_defined_borders(bounds2<bool>& defined_borders, point p, bool defined) {
+    switch (p) {
     case point::top_left:
-        defined_border_list_.top  = true;
-        defined_border_list_.left = true;
+        defined_borders.top  = defined;
+        defined_borders.left = defined;
         break;
-    case point::top: defined_border_list_.top = true; break;
+    case point::top: defined_borders.top = defined; break;
     case point::top_right:
-        defined_border_list_.top   = true;
-        defined_border_list_.right = true;
+        defined_borders.top   = defined;
+        defined_borders.right = defined;
         break;
-    case point::right: defined_border_list_.right = true; break;
+    case point::right: defined_borders.right = defined; break;
     case point::bottom_right:
-        defined_border_list_.bottom = true;
-        defined_border_list_.right  = true;
+        defined_borders.bottom = defined;
+        defined_borders.right  = defined;
         break;
-    case point::bottom: defined_border_list_.bottom = true; break;
+    case point::bottom: defined_borders.bottom = defined; break;
     case point::bottom_left:
-        defined_border_list_.bottom = true;
-        defined_border_list_.left   = true;
+        defined_borders.bottom = defined;
+        defined_borders.left   = defined;
         break;
-    case point::left: defined_border_list_.left = true; break;
+    case point::left: defined_borders.left = defined; break;
     default: break;
+    }
+}
+
+void region::set_anchor(const anchor_data& a) {
+    auto& modified_anchor = anchor_list_[static_cast<int>(a.object_point)];
+    auto  previous_parent = modified_anchor.has_value() ? modified_anchor->get_parent() : nullptr;
+
+    modified_anchor.emplace(*this, a);
+
+    set_defined_borders(defined_borders_, a.object_point, true);
+
+    auto new_parent = modified_anchor->get_parent();
+    if (new_parent != previous_parent) {
+        if (previous_parent) {
+            previous_parent->remove_anchored_object(*this);
+        }
+
+        if (new_parent) {
+            if (!check_cyclic_anchors(*this, modified_anchor.value())) {
+                modified_anchor.reset();
+                set_defined_borders(defined_borders_, a.object_point, false);
+            } else {
+                new_parent->add_anchored_object(*this);
+            }
+        }
     }
 
     if (!is_virtual_) {
-        update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -475,7 +512,7 @@ bool region::depends_on(const region& obj) const {
     return false;
 }
 
-std::size_t region::get_num_point() const {
+std::size_t region::get_anchor_count() const {
     std::size_t num_anchors = 0u;
     for (const auto& a : anchor_list_) {
         if (a)
@@ -485,27 +522,27 @@ std::size_t region::get_num_point() const {
     return num_anchors;
 }
 
-anchor& region::modify_point(point p) {
+anchor& region::modify_anchor(point p) {
     auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
-            "region", "Cannot modify a point that does not exist. Use set_point() first.");
+            "region", "Cannot modify a point that does not exist. Use set_anchor() first.");
     }
 
     return *a;
 }
 
-const anchor& region::get_point(point p) const {
+const anchor& region::get_anchor(point p) const {
     const auto& a = anchor_list_[static_cast<int>(p)];
     if (!a) {
         throw gui::exception(
-            "region", "Cannot get a point that does not exist. Use set_point() first.");
+            "region", "Cannot get an anchor that does not exist. Use set_anchor() first.");
     }
 
     return *a;
 }
 
-const std::array<std::optional<anchor>, 9>& region::get_point_list() const {
+const std::array<std::optional<anchor>, 9>& region::get_anchors() const {
     return anchor_list_;
 }
 
@@ -632,7 +669,7 @@ void region::update_borders_() {
     DEBUG_LOG("  Update anchors for " + lua_name_);
 
     const bool old_is_ready    = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     is_ready_ = true;
 
@@ -671,27 +708,27 @@ void region::update_borders_() {
                 bottom = top + 1;
             }
 
-            border_list_ = bounds2f(left, right, top, bottom);
+            borders_ = bounds2f(left, right, top, bottom);
         } else {
-            border_list_ = bounds2f::zero;
+            borders_ = bounds2f::zero;
         }
     } else {
-        border_list_ = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
-        is_ready_    = false;
+        borders_  = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
+        is_ready_ = false;
     }
 
     DEBUG_LOG("  Final borders");
-    border_list_.left   = round_to_pixel(border_list_.left);
-    border_list_.right  = round_to_pixel(border_list_.right);
-    border_list_.top    = round_to_pixel(border_list_.top);
-    border_list_.bottom = round_to_pixel(border_list_.bottom);
+    borders_.left   = round_to_pixel(borders_.left);
+    borders_.right  = round_to_pixel(borders_.right);
+    borders_.top    = round_to_pixel(borders_.top);
+    borders_.bottom = round_to_pixel(borders_.bottom);
 
-    DEBUG_LOG("    left=" + utils::to_string(border_list_.left));
-    DEBUG_LOG("    right=" + utils::to_string(border_list_.right));
-    DEBUG_LOG("    top=" + utils::to_string(border_list_.top));
-    DEBUG_LOG("    bottom=" + utils::to_string(border_list_.bottom));
+    DEBUG_LOG("    left=" + utils::to_string(borders_.left));
+    DEBUG_LOG("    right=" + utils::to_string(borders_.right));
+    DEBUG_LOG("    top=" + utils::to_string(borders_.top));
+    DEBUG_LOG("    bottom=" + utils::to_string(borders_.bottom));
 
-    if (border_list_ != old_border_list || is_ready_ != old_is_ready) {
+    if (borders_ != old_border_list || is_ready_ != old_is_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
@@ -700,52 +737,16 @@ void region::update_borders_() {
 #undef DEBUG_LOG
 }
 
-void region::update_anchors_() {
-    std::vector<utils::observer_ptr<region>> anchor_parent_list;
-    for (auto& a : anchor_list_) {
-        if (!a)
-            continue;
-
-        utils::observer_ptr<region> obj = a->get_parent();
-        if (obj) {
-            if (obj->depends_on(*this)) {
-                gui::out << gui::error << "gui::" << type_.back() << ": Cyclic anchor dependency ! "
-                         << "\"" << name_ << "\" and \"" << obj->get_name()
-                         << "\" depend on eachothers (directly or indirectly). \""
-                         << utils::to_string(a->object_point) << "\" anchor removed." << std::endl;
-
-                a.reset();
-                continue;
-            }
-
-            if (utils::find(anchor_parent_list, obj) == anchor_parent_list.end())
-                anchor_parent_list.push_back(obj);
-        }
-    }
-
-    for (const auto& parent : previous_anchor_parent_list_) {
-        if (utils::find(anchor_parent_list, parent) == anchor_parent_list.end())
-            parent->remove_anchored_object(*this);
-    }
-
-    for (const auto& parent : anchor_parent_list) {
-        if (utils::find(previous_anchor_parent_list_, parent) == previous_anchor_parent_list_.end())
-            parent->add_anchored_object(*this);
-    }
-
-    previous_anchor_parent_list_ = std::move(anchor_parent_list);
-}
-
 void region::notify_borders_need_update() {
     if (is_virtual())
         return;
 
     const bool old_ready       = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     update_borders_();
 
-    if (border_list_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_ready_ != old_ready) {
         for (const auto& object : anchored_object_list_)
             object->notify_borders_need_update();
     }
@@ -763,16 +764,21 @@ sol::state& region::get_lua_() {
     return get_manager().get_lua();
 }
 
+const sol::state& region::get_lua_() const {
+    return get_manager().get_lua();
+}
+
 void region::remove_glue() {
-    get_lua_().globals()[lua_name_] = sol::lua_nil;
+    get_lua_().globals()[get_name()]              = sol::lua_nil;
+    get_lua_().globals()["_METADATA"][get_name()] = sol::lua_nil;
 }
 
-void region::set_special() {
-    is_special_ = true;
+void region::set_manually_inherited(bool manually_inherited) {
+    is_manually_inherited_ = manually_inherited;
 }
 
-bool region::is_special() const {
-    return is_special_;
+bool region::is_manually_inherited() const {
+    return is_manually_inherited_;
 }
 
 void region::notify_renderer_need_redraw() {}
@@ -797,10 +803,12 @@ utils::observer_ptr<const frame_renderer> region::get_effective_frame_renderer()
 
 void region::notify_visible() {
     is_visible_ = true;
+    notify_renderer_need_redraw();
 }
 
 void region::notify_invisible() {
     is_visible_ = false;
+    notify_renderer_need_redraw();
 }
 
 std::string region::parse_file_name(const std::string& file_name) const {
@@ -820,7 +828,7 @@ std::string region::parse_file_name(const std::string& file_name) const {
 
 void region::set_addon(const addon* a) {
     if (addon_) {
-        gui::out << gui::warning << "gui::" << type_.back()
+        gui::out << gui::warning << "gui::" << get_region_type()
                  << ": set_addon() can only be called once." << std::endl;
         return;
     }
@@ -843,6 +851,10 @@ registry& region::get_registry() {
 const registry& region::get_registry() const {
     return is_virtual() ? get_manager().get_virtual_root().get_registry()
                         : get_manager().get_root().get_registry();
+}
+
+const std::vector<std::string>& region::get_type_list_() const {
+    return get_type_list_impl_<region>();
 }
 
 } // namespace lxgui::gui

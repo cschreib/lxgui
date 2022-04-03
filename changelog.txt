@@ -119,6 +119,11 @@ Other changes:
  - gui: renamed justifyH to alignX, justifyV to alignY
  - gui: renamed anchor_point to point
  - gui: renamed register_for_drag to enable_drag
+ - gui: renamed get_object_type to get_region_type
+ - gui: renamed clear_all_points to clear_all_anchors
+ - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
+ - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
+ - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()
@@ -138,6 +143,7 @@ Other changes:
  - gui: removed frame::is_in_frame; use is_in_region instead
  - gui: removed frame::register_all_events and unregister_all_events
  - gui: removed event class; generic events are now only using event_data
+ - gui: removed get_frame_type, use get_region_type instead
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument

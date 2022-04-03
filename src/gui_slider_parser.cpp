@@ -49,7 +49,7 @@ void slider::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto thumb_texture = parse_region_(defaulted, "ARTWORK", "Texture");
         if (thumb_texture) {
-            thumb_texture->set_special();
+            thumb_texture->set_manually_inherited(true);
             set_thumb_texture(utils::static_pointer_cast<texture>(thumb_texture));
         }
 

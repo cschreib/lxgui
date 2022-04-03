@@ -38,7 +38,7 @@
                     </Anchor>
                 </Anchors>
                 <Frames>
-                    <Frame name="$parentColorZone" setAllPoints="true">
+                    <Frame name="$parentColorZone" setAllAnchors="true">
                         <Backdrop edgeFile="|border_2px.png">
                             <BackgroundInsets>
                                 <AbsInset left="2" right="2" top="2" bottom="2"/>

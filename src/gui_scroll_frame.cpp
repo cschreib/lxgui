@@ -59,14 +59,14 @@ void scroll_frame::copy_from(const region& obj) {
 
     if (const frame* other_child = scroll_obj->get_scroll_child().get()) {
         frame_core_attributes attr;
-        attr.object_type = other_child->get_object_type();
+        attr.object_type = other_child->get_region_type();
         attr.name        = other_child->get_raw_name();
         attr.inheritance = {scroll_obj->get_scroll_child()};
 
         utils::observer_ptr<frame> scroll_child = create_child(std::move(attr));
 
         if (scroll_child) {
-            scroll_child->set_special();
+            scroll_child->set_manually_inherited(true);
             scroll_child->notify_loaded();
             this->set_scroll_child(remove_child(scroll_child));
         }
@@ -86,8 +86,8 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
         if (!scroll_texture)
             return;
 
-        scroll_texture->set_special();
-        scroll_texture->set_all_points(observer_from(this));
+        scroll_texture->set_manually_inherited(true);
+        scroll_texture->set_all_anchors(observer_from(this));
 
         if (scroll_render_target_)
             scroll_texture->set_texture(scroll_render_target_);
@@ -103,13 +103,13 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
         add_child(std::move(obj));
 
-        scroll_child_->set_special();
+        scroll_child_->set_manually_inherited(true);
         if (!is_virtual())
             scroll_child_->set_frame_renderer(observer_from(this));
 
-        scroll_child_->clear_all_points();
+        scroll_child_->clear_all_anchors();
         if (!is_virtual())
-            scroll_child_->set_point(point::top_left, get_name(), -scroll_);
+            scroll_child_->set_anchor(point::top_left, get_name(), -scroll_);
 
         update_scroll_range_();
     }
@@ -128,7 +128,7 @@ void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
     if (!checker.is_alive())
         return;
 
-    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->modify_anchor(point::top_left).offset = -scroll_;
     scroll_child_->notify_borders_need_update();
 
     redraw_scroll_render_target_flag_ = true;
@@ -153,7 +153,7 @@ void scroll_frame::set_vertical_scroll(float vertical_scroll) {
     if (!checker.is_alive())
         return;
 
-    scroll_child_->modify_point(point::top_left).offset = -scroll_;
+    scroll_child_->modify_anchor(point::top_left).offset = -scroll_;
     scroll_child_->notify_borders_need_update();
 
     redraw_scroll_render_target_flag_ = true;
@@ -290,6 +290,10 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& obj, 
 
 vector2f scroll_frame::get_target_dimensions() const {
     return get_apparent_dimensions();
+}
+
+const std::vector<std::string>& scroll_frame::get_type_list_() const {
+    return get_type_list_impl_<scroll_frame>();
 }
 
 } // namespace lxgui::gui

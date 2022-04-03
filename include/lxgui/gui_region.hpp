@@ -209,16 +209,9 @@ public:
     const std::string& get_name() const;
 
     /**
-     * \brief Returns this region's Lua name.
-     * \return This region's Lua name
-     */
-    const std::string& get_lua_name() const;
-
-    /**
      * \brief Returns this region's raw name.
      * \return This region's raw name
-     * \note This is the name of the region before "$parent"
-     * has been replaced by its parent's name.
+     * \note This is the name of the region before "$parent" has been replaced by its parent's name.
      */
     const std::string& get_raw_name() const;
 
@@ -277,14 +270,14 @@ public:
      * \note Its parent must be shown for it to appear on
      * the screen.
      */
-    virtual void show();
+    void show();
 
     /**
      * \brief hides this region.
      * \note All its children won't be visible on the screen
      * anymore, even if they are still marked as shown.
      */
-    virtual void hide();
+    void hide();
 
     /**
      * \brief shows/hides this region.
@@ -303,7 +296,7 @@ public:
      * \brief Checks if this region can be seen on the screen.
      * \return 'true' if this region can be seen on the screen
      */
-    virtual bool is_visible() const;
+    bool is_visible() const;
 
     /**
      * \brief Changes this region's absolute dimensions (in pixels).
@@ -395,29 +388,31 @@ public:
      * \brief Returns the type of this region.
      * \return The type of this region
      */
-    const std::string& get_object_type() const;
+    const std::string& get_region_type() const;
 
     /**
      * \brief Checks if this region is of the provided type.
      * \param type_name The type to test
      * \return 'true' if this region is of the provided type
      */
-    bool is_object_type(const std::string& type_name) const;
+    bool is_region_type(const std::string& type_name) const;
 
     /**
      * \brief Checks if this region is of the provided type.
      * \return 'true' if this region is of the provided type
      */
     template<typename ObjectType>
-    bool is_object_type() const {
-        return is_object_type(ObjectType::class_name);
+    bool is_region_type() const {
+        return is_region_type(ObjectType::class_name);
     }
 
     /**
-     * \brief Returns an array containing all the types of this region.
-     * \return An array containing all the types of this region
+     * \brief Checks if this region is of a type equal or derived from the supplied region.
+     * \return 'true' if this region is of a type equal or derived from the supplied region
      */
-    const std::vector<std::string>& get_object_type_list() const;
+    bool is_region_type(const region& obj) const {
+        return is_region_type(obj.get_region_type());
+    }
 
     /**
      * \brief Returns the vertical position of this region's bottom border.
@@ -460,37 +455,37 @@ public:
      * \note This region and its children won't be visible until you
      * define at least one anchor.
      */
-    void clear_all_points();
+    void clear_all_anchors();
 
     /**
      * \brief Adjusts this regions anchors to fit the provided region.
      * \param obj A pointer to the object you want to wrap
      * \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const utils::observer_ptr<region>& obj);
+    void set_all_anchors(const utils::observer_ptr<region>& obj);
 
     /**
      * \brief Adjusts this regions anchors to fit the provided region.
      * \param obj_name The name of the object to fit to
      * \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const std::string& obj_name);
+    void set_all_anchors(const std::string& obj_name);
 
     /**
      * \brief Adds/replaces an anchor.
      * \param a The anchor to add
      */
-    void set_point(const anchor_data& a);
+    void set_anchor(const anchor_data& a);
 
     /**
      * \brief Adds/replaces an anchor.
      * \param args Argument to construct a new anchor_data
      */
     template<typename... Args>
-    void set_point(Args&&... args) {
-        constexpr auto set_point_overload =
-            static_cast<void (region::*)(const anchor_data&)>(&region::set_point);
-        (this->*set_point_overload)(anchor_data{std::forward<Args>(args)...});
+    void set_anchor(Args&&... args) {
+        constexpr auto set_anchor_overload =
+            static_cast<void (region::*)(const anchor_data&)>(&region::set_anchor);
+        (this->*set_anchor_overload)(anchor_data{std::forward<Args>(args)...});
     }
 
     /**
@@ -504,7 +499,7 @@ public:
      * \brief Returns the number of defined anchors.
      * \return The number of defined anchors
      */
-    std::size_t get_num_point() const;
+    std::size_t get_anchor_count() const;
 
     /**
      * \brief Returns one of this region's anchor to modify it.
@@ -513,20 +508,20 @@ public:
      * \note After you have modified the anchor, you must call notify_borders_need_update() to
      * ensure that the object's borders are properly updated.
      */
-    anchor& modify_point(point p);
+    anchor& modify_anchor(point p);
 
     /**
      * \brief Returns one of this region's anchor.
      * \param p The anchor point
      * \return A pointer to the anchor, nullptr if none
      */
-    const anchor& get_point(point p) const;
+    const anchor& get_anchor(point p) const;
 
     /**
      * \brief Returns all of this region's anchors.
      * \return All of this region's anchors
      */
-    const std::array<std::optional<anchor>, 9>& get_point_list() const;
+    const std::array<std::optional<anchor>, 9>& get_anchors() const;
 
     /**
      * \brief Round an absolute position on screen to the nearest physical pixel.
@@ -572,21 +567,20 @@ public:
     bool is_virtual() const;
 
     /**
-     * \brief Flags this object as "special".
-     * \note Special objects are not automatically copied
-     * in the frame inheritance process. They must be
-     * explicitly copied by the derived class
-     * (example: Button will have to copy its button
-     * textures itself).
+     * \brief Flags this region as manually inherited or not.
+     * \note By default, all regions are automatically inherited. This is generally the desired
+     * behavior for regions defined by the user, but it is less desirable for "special" or
+     * "internal" regions necessary for the proper operation of some region types (e.g., the texture
+     * used by a button), which need special treatment or registration.
      */
-    void set_special();
+    void set_manually_inherited(bool manually_inherited);
 
     /**
-     * \brief Checks if this object is special.
-     * \return 'true' if this object is special
-     * \note For more information, see set_special().
+     * \brief Checks if this object is manually inherited.
+     * \return 'true' if this object is manually inherited
+     * \note For more information, see set_manually_inherited().
      */
-    bool is_special() const;
+    bool is_manually_inherited() const;
 
     /**
      * \brief Returns the renderer of this object or its parents.
@@ -737,12 +731,17 @@ protected:
     bool make_borders_(float& min, float& max, float center, float size) const;
 
     virtual void update_borders_();
-    virtual void update_anchors_();
 
-    sol::state& get_lua_();
+    sol::state&       get_lua_();
+    const sol::state& get_lua_() const;
 
     template<typename T>
     void create_glue_(T& self);
+
+    template<typename T>
+    static const std::vector<std::string>& get_type_list_impl_();
+
+    virtual const std::vector<std::string>& get_type_list_() const;
 
     void        set_lua_member_(std::string key, sol::stack_object value);
     sol::object get_lua_member_(const std::string& key) const;
@@ -782,22 +781,17 @@ protected:
 
     std::string name_;
     std::string raw_name_;
-    std::string lua_name_;
-    std::size_t id_ = std::numeric_limits<std::size_t>::max();
 
     utils::observer_ptr<frame> parent_ = nullptr;
 
-    bool is_special_ = false;
-    bool is_virtual_ = false;
-    bool is_loaded_  = false;
-    bool is_ready_   = true;
+    bool is_manually_inherited_ = false;
+    bool is_virtual_            = false;
+    bool is_loaded_             = false;
+    bool is_ready_              = true;
 
-    std::vector<std::string> type_;
-
-    std::array<std::optional<anchor>, 9>     anchor_list_;
-    std::vector<utils::observer_ptr<region>> previous_anchor_parent_list_;
-    bounds2<bool>                            defined_border_list_;
-    bounds2f                                 border_list_;
+    std::array<std::optional<anchor>, 9> anchor_list_;
+    bounds2<bool>                        defined_borders_;
+    bounds2f                             borders_;
 
     float alpha_      = 1.0f;
     bool  is_shown_   = true;
@@ -806,8 +800,6 @@ protected:
     vector2f dimensions_;
 
     std::vector<utils::observer_ptr<region>> anchored_object_list_;
-
-    std::unordered_map<std::string, sol::object> lua_members_;
 };
 
 /**
@@ -822,9 +814,9 @@ protected:
 template<typename ObjectType>
 const ObjectType* down_cast(const region* self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
-    if (self && !object && self->is_object_type(ObjectType::class_name)) {
+    if (self && !object && self->is_region_type(ObjectType::class_name)) {
         throw gui::exception(
-            self->get_object_type(), "cannot use down_cast() to " +
+            self->get_region_type(), "cannot use down_cast() to " +
                                          std::string(ObjectType::class_name) +
                                          " as object is being destroyed");
     }
@@ -844,14 +836,14 @@ template<typename ObjectType>
 const ObjectType& down_cast(const region& self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
     if (self && !object) {
-        if (self.is_object_type(ObjectType::class_name)) {
+        if (self.is_region_type(ObjectType::class_name)) {
             throw gui::exception(
-                self.get_object_type(), "cannot use down_cast() to " +
+                self.get_region_type(), "cannot use down_cast() to " +
                                             std::string(ObjectType::class_name) +
                                             " as object is being destroyed");
         } else {
             throw gui::exception(
-                self.get_object_type(), "cannot use down_cast() to " +
+                self.get_region_type(), "cannot use down_cast() to " +
                                             std::string(ObjectType::class_name) +
                                             " as object is not of the right type");
         }
@@ -925,7 +917,7 @@ utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<region>&& object) 
  * \param self The raw pointer to get an observer from
  * \return The observer pointer.
  * \note This returns the same things as self->observer_from_this(),
- * but returning a pointer to the most-derived type known form the
+ * but returning a pointer to the most-derived type known from the
  * input pointer.
  */
 template<typename ObjectType>

@@ -28,22 +28,22 @@ void font_string::render() const {
 
     if (std::isinf(text_->get_box_width())) {
         switch (align_x_) {
-        case alignment_x::left: pos.x = border_list_.left; break;
-        case alignment_x::center: pos.x = (border_list_.left + border_list_.right) / 2; break;
-        case alignment_x::right: pos.x = border_list_.right; break;
+        case alignment_x::left: pos.x = borders_.left; break;
+        case alignment_x::center: pos.x = (borders_.left + borders_.right) / 2; break;
+        case alignment_x::right: pos.x = borders_.right; break;
         }
     } else {
-        pos.x = border_list_.left;
+        pos.x = borders_.left;
     }
 
     if (std::isinf(text_->get_box_height())) {
         switch (align_y_) {
-        case alignment_y::top: pos.y = border_list_.top; break;
-        case alignment_y::middle: pos.y = (border_list_.top + border_list_.bottom) / 2; break;
-        case alignment_y::bottom: pos.y = border_list_.bottom; break;
+        case alignment_y::top: pos.y = borders_.top; break;
+        case alignment_y::middle: pos.y = (borders_.top + borders_.bottom) / 2; break;
+        case alignment_y::bottom: pos.y = borders_.bottom; break;
         }
     } else {
-        pos.y = border_list_.top;
+        pos.y = borders_.top;
     }
 
     pos += offset_;
@@ -408,7 +408,7 @@ void font_string::update_borders_() {
 #define DEBUG_LOG(msg)
 
     const bool old_ready       = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
     is_ready_                  = true;
 
     if (!anchor_list_.empty()) {
@@ -421,13 +421,13 @@ void font_string::update_borders_() {
         float box_width = std::numeric_limits<float>::infinity();
         if (get_dimensions().x != 0.0f)
             box_width = get_dimensions().x;
-        else if (defined_border_list_.left && defined_border_list_.right)
+        else if (defined_borders_.left && defined_borders_.right)
             box_width = right - left;
 
         float box_height = std::numeric_limits<float>::infinity();
         if (get_dimensions().y != 0.0f)
             box_height = get_dimensions().y;
-        else if (defined_border_list_.top && defined_border_list_.bottom)
+        else if (defined_borders_.top && defined_borders_.bottom)
             box_height = bottom - top;
 
         box_width  = round_to_pixel(box_width, utils::rounding_method::nearest_not_zero);
@@ -457,12 +457,12 @@ void font_string::update_borders_() {
                 bottom = top + 1.0f;
             }
 
-            border_list_.left   = left;
-            border_list_.right  = right;
-            border_list_.top    = top;
-            border_list_.bottom = bottom;
+            borders_.left   = left;
+            borders_.right  = right;
+            borders_.top    = top;
+            borders_.bottom = bottom;
         } else {
-            border_list_ = bounds2f::zero;
+            borders_ = bounds2f::zero;
         }
     } else {
         float box_width = get_dimensions().x;
@@ -475,20 +475,24 @@ void font_string::update_borders_() {
             box_height = text_->get_height();
         }
 
-        border_list_ = bounds2f(0.0, 0.0, box_width, box_height);
-        is_ready_    = false;
+        borders_  = bounds2f(0.0, 0.0, box_width, box_height);
+        is_ready_ = false;
     }
 
-    border_list_.left   = round_to_pixel(border_list_.left);
-    border_list_.right  = round_to_pixel(border_list_.right);
-    border_list_.top    = round_to_pixel(border_list_.top);
-    border_list_.bottom = round_to_pixel(border_list_.bottom);
+    borders_.left   = round_to_pixel(borders_.left);
+    borders_.right  = round_to_pixel(borders_.right);
+    borders_.top    = round_to_pixel(borders_.top);
+    borders_.bottom = round_to_pixel(borders_.bottom);
 
-    if (border_list_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_ready_ != old_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  @");
+}
+
+const std::vector<std::string>& font_string::get_type_list_() const {
+    return get_type_list_impl_<font_string>();
 }
 
 } // namespace lxgui::gui

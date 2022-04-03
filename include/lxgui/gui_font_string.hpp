@@ -32,9 +32,9 @@ namespace lxgui::gui {
  * in the specified area.
  */
 class font_string : public layered_region {
+public:
     using base = layered_region;
 
-public:
     /// Constructor.
     explicit font_string(
         utils::control_block& block, manager& mgr, const region_core_attributes& attr);
@@ -308,6 +308,8 @@ public:
 private:
     void parse_attributes_(const layout_node& node) override;
     void parse_shadow_node_(const layout_node& node);
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     void create_text_object_();
 

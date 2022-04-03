@@ -37,6 +37,10 @@ void manager::create_lua_() {
 
     auto& lua = *lua_;
 
+    // This table is used to store Lua members of regions.
+    // See region::set_lua_member_.
+    lua.globals()["_METADATA"] = sol::table(lua.lua_state(), sol::create);
+
     /** @function log
      */
     lua.set_function("log", [](const std::string& message) { gui::out << message << std::endl; });
@@ -64,7 +68,7 @@ void manager::create_lua_() {
             if (new_frame) {
                 new_frame->set_addon(get_addon_registry()->get_current_addon());
                 new_frame->notify_loaded();
-                return get_lua()[new_frame->get_lua_name()];
+                return get_lua()[new_frame->get_name()];
             } else
                 return sol::lua_nil;
         });

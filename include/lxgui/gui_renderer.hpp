@@ -129,7 +129,7 @@ public:
      * \brief Count the total number of texture atlas pages currently in use.
      * \return The total number of texture atlas pages currently in use
      */
-    std::size_t get_num_texture_atlas_pages() const;
+    std::size_t get_texture_atlas_page_count() const;
 
     /**
      * \brief Checks if the renderer supports vertex caches.
@@ -155,11 +155,24 @@ public:
     void auto_detect_settings();
 
     /**
-     * \brief Returns the number of batches of vertices sent to the GPU during the last frame.
-     * \return The number of batches of vertices sent to the GPU during the last frame
+     * \brief Resets the number of batches to zero (for analytics only).
+     * \note See get_batch_count() and get_vertex_count().
+     * This should be called a the beginning of a frame.
+     */
+    void reset_counters();
+
+    /**
+     * \brief Returns the number of batches of vertices sent to the GPU since the last call to reset_counters.
+     * \return The number of batches of vertices sent to the GPU since the last call to reset_counters
      * \note This will be zero unless is_quad_batching_enabled() is 'true'.
      */
     std::size_t get_batch_count() const;
+
+    /**
+     * \brief Returns the number of vertices sent to the GPU since the last call to reset_counters.
+     * \return The number of vertices sent to the GPU since the last call to reset_counters
+     */
+    std::size_t get_vertex_count() const;
 
     /**
      * \brief Begins rendering on a particular render target.
@@ -501,10 +514,12 @@ private:
     static constexpr std::size_t                        batching_cache_cycle_size = 16u;
     std::array<quad_batcher, batching_cache_cycle_size> quad_cache_;
 
-    const gui::material* current_material_       = nullptr;
-    std::size_t          current_quad_cache_     = 0u;
-    std::size_t          batch_count_            = 0u;
-    std::size_t          last_frame_batch_count_ = 0u;
+    const gui::material* current_material_        = nullptr;
+    std::size_t          current_quad_cache_      = 0u;
+    std::size_t          batch_count_             = 0u;
+    std::size_t          vertex_count_            = 0u;
+    std::size_t          last_frame_batch_count_  = 0u;
+    std::size_t          last_frame_vertex_count_ = 0u;
 };
 
 } // namespace lxgui::gui

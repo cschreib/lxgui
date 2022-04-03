@@ -55,14 +55,14 @@ void status_bar::copy_from(const region& obj) {
 
     if (const texture* bar = bar_obj->get_bar_texture().get()) {
         region_core_attributes attr;
-        attr.name        = bar->get_name();
+        attr.name        = bar->get_raw_name();
         attr.inheritance = {bar_obj->get_bar_texture()};
 
         auto bar_texture =
             this->create_layered_region<texture>(bar->get_draw_layer(), std::move(attr));
 
         if (bar_texture) {
-            bar_texture->set_special();
+            bar_texture->set_manually_inherited(true);
             bar_texture->notify_loaded();
             this->set_bar_texture(bar_texture);
         }
@@ -161,14 +161,14 @@ void status_bar::set_bar_texture(utils::observer_ptr<texture> bar_texture) {
         return;
 
     bar_texture_->set_draw_layer(bar_layer_);
-    bar_texture_->clear_all_points();
+    bar_texture_->clear_all_anchors();
 
     std::string parent = bar_texture_->get_parent().get() == this ? "$parent" : name_;
 
     if (is_reversed_) {
-        bar_texture_->set_point(point::top_right, parent);
+        bar_texture_->set_anchor(point::top_right, parent);
     } else {
-        bar_texture_->set_point(point::bottom_left, parent);
+        bar_texture_->set_anchor(point::bottom_left, parent);
     }
 
     initial_text_coords_ = select_uvs(bar_texture_->get_tex_coord());
@@ -198,9 +198,9 @@ void status_bar::set_reversed(bool reversed) {
 
     if (bar_texture_) {
         if (is_reversed_) {
-            bar_texture_->set_point(point::top_right);
+            bar_texture_->set_anchor(point::top_right);
         } else {
-            bar_texture_->set_point(point::bottom_left);
+            bar_texture_->set_anchor(point::bottom_left);
         }
 
         if (!is_virtual_) {
@@ -245,7 +245,7 @@ void status_bar::create_bar_texture_() {
     if (!bar_texture)
         return;
 
-    bar_texture->set_special();
+    bar_texture->set_manually_inherited(true);
     bar_texture->notify_loaded();
     set_bar_texture(bar_texture);
 }
@@ -278,6 +278,10 @@ void status_bar::notify_bar_texture_needs_update_() {
     }
 
     bar_texture_->set_tex_rect(uvs);
+}
+
+const std::vector<std::string>& status_bar::get_type_list_() const {
+    return get_type_list_impl_<status_bar>();
 }
 
 } // namespace lxgui::gui

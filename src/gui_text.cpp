@@ -99,7 +99,7 @@ parse_string(renderer& renderer, const utils::ustring_view& caption, bool format
                     const auto words = utils::cut(extracted, ":");
                     if (!words.empty()) {
                         texture texture;
-                        texture.mat   = renderer.create_material(std::string{words[0]});
+                        texture.mat = renderer.create_atlas_material("GUI", std::string{words[0]});
                         texture.width = texture.height = std::numeric_limits<float>::quiet_NaN();
 
                         if (words.size() == 2) {
@@ -280,7 +280,8 @@ float get_string_width(const text& txt, const std::vector<item>& content) {
 /** \endcond
  */
 
-text::text(renderer& rdr, std::shared_ptr<font> fnt, std::shared_ptr<font> outline_font) :
+text::text(
+    renderer& rdr, std::shared_ptr<const font> fnt, std::shared_ptr<const font> outline_font) :
     renderer_(rdr), font_(std::move(fnt)), outline_font_(std::move(outline_font)) {
 
     if (!font_)
@@ -407,7 +408,7 @@ float text::get_text_height() const {
     return height;
 }
 
-std::size_t text::get_num_lines() const {
+std::size_t text::get_line_count() const {
     update_();
     return num_lines_;
 }
@@ -968,7 +969,7 @@ void text::update_() const {
     update_cache_flag_ = false;
 }
 
-std::array<vertex, 4> text::create_letter_quad_(gui::font& font, char32_t c) const {
+std::array<vertex, 4> text::create_letter_quad_(const gui::font& font, char32_t c) const {
     bounds2f quad = font.get_character_bounds(c) * scaling_factor_;
 
     std::array<vertex, 4> vertex_list;
@@ -1002,7 +1003,7 @@ quad text::create_letter_quad(char32_t c) const {
     return output;
 }
 
-std::size_t text::get_num_letters() const {
+std::size_t text::get_letter_count() const {
     update_();
     return quad_list_.size();
 }

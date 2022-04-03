@@ -59,7 +59,7 @@ void status_bar::parse_all_nodes_before_children_(const layout_node& node) {
 
         auto bar_texture = parse_region_(defaulted, "ARTWORK", "Texture");
         if (bar_texture) {
-            bar_texture->set_special();
+            bar_texture->set_manually_inherited(true);
             set_bar_texture(utils::static_pointer_cast<texture>(bar_texture));
         }
 

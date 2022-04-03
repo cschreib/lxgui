@@ -55,7 +55,7 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
     if (script_name == "OnDragStart") {
         if (thumb_texture_ &&
             thumb_texture_->is_in_region({data.get<float>(2), data.get<float>(3)})) {
-            anchor& a = thumb_texture_->modify_point(point::center);
+            anchor& a = thumb_texture_->modify_anchor(point::center);
 
             get_manager().get_root().start_moving(
                 thumb_texture_, &a,
@@ -77,11 +77,11 @@ void slider::fire_script(const std::string& script_name, const event_data& data)
 
             float value;
             if (orientation_ == orientation::horizontal) {
-                float offset = data.get<float>(2) - border_list_.left;
+                float offset = data.get<float>(2) - borders_.left;
                 value        = offset / apparent_size.x;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             } else {
-                float offset = data.get<float>(3) - border_list_.top;
+                float offset = data.get<float>(3) - borders_.top;
                 value        = offset / apparent_size.y;
                 set_value(value * (max_value_ - min_value_) + min_value_);
             }
@@ -106,13 +106,13 @@ void slider::copy_from(const region& obj) {
 
     if (const texture* thumb = slider_obj->get_thumb_texture().get()) {
         region_core_attributes attr;
-        attr.name        = thumb->get_name();
+        attr.name        = thumb->get_raw_name();
         attr.inheritance = {slider_obj->get_thumb_texture()};
 
         auto tex = this->create_layered_region<texture>(thumb->get_draw_layer(), std::move(attr));
 
         if (tex) {
-            tex->set_special();
+            tex->set_manually_inherited(true);
             tex->notify_loaded();
             this->set_thumb_texture(tex);
         }
@@ -133,9 +133,9 @@ void slider::constrain_thumb_() {
 
     if (is_thumb_dragged_) {
         if (orientation_ == orientation::horizontal)
-            value_ = thumb_texture_->get_point(point::center).offset.x / apparent_size.x;
+            value_ = thumb_texture_->get_anchor(point::center).offset.x / apparent_size.x;
         else
-            value_ = thumb_texture_->get_point(point::center).offset.y / apparent_size.y;
+            value_ = thumb_texture_->get_anchor(point::center).offset.y / apparent_size.y;
 
         value_ = value_ * (max_value_ - min_value_) + min_value_;
         value_ = std::clamp(value_, min_value_, max_value_);
@@ -144,7 +144,7 @@ void slider::constrain_thumb_() {
 
     float coef = (value_ - min_value_) / (max_value_ - min_value_);
 
-    anchor& a = thumb_texture_->modify_point(point::center);
+    anchor& a = thumb_texture_->modify_anchor(point::center);
 
     vector2f new_offset;
     if (orientation_ == orientation::horizontal)
@@ -254,8 +254,8 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> tex) {
         return;
 
     thumb_texture_->set_draw_layer(thumb_layer_);
-    thumb_texture_->clear_all_points();
-    thumb_texture_->set_point(
+    thumb_texture_->clear_all_anchors();
+    thumb_texture_->set_anchor(
         point::center, thumb_texture_->get_parent().get() == this ? "$parent" : name_,
         orientation_ == orientation::horizontal ? point::left : point::top);
 
@@ -269,7 +269,7 @@ void slider::set_orientation(orientation orient) {
     orientation_ = orient;
 
     if (thumb_texture_) {
-        thumb_texture_->set_point(
+        thumb_texture_->set_anchor(
             point::center, name_,
             orientation_ == orientation::horizontal ? point::left : point::top);
     }
@@ -345,6 +345,10 @@ void slider::notify_borders_need_update() {
 
 void slider::notify_thumb_texture_needs_update_() {
     update_thumb_texture_();
+}
+
+const std::vector<std::string>& slider::get_type_list_() const {
+    return get_type_list_impl_<slider>();
 }
 
 } // namespace lxgui::gui

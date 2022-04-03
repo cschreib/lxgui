@@ -37,7 +37,7 @@
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="11" outline="NORMAL" text="Zoom x1.0" setAllPoints="true"/>
+                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="11" outline="NORMAL" text="Zoom x1.0" setAllAnchors="true"/>
             </Layer>
         </Layers>
     </StatusBar>
@@ -59,7 +59,7 @@
                 self.timer = self.update_time;
                 self.total_fps = 0;
                 self.frames = 0;
-                FontstringTestFrameText:set_point("BOTTOM_RIGHT", self, "TOP_RIGHT", -2, -5);
+                FontstringTestFrameText:set_anchor("BOTTOM_RIGHT", self, "TOP_RIGHT", -2, -5);
             </OnLoad>
             <OnUpdate>
                 if (arg1 == 0) then arg1 = 0.1; end
@@ -85,7 +85,7 @@
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <Texture name="$parentBorder" file="|bar_outline.png" setAllPoints="true"/>
+                <Texture name="$parentBorder" file="|bar_outline.png" setAllAnchors="true"/>
             </Layer>
         </Layers>
     </StatusBar>

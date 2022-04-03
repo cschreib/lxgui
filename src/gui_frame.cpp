@@ -5,6 +5,7 @@
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -24,7 +25,6 @@ namespace lxgui::gui {
 
 frame::frame(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     base(block, mgr, attr), event_receiver_(mgr.get_event_emitter()), frame_renderer_(attr.rdr) {
-    type_.push_back(class_name);
 
     initialize_(*this, attr);
 
@@ -227,11 +227,11 @@ void frame::copy_from(const region& obj) {
     this->set_scale(frame_obj->get_scale());
 
     for (const auto& art : frame_obj->region_list_) {
-        if (!art || art->is_special())
+        if (!art || art->is_manually_inherited())
             continue;
 
         region_core_attributes attr;
-        attr.object_type = art->get_object_type();
+        attr.object_type = art->get_region_type();
         attr.name        = art->get_raw_name();
         attr.inheritance = {art};
 
@@ -254,11 +254,11 @@ void frame::copy_from(const region& obj) {
     }
 
     for (const auto& child : frame_obj->child_list_) {
-        if (!child || child->is_special())
+        if (!child || child->is_manually_inherited())
             continue;
 
         frame_core_attributes attr;
-        attr.object_type = child->get_object_type();
+        attr.object_type = child->get_region_type();
         attr.name        = child->get_raw_name();
         attr.inheritance = {child};
 
@@ -272,7 +272,7 @@ void frame::copy_from(const region& obj) {
 
 void frame::create_title_region() {
     if (title_region_) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": \"" << name_
+        gui::out << gui::warning << "gui::" << get_region_type() << ": \"" << name_
                  << "\" already has a title region." << std::endl;
         return;
     }
@@ -288,12 +288,12 @@ void frame::create_title_region() {
     if (!title_region)
         return;
 
-    title_region->set_special();
+    title_region->set_manually_inherited(true);
 
     if (!title_region->is_virtual()) {
         // Add shortcut to region as entry in Lua table
-        auto& lua                          = get_lua_();
-        lua[get_lua_name()]["TitleRegion"] = lua[title_region->get_lua_name()];
+        auto& lua                      = get_lua_();
+        lua[get_name()]["TitleRegion"] = lua[title_region->get_name()];
     }
 
     title_region_ = std::move(title_region);
@@ -355,62 +355,62 @@ void frame::set_height(float abs_height) {
 }
 
 void frame::check_position_() {
-    if (border_list_.right - border_list_.left < min_width_) {
-        border_list_.right = border_list_.left + min_width_;
-    } else if (border_list_.right - border_list_.left > max_width_) {
-        border_list_.right = border_list_.left + max_width_;
+    if (borders_.right - borders_.left < min_width_) {
+        borders_.right = borders_.left + min_width_;
+    } else if (borders_.right - borders_.left > max_width_) {
+        borders_.right = borders_.left + max_width_;
     }
 
-    if (border_list_.bottom - border_list_.top < min_height_) {
-        border_list_.bottom = border_list_.top + min_height_;
-    } else if (border_list_.bottom - border_list_.top > max_height_) {
-        border_list_.bottom = border_list_.top + max_height_;
+    if (borders_.bottom - borders_.top < min_height_) {
+        borders_.bottom = borders_.top + min_height_;
+    } else if (borders_.bottom - borders_.top > max_height_) {
+        borders_.bottom = borders_.top + max_height_;
     }
 
     if (is_clamped_to_screen_) {
         vector2f screen_dimensions = get_effective_frame_renderer()->get_target_dimensions();
 
-        if (border_list_.right > screen_dimensions.x) {
-            float width = border_list_.right - border_list_.left;
+        if (borders_.right > screen_dimensions.x) {
+            float width = borders_.right - borders_.left;
             if (width > screen_dimensions.x) {
-                border_list_.left  = 0;
-                border_list_.right = screen_dimensions.x;
+                borders_.left  = 0;
+                borders_.right = screen_dimensions.x;
             } else {
-                border_list_.right = screen_dimensions.x;
-                border_list_.left  = screen_dimensions.x - width;
+                borders_.right = screen_dimensions.x;
+                borders_.left  = screen_dimensions.x - width;
             }
         }
 
-        if (border_list_.left < 0) {
-            float width = border_list_.right - border_list_.left;
-            if (border_list_.right - border_list_.left > screen_dimensions.x) {
-                border_list_.left  = 0;
-                border_list_.right = screen_dimensions.x;
+        if (borders_.left < 0) {
+            float width = borders_.right - borders_.left;
+            if (borders_.right - borders_.left > screen_dimensions.x) {
+                borders_.left  = 0;
+                borders_.right = screen_dimensions.x;
             } else {
-                border_list_.left  = 0;
-                border_list_.right = width;
+                borders_.left  = 0;
+                borders_.right = width;
             }
         }
 
-        if (border_list_.bottom > screen_dimensions.y) {
-            float height = border_list_.bottom - border_list_.top;
+        if (borders_.bottom > screen_dimensions.y) {
+            float height = borders_.bottom - borders_.top;
             if (height > screen_dimensions.y) {
-                border_list_.top    = 0;
-                border_list_.bottom = screen_dimensions.y;
+                borders_.top    = 0;
+                borders_.bottom = screen_dimensions.y;
             } else {
-                border_list_.bottom = screen_dimensions.y;
-                border_list_.top    = screen_dimensions.y - height;
+                borders_.bottom = screen_dimensions.y;
+                borders_.top    = screen_dimensions.y - height;
             }
         }
 
-        if (border_list_.top < 0) {
-            float height = border_list_.bottom - border_list_.top;
+        if (borders_.top < 0) {
+            float height = borders_.bottom - borders_.top;
             if (height > screen_dimensions.y) {
-                border_list_.top    = 0;
-                border_list_.bottom = screen_dimensions.y;
+                borders_.top    = 0;
+                borders_.bottom = screen_dimensions.y;
             } else {
-                border_list_.top    = 0;
-                border_list_.bottom = height;
+                borders_.top    = 0;
+                borders_.bottom = height;
             }
         }
     }
@@ -498,8 +498,8 @@ void frame::set_parent_(utils::observer_ptr<frame> parent) {
             std::string raw_name = get_raw_name();
             if (utils::starts_with(raw_name, "$parent")) {
                 raw_name.erase(0, std::string("$parent").size());
-                sol::state& lua                                = get_lua_();
-                lua[raw_prev_parent->get_lua_name()][raw_name] = sol::lua_nil;
+                sol::state& lua                            = get_lua_();
+                lua[raw_prev_parent->get_name()][raw_name] = sol::lua_nil;
             }
         }
     }
@@ -525,8 +525,8 @@ void frame::set_parent_(utils::observer_ptr<frame> parent) {
             std::string raw_name = get_raw_name();
             if (utils::starts_with(raw_name, "$parent")) {
                 raw_name.erase(0, std::string("$parent").size());
-                auto& lua                                     = get_lua_();
-                lua[raw_new_parent->get_lua_name()][raw_name] = lua[get_lua_name()];
+                auto& lua                                 = get_lua_();
+                lua[raw_new_parent->get_name()][raw_name] = lua[get_name()];
             }
         }
 
@@ -584,8 +584,8 @@ utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_r
         std::string raw_name = added_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
-            auto& lua                     = get_lua_();
-            lua[get_lua_name()][raw_name] = lua[added_region->get_lua_name()];
+            auto& lua                 = get_lua_();
+            lua[get_name()][raw_name] = lua[added_region->get_name()];
         }
     }
 
@@ -602,7 +602,7 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
     auto iter = utils::find_if(region_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == region_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "Trying to remove \"" << reg->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -620,8 +620,8 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
         std::string raw_name = removed_region->get_raw_name();
         if (utils::starts_with(raw_name, "$parent")) {
             raw_name.erase(0, std::string("$parent").size());
-            sol::state& lua               = get_lua_();
-            lua[get_lua_name()][raw_name] = sol::lua_nil;
+            sol::state& lua           = get_lua_();
+            lua[get_name()][raw_name] = sol::lua_nil;
         }
     }
 
@@ -675,7 +675,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& ch
     auto   iter = utils::find_if(child_list_, [&](auto& obj) { return obj.get() == raw_pointer; });
 
     if (iter == child_list_.end()) {
-        gui::out << gui::warning << "gui::" << type_.back() << ": "
+        gui::out << gui::warning << "gui::" << get_region_type() << ": "
                  << "Trying to remove \"" << child->get_name() << "\" from \"" << name_
                  << "\"'s children, but it was not one of this frame's children." << std::endl;
         return nullptr;
@@ -754,10 +754,6 @@ backdrop& frame::get_or_create_backdrop() {
     return *backdrop_;
 }
 
-const std::string& frame::get_frame_type() const {
-    return type_.back();
-}
-
 const bounds2f& frame::get_abs_hit_rect_insets() const {
     return abs_hit_rect_inset_list_;
 }
@@ -774,21 +770,21 @@ vector2f frame::get_min_dimensions() const {
     return vector2f(min_width_, min_height_);
 }
 
-std::size_t frame::get_num_children() const {
+std::size_t frame::get_child_count() const {
     return std::count_if(
         child_list_.begin(), child_list_.end(), [](const auto& child) { return child != nullptr; });
 }
 
-std::size_t frame::get_rough_num_children() const {
+std::size_t frame::get_child_count_upper_bound() const {
     return child_list_.size();
 }
 
-std::size_t frame::get_num_regions() const {
+std::size_t frame::get_layered_region_count() const {
     return std::count_if(
         region_list_.begin(), region_list_.end(), [](const auto& reg) { return reg != nullptr; });
 }
 
-std::size_t frame::get_rough_num_regions() const {
+std::size_t frame::get_layered_region_count_upper_bound() const {
     return region_list_.size();
 }
 
@@ -804,10 +800,10 @@ bool frame::is_in_region(const vector2f& position) const {
     if (title_region_ && title_region_->is_in_region(position))
         return true;
 
-    bool is_in_x_range = border_list_.left + abs_hit_rect_inset_list_.left <= position.x &&
-                         position.x <= border_list_.right - abs_hit_rect_inset_list_.right - 1.0f;
-    bool is_in_y_range = border_list_.top + abs_hit_rect_inset_list_.top <= position.y &&
-                         position.y <= border_list_.bottom - abs_hit_rect_inset_list_.bottom - 1.0f;
+    bool is_in_x_range = borders_.left + abs_hit_rect_inset_list_.left <= position.x &&
+                         position.x <= borders_.right - abs_hit_rect_inset_list_.right - 1.0f;
+    bool is_in_y_range = borders_.top + abs_hit_rect_inset_list_.top <= position.y &&
+                         position.y <= borders_.bottom - abs_hit_rect_inset_list_.bottom - 1.0f;
 
     return is_in_x_range && is_in_y_range;
 }
@@ -927,11 +923,23 @@ std::string hijack_sol_error_message(
     return new_error;
 }
 
+bool frame::check_script_(const std::string& script_name) const {
+    if (!can_use_script(script_name)) {
+        gui::out << gui::error << get_region_type() << ": "
+                 << "\"" << get_name() << "\" cannot use script \"" << script_name << "\"."
+                 << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 utils::connection frame::define_script_(
     const std::string& script_name,
     const std::string& content,
     bool               append,
     const script_info& info) {
+
     // Create the Lua function from the provided string
     sol::state& lua = get_lua_();
 
@@ -975,7 +983,7 @@ utils::connection frame::define_script_(
         std::vector<sol::object> lua_args;
 
         // Set arguments
-        for (std::size_t i = 0; i < args.get_num_param(); ++i) {
+        for (std::size_t i = 0; i < args.get_param_count(); ++i) {
             const utils::variant& arg = args.get(i);
             if (std::holds_alternative<utils::empty>(arg))
                 lua_args.emplace_back(sol::lua_nil);
@@ -984,7 +992,7 @@ utils::connection frame::define_script_(
         }
 
         // Get a reference to self
-        sol::object self_lua = lua[self.get_lua_name()];
+        sol::object self_lua = lua[self.get_name()];
         if (self_lua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
@@ -1008,11 +1016,12 @@ utils::connection frame::define_script_(
     script_function    handler,
     bool               append,
     const script_info& /*info*/) {
+
     if (!is_virtual()) {
         // Register the function so it can be called directly from Lua
         std::string adjusted_name = get_adjusted_script_name(script_name);
 
-        get_lua_()[get_lua_name()][adjusted_name].set_function(
+        get_lua_()[get_name()][adjusted_name].set_function(
             [=](frame& self, sol::variadic_args v_args) {
                 event_data data;
                 for (auto&& arg : v_args) {
@@ -1043,7 +1052,7 @@ utils::connection frame::define_script_(
 script_list_view frame::get_script(const std::string& script_name) const {
     auto iter_h = signal_list_.find(script_name);
     if (iter_h == signal_list_.end())
-        throw gui::exception(type_.back(), "no script registered for " + script_name);
+        throw gui::exception(get_region_type(), "no script registered for " + script_name);
 
     return iter_h->second.slots();
 }
@@ -1059,15 +1068,15 @@ void frame::remove_script(const std::string& script_name) {
     iter_h->second.disconnect_all();
 
     if (!is_virtual()) {
-        std::string adjusted_name                 = get_adjusted_script_name(script_name);
-        get_lua_()[get_lua_name()][adjusted_name] = sol::lua_nil;
+        std::string adjusted_name             = get_adjusted_script_name(script_name);
+        get_lua_()[get_name()][adjusted_name] = sol::lua_nil;
     }
 }
 
 void frame::on_event_(std::string_view event_name, const event_data& event) {
     event_data data;
     data.add(std::string(event_name));
-    for (std::size_t i = 0; i < event.get_num_param(); ++i)
+    for (std::size_t i = 0; i < event.get_param_count(); ++i)
         data.add(event.get(i));
 
     fire_script("OnEvent", data);
@@ -1415,7 +1424,7 @@ void frame::notify_visible() {
     if (!checker.is_alive())
         return;
 
-    notify_renderer_need_redraw();
+    get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::notify_invisible() {
@@ -1439,7 +1448,7 @@ void frame::notify_invisible() {
     if (!checker.is_alive())
         return;
 
-    notify_renderer_need_redraw();
+    get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::notify_renderer_need_redraw() {
@@ -1462,28 +1471,6 @@ void frame::notify_scaling_factor_updated() {
         obj.notify_scaling_factor_updated();
 }
 
-void frame::show() {
-    if (is_shown_)
-        return;
-
-    bool was_visible = is_visible_;
-    base::show();
-
-    if (!was_visible)
-        get_manager().get_root().notify_hovered_frame_dirty();
-}
-
-void frame::hide() {
-    if (!is_shown_)
-        return;
-
-    bool was_visible = is_visible_;
-    base::hide();
-
-    if (was_visible)
-        get_manager().get_root().notify_hovered_frame_dirty();
-}
-
 void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*position*/) {
     if (mouse_in_frame == is_mouse_in_frame_)
         return;
@@ -1504,15 +1491,15 @@ void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*positio
 
 void frame::update_borders_() {
     const bool old_ready       = is_ready_;
-    const auto old_border_list = border_list_;
+    const auto old_border_list = borders_;
 
     base::update_borders_();
 
     check_position_();
 
-    if (border_list_ != old_border_list || is_ready_ != old_ready) {
-        if (border_list_.width() != old_border_list.width() ||
-            border_list_.height() != old_border_list.height()) {
+    if (borders_ != old_border_list || is_ready_ != old_ready) {
+        if (borders_.width() != old_border_list.width() ||
+            borders_.height() != old_border_list.height()) {
             alive_checker checker(*this);
             fire_script("OnSizeChanged");
             if (!checker.is_alive())
@@ -1537,15 +1524,16 @@ void frame::update(float delta) {
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
+        // TODO: This is bad; the frame class should not know about font_string, see #.
         for (const auto& reg : region_list_) {
-            if (reg && !reg->is_object_type("font_string")) {
+            if (reg && !reg->is_region_type<font_string>()) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }
         }
 
         for (const auto& reg : region_list_) {
-            if (reg && reg->is_object_type("font_string")) {
+            if (reg && reg->is_region_type<font_string>()) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
                     reg);
             }
@@ -1602,6 +1590,10 @@ void frame::update(float delta) {
             }
         }
     }
+}
+
+const std::vector<std::string>& frame::get_type_list_() const {
+    return get_type_list_impl_<frame>();
 }
 
 } // namespace lxgui::gui

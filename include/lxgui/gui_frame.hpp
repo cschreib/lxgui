@@ -248,9 +248,9 @@ using script_list_view = script_signal::slot_list_view;
  * child frames, and all the layered regions of the virtual frame.
  */
 class frame : public region {
+public:
     using base = region;
 
-public:
     /**
      * \brief Type of the frame child list (internal).
      * \note Constraints on the choice container type:
@@ -793,12 +793,6 @@ public:
     backdrop& get_or_create_backdrop();
 
     /**
-     * \brief Returns this frame's type.
-     * \return This frame's type (Frame, Slider, ...)
-     */
-    const std::string& get_frame_type() const;
-
-    /**
      * \brief Returns this frame's absolute hit rect insets.
      * \return This frame's absolute hit rect insets
      */
@@ -825,36 +819,36 @@ public:
     /**
      * \brief Returns the number of children of this frame.
      * \return The number of children of this frame
-     * \note If only an approximate number is acceptable, use get_rough_num_children(),
+     * \note If only an approximate number is acceptable, use get_child_count_upper_bound(),
      * which is faster.
      */
-    std::size_t get_num_children() const;
+    std::size_t get_child_count() const;
 
     /**
      * \brief Returns the approximate number of children of this frame.
      * \return The approximate number of children of this frame
      * \note The returned number is an *upper bound* on the actual number of children.
      * This can be used to reserve enough space for memory allocations.
-     * If the exact number of children is required, use get_num_children().
+     * If the exact number of children is required, use get_child_count().
      */
-    std::size_t get_rough_num_children() const;
+    std::size_t get_child_count_upper_bound() const;
 
     /**
-     * \brief Returns the number of regions of this frame.
-     * \return The number of regions of this frame
-     * \note If only an approximate number is acceptable, use get_rough_num_regions(),
+     * \brief Returns the number of layered regions of this frame.
+     * \return The number of layered regions of this frame
+     * \note If only an approximate number is acceptable, use get_layered_region_count_upper_bound(),
      * which is faster.
      */
-    std::size_t get_num_regions() const;
+    std::size_t get_layered_region_count() const;
 
     /**
      * \brief Returns the approximate number of regions of this frame.
      * \return The approximate number of regions of this frame
      * \note The returned number is an *upper bound* on the actual number of regions.
      * This can be used to reserve enough space for memory allocations.
-     * If the exact number of regions is required, use get_num_regions().
+     * If the exact number of regions is required, use get_layered_region_count().
      */
-    std::size_t get_rough_num_regions() const;
+    std::size_t get_layered_region_count_upper_bound() const;
 
     /**
      * \brief Returns this frame's scale.
@@ -1000,6 +994,8 @@ public:
      */
     utils::connection add_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, content, true, info);
     }
 
@@ -1019,6 +1015,8 @@ public:
         const std::string&      script_name,
         sol::protected_function handler,
         script_info             info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), true, info);
     }
 
@@ -1036,6 +1034,8 @@ public:
      */
     utils::connection add_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), true, info);
     }
 
@@ -1053,15 +1053,15 @@ public:
      *
      * \note This overload enables taking handler scripts with a `self` parameter of type other than
      * \ref frame, for example:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
      * will be reported. However this has a cost; if you are sure of the type and want to bypass
      * this cost, just supply the `self` type as the first template argument to this function:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script<button>([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      */
     template<typename DerivedType = void, typename Function>
     utils::connection add_script(
@@ -1102,6 +1102,8 @@ public:
      */
     utils::connection set_script(
         const std::string& script_name, std::string content, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, content, false, info);
     }
 
@@ -1121,6 +1123,8 @@ public:
         const std::string&      script_name,
         sol::protected_function handler,
         script_info             info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), false, info);
     }
 
@@ -1138,6 +1142,8 @@ public:
      */
     utils::connection set_script(
         const std::string& script_name, script_function handler, script_info info = script_info{}) {
+        if (!check_script_(script_name))
+            return {};
         return define_script_(script_name, std::move(handler), false, info);
     }
 
@@ -1155,15 +1161,15 @@ public:
      *
      * \note This overload enables taking handler scripts with a `self` parameter of type other than
      * \ref frame, for example:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      * For maximum safety, by default this is done using a `dynamic_cast`, so that incorrect types
      * will be reported. However this has a cost; if you are sure of the type and want to bypass
      * this cost, just supply the `self` type as the first template argument to this function:
-     * \begin_code{cpp}
+     * \code{cpp}
      * add_script<button>([](button& self, const event_data& data) { ... });
-     * \end_code
+     * \endcode
      */
     template<typename DerivedType = void, typename Function>
     utils::connection set_script(
@@ -1395,20 +1401,6 @@ public:
     void stop_sizing();
 
     /**
-     * \brief shows this region.
-     * \note Its parent must be shown for it to appear on
-     * the screen.
-     */
-    void show() override;
-
-    /**
-     * \brief hides this region.
-     * \note All its children won't be visible on the screen
-     * anymore, even if they are still marked as shown.
-     */
-    void hide() override;
-
-    /**
      * \brief Enables automatic focus when this frame is shown or raised.
      * \param enable 'true' to enable auto focus
      */
@@ -1574,6 +1566,8 @@ protected:
     virtual void parse_frames_node_(const layout_node& node);
     virtual void parse_scripts_node_(const layout_node& node);
 
+    const std::vector<std::string>& get_type_list_() const override;
+
     utils::observer_ptr<layered_region>
     parse_region_(const layout_node& node, const std::string& layer_name, const std::string& type);
 
@@ -1604,6 +1598,8 @@ protected:
      * \note Default is nullptr.
      */
     void set_parent_(utils::observer_ptr<frame> parent) override;
+
+    bool check_script_(const std::string& script_name) const;
 
     utils::connection define_script_(
         const std::string& script_name,

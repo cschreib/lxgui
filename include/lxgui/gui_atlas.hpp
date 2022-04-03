@@ -181,7 +181,7 @@ public:
      * \brief Return the number of pages in this atlas.
      * \return The number of pages in this atlas
      */
-    std::size_t get_num_pages() const;
+    std::size_t get_page_count() const;
 
 protected:
     /**

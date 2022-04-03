@@ -36,7 +36,7 @@ public:
 
     /**
      * \brief Returns a parameter of this event.
-     * \param index The index of the parameter (see get_num_param())
+     * \param index The index of the parameter (see get_param_count())
      * \return A parameter of this event
      */
     const utils::variant& get(std::size_t index) const {
@@ -47,7 +47,7 @@ public:
 
     /**
      * \brief Returns a parameter of this event.
-     * \param index The index of the parameter (see get_num_param())
+     * \param index The index of the parameter (see get_param_count())
      * \return A parameter of this event
      */
     utils::variant& get(std::size_t index) {
@@ -58,7 +58,7 @@ public:
 
     /**
      * \brief Returns a parameter of this event.
-     * \param index The index of the parameter (see get_num_param())
+     * \param index The index of the parameter (see get_param_count())
      * \return A parameter of this event
      */
     template<typename T>
@@ -68,7 +68,7 @@ public:
 
     /**
      * \brief Returns a parameter of this event.
-     * \param index The index of the parameter (see get_num_param())
+     * \param index The index of the parameter (see get_param_count())
      * \return A parameter of this event
      */
     template<typename T>
@@ -80,7 +80,7 @@ public:
      * \brief Returns the number of parameters.
      * \return The number of parameters
      */
-    std::size_t get_num_param() const {
+    std::size_t get_param_count() const {
         return arg_list_.size();
     }
 

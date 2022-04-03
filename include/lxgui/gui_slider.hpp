@@ -28,9 +28,9 @@ class texture;
  * previous value would not satisfy the new constraints.
  */
 class slider : public frame {
+public:
     using base = frame;
 
-public:
     /// Constructor.
     explicit slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
@@ -204,6 +204,8 @@ protected:
 
     void parse_attributes_(const layout_node& node) override;
     void parse_all_nodes_before_children_(const layout_node& node) override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     orientation orientation_ = orientation::vertical;
 

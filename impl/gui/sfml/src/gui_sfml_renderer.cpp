@@ -142,7 +142,7 @@ void renderer::render_cache_(
     if (sf_mat)
         state.texture = sf_mat->get_texture();
     state.transform = to_sfml(model_transform);
-    current_sfml_target_->draw(sf_cache.get_impl(), 0, sf_cache.get_num_vertex(), state);
+    current_sfml_target_->draw(sf_cache.get_impl(), 0, sf_cache.get_vertex_count(), state);
 #else
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 #endif

@@ -99,8 +99,8 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        self.ThumbTexture:set_point("TOP", self, "TOP");
-                        self.ThumbTexture:set_point("BOTTOM", self, "BOTTOM");
+                        self.ThumbTexture:set_anchor("TOP", self, "TOP");
+                        self.ThumbTexture:set_anchor("BOTTOM", self, "BOTTOM");
                     </OnLoad>
                 </Scripts>
                 <Frames>

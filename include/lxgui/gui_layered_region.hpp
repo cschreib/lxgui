@@ -21,9 +21,9 @@ enum class layer { background, border, artwork, overlay, highlight, special_high
  * must be taken care of by the parent frame.
  */
 class layered_region : public region {
+public:
     using base = region;
 
-public:
     /// Constructor.
     explicit layered_region(
         utils::control_block& block, manager& mgr, const region_core_attributes& attr);
@@ -40,26 +40,6 @@ public:
      * \return An owning pointer to this region
      */
     utils::owner_ptr<region> release_from_parent() override;
-
-    /**
-     * \brief shows this region.
-     * \note Its parent must be shown for it to appear on
-     * the screen.
-     */
-    void show() override;
-
-    /**
-     * \brief hides this region.
-     * \note All its children won't be visible on the screen
-     * anymore, even if they are still marked as shown.
-     */
-    void hide() override;
-
-    /**
-     * \brief Checks if this region can be seen on the screen.
-     * \return 'true' if this region can be seen on the screen
-     */
-    bool is_visible() const override;
 
     /**
      * \brief Returns this layered_region's draw layer.
@@ -92,6 +72,8 @@ public:
 
 protected:
     void parse_attributes_(const layout_node& node) override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     layer layer_ = layer::artwork;
 };

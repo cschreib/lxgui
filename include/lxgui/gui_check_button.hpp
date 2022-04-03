@@ -13,9 +13,9 @@ namespace lxgui::gui {
  * additional special textures for the check sign.
  */
 class check_button : public button {
+public:
     using base = button;
 
-public:
     /// Constructor.
     explicit check_button(
         utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
@@ -112,6 +112,8 @@ public:
 
 protected:
     void parse_all_nodes_before_children_(const layout_node& node) override;
+
+    const std::vector<std::string>& get_type_list_() const override;
 
     bool is_checked_ = false;
 

@@ -49,7 +49,7 @@ public:
      * \brief Returns the number of vertices currently stored in the cache.
      * \return The number of vertices currently stored in the cache
      */
-    std::size_t get_num_vertex() const;
+    std::size_t get_vertex_count() const;
 
     /**
      * \brief Returns the SFML vertex buffer object.
@@ -58,7 +58,6 @@ public:
     const sf::VertexBuffer& get_impl() const;
 
 private:
-    std::size_t      num_vertex_ = 0u;
     sf::VertexBuffer buffer_;
 };
 

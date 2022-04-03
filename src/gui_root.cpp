@@ -279,10 +279,10 @@ void root::start_moving(
         } else {
             const bounds2f borders = moved_object_->get_borders();
 
-            moved_object_->clear_all_points();
-            moved_object_->set_point(point::top_left, "", borders.top_left());
+            moved_object_->clear_all_anchors();
+            moved_object_->set_anchor(point::top_left, "", borders.top_left());
 
-            moved_anchor_ = &moved_object_->modify_point(point::top_left);
+            moved_anchor_ = &moved_object_->modify_anchor(point::top_left);
 
             movement_start_position_ = borders.top_left();
         }
@@ -346,8 +346,8 @@ void root::start_sizing(utils::observer_ptr<region> obj, point p) {
             return;
         }
 
-        sized_object_->clear_all_points();
-        sized_object_->set_point(opposite_point, "", point::top_left, offset);
+        sized_object_->clear_all_anchors();
+        sized_object_->set_anchor(opposite_point, "", point::top_left, offset);
 
         resize_start_ = sized_object_->get_apparent_dimensions();
 

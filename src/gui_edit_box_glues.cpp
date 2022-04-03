@@ -91,9 +91,9 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_max_letters", member_function<&edit_box::get_max_letters>());
 
-    /** @function get_num_letters
+    /** @function get_letter_count
      */
-    type.set_function("get_num_letters", member_function<&edit_box::get_num_letters>());
+    type.set_function("get_letter_count", member_function<&edit_box::get_letter_count>());
 
     /** @function get_number
      */
