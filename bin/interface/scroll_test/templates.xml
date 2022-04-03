@@ -10,7 +10,7 @@
                 </Offset>
             </Anchor>
         </Anchors>
-        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false" alignX="LEFT">
+        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllAnchors="false" alignX="LEFT">
             <Anchors>
                 <Anchor point="LEFT" relativeTo="$parentIconFrame" relativePoint="RIGHT">
                     <Offset>
@@ -36,7 +36,7 @@
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <Texture name="$parentIcon" setAllPoints="true"/>
+                        <Texture name="$parentIcon" setAllAnchors="true"/>
                     </Layer>
                 </Layers>
             </Frame>
@@ -50,7 +50,7 @@
         <Anchors>
             <Anchor point="RIGHT"/>
         </Anchors>
-        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false" alignX="LEFT">
+        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllAnchors="false" alignX="LEFT">
             <Anchors>
                 <Anchor point="LEFT" relativeTo="$parentIconFrame" relativePoint="RIGHT">
                     <Offset>
@@ -77,10 +77,10 @@
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <Texture name="$parentPlus" file="|icons.png" setAllPoints="true">
+                        <Texture name="$parentPlus" file="|icons.png" setAllAnchors="true">
                             <TexCoords left="0" right="0.125" top="0.0" bottom="1.0"/>
                         </Texture>
-                        <Texture name="$parentMinus" file="|icons.png" hidden="true" setAllPoints="true">
+                        <Texture name="$parentMinus" file="|icons.png" hidden="true" setAllAnchors="true">
                             <TexCoords left="0.125" right="0.25" top="0.0" bottom="1.0"/>
                         </Texture>
                     </Layer>
@@ -100,7 +100,7 @@
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <Texture name="$parentFolder" file="|icons.png" setAllPoints="true">
+                        <Texture name="$parentFolder" file="|icons.png" setAllAnchors="true">
                             <TexCoords left="0.25" right="0.375" top="0.0" bottom="1.0"/>
                         </Texture>
                     </Layer>

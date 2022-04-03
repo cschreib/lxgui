@@ -87,7 +87,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
             return;
 
         scroll_texture->set_manually_inherited(true);
-        scroll_texture->set_all_points(observer_from(this));
+        scroll_texture->set_all_anchors(observer_from(this));
 
         if (scroll_render_target_)
             scroll_texture->set_texture(scroll_render_target_);

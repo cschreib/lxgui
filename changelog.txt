@@ -123,6 +123,7 @@ Other changes:
  - gui: renamed clear_all_points to clear_all_anchors
  - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
  - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
+ - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()

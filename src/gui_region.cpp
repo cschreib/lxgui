@@ -397,10 +397,10 @@ bool check_cyclic_anchors(const region& self, anchor& a) {
     return true;
 }
 
-void region::set_all_points(const std::string& obj_name) {
+void region::set_all_anchors(const std::string& obj_name) {
     if (obj_name == name_) {
         gui::out << gui::error << "gui::" << get_region_type()
-                 << ": Cannot call set_all_points(this)." << std::endl;
+                 << ": Cannot call set_all_anchors(this)." << std::endl;
         return;
     }
 
@@ -430,14 +430,14 @@ void region::set_all_points(const std::string& obj_name) {
     }
 }
 
-void region::set_all_points(const utils::observer_ptr<region>& obj) {
+void region::set_all_anchors(const utils::observer_ptr<region>& obj) {
     if (obj == observer_from_this()) {
         gui::out << gui::error << "gui::" << get_region_type()
-                 << ": Cannot call set_all_points(this)." << std::endl;
+                 << ": Cannot call set_all_anchors(this)." << std::endl;
         return;
     }
 
-    set_all_points(obj ? obj->get_name() : "");
+    set_all_anchors(obj ? obj->get_name() : "");
 }
 
 void set_defined_borders(bounds2<bool>& defined_borders, point p, bool defined) {

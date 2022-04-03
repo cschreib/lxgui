@@ -462,14 +462,14 @@ public:
      * \param obj A pointer to the object you want to wrap
      * \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const utils::observer_ptr<region>& obj);
+    void set_all_anchors(const utils::observer_ptr<region>& obj);
 
     /**
      * \brief Adjusts this regions anchors to fit the provided region.
      * \param obj_name The name of the object to fit to
      * \note Removes all anchors and defines two new ones.
      */
-    void set_all_points(const std::string& obj_name);
+    void set_all_anchors(const std::string& obj_name);
 
     /**
      * \brief Adds/replaces an anchor.

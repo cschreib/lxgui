@@ -37,7 +37,7 @@
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="11" outline="NORMAL" text="Zoom x1.0" setAllPoints="true"/>
+                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="11" outline="NORMAL" text="Zoom x1.0" setAllAnchors="true"/>
             </Layer>
         </Layers>
     </StatusBar>
@@ -85,7 +85,7 @@
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <Texture name="$parentBorder" file="|bar_outline.png" setAllPoints="true"/>
+                <Texture name="$parentBorder" file="|bar_outline.png" setAllAnchors="true"/>
             </Layer>
         </Layers>
     </StatusBar>

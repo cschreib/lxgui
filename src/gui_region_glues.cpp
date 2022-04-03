@@ -254,12 +254,12 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("is_visible", member_function<&region::is_visible>());
 
-    /** @function set_all_points
+    /** @function set_all_anchors
      */
     type.set_function(
-        "set_all_points",
+        "set_all_anchors",
         [](region& self, sol::optional<std::variant<std::string, region*>> target) {
-            self.set_all_points(
+            self.set_all_anchors(
                 target.has_value() ? get_object<region>(self.get_manager(), target.value())
                                    : nullptr);
         });

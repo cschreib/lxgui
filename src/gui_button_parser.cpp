@@ -25,7 +25,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentNormalTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
@@ -42,7 +42,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentPushedTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
@@ -59,7 +59,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentDisabledTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
@@ -76,7 +76,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentHighlightTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
@@ -93,7 +93,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentNormalText");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {
@@ -110,7 +110,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentHighlightText");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {
@@ -127,7 +127,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentDisabledText");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto fstr = parse_region_(defaulted, layer, "FontString");
         if (fstr) {

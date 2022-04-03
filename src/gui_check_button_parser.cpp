@@ -13,7 +13,7 @@ void check_button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentCheckedTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {
@@ -30,7 +30,7 @@ void check_button::parse_all_nodes_before_children_(const layout_node& node) {
 
         layout_node defaulted = *special_node;
         defaulted.get_or_set_attribute_value("name", "$parentDisabledCheckedTexture");
-        defaulted.get_or_set_attribute_value("setAllPoints", "true");
+        defaulted.get_or_set_attribute_value("setAllAnchors", "true");
 
         auto tex = parse_region_(defaulted, layer, "Texture");
         if (tex) {

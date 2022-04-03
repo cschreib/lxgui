@@ -132,8 +132,8 @@ void region::parse_layout(const layout_node& node) {
 }
 
 void region::parse_attributes_(const layout_node& node) {
-    if (node.get_attribute_value_or<bool>("setAllPoints", false))
-        set_all_points("$parent");
+    if (node.get_attribute_value_or<bool>("setAllAnchors", false))
+        set_all_anchors("$parent");
 }
 
 } // namespace lxgui::gui

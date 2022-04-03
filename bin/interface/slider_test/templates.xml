@@ -89,7 +89,7 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
-                        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false">
+                        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllAnchors="false">
                             <Anchors>
                                 <Anchor point="CENTER"/>
                             </Anchors>

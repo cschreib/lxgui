@@ -33,8 +33,8 @@ void frame::parse_attributes_(const layout_node& node) {
     if (const layout_attribute* attr = node.try_get_attribute("hidden"))
         set_shown(!attr->get_value<bool>());
 
-    if (node.get_attribute_value_or<bool>("setAllPoints", false))
-        set_all_points("$parent");
+    if (node.get_attribute_value_or<bool>("setAllAnchors", false))
+        set_all_anchors("$parent");
 
     if (const layout_attribute* attr = node.try_get_attribute("alpha"))
         set_alpha(attr->get_value<float>());
