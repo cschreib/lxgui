@@ -66,10 +66,12 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classlxgui_1_1gui_1_1layered__region-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -94,6 +96,11 @@ Inheritance diagram for lxgui::gui::layered_region:</div>
   </map>
 </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a2ee655ba7aabf802bf31942aca4e1801"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a2ee655ba7aabf802bf31942aca4e1801">base</a> = <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a></td></tr>
+<tr class="separator:a2ee655ba7aabf802bf31942aca4e1801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5fb06814150ee10de95cfbbf31def928"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a5fb06814150ee10de95cfbbf31def928">layered_region</a> (utils::control_block &amp;block, <a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> &amp;mgr, const <a class="el" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a> &amp;attr)</td></tr>
@@ -105,15 +112,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2e256ad9e2e0efbbf017e34a2c6a75c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">utils::owner_ptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad2e256ad9e2e0efbbf017e34a2c6a75c">release_from_parent</a> () override</td></tr>
 <tr class="memdesc:ad2e256ad9e2e0efbbf017e34a2c6a75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes this region from its parent and return an owning pointer.  <a href="classlxgui_1_1gui_1_1layered__region.html#ad2e256ad9e2e0efbbf017e34a2c6a75c">More...</a><br /></td></tr>
 <tr class="separator:ad2e256ad9e2e0efbbf017e34a2c6a75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0aa1eea006ce0c1649790e603e49ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3">show</a> () override</td></tr>
-<tr class="memdesc:ad0aa1eea006ce0c1649790e603e49ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows this region.  <a href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3">More...</a><br /></td></tr>
-<tr class="separator:ad0aa1eea006ce0c1649790e603e49ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae239f110c864bab9470644d9670c4224"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ae239f110c864bab9470644d9670c4224">hide</a> () override</td></tr>
-<tr class="memdesc:ae239f110c864bab9470644d9670c4224"><td class="mdescLeft">&#160;</td><td class="mdescRight">hides this region.  <a href="classlxgui_1_1gui_1_1layered__region.html#ae239f110c864bab9470644d9670c4224">More...</a><br /></td></tr>
-<tr class="separator:ae239f110c864bab9470644d9670c4224"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a329dfdc8189d8712db6abf9c35436356"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a329dfdc8189d8712db6abf9c35436356">is_visible</a> () const override</td></tr>
-<tr class="memdesc:a329dfdc8189d8712db6abf9c35436356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region can be seen on the screen.  <a href="classlxgui_1_1gui_1_1layered__region.html#a329dfdc8189d8712db6abf9c35436356">More...</a><br /></td></tr>
-<tr class="separator:a329dfdc8189d8712db6abf9c35436356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbdeb3a150fcd19223f9cb561915c889"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#acbdeb3a150fcd19223f9cb561915c889">get_draw_layer</a> () const</td></tr>
 <tr class="memdesc:acbdeb3a150fcd19223f9cb561915c889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A region that can be rendered in a layer.">layered_region</a>'s draw layer.  <a href="classlxgui_1_1gui_1_1layered__region.html#acbdeb3a150fcd19223f9cb561915c889">More...</a><br /></td></tr>
 <tr class="separator:acbdeb3a150fcd19223f9cb561915c889"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,9 +142,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a56ec135272ef0a302ab5707452840a"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a7a56ec135272ef0a302ab5707452840a">get_name</a> () const</td></tr>
 <tr class="memdesc:a7a56ec135272ef0a302ab5707452840a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this region's name.  <a href="classlxgui_1_1gui_1_1region.html#a7a56ec135272ef0a302ab5707452840a">More...</a><br /></td></tr>
 <tr class="separator:a7a56ec135272ef0a302ab5707452840a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe13557d63b6355a4fcd98ece14acc42"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#afe13557d63b6355a4fcd98ece14acc42">get_lua_name</a> () const</td></tr>
-<tr class="memdesc:afe13557d63b6355a4fcd98ece14acc42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this region's Lua name.  <a href="classlxgui_1_1gui_1_1region.html#afe13557d63b6355a4fcd98ece14acc42">More...</a><br /></td></tr>
-<tr class="separator:afe13557d63b6355a4fcd98ece14acc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b53e5cc7045fe5bb6eaaef11253417"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a99b53e5cc7045fe5bb6eaaef11253417">get_raw_name</a> () const</td></tr>
 <tr class="memdesc:a99b53e5cc7045fe5bb6eaaef11253417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this region's raw name.  <a href="classlxgui_1_1gui_1_1region.html#a99b53e5cc7045fe5bb6eaaef11253417">More...</a><br /></td></tr>
 <tr class="separator:a99b53e5cc7045fe5bb6eaaef11253417"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,12 +163,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e6bd832e74cd0322b819e47228bca39"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a2e6bd832e74cd0322b819e47228bca39">get_effective_alpha</a> () const</td></tr>
 <tr class="memdesc:a2e6bd832e74cd0322b819e47228bca39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this region's effective alpha (opacity).  <a href="classlxgui_1_1gui_1_1region.html#a2e6bd832e74cd0322b819e47228bca39">More...</a><br /></td></tr>
 <tr class="separator:a2e6bd832e74cd0322b819e47228bca39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64cb80aa3c7770da0568bc861e50204f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f">show</a> ()</td></tr>
+<tr class="memdesc:a64cb80aa3c7770da0568bc861e50204f"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows this region.  <a href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f">More...</a><br /></td></tr>
+<tr class="separator:a64cb80aa3c7770da0568bc861e50204f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536dee29afb529caacf8007b50cd28fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a536dee29afb529caacf8007b50cd28fc">hide</a> ()</td></tr>
+<tr class="memdesc:a536dee29afb529caacf8007b50cd28fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">hides this region.  <a href="classlxgui_1_1gui_1_1region.html#a536dee29afb529caacf8007b50cd28fc">More...</a><br /></td></tr>
+<tr class="separator:a536dee29afb529caacf8007b50cd28fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01a634426f40feb472a1c56a55782ada"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a01a634426f40feb472a1c56a55782ada">set_shown</a> (bool <a class="el" href="classlxgui_1_1gui_1_1region.html#a7cc0f6bbd627abbcf1a4a8f99226e92d">is_shown</a>)</td></tr>
 <tr class="memdesc:a01a634426f40feb472a1c56a55782ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows/hides this region.  <a href="classlxgui_1_1gui_1_1region.html#a01a634426f40feb472a1c56a55782ada">More...</a><br /></td></tr>
 <tr class="separator:a01a634426f40feb472a1c56a55782ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cc0f6bbd627abbcf1a4a8f99226e92d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a7cc0f6bbd627abbcf1a4a8f99226e92d">is_shown</a> () const</td></tr>
 <tr class="memdesc:a7cc0f6bbd627abbcf1a4a8f99226e92d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is shown.  <a href="classlxgui_1_1gui_1_1region.html#a7cc0f6bbd627abbcf1a4a8f99226e92d">More...</a><br /></td></tr>
 <tr class="separator:a7cc0f6bbd627abbcf1a4a8f99226e92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a481a263dd2171bdac6cc53943bf65864"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a481a263dd2171bdac6cc53943bf65864">is_visible</a> () const</td></tr>
+<tr class="memdesc:a481a263dd2171bdac6cc53943bf65864"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region can be seen on the screen.  <a href="classlxgui_1_1gui_1_1region.html#a481a263dd2171bdac6cc53943bf65864">More...</a><br /></td></tr>
+<tr class="separator:a481a263dd2171bdac6cc53943bf65864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9f0ba4d73616dd272d56064a45c6ff5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aa9f0ba4d73616dd272d56064a45c6ff5">set_dimensions</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;dimensions)</td></tr>
 <tr class="memdesc:aa9f0ba4d73616dd272d56064a45c6ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this region's absolute dimensions (in pixels).  <a href="classlxgui_1_1gui_1_1region.html#aa9f0ba4d73616dd272d56064a45c6ff5">More...</a><br /></td></tr>
 <tr class="separator:aa9f0ba4d73616dd272d56064a45c6ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,19 +211,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa50737cd309400bb24e0082d86eafcc0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aa50737cd309400bb24e0082d86eafcc0">is_in_region</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;position) const</td></tr>
 <tr class="memdesc:aa50737cd309400bb24e0082d86eafcc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided coordinates are inside this region.  <a href="classlxgui_1_1gui_1_1region.html#aa50737cd309400bb24e0082d86eafcc0">More...</a><br /></td></tr>
 <tr class="separator:aa50737cd309400bb24e0082d86eafcc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a198cf89387e9d792447bfa0ba5776d88"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a198cf89387e9d792447bfa0ba5776d88">get_object_type</a> () const</td></tr>
-<tr class="memdesc:a198cf89387e9d792447bfa0ba5776d88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type of this region.  <a href="classlxgui_1_1gui_1_1region.html#a198cf89387e9d792447bfa0ba5776d88">More...</a><br /></td></tr>
-<tr class="separator:a198cf89387e9d792447bfa0ba5776d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a880fb681dcbff51ea62cf9e2264937f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a880fb681dcbff51ea62cf9e2264937f5">is_object_type</a> (const std::string &amp;type_name) const</td></tr>
-<tr class="memdesc:a880fb681dcbff51ea62cf9e2264937f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is of the provided type.  <a href="classlxgui_1_1gui_1_1region.html#a880fb681dcbff51ea62cf9e2264937f5">More...</a><br /></td></tr>
-<tr class="separator:a880fb681dcbff51ea62cf9e2264937f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e4e871fbbf7c477d374fa92a04424c5"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
-<tr class="memitem:a1e4e871fbbf7c477d374fa92a04424c5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a1e4e871fbbf7c477d374fa92a04424c5">is_object_type</a> () const</td></tr>
-<tr class="memdesc:a1e4e871fbbf7c477d374fa92a04424c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is of the provided type.  <a href="classlxgui_1_1gui_1_1region.html#a1e4e871fbbf7c477d374fa92a04424c5">More...</a><br /></td></tr>
-<tr class="separator:a1e4e871fbbf7c477d374fa92a04424c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7915232f4d9757ddc80fc4b3a608007e"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a7915232f4d9757ddc80fc4b3a608007e">get_object_type_list</a> () const</td></tr>
-<tr class="memdesc:a7915232f4d9757ddc80fc4b3a608007e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this region.  <a href="classlxgui_1_1gui_1_1region.html#a7915232f4d9757ddc80fc4b3a608007e">More...</a><br /></td></tr>
-<tr class="separator:a7915232f4d9757ddc80fc4b3a608007e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a6d861f2d064f7b0468290f7379d07c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a0a6d861f2d064f7b0468290f7379d07c">get_region_type</a> () const</td></tr>
+<tr class="memdesc:a0a6d861f2d064f7b0468290f7379d07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type of this region.  <a href="classlxgui_1_1gui_1_1region.html#a0a6d861f2d064f7b0468290f7379d07c">More...</a><br /></td></tr>
+<tr class="separator:a0a6d861f2d064f7b0468290f7379d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704c45ef4f16d1e61cd5579e9cbbee96"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a704c45ef4f16d1e61cd5579e9cbbee96">is_region_type</a> (const std::string &amp;type_name) const</td></tr>
+<tr class="memdesc:a704c45ef4f16d1e61cd5579e9cbbee96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is of the provided type.  <a href="classlxgui_1_1gui_1_1region.html#a704c45ef4f16d1e61cd5579e9cbbee96">More...</a><br /></td></tr>
+<tr class="separator:a704c45ef4f16d1e61cd5579e9cbbee96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06276b01f627ba00557bbf71e504db4c"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a06276b01f627ba00557bbf71e504db4c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a06276b01f627ba00557bbf71e504db4c">is_region_type</a> () const</td></tr>
+<tr class="memdesc:a06276b01f627ba00557bbf71e504db4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is of the provided type.  <a href="classlxgui_1_1gui_1_1region.html#a06276b01f627ba00557bbf71e504db4c">More...</a><br /></td></tr>
+<tr class="separator:a06276b01f627ba00557bbf71e504db4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6fbc419f09d678879164884267ebf19"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ac6fbc419f09d678879164884267ebf19">is_region_type</a> (const <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;obj) const</td></tr>
+<tr class="memdesc:ac6fbc419f09d678879164884267ebf19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is of a type equal or derived from the supplied region.  <a href="classlxgui_1_1gui_1_1region.html#ac6fbc419f09d678879164884267ebf19">More...</a><br /></td></tr>
+<tr class="separator:ac6fbc419f09d678879164884267ebf19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabca13f5f64ef623892102843b7db4a7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aabca13f5f64ef623892102843b7db4a7">get_bottom</a> () const</td></tr>
 <tr class="memdesc:aabca13f5f64ef623892102843b7db4a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this region's bottom border.  <a href="classlxgui_1_1gui_1_1region.html#aabca13f5f64ef623892102843b7db4a7">More...</a><br /></td></tr>
 <tr class="separator:aabca13f5f64ef623892102843b7db4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,37 +242,37 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a22085f5fb7d6207a59cf7a2f661c1a6f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a22085f5fb7d6207a59cf7a2f661c1a6f">get_borders</a> () const</td></tr>
 <tr class="memdesc:a22085f5fb7d6207a59cf7a2f661c1a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this region's borders.  <a href="classlxgui_1_1gui_1_1region.html#a22085f5fb7d6207a59cf7a2f661c1a6f">More...</a><br /></td></tr>
 <tr class="separator:a22085f5fb7d6207a59cf7a2f661c1a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71b82aee7769f830c4bff7dfdc5c8681"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a71b82aee7769f830c4bff7dfdc5c8681">clear_all_points</a> ()</td></tr>
-<tr class="memdesc:a71b82aee7769f830c4bff7dfdc5c8681"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all anchors.  <a href="classlxgui_1_1gui_1_1region.html#a71b82aee7769f830c4bff7dfdc5c8681">More...</a><br /></td></tr>
-<tr class="separator:a71b82aee7769f830c4bff7dfdc5c8681"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3627ccc42043cf35f663519a84f663b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a3627ccc42043cf35f663519a84f663b8">set_all_points</a> (const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &amp;obj)</td></tr>
-<tr class="memdesc:a3627ccc42043cf35f663519a84f663b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts this regions anchors to fit the provided region.  <a href="classlxgui_1_1gui_1_1region.html#a3627ccc42043cf35f663519a84f663b8">More...</a><br /></td></tr>
-<tr class="separator:a3627ccc42043cf35f663519a84f663b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a302427c2cdf173456400b7ee26e84d32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a302427c2cdf173456400b7ee26e84d32">set_all_points</a> (const std::string &amp;obj_name)</td></tr>
-<tr class="memdesc:a302427c2cdf173456400b7ee26e84d32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts this regions anchors to fit the provided region.  <a href="classlxgui_1_1gui_1_1region.html#a302427c2cdf173456400b7ee26e84d32">More...</a><br /></td></tr>
-<tr class="separator:a302427c2cdf173456400b7ee26e84d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae47b51c6dd9bde9c525730c449a8ac56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ae47b51c6dd9bde9c525730c449a8ac56">set_point</a> (const <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a> &amp;a)</td></tr>
-<tr class="memdesc:ae47b51c6dd9bde9c525730c449a8ac56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds/replaces an anchor.  <a href="classlxgui_1_1gui_1_1region.html#ae47b51c6dd9bde9c525730c449a8ac56">More...</a><br /></td></tr>
-<tr class="separator:ae47b51c6dd9bde9c525730c449a8ac56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a49ff4441bdb38256da5fcf66465eef"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:a2a49ff4441bdb38256da5fcf66465eef"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a2a49ff4441bdb38256da5fcf66465eef">set_point</a> (Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:a2a49ff4441bdb38256da5fcf66465eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds/replaces an anchor.  <a href="classlxgui_1_1gui_1_1region.html#a2a49ff4441bdb38256da5fcf66465eef">More...</a><br /></td></tr>
-<tr class="separator:a2a49ff4441bdb38256da5fcf66465eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab65c14bf37b5ac6f4882613f01705248"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ab65c14bf37b5ac6f4882613f01705248">clear_all_anchors</a> ()</td></tr>
+<tr class="memdesc:ab65c14bf37b5ac6f4882613f01705248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all anchors.  <a href="classlxgui_1_1gui_1_1region.html#ab65c14bf37b5ac6f4882613f01705248">More...</a><br /></td></tr>
+<tr class="separator:ab65c14bf37b5ac6f4882613f01705248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02f17b659c7e3b3d5753af5e119b1aef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a02f17b659c7e3b3d5753af5e119b1aef">set_all_anchors</a> (const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &amp;obj)</td></tr>
+<tr class="memdesc:a02f17b659c7e3b3d5753af5e119b1aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts this regions anchors to fit the provided region.  <a href="classlxgui_1_1gui_1_1region.html#a02f17b659c7e3b3d5753af5e119b1aef">More...</a><br /></td></tr>
+<tr class="separator:a02f17b659c7e3b3d5753af5e119b1aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b45cda12358b0a9628b697b7e8199a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af1b45cda12358b0a9628b697b7e8199a">set_all_anchors</a> (const std::string &amp;obj_name)</td></tr>
+<tr class="memdesc:af1b45cda12358b0a9628b697b7e8199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts this regions anchors to fit the provided region.  <a href="classlxgui_1_1gui_1_1region.html#af1b45cda12358b0a9628b697b7e8199a">More...</a><br /></td></tr>
+<tr class="separator:af1b45cda12358b0a9628b697b7e8199a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12d048050a6ebd0113a6c8dda99bc486"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a12d048050a6ebd0113a6c8dda99bc486">set_anchor</a> (const <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a> &amp;a)</td></tr>
+<tr class="memdesc:a12d048050a6ebd0113a6c8dda99bc486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds/replaces an anchor.  <a href="classlxgui_1_1gui_1_1region.html#a12d048050a6ebd0113a6c8dda99bc486">More...</a><br /></td></tr>
+<tr class="separator:a12d048050a6ebd0113a6c8dda99bc486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca037825d36e5fed682b71f0fa1b2891"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:aca037825d36e5fed682b71f0fa1b2891"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aca037825d36e5fed682b71f0fa1b2891">set_anchor</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:aca037825d36e5fed682b71f0fa1b2891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds/replaces an anchor.  <a href="classlxgui_1_1gui_1_1region.html#aca037825d36e5fed682b71f0fa1b2891">More...</a><br /></td></tr>
+<tr class="separator:aca037825d36e5fed682b71f0fa1b2891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c4d4c7b79d410e1689054c0075f3dd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a6c4d4c7b79d410e1689054c0075f3dd1">depends_on</a> (const <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;obj) const</td></tr>
 <tr class="memdesc:a6c4d4c7b79d410e1689054c0075f3dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region depends on another.  <a href="classlxgui_1_1gui_1_1region.html#a6c4d4c7b79d410e1689054c0075f3dd1">More...</a><br /></td></tr>
 <tr class="separator:a6c4d4c7b79d410e1689054c0075f3dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a055b3ad0a22b25a7d75adb53a22adaf7"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a055b3ad0a22b25a7d75adb53a22adaf7">get_num_point</a> () const</td></tr>
-<tr class="memdesc:a055b3ad0a22b25a7d75adb53a22adaf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of defined anchors.  <a href="classlxgui_1_1gui_1_1region.html#a055b3ad0a22b25a7d75adb53a22adaf7">More...</a><br /></td></tr>
-<tr class="separator:a055b3ad0a22b25a7d75adb53a22adaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a836873ebfb396808b9679310650167dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a836873ebfb396808b9679310650167dd">modify_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a> p)</td></tr>
-<tr class="memdesc:a836873ebfb396808b9679310650167dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this region's anchor to modify it.  <a href="classlxgui_1_1gui_1_1region.html#a836873ebfb396808b9679310650167dd">More...</a><br /></td></tr>
-<tr class="separator:a836873ebfb396808b9679310650167dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3957e333467afa254566a609b19d2dae"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a3957e333467afa254566a609b19d2dae">get_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a> p) const</td></tr>
-<tr class="memdesc:a3957e333467afa254566a609b19d2dae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this region's anchor.  <a href="classlxgui_1_1gui_1_1region.html#a3957e333467afa254566a609b19d2dae">More...</a><br /></td></tr>
-<tr class="separator:a3957e333467afa254566a609b19d2dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01792e3e77e9f61b314161cc39509a27"><td class="memItemLeft" align="right" valign="top">const std::array&lt; std::optional&lt; <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &gt;, 9 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a01792e3e77e9f61b314161cc39509a27">get_point_list</a> () const</td></tr>
-<tr class="memdesc:a01792e3e77e9f61b314161cc39509a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all of this region's anchors.  <a href="classlxgui_1_1gui_1_1region.html#a01792e3e77e9f61b314161cc39509a27">More...</a><br /></td></tr>
-<tr class="separator:a01792e3e77e9f61b314161cc39509a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8c9de138c69b6e882f7cd48186ca872"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af8c9de138c69b6e882f7cd48186ca872">get_anchor_count</a> () const</td></tr>
+<tr class="memdesc:af8c9de138c69b6e882f7cd48186ca872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of defined anchors.  <a href="classlxgui_1_1gui_1_1region.html#af8c9de138c69b6e882f7cd48186ca872">More...</a><br /></td></tr>
+<tr class="separator:af8c9de138c69b6e882f7cd48186ca872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f25e82e838059df6eb5ea810292f53d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a9f25e82e838059df6eb5ea810292f53d">modify_anchor</a> (<a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a> p)</td></tr>
+<tr class="memdesc:a9f25e82e838059df6eb5ea810292f53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this region's anchor to modify it.  <a href="classlxgui_1_1gui_1_1region.html#a9f25e82e838059df6eb5ea810292f53d">More...</a><br /></td></tr>
+<tr class="separator:a9f25e82e838059df6eb5ea810292f53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09a47fd47e748941b079d25d25b38a01"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a09a47fd47e748941b079d25d25b38a01">get_anchor</a> (<a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a> p) const</td></tr>
+<tr class="memdesc:a09a47fd47e748941b079d25d25b38a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this region's anchor.  <a href="classlxgui_1_1gui_1_1region.html#a09a47fd47e748941b079d25d25b38a01">More...</a><br /></td></tr>
+<tr class="separator:a09a47fd47e748941b079d25d25b38a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbaea0d8270da3ac023b6f3a20c9ce54"><td class="memItemLeft" align="right" valign="top">const std::array&lt; std::optional&lt; <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &gt;, 9 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#adbaea0d8270da3ac023b6f3a20c9ce54">get_anchors</a> () const</td></tr>
+<tr class="memdesc:adbaea0d8270da3ac023b6f3a20c9ce54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all of this region's anchors.  <a href="classlxgui_1_1gui_1_1region.html#adbaea0d8270da3ac023b6f3a20c9ce54">More...</a><br /></td></tr>
+<tr class="separator:adbaea0d8270da3ac023b6f3a20c9ce54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5927d7c1324c496c9cf93d1c1b665f66"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a5927d7c1324c496c9cf93d1c1b665f66">round_to_pixel</a> (float value, <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">utils::rounding_method</a> method=<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5cead879c351426770bc0b13c3628db1e636">utils::rounding_method::nearest</a>) const</td></tr>
 <tr class="memdesc:a5927d7c1324c496c9cf93d1c1b665f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Round an absolute position on screen to the nearest physical pixel.  <a href="classlxgui_1_1gui_1_1region.html#a5927d7c1324c496c9cf93d1c1b665f66">More...</a><br /></td></tr>
 <tr class="separator:a5927d7c1324c496c9cf93d1c1b665f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,12 +288,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2dd964ca00fbbc11c66a7a4bca2e403f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a2dd964ca00fbbc11c66a7a4bca2e403f">is_virtual</a> () const</td></tr>
 <tr class="memdesc:a2dd964ca00fbbc11c66a7a4bca2e403f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this region is virtual.  <a href="classlxgui_1_1gui_1_1region.html#a2dd964ca00fbbc11c66a7a4bca2e403f">More...</a><br /></td></tr>
 <tr class="separator:a2dd964ca00fbbc11c66a7a4bca2e403f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae913615c67021b1ec74d1bc92c5d8fa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ae913615c67021b1ec74d1bc92c5d8fa5">set_special</a> ()</td></tr>
-<tr class="memdesc:ae913615c67021b1ec74d1bc92c5d8fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as "special".  <a href="classlxgui_1_1gui_1_1region.html#ae913615c67021b1ec74d1bc92c5d8fa5">More...</a><br /></td></tr>
-<tr class="separator:ae913615c67021b1ec74d1bc92c5d8fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#acccc9f78644f2fb1aec45bf4f9a8502f">is_special</a> () const</td></tr>
-<tr class="memdesc:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is special.  <a href="classlxgui_1_1gui_1_1region.html#acccc9f78644f2fb1aec45bf4f9a8502f">More...</a><br /></td></tr>
-<tr class="separator:acccc9f78644f2fb1aec45bf4f9a8502f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eaf1ebdfe16c14c823cf3c935c75094"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a5eaf1ebdfe16c14c823cf3c935c75094">set_manually_inherited</a> (bool manually_inherited)</td></tr>
+<tr class="memdesc:a5eaf1ebdfe16c14c823cf3c935c75094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this region as manually inherited or not.  <a href="classlxgui_1_1gui_1_1region.html#a5eaf1ebdfe16c14c823cf3c935c75094">More...</a><br /></td></tr>
+<tr class="separator:a5eaf1ebdfe16c14c823cf3c935c75094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa437b84cc592e3093311d55de1f2ae69"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aa437b84cc592e3093311d55de1f2ae69">is_manually_inherited</a> () const</td></tr>
+<tr class="memdesc:aa437b84cc592e3093311d55de1f2ae69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is manually inherited.  <a href="classlxgui_1_1gui_1_1region.html#aa437b84cc592e3093311d55de1f2ae69">More...</a><br /></td></tr>
+<tr class="separator:aa437b84cc592e3093311d55de1f2ae69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="memItemLeft" align="right" valign="top">virtual utils::observer_ptr&lt; const <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html">frame_renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a12f016877aedbe9e89d8ca3a49a12fcc">get_effective_frame_renderer</a> () const</td></tr>
 <tr class="memdesc:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents.  <a href="classlxgui_1_1gui_1_1region.html#a12f016877aedbe9e89d8ca3a49a12fcc">More...</a><br /></td></tr>
 <tr class="separator:a12f016877aedbe9e89d8ca3a49a12fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -351,6 +355,8 @@ Static Public Attributes</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a01d99c6b3b3ec57ea5103bee98ff18e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a01d99c6b3b3ec57ea5103bee98ff18e6">parse_attributes_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node) override</td></tr>
 <tr class="separator:a01d99c6b3b3ec57ea5103bee98ff18e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee06a7d81bdbaace89c473c281ee8914"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#aee06a7d81bdbaace89c473c281ee8914">get_type_list_</a> () const override</td></tr>
+<tr class="separator:aee06a7d81bdbaace89c473c281ee8914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3acfd5b21f923c36ec68ee850c8686ce"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a3acfd5b21f923c36ec68ee850c8686ce">parse_size_node_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
 <tr class="separator:a3acfd5b21f923c36ec68ee850c8686ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae33ce6cb2c5fefa3586932f012a0fcf9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ae33ce6cb2c5fefa3586932f012a0fcf9">parse_anchor_node_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
@@ -365,10 +371,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:acb985f1935dfb72b3399e868158ed92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af971a9136ee08b9bc7b86ac1650de12b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af971a9136ee08b9bc7b86ac1650de12b">update_borders_</a> ()</td></tr>
 <tr class="separator:af971a9136ee08b9bc7b86ac1650de12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3e1d9dcb17d1085720cbb7944989e18"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af3e1d9dcb17d1085720cbb7944989e18">update_anchors_</a> ()</td></tr>
-<tr class="separator:af3e1d9dcb17d1085720cbb7944989e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4a9345359dd93d4a2553b8e5e9f2200"><td class="memItemLeft" align="right" valign="top">sol::state &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af4a9345359dd93d4a2553b8e5e9f2200">get_lua_</a> ()</td></tr>
-<tr class="separator:af4a9345359dd93d4a2553b8e5e9f2200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a710809a46f74cdd42a08077455753686"><td class="memItemLeft" align="right" valign="top">sol::state &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a710809a46f74cdd42a08077455753686">get_lua_</a> ()</td></tr>
+<tr class="separator:a710809a46f74cdd42a08077455753686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a557d15b34a559af9ee4cc1886390d788"><td class="memItemLeft" align="right" valign="top">const sol::state &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a557d15b34a559af9ee4cc1886390d788">get_lua_</a> () const</td></tr>
+<tr class="separator:a557d15b34a559af9ee4cc1886390d788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c4130ae28a2a222da8fb6a90601341b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1c4130ae28a2a222da8fb6a90601341b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a1c4130ae28a2a222da8fb6a90601341b">create_glue_</a> (T &amp;self)</td></tr>
 <tr class="separator:a1c4130ae28a2a222da8fb6a90601341b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -390,6 +396,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a25c2bdef4770fdb762e0ab8b657276af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up function to call in all derived class constructors.  <a href="classlxgui_1_1gui_1_1region.html#a25c2bdef4770fdb762e0ab8b657276af">More...</a><br /></td></tr>
 <tr class="separator:a25c2bdef4770fdb762e0ab8b657276af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a978932495f6d7dd26d82491202db10fc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a978932495f6d7dd26d82491202db10fc"><td class="memTemplItemLeft" align="right" valign="top">static const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a978932495f6d7dd26d82491202db10fc">get_type_list_impl_</a> ()</td></tr>
+<tr class="separator:a978932495f6d7dd26d82491202db10fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:aeb965bc7547bc56b569ff1e8b8376e0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#aeb965bc7547bc56b569ff1e8b8376e0b">layer_</a> = <a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768ea431a210e866f6a0b95ea506860e8e5cd">layer::artwork</a></td></tr>
@@ -402,30 +414,22 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a99ad7415c499009a60c7cee141acfb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7410e61a903e3621083a5b9cbcfa0f1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ad7410e61a903e3621083a5b9cbcfa0f1">raw_name_</a></td></tr>
 <tr class="separator:ad7410e61a903e3621083a5b9cbcfa0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a572d2650a55a02a32152e9bb5d880642"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a572d2650a55a02a32152e9bb5d880642">lua_name_</a></td></tr>
-<tr class="separator:a572d2650a55a02a32152e9bb5d880642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8820c41bc62e41995b51a96cff8cc824"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a8820c41bc62e41995b51a96cff8cc824">id_</a> = std::numeric_limits&lt;std::size_t&gt;::max()</td></tr>
-<tr class="separator:a8820c41bc62e41995b51a96cff8cc824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cd30e88dc5c02a364ffb761bfb59e08"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a4cd30e88dc5c02a364ffb761bfb59e08">parent_</a> = nullptr</td></tr>
 <tr class="separator:a4cd30e88dc5c02a364ffb761bfb59e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ffc92765f9bfce99b5ff5de037d380a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a0ffc92765f9bfce99b5ff5de037d380a">is_special_</a> = false</td></tr>
-<tr class="separator:a0ffc92765f9bfce99b5ff5de037d380a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6f54870f222ecfe628a3d97c9cd391"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#add6f54870f222ecfe628a3d97c9cd391">is_manually_inherited_</a> = false</td></tr>
+<tr class="separator:add6f54870f222ecfe628a3d97c9cd391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef274df92384174dbed2912663d35e88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#aef274df92384174dbed2912663d35e88">is_virtual_</a> = false</td></tr>
 <tr class="separator:aef274df92384174dbed2912663d35e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a931efa38f18453044267fa1f11e31a8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a931efa38f18453044267fa1f11e31a8b">is_loaded_</a> = false</td></tr>
 <tr class="separator:a931efa38f18453044267fa1f11e31a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98de528fe9d53bd3de0e595a6e6853e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a98de528fe9d53bd3de0e595a6e6853e0">is_ready_</a> = true</td></tr>
 <tr class="separator:a98de528fe9d53bd3de0e595a6e6853e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14ed05c8de631c4c9669bc09c3ecd47b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a14ed05c8de631c4c9669bc09c3ecd47b">type_</a></td></tr>
-<tr class="separator:a14ed05c8de631c4c9669bc09c3ecd47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cd6bf5d11f50456a65e5f322c66041f"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::optional&lt; <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &gt;, 9 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a9cd6bf5d11f50456a65e5f322c66041f">anchor_list_</a></td></tr>
 <tr class="separator:a9cd6bf5d11f50456a65e5f322c66041f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fa72a00d7a38af4aaf4e65765d212d5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a9fa72a00d7a38af4aaf4e65765d212d5">previous_anchor_parent_list_</a></td></tr>
-<tr class="separator:a9fa72a00d7a38af4aaf4e65765d212d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a659a5148b3601a8328ec7f0f35d7ba25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1bounds2.html">bounds2</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a659a5148b3601a8328ec7f0f35d7ba25">defined_border_list_</a></td></tr>
-<tr class="separator:a659a5148b3601a8328ec7f0f35d7ba25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f746fe65f1127b064bbdab2de91cc74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a8f746fe65f1127b064bbdab2de91cc74">border_list_</a></td></tr>
-<tr class="separator:a8f746fe65f1127b064bbdab2de91cc74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac62675671e330a8327b995422f5f4dbb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1bounds2.html">bounds2</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ac62675671e330a8327b995422f5f4dbb">defined_borders_</a></td></tr>
+<tr class="separator:ac62675671e330a8327b995422f5f4dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a290da2442768a77ce150c2dcbeeebe25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a290da2442768a77ce150c2dcbeeebe25">borders_</a></td></tr>
+<tr class="separator:a290da2442768a77ce150c2dcbeeebe25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ee90a77fb14565917de6bd45dc2f7f1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a3ee90a77fb14565917de6bd45dc2f7f1">alpha_</a> = 1.0f</td></tr>
 <tr class="separator:a3ee90a77fb14565917de6bd45dc2f7f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a857ba4bc8ebf98057acb10b823b39a64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a857ba4bc8ebf98057acb10b823b39a64">is_shown_</a> = true</td></tr>
@@ -436,8 +440,6 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a9a4ea8f2f8f24213b51a53e0d411580d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f0fc6af8d2cc01497114cb47295d48"><td class="memItemLeft" align="right" valign="top">std::vector&lt; utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#af4f0fc6af8d2cc01497114cb47295d48">anchored_object_list_</a></td></tr>
 <tr class="separator:af4f0fc6af8d2cc01497114cb47295d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65fe354eea8c24882ef1433809e19f7b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, sol::object &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a65fe354eea8c24882ef1433809e19f7b">lua_members_</a></td></tr>
-<tr class="separator:a65fe354eea8c24882ef1433809e19f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A <a class="el" href="classlxgui_1_1gui_1_1region.html#ac3347217382e259c4eff5ffebde95979" title="Contructor.">region</a> that can be rendered in a layer. </p>
@@ -445,7 +447,24 @@ Protected Attributes</h2></td></tr>
 <p>Layered regions cannot themselves react to events; this must be taken care of by the parent frame. </p>
 
 <p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a2ee655ba7aabf802bf31942aca4e1801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee655ba7aabf802bf31942aca4e1801">&#9670;&nbsp;</a></span>base</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a2ee655ba7aabf802bf31942aca4e1801">lxgui::gui::layered_region::base</a> =  <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5fb06814150ee10de95cfbbf31def928"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fb06814150ee10de95cfbbf31def928">&#9670;&nbsp;</a></span>layered_region()</h2>
 
@@ -526,12 +545,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Anchored objects get their borders automatically updated whenever this object's borders are updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00520">520</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00557">557</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a71b82aee7769f830c4bff7dfdc5c8681"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71b82aee7769f830c4bff7dfdc5c8681">&#9670;&nbsp;</a></span>clear_all_points()</h2>
+<a id="ab65c14bf37b5ac6f4882613f01705248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab65c14bf37b5ac6f4882613f01705248">&#9670;&nbsp;</a></span>clear_all_anchors()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +559,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::region::clear_all_points </td>
+          <td class="memname">void lxgui::gui::region::clear_all_anchors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -556,7 +575,7 @@ Protected Attributes</h2></td></tr>
 <p>Removes all anchors. </p>
 <dl class="section note"><dt>Note</dt><dd>This region and its children won't be visible until you define at least one anchor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00374">374</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00361">361</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +613,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a35e42c98ce07565d4c86672204588ffa">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#aad7a21ecbf543bd99aa249f076ad5d4e">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a996ed1ac99c2b0c306fc40556cbb7619">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#ae8762c5ee32174547780d77c94385037">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a87b273b77e09c35936dfbbf6d2091f10">lxgui::gui::scroll_frame</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#a71ff79bdf3a19986bed52b2071b247c2">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a47256f733317974a0f92aef4a122616a">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#a199bcae344b5b3342b76c7d7640ff400">lxgui::gui::texture</a>, <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#ae896c30cb45a62d576ec619cc48adeb0">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#aa8758c16f1b15623d2182f6cbfcf4282">lxgui::gui::check_button</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00131">131</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00128">128</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -661,7 +680,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Useful to detect circular references. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00462">462</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00499">499</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -691,7 +710,7 @@ template&lt;typename T &gt; </div>
 <p>Forcefully removes this region from the GUI. </p>
 <dl class="section warning"><dt>Warning</dt><dd>After calling this function, any pointer to the object is invalidated! Only call this function if you need the object to be destroyed early, before its parent (if any) would itself be destroyed. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00342">342</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00329">329</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -722,7 +741,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This frame's addon </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns "nullptr" if the frame has been created by Lua code and wasn't assigned a parent. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00831">831</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00839">839</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -752,7 +771,74 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's alpha (opacity). </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's alpha (opacity). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00167">167</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00157">157</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a09a47fd47e748941b079d25d25b38a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09a47fd47e748941b079d25d25b38a01">&#9670;&nbsp;</a></span>get_anchor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp; lxgui::gui::region::get_anchor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns one of this region's anchor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>The anchor point </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the anchor, nullptr if none </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00535">535</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="af8c9de138c69b6e882f7cd48186ca872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8c9de138c69b6e882f7cd48186ca872">&#9670;&nbsp;</a></span>get_anchor_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::region::get_anchor_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of defined anchors. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of defined anchors </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00515">515</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -782,7 +868,37 @@ template&lt;typename T &gt; </div>
 <p>Returns the list of all objects that are anchored to this one. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of all objects that are anchored to this one </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00780">780</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00786">786</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="adbaea0d8270da3ac023b6f3a20c9ce54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbaea0d8270da3ac023b6f3a20c9ce54">&#9670;&nbsp;</a></span>get_anchors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::array&lt; std::optional&lt; <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &gt;, 9 &gt; &amp; lxgui::gui::region::get_anchors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns all of this region's anchors. </p>
+<dl class="section return"><dt>Returns</dt><dd>All of this region's anchors </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00545">545</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -813,7 +929,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This region's apparent width and height (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the actual size of a region on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1region.html#a6aee0332c7592bca6b5f69b7f041c80c" title="Returns this region&#39;s explicitly-defined width and height (in pixels).">get_dimensions()</a>, as some regions may not have their dimensions explicitly defined, and instead get their extents from anchors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00282">282</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00272">272</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -843,7 +959,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's borders. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's borders </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00370">370</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00357">357</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -873,7 +989,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this region's bottom border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this region's bottom border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00366">366</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00353">353</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -903,7 +1019,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the position of this region's center. </p>
 <dl class="section return"><dt>Returns</dt><dd>The position of this region's center </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00350">350</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00337">337</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -934,7 +1050,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This region's explicitly-defined width and height (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the actual size of a region on the screen, use <a class="el" href="classlxgui_1_1gui_1_1region.html#a594900425f84c5fe801fa2c4d9decf27" title="Returns this region&#39;s apparent width and height (in pixels).">get_apparent_dimensions()</a>, as some regions may not have their dimensions explicitly defined, and instead get their extents from anchors. If a dimension is not explicitly defined, it will be returned as zero. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00278">278</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00268">268</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -956,7 +1072,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A region that can be rendered in a layer.">layered_region</a>'s draw layer. </p>
 <dl class="section return"><dt>Returns</dt><dd>this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A region that can be rendered in a layer.">layered_region</a>'s draw layer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00053">53</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00035">35</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -987,7 +1103,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This region's effective alpha (opacity). </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This includes the region's parent alpha. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00171">171</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00161">161</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1018,7 +1134,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00603">603</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00597">597</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1167,7 @@ template&lt;typename T &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ad6dfd9f7cac8c9b8e13f518d5f9a3511">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1081,12 +1197,12 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this region's left border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this region's left border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00354">354</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00341">341</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="af4a9345359dd93d4a2553b8e5e9f2200"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4a9345359dd93d4a2553b8e5e9f2200">&#9670;&nbsp;</a></span>get_lua_()</h2>
+<a id="a710809a46f74cdd42a08077455753686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a710809a46f74cdd42a08077455753686">&#9670;&nbsp;</a></span>get_lua_() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1095,7 +1211,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">sol::state &amp; lxgui::gui::region::get_lua_ </td>
+          <td class="memname">const sol::state &amp; lxgui::gui::region::get_lua_ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1108,7 +1224,32 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00762">762</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00763">763</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a557d15b34a559af9ee4cc1886390d788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a557d15b34a559af9ee4cc1886390d788">&#9670;&nbsp;</a></span>get_lua_() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const sol::state&amp; lxgui::gui::region::get_lua_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1138,36 +1279,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="afe13557d63b6355a4fcd98ece14acc42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe13557d63b6355a4fcd98ece14acc42">&#9670;&nbsp;</a></span>get_lua_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string &amp; lxgui::gui::region::get_lua_name </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns this region's Lua name. </p>
-<dl class="section return"><dt>Returns</dt><dd>This region's Lua name </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00147">147</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
 <a id="a520aafafcf4cff32c1feb7a1599eae77"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a520aafafcf4cff32c1feb7a1599eae77">&#9670;&nbsp;</a></span>get_manager() <span class="overload">[1/2]</span></h2>
 
@@ -1194,7 +1305,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00681">681</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00675">675</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1335,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00689">689</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00683">683</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1254,97 +1365,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's name. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a055b3ad0a22b25a7d75adb53a22adaf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a055b3ad0a22b25a7d75adb53a22adaf7">&#9670;&nbsp;</a></span>get_num_point()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t lxgui::gui::region::get_num_point </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the number of defined anchors. </p>
-<dl class="section return"><dt>Returns</dt><dd>The number of defined anchors </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00478">478</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a198cf89387e9d792447bfa0ba5776d88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a198cf89387e9d792447bfa0ba5776d88">&#9670;&nbsp;</a></span>get_object_type()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string &amp; lxgui::gui::region::get_object_type </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the type of this region. </p>
-<dl class="section return"><dt>Returns</dt><dd>The type of this region </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00155">155</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a7915232f4d9757ddc80fc4b3a608007e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7915232f4d9757ddc80fc4b3a608007e">&#9670;&nbsp;</a></span>get_object_type_list()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt; std::string &gt; &amp; lxgui::gui::region::get_object_type_list </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns an array containing all the types of this region. </p>
-<dl class="section return"><dt>Returns</dt><dd>An array containing all the types of this region </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00159">159</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00140">140</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1374,7 +1395,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00237">237</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00230">230</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1404,74 +1425,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00229">229</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a3957e333467afa254566a609b19d2dae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3957e333467afa254566a609b19d2dae">&#9670;&nbsp;</a></span>get_point()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp; lxgui::gui::region::get_point </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a>&#160;</td>
-          <td class="paramname"><em>p</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns one of this region's anchor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">p</td><td>The anchor point </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the anchor, nullptr if none </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00498">498</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a01792e3e77e9f61b314161cc39509a27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01792e3e77e9f61b314161cc39509a27">&#9670;&nbsp;</a></span>get_point_list()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::array&lt; std::optional&lt; <a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &gt;, 9 &gt; &amp; lxgui::gui::region::get_point_list </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns all of this region's anchors. </p>
-<dl class="section return"><dt>Returns</dt><dd>All of this region's anchors </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00508">508</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00222">222</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1502,7 +1456,37 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This region's raw name </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is the name of the region before "$parent" has been replaced by its parent's name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00151">151</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0a6d861f2d064f7b0468290f7379d07c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a6d861f2d064f7b0468290f7379d07c">&#9670;&nbsp;</a></span>get_region_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; lxgui::gui::region::get_region_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the type of this region. </p>
+<dl class="section return"><dt>Returns</dt><dd>The type of this region </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00148">148</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1532,7 +1516,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the UI object registry, which keeps track of all objects in the UI. </p>
 <dl class="section return"><dt>Returns</dt><dd>The registry object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00838">838</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00846">846</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1590,7 +1574,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this region's right border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this region's right border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00358">358</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00345">345</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1620,12 +1604,12 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this region's top border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this region's top border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00362">362</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00349">349</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ae239f110c864bab9470644d9670c4224"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae239f110c864bab9470644d9670c4224">&#9670;&nbsp;</a></span>hide()</h2>
+<a id="aee06a7d81bdbaace89c473c281ee8914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee06a7d81bdbaace89c473c281ee8914">&#9670;&nbsp;</a></span>get_type_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1634,7 +1618,62 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::layered_region::hide </td>
+          <td class="memname">const std::vector&lt; std::string &gt; &amp; lxgui::gui::layered_region::get_type_list_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#ab7fa30fcf46fce903663aee9435f4585">lxgui::gui::region</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00055">55</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a978932495f6d7dd26d82491202db10fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a978932495f6d7dd26d82491202db10fc">&#9670;&nbsp;</a></span>get_type_list_impl_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::string &gt; &amp; lxgui::gui::region::get_type_list_impl_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__region__tpl_8hpp_source.html#l00147">147</a> of file <a class="el" href="gui__region__tpl_8hpp_source.html">gui_region_tpl.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a536dee29afb529caacf8007b50cd28fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a536dee29afb529caacf8007b50cd28fc">&#9670;&nbsp;</a></span>hide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::region::hide </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1642,7 +1681,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1650,9 +1689,7 @@ template&lt;typename T &gt; </div>
 <p>hides this region. </p>
 <dl class="section note"><dt>Note</dt><dd>All its children won't be visible on the screen anymore, even if they are still marked as shown. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a536dee29afb529caacf8007b50cd28fc">lxgui::gui::region</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00042">42</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00186">186</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1732,7 +1769,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if defined, 'false' otherwise </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The apparent height is defined if either the region's absolute or relative height is explicitly specified (from <a class="el" href="classlxgui_1_1gui_1_1region.html#a64bd82e5a15b865ac725c7484dc70f32" title="Changes this region&#39;s absolute height (in pixels).">set_height()</a>, <a class="el" href="classlxgui_1_1gui_1_1region.html#a67cdec55404a9c068ecb814522b5cb48" title="Changes this region&#39;s height (relative to its parent).">set_relative_height()</a>, <a class="el" href="classlxgui_1_1gui_1_1region.html#aa9f0ba4d73616dd272d56064a45c6ff5" title="Changes this region&#39;s absolute dimensions (in pixels).">set_dimensions()</a>, or <a class="el" href="classlxgui_1_1gui_1_1region.html#acbe335aed8ccd88aa8456cdbee1b8f85" title="Changes this region&#39;s dimensions (relative to its parent).">set_relative_dimensions()</a>), or if its left and right borders are anchored. A region with an undefined apparent height will not be rendered on the screen until its height is defined. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00290">290</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00280">280</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1763,7 +1800,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if defined, 'false' otherwise </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The apparent width is defined if either the region's absolute or relative width is explicitly specified (from <a class="el" href="classlxgui_1_1gui_1_1region.html#a0209805d0f6e3a6c4445ed90104756d5" title="Changes this region&#39;s absolute width (in pixels).">set_width()</a>, <a class="el" href="classlxgui_1_1gui_1_1region.html#ab2d239310dd67b5d1ce3072371e4ea5d" title="Changes this region&#39;s width (relative to its parent).">set_relative_width()</a>, <a class="el" href="classlxgui_1_1gui_1_1region.html#aa9f0ba4d73616dd272d56064a45c6ff5" title="Changes this region&#39;s absolute dimensions (in pixels).">set_dimensions()</a>, or <a class="el" href="classlxgui_1_1gui_1_1region.html#acbe335aed8ccd88aa8456cdbee1b8f85" title="Changes this region&#39;s dimensions (relative to its parent).">set_relative_dimensions()</a>), or if its left and right borders are anchored. A region with an undefined apparent width will not be rendered on the screen until its width is defined. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00286">286</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00276">276</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1802,7 +1839,7 @@ template&lt;typename T &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a353160478d17c0b1026ee9f19a6e750e">lxgui::gui::frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1slider.html#a41da3e8c5b97d87a19f72c5881c5f10a">lxgui::gui::slider</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00294">294</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00284">284</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1832,12 +1869,43 @@ template&lt;typename T &gt; </div>
 <p>Checks if this region has been fully loaded. </p>
 <dl class="section note"><dt>Note</dt><dd>A region that is not fully loaded still has all its core attributes set, hence can be considered as "fully constructed" from a C++ point of view. However, semantically, the object may need further steps to be complete, as designed by the UI designer. Therefore, form the UI's point of view, a region is considered "complete" only if <a class="el" href="classlxgui_1_1gui_1_1region.html#ac0f02311f39f8f4940c70a43457c063b" title="Checks if this region has been fully loaded.">is_loaded()</a> returns 'true' (see notifu_loaded()). Only then can the region, e.g., react to or generate events. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00788">788</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00794">794</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a1e4e871fbbf7c477d374fa92a04424c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e4e871fbbf7c477d374fa92a04424c5">&#9670;&nbsp;</a></span>is_object_type() <span class="overload">[1/2]</span></h2>
+<a id="aa437b84cc592e3093311d55de1f2ae69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa437b84cc592e3093311d55de1f2ae69">&#9670;&nbsp;</a></span>is_manually_inherited()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::region::is_manually_inherited </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if this object is manually inherited. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if this object is manually inherited </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1region.html#a5eaf1ebdfe16c14c823cf3c935c75094" title="Flags this region as manually inherited or not.">set_manually_inherited()</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00780">780</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a06276b01f627ba00557bbf71e504db4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06276b01f627ba00557bbf71e504db4c">&#9670;&nbsp;</a></span>is_region_type() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1848,7 +1916,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::region::is_object_type </td>
+          <td class="memname">bool lxgui::gui::region::is_region_type </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1864,12 +1932,12 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region is of the provided type. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is of the provided type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00412">412</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00405">405</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a880fb681dcbff51ea62cf9e2264937f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a880fb681dcbff51ea62cf9e2264937f5">&#9670;&nbsp;</a></span>is_object_type() <span class="overload">[2/2]</span></h2>
+<a id="ac6fbc419f09d678879164884267ebf19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6fbc419f09d678879164884267ebf19">&#9670;&nbsp;</a></span>is_region_type() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1878,7 +1946,38 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::region::is_object_type </td>
+          <td class="memname">bool lxgui::gui::region::is_region_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &amp;&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if this region is of a type equal or derived from the supplied region. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if this region is of a type equal or derived from the supplied region </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00413">413</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a704c45ef4f16d1e61cd5579e9cbbee96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a704c45ef4f16d1e61cd5579e9cbbee96">&#9670;&nbsp;</a></span>is_region_type() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::region::is_region_type </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>type_name</em></td><td>)</td>
@@ -1901,7 +2000,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is of the provided type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00163">163</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00152">152</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1931,38 +2030,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region is shown. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is shown </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00213">213</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="acccc9f78644f2fb1aec45bf4f9a8502f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acccc9f78644f2fb1aec45bf4f9a8502f">&#9670;&nbsp;</a></span>is_special()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool lxgui::gui::region::is_special </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if this object is special. </p>
-<dl class="section return"><dt>Returns</dt><dd>'true' if this object is special </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1region.html#ae913615c67021b1ec74d1bc92c5d8fa5" title="Flags this object as &quot;special&quot;.">set_special()</a>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00774">774</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00203">203</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -1993,12 +2061,12 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is virtual </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>A virtual region will not be displayed on the screen, but can serve as a template to create new GUI elements (it is then "inherited", although note that this has no connection to C++ inheritance). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00512">512</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00549">549</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a329dfdc8189d8712db6abf9c35436356"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a329dfdc8189d8712db6abf9c35436356">&#9670;&nbsp;</a></span>is_visible()</h2>
+<a id="a481a263dd2171bdac6cc53943bf65864"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a481a263dd2171bdac6cc53943bf65864">&#9670;&nbsp;</a></span>is_visible()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2007,7 +2075,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::layered_region::is_visible </td>
+          <td class="memname">bool lxgui::gui::region::is_visible </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -2015,7 +2083,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2023,9 +2091,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region can be seen on the screen. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region can be seen on the screen </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a481a263dd2171bdac6cc53943bf65864">lxgui::gui::region</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00049">49</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00207">207</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2075,12 +2141,12 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00544">544</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00581">581</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a836873ebfb396808b9679310650167dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a836873ebfb396808b9679310650167dd">&#9670;&nbsp;</a></span>modify_point()</h2>
+<a id="a9f25e82e838059df6eb5ea810292f53d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f25e82e838059df6eb5ea810292f53d">&#9670;&nbsp;</a></span>modify_anchor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2089,7 +2155,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp; lxgui::gui::region::modify_point </td>
+          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a> &amp; lxgui::gui::region::modify_anchor </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#aef94717d3dd9acdb534568e4801add9d">point</a>&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
@@ -2113,7 +2179,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the anchor, will throw if this point has no anchor. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>After you have modified the anchor, you must call <a class="el" href="classlxgui_1_1gui_1_1region.html#ac51cd3dbce43ef7984ebf48740dc9f90" title="Tells this region that its borders need updating.">notify_borders_need_update()</a> to ensure that the object's borders are properly updated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00488">488</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00525">525</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2144,7 +2210,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a10b8051cabf41924b470aa7ae4c4fd13">lxgui::gui::slider</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00739">739</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00740">740</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2172,11 +2238,11 @@ template&lt;typename ObjectType &gt; </div>
 </div><div class="memdoc">
 
 <p>Notifies this region that it is no longer visible on screen. </p>
-<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3" title="shows this region.">show()</a>/hide(). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f" title="shows this region.">show()</a>/hide(). </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a161fd7168a710ecd30728a0349e139ed">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00809">809</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2208,7 +2274,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00784">784</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2240,7 +2306,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a5869f893e9f4f30018c1f7be5c59acd6">lxgui::gui::region</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00065">65</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00047">47</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2271,7 +2337,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#afa3e9e8b46f22972d2cd7e576e39fbbc">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00754">754</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00755">755</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2299,11 +2365,11 @@ template&lt;typename ObjectType &gt; </div>
 </div><div class="memdoc">
 
 <p>Notifies this region that it is now visible on screen. </p>
-<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3" title="shows this region.">show()</a>/hide(). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f" title="shows this region.">show()</a>/hide(). </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a675523de3fd90beebc7fe87853c1b879">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00804">804</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2455,7 +2521,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The modified file name </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>All file names must be relative to the current working directory (typically, the application's executable path), but sometimes it is more convenient and maintainable to specify a path that is relative to the addon directory. This can be achieved by simply putting "|" in front of a file name, which will then be interpreted as relative to the addon directory. This function takes care of this transformation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00806">806</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00814">814</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2585,7 +2651,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00573">573</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00610">610</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2682,7 +2748,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1region.html#a956d919c0a6b97732520f341081b1757" title="Notifies this region that another one is anchored to it.">add_anchored_object()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00524">524</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00561">561</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2711,7 +2777,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Removes the Lua glue. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00766">766</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00771">771</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2742,7 +2808,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a1e6ec37d6da22a7b4b6655d1219066ce">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a83bca4c9f39df5605d99a3745231fdde">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#af1899600b0525f2f0271608e24d4ae8b">lxgui::gui::texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#affd2ec6300a8efb8d28760298e5af0b2">lxgui::gui::animated_texture</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00760">760</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00761">761</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2790,7 +2856,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the nearest physical pixel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00537">537</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00574">574</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2838,7 +2904,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the nearest physical pixel </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00532">532</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00569">569</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -2915,12 +2981,12 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00821">821</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00829">829</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a302427c2cdf173456400b7ee26e84d32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a302427c2cdf173456400b7ee26e84d32">&#9670;&nbsp;</a></span>set_all_points() <span class="overload">[1/2]</span></h2>
+<a id="af1b45cda12358b0a9628b697b7e8199a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b45cda12358b0a9628b697b7e8199a">&#9670;&nbsp;</a></span>set_all_anchors() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2929,7 +2995,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::region::set_all_points </td>
+          <td class="memname">void lxgui::gui::region::set_all_anchors </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>obj_name</em></td><td>)</td>
@@ -2952,12 +3018,12 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00394">394</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00400">400</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a3627ccc42043cf35f663519a84f663b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3627ccc42043cf35f663519a84f663b8">&#9670;&nbsp;</a></span>set_all_points() <span class="overload">[2/2]</span></h2>
+<a id="a02f17b659c7e3b3d5753af5e119b1aef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02f17b659c7e3b3d5753af5e119b1aef">&#9670;&nbsp;</a></span>set_all_anchors() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2966,7 +3032,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::region::set_all_points </td>
+          <td class="memname">void lxgui::gui::region::set_all_anchors </td>
           <td>(</td>
           <td class="paramtype">const utils::observer_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>obj</em></td><td>)</td>
@@ -2989,7 +3055,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00418">418</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00433">433</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3026,7 +3092,81 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Default is 1.0f. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00179">179</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00169">169</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aca037825d36e5fed682b71f0fa1b2891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca037825d36e5fed682b71f0fa1b2891">&#9670;&nbsp;</a></span>set_anchor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::region::set_anchor </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds/replaces an anchor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>Argument to construct a new <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html" title="Raw data of an anchor (value type)">anchor_data</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00485">485</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a12d048050a6ebd0113a6c8dda99bc486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12d048050a6ebd0113a6c8dda99bc486">&#9670;&nbsp;</a></span>set_anchor() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::region::set_anchor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a> &amp;&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds/replaces an anchor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>The anchor to add </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00469">469</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3064,7 +3204,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7c4e02861fede367b8d72fec25bc71e8">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00221">221</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00211">211</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3100,7 +3240,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00057">57</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00039">39</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3138,7 +3278,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a10992618e1519952308e9f135779fb37">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00235">235</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3178,6 +3318,37 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
+<a id="a5eaf1ebdfe16c14c823cf3c935c75094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eaf1ebdfe16c14c823cf3c935c75094">&#9670;&nbsp;</a></span>set_manually_inherited()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::region::set_manually_inherited </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>manually_inherited</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flags this region as manually inherited or not. </p>
+<dl class="section note"><dt>Note</dt><dd>By default, all regions are automatically inherited. This is generally the desired behavior for regions defined by the user, but it is less desirable for "special" or "internal" regions necessary for the proper operation of some region types (e.g., the texture used by a button), which need special treatment or registration. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00776">776</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+
+</div>
+</div>
 <a id="af9c3e592b47752a45b6311250e86ad5e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9c3e592b47752a45b6311250e86ad5e">&#9670;&nbsp;</a></span>set_name_()</h2>
 
@@ -3211,7 +3382,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Can only be called once. If you need to set both the name and the parent at the same time (typically, at creation), use set_name_and_parent_(). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00300">300</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00290">290</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3250,81 +3421,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ab7d771971b72294a3033b8373ba4cdd4">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00321">321</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a2a49ff4441bdb38256da5fcf66465eef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a49ff4441bdb38256da5fcf66465eef">&#9670;&nbsp;</a></span>set_point() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::region::set_point </td>
-          <td>(</td>
-          <td class="paramtype">Args &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>args</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds/replaces an anchor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">args</td><td>Argument to construct a new <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html" title="Raw data of an anchor (value type)">anchor_data</a> </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00490">490</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ae47b51c6dd9bde9c525730c449a8ac56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae47b51c6dd9bde9c525730c449a8ac56">&#9670;&nbsp;</a></span>set_point() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::region::set_point </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a> &amp;&#160;</td>
-          <td class="paramname"><em>a</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds/replaces an anchor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a</td><td>The anchor to add </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00428">428</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00308">308</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3360,7 +3457,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00257">257</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00247">247</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3396,7 +3493,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00271">271</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00261">261</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3432,7 +3529,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00264">264</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00254">254</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3467,39 +3564,9 @@ template&lt;typename... Args&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3" title="shows this region.">show()</a> and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ae239f110c864bab9470644d9670c4224" title="hides this region.">hide()</a> for more information. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f" title="shows this region.">show()</a> and <a class="el" href="classlxgui_1_1gui_1_1region.html#a536dee29afb529caacf8007b50cd28fc" title="hides this region.">hide()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00206">206</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ae913615c67021b1ec74d1bc92c5d8fa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae913615c67021b1ec74d1bc92c5d8fa5">&#9670;&nbsp;</a></span>set_special()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::region::set_special </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Flags this object as "special". </p>
-<dl class="section note"><dt>Note</dt><dd>Special objects are not automatically copied in the frame inheritance process. They must be explicitly copied by the derived class (example: Button will have to copy its button textures itself). </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00770">770</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00196">196</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3529,7 +3596,7 @@ template&lt;typename... Args&gt; </div>
 <p>Makes this region virtual. </p>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1region.html#a2dd964ca00fbbc11c66a7a4bca2e403f" title="Checks if this region is virtual.">is_virtual()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00516">516</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00553">553</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3567,12 +3634,12 @@ template&lt;typename... Args&gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a92438882b4ecc653c319eb39fa817553">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00233">233</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00223">223</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ad0aa1eea006ce0c1649790e603e49ae3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0aa1eea006ce0c1649790e603e49ae3">&#9670;&nbsp;</a></span>show()</h2>
+<a id="a64cb80aa3c7770da0568bc861e50204f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64cb80aa3c7770da0568bc861e50204f">&#9670;&nbsp;</a></span>show()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3581,7 +3648,7 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::layered_region::show </td>
+          <td class="memname">void lxgui::gui::region::show </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -3589,7 +3656,7 @@ template&lt;typename... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3597,9 +3664,7 @@ template&lt;typename... Args&gt; </div>
 <p>shows this region. </p>
 <dl class="section note"><dt>Note</dt><dd>Its parent must be shown for it to appear on the screen. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f">lxgui::gui::region</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8cpp_source.html#l00035">35</a> of file <a class="el" href="gui__layered__region_8cpp_source.html">gui_layered_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00176">176</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3637,34 +3702,7 @@ template&lt;typename... Args&gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#af009d04eb75bedec66afa63355c0106c">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a90522a88d49826c0945584f4feb9bb44">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a334a1885fd6f92dd30d85372f3c950df">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#a86352b2b9b1a43f4538384cd2b284af4">lxgui::gui::animated_texture</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00758">758</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
-
-</div>
-</div>
-<a id="af3e1d9dcb17d1085720cbb7944989e18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3e1d9dcb17d1085720cbb7944989e18">&#9670;&nbsp;</a></span>update_anchors_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::region::update_anchors_ </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00703">703</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00759">759</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3693,7 +3731,7 @@ template&lt;typename... Args&gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#acde18b9bf8675e4256590a412f0da2d4">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00628">628</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00665">665</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
 </div>
 </div>
@@ -3718,7 +3756,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00781">781</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00780">780</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3742,7 +3780,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00796">796</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3766,7 +3804,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3790,12 +3828,12 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00808">808</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a8f746fe65f1127b064bbdab2de91cc74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f746fe65f1127b064bbdab2de91cc74">&#9670;&nbsp;</a></span>border_list_</h2>
+<a id="a290da2442768a77ce150c2dcbeeebe25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a290da2442768a77ce150c2dcbeeebe25">&#9670;&nbsp;</a></span>borders_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3804,7 +3842,7 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> lxgui::gui::region::border_list_</td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> lxgui::gui::region::borders_</td>
         </tr>
       </table>
   </td>
@@ -3814,7 +3852,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00794">794</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3838,12 +3876,12 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00091">91</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00071">71</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a659a5148b3601a8328ec7f0f35d7ba25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a659a5148b3601a8328ec7f0f35d7ba25">&#9670;&nbsp;</a></span>defined_border_list_</h2>
+<a id="ac62675671e330a8327b995422f5f4dbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac62675671e330a8327b995422f5f4dbb">&#9670;&nbsp;</a></span>defined_borders_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3852,7 +3890,7 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1bounds2.html">bounds2</a>&lt;bool&gt; lxgui::gui::region::defined_border_list_</td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1bounds2.html">bounds2</a>&lt;bool&gt; lxgui::gui::region::defined_borders_</td>
         </tr>
       </table>
   </td>
@@ -3862,7 +3900,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00799">799</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3886,31 +3924,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00806">806</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a8820c41bc62e41995b51a96cff8cc824"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8820c41bc62e41995b51a96cff8cc824">&#9670;&nbsp;</a></span>id_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t lxgui::gui::region::id_ = std::numeric_limits&lt;std::size_t&gt;::max()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00786">786</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3934,7 +3948,31 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+
+</div>
+</div>
+<a id="add6f54870f222ecfe628a3d97c9cd391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add6f54870f222ecfe628a3d97c9cd391">&#9670;&nbsp;</a></span>is_manually_inherited_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::region::is_manually_inherited_ = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00787">787</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3958,7 +3996,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3982,31 +4020,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a0ffc92765f9bfce99b5ff5de037d380a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ffc92765f9bfce99b5ff5de037d380a">&#9670;&nbsp;</a></span>is_special_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool lxgui::gui::region::is_special_ = false</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4030,7 +4044,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00791">791</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4054,7 +4068,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00804">804</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4078,55 +4092,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00096">96</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a65fe354eea8c24882ef1433809e19f7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65fe354eea8c24882ef1433809e19f7b">&#9670;&nbsp;</a></span>lua_members_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;std::string, sol::object&gt; lxgui::gui::region::lua_members_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a572d2650a55a02a32152e9bb5d880642"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a572d2650a55a02a32152e9bb5d880642">&#9670;&nbsp;</a></span>lua_name_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string lxgui::gui::region::lua_name_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layered__region_8hpp_source.html#l00078">78</a> of file <a class="el" href="gui__layered__region_8hpp_source.html">gui_layered_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4150,7 +4116,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00779">779</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00778">778</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4174,7 +4140,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00783">783</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00782">782</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4198,31 +4164,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a9fa72a00d7a38af4aaf4e65765d212d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fa72a00d7a38af4aaf4e65765d212d5">&#9670;&nbsp;</a></span>previous_anchor_parent_list_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;utils::observer_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1region.html">region</a>&gt; &gt; lxgui::gui::region::previous_anchor_parent_list_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4246,31 +4188,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00784">784</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a14ed05c8de631c4c9669bc09c3ecd47b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14ed05c8de631c4c9669bc09c3ecd47b">&#9670;&nbsp;</a></span>type_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; lxgui::gui::region::type_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00795">795</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00783">783</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -4282,7 +4200,7 @@ template&lt;typename... Args&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

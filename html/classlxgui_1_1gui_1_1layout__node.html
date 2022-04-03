@@ -120,9 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ace0fbfcca45ab61061700bf55733ed4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a675a2989a5ba08a6c53f67f45d42fde3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a675a2989a5ba08a6c53f67f45d42fde3">operator=</a> (<a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&amp;)=default</td></tr>
 <tr class="separator:a675a2989a5ba08a6c53f67f45d42fde3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f8d64f2974a941aaa2da7f9f16c2295"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a9f8d64f2974a941aaa2da7f9f16c2295">get_children_count</a> () const noexcept</td></tr>
-<tr class="memdesc:a9f8d64f2974a941aaa2da7f9f16c2295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of children of this node.  <a href="classlxgui_1_1gui_1_1layout__node.html#a9f8d64f2974a941aaa2da7f9f16c2295">More...</a><br /></td></tr>
-<tr class="separator:a9f8d64f2974a941aaa2da7f9f16c2295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6989a773f0ee4710a61e8501fe295fdc"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a6989a773f0ee4710a61e8501fe295fdc">get_child_count</a> () const noexcept</td></tr>
+<tr class="memdesc:a6989a773f0ee4710a61e8501fe295fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of children of this node.  <a href="classlxgui_1_1gui_1_1layout__node.html#a6989a773f0ee4710a61e8501fe295fdc">More...</a><br /></td></tr>
+<tr class="separator:a6989a773f0ee4710a61e8501fe295fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f2a2589c5c2d52c0cc378475591cfb9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a3f2a2589c5c2d52c0cc378475591cfb9">get_child</a> (std::size_t index) const noexcept</td></tr>
 <tr class="memdesc:a3f2a2589c5c2d52c0cc378475591cfb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a specific child of this node, by index.  <a href="classlxgui_1_1gui_1_1layout__node.html#a3f2a2589c5c2d52c0cc378475591cfb9">More...</a><br /></td></tr>
 <tr class="separator:a3f2a2589c5c2d52c0cc378475591cfb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -821,6 +821,36 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a6989a773f0ee4710a61e8501fe295fdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6989a773f0ee4710a61e8501fe295fdc">&#9670;&nbsp;</a></span>get_child_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::layout_node::get_child_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of children of this node. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of children of this node </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00228">228</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a62d8b93a750bcf72cc8f8f975357ad63"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a62d8b93a750bcf72cc8f8f975357ad63">&#9670;&nbsp;</a></span>get_children() <span class="overload">[1/2]</span></h2>
 
@@ -885,36 +915,6 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A view to the list of children with a given name </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00268">268</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a9f8d64f2974a941aaa2da7f9f16c2295"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f8d64f2974a941aaa2da7f9f16c2295">&#9670;&nbsp;</a></span>get_children_count()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t lxgui::gui::layout_node::get_children_count </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the number of children of this node. </p>
-<dl class="section return"><dt>Returns</dt><dd>The number of children of this node </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00228">228</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1859,7 +1859,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

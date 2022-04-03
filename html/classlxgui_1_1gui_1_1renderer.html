@@ -142,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab5d55a87e425d9d3977b589ecb212e1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab5d55a87e425d9d3977b589ecb212e1b">set_texture_atlas_page_size</a> (std::size_t page_size)</td></tr>
 <tr class="memdesc:ab5d55a87e425d9d3977b589ecb212e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the width/height of a texture atlas page (in pixels).  <a href="classlxgui_1_1gui_1_1renderer.html#ab5d55a87e425d9d3977b589ecb212e1b">More...</a><br /></td></tr>
 <tr class="separator:ab5d55a87e425d9d3977b589ecb212e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a830b0aedc489ceb2ca9f861b497bb569"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a830b0aedc489ceb2ca9f861b497bb569">get_num_texture_atlas_pages</a> () const</td></tr>
-<tr class="memdesc:a830b0aedc489ceb2ca9f861b497bb569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the total number of texture atlas pages currently in use.  <a href="classlxgui_1_1gui_1_1renderer.html#a830b0aedc489ceb2ca9f861b497bb569">More...</a><br /></td></tr>
-<tr class="separator:a830b0aedc489ceb2ca9f861b497bb569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a855fc83a83d10427b44cd8155952baf6"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a855fc83a83d10427b44cd8155952baf6">get_texture_atlas_page_count</a> () const</td></tr>
+<tr class="memdesc:a855fc83a83d10427b44cd8155952baf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the total number of texture atlas pages currently in use.  <a href="classlxgui_1_1gui_1_1renderer.html#a855fc83a83d10427b44cd8155952baf6">More...</a><br /></td></tr>
+<tr class="separator:a855fc83a83d10427b44cd8155952baf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9392358704bdd9970e0def4ab06cc9f0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0">is_vertex_cache_supported</a> () const =0</td></tr>
 <tr class="memdesc:a9392358704bdd9970e0def4ab06cc9f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0">More...</a><br /></td></tr>
 <tr class="separator:a9392358704bdd9970e0def4ab06cc9f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,9 +157,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a751ee37acb94dca54c2b9fb5d4b227bc">auto_detect_settings</a> ()</td></tr>
 <tr class="memdesc:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically determines the best rendering settings for the current platform.  <a href="classlxgui_1_1gui_1_1renderer.html#a751ee37acb94dca54c2b9fb5d4b227bc">More...</a><br /></td></tr>
 <tr class="separator:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca5d8938ce9ca66d5d8f50570e6ed55e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aca5d8938ce9ca66d5d8f50570e6ed55e">reset_counters</a> ()</td></tr>
+<tr class="memdesc:aca5d8938ce9ca66d5d8f50570e6ed55e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the number of batches to zero (for analytics only).  <a href="classlxgui_1_1gui_1_1renderer.html#aca5d8938ce9ca66d5d8f50570e6ed55e">More...</a><br /></td></tr>
+<tr class="separator:aca5d8938ce9ca66d5d8f50570e6ed55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b187ee25ef24303193a83922b99b17c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a1b187ee25ef24303193a83922b99b17c">get_batch_count</a> () const</td></tr>
-<tr class="memdesc:a1b187ee25ef24303193a83922b99b17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of batches of vertices sent to the GPU during the last frame.  <a href="classlxgui_1_1gui_1_1renderer.html#a1b187ee25ef24303193a83922b99b17c">More...</a><br /></td></tr>
+<tr class="memdesc:a1b187ee25ef24303193a83922b99b17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of batches of vertices sent to the GPU since the last call to reset_counters.  <a href="classlxgui_1_1gui_1_1renderer.html#a1b187ee25ef24303193a83922b99b17c">More...</a><br /></td></tr>
 <tr class="separator:a1b187ee25ef24303193a83922b99b17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b4f2bdf59221c3e11b9328f9a22b137"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6b4f2bdf59221c3e11b9328f9a22b137">get_vertex_count</a> () const</td></tr>
+<tr class="memdesc:a6b4f2bdf59221c3e11b9328f9a22b137"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of vertices sent to the GPU since the last call to reset_counters.  <a href="classlxgui_1_1gui_1_1renderer.html#a6b4f2bdf59221c3e11b9328f9a22b137">More...</a><br /></td></tr>
+<tr class="separator:a6b4f2bdf59221c3e11b9328f9a22b137"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0ef6966104f7309f01f607e52a4af9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e">begin</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; target=nullptr)</td></tr>
 <tr class="memdesc:ab0ef6966104f7309f01f607e52a4af9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begins rendering on a particular render target.  <a href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e">More...</a><br /></td></tr>
 <tr class="separator:ab0ef6966104f7309f01f607e52a4af9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,7 +392,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Automatically determines the best rendering settings for the current platform. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00263">263</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00280">280</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -557,7 +563,7 @@ Protected Attributes</h2></td></tr>
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a149a08fe6a73fdb2f4ed808bd9be3eb9" title="Creates a new material from a texture file.">create_atlas_material()</a> for more information on atlases. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00309">309</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00326">326</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -609,7 +615,7 @@ The atlas category is a hint that the implementation can use to select the textu
 <dd>
 Because of how texture atlases work, it is not possible to use texture coordinate wrapping for materials from an atlas. Trying to use coordinates outside the [0,1] range will start reading texture data from another material. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00287">287</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00304">304</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -672,7 +678,7 @@ Because of how texture atlases work, it is not possible to use texture coordinat
 <dd>
 If an outline thickness other than zero is requested, only the outline itself will be rendered by the returned font. A non-outlined font must be rendered above the outlined font to fill the actual characters. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00202">202</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00219">219</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -782,7 +788,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00162">162</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00179">179</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -866,7 +872,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00339">339</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00356">356</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1074,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 
 <p>Ends rendering. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00039">39</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00037">37</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1127,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 <dd>
 This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e" title="Ends rendering.">end()</a> only. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00122">122</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00135">135</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1159,7 +1165,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00269">269</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00286">286</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1178,9 +1184,11 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
       </table>
 </div><div class="memdoc">
 
-<p>Returns the number of batches of vertices sent to the GPU during the last frame. </p>
-<dl class="section return"><dt>Returns</dt><dd>The number of batches of vertices sent to the GPU during the last frame </dd></dl>
+<p>Returns the number of batches of vertices sent to the GPU since the last call to reset_counters. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of batches of vertices sent to the GPU since the last call to reset_counters </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This will be zero unless <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81" title="Checks if the renderer has quad render batching enabled.">is_quad_batching_enabled()</a> is 'true'. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00052">52</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1214,14 +1222,14 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 
 </div>
 </div>
-<a id="a830b0aedc489ceb2ca9f861b497bb569"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a830b0aedc489ceb2ca9f861b497bb569">&#9670;&nbsp;</a></span>get_num_texture_atlas_pages()</h2>
+<a id="a855fc83a83d10427b44cd8155952baf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a855fc83a83d10427b44cd8155952baf6">&#9670;&nbsp;</a></span>get_texture_atlas_page_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t lxgui::gui::renderer::get_num_texture_atlas_pages </td>
+          <td class="memname">std::size_t lxgui::gui::renderer::get_texture_atlas_page_count </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1232,7 +1240,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Count the total number of texture atlas pages currently in use. </p>
 <dl class="section return"><dt>Returns</dt><dd>The total number of texture atlas pages currently in use </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00262">262</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1254,7 +1262,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Returns the width/height of a texture atlas page (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>The width/height of a texture atlas page (in pixels) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00234">234</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00251">251</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1285,6 +1293,28 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <dl class="section return"><dt>Returns</dt><dd>The maximum texture width/height (in pixels) </dd></dl>
 
 <p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a16f265b6da279be24ebb6a7b1a6e47ff">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a2a70aea26f554664e4c2ad42ee5d5d09">lxgui::gui::sfml::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a9d3d6413076dceb79a624ddad979ecf4">lxgui::gui::sdl::renderer</a>.</p>
+
+</div>
+</div>
+<a id="a6b4f2bdf59221c3e11b9328f9a22b137"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b4f2bdf59221c3e11b9328f9a22b137">&#9670;&nbsp;</a></span>get_vertex_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::renderer::get_vertex_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of vertices sent to the GPU since the last call to reset_counters. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of vertices sent to the GPU since the last call to reset_counters </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00056">56</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1337,7 +1367,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Checks if the renderer has quad render batching enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if enabled, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00170">170</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1359,7 +1389,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Checks if the renderer has texture atlases enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if enabled, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00226">226</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00243">243</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1442,7 +1472,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Checks if the renderer has enabled support for vertex caches. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if vertex caches are supported and enabled, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00255">255</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00272">272</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1510,7 +1540,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adee1c1c33fdd812e4671b8054c1732b6">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa583e4c0f8863c89a0f5b23601cc0dec">lxgui::gui::sfml::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a460077b4e7b0dd14a7028f42d66ca9ff">lxgui::gui::sdl::renderer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00344">344</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00361">361</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1643,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. This method is also more efficient than <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab71abd93eb1ae779aced20f52737573c" title="Renders a set of quads.">render_quads()</a>, as the vertex data is already cached to the GPU and does not need sending again. However, not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>. Note finally that rendering a vertex cache always triggers a draw call, no matter what, even when quad batching is enabled. For this reason, if quad batching is enabled, only use vertex caches for large vertex arrays and not for just a handful of quads. Benchmark when in doubt. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00159">159</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1697,7 +1727,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e" title="Ends rendering.">end()</a> only. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00056">56</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00068">68</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1767,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4c6a0991a2cc47da4c8a4eea813a231e" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00077">77</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00089">89</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1789,6 +1819,28 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 
 </div>
 </div>
+<a id="aca5d8938ce9ca66d5d8f50570e6ed55e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca5d8938ce9ca66d5d8f50570e6ed55e">&#9670;&nbsp;</a></span>reset_counters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::reset_counters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the number of batches to zero (for analytics only). </p>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a1b187ee25ef24303193a83922b99b17c" title="Returns the number of batches of vertices sent to the GPU since the last call to reset_counters.">get_batch_count()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6b4f2bdf59221c3e11b9328f9a22b137" title="Returns the number of vertices sent to the GPU since the last call to reset_counters.">get_vertex_count()</a>. This should be called a the beginning of a frame. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00045">45</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
 <a id="aa2b04645ee6f196f18b207f235e68e5f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2b04645ee6f196f18b207f235e68e5f">&#9670;&nbsp;</a></span>set_quad_batching_enabled()</h2>
 
@@ -1816,7 +1868,7 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <dd>
 When quad batching is disabled, each call to <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab71abd93eb1ae779aced20f52737573c" title="Renders a set of quads.">render_quads()</a> renders immediately to the screen. This can lead to a large number of draw calls. With quad batching enabled, the renderer accumulates quads into a local cache, and only renders them when necessary (i.e., when the texture changes, when another immediate rendering call is requested, or the frame ends). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00157">157</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00174">174</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1847,7 +1899,7 @@ When quad batching is disabled, each call to <a class="el" href="classlxgui_1_1g
 <dd>
 In general, texture atlases only increase performance when vertex caches are supported and used (see <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>). The can actually decrease performance when vertex caches are not supported, if texture tiling is used a lot (e.g., in frame backdrop edges). It is therefore recommended to disable texture atlases if vertex caches are not supported. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00230">230</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00247">247</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1878,7 +1930,7 @@ In general, texture atlases only increase performance when vertex caches are sup
 <dd>
 Increase this value to allow more materials to fit on a single atlas page, therefore improving performance. Decrease tihs value if the memory usage from atlas textures is too large. Set it to zero to fall back to the implementation-defined default value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00241">241</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00258">258</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1907,7 +1959,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Even if enabled with this function, vertex caches may not be supported by the renderer, see <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00259">259</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00276">276</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1937,7 +1989,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 <dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab0ef6966104f7309f01f607e52a4af9e" title="Begins rendering on a particular render target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00048">48</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00060">60</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -2000,7 +2052,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00485">485</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00498">498</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2024,7 +2076,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00486">486</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00499">499</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2048,7 +2100,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00484">484</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00497">497</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2059,7 +2111,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

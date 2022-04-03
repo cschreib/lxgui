@@ -105,9 +105,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a691e7171564d6aa8344ef90b3e1ee445"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a691e7171564d6aa8344ef90b3e1ee445">update</a> (const <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a> *vertex_data, std::size_t num_vertex) override</td></tr>
 <tr class="memdesc:a691e7171564d6aa8344ef90b3e1ee445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the data stored in the cache to form new triangles.  <a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a691e7171564d6aa8344ef90b3e1ee445">More...</a><br /></td></tr>
 <tr class="separator:a691e7171564d6aa8344ef90b3e1ee445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21095492bc1560cc2c20322b2bfa1da0"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a21095492bc1560cc2c20322b2bfa1da0">get_num_vertex</a> () const</td></tr>
-<tr class="memdesc:a21095492bc1560cc2c20322b2bfa1da0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of vertices currently stored in the cache.  <a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a21095492bc1560cc2c20322b2bfa1da0">More...</a><br /></td></tr>
-<tr class="separator:a21095492bc1560cc2c20322b2bfa1da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac310de11905124283143421fbd419514"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac310de11905124283143421fbd419514">get_vertex_count</a> () const</td></tr>
+<tr class="memdesc:ac310de11905124283143421fbd419514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of vertices currently stored in the cache.  <a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac310de11905124283143421fbd419514">More...</a><br /></td></tr>
+<tr class="separator:ac310de11905124283143421fbd419514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac27452f961f1d617af405ff770a259f7"><td class="memItemLeft" align="right" valign="top">const sf::VertexBuffer &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac27452f961f1d617af405ff770a259f7">get_impl</a> () const</td></tr>
 <tr class="memdesc:ac27452f961f1d617af405ff770a259f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SFML vertex buffer object.  <a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac27452f961f1d617af405ff770a259f7">More...</a><br /></td></tr>
 <tr class="separator:ac27452f961f1d617af405ff770a259f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +116,8 @@ Public Member Functions</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:acce997d264c98e25820951eaf3aa7a69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#acce997d264c98e25820951eaf3aa7a69">type_</a> = <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea817d7d587258bac88b24567b17bdda87">type::triangles</a></td></tr>
 <tr class="separator:acce997d264c98e25820951eaf3aa7a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66702a82a120955c129f839432336ffe"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a66702a82a120955c129f839432336ffe">num_vertex_</a> = 0</td></tr>
+<tr class="separator:a66702a82a120955c129f839432336ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An object representing cached vertex data on the GPU. </p>
@@ -215,14 +217,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a21095492bc1560cc2c20322b2bfa1da0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21095492bc1560cc2c20322b2bfa1da0">&#9670;&nbsp;</a></span>get_num_vertex()</h2>
+<a id="ac310de11905124283143421fbd419514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac310de11905124283143421fbd419514">&#9670;&nbsp;</a></span>get_vertex_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t lxgui::gui::sfml::vertex_cache::get_num_vertex </td>
+          <td class="memname">std::size_t lxgui::gui::sfml::vertex_cache::get_vertex_count </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -284,6 +286,30 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a66702a82a120955c129f839432336ffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66702a82a120955c129f839432336ffe">&#9670;&nbsp;</a></span>num_vertex_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::vertex_cache::num_vertex_ = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00079">79</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
+
+</div>
+</div>
 <a id="acce997d264c98e25820951eaf3aa7a69"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acce997d264c98e25820951eaf3aa7a69">&#9670;&nbsp;</a></span>type_</h2>
 
@@ -304,7 +330,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00070">70</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00078">78</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
 
 </div>
 </div>
@@ -314,7 +340,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

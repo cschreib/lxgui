@@ -96,11 +96,11 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentNormalTexture&quot;</span>);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a1da74aaffbee13d7950454d0cfcf0f59">set_normal_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
@@ -113,11 +113,11 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentPushedTexture&quot;</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a489fe04b0f93c0bfb4892be9effeaf54">set_pushed_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
@@ -130,11 +130,11 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledTexture&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a4f22fb09f941029f85fb4638cddaa63a">set_disabled_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
@@ -147,11 +147,11 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentHighlightTexture&quot;</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a6ca4ae8a7c46151924961846154c1d94">set_highlight_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
@@ -164,11 +164,11 @@ $(function() {
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentNormalText&quot;</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">auto</span> fstr = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">if</span> (fstr) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            fstr-&gt;set_special();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            fstr-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#ac8f5995a8c00a9f1251f8a52e1886678">set_normal_text</a>(utils::static_pointer_cast&lt;font_string&gt;(fstr));</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
@@ -181,11 +181,11 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentHighlightText&quot;</span>);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keyword">auto</span> fstr = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">if</span> (fstr) {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            fstr-&gt;set_special();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            fstr-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a19657b8e0988bde29246e3ed92e79a09">set_highlight_text</a>(utils::static_pointer_cast&lt;font_string&gt;(fstr));</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
@@ -198,11 +198,11 @@ $(function() {
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledText&quot;</span>);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">auto</span> fstr = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">if</span> (fstr) {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            fstr-&gt;set_special();</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            fstr-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#ab7c3be9ace13911277c720fbc9b7c070">set_disabled_text</a>(utils::static_pointer_cast&lt;font_string&gt;(fstr));</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        }</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
@@ -238,7 +238,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1layout__node_html_a712a2dfcc4bd45d204d7421a56f8870e"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__node.html#a712a2dfcc4bd45d204d7421a56f8870e">lxgui::gui::layout_node::try_get_child</a></div><div class="ttdeci">const layout_node * try_get_child(std::string_view name) const noexcept</div><div class="ttdoc">Returns the first child with a given name, or null if none.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layout__node_8hpp_source.html#l00278">gui_layout_node.hpp:278</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a012622f35ce097846b26a614c39d768e"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">lxgui::gui::layer</a></div><div class="ttdeci">layer</div><div class="ttdoc">ID of a layer for rendering inside a frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layered__region_8hpp_source.html#l00011">gui_layered_region.hpp:11</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a8ce1e69e7d415e0039029c663fca13af"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">lxgui::gui::frame::parse_region_</a></div><div class="ttdeci">utils::observer_ptr&lt; layered_region &gt; parse_region_(const layout_node &amp;node, const std::string &amp;layer_name, const std::string &amp;type)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00301">gui_frame_parser.cpp:301</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a520aafafcf4cff32c1feb7a1599eae77"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a520aafafcf4cff32c1feb7a1599eae77">lxgui::gui::region::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns this region's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8hpp_source.html#l00681">gui_region.hpp:681</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1region_html_a520aafafcf4cff32c1feb7a1599eae77"><div class="ttname"><a href="classlxgui_1_1gui_1_1region.html#a520aafafcf4cff32c1feb7a1599eae77">lxgui::gui::region::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns this region's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__region_8hpp_source.html#l00675">gui_region.hpp:675</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_aad6c8fb95abd8908b1f5b4b71c7489c9"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#aad6c8fb95abd8908b1f5b4b71c7489c9">lxgui::gui::button::set_text</a></div><div class="ttdeci">void set_text(const utils::ustring &amp;content)</div><div class="ttdoc">Sets this button's text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00179">gui_button.cpp:179</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html"><div class="ttname"><a href="namespacelxgui_1_1gui.html">lxgui::gui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00020">gui_addon_registry.cpp:20</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdoc">Holds 2D coordinates (as floats)</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00170">gui_vector2.hpp:170</a></div></div>
@@ -254,7 +254,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1layout__attribute_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1layout__attribute.html">lxgui::gui::layout_attribute</a></div><div class="ttdoc">An attribute in a layout file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__layout__node_8hpp_source.html#l00023">gui_layout_node.hpp:23</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

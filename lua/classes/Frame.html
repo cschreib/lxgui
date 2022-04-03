@@ -62,8 +62,6 @@
 
 <h1>Class <code>Frame</code></h1>
 <p>A <a href="../classes/Region.html#">Region</a> that can contain other regions and react to events.</p>
-<p>
-
 <p> This class, which is at the core of the UI design, can contain
  other <a href="../classes/Frame.html#">Frame</a>s as "children", and <a href="../classes/LayeredRegion.html#">LayeredRegion</a>s sorted by layers
  (text, images, ...). A frame can also react to events, and register
@@ -174,11 +172,110 @@
     is hidden indirectly (for example if its parent is itself hidden). This
     will only fire if the frame was previously shown.</li>
     <li><code>OnKeyDown</code>: Triggered when a keyboard key is pressed. Will only
-    trigger if the frame has focus (see @ref frame::set<em>focus) or if the key has
-    been registered for capture using @ref frame::enable</em>key_capture. If no
-    keyboard-enabled frame is focused, only the topmost frame with</li>
+    trigger if the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or if the key has
+    been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>. If no
+    keyboard-enabled frame is focused, only the topmost frame with
+    <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
+    captured the key, then the key is tested for existing key bindings (see
+    <a href="../modules/Manager.html#register_key_binding">Manager.register_key_binding</a>). This event provides five arguments to the registered
+    callback: a number identifying the main key being pressed, three boolean flags
+    for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
+    key combination being pressed (e.g., Shift+A).</li>
+    <li><code>OnKeyRepeat</code>: Similar to <code>OnKeyDown</code>, but triggered when a key has been
+    long-pressed and the operating system generated repeat events.</li>
+    <li><code>OnKeyUp</code>: Similar to <code>OnKeyDown</code>, but triggered when a keyboard key is
+    released.</li>
+    <li><code>OnLeave</code>: Triggered when the mouse pointer leaves the area of the
+    screen occupied by the frame. Note: this only takes into account the
+    position and size of the frame and its title region, but not the space
+    occupied by its children or layered regions. Will not trigger if the
+    frame is hidden, unless the frame was just hidden with the mouse
+    previously inside the frame. Finally, this <em>will</em> trigger whenever
+    the mouse enters another mouse-enabled frame with a higher level/strata,
+    even if the mouse is still technically within this frame's region.</li>
+    <li><code>OnLoad</code>: Triggered just after the frame is created. This is where
+    you would normally register for events and specific inputs, set up
+    initial states for extra logic, or do localization.</li>
+    <li><code>OnMouseDown</code>: Triggered when a mouse button is pressed and this frame is
+    the topmost mouse-click-enabled frame under the mouse pointer. Will not
+    trigger if the frame is hidden. This event provides four arguments to
+    the registered callback: a number identifying the mouse button, a string
+    containing the human-readable name of this button (<code>&quot;LeftButton&quot;</code>,
+    <code>&quot;RightButton&quot;</code>, or <code>&quot;MiddleButton&quot;</code>), and the mouse X and Y position.</li>
+    <li><code>OnMouseMove</code>: Triggered when the mouse moves over this frame, after
+    <code>OnEnter</code> and until <code>OnLeave</code>. This event provides four argument to
+    the registered callback: the amount of mouse movement in X and Y since the
+    last call to <code>OnMouseMove</code> (or since the last position before the mouse
+    entered this frame), and the mouse X and Y position.</li>
+    <li><code>OnMouseUp</code>: Similar to <code>OnMouseDown</code>, but triggered when the mouse button
+    is released.</li>
+    <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved and this frame is
+    the topmost mouse-wheel-enabled frame under the mouse pointer. This event
+    provides three arguments to the registered callback. The first is a number
+    indicating by how many "notches" the wheel has turned in this event. A
+    positive value means the wheel has been moved "away" from the user (this
+    would normally scroll <em>up</em> in a document). The other two arguments
+    are the mouse X and Y position.</li>
+    <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved and this frame is
+    the topmost mouse-wheel-enabled frame under the mouse pointer. This event
+    provides one argument to the registered callback: a number indicating by
+    how many "notches" the wheel has turned in this event. A positive value
+    means the wheel has been moved "away" from the user (this would normally
+    scroll <em>up</em> in a document).</li>
+    <li><code>OnReceiveDrag</code>: Triggered when the mouse pointer was previously
+    dragged onto the frame, and when one of the mouse button registered for
+    dragging (see <a href="../classes/Frame.html#Frame:enable_drag">Frame:enable_drag</a>) is released. This enables
+    the "drop" in "drag and drop" operations.</li>
+    <li><code>OnShow</code>: Triggered when <a href="../classes/Region.html#Region:show">Region:show</a> is called, or when the frame
+    is shown indirectly (for example if its parent is itself shown). This
+    will only fire if the frame was previously hidden.</li>
+    <li><code>OnSizeChanged</code>: Triggered whenever the size of the frame changes, either
+    directly or indirectly. Be very careful not to call any function that could
+    change the size of the frame inside this callback, as this would generate
+    an infinite loop.</li>
+    <li><code>OnUpdate</code>: Triggered on every tick of the game loop. This event provides
+    one argument to the registered callback: a floating point number indicating
+    how much time has passed since the last call to <code>OnUpdate</code> (in seconds).
+    For optimal performance, prefer using other events types whenever possible.
+    <code>OnUpdate</code> callbacks will be executed over and over again, and can quickly
+    consume a lot of resources if user unreasonably. If you have to use
+    <code>OnUpdate</code>, you can mitigate performance problems by artificially reducing
+    the update rate: let the callback function only accumulate the time passed,
+    and wait until enough time has passed (say, half a second) to execute any
+    expensive operation. Then reset the accumulated time, and wait again.</li>
 </ul>
-</p>
+
+<p> Generic events fired natively by lxgui:</p>
+
+<ul>
+    <li><code>&quot;LUA_ERROR&quot;</code>: Triggered whenever a callback function or an addon script
+    file generates a Lua error. This event provides one argument to the
+    registered callback: a string containing the error message.</li>
+    <li><code>&quot;ADDON_LOADED&quot;</code>: Triggered when an addon is fully loaded. This event
+    provides one argument to the registered callback: a string containing the
+    name of the loaded addon.</li>
+    <li><code>&quot;ENTERING_WORLD&quot;</code>: Triggered once at the start of the program, at the
+    end of the first update tick.</li>
+</ul>
+
+<p> <strong>Virtual frames.</strong> Virtual frames are not displayed on the screen,
+ and technically are not part of the interface. They are only available
+ as "templates" that can be reused by other (virtual or non-virtual)
+ frames. This is useful for defining a few frame templates with a
+ particular style, and then reuse these templates across the interface
+ to ensure a consistent look. When inheriting from a virtual frame,
+ the inheriting frame will copy all the registered callbacks, all the
+ child frames, and all the layered regions of the virtual frame.</p>
+
+<p> This inheritance mechanism can be chained: a virtual frame itself can
+ inherit from another virtual frame. It is also possible to inherit from
+ multiple virtual frames at once, which will copy their respective content
+ in the order they are specified.</p>
+
+<p> Inherits all methods from: <a href="../classes/Region.html#">Region</a>.</p>
+
+<p> Child classes: <a href="../classes/Button.html#">Button</a>, <a href="../classes/CheckButton.html#">CheckButton</a>, <a href="../classes/EditBox.html#">EditBox</a>,
+ <a href="../classes/ScrollFrame.html#">ScrollFrame</a>, <a href="../classes/Slider.html#">Slider</a>, <a href="../classes/StatusBar.html#">StatusBar</a>.</p>
 
 
 <h2><a href="#Methods">Methods</a></h2>
@@ -322,12 +419,6 @@
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_frame_type">Frame:get_frame_type()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
 	<td class="name" nowrap><a href="#Frame:get_hit_rect_insets">Frame:get_hit_rect_insets()</a></td>
 	<td class="summary">
 
@@ -346,13 +437,13 @@
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_num_children">Frame:get_num_children()</a></td>
+	<td class="name" nowrap><a href="#Frame:get_child_count">Frame:get_child_count()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_num_regions">Frame:get_num_regions()</a></td>
+	<td class="name" nowrap><a href="#Frame:get_layered_region_count">Frame:get_layered_region_count()</a></td>
 	<td class="summary">
 
 </td>
@@ -389,12 +480,6 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Frame:is_clamped_to_screen">Frame:is_clamped_to_screen()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Frame:is_frame_type">Frame:is_frame_type()</a></td>
 	<td class="summary">
 
 </td>
@@ -1005,22 +1090,6 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_frame_type"></a>
-    <strong>Frame:get_frame_type()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
     <a name = "Frame:get_hit_rect_insets"></a>
     <strong>Frame:get_hit_rect_insets()</strong>
     </dt>
@@ -1069,8 +1138,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_num_children"></a>
-    <strong>Frame:get_num_children()</strong>
+    <a name = "Frame:get_child_count"></a>
+    <strong>Frame:get_child_count()</strong>
     </dt>
     <dd>
 
@@ -1085,8 +1154,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_num_regions"></a>
-    <strong>Frame:get_num_regions()</strong>
+    <a name = "Frame:get_layered_region_count"></a>
+    <strong>Frame:get_layered_region_count()</strong>
     </dt>
     <dd>
 
@@ -1183,22 +1252,6 @@
     <dt>
     <a name = "Frame:is_clamped_to_screen"></a>
     <strong>Frame:is_clamped_to_screen()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Frame:is_frame_type"></a>
-    <strong>Frame:is_frame_type()</strong>
     </dt>
     <dd>
 
@@ -1827,7 +1880,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-03-30 06:57:48 </i>
+<i style="float:right;">Last updated 2022-04-03 15:24:11 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

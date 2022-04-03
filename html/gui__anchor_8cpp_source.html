@@ -102,9 +102,9 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    std::string parent_full_name = <a class="code" href="structlxgui_1_1gui_1_1anchor__data.html#ab0c8e44b70e89291a51bfc66d3914142">parent_name</a>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span> (obj_parent) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        utils::replace(parent_full_name, <span class="stringliteral">&quot;$parent&quot;</span>, obj_parent-&gt;get_lua_name());</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        utils::replace(parent_full_name, <span class="stringliteral">&quot;$parent&quot;</span>, obj_parent-&gt;get_name());</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (parent_full_name.find(<span class="stringliteral">&quot;$parent&quot;</span>) != parent_full_name.npos) {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_object_type() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_region_type() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;region \&quot;&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; tries to anchor to \&quot;&quot;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                 &lt;&lt; parent_full_name &lt;&lt; <span class="stringliteral">&quot;\&quot;, but &#39;$parent&#39; does not exist.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">return</span>;</div>
@@ -114,7 +114,7 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">object</span>.get_registry().get_region_by_name(parent_full_name);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> (!new_parent) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_object_type() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_region_type() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot;region \&quot;&quot;</span> &lt;&lt; <span class="keywordtype">object</span>.get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; tries to anchor to \&quot;&quot;</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                 &lt;&lt; parent_full_name &lt;&lt; <span class="stringliteral">&quot;\&quot; but this region does not (yet?) exist.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span>;</div>
@@ -236,7 +236,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1anchor__data_html_a10d90eee91f820a487334ef4b8070340"><div class="ttname"><a href="structlxgui_1_1gui_1_1anchor__data.html#a10d90eee91f820a487334ef4b8070340">lxgui::gui::anchor_data::type</a></div><div class="ttdeci">anchor_type type</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00093">gui_anchor.hpp:93</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

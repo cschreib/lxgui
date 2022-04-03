@@ -120,11 +120,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0060fe3961b960046d9d9fcaf3eb9d9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html#a0060fe3961b960046d9d9fcaf3eb9d9c">render</a> () const</td></tr>
 <tr class="memdesc:a0060fe3961b960046d9d9fcaf3eb9d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the cache.  <a href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html#a0060fe3961b960046d9d9fcaf3eb9d9c">More...</a><br /></td></tr>
 <tr class="separator:a0060fe3961b960046d9d9fcaf3eb9d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c0a95de4f1e7b5a00b206a0096f126"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a19c0a95de4f1e7b5a00b206a0096f126">get_vertex_count</a> () const</td></tr>
+<tr class="memdesc:a19c0a95de4f1e7b5a00b206a0096f126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of vertices stored in this cache.  <a href="classlxgui_1_1gui_1_1vertex__cache.html#a19c0a95de4f1e7b5a00b206a0096f126">More...</a><br /></td></tr>
+<tr class="separator:a19c0a95de4f1e7b5a00b206a0096f126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:acce997d264c98e25820951eaf3aa7a69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#acce997d264c98e25820951eaf3aa7a69">type_</a> = <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea817d7d587258bac88b24567b17bdda87">type::triangles</a></td></tr>
 <tr class="separator:acce997d264c98e25820951eaf3aa7a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66702a82a120955c129f839432336ffe"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a66702a82a120955c129f839432336ffe">num_vertex_</a> = 0</td></tr>
+<tr class="separator:a66702a82a120955c129f839432336ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An object representing cached vertex data on the GPU. </p>
@@ -233,6 +238,36 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a19c0a95de4f1e7b5a00b206a0096f126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c0a95de4f1e7b5a00b206a0096f126">&#9670;&nbsp;</a></span>get_vertex_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::vertex_cache::get_vertex_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of vertices stored in this cache. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of vertices stored in this cache </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00073">73</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a0060fe3961b960046d9d9fcaf3eb9d9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0060fe3961b960046d9d9fcaf3eb9d9c">&#9670;&nbsp;</a></span>render()</h2>
 
@@ -414,6 +449,30 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a66702a82a120955c129f839432336ffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66702a82a120955c129f839432336ffe">&#9670;&nbsp;</a></span>num_vertex_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lxgui::gui::vertex_cache::num_vertex_ = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00079">79</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
+
+</div>
+</div>
 <a id="acce997d264c98e25820951eaf3aa7a69"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acce997d264c98e25820951eaf3aa7a69">&#9670;&nbsp;</a></span>type_</h2>
 
@@ -434,7 +493,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00070">70</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertex__cache_8hpp_source.html#l00078">78</a> of file <a class="el" href="gui__vertex__cache_8hpp_source.html">gui_vertex_cache.hpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +503,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:47 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -87,9 +87,9 @@ $(function() {
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">class </span>render_target;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1texture.html">texture</a> : <span class="keyword">public</span> <a class="code" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> <a class="code" href="classlxgui_1_1gui_1_1region.html">base</a> = <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a5fb06814150ee10de95cfbbf31def928">layered_region</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#ab91b62984a0d63c8af181b5cc05d3105">   25</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classlxgui_1_1gui_1_1region.html">base</a> = <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a5fb06814150ee10de95cfbbf31def928">layered_region</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036">   27</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036">blend_mode</a> { <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036a334c4a4c42fdb79d7ebc3e73b517e6f8">none</a>, <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036ac195f144a8d768f2bb87f155ed2117a4">blend</a>, <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036a3c6e0b8a9c15224a8228b9a98ca1531d">key</a>, <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036a34ec78fcc91ffb1e54cd85e4a0924332">add</a>, <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036aad148a3ca8bd0ef3b48c52454c493ec5">mod</a> };</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#a641f38cf29c217ac8e1017fd89377b7b">texture</a>(utils::control_block&amp; block, <a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mgr, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a>&amp; attr);</div>
@@ -160,24 +160,26 @@ $(function() {
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordtype">void</span> parse_tex_coords_node_(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; node);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">void</span> parse_gradient_node_(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; node);</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordtype">void</span> update_dimensions_from_tex_coord_();</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">void</span> update_borders_() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keyword">using</span> content    = std::variant&lt;color, std::string, gradient&gt;;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    content content_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#aa74004945c11a3a9218f3689599d3802">color::white</a>;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036">blend_mode</a>       blend_mode_                    = <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036ac195f144a8d768f2bb87f155ed2117a4">blend_mode::blend</a>;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filter_                        = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keywordtype">bool</span>             is_desaturated_                = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordtype">bool</span>             is_texture_stretching_enabled_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; renderer_;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a>      quad_;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;};</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; get_type_list_() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">void</span> update_dimensions_from_tex_coord_();</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">void</span> update_borders_() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keyword">using</span> content    = std::variant&lt;color, std::string, gradient&gt;;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    content content_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#aa74004945c11a3a9218f3689599d3802">color::white</a>;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036">blend_mode</a>       blend_mode_                    = <a class="code" href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036ac195f144a8d768f2bb87f155ed2117a4">blend_mode::blend</a>;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> filter_                        = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">material::filter::none</a>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordtype">bool</span>             is_desaturated_                = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordtype">bool</span>             is_texture_stretching_enabled_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; renderer_;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a>      quad_;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;};</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00020">gui_material.hpp:20</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">Holds a single color (float RGBA, 128 bits)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00012">gui_color.hpp:12</a></div></div>
@@ -233,7 +235,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a4b380537f5890f25569faaec5053a7d3"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a4b380537f5890f25569faaec5053a7d3">lxgui::gui::texture::set_desaturated</a></div><div class="ttdeci">void set_desaturated(bool is_desaturated)</div><div class="ttdoc">Makes this texture appear without any color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00198">gui_texture.cpp:198</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

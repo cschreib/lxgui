@@ -80,9 +80,9 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui_1_1gui.html">lxgui::gui</a> {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1font__string.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1font__string.html">font_string</a> : <span class="keyword">public</span> <a class="code" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">using</span> <a class="code" href="classlxgui_1_1gui_1_1layered__region.html">base</a> = <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a5fb06814150ee10de95cfbbf31def928">layered_region</a>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1font__string.html#a2d98d350472d474b33977d1dae7ae62d">   36</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classlxgui_1_1gui_1_1layered__region.html">base</a> = <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#a5fb06814150ee10de95cfbbf31def928">layered_region</a>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1gui_1_1font__string.html#ac16025221f1741d2b371666327c5c754">font_string</a>(</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        utils::control_block&amp; block, <a class="code" href="classlxgui_1_1gui_1_1manager.html">manager</a>&amp; mgr, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1region__core__attributes.html">region_core_attributes</a>&amp; attr);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
@@ -176,37 +176,39 @@ $(function() {
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordtype">void</span> parse_attributes_(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; node) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">void</span> parse_shadow_node_(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a>&amp; node);</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordtype">void</span> create_text_object_();</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; get_type_list_() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">void</span> update_borders_() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">void</span> create_text_object_();</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    std::unique_ptr&lt;text&gt; text_;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keywordtype">void</span> update_borders_() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    utils::ustring content_;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    std::string    font_name_;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordtype">float</span>          height_ = 0.0f;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordtype">float</span>       spacing_      = 0.0f;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordtype">float</span>       line_spacing_ = 1.0f;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4d">alignment_x</a> align_x_      = <a class="code" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4daadb115059e28d960fa8badfac5516667">alignment_x::center</a>;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a5ba85fc912c9ca00a3b2e0fbae7eb089">alignment_y</a> align_y_      = <a class="code" href="namespacelxgui_1_1gui.html#a5ba85fc912c9ca00a3b2e0fbae7eb089a4a548addbfb239bbd12f5afe11a4b6dc">alignment_y::middle</a>;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>    offset_       = <a class="code" href="structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb">vector2f::zero</a>;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordtype">bool</span>  is_outlined_            = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keywordtype">bool</span>  non_space_wrap_enabled_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">bool</span>  word_wrap_enabled_      = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">bool</span>  ellipsis_enabled_       = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordtype">bool</span>  formatting_enabled_     = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> text_color_             = <a class="code" href="classlxgui_1_1gui_1_1color.html#aa74004945c11a3a9218f3689599d3802">color::white</a>;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordtype">bool</span>     has_shadow_    = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>    shadow_color_  = <a class="code" href="classlxgui_1_1gui_1_1color.html#ac3436ff70606d6e6c8c6d6068f353c78">color::black</a>;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> shadow_offset_ = <a class="code" href="structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb">vector2f::zero</a>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;};</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    std::unique_ptr&lt;text&gt; text_;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    utils::ustring content_;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    std::string    font_name_;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordtype">float</span>          height_ = 0.0f;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordtype">float</span>       spacing_      = 0.0f;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keywordtype">float</span>       line_spacing_ = 1.0f;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4d">alignment_x</a> align_x_      = <a class="code" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4daadb115059e28d960fa8badfac5516667">alignment_x::center</a>;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a5ba85fc912c9ca00a3b2e0fbae7eb089">alignment_y</a> align_y_      = <a class="code" href="namespacelxgui_1_1gui.html#a5ba85fc912c9ca00a3b2e0fbae7eb089a4a548addbfb239bbd12f5afe11a4b6dc">alignment_y::middle</a>;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>    offset_       = <a class="code" href="structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb">vector2f::zero</a>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">bool</span>  is_outlined_            = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">bool</span>  non_space_wrap_enabled_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordtype">bool</span>  word_wrap_enabled_      = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordtype">bool</span>  ellipsis_enabled_       = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="keywordtype">bool</span>  formatting_enabled_     = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> text_color_             = <a class="code" href="classlxgui_1_1gui_1_1color.html#aa74004945c11a3a9218f3689599d3802">color::white</a>;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordtype">bool</span>     has_shadow_    = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>    shadow_color_  = <a class="code" href="classlxgui_1_1gui_1_1color.html#ac3436ff70606d6e6c8c6d6068f353c78">color::black</a>;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> shadow_offset_ = <a class="code" href="structlxgui_1_1gui_1_1vector2.html#a50f333013e056929c9953afa016ae6cb">vector2f::zero</a>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;};</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font__string_html_aa64e60239534dda7a5e1ce2e5af50609"><div class="ttname"><a href="classlxgui_1_1gui_1_1font__string.html#aa64e60239534dda7a5e1ce2e5af50609">lxgui::gui::font_string::set_shadow_offset</a></div><div class="ttdeci">void set_shadow_offset(const vector2f &amp;shadow_offset)</div><div class="ttdoc">Sets this font_string's shadow offset.</div><div class="ttdef"><b>Definition:</b> <a href="gui__font__string_8cpp_source.html#l00260">gui_font_string.cpp:260</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font__string_html_a2a75bdd73fcbb8e304e9721db8e5384e"><div class="ttname"><a href="classlxgui_1_1gui_1_1font__string.html#a2a75bdd73fcbb8e304e9721db8e5384e">lxgui::gui::font_string::get_offset</a></div><div class="ttdeci">const vector2f &amp; get_offset() const</div><div class="ttdoc">Returns this font_string's offset.</div><div class="ttdef"><b>Definition:</b> <a href="gui__font__string_8cpp_source.html#l00154">gui_font_string.cpp:154</a></div></div>
@@ -270,7 +272,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font__string_html_ab18d95a33b5fbfffa68e97823336e312"><div class="ttname"><a href="classlxgui_1_1gui_1_1font__string.html#ab18d95a33b5fbfffa68e97823336e312">lxgui::gui::font_string::set_shadow</a></div><div class="ttdeci">void set_shadow(bool has_shadow)</div><div class="ttdoc">Sets whether this font_string should draw a shadow under its text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__font__string_8cpp_source.html#l00353">gui_font_string.cpp:353</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

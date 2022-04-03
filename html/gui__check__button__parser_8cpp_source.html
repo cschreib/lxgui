@@ -84,11 +84,11 @@ $(function() {
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentCheckedTexture&quot;</span>);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1check__button.html#aef95767a312a41d82b34abde18221c44">set_checked_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
@@ -101,11 +101,11 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> defaulted = *special_node;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        defaulted.<a class="code" href="classlxgui_1_1gui_1_1layout__node.html#a4d9ec2b4b3d6c9923dce9031b438f9b8">get_or_set_attribute_value</a>(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledCheckedTexture&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        defaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllAnchors&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">auto</span> tex = <a class="code" href="classlxgui_1_1gui_1_1frame.html#a8ce1e69e7d415e0039029c663fca13af">parse_region_</a>(defaulted, <a class="code" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a>, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> (tex) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            tex-&gt;set_special();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            tex-&gt;set_manually_inherited(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1check__button.html#a59c9f3b4787285fed2dc796493322c90">set_disabled_checked_texture</a>(utils::static_pointer_cast&lt;texture&gt;(tex));</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
@@ -129,7 +129,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a59c9f3b4787285fed2dc796493322c90"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a59c9f3b4787285fed2dc796493322c90">lxgui::gui::check_button::set_disabled_checked_texture</a></div><div class="ttdeci">void set_disabled_checked_texture(utils::observer_ptr&lt; texture &gt; tex)</div><div class="ttdoc">Sets this button's disabled checked texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__check__button_8cpp_source.html#l00134">gui_check_button.cpp:134</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

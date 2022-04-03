@@ -86,18 +86,17 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a691e7171564d6aa8344ef90b3e1ee445">update</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>* vertex_data, std::size_t num_vertex) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::size_t <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a21095492bc1560cc2c20322b2bfa1da0">get_num_vertex</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::size_t <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac310de11905124283143421fbd419514">get_vertex_count</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">const</span> sf::VertexBuffer&amp; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac27452f961f1d617af405ff770a259f7">get_impl</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    std::size_t      num_vertex_ = 0u;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    sf::VertexBuffer buffer_;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;} <span class="comment">// namespace lxgui::gui::sfml</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    sf::VertexBuffer buffer_;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace lxgui::gui::sfml</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_1_1sfml_html"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1sfml.html">lxgui::gui::sfml</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__sfml_8hpp_source.html#l00017">gui_sfml.hpp:17</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1vertex__cache_html_a0354490e97b4d68ec0c2e1d5f5b3f6de"><div class="ttname"><a href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">lxgui::gui::vertex_cache::type</a></div><div class="ttdeci">type</div><div class="ttdoc">The type of vertex data contained in a vertex_cache.</div><div class="ttdef"><b>Definition:</b> <a href="gui__vertex__cache_8hpp_source.html#l00032">gui_vertex_cache.hpp:32</a></div></div>
@@ -105,12 +104,12 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html_a614156d9685f6b005d3fb123b1e9b5ea"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a614156d9685f6b005d3fb123b1e9b5ea">lxgui::gui::sfml::vertex_cache::vertex_cache</a></div><div class="ttdeci">vertex_cache(type t)</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html_ac27452f961f1d617af405ff770a259f7"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac27452f961f1d617af405ff770a259f7">lxgui::gui::sfml::vertex_cache::get_impl</a></div><div class="ttdeci">const sf::VertexBuffer &amp; get_impl() const</div><div class="ttdoc">Returns the SFML vertex buffer object.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1vertex__cache_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1vertex__cache.html">lxgui::gui::vertex_cache</a></div><div class="ttdoc">An object representing cached vertex data on the GPU.</div><div class="ttdef"><b>Definition:</b> <a href="gui__vertex__cache_8hpp_source.html#l00029">gui_vertex_cache.hpp:29</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html_a21095492bc1560cc2c20322b2bfa1da0"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a21095492bc1560cc2c20322b2bfa1da0">lxgui::gui::sfml::vertex_cache::get_num_vertex</a></div><div class="ttdeci">std::size_t get_num_vertex() const</div><div class="ttdoc">Returns the number of vertices currently stored in the cache.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html">lxgui::gui::sfml::vertex_cache</a></div><div class="ttdoc">An object representing cached vertex data on the GPU.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sfml__vertex__cache_8hpp_source.html#l00028">gui_sfml_vertex_cache.hpp:28</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html_ac310de11905124283143421fbd419514"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#ac310de11905124283143421fbd419514">lxgui::gui::sfml::vertex_cache::get_vertex_count</a></div><div class="ttdeci">std::size_t get_vertex_count() const</div><div class="ttdoc">Returns the number of vertices currently stored in the cache.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1vertex__cache_html_a691e7171564d6aa8344ef90b3e1ee445"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html#a691e7171564d6aa8344ef90b3e1ee445">lxgui::gui::sfml::vertex_cache::update</a></div><div class="ttdeci">void update(const vertex *vertex_data, std::size_t num_vertex) override</div><div class="ttdoc">Update the data stored in the cache to form new triangles.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 30 2022 06:57:46 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 3 2022 15:24:09 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
