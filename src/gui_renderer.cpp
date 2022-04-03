@@ -9,8 +9,6 @@
 namespace lxgui::gui {
 
 void renderer::begin(std::shared_ptr<render_target> target) {
-    batch_count_ = 0;
-
     if (is_quad_batching_enabled()) {
         current_material_ = nullptr;
 
@@ -39,10 +37,18 @@ void renderer::begin(std::shared_ptr<render_target> target) {
 void renderer::end() {
     if (is_quad_batching_enabled()) {
         flush_quad_batch();
-        last_frame_batch_count_ = batch_count_;
     }
 
     end_();
+}
+
+void renderer::reset_batch_count() {
+    last_frame_batch_count_ = batch_count_;
+    batch_count_            = 0;
+}
+
+std::size_t renderer::get_batch_count() const {
+    return last_frame_batch_count_;
 }
 
 void renderer::set_view(const matrix4f& view_matrix) {

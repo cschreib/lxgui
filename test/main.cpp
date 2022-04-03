@@ -165,6 +165,9 @@ void main_loop(void* type_erased_data) {
         SDL_GL_MakeCurrent(context.window, context.gl_context);
 #endif
 
+        // Reset batch count (for analytics only, optional)
+        context.manager->get_renderer().reset_batch_count();
+
         // Update the gui
         timing_clock::time_point start = timing_clock::now();
         context.manager->update_ui(context.delta);
