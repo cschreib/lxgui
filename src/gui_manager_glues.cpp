@@ -37,6 +37,8 @@ void manager::create_lua_() {
 
     auto& lua = *lua_;
 
+    lua.globals()["_METADATA_"] = sol::table(lua.lua_state(), sol::create);
+
     /** @function log
      */
     lua.set_function("log", [](const std::string& message) { gui::out << message << std::endl; });

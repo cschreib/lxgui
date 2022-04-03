@@ -753,8 +753,13 @@ sol::state& region::get_lua_() {
     return get_manager().get_lua();
 }
 
+const sol::state& region::get_lua_() const {
+    return get_manager().get_lua();
+}
+
 void region::remove_glue() {
-    get_lua_().globals()[get_name()] = sol::lua_nil;
+    get_lua_().globals()[get_name()]               = sol::lua_nil;
+    get_lua_().globals()["_METADATA_"][get_name()] = sol::lua_nil;
 }
 
 void region::set_manually_inherited(bool manually_inherited) {

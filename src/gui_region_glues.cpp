@@ -125,20 +125,25 @@
 namespace lxgui::gui {
 
 void region::set_lua_member_(std::string key, sol::stack_object value) {
-    auto iter = lua_members_.find(key);
-    if (iter == lua_members_.cend()) {
-        lua_members_.insert(iter, {std::move(key), value});
-    } else {
-        iter->second = sol::object(value);
+    auto& lua  = get_lua_();
+    auto  self = lua.globals()["_METADATA_"][get_name()];
+
+    if (!self.valid()) {
+        self = sol::table(lua.lua_state(), sol::create);
     }
+
+    self[key] = value;
 }
 
 sol::object region::get_lua_member_(const std::string& key) const {
-    auto iter = lua_members_.find(key);
-    if (iter == lua_members_.cend())
-        return sol::lua_nil;
+    auto& lua  = get_lua_();
+    auto  self = lua.globals()["_METADATA_"][get_name()];
 
-    return iter->second;
+    if (self.valid()) {
+        return self[key];
+    } else {
+        return sol::lua_nil;
+    }
 }
 
 void region::register_on_lua(sol::state& lua) {

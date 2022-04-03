@@ -733,7 +733,8 @@ protected:
     virtual void update_borders_();
     virtual void update_anchors_();
 
-    sol::state& get_lua_();
+    sol::state&       get_lua_();
+    const sol::state& get_lua_() const;
 
     template<typename T>
     void create_glue_(T& self);
@@ -801,8 +802,6 @@ protected:
     vector2f dimensions_;
 
     std::vector<utils::observer_ptr<region>> anchored_object_list_;
-
-    std::unordered_map<std::string, sol::object> lua_members_;
 };
 
 /**
