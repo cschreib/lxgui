@@ -86,7 +86,7 @@
 * The translation must then refer to these dynamic elements to include them in the
 * displayed test. Dynamic elements are always indicated with pairs of braces `{}`.
 * Inside the braces, you can supply additional modifiers which will affect how the
-* data is being displayed. This follows the [&](https://fmt.dev/latest/syntax.html)
+* data is being displayed. This follows the [fmtlib](https://fmt.dev/latest/syntax.html)
 * syntax. For example, the message above can be represented with the string
 *
 *     ["player_lost_hp"] = "{} has lost {} HP.",
@@ -152,7 +152,7 @@
 *         end
 *     end,
 *
-* This can be used to implement complex support language rules like adding an "s" to
+* This can be used to implement complex language rules like adding an "s" to
 * plurals of nouns in French:
 *
 *     -- Table for plurals that are not obtained by just adding "s"
@@ -240,7 +240,7 @@ void localizer::register_on_lua(sol::state& lua) {
      * main language, and `{REGION}` is a two-letter upper case word identifying the dialect or
      * regional variant of the language (e.g., "enUS" for United States of America English, and
      * "enGB" for Great Britain English). This change will not take effect until the GUI is
-     * re-loaded, see @{Manager.reload_ui}.
+     * re-loaded, see @{GUI.reload_ui}.
      * @function set_preferred_languages
      * @tparam table languages A table listing the languages to use to display the GUI
      */
@@ -251,13 +251,13 @@ void localizer::register_on_lua(sol::state& lua) {
      * After calling this function, it is highly recommended to always include at least
      * the Unicode groups "basic latin" (to render basic ASCII characters) and
      * "geometric shapes" (to render the "missing character" glyph).
-     * This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     * This change will not take effect until the GUI is re-loaded, see @{GUI.reload_ui}.
      * @function clear_allowed_code_points
      */
     lua.set_function("clear_allowed_code_points", [&]() { clear_allowed_code_points(); });
 
     /** Adds a new range to the set of allowed code points.
-     * This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     * This change will not take effect until the GUI is re-loaded, see @{GUI.reload_ui}.
      * @tparam integer first The first code point in the range
      * @tparam integer last The last code point in the range
      * @function add_allowed_code_points
@@ -271,7 +271,7 @@ void localizer::register_on_lua(sol::state& lua) {
      * ranges of Unicode code points that are typically associated to a language
      * or a group of languages. This function knows about such groups and the
      * ranges of code point they correspond to, and is therefore more user-friendly.
-     * This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     * This change will not take effect until the GUI is re-loaded, see @{GUI.reload_ui}.
      * @tparam string group The name of the Unicode code group to allow
      * @function add_allowed_code_points_for_group
      */
@@ -283,7 +283,7 @@ void localizer::register_on_lua(sol::state& lua) {
      * Language codes are based on the ISO-639-1 standard, or later standards for those
      * languages which were not listed in ISO-639-1. They are always in lower case, and
      * typically composed of just two letters, but sometimes more.
-     * This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     * This change will not take effect until the GUI is re-loaded, see @{GUI.reload_ui}.
      * @tparam string language The language code (e.g., "en", "ru", etc.)
      * @function add_allowed_code_points_for_language
      */
@@ -294,7 +294,7 @@ void localizer::register_on_lua(sol::state& lua) {
     /** Attempts to automatically detect the set of allowed code points based on preferred
      * languages. Only use it if you need to reset the allowed code points to the default after
      * changing the preferred languages with @{set_preferred_languages}. This change will not take
-     * effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+     * effect until the GUI is re-loaded, see @{GUI.reload_ui}.
      * @function auto_detect_allowed_code_points
      */
     lua.set_function(

@@ -33,26 +33,33 @@
  * Note: Although you can destroy this Lua variable by setting it to nil, this is
  * not recommended: the object will _not_ be destroyed (nor garbage-collected)
  * because it still exists in the C++ memory space. The only way to truly destroy
- * an object is to call @{Manager.delete_frame} (for @{Frame}s only). Destroying and
+ * an object is to call @{GUI.delete_frame} (for @{Frame}s only). Destroying and
  * creating objects has a cost however. If the object is likely to reappear later
  * with the same content, simply hide it and show it again later on. If the
  * content may change, you can also recycle the object, i.e., keep it alive and
  * simply change its content when it later reappears.
  *
  * __Parent-child relationship.__ Parents of @{Region}s are @{Frame}s. See
- * the @{Frame} class documentation for more information. One important aspect
- * of the parent-child relationship is related to the object name. If a
- * @{Region} has a parent, it can be given a name starting with `"$parent"`.
+ * the @{Frame} class documentation for more information. One important
+ * aspect of the parent-child relationship is related to the object name. If a
+ * region has a parent, it can be given a name starting with `"$parent"`.
  * The name of the parent will automatically replace the `"$parent"` string.
  * For example, if an object is named `"$parentButton"` and its parent is named
  * `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
  * It can be accessed from the Lua state as `ErrorMessageButton`, or as
- * `ErrorMessage.Button`. Note that this is totally dynamic: if you later change
- * the parent of this button to be another frame, for example `"ExitDialog"`
- * its name will naturally change to `"ExitDialogButton"`, and it can be accessed
- * from Lua as `ExitDialogButton`, or as `ExitDialog.Button`. This is particularly
- * powerful for writing generic code which does not rely on the full names of
- * objects, only on their child-parent relationship.
+ * `ErrorMessage.Button`. This is particularly important when using inheritance,
+ * as the final name of an inherited child region then naturally depends on the
+ * name of its parent.
+ *
+ * A child will inherit some properties from its parent: transparency, scaling,
+ * visibility (show/hide), strata (if not explicitly specified), level
+ * (incremented from its parent's), and renderer (if not explicitly specified).
+ * Note in particular that the parent-child relationship does not impose any
+ * link between the child and its parent's position and size: this must be done
+ * explicitly with anchors, as required.
+ *
+ * Lastly, a child is *owned* by its parent: if the parent is destroyed, the
+ * child will be destroyed as well.
  *
  * __Positioning.__ @{Region}s have a position on the screen, but this is
  * not parametrized as a simple pair of X and Y coordinates. Instead, objects

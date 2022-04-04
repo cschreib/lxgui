@@ -38,13 +38,7 @@
  * when the frame is clicked, which effectively brings the frame to the
  * front.
  *
- * __Children and regions.__ When a frame is hidden, all its children
- * and regions will also be hidden. Likewise, deleting a frame will
- * automatically delete all its children and regions, unless they are
- * detached first. Other than this, children and regions do not need to
- * be located inside the frame; this is controlled purely by their anchors.
- * Therefore, if a child is not anchored to its parent, moving the parent
- * will not automatically move the child.
+ * __Children and layered regions.__ See the @{Region} documentation.
  *
  * __Events.__ Frames can react to events. For this to happen, a callback
  * function must be registered to handle the corresponding event. There are
@@ -125,7 +119,7 @@
  * keyboard-enabled frame is focused, only the topmost frame with
  * @{Frame:enable_key_capture} will receive the event. If no frame has
  * captured the key, then the key is tested for existing key bindings (see
- * @{Manager.register_key_binding}). This event provides five arguments to the registered
+ * @{GUI.register_key_binding}). This event provides five arguments to the registered
  * callback: a number identifying the main key being pressed, three boolean flags
  * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
  * key combination being pressed (e.g., Shift+A).
