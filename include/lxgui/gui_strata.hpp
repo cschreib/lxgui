@@ -13,22 +13,11 @@
 
 namespace lxgui::gui {
 
-class frame;
-
-enum class frame_strata {
-    background,
-    low,
-    medium,
-    high,
-    dialog,
-    fullscreen,
-    fullscreen_dialog,
-    tooltip
-};
+enum class strata { background, low, medium, high, dialog, fullscreen, fullscreen_dialog, tooltip };
 
 /// Contains frames sorted by level
-struct strata {
-    frame_strata                        id;
+struct strata_data {
+    strata                              id;
     std::pair<std::size_t, std::size_t> range;
     bool                                redraw_flag = true;
     std::shared_ptr<render_target>      target;

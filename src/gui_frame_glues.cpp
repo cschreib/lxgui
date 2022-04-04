@@ -427,24 +427,24 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("get_effective_scale", member_function<&frame::get_effective_scale>());
 
-    /** @function get_frame_level
+    /** @function get_level
      */
-    type.set_function("get_frame_level", member_function<&frame::get_level>());
+    type.set_function("get_level", member_function<&frame::get_level>());
 
-    /** @function get_frame_strata
+    /** @function get_strata
      */
-    type.set_function("get_frame_strata", [](const frame& self) -> sol::optional<std::string> {
-        auto strata_id = self.get_frame_strata();
+    type.set_function("get_strata", [](const frame& self) -> sol::optional<std::string> {
+        auto strata_id = self.get_strata();
         if (strata_id.has_value())
             return utils::to_string(strata_id.value());
         else
             return sol::nullopt;
     });
 
-    /** @function get_frame_strata
+    /** @function get_strata
      */
-    type.set_function("get_effective_frame_strata", [](const frame& self) {
-        return utils::to_string(self.get_effective_frame_strata());
+    type.set_function("get_effective_strata", [](const frame& self) {
+        return utils::to_string(self.get_effective_strata());
     });
 
     /** @function get_hit_rect_insets
@@ -643,21 +643,21 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_focus", [](frame& self) { self.set_focus(true); });
 
-    /** @function set_frame_level
+    /** @function set_level
      */
-    type.set_function("set_frame_level", member_function<&frame::set_level>());
+    type.set_function("set_level", member_function<&frame::set_level>());
 
-    /** @function set_frame_strata
+    /** @function set_strata
      */
-    type.set_function("set_frame_strata", [](frame& self, sol::optional<std::string> strata_name) {
+    type.set_function("set_strata", [](frame& self, sol::optional<std::string> strata_name) {
         if (!strata_name.has_value()) {
-            self.set_frame_strata(std::nullopt);
+            self.set_strata(std::nullopt);
         } else {
-            if (auto converted = utils::from_string<frame_strata>(strata_name.value());
+            if (auto converted = utils::from_string<strata>(strata_name.value());
                 converted.has_value()) {
-                self.set_frame_strata(converted.value());
+                self.set_strata(converted.value());
             } else {
-                gui::out << gui::warning << "Frame.set_frame_strata: "
+                gui::out << gui::warning << "Frame.set_strata: "
                          << "Unknown strata type: \"" << strata_name.value() << "\"." << std::endl;
             }
         }

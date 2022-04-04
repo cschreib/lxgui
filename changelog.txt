@@ -124,6 +124,9 @@ Other changes:
  - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
  - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
  - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
+ - gui: renamed strata to strata_data
+ - gui: renamed frame_level to level
+ - gui: renamed frame_strata to strata
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()
@@ -153,7 +156,6 @@ Other changes:
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added frame_renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a frame_renderer
- - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting
  - gui: removed clear_links() in favor of using destructors

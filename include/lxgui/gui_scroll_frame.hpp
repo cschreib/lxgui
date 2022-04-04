@@ -149,7 +149,7 @@ public:
     find_topmost_frame(const std::function<bool(const frame&)>& predicate) const override;
 
     /// Tells this renderer that one of its region requires redraw.
-    void notify_strata_needs_redraw(frame_strata strata_id) override;
+    void notify_strata_needs_redraw(strata strata_id) override;
 
     /**
      * \brief Tells this renderer that it should (or not) render another frame.

@@ -272,7 +272,7 @@ scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& predic
     return nullptr;
 }
 
-void scroll_frame::notify_strata_needs_redraw(frame_strata strata_id) {
+void scroll_frame::notify_strata_needs_redraw(strata strata_id) {
     frame_renderer::notify_strata_needs_redraw(strata_id);
 
     redraw_scroll_render_target_flag_ = true;

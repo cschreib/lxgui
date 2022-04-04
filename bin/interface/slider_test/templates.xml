@@ -1,5 +1,5 @@
 <Ui>
-    <Frame name="FrameTemplate_Dialog" virtual="true" hidden="false" movable="true" enableMouse="true" enableMouseWheel="true" clampedToScreen="true" frameStrata="DIALOG" topLevel="true">
+    <Frame name="FrameTemplate_Dialog" virtual="true" hidden="false" movable="true" enableMouse="true" enableMouseWheel="true" clampedToScreen="true" strata="DIALOG" topLevel="true">
         <Backdrop edgeFile="|dialog_border.png">
             <BackgroundInsets>
                 <AbsInset left="8" right="8" top="8" bottom="8"/>

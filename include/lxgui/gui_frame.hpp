@@ -743,15 +743,15 @@ public:
     /**
      * \brief Returns this frame's strata.
      * \return This frame's strata, or nullopt if the strata is inherited from the parent.
-     * \note See get_effective_frame_strata() to obtain the actual strata of this frame.
+     * \note See get_effective_strata() to obtain the actual strata of this frame.
      */
-    std::optional<frame_strata> get_frame_strata() const;
+    std::optional<strata> get_strata() const;
 
     /**
      * \brief Returns this frame's effective strata.
-     * \return This frame's strata, or its parent's effective strata if frame_strata::parent.
+     * \return This frame's strata, or its parent's effective strata if strata::parent.
      */
-    frame_strata get_effective_frame_strata() const;
+    strata get_effective_strata() const;
 
     /**
      * \brief Returns this frame's top-level parent.
@@ -1268,7 +1268,7 @@ public:
      * \brief Sets this frame's strata.
      * \param strata_id The new strata, or nullopt to inherit strata from parent
      */
-    void set_frame_strata(std::optional<frame_strata> strata_id);
+    void set_strata(std::optional<strata> strata_id);
 
     /**
      * \brief Sets this frames' backdrop.
@@ -1578,9 +1578,9 @@ protected:
             const_cast<const frame*>(this)->compute_top_level_frame_renderer_());
     }
 
-    frame_strata compute_effective_frame_strata_() const;
+    strata compute_effective_strata_() const;
 
-    void notify_frame_strata_changed_(frame_strata new_strata_id);
+    void notify_strata_changed_(strata new_strata_id);
 
     void notify_frame_renderer_changed_(const utils::observer_ptr<frame_renderer>& new_renderer);
 
@@ -1628,10 +1628,10 @@ protected:
     std::set<std::string> reg_drag_list_;
     std::set<std::string> reg_key_list_;
 
-    int                         level_ = 0;
-    std::optional<frame_strata> strata_;
-    frame_strata                effective_strata_ = frame_strata::medium;
-    bool                        is_top_level_     = false;
+    int                   level_ = 0;
+    std::optional<strata> strata_;
+    strata                effective_strata_ = strata::medium;
+    bool                  is_top_level_     = false;
 
     utils::observer_ptr<frame_renderer> frame_renderer_           = nullptr;
     utils::observer_ptr<frame_renderer> effective_frame_renderer_ = nullptr;
