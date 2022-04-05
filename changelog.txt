@@ -88,6 +88,18 @@ Other changes:
  - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
  - gui: added frame::enable_key_capture
  - gui: added OnKeyRepeat frame event
+ - gui: added OnReceiveDrag for frame
+ - gui: added OnCursorChanged for edit_box
+ - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
+ - gui: added set_cursor_position()/get_cursor_position() to edit_box
+ - gui: added clear_history() to edit_box
+ - gui: added clipboard support to edit_box
+ - gui: added automatic un-focus of edit_box when clicking outside of the box
+ - gui: added frame::get_script
+ - gui: added slider::set_orientation(const std::string&)
+ - gui: added status_bar::set_orientation(const std::string&)
+ - gui: added manager::close_ui_now and made close_ui safer
+ - gui: added frame::enable_mouse_click and frame::enable_mouse_move
  - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -125,8 +137,8 @@ Other changes:
  - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
  - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
  - gui: renamed strata to strata_data
- - gui: renamed frame_level to level
- - gui: renamed frame_strata to strata
+ - gui: renamed frame_level/frameLevel to level
+ - gui: renamed frame_strata/frameStrata to strata
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()
@@ -168,22 +180,9 @@ Other changes:
  - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
  - gui: key and mouse events no longer contain string names of buttons and keys
  - gui: objects inside a scroll_frame can now correctly anchor to other objects
- - gui: added OnReceiveDrag for frame
- - gui: added OnCursorChanged for edit_box
- - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
- - gui: added set_cursor_position()/get_cursor_position() to edit_box
- - gui: added clear_history() to edit_box
- - gui: added clipboard support to edit_box
- - gui: added automatic un-focus of edit_box when clicking outside of the box
- - gui: added frame::get_script
- - gui: added slider::set_orientation(const std::string&)
- - gui: added status_bar::set_orientation(const std::string&)
- - gui: added manager::close_ui_now and made close_ui safer
- - gui: added frame::enable_mouse_click and frame::enable_mouse_move
  - gui: render targets can now have texture filtering other than nearest
  - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications
- - gui: improved peformance of generating new object IDs
  - gui: improved peformance of font outline rendering
  - gui: improved quality and consistency of font rendering in OpenGL back-end
  - gui: fixed rare crash in edit_box
