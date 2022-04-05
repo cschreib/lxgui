@@ -280,13 +280,25 @@ public:
     bool get_remove_starting_spaces() const;
 
     /**
-     * \brief Allows word wrap when the line is too long for the text box.
+     * \brief Allows/disallows word wrap when the line is too long for the text box.
      * \param wrap 'true' to enable word wrap
-     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
      * \note Enabled by default.
      */
+    void set_word_wrap_enabled(bool wrap);
 
-    void enable_word_wrap(bool wrap, bool add_ellipsis);
+    /**
+     * \brief Allows word wrap when the line is too long for the text box.
+     */
+    void enable_word_wrap() {
+        set_word_wrap_enabled(true);
+    }
+
+    /**
+     * \brief Disallow word wrap when the line is too long for the text box.
+     */
+    void disable_word_wrap() {
+        set_word_wrap_enabled(false);
+    }
 
     /**
      * \brief Checks if word wrap is enabled.
@@ -295,11 +307,54 @@ public:
     bool is_word_wrap_enabled() const;
 
     /**
+     * \brief Sets whether to show an ellipsis "..." if words don't fit in the text box.
+     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
+     * \note Disabled by default.
+     */
+    void set_word_ellipsis_enabled(bool add_ellipsis);
+
+    /**
+     * \brief Show an ellipsis "..." if words don't fit in the text box.
+     */
+    void enable_word_ellipsis() {
+        set_word_ellipsis_enabled(true);
+    }
+
+    /**
+     * \brief Do not show an ellipsis "..." if words don't fit in the text box.
+     */
+    void disable_word_ellipsis() {
+        set_word_ellipsis_enabled(false);
+    }
+
+    /**
+     * \brief Checks if word ellipsis is enabled.
+     * \return 'true' if word ellipsis is enabled
+     */
+    bool is_word_ellipsis_enabled() const;
+
+    /**
      * \brief Enables color formatting.
      * \param formatting 'true' to enable color formatting
      * \note Enabled by default. See \ref set_text for more information on formatting.
      */
-    void enable_formatting(bool formatting);
+    void set_formatting_enabled(bool formatting);
+
+    /**
+     * \brief Enables color formatting.
+     * \see set_formatting_enabled
+     */
+    void enable_formatting() {
+        set_formatting_enabled(true);
+    }
+
+    /**
+     * \brief Disables color formatting.
+     * \see set_formatting_enabled
+     */
+    void disable_formatting() {
+        set_formatting_enabled(false);
+    }
 
     /**
      * \brief Renders this text at the given position.

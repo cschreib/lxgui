@@ -73,6 +73,14 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("clear_history", member_function<&edit_box::clear_history>());
 
+    /** @function disable_password_mode
+     */
+    type.set_function("disable_password_mode", member_function<&edit_box::disable_password_mode>());
+
+    /** @function enable_password_mode
+     */
+    type.set_function("enable_password_mode", member_function<&edit_box::enable_password_mode>());
+
     /** @function get_blink_period
      */
     type.set_function("get_blink_period", member_function<&edit_box::get_blink_period>());
@@ -138,9 +146,10 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("is_numeric", member_function<&edit_box::is_numeric_only>());
 
-    /** @function is_password
+    /** @function is_password_mode_enabled
      */
-    type.set_function("is_password", member_function<&edit_box::is_password_mode_enabled>());
+    type.set_function(
+        "is_password_mode_enabled", member_function<&edit_box::is_password_mode_enabled>());
 
     /** @function set_blink_period
      */
@@ -204,9 +213,10 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_numeric", member_function<&edit_box::set_numeric_only>());
 
-    /** @function set_password
+    /** @function set_password_mode_enabled
      */
-    type.set_function("set_password", member_function<&edit_box::enable_password_mode>());
+    type.set_function(
+        "set_password_mode_enabled", member_function<&edit_box::set_password_mode_enabled>());
 
     /** @function set_text
      */

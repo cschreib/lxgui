@@ -24,7 +24,7 @@ slider::slider(utils::control_block& block, manager& mgr, const frame_core_attri
 
     initialize_(*this, attr);
 
-    enable_mouse(true);
+    enable_mouse();
     enable_drag(input::mouse_button::left);
 }
 

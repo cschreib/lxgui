@@ -498,12 +498,11 @@ bool text::get_remove_starting_spaces() const {
     return remove_starting_spaces_;
 }
 
-void text::enable_word_wrap(bool wrap, bool add_ellipsis) {
-    if (word_wrap_enabled_ == wrap && ellipsis_enabled_ == add_ellipsis)
+void text::set_word_wrap_enabled(bool wrap) {
+    if (word_wrap_enabled_ == wrap)
         return;
 
     word_wrap_enabled_ = wrap;
-    ellipsis_enabled_  = add_ellipsis;
     notify_cache_dirty_();
 }
 
@@ -511,7 +510,19 @@ bool text::is_word_wrap_enabled() const {
     return word_wrap_enabled_;
 }
 
-void text::enable_formatting(bool formatting) {
+void text::set_word_ellipsis_enabled(bool add_ellipsis) {
+    if (ellipsis_enabled_ == add_ellipsis)
+        return;
+
+    ellipsis_enabled_ = add_ellipsis;
+    notify_cache_dirty_();
+}
+
+bool text::is_word_ellipsis_enabled() const {
+    return ellipsis_enabled_;
+}
+
+void text::set_formatting_enabled(bool formatting) {
     if (formatting == formatting_enabled_)
         return;
 

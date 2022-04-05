@@ -27,8 +27,8 @@ void font_string::parse_attributes_(const layout_node& node) {
             get_manager().get_localizer().localize(attr->get_value<std::string>())));
     }
 
-    if (const layout_attribute* attr = node.try_get_attribute("nonspacewrap"))
-        set_non_space_wrap(attr->get_value<bool>());
+    if (const layout_attribute* attr = node.try_get_attribute("nonSpaceWrap"))
+        set_non_space_wrap_enabled(attr->get_value<bool>());
 
     if (const layout_attribute* attr = node.try_get_attribute("spacing"))
         set_spacing(attr->get_value<float>());
@@ -82,7 +82,7 @@ void font_string::parse_attributes_(const layout_node& node) {
 
 void font_string::parse_shadow_node_(const layout_node& node) {
     if (const layout_node* shadow_node = node.try_get_child("Shadow")) {
-        set_shadow(true);
+        enable_shadow();
 
         if (const layout_node* color_node = shadow_node->try_get_child("Color"))
             set_shadow_color(parse_color_node_(*color_node));

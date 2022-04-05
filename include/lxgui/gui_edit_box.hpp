@@ -221,12 +221,28 @@ public:
     bool is_integer_only() const;
 
     /**
-     * \brief Enables password mode.
+     * \brief Enables or disables password mode.
      * \param enable 'true' to enable password mode
      * \note In password mode, the content of the edit_box is replaced
      * by stars (*).
      */
-    void enable_password_mode(bool enable);
+    void set_password_mode_enabled(bool enable);
+
+    /**
+     * \brief Enables password mode.
+     * \see set_password_mode_enabled
+     */
+    void enable_password_mode() {
+        set_password_mode_enabled(true);
+    }
+
+    /**
+     * \brief Disables password mode.
+     * \see set_password_mode_enabled
+     */
+    void disable_password_mode() {
+        set_password_mode_enabled(false);
+    }
 
     /**
      * \brief Checks if this edit_box is in password mode.

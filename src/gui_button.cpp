@@ -15,7 +15,7 @@ button::button(utils::control_block& block, manager& mgr, const frame_core_attri
 
     initialize_(*this, attr);
 
-    enable_mouse(true);
+    enable_mouse();
 }
 
 std::string button::serialize(const std::string& tab) const {

@@ -25,10 +25,9 @@ edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_a
     iter_carret_pos_     = unicode_text_.begin();
     iter_carret_pos_old_ = unicode_text_.begin();
 
-    enable_mouse(true);
+    enable_mouse();
     enable_drag(input::mouse_button::left);
-
-    enable_keyboard(true);
+    enable_keyboard();
 }
 
 bool edit_box::can_use_script(const std::string& script_name) const {
@@ -51,7 +50,7 @@ void edit_box::copy_from(const region& obj) {
     this->set_numeric_only(box_obj->is_numeric_only());
     this->set_positive_only(box_obj->is_positive_only());
     this->set_integer_only(box_obj->is_integer_only());
-    this->enable_password_mode(box_obj->is_password_mode_enabled());
+    this->set_password_mode_enabled(box_obj->is_password_mode_enabled());
     this->set_multi_line(box_obj->is_multi_line());
     this->set_max_history_lines(box_obj->get_max_history_lines());
     this->set_text_insets(box_obj->get_text_insets());
@@ -429,7 +428,7 @@ bool edit_box::is_integer_only() const {
     return is_integer_only_;
 }
 
-void edit_box::enable_password_mode(bool enable) {
+void edit_box::set_password_mode_enabled(bool enable) {
     if (is_password_mode_ == enable)
         return;
 
@@ -450,8 +449,10 @@ void edit_box::set_multi_line(bool multi_line) {
 
     is_multi_line_ = multi_line;
 
-    if (font_string_)
-        font_string_->set_word_wrap(is_multi_line_, is_multi_line_);
+    if (font_string_) {
+        font_string_->set_word_wrap_enabled(is_multi_line_);
+        font_string_->set_word_ellipsis_enabled(is_multi_line_);
+    }
 
     check_text_();
     iter_carret_pos_ = unicode_text_.end();
@@ -569,7 +570,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> fstr) {
     if (!font_string_)
         return;
 
-    font_string_->set_word_wrap(is_multi_line_, is_multi_line_);
+    font_string_->set_word_wrap_enabled(is_multi_line_);
+    font_string_->set_word_ellipsis_enabled(is_multi_line_);
 
     font_string_->set_dimensions(vector2f(0, 0));
     font_string_->clear_all_anchors();
@@ -577,7 +579,7 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> fstr) {
     font_string_->set_anchor(point::top_left, text_insets_.top_left());
     font_string_->set_anchor(point::bottom_right, -text_insets_.bottom_right());
 
-    font_string_->enable_formatting(false);
+    font_string_->disable_formatting();
 
     create_carret_();
 }
@@ -585,7 +587,8 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> fstr) {
 void edit_box::set_font(const std::string& font_name, float height) {
     create_font_string_();
 
-    font_string_->set_font(font_name, height);
+    if (font_string_)
+        font_string_->set_font(font_name, height);
 
     create_carret_();
 }

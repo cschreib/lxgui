@@ -295,6 +295,16 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("create_title_region", member_function<&frame::create_title_region>());
 
+    /** @function disable_drag
+     */
+    type.set_function("disable_drag", [](frame& self, sol::optional<std::string> button_name) {
+        if (button_name.has_value()) {
+            self.disable_drag(button_name.value());
+        } else {
+            self.disable_drag();
+        }
+    });
+
     /** @function disable_draw_layer
      */
     type.set_function("disable_draw_layer", [](frame& self, const std::string& layer_name) {
@@ -306,6 +316,43 @@ void frame::register_on_lua(sol::state& lua) {
         }
     });
 
+    /** @function disable_key_capture
+     */
+    type.set_function("disable_key_capture", [](frame& self, sol::optional<std::string> key_name) {
+        if (key_name.has_value()) {
+            self.disable_key_capture(key_name.value());
+        } else {
+            self.disable_key_capture();
+        }
+    });
+
+    /** @function disable_keyboard
+     */
+    type.set_function("disable_keyboard", member_function<&frame::disable_keyboard>());
+
+    /** @function disable_mouse
+     */
+    type.set_function("disable_mouse", member_function<&frame::disable_mouse>());
+
+    /** @function disable_mouse_click
+     */
+    type.set_function("disable_mouse_click", member_function<&frame::disable_mouse_click>());
+
+    /** @function disable_mouse_move
+     */
+    type.set_function("disable_mouse_move", member_function<&frame::disable_mouse_move>());
+
+    /** @function disable_mouse_wheel
+     */
+    type.set_function("disable_mouse_wheel", member_function<&frame::disable_mouse_wheel>());
+
+    /** @function enable_drag
+     */
+    type.set_function(
+        "enable_drag",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&)>(&frame::enable_drag)>());
+
     /** @function enable_draw_layer
      */
     type.set_function("enable_draw_layer", [](frame& self, const std::string& layer_name) {
@@ -316,6 +363,17 @@ void frame::register_on_lua(sol::state& lua) {
                      << "Unknown layer type: \"" << layer_name << "\"." << std::endl;
         }
     });
+
+    /** @function enable_key_capture
+     */
+    type.set_function(
+        "enable_key_capture",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&)>(&frame::enable_key_capture)>());
+
+    /** @function enable_keyboard
+     */
+    type.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
 
     /** @function enable_mouse
      */
@@ -332,27 +390,6 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function enable_mouse_wheel
      */
     type.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
-
-    /** @function enable_keyboard
-     */
-    type.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
-
-    /** @function enable_key_capture
-     */
-    type.set_function(
-        "enable_key_capture",
-        member_function< // select the right overload for Lua
-            static_cast<void (frame::*)(const std::string&)>(&frame::enable_key_capture)>());
-
-    /** @function disable_key_capture
-     */
-    type.set_function("disable_key_capture", [](frame& self, sol::optional<std::string> key_name) {
-        if (key_name.has_value()) {
-            self.disable_key_capture(key_name.value());
-        } else {
-            self.disable_key_capture();
-        }
-    });
 
     /** @function get_backdrop
      */
@@ -555,23 +592,6 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("register_event", member_function<&frame::register_event>());
 
-    /** @function enable_drag
-     */
-    type.set_function(
-        "enable_drag",
-        member_function< // select the right overload for Lua
-            static_cast<void (frame::*)(const std::string&)>(&frame::enable_drag)>());
-
-    /** @function disable_drag
-     */
-    type.set_function("disable_drag", [](frame& self, sol::optional<std::string> button_name) {
-        if (button_name.has_value()) {
-            self.disable_drag(button_name.value());
-        } else {
-            self.disable_drag();
-        }
-    });
-
     /** @function set_auto_focus
      */
     type.set_function("set_auto_focus", member_function<&frame::enable_auto_focus>());
@@ -639,13 +659,62 @@ void frame::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
 
+    /** @function set_drag_enabled
+     */
+    type.set_function(
+        "set_drag_enabled",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&, bool)>(&frame::set_drag_enabled)>());
+
+    /** @function set_draw_layer_enabled
+     */
+    type.set_function(
+        "set_draw_layer_enabled", [](frame& self, const std::string& layer_name, bool enable) {
+            if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
+                self.set_draw_layer_enabled(converted.value(), enable);
+            } else {
+                gui::out << gui::warning << "Frame.set_draw_layer_enabled: "
+                         << "Unknown layer type: \"" << layer_name << "\"." << std::endl;
+            }
+        });
+
     /** @function set_focus
      */
     type.set_function("set_focus", [](frame& self) { self.set_focus(true); });
 
+    /** @function set_keyboard_enabled
+     */
+    type.set_function("set_keyboard_enabled", member_function<&frame::set_keyboard_enabled>());
+
+    /** @function set_key_capture_enabled
+     */
+    type.set_function(
+        "set_key_capture_enabled",
+        member_function< // select the right overload for Lua
+            static_cast<void (frame::*)(const std::string&, bool)>(
+                &frame::set_key_capture_enabled)>());
+
     /** @function set_level
      */
     type.set_function("set_level", member_function<&frame::set_level>());
+
+    /** @function set_mouse_wheel_enabled
+     */
+    type.set_function(
+        "set_mouse_wheel_enabled", member_function<&frame::set_mouse_wheel_enabled>());
+
+    /** @function set_mouse_enabled
+     */
+    type.set_function("set_mouse_enabled", member_function<&frame::set_mouse_enabled>());
+
+    /** @function set_mouse_click_enabled
+     */
+    type.set_function(
+        "set_mouse_click_enabled", member_function<&frame::set_mouse_click_enabled>());
+
+    /** @function set_mouse_move_enabled
+     */
+    type.set_function("set_mouse_move_enabled", member_function<&frame::set_mouse_move_enabled>());
 
     /** @function set_strata
      */

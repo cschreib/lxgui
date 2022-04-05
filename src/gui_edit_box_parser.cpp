@@ -24,7 +24,7 @@ void edit_box::parse_attributes_(const layout_node& node) {
         set_integer_only(attr->get_value<bool>());
 
     if (const layout_attribute* attr = node.try_get_attribute("password"))
-        enable_password_mode(attr->get_value<bool>());
+        set_password_mode_enabled(attr->get_value<bool>());
 
     if (const layout_attribute* attr = node.try_get_attribute("multiLine"))
         set_multi_line(attr->get_value<bool>());

@@ -209,10 +209,10 @@ void frame::copy_from(const region& obj) {
     // NB: level is not inherited on purpose; this is difficult to make sense of
     this->set_top_level(frame_obj->is_top_level());
 
-    this->enable_mouse_click(frame_obj->is_mouse_click_enabled());
-    this->enable_mouse_move(frame_obj->is_mouse_move_enabled());
-    this->enable_mouse_wheel(frame_obj->is_mouse_wheel_enabled());
-    this->enable_keyboard(frame_obj->is_keyboard_enabled());
+    this->set_mouse_click_enabled(frame_obj->is_mouse_click_enabled());
+    this->set_mouse_move_enabled(frame_obj->is_mouse_move_enabled());
+    this->set_mouse_wheel_enabled(frame_obj->is_mouse_wheel_enabled());
+    this->set_keyboard_enabled(frame_obj->is_keyboard_enabled());
 
     this->set_movable(frame_obj->is_movable());
     this->set_clamped_to_screen(frame_obj->is_clamped_to_screen());
@@ -432,24 +432,24 @@ void frame::enable_draw_layer(layer layer_id) {
     }
 }
 
-void frame::enable_mouse(bool is_mouse_enabled) {
-    enable_mouse_click(is_mouse_enabled);
-    enable_mouse_move(is_mouse_enabled);
+void frame::set_mouse_enabled(bool is_mouse_enabled) {
+    set_mouse_click_enabled(is_mouse_enabled);
+    set_mouse_move_enabled(is_mouse_enabled);
 }
 
-void frame::enable_mouse_click(bool is_mouse_enabled) {
+void frame::set_mouse_click_enabled(bool is_mouse_enabled) {
     is_mouse_click_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_move(bool is_mouse_enabled) {
+void frame::set_mouse_move_enabled(bool is_mouse_enabled) {
     is_mouse_move_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_wheel(bool is_mouse_wheel_enabled) {
+void frame::set_mouse_wheel_enabled(bool is_mouse_wheel_enabled) {
     is_mouse_wheel_enabled_ = is_mouse_wheel_enabled;
 }
 
-void frame::enable_keyboard(bool is_keyboard_enabled) {
+void frame::set_keyboard_enabled(bool is_keyboard_enabled) {
     is_keyboard_enabled_ = is_keyboard_enabled;
 }
 

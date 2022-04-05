@@ -226,6 +226,10 @@ void button::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_disabled_texture", member_function<&button::set_disabled_texture>());
 
+    /** @function set_enabled
+     */
+    type.set_function("set_enabled", member_function<&button::set_enabled>());
+
     /** @function set_highlight_font_object
      */
     type.set_function("set_highlight_font_object", member_function<&button::set_highlight_text>());

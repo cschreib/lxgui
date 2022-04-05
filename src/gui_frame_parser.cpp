@@ -59,15 +59,15 @@ void frame::parse_attributes_(const layout_node& node) {
     }
 
     if (const layout_attribute* attr = node.try_get_attribute("enableMouse"))
-        enable_mouse(attr->get_value<bool>());
+        set_mouse_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseMove"))
-        enable_mouse_move(attr->get_value<bool>());
+        set_mouse_move_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseClick"))
-        enable_mouse_click(attr->get_value<bool>());
+        set_mouse_click_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseWheel"))
-        enable_mouse_wheel(attr->get_value<bool>());
+        set_mouse_wheel_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableKeyboard"))
-        enable_keyboard(attr->get_value<bool>());
+        set_keyboard_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("clampedToScreen"))
         set_clamped_to_screen(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("autoFocus"))

@@ -324,6 +324,19 @@ public:
     void create_title_region();
 
     /**
+     * \brief Enables or disables a layer.
+     * \param layer_id The id of the layer to disable
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_draw_layer_enabled(layer layer_id, bool enable) {
+        if (enable) {
+            enable_draw_layer(layer_id);
+        } else {
+            disable_draw_layer(layer_id);
+        }
+    }
+
+    /**
      * \brief Disables a layer.
      * \param layer_id The id of the layer to disable
      */
@@ -339,25 +352,89 @@ public:
      * \brief Sets if this frame can receive mouse input (click & move).
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse(bool is_mouse_enabled);
+    void set_mouse_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse input (click & move).
+     * \see set_mouse_enabled()
+     */
+    void enable_mouse() {
+        set_mouse_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse input (click & move).
+     * \see set_mouse_enabled()
+     */
+    void disable_mouse() {
+        set_mouse_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse click input.
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_click(bool is_mouse_enabled);
+    void set_mouse_click_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse click input.
+     * \see set_mouse_click_enabled()
+     */
+    void enable_mouse_click() {
+        set_mouse_click_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse click input.
+     * \see set_mouse_click_enabled()
+     */
+    void disable_mouse_click() {
+        set_mouse_click_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse move input.
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_move(bool is_mouse_enabled);
+    void set_mouse_move_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse move input.
+     * \see set_mouse_move_enabled()
+     */
+    void enable_mouse_move() {
+        set_mouse_move_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse move input.
+     * \see set_mouse_move_enabled()
+     */
+    void disable_mouse_move() {
+        set_mouse_move_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse wheel input.
      * \param is_mouse_wheel_enabled 'true' to enable
      */
-    void enable_mouse_wheel(bool is_mouse_wheel_enabled);
+    void set_mouse_wheel_enabled(bool is_mouse_wheel_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse wheel input.
+     * \see set_mouse_wheel_enabled()
+     */
+    void enable_mouse_wheel() {
+        set_mouse_wheel_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse wheel input.
+     * \see set_mouse_wheel_enabled()
+     */
+    void disable_mouse_wheel() {
+        set_mouse_wheel_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive any keyboard input.
@@ -367,8 +444,56 @@ public:
      * \see is_keyboard_enabled()
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see disable_keyboard()
      */
-    void enable_keyboard(bool is_keyboard_enabled);
+    void set_keyboard_enabled(bool is_keyboard_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive any keyboard input.
+     * \see set_keyboard_enabled()
+     */
+    void enable_keyboard() {
+        set_keyboard_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive any keyboard input.
+     * \see set_keyboard_enabled()
+     */
+    void disable_keyboard() {
+        set_keyboard_enabled(false);
+    }
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_name The key to capture
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_key_capture()
+     * \see disable_key_capture()
+     */
+    void set_key_capture_enabled(const std::string& key_name, bool enable) {
+        if (enable) {
+            enable_key_capture(key_name);
+        } else {
+            disable_key_capture(key_name);
+        }
+    }
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_id The key to capture
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_key_capture()
+     * \see disable_key_capture()
+     */
+    void set_key_capture_enabled(input::key key_id, bool enable) {
+        if (enable) {
+            enable_key_capture(key_id);
+        } else {
+            disable_key_capture(key_id);
+        }
+    }
 
     /**
      * \brief Marks this frame as able to receive keyboard input from a specific key.
@@ -380,7 +505,7 @@ public:
      * simultaneously. Keyboard input must be enabled for capture to take place.
      * \see disable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void enable_key_capture(const std::string& key_name);
@@ -393,7 +518,7 @@ public:
      * please use the overload taking a string.
      * \see disable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void enable_key_capture(input::key key_id);
@@ -403,10 +528,11 @@ public:
      * \param key_name The key for which to disable capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture(const std::string& key_name);
+
     /**
      * \brief Marks this frame as unable to receive keyboard input from a specific key.
      * \param key_id The key for which to disable capture
@@ -415,7 +541,7 @@ public:
      * please use the overload taking a string.
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture(input::key key_id);
@@ -425,7 +551,7 @@ public:
      * \param key_name The key to capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture();
@@ -1227,6 +1353,32 @@ public:
      * \param event_name The name of the event
      */
     void unregister_event(const std::string& event_name);
+
+    /**
+     * \brief Tells this frame whether to react to mouse drag or not.
+     * \param button_name The mouse button to react to
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_drag_enabled(const std::string& button_name, bool enable) {
+        if (enable) {
+            enable_drag(button_name);
+        } else {
+            disable_drag(button_name);
+        }
+    }
+
+    /**
+     * \brief Tells this frame whether to react to mouse drag or not.
+     * \param button_id The mouse button to react to
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_drag_enabled(input::mouse_button button_id, bool enable) {
+        if (enable) {
+            enable_drag(button_id);
+        } else {
+            disable_drag(button_id);
+        }
+    }
 
     /**
      * \brief Tells this frame to react to mouse drag.

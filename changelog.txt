@@ -139,6 +139,19 @@ Other changes:
  - gui: renamed strata to strata_data
  - gui: renamed frame_level/frameLevel to level
  - gui: renamed frame_strata/frameStrata to strata
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_non_space_wrap_enabled
+ - gui: renamed has_shadow to is_shadow_enabled
+ - gui: renamed set_shadow to set_shadow_enabled
+ - gui: renamed set_word_wrap to set_word_wrap_enabled
+ - gui: renamed can_word_wrap to is_word_wrap_enabled
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_word_wrap_enabled
+ - gui: renamed nonspacewrap to nonSpaceWrap
+ - gui: renamed enable_mouse* to set_mouse*_enabled
+ - gui: renamed enable_key* to set_key*_enabled
+ - gui: renamed is_password to is_password_mode_enabled
+ - gui: renamed set_password to set_password_mode_enabled
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()

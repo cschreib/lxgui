@@ -64,7 +64,7 @@ function ScrollTest:init_root_folder()
 
         folderButton:set_text(folder)
         local font = folderButton:get_normal_font_object()
-        font:set_word_wrap(false)
+        font:disable_word_wrap()
 
         if rootFolder.lastFolder then
             rootFolder.lastFolder.nextFolder = folderButton
@@ -133,7 +133,7 @@ function ScrollTest:develop_folder(id, toggle)
             folderButton.folderNum = 0
 
             folderButton:set_text(folder)
-            folderButton:get_normal_font_object():set_word_wrap(false)
+            folderButton:get_normal_font_object():disable_word_wrap()
 
             if parentFolder.lastFolder then
                 parentFolder.lastFolder.nextFolder = folderButton
@@ -289,7 +289,7 @@ function ScrollTest:set_folder(id)
             fileButton.file = file
         end
         fileButton:set_text(file)
-        fileButton:get_normal_font_object():set_word_wrap(false)
+        fileButton:get_normal_font_object():disable_word_wrap()
 
         if self.lastFile then
             fileButton:set_anchor("TOP_LEFT", self.lastFile, "BOTTOM_LEFT")

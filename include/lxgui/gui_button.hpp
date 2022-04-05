@@ -263,6 +263,18 @@ public:
     void set_disabled_text(utils::observer_ptr<font_string> fstr);
 
     /**
+     * \brief Enables or disables this button.
+     * \param enabled 'true' to enable, 'false' to disable
+     */
+    void set_enabled(bool enabled) {
+        if (enabled) {
+            enable();
+        } else {
+            disable();
+        }
+    }
+
+    /**
      * \brief Disables this button.
      * \note A disabled button doesn't receive any input.
      */

@@ -50,7 +50,7 @@ void font_string::render() const {
 
     text_->set_alpha(get_effective_alpha());
 
-    if (has_shadow_) {
+    if (is_shadow_enabled_) {
         text_->set_color(shadow_color_, true);
         text_->render(matrix4f::translation(round_to_pixel(pos + shadow_offset_)));
     }
@@ -77,7 +77,7 @@ std::string font_string::serialize(const std::string& tab) const {
     str << tab << "  |   # vertical  : " << utils::to_string(align_y_) << "\n";
     str << tab << "  #-###\n";
     str << tab << "  # NonSpaceW. : " << non_space_wrap_enabled_ << "\n";
-    if (has_shadow_) {
+    if (is_shadow_enabled_) {
         str << tab << "  # Shadow off.: (" << shadow_offset_.x << ", " << shadow_offset_.y << ")\n";
         str << tab << "  # Shadow col.: " << shadow_color_ << "\n";
     }
@@ -103,13 +103,13 @@ void font_string::copy_from(const region& obj) {
     this->set_line_spacing(fstr_obj->get_line_spacing());
     this->set_text(fstr_obj->get_text());
     this->set_outlined(fstr_obj->is_outlined());
-    if (fstr_obj->has_shadow()) {
-        this->set_shadow(true);
+    if (fstr_obj->is_shadow_enabled()) {
+        this->set_shadow_enabled(true);
         this->set_shadow_color(fstr_obj->get_shadow_color());
         this->set_shadow_offset(fstr_obj->get_shadow_offset());
     }
     this->set_text_color(fstr_obj->get_text_color());
-    this->set_non_space_wrap(fstr_obj->can_non_space_wrap());
+    this->set_non_space_wrap_enabled(fstr_obj->is_non_space_wrap_enabled());
 }
 
 const std::string& font_string::get_font_name() const {
@@ -206,8 +206,9 @@ void font_string::create_text_object_() {
     text_->set_alignment_x(align_x_);
     text_->set_alignment_y(align_y_);
     text_->set_tracking(spacing_);
-    text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
-    text_->enable_formatting(formatting_enabled_);
+    text_->set_word_wrap_enabled(word_wrap_enabled_);
+    text_->set_word_ellipsis_enabled(ellipsis_enabled_);
+    text_->set_formatting_enabled(formatting_enabled_);
 }
 
 void font_string::set_font(const std::string& font_name, float height) {
@@ -253,7 +254,7 @@ void font_string::set_shadow_color(const color& shadow_color) {
         return;
 
     shadow_color_ = shadow_color;
-    if (has_shadow_ && !is_virtual_)
+    if (is_shadow_enabled_ && !is_virtual_)
         notify_renderer_need_redraw();
 }
 
@@ -262,7 +263,7 @@ void font_string::set_shadow_offset(const vector2f& shadow_offset) {
         return;
 
     shadow_offset_ = shadow_offset;
-    if (has_shadow_ && !is_virtual_)
+    if (is_shadow_enabled_ && !is_virtual_)
         notify_renderer_need_redraw();
 }
 
@@ -308,7 +309,7 @@ void font_string::set_text_color(const color& text_color) {
         notify_renderer_need_redraw();
 }
 
-bool font_string::can_non_space_wrap() const {
+bool font_string::is_non_space_wrap_enabled() const {
     return non_space_wrap_enabled_;
 }
 
@@ -337,43 +338,52 @@ const utils::ustring& font_string::get_text() const {
     return content_;
 }
 
-void font_string::set_non_space_wrap(bool can_non_space_wrap) {
-    if (non_space_wrap_enabled_ == can_non_space_wrap)
+void font_string::set_non_space_wrap_enabled(bool is_non_space_wrap_enabled) {
+    if (non_space_wrap_enabled_ == is_non_space_wrap_enabled)
         return;
 
-    non_space_wrap_enabled_ = can_non_space_wrap;
+    non_space_wrap_enabled_ = is_non_space_wrap_enabled;
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
 
-bool font_string::has_shadow() const {
-    return has_shadow_;
+bool font_string::is_shadow_enabled() const {
+    return is_shadow_enabled_;
 }
 
-void font_string::set_shadow(bool has_shadow) {
-    if (has_shadow_ == has_shadow)
+void font_string::set_shadow_enabled(bool is_shadow_enabled) {
+    if (is_shadow_enabled_ == is_shadow_enabled)
         return;
 
-    has_shadow_ = has_shadow;
+    is_shadow_enabled_ = is_shadow_enabled;
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
 
-void font_string::set_word_wrap(bool can_word_wrap, bool add_ellipsis) {
-    word_wrap_enabled_ = can_word_wrap;
-    ellipsis_enabled_  = add_ellipsis;
+void font_string::set_word_wrap_enabled(bool enabled) {
+    word_wrap_enabled_ = enabled;
     if (text_)
-        text_->enable_word_wrap(word_wrap_enabled_, ellipsis_enabled_);
+        text_->set_word_wrap_enabled(word_wrap_enabled_);
 }
 
-bool font_string::can_word_wrap() const {
+bool font_string::is_word_wrap_enabled() const {
     return word_wrap_enabled_;
 }
 
-void font_string::enable_formatting(bool formatting) {
+void font_string::set_word_ellipsis_enabled(bool enabled) {
+    ellipsis_enabled_ = enabled;
+    if (text_)
+        text_->set_word_ellipsis_enabled(ellipsis_enabled_);
+}
+
+bool font_string::is_word_ellipsis_enabled() const {
+    return ellipsis_enabled_;
+}
+
+void font_string::set_formatting_enabled(bool formatting) {
     formatting_enabled_ = formatting;
     if (text_)
-        text_->enable_formatting(formatting_enabled_);
+        text_->set_formatting_enabled(formatting_enabled_);
 }
 
 bool font_string::is_formatting_enabled() const {
