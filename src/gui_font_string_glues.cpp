@@ -71,7 +71,7 @@ namespace lxgui::gui {
 
 void font_string::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<font_string>(
-        "FontString", sol::base_classes, sol::bases<region, layered_region>(),
+        font_string::class_name, sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index, member_function<&font_string::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&font_string::set_lua_member_>());
 

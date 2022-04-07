@@ -59,9 +59,9 @@ namespace lxgui::gui {
 
 void edit_box::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<edit_box>(
-        "EditBox", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
-        member_function<&edit_box::get_lua_member_>(), sol::meta_function::new_index,
-        member_function<&edit_box::set_lua_member_>());
+        edit_box::class_name, sol::base_classes, sol::bases<region, frame>(),
+        sol::meta_function::index, member_function<&edit_box::get_lua_member_>(),
+        sol::meta_function::new_index, member_function<&edit_box::set_lua_member_>());
 
     /** @function add_history_line
      */

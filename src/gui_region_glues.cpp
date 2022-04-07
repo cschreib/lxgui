@@ -155,7 +155,7 @@ sol::object region::get_lua_member_(const std::string& key) const {
 
 void region::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<region>(
-        "Region", sol::meta_function::index, member_function<&region::get_lua_member_>(),
+        region::class_name, sol::meta_function::index, member_function<&region::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&region::set_lua_member_>());
 
     /** @function get_alpha
