@@ -152,6 +152,7 @@ Other changes:
  - gui: renamed enable_key* to set_key*_enabled
  - gui: renamed is_password to is_password_mode_enabled
  - gui: renamed set_password to set_password_mode_enabled
+ - gui: renamed blink_period/blinkPeriod to blink_time/blinkTime
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()

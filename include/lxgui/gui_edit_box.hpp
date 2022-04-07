@@ -171,16 +171,16 @@ public:
     std::size_t get_letter_count() const;
 
     /**
-     * \brief Sets the carret's blink speed.
-     * \param blink_period The number of seconds to wait between each blink
+     * \brief Sets the carret's blink time.
+     * \param blink_time The number of seconds to wait between each blink
      */
-    void set_blink_period(double blink_period);
+    void set_blink_time(double blink_time);
 
     /**
-     * \brief Returns the carret's blink speed.
-     * \return the carret's blink speed (time in seconds between each blink)
+     * \brief Returns the carret's blink time.
+     * \return the carret's blink time (time in seconds between each blink)
      */
-    double get_blink_period() const;
+    double get_blink_time() const;
 
     /**
      * \brief Makes this edit_box allow numeric characters only.
@@ -406,8 +406,8 @@ protected:
     std::size_t                  selection_end_pos_   = 0u;
     bool                         is_text_selected_    = false;
 
-    utils::observer_ptr<texture> carret_       = nullptr;
-    double                       blink_period_ = 0.5;
+    utils::observer_ptr<texture> carret_     = nullptr;
+    double                       blink_time_ = 0.5;
     utils::periodic_timer        carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;

@@ -11,8 +11,8 @@ void edit_box::parse_attributes_(const layout_node& node) {
     if (const layout_attribute* attr = node.try_get_attribute("letters"))
         set_max_letters(attr->get_value<std::size_t>());
 
-    if (const layout_attribute* attr = node.try_get_attribute("blinkPeriod"))
-        set_blink_period(attr->get_value<float>());
+    if (const layout_attribute* attr = node.try_get_attribute("blinkTime"))
+        set_blink_time(attr->get_value<float>());
 
     if (const layout_attribute* attr = node.try_get_attribute("numeric"))
         set_numeric_only(attr->get_value<bool>());

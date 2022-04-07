@@ -18,7 +18,7 @@ namespace lxgui::gui {
 
 edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_attributes& attr) :
     frame(block, mgr, attr),
-    carret_timer_(blink_period_, utils::periodic_timer::start_type::first_tick, false) {
+    carret_timer_(blink_time_, utils::periodic_timer::start_type::first_tick, false) {
 
     initialize_(*this, attr);
 
@@ -46,7 +46,7 @@ void edit_box::copy_from(const region& obj) {
         return;
 
     this->set_max_letters(box_obj->get_max_letters());
-    this->set_blink_period(box_obj->get_blink_period());
+    this->set_blink_time(box_obj->get_blink_time());
     this->set_numeric_only(box_obj->is_numeric_only());
     this->set_positive_only(box_obj->is_positive_only());
     this->set_integer_only(box_obj->is_integer_only());
@@ -361,17 +361,17 @@ std::size_t edit_box::get_letter_count() const {
     return unicode_text_.size();
 }
 
-void edit_box::set_blink_period(double blink_period) {
-    if (blink_period_ == blink_period)
+void edit_box::set_blink_time(double blink_time) {
+    if (blink_time_ == blink_time)
         return;
 
-    blink_period_ = blink_period;
+    blink_time_ = blink_time;
     carret_timer_ =
-        utils::periodic_timer(blink_period_, utils::periodic_timer::start_type::first_tick, false);
+        utils::periodic_timer(blink_time_, utils::periodic_timer::start_type::first_tick, false);
 }
 
-double edit_box::get_blink_period() const {
-    return blink_period_;
+double edit_box::get_blink_time() const {
+    return blink_time_;
 }
 
 void edit_box::set_numeric_only(bool numeric_only) {

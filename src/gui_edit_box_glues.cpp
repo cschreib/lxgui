@@ -81,9 +81,9 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("enable_password_mode", member_function<&edit_box::enable_password_mode>());
 
-    /** @function get_blink_period
+    /** @function get_blink_time
      */
-    type.set_function("get_blink_period", member_function<&edit_box::get_blink_period>());
+    type.set_function("get_blink_time", member_function<&edit_box::get_blink_time>());
 
     /** @function get_cursor_position
      */
@@ -151,9 +151,9 @@ void edit_box::register_on_lua(sol::state& lua) {
     type.set_function(
         "is_password_mode_enabled", member_function<&edit_box::is_password_mode_enabled>());
 
-    /** @function set_blink_period
+    /** @function set_blink_time
      */
-    type.set_function("set_blink_period", member_function<&edit_box::set_blink_period>());
+    type.set_function("set_blink_time", member_function<&edit_box::set_blink_time>());
 
     /** @function set_cursor_position
      */
