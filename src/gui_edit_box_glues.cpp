@@ -106,9 +106,8 @@ void edit_box::register_on_lua(sol::state& lua) {
     /** @function get_number
      */
     type.set_function("get_number", [](const edit_box& self) {
-        // TODO: use localizer's locale for that
-        // https://github.com/cschreib/lxgui/issues/88
-        return utils::from_string<double>(self.get_text()).value_or(0.0);
+        const auto& locale = self.get_manager().get_localizer().get_locale();
+        return utils::from_string<double>(locale, self.get_text()).value_or(0.0);
     });
 
     /** @function get_text

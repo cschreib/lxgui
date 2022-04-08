@@ -2,6 +2,7 @@
 
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_font_string.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_quad.hpp"
@@ -627,7 +628,24 @@ void edit_box::notify_focus(bool focus) {
         unlight_text();
     }
 
+    alive_checker checker(*this);
     base::notify_focus(focus);
+    if (!checker.is_alive())
+        return;
+
+    if (check_text_()) {
+        iter_carret_pos_ = unicode_text_.end();
+        update_displayed_text_();
+        update_carret_position_();
+
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
+    }
 }
 
 void edit_box::notify_scaling_factor_updated() {
@@ -732,21 +750,23 @@ bool edit_box::check_text_() {
         modified = true;
     }
 
-    // TODO: use localizer's locale for these checks
-    // https://github.com/cschreib/lxgui/issues/88
-    if (is_numeric_only_ && !utils::is_number(unicode_text_)) {
-        unicode_text_.clear();
-        return true;
-    }
+    if (is_numeric_only_) {
+        const auto& locale = get_manager().get_localizer().get_locale();
+        if (!utils::is_number(locale, unicode_text_)) {
+            unicode_text_.clear();
+            return true;
+        }
 
-    if (is_integer_only_ && !utils::is_integer(unicode_text_)) {
-        unicode_text_.clear();
-        return true;
-    }
+        if (is_integer_only_ && !utils::is_integer(locale, unicode_text_)) {
+            unicode_text_.clear();
+            return true;
+        }
 
-    if (is_positive_only_ && utils::from_string<double>(unicode_text_).value_or(-1.0) < 0.0) {
-        unicode_text_.clear();
-        return true;
+        if (is_positive_only_ &&
+            utils::from_string<double>(locale, unicode_text_).value_or(-1.0) < 0.0) {
+            unicode_text_.clear();
+            return true;
+        }
     }
 
     return modified;
@@ -897,27 +917,6 @@ bool edit_box::add_char_(char32_t c) {
 
     if (get_letter_count() >= max_letters_)
         return false;
-
-    // TODO: use localizer for these checks, if possible
-    // https://github.com/cschreib/lxgui/issues/88
-    if (is_numeric_only_) {
-        if (c == U'.') {
-            if (is_integer_only_)
-                return false;
-
-            if (unicode_text_.find(U'.') != utils::ustring::npos)
-                return false;
-        } else if (c == U'+' || c == U'-') {
-            if (is_positive_only_)
-                return false;
-
-            if (iter_carret_pos_ != unicode_text_.begin() ||
-                unicode_text_.find(U'+') != utils::ustring::npos ||
-                unicode_text_.find(U'-') != utils::ustring::npos)
-                return false;
-        } else if (!utils::is_number(c))
-            return false;
-    }
 
     iter_carret_pos_ = unicode_text_.insert(iter_carret_pos_, c) + 1;
 
