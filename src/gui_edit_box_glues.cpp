@@ -69,9 +69,9 @@ void edit_box::register_on_lua(sol::state& lua) {
         self.add_history_line(utils::utf8_to_unicode(line));
     });
 
-    /** @function clear_history
+    /** @function clear_history_lines
      */
-    type.set_function("clear_history", member_function<&edit_box::clear_history>());
+    type.set_function("clear_history_lines", member_function<&edit_box::clear_history_lines>());
 
     /** @function disable_password_mode
      */

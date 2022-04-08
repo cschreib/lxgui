@@ -254,10 +254,10 @@ public:
      * \brief Allows this edit_box to have several lines in it.
      * \param multi_line 'true' to allow several lines in this edit_box
      * \note The behavior of a "multi line" edit_box is very different from
-     * a single line one.<br>
-     * History lines are only available to single line edit_boxes.<br>
-     * Scrolling in a single line edit_box is done horizontally, while
-     * it is only done vertically in a multi line one.
+     * a single line one. History lines are only available to single-line edit_boxes.
+     * Scrolling in a single-line edit_box is done horizontally, while it is only done
+     * vertically in a multi-line one.
+     * \warning Multi-line edit_box is not yet fully implemented!
      */
     void set_multi_line(bool multi_line);
 
@@ -294,7 +294,7 @@ public:
     const std::vector<utils::ustring>& get_history_lines() const;
 
     /// Clears the history line list.
-    void clear_history();
+    void clear_history_lines();
 
     /**
      * \brief Sets whether keyboard arrows move the carret or not.

@@ -92,7 +92,7 @@ Other changes:
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
  - gui: added set_cursor_position()/get_cursor_position() to edit_box
- - gui: added clear_history() to edit_box
+ - gui: added clear_history_lines() to edit_box
  - gui: added clipboard support to edit_box
  - gui: added automatic un-focus of edit_box when clicking outside of the box
  - gui: added frame::get_script

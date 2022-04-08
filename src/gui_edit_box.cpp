@@ -507,7 +507,7 @@ const std::vector<utils::ustring>& edit_box::get_history_lines() const {
     return history_line_list_;
 }
 
-void edit_box::clear_history() {
+void edit_box::clear_history_lines() {
     history_line_list_.clear();
     current_history_line_ = std::numeric_limits<std::size_t>::max();
 }
