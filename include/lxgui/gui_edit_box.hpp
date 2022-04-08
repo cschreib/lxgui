@@ -371,7 +371,7 @@ protected:
     void create_highlight_();
     void create_carret_();
 
-    void check_text_();
+    bool check_text_();
     void update_displayed_text_();
     void update_font_string_();
     void update_carret_position_();
@@ -388,7 +388,6 @@ protected:
     utils::ustring           unicode_text_;
     utils::ustring           displayed_text_;
     utils::ustring::iterator iter_carret_pos_;
-    utils::ustring::iterator iter_carret_pos_old_;
 
     std::size_t display_pos_        = 0;
     std::size_t num_letters_        = 0;

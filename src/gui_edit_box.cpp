@@ -22,8 +22,7 @@ edit_box::edit_box(utils::control_block& block, manager& mgr, const frame_core_a
 
     initialize_(*this, attr);
 
-    iter_carret_pos_     = unicode_text_.begin();
-    iter_carret_pos_old_ = unicode_text_.begin();
+    iter_carret_pos_ = unicode_text_.begin();
 
     enable_mouse();
     enable_drag(input::mouse_button::left);
@@ -92,13 +91,6 @@ void edit_box::update(float delta) {
             }
         }
     }
-
-    if (iter_carret_pos_ != iter_carret_pos_old_) {
-        iter_carret_pos_old_ = iter_carret_pos_;
-        fire_script("OnCursorChanged");
-        if (!checker.is_alive())
-            return;
-    }
 }
 
 void edit_box::fire_script(const std::string& script_name, const event_data& data) {
@@ -161,6 +153,10 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
             fire_script("OnTextChanged");
             if (!checker.is_alive())
                 return;
+
+            fire_script("OnCursorChanged");
+            if (!checker.is_alive())
+                return;
         }
     } else if (script_name == "OnSizeChanged") {
         update_displayed_text_();
@@ -183,6 +179,10 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
                 iter_carret_pos_     = unicode_text_.begin() + selection_start_pos_;
                 update_carret_position_();
             }
+
+            fire_script("OnCursorChanged");
+            if (!checker.is_alive())
+                return;
         }
     } else if (script_name == "OnMouseDown") {
         set_focus(true);
@@ -191,7 +191,11 @@ void edit_box::fire_script(const std::string& script_name, const event_data& dat
 
         unlight_text();
 
-        move_carret_at_({data.get<float>(2), data.get<float>(3)});
+        if (move_carret_at_({data.get<float>(2), data.get<float>(3)})) {
+            fire_script("OnCursorChanged");
+            if (!checker.is_alive())
+                return;
+        }
     }
 }
 
@@ -214,6 +218,10 @@ void edit_box::set_text(const utils::ustring& content) {
         return;
 
     fire_script("OnTextChanged");
+    if (!checker.is_alive())
+        return;
+
+    fire_script("OnCursorChanged");
     if (!checker.is_alive())
         return;
 }
@@ -315,6 +323,15 @@ void edit_box::insert_after_cursor(const utils::ustring& content) {
         update_displayed_text_();
         update_font_string_();
         update_carret_position_();
+
+        alive_checker checker(*this);
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -328,6 +345,11 @@ void edit_box::set_cursor_position(std::size_t pos) {
 
     iter_carret_pos_ = unicode_text_.begin() + pos;
     update_carret_position_();
+
+    alive_checker checker(*this);
+    fire_script("OnCursorChanged");
+    if (!checker.is_alive())
+        return;
 }
 
 void edit_box::set_max_letters(std::size_t max_letters) {
@@ -339,17 +361,31 @@ void edit_box::set_max_letters(std::size_t max_letters) {
     if (max_letters_ != max_letters) {
         max_letters_ = max_letters;
 
-        std::size_t carret_pos = iter_carret_pos_ - unicode_text_.begin();
+        const std::size_t carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
-        check_text_();
+        if (check_text_()) {
+            bool cursor_changed = false;
+            if (carret_pos > max_letters_) {
+                iter_carret_pos_ = unicode_text_.end();
+                update_displayed_text_();
+                update_font_string_();
+                update_carret_position_();
+                cursor_changed = true;
+            } else {
+                iter_carret_pos_ = unicode_text_.begin() + carret_pos;
+            }
 
-        if (carret_pos > max_letters_) {
-            iter_carret_pos_ = unicode_text_.end();
-            update_displayed_text_();
-            update_font_string_();
-            update_carret_position_();
-        } else
-            iter_carret_pos_ = unicode_text_.begin() + carret_pos;
+            alive_checker checker(*this);
+            fire_script("OnTextChanged");
+            if (!checker.is_alive())
+                return;
+
+            if (cursor_changed) {
+                fire_script("OnCursorChanged");
+                if (!checker.is_alive())
+                    return;
+            }
+        }
     }
 }
 
@@ -380,11 +416,19 @@ void edit_box::set_numeric_only(bool numeric_only) {
 
     is_numeric_only_ = numeric_only;
 
-    if (is_numeric_only_) {
-        check_text_();
+    if (is_numeric_only_ && check_text_()) {
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
         update_carret_position_();
+
+        alive_checker checker(*this);
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -394,11 +438,19 @@ void edit_box::set_positive_only(bool positive_only) {
 
     is_positive_only_ = positive_only;
 
-    if (is_numeric_only_ && is_positive_only_) {
-        check_text_();
+    if (is_numeric_only_ && is_positive_only_ && check_text_()) {
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
         update_carret_position_();
+
+        alive_checker checker(*this);
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -408,11 +460,19 @@ void edit_box::set_integer_only(bool integer_only) {
 
     is_integer_only_ = integer_only;
 
-    if (is_numeric_only_ && is_integer_only_) {
-        check_text_();
+    if (is_numeric_only_ && is_integer_only_ && check_text_()) {
         iter_carret_pos_ = unicode_text_.end();
         update_displayed_text_();
         update_carret_position_();
+
+        alive_checker checker(*this);
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -454,11 +514,25 @@ void edit_box::set_multi_line(bool multi_line) {
         font_string_->set_word_ellipsis_enabled(is_multi_line_);
     }
 
-    check_text_();
-    iter_carret_pos_ = unicode_text_.end();
+    bool text_changed = check_text_();
+    if (text_changed) {
+        iter_carret_pos_ = unicode_text_.end();
+    }
+
     update_displayed_text_();
     update_carret_position_();
-    clear_history();
+    clear_history_lines();
+
+    if (text_changed) {
+        alive_checker checker(*this);
+        fire_script("OnTextChanged");
+        if (!checker.is_alive())
+            return;
+
+        fire_script("OnCursorChanged");
+        if (!checker.is_alive())
+            return;
+    }
 }
 
 bool edit_box::is_multi_line() const {
@@ -651,26 +725,31 @@ void edit_box::create_carret_() {
     update_carret_position_();
 }
 
-void edit_box::check_text_() {
-    if (unicode_text_.size() > max_letters_)
+bool edit_box::check_text_() {
+    bool modified = false;
+    if (unicode_text_.size() > max_letters_) {
         unicode_text_.resize(max_letters_);
+        modified = true;
+    }
 
     // TODO: use localizer's locale for these checks
     // https://github.com/cschreib/lxgui/issues/88
     if (is_numeric_only_ && !utils::is_number(unicode_text_)) {
         unicode_text_.clear();
-        return;
+        return true;
     }
 
     if (is_integer_only_ && !utils::is_integer(unicode_text_)) {
         unicode_text_.clear();
-        return;
+        return true;
     }
 
     if (is_positive_only_ && utils::from_string<double>(unicode_text_).value_or(-1.0) < 0.0) {
         unicode_text_.clear();
-        return;
+        return true;
     }
+
+    return modified;
 }
 
 void edit_box::update_displayed_text_() {
@@ -985,8 +1064,9 @@ bool edit_box::move_carret_vertically_(bool down) {
             carret_timer_.zero();
 
             return true;
-        } else
-            return false;
+        }
+
+        return false;
     }
 }
 
@@ -995,17 +1075,11 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
 
     if (key_id == key::k_return || key_id == key::k_numpadenter) {
         if (is_multi_line_) {
-            if (add_char_(U'\n')) {
-                event_data key_event;
-                key_event.add(std::string("\n"));
-                fire_script("OnChar", key_event);
-                if (!checker.is_alive())
-                    return;
-
-                fire_script("OnTextChanged");
-                if (!checker.is_alive())
-                    return;
-            }
+            event_data key_event;
+            key_event.add(std::string("\n"));
+            fire_script("OnChar", key_event);
+            if (!checker.is_alive())
+                return;
         }
     } else if (key_id == key::k_end) {
         std::size_t previous_carret_pos = get_cursor_position();
@@ -1035,16 +1109,21 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
         return;
     } else if (key_id == key::k_back || key_id == key::k_delete) {
         if (is_text_selected_ || key_id == key::k_delete || move_carret_horizontally_(false)) {
-            remove_char_();
-            fire_script("OnTextChanged");
-            if (!checker.is_alive())
-                return;
+            if (remove_char_()) {
+                fire_script("OnTextChanged");
+                if (!checker.is_alive())
+                    return;
+
+                fire_script("OnCursorChanged");
+                if (!checker.is_alive())
+                    return;
+            }
         }
     } else if (
         key_id == key::k_left || key_id == key::k_right ||
         (is_multi_line_ && (key_id == key::k_up || key_id == key::k_down))) {
         if (!are_arrows_ignored_) {
-            std::size_t previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
+            const std::size_t previous_carret_pos = iter_carret_pos_ - unicode_text_.begin();
 
             if (key_id == key::k_left || key_id == key::k_right) {
                 if (is_text_selected_ && !shift_is_pressed) {
@@ -1056,11 +1135,25 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
 
                     iter_carret_pos_ = unicode_text_.begin() + offset;
                     update_carret_position_();
-                } else
-                    move_carret_horizontally_(key_id == key::k_right);
+
+                    fire_script("OnCursorChanged");
+                    if (!checker.is_alive())
+                        return;
+                } else {
+                    if (move_carret_horizontally_(key_id == key::k_right)) {
+                        fire_script("OnCursorChanged");
+                        if (!checker.is_alive())
+                            return;
+                    }
+                }
             } else {
-                if (is_multi_line_)
-                    move_carret_vertically_(key_id == key::k_down);
+                if (is_multi_line_) {
+                    if (move_carret_vertically_(key_id == key::k_down)) {
+                        fire_script("OnCursorChanged");
+                        if (!checker.is_alive())
+                            return;
+                    }
+                }
             }
 
             if (shift_is_pressed) {
@@ -1112,9 +1205,20 @@ void edit_box::process_key_(key key_id, bool shift_is_pressed, bool ctrl_is_pres
             get_manager().get_window().set_clipboard_content(selected);
         }
     } else if (key_id == key::k_v && ctrl_is_pressed) {
+        bool text_added = false;
         for (char32_t c : get_manager().get_window().get_clipboard_content()) {
             if (!add_char_(c))
                 break;
+
+            text_added = true;
+        }
+
+        if (text_added) {
+            fire_script("OnTextChanged");
+            if (!checker.is_alive())
+                return;
+
+            fire_script("OnCursorChanged");
             if (!checker.is_alive())
                 return;
         }
