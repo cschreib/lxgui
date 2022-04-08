@@ -8,15 +8,12 @@
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <locale>
 #include <magic_enum.hpp>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
-
-namespace std {
-class locale;
-}
 
 /** \cond INCLUDE_INTERNALS_IN_DOC
  */
