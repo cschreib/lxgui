@@ -70,10 +70,10 @@ void edit_box::copy_from(const region& obj) {
     }
 }
 
-void edit_box::update(float delta) {
+void edit_box::update_(float delta) {
     alive_checker checker(*this);
 
-    base::update(delta);
+    base::update_(delta);
     if (!checker.is_alive())
         return;
 

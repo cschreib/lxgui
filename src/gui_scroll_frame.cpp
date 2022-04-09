@@ -167,13 +167,13 @@ float scroll_frame::get_vertical_scroll_range() const {
     return scroll_range_.y;
 }
 
-void scroll_frame::update(float delta) {
+void scroll_frame::update_(float delta) {
     vector2f old_child_size;
     if (scroll_child_)
         old_child_size = scroll_child_->get_apparent_dimensions();
 
     alive_checker checker(*this);
-    base::update(delta);
+    base::update_(delta);
     if (!checker.is_alive())
         return;
 

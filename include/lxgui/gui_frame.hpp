@@ -295,7 +295,7 @@ public:
      * to use the frame again after calling this function, use
      * the helper class alive_checker.
      */
-    void update(float delta) override;
+    void update(float delta) final;
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -1343,6 +1343,25 @@ public:
     virtual void fire_script(const std::string& script_name, const event_data& data = event_data{});
 
     /**
+     * \brief Sets a maximum update rate (in updates per seconds).
+     * \param rate The new rate, or 0 to update as often as possible
+     * \note The default is 0, which means the frame will be updated on each frame.
+     * If set to a value of 10, then the frame will be updated a maximum of 10 times per second.
+     * This can be useful to avoid wasting time updating a frame constantly, when less frequent
+     * updates would be sufficient.
+     * \warning Because update is triggered from parent to child, a frame's update rate will
+     * never be greater than that of its parent, even if this function is used to set the rate
+     * to a larger value.
+     */
+    void set_update_rate(float rate);
+
+    /**
+     * \brief Gets the maximum update rate (in upates per seconds).
+     * \return The maximum update rate (in upates per seconds)
+     */
+    float get_update_rate() const;
+
+    /**
      * \brief Tells this frame to react to a certain event.
      * \param event_name The name of the event
      */
@@ -1719,6 +1738,8 @@ protected:
 
     utils::observer_ptr<frame> parse_child_(const layout_node& node, const std::string& type);
 
+    virtual void update_(float delta);
+
     void check_position_();
 
     void add_level_(int amount);
@@ -1810,6 +1831,9 @@ protected:
     float max_height_ = std::numeric_limits<float>::infinity();
 
     float scale_ = 1.0f;
+
+    float update_rate_            = 0.0f;
+    float time_since_last_update_ = std::numeric_limits<float>::infinity();
 
     bool is_mouse_in_frame_ = false;
 

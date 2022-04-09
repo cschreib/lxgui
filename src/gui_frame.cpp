@@ -124,6 +124,7 @@ std::string frame::serialize(const std::string& tab) const {
     str << tab << "  # Min height : " << min_height_ << "\n";
     str << tab << "  # Max height : " << max_height_ << "\n";
     str << tab << "  # Scale      : " << scale_ << "\n";
+    str << tab << "  # Update rate : " << update_rate_ << "\n";
     if (title_region_) {
         str << tab << "  # Title reg.  :\n";
         str << tab << "  |-###\n";
@@ -225,6 +226,8 @@ void frame::copy_from(const region& obj) {
     this->set_min_dimensions(frame_obj->get_min_dimensions());
 
     this->set_scale(frame_obj->get_scale());
+
+    this->set_update_rate(frame_obj->get_update_rate());
 
     for (const auto& art : frame_obj->region_list_) {
         if (!art || art->is_manually_inherited())
@@ -1123,6 +1126,14 @@ void frame::unregister_event(const std::string& event_name) {
     event_receiver_.unregister_event(event_name);
 }
 
+void frame::set_update_rate(float rate) {
+    update_rate_ = rate;
+}
+
+float frame::get_update_rate() const {
+    return update_rate_;
+}
+
 void frame::enable_drag(const std::string& button_name) {
     reg_drag_list_.insert(button_name);
 }
@@ -1513,9 +1524,25 @@ void frame::update_borders_() {
 }
 
 void frame::update(float delta) {
-    alive_checker checker(*this);
-
     base::update(delta);
+
+    if (update_rate_ > 0) {
+        time_since_last_update_ += delta;
+
+        if (time_since_last_update_ < 1.0f / update_rate_) {
+            return;
+        }
+
+        delta = time_since_last_update_;
+    }
+
+    time_since_last_update_ = 0.0f;
+
+    update_(delta);
+}
+
+void frame::update_(float delta) {
+    alive_checker checker(*this);
 
     if (build_layer_list_flag_) {
         // Clear layers' content

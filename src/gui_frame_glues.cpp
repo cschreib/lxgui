@@ -536,6 +536,10 @@ void frame::register_on_lua(sol::state& lua) {
         member_function< // select the right overload for Lua
             static_cast<utils::observer_ptr<region> (frame::*)()>(&frame::get_title_region)>());
 
+    /** @function get_update_rate
+     */
+    type.set_function("get_update_rate", member_function<&frame::get_update_rate>());
+
     /** @function has_script
      */
     type.set_function("has_script", member_function<&frame::has_script>());
@@ -793,6 +797,10 @@ void frame::register_on_lua(sol::state& lua) {
     /** @function set_top_level
      */
     type.set_function("set_top_level", member_function<&frame::set_top_level>());
+
+    /** @function set_update_rate
+     */
+    type.set_function("set_update_rate", member_function<&frame::set_update_rate>());
 
     /** @function set_user_placed
      */

@@ -44,15 +44,6 @@ public:
     ~scroll_frame() override;
 
     /**
-     * \brief Updates this region's logic.
-     * \param delta Time spent since last update
-     * \note Triggered callbacks could destroy the frame. If you need
-     * to use the frame again after calling this function, use
-     * the helper class alive_checker.
-     */
-    void update(float delta) override;
-
-    /**
      * \brief Copies a region's parameters into this scroll_frame (inheritance).
      * \param obj The region to copy
      */
@@ -175,6 +166,8 @@ public:
 protected:
     void         parse_all_nodes_before_children_(const layout_node& node) override;
     virtual void parse_scroll_child_node_(const layout_node& node);
+
+    void update_(float delta) override;
 
     const std::vector<std::string>& get_type_list_() const override;
 

@@ -72,6 +72,8 @@ void frame::parse_attributes_(const layout_node& node) {
         set_clamped_to_screen(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("autoFocus"))
         enable_auto_focus(attr->get_value<bool>());
+    if (const layout_attribute* attr = node.try_get_attribute("updateRate"))
+        set_update_rate(attr->get_value<float>());
 }
 
 void frame::parse_resize_bounds_node_(const layout_node& node) {

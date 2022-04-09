@@ -73,15 +73,6 @@ public:
     void copy_from(const region& obj) override;
 
     /**
-     * \brief Updates this region's logic.
-     * \param delta Time spent since last update
-     * \note Triggered callbacks could destroy the frame. If you need
-     * to use the frame again after calling this function, use
-     * the helper class alive_checker.
-     */
-    void update(float delta) override;
-
-    /**
      * \brief Calls a script.
      * \param script_name The name of the script
      * \param data Stores scripts arguments
@@ -364,6 +355,8 @@ protected:
     void parse_all_nodes_before_children_(const layout_node& node) override;
     void parse_font_string_node_(const layout_node& node);
     void parse_text_insets_node_(const layout_node& node);
+
+    void update_(float delta) override;
 
     const std::vector<std::string>& get_type_list_() const override;
 
