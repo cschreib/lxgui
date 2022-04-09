@@ -93,8 +93,9 @@ void renderer::render_quads(
 
     if (!is_quad_batching_enabled()) {
         // Render immediately
-        vertex_count_ += quad_list.size() * 4;
+        vertex_count_ += quad_list.size() * 6;
         render_quads_(mat, quad_list);
+        ++batch_count_;
         return;
     }
 
@@ -137,7 +138,7 @@ void renderer::flush_quad_batch() {
     if (cache.data.empty())
         return;
 
-    vertex_count_ += cache.data.size() * 4;
+    vertex_count_ += cache.data.size() * 6;
 
     if (cache.cache) {
         cache.cache->update(cache.data[0].data(), cache.data.size() * 4);
@@ -162,9 +163,11 @@ void renderer::render_cache(
         flush_quad_batch();
     }
 
-    vertex_count_ += cache.get_vertex_count() * 4;
+    vertex_count_ += cache.get_vertex_count();
 
     render_cache_(mat, cache, model_transform);
+
+    ++batch_count_;
 }
 
 bool renderer::is_quad_batching_enabled() const {
