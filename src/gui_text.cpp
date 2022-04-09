@@ -314,6 +314,7 @@ void text::set_text(const utils::ustring& content) {
         return;
 
     unicode_text_ = content;
+
     notify_cache_dirty_();
 }
 
@@ -328,8 +329,7 @@ void text::set_color(const color& c, bool force_color) {
     color_       = c;
     force_color_ = force_color;
 
-    if (renderer_.is_vertex_cache_enabled())
-        notify_cache_dirty_();
+    notify_vertex_cache_dirty_();
 }
 
 const color& text::get_color() const {
@@ -341,8 +341,8 @@ void text::set_alpha(float alpha) {
         return;
 
     alpha_ = alpha;
-    if (renderer_.is_vertex_cache_enabled())
-        notify_cache_dirty_();
+
+    notify_vertex_cache_dirty_();
 }
 
 float text::get_alpha() const {
@@ -355,6 +355,7 @@ void text::set_box_dimensions(float box_width, float box_height) {
 
     box_width_  = box_width;
     box_height_ = box_height;
+
     notify_cache_dirty_();
 }
 
@@ -363,6 +364,7 @@ void text::set_box_width(float box_width) {
         return;
 
     box_width_ = box_width;
+
     notify_cache_dirty_();
 }
 
@@ -371,18 +373,17 @@ void text::set_box_height(float box_height) {
         return;
 
     box_height_ = box_height;
+
     notify_cache_dirty_();
 }
 
 float text::get_width() const {
     update_();
-
     return width_;
 }
 
 float text::get_height() const {
     update_();
-
     return height_;
 }
 
@@ -443,6 +444,7 @@ void text::set_alignment_x(alignment_x align_x) {
         return;
 
     align_x_ = align_x;
+
     notify_cache_dirty_();
 }
 
@@ -451,6 +453,7 @@ void text::set_alignment_y(alignment_y align_y) {
         return;
 
     align_y_ = align_y;
+
     notify_cache_dirty_();
 }
 
@@ -467,6 +470,7 @@ void text::set_tracking(float tracking) {
         return;
 
     tracking_ = tracking;
+
     notify_cache_dirty_();
 }
 
@@ -479,6 +483,7 @@ void text::set_line_spacing(float line_spacing) {
         return;
 
     line_spacing_ = line_spacing;
+
     notify_cache_dirty_();
 }
 
@@ -491,6 +496,7 @@ void text::set_remove_starting_spaces(bool remove_starting_spaces) {
         return;
 
     remove_starting_spaces_ = remove_starting_spaces;
+
     notify_cache_dirty_();
 }
 
@@ -503,6 +509,7 @@ void text::set_word_wrap_enabled(bool wrap) {
         return;
 
     word_wrap_enabled_ = wrap;
+
     notify_cache_dirty_();
 }
 
@@ -515,6 +522,7 @@ void text::set_word_ellipsis_enabled(bool add_ellipsis) {
         return;
 
     ellipsis_enabled_ = add_ellipsis;
+
     notify_cache_dirty_();
 }
 
@@ -527,21 +535,32 @@ void text::set_formatting_enabled(bool formatting) {
         return;
 
     formatting_enabled_ = formatting;
-    if (renderer_.is_vertex_cache_enabled())
-        notify_cache_dirty_();
+
+    notify_vertex_cache_dirty_();
+}
+
+void text::set_use_vertex_cache(bool use_vertex_cache) {
+    use_vertex_cache_flag_ = use_vertex_cache;
+}
+
+bool text::get_use_vertex_cache() const {
+    return use_vertex_cache_flag_;
+}
+
+bool text::use_vertex_cache_() const {
+    return renderer_.is_vertex_cache_supported() && use_vertex_cache_flag_;
 }
 
 void text::render(const matrix4f& transform) const {
     if (!is_ready_ || unicode_text_.empty())
         return;
 
-    bool use_vertex_cache =
-        renderer_.is_vertex_cache_enabled() && !renderer_.is_quad_batching_enabled();
-
-    if ((use_vertex_cache && !vertex_cache_) || (use_vertex_cache && quad_list_.empty()))
-        update_cache_flag_ = true;
-
     update_();
+
+    bool use_vertex_cache = use_vertex_cache_();
+    if (use_vertex_cache) {
+        update_vertex_cache_();
+    }
 
     if (outline_font_) {
         if (const auto mat = outline_font_->get_texture().lock()) {
@@ -549,11 +568,12 @@ void text::render(const matrix4f& transform) const {
                 renderer_.render_cache(mat.get(), *outline_vertex_cache_, transform);
             } else {
                 std::vector<std::array<vertex, 4>> quads_copy = outline_quad_list_;
-                for (auto& quad : quads_copy)
+                for (auto& quad : quads_copy) {
                     for (std::size_t i = 0; i < 4; ++i) {
                         quad[i].pos = quad[i].pos * transform;
                         quad[i].col.a *= alpha_;
                     }
+                }
 
                 renderer_.render_quads(mat.get(), quads_copy);
             }
@@ -565,7 +585,7 @@ void text::render(const matrix4f& transform) const {
             renderer_.render_cache(mat.get(), *vertex_cache_, transform);
         } else {
             std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
-            for (auto& quad : quads_copy)
+            for (auto& quad : quads_copy) {
                 for (std::size_t i = 0; i < 4; ++i) {
                     quad[i].pos = quad[i].pos * transform;
 
@@ -575,6 +595,7 @@ void text::render(const matrix4f& transform) const {
 
                     quad[i].col.a *= alpha_;
                 }
+            }
 
             renderer_.render_quads(mat.get(), quads_copy);
         }
@@ -592,6 +613,10 @@ void text::render(const matrix4f& transform) const {
 
 void text::notify_cache_dirty_() const {
     update_cache_flag_ = true;
+}
+
+void text::notify_vertex_cache_dirty_() const {
+    update_vertex_cache_flag_ = true;
 }
 
 float text::round_to_pixel_(float value, utils::rounding_method method) const {
@@ -955,29 +980,46 @@ void text::update_() const {
         height_ = 0.0f;
     }
 
-    if (renderer_.is_vertex_cache_enabled() && !renderer_.is_quad_batching_enabled()) {
+    update_cache_flag_ = false;
+
+    notify_vertex_cache_dirty_();
+}
+
+void text::update_vertex_cache_() const {
+    if (!update_vertex_cache_flag_)
+        return;
+
+    if (!vertex_cache_)
+        vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
+
+    std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
+    for (auto& quad : quads_copy) {
+        for (std::size_t i = 0; i < 4; ++i) {
+            if (!formatting_enabled_ || force_color_ || quad[i].col == color::empty) {
+                quad[i].col = color_;
+            }
+
+            quad[i].col.a *= alpha_;
+        }
+    }
+
+    vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
+
+    if (outline_font_) {
         if (!outline_vertex_cache_)
             outline_vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
 
-        outline_vertex_cache_->update(outline_quad_list_[0].data(), outline_quad_list_.size() * 4);
-
-        if (!vertex_cache_)
-            vertex_cache_ = renderer_.create_vertex_cache(vertex_cache::type::quads);
-
-        std::vector<std::array<vertex, 4>> quads_copy = quad_list_;
-        for (auto& quad : quads_copy)
+        std::vector<std::array<vertex, 4>> outline_quads_copy = outline_quad_list_;
+        for (auto& quad : outline_quads_copy) {
             for (std::size_t i = 0; i < 4; ++i) {
-                if (!formatting_enabled_ || force_color_ || quad[i].col == color::empty) {
-                    quad[i].col = color_;
-                }
-
                 quad[i].col.a *= alpha_;
             }
+        }
 
-        vertex_cache_->update(quads_copy[0].data(), quads_copy.size() * 4);
+        outline_vertex_cache_->update(outline_quads_copy[0].data(), outline_quads_copy.size() * 4);
     }
 
-    update_cache_flag_ = false;
+    update_vertex_cache_flag_ = false;
 }
 
 std::array<vertex, 4> text::create_letter_quad_(const gui::font& font, char32_t c) const {

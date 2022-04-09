@@ -24,6 +24,8 @@ void font_string::render() const {
     if (!text_ || !is_ready_ || !is_visible())
         return;
 
+    text_->set_use_vertex_cache(is_vertex_cache_used_());
+
     vector2f pos;
 
     if (std::isinf(text_->get_box_width())) {
@@ -395,11 +397,31 @@ void font_string::set_text(const utils::ustring& content) {
         return;
 
     content_ = content;
+
     if (text_) {
         text_->set_text(content_);
         if (!is_virtual_)
             notify_borders_need_update();
     }
+}
+
+bool font_string::is_vertex_cache_used_() const {
+    auto& renderer = get_manager().get_renderer();
+    switch (vertex_cache_strategy_) {
+    case vertex_cache_strategy::always_disabled: return false;
+    case vertex_cache_strategy::prefer_enabled: return renderer.is_vertex_cache_enabled();
+    case vertex_cache_strategy::always_enabled: return true;
+    case vertex_cache_strategy::automatic:
+        return renderer.is_vertex_cache_enabled() && !renderer.is_quad_batching_enabled();
+    }
+}
+
+void font_string::set_vertex_cache_strategy(vertex_cache_strategy strategy) {
+    vertex_cache_strategy_ = strategy;
+}
+
+vertex_cache_strategy font_string::get_vertex_cache_strategy() const {
+    return vertex_cache_strategy_;
 }
 
 text* font_string::get_text_object() {

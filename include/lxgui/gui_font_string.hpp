@@ -9,6 +9,20 @@
 namespace lxgui::gui {
 
 /**
+ * \brief Strategy for using a vertex cache
+ */
+enum class vertex_cache_strategy {
+    /// Never use vertex cache.
+    always_disabled,
+    /// Use vertex cache if renderer supports and allows.
+    prefer_enabled,
+    /// Use vertex cache if renderer supports, even if not allowed.
+    always_enabled,
+    /// Choose automatically to maximize performance on common case.
+    automatic
+};
+
+/**
  * \brief A #layered_region that can draw text on the screen.
  * \details This class holds a string and a reference to a font, which
  * is used to draw the string on the screen. The appearance of
@@ -69,11 +83,11 @@ public:
 
     /**
      * \brief Adds or remove the outline around the text.
-     * \param is_outlined 'true' to enable the outline
+     * \param outlined 'true' to enable the outline
      * \note The thickness of this outline is constant and
      * does not depend on the font's size.
      */
-    void set_outlined(bool is_outlined);
+    void set_outlined(bool outlined);
 
     /**
      * \brief Check if this font_string is outlined.
@@ -277,10 +291,10 @@ public:
 
     /**
      * \brief Enables/disables word wrap.
-     * \param is_word_wrap_enabled 'true' to enable word wrap
+     * \param enabled 'true' to enable word wrap
      * \note Enabled by default.
      */
-    void set_word_wrap_enabled(bool is_word_wrap_enabled);
+    void set_word_wrap_enabled(bool enabled);
 
     /**
      * \brief Enables word wrap.
@@ -304,10 +318,10 @@ public:
 
     /**
      * \brief Sets whether to show an ellipsis "..." if words don't fit in the text box.
-     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
+     * \param enabled 'true' to put "..." at the end of a truncated line
      * \note Disabled by default.
      */
-    void set_word_ellipsis_enabled(bool add_ellipsis);
+    void set_word_ellipsis_enabled(bool enabled);
 
     /**
      * \brief Show an ellipsis "..." if words don't fit in the text box.
@@ -331,10 +345,10 @@ public:
 
     /**
      * \brief Enables color formatting.
-     * \param formatting 'true' to enable color formatting
+     * \param enabled 'true' to enable color formatting
      * \note Enabled by default. See text::set_formatting_enabled().
      */
-    void set_formatting_enabled(bool formatting);
+    void set_formatting_enabled(bool enabled);
 
     /**
      * \brief Enables color formatting.
@@ -357,6 +371,26 @@ public:
      * \return 'true' if color formatting is enabled
      */
     bool is_formatting_enabled() const;
+
+    /**
+     * \brief Selects the strategy for using vertex caches.
+     * \param strategy The new strategy
+     * \note The recommended value is the default, vertex_cache_strategy::automatic.
+     * This will automatically decide whether vertex caches should be used or not, based
+     * on what is expected to give the best performance for the common use case of mostly static
+     * text. If the displayed text changes very frequently, it is best to use the strategy
+     * vertex_cache_strategy::always_disabled. If the displayed text changes rarely and contains a
+     * large number of characters, it is best to use the strategy
+     * vertex_cache_strategy::prefer_enabled, or vertex_cache_strategy::always_enabled if you want
+     * to completely bypass the preferences set in the renderer configuration.
+     */
+    void set_vertex_cache_strategy(vertex_cache_strategy strategy);
+
+    /**
+     * \brief Gets the strategy for using vertex caches.
+     * \return The strategy for using vertex caches
+     */
+    vertex_cache_strategy get_vertex_cache_strategy() const;
 
     /**
      * \brief Sets the rendered text.
@@ -398,6 +432,7 @@ private:
     const std::vector<std::string>& get_type_list_() const override;
 
     void create_text_object_();
+    bool is_vertex_cache_used_() const;
 
     void update_borders_() override;
 
@@ -419,6 +454,8 @@ private:
     bool  ellipsis_enabled_       = true;
     bool  formatting_enabled_     = true;
     color text_color_             = color::white;
+
+    vertex_cache_strategy vertex_cache_strategy_ = vertex_cache_strategy::automatic;
 
     bool     is_shadow_enabled_ = false;
     color    shadow_color_      = color::black;

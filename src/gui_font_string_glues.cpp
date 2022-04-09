@@ -276,6 +276,12 @@ void font_string::register_on_lua(sol::state& lua) {
         return utils::unicode_to_utf8(self.get_text());
     });
 
+    /** @function get_vertex_cache_strategy
+     */
+    type.set_function("get_vertex_cache_strategy", [](const font_string& self) {
+        return utils::to_string(self.get_vertex_cache_strategy());
+    });
+
     /** @function is_formatting_enabled
      */
     type.set_function(
@@ -316,6 +322,19 @@ void font_string::register_on_lua(sol::state& lua) {
             [](font_string& self, const std::string& text) {
                 self.set_text(utils::utf8_to_unicode(text));
             }));
+
+    /** @function set_vertex_cache_strategy
+     */
+    type.set_function(
+        "set_vertex_cache_strategy", [](font_string& self, const std::string& strategy_name) {
+            if (auto strategy = utils::from_string<vertex_cache_strategy>(strategy_name);
+                strategy.has_value()) {
+                self.set_vertex_cache_strategy(strategy.value());
+            } else {
+                gui::out << gui::warning << "font_string:set_vertex_cache_strategy: "
+                         << "Unknown strategy: \"" << strategy_name << "\"." << std::endl;
+            }
+        });
 }
 
 } // namespace lxgui::gui

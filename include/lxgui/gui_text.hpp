@@ -393,6 +393,19 @@ public:
     quad create_letter_quad(char32_t c) const;
 
     /**
+     * \brief Sets whether this text object should use vertex caches or not.
+     * \note If vertex caches are not supported on the current rendering back end,
+     * this function has no effect.
+     */
+    void set_use_vertex_cache(bool use_vertex_cache);
+
+    /**
+     * \brief Checks if this text object is using vertex cache or not.
+     * \see set_use_vertex_cache()
+     */
+    bool get_use_vertex_cache() const;
+
+    /**
      * \brief Returns the renderer used to render this text.
      * \return The renderer used to render this text
      */
@@ -410,7 +423,10 @@ public:
 
 private:
     void update_() const;
+    void update_vertex_cache_() const;
+    bool use_vertex_cache_() const;
     void notify_cache_dirty_() const;
+    void notify_vertex_cache_dirty_() const;
 
     float round_to_pixel_(
         float value, utils::rounding_method method = utils::rounding_method::nearest) const;
@@ -446,6 +462,8 @@ private:
     mutable float       height_            = 0.0f;
     mutable std::size_t num_lines_         = 0u;
 
+    bool                                       use_vertex_cache_flag_    = false;
+    mutable bool                               update_vertex_cache_flag_ = false;
     mutable std::vector<std::array<vertex, 4>> quad_list_;
     mutable std::shared_ptr<vertex_cache>      vertex_cache_;
     mutable std::vector<std::array<vertex, 4>> outline_quad_list_;
