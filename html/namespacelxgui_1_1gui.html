@@ -232,8 +232,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classlxgui_1_1gui_1_1frame.html#a0bef6559bb78a221d16403a0729b89f5" title="Constructor.">frame</a> representing a variable-length bar.  <a href="classlxgui_1_1gui_1_1status__bar.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains frames sorted by level.  <a href="structlxgui_1_1gui_1_1strata.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1strata__data.html">strata_data</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains frames sorted by level.  <a href="structlxgui_1_1gui_1_1strata__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html">text</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to draw some text on the screen.  <a href="classlxgui_1_1gui_1_1text.html#details">More...</a><br /></td></tr>
@@ -325,6 +325,13 @@ Enumerations</h2></td></tr>
 <a class="el" href="namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3ba415290769594460e2e485922904f345d">constraint::y</a>
  }</td></tr>
 <tr class="separator:a67c9e76e9b8193bc3dc1b67c1f255f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e358520246a1f16ae5a0c35318c44d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3">vertex_cache_strategy</a> { <a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3a9ede198eccdaa4f500287f8338a8bbf8">vertex_cache_strategy::always_disabled</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3a1cc94809b914538e42bb5591c77beb89">vertex_cache_strategy::prefer_enabled</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3aba08383dcad1e3509423a0227f8f042f">vertex_cache_strategy::always_enabled</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3a2bd9c0ed00116be1258e0cc66617d7c8">vertex_cache_strategy::automatic</a>
+ }</td></tr>
+<tr class="memdesc:a1e358520246a1f16ae5a0c35318c44d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strategy for using a vertex cache.  <a href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3">More...</a><br /></td></tr>
+<tr class="separator:a1e358520246a1f16ae5a0c35318c44d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a012622f35ce097846b26a614c39d768e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768e">layer</a> { <br />
 &#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768ead229bbf31eaeebc7c88897732d8b932d">layer::background</a>, 
 <a class="el" href="namespacelxgui_1_1gui.html#a012622f35ce097846b26a614c39d768ea2de42fbb00305f8282310f1b3e10ce9a">layer::border</a>, 
@@ -347,19 +354,19 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a246cb1ee567c201f149a8765e79c0b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the rendering mode of a quad.  <a href="namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f">More...</a><br /></td></tr>
 <tr class="separator:a246cb1ee567c201f149a8765e79c0b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f62faad68736da3e6df7e8d92c293a6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> { <br />
-&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ad229bbf31eaeebc7c88897732d8b932d">frame_strata::background</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a53cced8d281a1a0ace3cb6594daaa4f7">frame_strata::low</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a075a3e36a0a52dcbc568c05788e8a713">frame_strata::medium</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a8d966b2253a917086c8604959e152243">frame_strata::high</a>, 
+<tr class="memitem:a14a0da829d3eadb084eee3198d7aa0a5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5">strata</a> { <br />
+&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5ad229bbf31eaeebc7c88897732d8b932d">strata::background</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a53cced8d281a1a0ace3cb6594daaa4f7">strata::low</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a075a3e36a0a52dcbc568c05788e8a713">strata::medium</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a8d966b2253a917086c8604959e152243">strata::high</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a91c7ec8d1c8bb75e853f70fee324a43b">frame_strata::dialog</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a74ba0736dad9b7236e2c7db4f4f4b874">frame_strata::fullscreen</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a2fca6e097e0ba64bb6dfb8ff34a81d21">frame_strata::fullscreen_dialog</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6addbfc1b6aa0ad4d79c5dac7aa3b44888">frame_strata::tooltip</a>
+&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a91c7ec8d1c8bb75e853f70fee324a43b">strata::dialog</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a74ba0736dad9b7236e2c7db4f4f4b874">strata::fullscreen</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5a2fca6e097e0ba64bb6dfb8ff34a81d21">strata::fullscreen_dialog</a>, 
+<a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5addbfc1b6aa0ad4d79c5dac7aa3b44888">strata::tooltip</a>
 <br />
  }</td></tr>
-<tr class="separator:a6f62faad68736da3e6df7e8d92c293a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a14a0da829d3eadb084eee3198d7aa0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e29b4cfd55276be4e7025f939cef4d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4d">alignment_x</a> { <a class="el" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4da811882fecd5c7618d7099ebbd39ea254">alignment_x::left</a>, 
 <a class="el" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4daadb115059e28d960fa8badfac5516667">alignment_x::center</a>, 
 <a class="el" href="namespacelxgui_1_1gui.html#a95e29b4cfd55276be4e7025f939cef4da7c4f29407893c334a6cb7a87bf045c0d">alignment_x::right</a>
@@ -905,40 +912,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a6f62faad68736da3e6df7e8d92c293a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f62faad68736da3e6df7e8d92c293a6">&#9670;&nbsp;</a></span>frame_strata</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">lxgui::gui::frame_strata</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6ad229bbf31eaeebc7c88897732d8b932d"></a>background&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a53cced8d281a1a0ace3cb6594daaa4f7"></a>low&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a075a3e36a0a52dcbc568c05788e8a713"></a>medium&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a8d966b2253a917086c8604959e152243"></a>high&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a91c7ec8d1c8bb75e853f70fee324a43b"></a>dialog&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a74ba0736dad9b7236e2c7db4f4f4b874"></a>fullscreen&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6a2fca6e097e0ba64bb6dfb8ff34a81d21"></a>fullscreen_dialog&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6f62faad68736da3e6df7e8d92c293a6addbfc1b6aa0ad4d79c5dac7aa3b44888"></a>tooltip&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00018">18</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a012622f35ce097846b26a614c39d768e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a012622f35ce097846b26a614c39d768e">&#9670;&nbsp;</a></span>layer</h2>
 
@@ -1033,6 +1006,76 @@ Variables</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="gui__anchor_8hpp_source.html#l00017">17</a> of file <a class="el" href="gui__anchor_8hpp_source.html">gui_anchor.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a14a0da829d3eadb084eee3198d7aa0a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14a0da829d3eadb084eee3198d7aa0a5">&#9670;&nbsp;</a></span>strata</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacelxgui_1_1gui.html#a14a0da829d3eadb084eee3198d7aa0a5">lxgui::gui::strata</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5ad229bbf31eaeebc7c88897732d8b932d"></a>background&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a53cced8d281a1a0ace3cb6594daaa4f7"></a>low&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a075a3e36a0a52dcbc568c05788e8a713"></a>medium&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a8d966b2253a917086c8604959e152243"></a>high&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a91c7ec8d1c8bb75e853f70fee324a43b"></a>dialog&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a74ba0736dad9b7236e2c7db4f4f4b874"></a>fullscreen&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5a2fca6e097e0ba64bb6dfb8ff34a81d21"></a>fullscreen_dialog&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a14a0da829d3eadb084eee3198d7aa0a5addbfc1b6aa0ad4d79c5dac7aa3b44888"></a>tooltip&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="gui__strata_8hpp_source.html#l00016">16</a> of file <a class="el" href="gui__strata_8hpp_source.html">gui_strata.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a1e358520246a1f16ae5a0c35318c44d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e358520246a1f16ae5a0c35318c44d3">&#9670;&nbsp;</a></span>vertex_cache_strategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3">lxgui::gui::vertex_cache_strategy</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Strategy for using a vertex cache. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1e358520246a1f16ae5a0c35318c44d3a9ede198eccdaa4f500287f8338a8bbf8"></a>always_disabled&#160;</td><td class="fielddoc"><p>Never use vertex cache. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1e358520246a1f16ae5a0c35318c44d3a1cc94809b914538e42bb5591c77beb89"></a>prefer_enabled&#160;</td><td class="fielddoc"><p>Use vertex cache if renderer supports and allows. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1e358520246a1f16ae5a0c35318c44d3aba08383dcad1e3509423a0227f8f042f"></a>always_enabled&#160;</td><td class="fielddoc"><p>Use vertex cache if renderer supports, even if not allowed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1e358520246a1f16ae5a0c35318c44d3a2bd9c0ed00116be1258e0cc66617d7c8"></a>automatic&#160;</td><td class="fielddoc"><p>Choose automatically to maximize performance on common case. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="gui__font__string_8hpp_source.html#l00014">14</a> of file <a class="el" href="gui__font__string_8hpp_source.html">gui_font_string.hpp</a>.</p>
 
 </div>
 </div>
@@ -1144,7 +1187,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A reference to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will throw if this region is not of the requested type. It will also throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00836">836</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00843">843</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1176,7 +1219,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this region is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00815">815</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00822">822</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1208,7 +1251,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a03c5b3903731364f6ae73ba841072342" title="Obtain a pointer to a derived class.">down_cast(const region*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00900">900</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00907">907</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1240,7 +1283,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A reference to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will throw if this region is not of the requested type. It will also throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00878">878</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00885">885</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1315,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this region is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00864">864</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00871">871</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1304,7 +1347,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a03c5b3903731364f6ae73ba841072342" title="Obtain a pointer to a derived class.">down_cast(const region*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00911">911</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00918">918</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1336,7 +1379,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a03c5b3903731364f6ae73ba841072342" title="Obtain a pointer to a derived class.">down_cast(const region*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00889">889</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00896">896</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1528,7 +1571,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00873">873</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00876">876</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1564,7 +1607,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00913">913</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00916">916</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1684,7 +1727,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The observer pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This returns the same things as self-&gt;observer_from_this(), but returning a pointer to the most-derived type known from the input pointer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00924">924</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00931">931</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -2978,7 +3021,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 10 2022 08:02:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

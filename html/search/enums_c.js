@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wrap_2599',['wrap',['../classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47',1,'lxgui::gui::material']]]
+  ['vertex_5fcache_5fstrategy_2672',['vertex_cache_strategy',['../namespacelxgui_1_1gui.html#a1e358520246a1f16ae5a0c35318c44d3',1,'lxgui::gui']]]
 ];

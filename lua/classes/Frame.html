@@ -52,7 +52,7 @@
 </ul>
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><a href="../modules/Manager.html">Manager</a></li>
+  <li><a href="../modules/GUI.html">GUI</a></li>
   <li><a href="../modules/Localization.html">Localization</a></li>
 </ul>
 
@@ -87,13 +87,7 @@
  when the frame is clicked, which effectively brings the frame to the
  front.</p>
 
-<p> <strong>Children and regions.</strong> When a frame is hidden, all its children
- and regions will also be hidden. Likewise, deleting a frame will
- automatically delete all its children and regions, unless they are
- detached first. Other than this, children and regions do not need to
- be located inside the frame; this is controlled purely by their anchors.
- Therefore, if a child is not anchored to its parent, moving the parent
- will not automatically move the child.</p>
+<p> <strong>Children and layered regions.</strong> See the <a href="../classes/Region.html#">Region</a> documentation.</p>
 
 <p> <strong>Events.</strong> Frames can react to events. For this to happen, a callback
  function must be registered to handle the corresponding event. There are
@@ -177,7 +171,7 @@
     keyboard-enabled frame is focused, only the topmost frame with
     <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
     captured the key, then the key is tested for existing key bindings (see
-    <a href="../modules/Manager.html#register_key_binding">Manager.register_key_binding</a>). This event provides five arguments to the registered
+    <a href="../modules/GUI.html#register_key_binding">GUI.register_key_binding</a>). This event provides five arguments to the registered
     callback: a number identifying the main key being pressed, three boolean flags
     for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
     key combination being pressed (e.g., Shift+A).</li>
@@ -311,13 +305,73 @@
 </td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_drag">Frame:disable_drag()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Frame:disable_draw_layer">Frame:disable_draw_layer()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_key_capture">Frame:disable_key_capture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_keyboard">Frame:disable_keyboard()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_mouse">Frame:disable_mouse()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_mouse_click">Frame:disable_mouse_click()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_mouse_move">Frame:disable_mouse_move()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:disable_mouse_wheel">Frame:disable_mouse_wheel()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:enable_drag">Frame:enable_drag()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Frame:enable_draw_layer">Frame:enable_draw_layer()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:enable_key_capture">Frame:enable_key_capture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:enable_keyboard">Frame:enable_keyboard()</a></td>
 	<td class="summary">
 
 </td>
@@ -342,24 +396,6 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Frame:enable_mouse_wheel">Frame:enable_mouse_wheel()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_keyboard">Frame:enable_keyboard()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_key_capture">Frame:enable_key_capture()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_key_capture">Frame:disable_key_capture()</a></td>
 	<td class="summary">
 
 </td>
@@ -401,19 +437,19 @@
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_frame_level">Frame:get_frame_level()</a></td>
+	<td class="name" nowrap><a href="#Frame:get_level">Frame:get_level()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_frame_strata">Frame:get_frame_strata()</a></td>
+	<td class="name" nowrap><a href="#Frame:get_strata">Frame:get_strata()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_frame_strata">Frame:get_frame_strata()</a></td>
+	<td class="name" nowrap><a href="#Frame:get_strata">Frame:get_strata()</a></td>
 	<td class="summary">
 
 </td>
@@ -462,6 +498,12 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Frame:get_title_region">Frame:get_title_region()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:get_update_rate">Frame:get_update_rate()</a></td>
 	<td class="summary">
 
 </td>
@@ -551,18 +593,6 @@
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_drag">Frame:enable_drag()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_drag">Frame:disable_drag()</a></td>
-	<td class="summary">
-
-</td>
-	</tr>
-	<tr>
 	<td class="name" nowrap><a href="#Frame:set_auto_focus">Frame:set_auto_focus()</a></td>
 	<td class="summary">
 
@@ -593,19 +623,67 @@
 </td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Frame:set_drag_enabled">Frame:set_drag_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_draw_layer_enabled">Frame:set_draw_layer_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Frame:set_focus">Frame:set_focus()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_frame_level">Frame:set_frame_level()</a></td>
+	<td class="name" nowrap><a href="#Frame:set_keyboard_enabled">Frame:set_keyboard_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_frame_strata">Frame:set_frame_strata()</a></td>
+	<td class="name" nowrap><a href="#Frame:set_key_capture_enabled">Frame:set_key_capture_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_level">Frame:set_level()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_mouse_wheel_enabled">Frame:set_mouse_wheel_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_mouse_enabled">Frame:set_mouse_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_mouse_click_enabled">Frame:set_mouse_click_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_mouse_move_enabled">Frame:set_mouse_move_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_strata">Frame:set_strata()</a></td>
 	<td class="summary">
 
 </td>
@@ -678,6 +756,12 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Frame:set_top_level">Frame:set_top_level()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Frame:set_update_rate">Frame:set_update_rate()</a></td>
 	<td class="summary">
 
 </td>
@@ -802,6 +886,22 @@
 
 </dd>
     <dt>
+    <a name = "Frame:disable_drag"></a>
+    <strong>Frame:disable_drag()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:disable_draw_layer"></a>
     <strong>Frame:disable_draw_layer()</strong>
     </dt>
@@ -818,8 +918,152 @@
 
 </dd>
     <dt>
+    <a name = "Frame:disable_key_capture"></a>
+    <strong>Frame:disable_key_capture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_keyboard"></a>
+    <strong>Frame:disable_keyboard()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_mouse"></a>
+    <strong>Frame:disable_mouse()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_mouse_click"></a>
+    <strong>Frame:disable_mouse_click()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_mouse_move"></a>
+    <strong>Frame:disable_mouse_move()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:disable_mouse_wheel"></a>
+    <strong>Frame:disable_mouse_wheel()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:enable_drag"></a>
+    <strong>Frame:enable_drag()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:enable_draw_layer"></a>
     <strong>Frame:enable_draw_layer()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:enable_key_capture"></a>
+    <strong>Frame:enable_key_capture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:enable_keyboard"></a>
+    <strong>Frame:enable_keyboard()</strong>
     </dt>
     <dd>
 
@@ -884,54 +1128,6 @@
     <dt>
     <a name = "Frame:enable_mouse_wheel"></a>
     <strong>Frame:enable_mouse_wheel()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Frame:enable_keyboard"></a>
-    <strong>Frame:enable_keyboard()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Frame:enable_key_capture"></a>
-    <strong>Frame:enable_key_capture()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Frame:disable_key_capture"></a>
-    <strong>Frame:disable_key_capture()</strong>
     </dt>
     <dd>
 
@@ -1042,8 +1238,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_frame_level"></a>
-    <strong>Frame:get_frame_level()</strong>
+    <a name = "Frame:get_level"></a>
+    <strong>Frame:get_level()</strong>
     </dt>
     <dd>
 
@@ -1058,8 +1254,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_frame_strata"></a>
-    <strong>Frame:get_frame_strata()</strong>
+    <a name = "Frame:get_strata"></a>
+    <strong>Frame:get_strata()</strong>
     </dt>
     <dd>
 
@@ -1074,8 +1270,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_frame_strata"></a>
-    <strong>Frame:get_frame_strata()</strong>
+    <a name = "Frame:get_strata"></a>
+    <strong>Frame:get_strata()</strong>
     </dt>
     <dd>
 
@@ -1204,6 +1400,22 @@
     <dt>
     <a name = "Frame:get_title_region"></a>
     <strong>Frame:get_title_region()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:get_update_rate"></a>
+    <strong>Frame:get_update_rate()</strong>
     </dt>
     <dd>
 
@@ -1442,38 +1654,6 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_drag"></a>
-    <strong>Frame:enable_drag()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Frame:disable_drag"></a>
-    <strong>Frame:disable_drag()</strong>
-    </dt>
-    <dd>
-
-
-
-
-
-
-
-
-
-
-</dd>
-    <dt>
     <a name = "Frame:set_auto_focus"></a>
     <strong>Frame:set_auto_focus()</strong>
     </dt>
@@ -1554,6 +1734,38 @@
 
 </dd>
     <dt>
+    <a name = "Frame:set_drag_enabled"></a>
+    <strong>Frame:set_drag_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_draw_layer_enabled"></a>
+    <strong>Frame:set_draw_layer_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:set_focus"></a>
     <strong>Frame:set_focus()</strong>
     </dt>
@@ -1570,8 +1782,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_frame_level"></a>
-    <strong>Frame:set_frame_level()</strong>
+    <a name = "Frame:set_keyboard_enabled"></a>
+    <strong>Frame:set_keyboard_enabled()</strong>
     </dt>
     <dd>
 
@@ -1586,8 +1798,104 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_frame_strata"></a>
-    <strong>Frame:set_frame_strata()</strong>
+    <a name = "Frame:set_key_capture_enabled"></a>
+    <strong>Frame:set_key_capture_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_level"></a>
+    <strong>Frame:set_level()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_mouse_wheel_enabled"></a>
+    <strong>Frame:set_mouse_wheel_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_mouse_enabled"></a>
+    <strong>Frame:set_mouse_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_mouse_click_enabled"></a>
+    <strong>Frame:set_mouse_click_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_mouse_move_enabled"></a>
+    <strong>Frame:set_mouse_move_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Frame:set_strata"></a>
+    <strong>Frame:set_strata()</strong>
     </dt>
     <dd>
 
@@ -1794,6 +2102,22 @@
 
 </dd>
     <dt>
+    <a name = "Frame:set_update_rate"></a>
+    <strong>Frame:set_update_rate()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Frame:set_user_placed"></a>
     <strong>Frame:set_user_placed()</strong>
     </dt>
@@ -1880,7 +2204,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-04-03 15:24:11 </i>
+<i style="float:right;">Last updated 2022-04-10 08:02:15 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

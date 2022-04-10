@@ -468,7 +468,9 @@ Friends</h2></td></tr>
 <p>Note: Although you can destroy this Lua variable by setting it to nil, this is not recommended: the object will <em>not</em> be destroyed (nor garbage-collected) because it still exists in the C++ memory space. The only way to truly destroy an object from Lua is to call <code>delete_frame</code> (for frames only). Destroying and creating objects has a cost however. If the object is likely to reappear later with the same content, simply hide it and show it again later on. If the content may change, you can also recycle the object, i.e., keep it alive and simply change its content when it later reappears.</p>
 <p>Deleting an object from C++ is done using <a class="el" href="classlxgui_1_1gui_1_1region.html#a8c3e8cac5199e6e6ea4492b6e7d615b3" title="Forcefully removes this region from the GUI.">region::destroy</a>. This will automatically delete all references to this object in Lua as well.</p>
 <p>Finally, note that objects do not need to be explicitly destroyed: they will automatically be destroyed when their parent is itself destroyed (see below). Only use explicit destruction when absolutely necessary.</p>
-<p><b>Parent-child relationship.</b> Parents of regions are frames. See the <a class="el" href="classlxgui_1_1gui_1_1frame.html" title="A region that can contain other regions and react to events.">lxgui::gui::frame</a> class documentation for more information. One important aspect of the parent-child relationship is related to the object name. If a region has a parent, it can be given a name starting with <code>"$parent"</code>. The name of the parent will automatically replace the <code>"$parent"</code> string. For example, if an object is named <code>"$parentButton"</code> and its parent is named <code>"ErrorMessage"</code>, the final name of the object will be <code>"ErrorMessageButton"</code>. It can be accessed from the Lua state as <code>ErrorMessageButton</code>, or as <code>ErrorMessage.Button</code>. Note that this is totally dynamic: if you later change the parent of this button to be another frame, for example <code>"ExitDialog"</code> its name will naturally change to <code>"ExitDialogButton"</code>, and it can be accessed from Lua as <code>ExitDialogButton</code>, or as <code>ExitDialog.Button</code>. This is particularly powerful for writing generic code which does not rely on the full names of objects, only on their child-parent relationship.</p>
+<p><b>Parent-child relationship.</b> Parents of regions are frames. See the <a class="el" href="classlxgui_1_1gui_1_1frame.html" title="A region that can contain other regions and react to events.">lxgui::gui::frame</a> class documentation for more information. One important aspect of the parent-child relationship is related to the object name. If a region has a parent, it can be given a name starting with <code>"$parent"</code>. The name of the parent will automatically replace the <code>"$parent"</code> string. For example, if an object is named <code>"$parentButton"</code> and its parent is named <code>"ErrorMessage"</code>, the final name of the object will be <code>"ErrorMessageButton"</code>. It can be accessed from the Lua state as <code>ErrorMessageButton</code>, or as <code>ErrorMessage.Button</code>. This is particularly important when using inheritance, as the final name of an inherited child region then naturally depends on the name of its parent.</p>
+<p>A child will inherit some properties from its parent: transparency, scaling, visibility (show/hide), strata (if not explicitly specified), level (incremented from its parent's), and renderer (if not explicitly specified). Note in particular that the parent-child relationship does not impose any link between the child and its parent's position and size: this must be done explicitly with anchors, as required.</p>
+<p>Lastly, a child is <em>owned</em> by its parent: if the parent is destroyed, the child will be destroyed as well.</p>
 <p><b>Positioning.</b> regions have a position on the screen, but this is not parameterized as a simple pair of X and Y coordinates. Instead, objects are positioned based on a list of "anchors". Anchors are links between objects, which force one edge or one corner of a given object to match with the edge or corner of another object. For example, given two objects A and B, you can create an anchor that links the top-left corner of A to the top-left corner of B. The position of A will automatically be linked to the position of B, hence if B moves, A will follow. To further refine this positioning, you can specify anchor offsets: for example, you may want A's top-left corner to be shifted from B's top-left corner by two pixels in the X direction, and five in the Y direction. This offset can be defined either as an absolute number of pixels, or as a relative fraction of the size of the object being anchored to. For example, you can specify that A's top-left corner links to B's top-left corner, with an horizontal offset equal to 30% of B's width. Read the "Anchors" section below for more information.</p>
 <p>An object which has no anchor will be considered "invalid" and will not be displayed.</p>
 <p><b>Sizing.</b> There are two ways to specify the size of a region. The first and most straightforward approach is to directly set its width and/or height. This must be specified as an absolute number of pixels. The second and more versatile method is to use more than one anchor for opposite sides of the object, for example an anchor for the "left" and another for the "right" edge. This will implicitly give a width to the object, depending on the position of the other objects to which it is anchored. Anchors will always override the absolute width and height of an object if they provide any constraint on the extents of the object in a given dimension.</p>
@@ -487,7 +489,7 @@ Friends</h2></td></tr>
 </ul>
 <p>If you specify two constraints on the same point (for example: <code>TOP_LEFT</code> and <code>BOTTOM_LEFT</code> both constrain the min X coordinate), the most stringent constraint always wins. Constraints on the midpoints are more subtle however, as they will always be discarded when both the min and max are constrained. For example, consider an object <code>A</code> of fixed size 30x30 and some other object <code>B</code> of fixed size 40x40. If we anchor the <code>RIGHT</code> of <code>A</code> to the <code>LEFT</code> of <code>B</code>, <code>A</code>'s <em>vertical</em> center will be automatically aligned with <code>B</code>'s vertical center. This is the effect of the midpoint constraint. Now, if we further anchor the <code>TOP</code> of <code>A</code> to the <code>TOP</code> of <code>B</code>, we have more than one anchor constraining the vertical extents of <code>A</code> (see "Sizing" above), therefore <code>A</code>'s fixed height of 30 pixels will be ignored from now on. It will shrink to a height of 20 pixels, i.e., the distance between <code>B</code>'s top edge and its vertical center. Finally, if we further anchor the <code>BOTTOM</code> of <code>A</code> to the <code>BOTTOM</code> of <code>B</code>, the constraint on <code>A</code>'s midpoint will be ignored: <code>A</code> will be enlarged to a height of 40 pixels, i.e., the distance between <code>B</code>'s top and bottom edges. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00154">154</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00161">161</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac3347217382e259c4eff5ffebde95979"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3347217382e259c4eff5ffebde95979">&#9670;&nbsp;</a></span>region() <span class="overload">[1/3]</span></h2>
@@ -704,7 +706,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a35e42c98ce07565d4c86672204588ffa">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#aad7a21ecbf543bd99aa249f076ad5d4e">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a996ed1ac99c2b0c306fc40556cbb7619">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#ae8762c5ee32174547780d77c94385037">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a87b273b77e09c35936dfbbf6d2091f10">lxgui::gui::scroll_frame</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#a71ff79bdf3a19986bed52b2071b247c2">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a47256f733317974a0f92aef4a122616a">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#a199bcae344b5b3342b76c7d7640ff400">lxgui::gui::texture</a>, <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#ae896c30cb45a62d576ec619cc48adeb0">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#aa8758c16f1b15623d2182f6cbfcf4282">lxgui::gui::check_button</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a35e42c98ce07565d4c86672204588ffa">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#aad7a21ecbf543bd99aa249f076ad5d4e">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a996ed1ac99c2b0c306fc40556cbb7619">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a47256f733317974a0f92aef4a122616a">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#ae8762c5ee32174547780d77c94385037">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#a71ff79bdf3a19986bed52b2071b247c2">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a87b273b77e09c35936dfbbf6d2091f10">lxgui::gui::scroll_frame</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#a199bcae344b5b3342b76c7d7640ff400">lxgui::gui::texture</a>, <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#ae896c30cb45a62d576ec619cc48adeb0">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#aa8758c16f1b15623d2182f6cbfcf4282">lxgui::gui::check_button</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00128">128</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -1093,7 +1095,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626" title="Flags this object as rendered by another object.">frame::set_frame_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00597">597</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00604">604</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1256,7 +1258,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00675">675</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00682">682</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1286,7 +1288,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00683">683</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00690">690</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +1340,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00230">230</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00237">237</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1368,7 +1370,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this region's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This region's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00222">222</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00229">229</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1787,7 +1789,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region is of the provided type. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is of the provided type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00405">405</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00412">412</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1820,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this region is of a type equal or derived from the supplied region. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this region is of a type equal or derived from the supplied region </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00413">413</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00420">420</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -2150,7 +2152,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Tells this region that the global interface scaling factor has changed. </p>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#afa3e9e8b46f22972d2cd7e576e39fbbc">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#afa3e9e8b46f22972d2cd7e576e39fbbc">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">lxgui::gui::edit_box</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00755">755</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -2296,7 +2298,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a724d63060ebbff745bafaf4705ab187b">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a2b33aa99e8ad7949a89673cd93445d02">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#a5216067cb717ad4b6191948dd0ecb9fc">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#a11dcd784265a3a92232a20e0574ecc29">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ac5393df385018f025f3674e0f88c4be1">lxgui::gui::status_bar</a>, and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a01d99c6b3b3ec57ea5103bee98ff18e6">lxgui::gui::layered_region</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a724d63060ebbff745bafaf4705ab187b">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#a5216067cb717ad4b6191948dd0ecb9fc">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a2b33aa99e8ad7949a89673cd93445d02">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#a11dcd784265a3a92232a20e0574ecc29">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ac5393df385018f025f3674e0f88c4be1">lxgui::gui::status_bar</a>, and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a01d99c6b3b3ec57ea5103bee98ff18e6">lxgui::gui::layered_region</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00134">134</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
 
@@ -2770,7 +2772,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>All relevant information about this region </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a1cc4c4ff2b0d336e37570ea17e462031">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#a513f9c8cfe4926a65af9539a112fa5e1">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a6f8ce731fab7a6a0048e95d674776d15">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ae3d1a18502d4f200c950ae03615ada46">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#af88fd76bd55300d8a8257fd1d10def45">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#a0821ad0256e1583ae3485f4c64b51088">lxgui::gui::texture</a>, <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#aba62a367ea2d1398ad5a4838859b5a0e">lxgui::gui::layered_region</a>, <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#a7823ed471c5f537fcff7c68c3891e5b5">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#acedb9c21810efec5d28acf40473906ed">lxgui::gui::check_button</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a1cc4c4ff2b0d336e37570ea17e462031">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a6f8ce731fab7a6a0048e95d674776d15">lxgui::gui::font_string</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#a513f9c8cfe4926a65af9539a112fa5e1">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ae3d1a18502d4f200c950ae03615ada46">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#af88fd76bd55300d8a8257fd1d10def45">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1texture.html#a0821ad0256e1583ae3485f4c64b51088">lxgui::gui::texture</a>, <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#aba62a367ea2d1398ad5a4838859b5a0e">lxgui::gui::layered_region</a>, <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#a7823ed471c5f537fcff7c68c3891e5b5">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#acedb9c21810efec5d28acf40473906ed">lxgui::gui::check_button</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00091">91</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -2925,7 +2927,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00485">485</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00492">492</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3403,7 +3405,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#af009d04eb75bedec66afa63355c0106c">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a90522a88d49826c0945584f4feb9bb44">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a334a1885fd6f92dd30d85372f3c950df">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#a86352b2b9b1a43f4538384cd2b284af4">lxgui::gui::animated_texture</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1animated__texture.html#a86352b2b9b1a43f4538384cd2b284af4">lxgui::gui::animated_texture</a>, and <a class="el" href="classlxgui_1_1gui_1_1frame.html#a5ff8cd5ef7eca38bae0d7cd139f3b02c">lxgui::gui::frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00759">759</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -3475,7 +3477,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this region is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00815">815</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00822">822</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3515,7 +3517,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this region is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00864">864</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00871">871</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3540,7 +3542,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00780">780</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00787">787</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3564,7 +3566,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00796">796</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3588,7 +3590,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00799">799</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3612,7 +3614,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00809">809</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3636,7 +3638,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00794">794</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00801">801</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3660,7 +3662,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00717">717</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00724">724</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3684,7 +3686,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00793">793</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3708,7 +3710,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00807">807</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3732,7 +3734,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00796">796</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3756,7 +3758,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00787">787</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00794">794</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3780,7 +3782,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3804,7 +3806,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00797">797</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00804">804</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3828,7 +3830,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00795">795</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3852,7 +3854,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00805">805</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3876,7 +3878,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00778">778</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3900,7 +3902,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00782">782</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00789">789</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3924,7 +3926,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00785">785</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3948,7 +3950,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00783">783</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -3961,7 +3963,7 @@ template&lt;typename ObjectType &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 3 2022 15:24:10 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 10 2022 08:02:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
