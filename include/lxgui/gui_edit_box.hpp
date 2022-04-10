@@ -73,15 +73,6 @@ public:
     void copy_from(const region& obj) override;
 
     /**
-     * \brief Updates this region's logic.
-     * \param delta Time spent since last update
-     * \note Triggered callbacks could destroy the frame. If you need
-     * to use the frame again after calling this function, use
-     * the helper class alive_checker.
-     */
-    void update(float delta) override;
-
-    /**
      * \brief Calls a script.
      * \param script_name The name of the script
      * \param data Stores scripts arguments
@@ -171,16 +162,16 @@ public:
     std::size_t get_letter_count() const;
 
     /**
-     * \brief Sets the carret's blink speed.
-     * \param blink_period The number of seconds to wait between each blink
+     * \brief Sets the carret's blink time.
+     * \param blink_time The number of seconds to wait between each blink
      */
-    void set_blink_period(double blink_period);
+    void set_blink_time(double blink_time);
 
     /**
-     * \brief Returns the carret's blink speed.
-     * \return the carret's blink speed (time in seconds between each blink)
+     * \brief Returns the carret's blink time.
+     * \return the carret's blink time (time in seconds between each blink)
      */
-    double get_blink_period() const;
+    double get_blink_time() const;
 
     /**
      * \brief Makes this edit_box allow numeric characters only.
@@ -221,12 +212,28 @@ public:
     bool is_integer_only() const;
 
     /**
-     * \brief Enables password mode.
+     * \brief Enables or disables password mode.
      * \param enable 'true' to enable password mode
      * \note In password mode, the content of the edit_box is replaced
      * by stars (*).
      */
-    void enable_password_mode(bool enable);
+    void set_password_mode_enabled(bool enable);
+
+    /**
+     * \brief Enables password mode.
+     * \see set_password_mode_enabled
+     */
+    void enable_password_mode() {
+        set_password_mode_enabled(true);
+    }
+
+    /**
+     * \brief Disables password mode.
+     * \see set_password_mode_enabled
+     */
+    void disable_password_mode() {
+        set_password_mode_enabled(false);
+    }
 
     /**
      * \brief Checks if this edit_box is in password mode.
@@ -238,10 +245,10 @@ public:
      * \brief Allows this edit_box to have several lines in it.
      * \param multi_line 'true' to allow several lines in this edit_box
      * \note The behavior of a "multi line" edit_box is very different from
-     * a single line one.<br>
-     * History lines are only available to single line edit_boxes.<br>
-     * Scrolling in a single line edit_box is done horizontally, while
-     * it is only done vertically in a multi line one.
+     * a single line one. History lines are only available to single-line edit_boxes.
+     * Scrolling in a single-line edit_box is done horizontally, while it is only done
+     * vertically in a multi-line one.
+     * \warning Multi-line edit_box is not yet fully implemented!
      */
     void set_multi_line(bool multi_line);
 
@@ -278,7 +285,7 @@ public:
     const std::vector<utils::ustring>& get_history_lines() const;
 
     /// Clears the history line list.
-    void clear_history();
+    void clear_history_lines();
 
     /**
      * \brief Sets whether keyboard arrows move the carret or not.
@@ -349,13 +356,15 @@ protected:
     void parse_font_string_node_(const layout_node& node);
     void parse_text_insets_node_(const layout_node& node);
 
+    void update_(float delta) override;
+
     const std::vector<std::string>& get_type_list_() const override;
 
     void create_font_string_();
     void create_highlight_();
     void create_carret_();
 
-    void check_text_();
+    bool check_text_();
     void update_displayed_text_();
     void update_font_string_();
     void update_carret_position_();
@@ -372,7 +381,6 @@ protected:
     utils::ustring           unicode_text_;
     utils::ustring           displayed_text_;
     utils::ustring::iterator iter_carret_pos_;
-    utils::ustring::iterator iter_carret_pos_old_;
 
     std::size_t display_pos_        = 0;
     std::size_t num_letters_        = 0;
@@ -390,8 +398,8 @@ protected:
     std::size_t                  selection_end_pos_   = 0u;
     bool                         is_text_selected_    = false;
 
-    utils::observer_ptr<texture> carret_       = nullptr;
-    double                       blink_period_ = 0.5;
+    utils::observer_ptr<texture> carret_     = nullptr;
+    double                       blink_time_ = 0.5;
     utils::periodic_timer        carret_timer_;
 
     std::vector<utils::ustring> history_line_list_;

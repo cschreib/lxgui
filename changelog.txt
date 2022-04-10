@@ -88,6 +88,20 @@ Other changes:
  - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
  - gui: added frame::enable_key_capture
  - gui: added OnKeyRepeat frame event
+ - gui: added OnReceiveDrag for frame
+ - gui: added OnCursorChanged for edit_box
+ - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
+ - gui: added set_cursor_position()/get_cursor_position() to edit_box
+ - gui: added clear_history_lines() to edit_box
+ - gui: added clipboard support to edit_box
+ - gui: added automatic un-focus of edit_box when clicking outside of the box
+ - gui: added frame::get_script
+ - gui: added slider::set_orientation(const std::string&)
+ - gui: added status_bar::set_orientation(const std::string&)
+ - gui: added manager::close_ui_now and made close_ui safer
+ - gui: added frame::enable_mouse_click and frame::enable_mouse_move
+ - gui: added font_string::set_vertex_cache_strategy
+ - gui: added frame::set_update_rate
  - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -124,6 +138,23 @@ Other changes:
  - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
  - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
  - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
+ - gui: renamed strata to strata_data
+ - gui: renamed frame_level/frameLevel to level
+ - gui: renamed frame_strata/frameStrata to strata
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_non_space_wrap_enabled
+ - gui: renamed has_shadow to is_shadow_enabled
+ - gui: renamed set_shadow to set_shadow_enabled
+ - gui: renamed set_word_wrap to set_word_wrap_enabled
+ - gui: renamed can_word_wrap to is_word_wrap_enabled
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_word_wrap_enabled
+ - gui: renamed nonspacewrap to nonSpaceWrap
+ - gui: renamed enable_mouse* to set_mouse*_enabled
+ - gui: renamed enable_key* to set_key*_enabled
+ - gui: renamed is_password to is_password_mode_enabled
+ - gui: renamed set_password to set_password_mode_enabled
+ - gui: renamed blink_period/blinkPeriod to blink_time/blinkTime
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed region::get_base()
@@ -153,7 +184,6 @@ Other changes:
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added frame_renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a frame_renderer
- - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting
  - gui: removed clear_links() in favor of using destructors
@@ -166,22 +196,9 @@ Other changes:
  - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
  - gui: key and mouse events no longer contain string names of buttons and keys
  - gui: objects inside a scroll_frame can now correctly anchor to other objects
- - gui: added OnReceiveDrag for frame
- - gui: added OnCursorChanged for edit_box
- - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
- - gui: added set_cursor_position()/get_cursor_position() to edit_box
- - gui: added clear_history() to edit_box
- - gui: added clipboard support to edit_box
- - gui: added automatic un-focus of edit_box when clicking outside of the box
- - gui: added frame::get_script
- - gui: added slider::set_orientation(const std::string&)
- - gui: added status_bar::set_orientation(const std::string&)
- - gui: added manager::close_ui_now and made close_ui safer
- - gui: added frame::enable_mouse_click and frame::enable_mouse_move
  - gui: render targets can now have texture filtering other than nearest
  - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications
- - gui: improved peformance of generating new object IDs
  - gui: improved peformance of font outline rendering
  - gui: improved quality and consistency of font rendering in OpenGL back-end
  - gui: fixed rare crash in edit_box

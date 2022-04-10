@@ -164,7 +164,6 @@ public:
     /**
      * \brief Returns the number of batches of vertices sent to the GPU since the last call to reset_counters.
      * \return The number of batches of vertices sent to the GPU since the last call to reset_counters
-     * \note This will be zero unless is_quad_batching_enabled() is 'true'.
      */
     std::size_t get_batch_count() const;
 

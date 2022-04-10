@@ -24,9 +24,9 @@ namespace lxgui::gui {
 
 void layered_region::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<layered_region>(
-        "LayeredRegion", sol::base_classes, sol::bases<region>(), sol::meta_function::index,
-        member_function<&layered_region::get_lua_member_>(), sol::meta_function::new_index,
-        member_function<&layered_region::set_lua_member_>());
+        layered_region::class_name, sol::base_classes, sol::bases<region>(),
+        sol::meta_function::index, member_function<&layered_region::get_lua_member_>(),
+        sol::meta_function::new_index, member_function<&layered_region::set_lua_member_>());
 
     /** @function set_draw_layer
      */

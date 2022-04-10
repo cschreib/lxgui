@@ -32,9 +32,9 @@ namespace lxgui::gui {
 
 void status_bar::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<status_bar>(
-        "StatusBar", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
-        member_function<&status_bar::get_lua_member_>(), sol::meta_function::new_index,
-        member_function<&status_bar::set_lua_member_>());
+        status_bar::class_name, sol::base_classes, sol::bases<region, frame>(),
+        sol::meta_function::index, member_function<&status_bar::get_lua_member_>(),
+        sol::meta_function::new_index, member_function<&status_bar::set_lua_member_>());
 
     /** @function get_min_max_values
      */

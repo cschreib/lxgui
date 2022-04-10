@@ -30,7 +30,7 @@ std::optional<orientation> get_gradient_orientation(const std::string& orientati
 
 void texture::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<texture>(
-        "Texture", sol::base_classes, sol::bases<region, layered_region>(),
+        texture::class_name, sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index, member_function<&texture::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&texture::set_lua_member_>());
 

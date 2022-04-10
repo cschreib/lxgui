@@ -84,12 +84,19 @@ class frame_renderer;
  * For example, if an object is named `"$parentButton"` and its parent is named
  * `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
  * It can be accessed from the Lua state as `ErrorMessageButton`, or as
- * `ErrorMessage.Button`. Note that this is totally dynamic: if you later change
- * the parent of this button to be another frame, for example `"ExitDialog"`
- * its name will naturally change to `"ExitDialogButton"`, and it can be accessed
- * from Lua as `ExitDialogButton`, or as `ExitDialog.Button`. This is particularly
- * powerful for writing generic code which does not rely on the full names of
- * objects, only on their child-parent relationship.
+ * `ErrorMessage.Button`. This is particularly important when using inheritance,
+ * as the final name of an inherited child region then naturally depends on the
+ * name of its parent.
+ *
+ * A child will inherit some properties from its parent: transparency, scaling,
+ * visibility (show/hide), strata (if not explicitly specified), level
+ * (incremented from its parent's), and renderer (if not explicitly specified).
+ * Note in particular that the parent-child relationship does not impose any
+ * link between the child and its parent's position and size: this must be done
+ * explicitly with anchors, as required.
+ *
+ * Lastly, a child is *owned* by its parent: if the parent is destroyed, the
+ * child will be destroyed as well.
  *
  * __Positioning.__ regions have a position on the screen, but this is
  * not parameterized as a simple pair of X and Y coordinates. Instead, objects

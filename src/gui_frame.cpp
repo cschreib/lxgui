@@ -33,7 +33,7 @@ frame::frame(utils::control_block& block, manager& mgr, const frame_core_attribu
     }
 
     effective_frame_renderer_ = compute_top_level_frame_renderer_();
-    effective_strata_         = compute_effective_frame_strata_();
+    effective_strata_         = compute_effective_strata_();
 
     if (!is_virtual_) {
         // Tell the renderer to render this region
@@ -124,6 +124,7 @@ std::string frame::serialize(const std::string& tab) const {
     str << tab << "  # Min height : " << min_height_ << "\n";
     str << tab << "  # Max height : " << max_height_ << "\n";
     str << tab << "  # Scale      : " << scale_ << "\n";
+    str << tab << "  # Update rate : " << update_rate_ << "\n";
     if (title_region_) {
         str << tab << "  # Title reg.  :\n";
         str << tab << "  |-###\n";
@@ -205,14 +206,14 @@ void frame::copy_from(const region& obj) {
         }
     }
 
-    this->set_frame_strata(frame_obj->get_frame_strata());
+    this->set_strata(frame_obj->get_strata());
     // NB: level is not inherited on purpose; this is difficult to make sense of
     this->set_top_level(frame_obj->is_top_level());
 
-    this->enable_mouse_click(frame_obj->is_mouse_click_enabled());
-    this->enable_mouse_move(frame_obj->is_mouse_move_enabled());
-    this->enable_mouse_wheel(frame_obj->is_mouse_wheel_enabled());
-    this->enable_keyboard(frame_obj->is_keyboard_enabled());
+    this->set_mouse_click_enabled(frame_obj->is_mouse_click_enabled());
+    this->set_mouse_move_enabled(frame_obj->is_mouse_move_enabled());
+    this->set_mouse_wheel_enabled(frame_obj->is_mouse_wheel_enabled());
+    this->set_keyboard_enabled(frame_obj->is_keyboard_enabled());
 
     this->set_movable(frame_obj->is_movable());
     this->set_clamped_to_screen(frame_obj->is_clamped_to_screen());
@@ -225,6 +226,8 @@ void frame::copy_from(const region& obj) {
     this->set_min_dimensions(frame_obj->get_min_dimensions());
 
     this->set_scale(frame_obj->get_scale());
+
+    this->set_update_rate(frame_obj->get_update_rate());
 
     for (const auto& art : frame_obj->region_list_) {
         if (!art || art->is_manually_inherited())
@@ -432,24 +435,24 @@ void frame::enable_draw_layer(layer layer_id) {
     }
 }
 
-void frame::enable_mouse(bool is_mouse_enabled) {
-    enable_mouse_click(is_mouse_enabled);
-    enable_mouse_move(is_mouse_enabled);
+void frame::set_mouse_enabled(bool is_mouse_enabled) {
+    set_mouse_click_enabled(is_mouse_enabled);
+    set_mouse_move_enabled(is_mouse_enabled);
 }
 
-void frame::enable_mouse_click(bool is_mouse_enabled) {
+void frame::set_mouse_click_enabled(bool is_mouse_enabled) {
     is_mouse_click_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_move(bool is_mouse_enabled) {
+void frame::set_mouse_move_enabled(bool is_mouse_enabled) {
     is_mouse_move_enabled_ = is_mouse_enabled;
 }
 
-void frame::enable_mouse_wheel(bool is_mouse_wheel_enabled) {
+void frame::set_mouse_wheel_enabled(bool is_mouse_wheel_enabled) {
     is_mouse_wheel_enabled_ = is_mouse_wheel_enabled;
 }
 
-void frame::enable_keyboard(bool is_keyboard_enabled) {
+void frame::set_keyboard_enabled(bool is_keyboard_enabled) {
     is_keyboard_enabled_ = is_keyboard_enabled;
 }
 
@@ -535,27 +538,27 @@ void frame::set_parent_(utils::observer_ptr<frame> parent) {
             notify_frame_renderer_changed_(new_top_level_renderer);
         }
 
-        const auto new_strata = compute_effective_frame_strata_();
+        const auto new_strata = compute_effective_strata_();
         if (new_strata != effective_strata_) {
-            notify_frame_strata_changed_(new_strata);
+            notify_strata_changed_(new_strata);
         }
     }
 }
 
-void frame::notify_frame_strata_changed_(frame_strata new_strata_id) {
+void frame::notify_strata_changed_(strata new_strata_id) {
     const auto old_strata = effective_strata_;
 
     effective_strata_ = new_strata_id;
 
-    get_effective_frame_renderer()->notify_frame_strata_changed(
+    get_effective_frame_renderer()->notify_strata_changed(
         observer_from(this), old_strata, effective_strata_);
 
     for (const auto& child : child_list_) {
         if (!child)
             continue;
 
-        if (!child->get_frame_strata().has_value())
-            child->notify_frame_strata_changed_(new_strata_id);
+        if (!child->get_strata().has_value())
+            child->notify_strata_changed_(new_strata_id);
     }
 }
 
@@ -708,23 +711,23 @@ int frame::get_level() const {
     return level_;
 }
 
-std::optional<frame_strata> frame::get_frame_strata() const {
+std::optional<strata> frame::get_strata() const {
     return strata_;
 }
 
-frame_strata frame::get_effective_frame_strata() const {
+strata frame::get_effective_strata() const {
     return effective_strata_;
 }
 
-frame_strata frame::compute_effective_frame_strata_() const {
+strata frame::compute_effective_strata_() const {
     if (strata_.has_value())
         return strata_.value();
 
     if (parent_ && parent_->get_effective_frame_renderer() == get_effective_frame_renderer())
-        return parent_->get_effective_frame_strata();
+        return parent_->get_effective_strata();
 
     // Default if no defined strata and no parent set.
-    return frame_strata::medium;
+    return strata::medium;
 }
 
 utils::observer_ptr<const frame> frame::get_top_level_parent() const {
@@ -1123,6 +1126,14 @@ void frame::unregister_event(const std::string& event_name) {
     event_receiver_.unregister_event(event_name);
 }
 
+void frame::set_update_rate(float rate) {
+    update_rate_ = rate;
+}
+
+float frame::get_update_rate() const {
+    return update_rate_;
+}
+
 void frame::enable_drag(const std::string& button_name) {
     reg_drag_list_.insert(button_name);
 }
@@ -1147,13 +1158,13 @@ void frame::set_clamped_to_screen(bool is_clamped_to_screen) {
     is_clamped_to_screen_ = is_clamped_to_screen;
 }
 
-void frame::set_frame_strata(std::optional<frame_strata> strata_id) {
+void frame::set_strata(std::optional<strata> strata_id) {
     strata_ = strata_id;
 
-    const auto new_effective_strata = compute_effective_frame_strata_();
+    const auto new_effective_strata = compute_effective_strata_();
 
     if (!is_virtual() && new_effective_strata != effective_strata_) {
-        notify_frame_strata_changed_(new_effective_strata);
+        notify_strata_changed_(new_effective_strata);
     }
 }
 
@@ -1177,8 +1188,7 @@ void frame::set_level(int level_id) {
     std::swap(level_id, level_);
 
     if (!is_virtual_) {
-        get_effective_frame_renderer()->notify_frame_level_changed(
-            observer_from(this), level_id, level_);
+        get_effective_frame_renderer()->notify_level_changed(observer_from(this), level_id, level_);
     }
 }
 
@@ -1262,7 +1272,7 @@ void frame::raise() {
 
     int  old_level = level_;
     auto rdr       = get_effective_frame_renderer();
-    int  top_level = rdr->get_highest_level(get_effective_frame_strata());
+    int  top_level = rdr->get_highest_level(get_effective_strata());
 
     if (old_level == top_level) {
         // This frame is already on top, nothing to do.
@@ -1273,7 +1283,7 @@ void frame::raise() {
     int diff = level_ - old_level;
 
     if (!is_virtual()) {
-        rdr->notify_frame_level_changed(observer_from(this), old_level, level_);
+        rdr->notify_level_changed(observer_from(this), old_level, level_);
     }
 
     for (auto& child : get_children())
@@ -1317,7 +1327,7 @@ void frame::add_level_(int amount) {
     level_ += amount;
 
     if (!is_virtual()) {
-        get_effective_frame_renderer()->notify_frame_level_changed(
+        get_effective_frame_renderer()->notify_level_changed(
             observer_from(this), old_level, level_);
     }
 
@@ -1455,7 +1465,7 @@ void frame::notify_renderer_need_redraw() {
     if (is_virtual_)
         return;
 
-    get_effective_frame_renderer()->notify_strata_needs_redraw(get_effective_frame_strata());
+    get_effective_frame_renderer()->notify_strata_needs_redraw(get_effective_strata());
 }
 
 void frame::notify_scaling_factor_updated() {
@@ -1514,9 +1524,25 @@ void frame::update_borders_() {
 }
 
 void frame::update(float delta) {
-    alive_checker checker(*this);
-
     base::update(delta);
+
+    if (update_rate_ > 0) {
+        time_since_last_update_ += delta;
+
+        if (time_since_last_update_ < 1.0f / update_rate_) {
+            return;
+        }
+
+        delta = time_since_last_update_;
+    }
+
+    time_since_last_update_ = 0.0f;
+
+    update_(delta);
+}
+
+void frame::update_(float delta) {
+    alive_checker checker(*this);
 
     if (build_layer_list_flag_) {
         // Clear layers' content

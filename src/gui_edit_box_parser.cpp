@@ -11,8 +11,8 @@ void edit_box::parse_attributes_(const layout_node& node) {
     if (const layout_attribute* attr = node.try_get_attribute("letters"))
         set_max_letters(attr->get_value<std::size_t>());
 
-    if (const layout_attribute* attr = node.try_get_attribute("blinkPeriod"))
-        set_blink_period(attr->get_value<float>());
+    if (const layout_attribute* attr = node.try_get_attribute("blinkTime"))
+        set_blink_time(attr->get_value<float>());
 
     if (const layout_attribute* attr = node.try_get_attribute("numeric"))
         set_numeric_only(attr->get_value<bool>());
@@ -24,7 +24,7 @@ void edit_box::parse_attributes_(const layout_node& node) {
         set_integer_only(attr->get_value<bool>());
 
     if (const layout_attribute* attr = node.try_get_attribute("password"))
-        enable_password_mode(attr->get_value<bool>());
+        set_password_mode_enabled(attr->get_value<bool>());
 
     if (const layout_attribute* attr = node.try_get_attribute("multiLine"))
         set_multi_line(attr->get_value<bool>());

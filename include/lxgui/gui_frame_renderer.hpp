@@ -32,7 +32,7 @@ public:
     frame_renderer& operator=(frame_renderer&&) = delete;
 
     /// Tells this renderer that one of its region requires redraw.
-    virtual void notify_strata_needs_redraw(frame_strata strata_id);
+    virtual void notify_strata_needs_redraw(strata strata_id);
 
     /**
      * \brief Tells this renderer that it should (or not) render another frame.
@@ -47,10 +47,8 @@ public:
      * \param old_strata_id The old frame strata
      * \param new_strata_id The new frame strata
      */
-    virtual void notify_frame_strata_changed(
-        const utils::observer_ptr<frame>& obj,
-        frame_strata                      old_strata_id,
-        frame_strata                      new_strata_id);
+    virtual void notify_strata_changed(
+        const utils::observer_ptr<frame>& obj, strata old_strata_id, strata new_strata_id);
 
     /**
      * \brief Tells this renderer that a frame has changed level.
@@ -59,7 +57,7 @@ public:
      * \param new_level The new frame level
      */
     virtual void
-    notify_frame_level_changed(const utils::observer_ptr<frame>& obj, int old_level, int new_level);
+    notify_level_changed(const utils::observer_ptr<frame>& obj, int old_level, int new_level);
 
     /**
      * \brief Returns the width and height of of this renderer's main render target (e.g., screen).
@@ -91,15 +89,15 @@ public:
      * \param strata_id The strata to inspect
      * \return The highest level on the provided strata
      */
-    int get_highest_level(frame_strata strata_id) const;
+    int get_highest_level(strata strata_id) const;
 
 protected:
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();
-    void notify_strata_needs_redraw_(strata& strata_obj);
+    void notify_strata_needs_redraw_(strata_data& strata_obj);
 
-    void render_strata_(const strata& strata_obj) const;
+    void render_strata_(const strata_data& strata_obj) const;
 
     struct frame_comparator {
         bool operator()(const frame* f1, const frame* f2) const;
@@ -108,13 +106,13 @@ protected:
     using frame_list_type     = utils::sorted_vector<frame*, frame_comparator>;
     using frame_list_iterator = frame_list_type::iterator;
 
-    std::pair<std::size_t, std::size_t> get_strata_range_(frame_strata strata_id) const;
+    std::pair<std::size_t, std::size_t> get_strata_range_(strata strata_id) const;
 
-    static constexpr std::size_t num_strata = magic_enum::enum_count<frame_strata>();
+    static constexpr std::size_t num_strata = magic_enum::enum_count<strata>();
 
-    std::array<strata, num_strata> strata_list_;
-    frame_list_type                sorted_frame_list_;
-    bool                           frame_list_updated_ = false;
+    std::array<strata_data, num_strata> strata_list_;
+    frame_list_type                     sorted_frame_list_;
+    bool                                frame_list_updated_ = false;
 };
 
 } // namespace lxgui::gui

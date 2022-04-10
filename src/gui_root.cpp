@@ -120,7 +120,7 @@ void root::create_caching_render_target_() {
     screen_quad_.v[3].uvs = screen_quad_.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
-void root::create_strata_cache_render_target_(strata& strata_obj) {
+void root::create_strata_cache_render_target_(strata_data& strata_obj) {
     if (strata_obj.target)
         strata_obj.target->set_dimensions(screen_dimensions_);
     else

@@ -80,13 +80,7 @@ using script_list_view = script_signal::slot_list_view;
  * when the frame is clicked, which effectively brings the frame to the
  * front.
  *
- * __Children and regions.__ When a frame is hidden, all its children
- * and regions will also be hidden. Likewise, deleting a frame will
- * automatically delete all its children and regions, unless they are
- * detached first. Other than this, children and regions do not need to
- * be located inside the frame; this is controlled purely by their anchors.
- * Therefore, if a child is not anchored to its parent, moving the parent
- * will not automatically move the child.
+ * __Children and layered regions.__ See the @ref region documentation.
  *
  * __Events.__ Frames can react to events. For this to happen, a callback
  * function must be registered to handle the corresponding event. There are
@@ -301,7 +295,7 @@ public:
      * to use the frame again after calling this function, use
      * the helper class alive_checker.
      */
-    void update(float delta) override;
+    void update(float delta) final;
 
     /**
      * \brief Prints all relevant information about this region in a string.
@@ -330,6 +324,19 @@ public:
     void create_title_region();
 
     /**
+     * \brief Enables or disables a layer.
+     * \param layer_id The id of the layer to disable
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_draw_layer_enabled(layer layer_id, bool enable) {
+        if (enable) {
+            enable_draw_layer(layer_id);
+        } else {
+            disable_draw_layer(layer_id);
+        }
+    }
+
+    /**
      * \brief Disables a layer.
      * \param layer_id The id of the layer to disable
      */
@@ -345,25 +352,89 @@ public:
      * \brief Sets if this frame can receive mouse input (click & move).
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse(bool is_mouse_enabled);
+    void set_mouse_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse input (click & move).
+     * \see set_mouse_enabled()
+     */
+    void enable_mouse() {
+        set_mouse_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse input (click & move).
+     * \see set_mouse_enabled()
+     */
+    void disable_mouse() {
+        set_mouse_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse click input.
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_click(bool is_mouse_enabled);
+    void set_mouse_click_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse click input.
+     * \see set_mouse_click_enabled()
+     */
+    void enable_mouse_click() {
+        set_mouse_click_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse click input.
+     * \see set_mouse_click_enabled()
+     */
+    void disable_mouse_click() {
+        set_mouse_click_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse move input.
      * \param is_mouse_enabled 'true' to enable
      */
-    void enable_mouse_move(bool is_mouse_enabled);
+    void set_mouse_move_enabled(bool is_mouse_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse move input.
+     * \see set_mouse_move_enabled()
+     */
+    void enable_mouse_move() {
+        set_mouse_move_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse move input.
+     * \see set_mouse_move_enabled()
+     */
+    void disable_mouse_move() {
+        set_mouse_move_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive mouse wheel input.
      * \param is_mouse_wheel_enabled 'true' to enable
      */
-    void enable_mouse_wheel(bool is_mouse_wheel_enabled);
+    void set_mouse_wheel_enabled(bool is_mouse_wheel_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive mouse wheel input.
+     * \see set_mouse_wheel_enabled()
+     */
+    void enable_mouse_wheel() {
+        set_mouse_wheel_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive mouse wheel input.
+     * \see set_mouse_wheel_enabled()
+     */
+    void disable_mouse_wheel() {
+        set_mouse_wheel_enabled(false);
+    }
 
     /**
      * \brief Sets if this frame can receive any keyboard input.
@@ -373,8 +444,56 @@ public:
      * \see is_keyboard_enabled()
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
+     * \see enable_keyboard()
+     * \see disable_keyboard()
      */
-    void enable_keyboard(bool is_keyboard_enabled);
+    void set_keyboard_enabled(bool is_keyboard_enabled);
+
+    /**
+     * \brief Marks this frame as able to receive any keyboard input.
+     * \see set_keyboard_enabled()
+     */
+    void enable_keyboard() {
+        set_keyboard_enabled(true);
+    }
+
+    /**
+     * \brief Marks this frame as unable to receive any keyboard input.
+     * \see set_keyboard_enabled()
+     */
+    void disable_keyboard() {
+        set_keyboard_enabled(false);
+    }
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_name The key to capture
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_key_capture()
+     * \see disable_key_capture()
+     */
+    void set_key_capture_enabled(const std::string& key_name, bool enable) {
+        if (enable) {
+            enable_key_capture(key_name);
+        } else {
+            disable_key_capture(key_name);
+        }
+    }
+
+    /**
+     * \brief Marks this frame as able to receive keyboard input from a specific key.
+     * \param key_id The key to capture
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_key_capture()
+     * \see disable_key_capture()
+     */
+    void set_key_capture_enabled(input::key key_id, bool enable) {
+        if (enable) {
+            enable_key_capture(key_id);
+        } else {
+            disable_key_capture(key_id);
+        }
+    }
 
     /**
      * \brief Marks this frame as able to receive keyboard input from a specific key.
@@ -386,7 +505,7 @@ public:
      * simultaneously. Keyboard input must be enabled for capture to take place.
      * \see disable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void enable_key_capture(const std::string& key_name);
@@ -399,7 +518,7 @@ public:
      * please use the overload taking a string.
      * \see disable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void enable_key_capture(input::key key_id);
@@ -409,10 +528,11 @@ public:
      * \param key_name The key for which to disable capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture(const std::string& key_name);
+
     /**
      * \brief Marks this frame as unable to receive keyboard input from a specific key.
      * \param key_id The key for which to disable capture
@@ -421,7 +541,7 @@ public:
      * please use the overload taking a string.
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture(input::key key_id);
@@ -431,7 +551,7 @@ public:
      * \param key_name The key to capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
-     * \see enable_keyboard()
+     * \see set_keyboard_enabled()
      * \see is_keyboard_enabled()
      */
     void disable_key_capture();
@@ -749,15 +869,15 @@ public:
     /**
      * \brief Returns this frame's strata.
      * \return This frame's strata, or nullopt if the strata is inherited from the parent.
-     * \note See get_effective_frame_strata() to obtain the actual strata of this frame.
+     * \note See get_effective_strata() to obtain the actual strata of this frame.
      */
-    std::optional<frame_strata> get_frame_strata() const;
+    std::optional<strata> get_strata() const;
 
     /**
      * \brief Returns this frame's effective strata.
-     * \return This frame's strata, or its parent's effective strata if frame_strata::parent.
+     * \return This frame's strata, or its parent's effective strata if strata::parent.
      */
-    frame_strata get_effective_frame_strata() const;
+    strata get_effective_strata() const;
 
     /**
      * \brief Returns this frame's top-level parent.
@@ -1223,6 +1343,25 @@ public:
     virtual void fire_script(const std::string& script_name, const event_data& data = event_data{});
 
     /**
+     * \brief Sets a maximum update rate (in updates per seconds).
+     * \param rate The new rate, or 0 to update as often as possible
+     * \note The default is 0, which means the frame will be updated on each frame.
+     * If set to a value of 10, then the frame will be updated a maximum of 10 times per second.
+     * This can be useful to avoid wasting time updating a frame constantly, when less frequent
+     * updates would be sufficient.
+     * \warning Because update is triggered from parent to child, a frame's update rate will
+     * never be greater than that of its parent, even if this function is used to set the rate
+     * to a larger value.
+     */
+    void set_update_rate(float rate);
+
+    /**
+     * \brief Gets the maximum update rate (in upates per seconds).
+     * \return The maximum update rate (in upates per seconds)
+     */
+    float get_update_rate() const;
+
+    /**
      * \brief Tells this frame to react to a certain event.
      * \param event_name The name of the event
      */
@@ -1233,6 +1372,32 @@ public:
      * \param event_name The name of the event
      */
     void unregister_event(const std::string& event_name);
+
+    /**
+     * \brief Tells this frame whether to react to mouse drag or not.
+     * \param button_name The mouse button to react to
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_drag_enabled(const std::string& button_name, bool enable) {
+        if (enable) {
+            enable_drag(button_name);
+        } else {
+            disable_drag(button_name);
+        }
+    }
+
+    /**
+     * \brief Tells this frame whether to react to mouse drag or not.
+     * \param button_id The mouse button to react to
+     * \param enable 'true' to enable, 'false' to disable
+     */
+    void set_drag_enabled(input::mouse_button button_id, bool enable) {
+        if (enable) {
+            enable_drag(button_id);
+        } else {
+            disable_drag(button_id);
+        }
+    }
 
     /**
      * \brief Tells this frame to react to mouse drag.
@@ -1274,7 +1439,7 @@ public:
      * \brief Sets this frame's strata.
      * \param strata_id The new strata, or nullopt to inherit strata from parent
      */
-    void set_frame_strata(std::optional<frame_strata> strata_id);
+    void set_strata(std::optional<strata> strata_id);
 
     /**
      * \brief Sets this frames' backdrop.
@@ -1573,6 +1738,8 @@ protected:
 
     utils::observer_ptr<frame> parse_child_(const layout_node& node, const std::string& type);
 
+    virtual void update_(float delta);
+
     void check_position_();
 
     void add_level_(int amount);
@@ -1584,9 +1751,9 @@ protected:
             const_cast<const frame*>(this)->compute_top_level_frame_renderer_());
     }
 
-    frame_strata compute_effective_frame_strata_() const;
+    strata compute_effective_strata_() const;
 
-    void notify_frame_strata_changed_(frame_strata new_strata_id);
+    void notify_strata_changed_(strata new_strata_id);
 
     void notify_frame_renderer_changed_(const utils::observer_ptr<frame_renderer>& new_renderer);
 
@@ -1634,10 +1801,10 @@ protected:
     std::set<std::string> reg_drag_list_;
     std::set<std::string> reg_key_list_;
 
-    int                         level_ = 0;
-    std::optional<frame_strata> strata_;
-    frame_strata                effective_strata_ = frame_strata::medium;
-    bool                        is_top_level_     = false;
+    int                   level_ = 0;
+    std::optional<strata> strata_;
+    strata                effective_strata_ = strata::medium;
+    bool                  is_top_level_     = false;
 
     utils::observer_ptr<frame_renderer> frame_renderer_           = nullptr;
     utils::observer_ptr<frame_renderer> effective_frame_renderer_ = nullptr;
@@ -1664,6 +1831,9 @@ protected:
     float max_height_ = std::numeric_limits<float>::infinity();
 
     float scale_ = 1.0f;
+
+    float update_rate_            = 0.0f;
+    float time_since_last_update_ = std::numeric_limits<float>::infinity();
 
     bool is_mouse_in_frame_ = false;
 

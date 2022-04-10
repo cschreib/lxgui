@@ -184,9 +184,9 @@ std::size_t hex_to_uint(string_view s) {
 namespace impl {
 
 template<typename T>
-std::optional<T> from_string_template(string_view s) {
+std::optional<T> from_string_template(const std::locale& loc, string_view s) {
     std::istringstream ss{std::string(s)};
-    ss.imbue(std::locale::classic());
+    ss.imbue(loc);
 
     T v;
     ss >> v;
@@ -205,44 +205,137 @@ std::optional<T> from_string_template(string_view s) {
     return {};
 }
 
+template<typename T>
+std::optional<T> from_string_template(const std::locale& loc, ustring_view s) {
+    return from_string_template<T>(loc, unicode_to_utf8(s));
+}
+
+// ----- locale, utf8 string
+
+template<>
+std::optional<int> from_string<int>(const std::locale& loc, string_view s) {
+    return from_string_template<int>(loc, s);
+}
+
+template<>
+std::optional<long> from_string<long>(const std::locale& loc, string_view s) {
+    return from_string_template<long>(loc, s);
+}
+
+template<>
+std::optional<long long> from_string<long long>(const std::locale& loc, string_view s) {
+    return from_string_template<long long>(loc, s);
+}
+
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale& loc, string_view s) {
+    return from_string_template<unsigned>(loc, s);
+}
+
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale& loc, string_view s) {
+    return from_string_template<unsigned long>(loc, s);
+}
+
+template<>
+std::optional<unsigned long long>
+from_string<unsigned long long>(const std::locale& loc, string_view s) {
+    return from_string_template<unsigned long long>(loc, s);
+}
+
+template<>
+std::optional<float> from_string<float>(const std::locale& loc, string_view s) {
+    return from_string_template<float>(loc, s);
+}
+
+template<>
+std::optional<double> from_string<double>(const std::locale& loc, string_view s) {
+    return from_string_template<double>(loc, s);
+}
+
+// ----- locale, utf32 string
+
+template<>
+std::optional<int> from_string<int>(const std::locale& loc, ustring_view s) {
+    return from_string_template<int>(loc, s);
+}
+
+template<>
+std::optional<long> from_string<long>(const std::locale& loc, ustring_view s) {
+    return from_string_template<long>(loc, s);
+}
+
+template<>
+std::optional<long long> from_string<long long>(const std::locale& loc, ustring_view s) {
+    return from_string_template<long long>(loc, s);
+}
+
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale& loc, ustring_view s) {
+    return from_string_template<unsigned>(loc, s);
+}
+
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale& loc, ustring_view s) {
+    return from_string_template<unsigned long>(loc, s);
+}
+
+template<>
+std::optional<unsigned long long>
+from_string<unsigned long long>(const std::locale& loc, ustring_view s) {
+    return from_string_template<unsigned long long>(loc, s);
+}
+
+template<>
+std::optional<float> from_string<float>(const std::locale& loc, ustring_view s) {
+    return from_string_template<float>(loc, s);
+}
+
+template<>
+std::optional<double> from_string<double>(const std::locale& loc, ustring_view s) {
+    return from_string_template<double>(loc, s);
+}
+
+// ----- C locale, utf8 string
+
 template<>
 std::optional<int> from_string<int>(string_view s) {
-    return from_string_template<int>(s);
+    return from_string_template<int>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<long> from_string<long>(string_view s) {
-    return from_string_template<long>(s);
+    return from_string_template<long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<long long> from_string<long long>(string_view s) {
-    return from_string_template<long long>(s);
+    return from_string_template<long long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned> from_string<unsigned>(string_view s) {
-    return from_string_template<unsigned>(s);
+    return from_string_template<unsigned>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned long> from_string<unsigned long>(string_view s) {
-    return from_string_template<unsigned long>(s);
+    return from_string_template<unsigned long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned long long> from_string<unsigned long long>(string_view s) {
-    return from_string_template<unsigned long long>(s);
+    return from_string_template<unsigned long long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<float> from_string<float>(string_view s) {
-    return from_string_template<float>(s);
+    return from_string_template<float>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<double> from_string<double>(string_view s) {
-    return from_string_template<double>(s);
+    return from_string_template<double>(std::locale::classic(), s);
 }
 
 template<>
@@ -259,49 +352,46 @@ std::optional<string> from_string<string>(string_view s) {
     return string{s};
 }
 
-template<typename T>
-std::optional<T> from_string_template(ustring_view s) {
-    return from_string<T>(unicode_to_utf8(s));
-}
+// ----- C locale, utf32 string
 
 template<>
 std::optional<int> from_string<int>(ustring_view s) {
-    return from_string_template<int>(s);
+    return from_string_template<int>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<long> from_string<long>(ustring_view s) {
-    return from_string_template<long>(s);
+    return from_string_template<long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<long long> from_string<long long>(ustring_view s) {
-    return from_string_template<long long>(s);
+    return from_string_template<long long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned> from_string<unsigned>(ustring_view s) {
-    return from_string_template<unsigned>(s);
+    return from_string_template<unsigned>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned long> from_string<unsigned long>(ustring_view s) {
-    return from_string_template<unsigned long>(s);
+    return from_string_template<unsigned long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<unsigned long long> from_string<unsigned long long>(ustring_view s) {
-    return from_string_template<unsigned long long>(s);
+    return from_string_template<unsigned long long>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<float> from_string<float>(ustring_view s) {
-    return from_string_template<float>(s);
+    return from_string_template<float>(std::locale::classic(), s);
 }
 
 template<>
 std::optional<double> from_string<double>(ustring_view s) {
-    return from_string_template<double>(s);
+    return from_string_template<double>(std::locale::classic(), s);
 }
 
 template<>
@@ -320,18 +410,36 @@ std::optional<ustring> from_string<ustring>(ustring_view s) {
 
 } // namespace impl
 
+bool is_number(const std::locale& loc, string_view s) {
+    return impl::from_string<double>(loc, s).has_value();
+}
+
+bool is_number(const std::locale& loc, ustring_view s) {
+    return impl::from_string<double>(loc, s).has_value();
+}
+
+bool is_integer(const std::locale& loc, string_view s) {
+    return impl::from_string<std::int64_t>(loc, s).has_value();
+}
+
+bool is_integer(const std::locale& loc, ustring_view s) {
+    return impl::from_string<std::int64_t>(loc, s).has_value();
+}
+
 bool is_number(string_view s) {
-    std::istringstream temp{std::string(s)};
-    temp.imbue(std::locale::classic());
-
-    double value = 0;
-    temp >> value;
-
-    return !temp.fail();
+    return is_number(std::locale::classic(), s);
 }
 
 bool is_number(ustring_view s) {
-    return is_number(unicode_to_utf8(s));
+    return is_number(std::locale::classic(), s);
+}
+
+bool is_integer(string_view s) {
+    return is_integer(std::locale::classic(), s);
+}
+
+bool is_integer(ustring_view s) {
+    return is_integer(std::locale::classic(), s);
 }
 
 bool is_number(char s) {
@@ -340,20 +448,6 @@ bool is_number(char s) {
 
 bool is_number(char32_t s) {
     return U'0' <= s && s <= U'9';
-}
-
-bool is_integer(string_view s) {
-    std::istringstream temp{std::string(s)};
-    temp.imbue(std::locale::classic());
-
-    std::int64_t value = 0;
-    temp >> value;
-
-    return !temp.fail();
-}
-
-bool is_integer(ustring_view s) {
-    return is_integer(unicode_to_utf8(s));
 }
 
 bool is_integer(char s) {

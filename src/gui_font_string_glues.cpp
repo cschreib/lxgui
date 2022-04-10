@@ -71,9 +71,53 @@ namespace lxgui::gui {
 
 void font_string::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<font_string>(
-        "FontString", sol::base_classes, sol::bases<region, layered_region>(),
+        font_string::class_name, sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index, member_function<&font_string::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&font_string::set_lua_member_>());
+
+    /** @function disable_formatting
+     */
+    type.set_function("disable_formatting", member_function<&font_string::disable_formatting>());
+
+    /** @function disable_non_space_wrap
+     */
+    type.set_function(
+        "disable_non_space_wrap", member_function<&font_string::disable_non_space_wrap>());
+
+    /** @function disable_shadow
+     */
+    type.set_function("disable_shadow", member_function<&font_string::disable_shadow>());
+
+    /** @function disable_word_ellipsis
+     */
+    type.set_function(
+        "disable_word_ellipsis", member_function<&font_string::disable_word_ellipsis>());
+
+    /** @function disable_word_wrap
+     */
+    type.set_function("disable_word_wrap", member_function<&font_string::disable_word_wrap>());
+
+    /** @function enable_formatting
+     */
+    type.set_function("enable_formatting", member_function<&font_string::enable_formatting>());
+
+    /** @function enable_non_space_wrap
+     */
+    type.set_function(
+        "enable_non_space_wrap", member_function<&font_string::enable_non_space_wrap>());
+
+    /** @function enable_shadow
+     */
+    type.set_function("enable_shadow", member_function<&font_string::enable_shadow>());
+
+    /** @function enable_word_ellipsis
+     */
+    type.set_function(
+        "enable_word_ellipsis", member_function<&font_string::enable_word_ellipsis>());
+
+    /** @function enable_word_wrap
+     */
+    type.set_function("enable_word_wrap", member_function<&font_string::enable_word_wrap>());
 
     /** @function get_font
      */
@@ -198,13 +242,15 @@ void font_string::register_on_lua(sol::state& lua) {
             },
             [](font_string& self, const std::string& s) { self.set_text_color(color(s)); }));
 
-    /** @function can_non_space_wrap
+    /** @function is_non_space_wrap_enabled
      */
-    type.set_function("can_non_space_wrap", member_function<&font_string::can_non_space_wrap>());
+    type.set_function(
+        "is_non_space_wrap_enabled", member_function<&font_string::is_non_space_wrap_enabled>());
 
-    /** @function can_word_wrap
+    /** @function is_word_wrap_enabled
      */
-    type.set_function("can_word_wrap", member_function<&font_string::can_word_wrap>());
+    type.set_function(
+        "is_word_wrap_enabled", member_function<&font_string::is_word_wrap_enabled>());
 
     /** @function enable_formatting
      */
@@ -230,21 +276,31 @@ void font_string::register_on_lua(sol::state& lua) {
         return utils::unicode_to_utf8(self.get_text());
     });
 
+    /** @function get_vertex_cache_strategy
+     */
+    type.set_function("get_vertex_cache_strategy", [](const font_string& self) {
+        return utils::to_string(self.get_vertex_cache_strategy());
+    });
+
     /** @function is_formatting_enabled
      */
     type.set_function(
         "is_formatting_enabled", member_function<&font_string::is_formatting_enabled>());
 
-    /** @function set_non_space_wrap
-     */
-    type.set_function("set_non_space_wrap", member_function<&font_string::set_non_space_wrap>());
-
-    /** @function set_word_wrap
+    /** @function set_non_space_wrap_enabled
      */
     type.set_function(
-        "set_word_wrap", [](font_string& self, bool wrap, sol::optional<bool> ellipsis) {
-            self.set_word_wrap(wrap, ellipsis.value_or(false));
-        });
+        "set_non_space_wrap_enabled", member_function<&font_string::set_non_space_wrap_enabled>());
+
+    /** @function set_word_wrap_enabled
+     */
+    type.set_function(
+        "set_word_wrap_enabled", member_function<&font_string::set_word_wrap_enabled>());
+
+    /** @function set_word_ellipsis_enabled
+     */
+    type.set_function(
+        "set_word_ellipsis_enabled", member_function<&font_string::set_word_ellipsis_enabled>());
 
     /** @function set_text
      */
@@ -266,6 +322,19 @@ void font_string::register_on_lua(sol::state& lua) {
             [](font_string& self, const std::string& text) {
                 self.set_text(utils::utf8_to_unicode(text));
             }));
+
+    /** @function set_vertex_cache_strategy
+     */
+    type.set_function(
+        "set_vertex_cache_strategy", [](font_string& self, const std::string& strategy_name) {
+            if (auto strategy = utils::from_string<vertex_cache_strategy>(strategy_name);
+                strategy.has_value()) {
+                self.set_vertex_cache_strategy(strategy.value());
+            } else {
+                gui::out << gui::warning << "font_string:set_vertex_cache_strategy: "
+                         << "Unknown strategy: \"" << strategy_name << "\"." << std::endl;
+            }
+        });
 }
 
 } // namespace lxgui::gui

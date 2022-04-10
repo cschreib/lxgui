@@ -280,13 +280,25 @@ public:
     bool get_remove_starting_spaces() const;
 
     /**
-     * \brief Allows word wrap when the line is too long for the text box.
+     * \brief Allows/disallows word wrap when the line is too long for the text box.
      * \param wrap 'true' to enable word wrap
-     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
      * \note Enabled by default.
      */
+    void set_word_wrap_enabled(bool wrap);
 
-    void enable_word_wrap(bool wrap, bool add_ellipsis);
+    /**
+     * \brief Allows word wrap when the line is too long for the text box.
+     */
+    void enable_word_wrap() {
+        set_word_wrap_enabled(true);
+    }
+
+    /**
+     * \brief Disallow word wrap when the line is too long for the text box.
+     */
+    void disable_word_wrap() {
+        set_word_wrap_enabled(false);
+    }
 
     /**
      * \brief Checks if word wrap is enabled.
@@ -295,11 +307,54 @@ public:
     bool is_word_wrap_enabled() const;
 
     /**
+     * \brief Sets whether to show an ellipsis "..." if words don't fit in the text box.
+     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
+     * \note Disabled by default.
+     */
+    void set_word_ellipsis_enabled(bool add_ellipsis);
+
+    /**
+     * \brief Show an ellipsis "..." if words don't fit in the text box.
+     */
+    void enable_word_ellipsis() {
+        set_word_ellipsis_enabled(true);
+    }
+
+    /**
+     * \brief Do not show an ellipsis "..." if words don't fit in the text box.
+     */
+    void disable_word_ellipsis() {
+        set_word_ellipsis_enabled(false);
+    }
+
+    /**
+     * \brief Checks if word ellipsis is enabled.
+     * \return 'true' if word ellipsis is enabled
+     */
+    bool is_word_ellipsis_enabled() const;
+
+    /**
      * \brief Enables color formatting.
      * \param formatting 'true' to enable color formatting
      * \note Enabled by default. See \ref set_text for more information on formatting.
      */
-    void enable_formatting(bool formatting);
+    void set_formatting_enabled(bool formatting);
+
+    /**
+     * \brief Enables color formatting.
+     * \see set_formatting_enabled
+     */
+    void enable_formatting() {
+        set_formatting_enabled(true);
+    }
+
+    /**
+     * \brief Disables color formatting.
+     * \see set_formatting_enabled
+     */
+    void disable_formatting() {
+        set_formatting_enabled(false);
+    }
 
     /**
      * \brief Renders this text at the given position.
@@ -338,6 +393,19 @@ public:
     quad create_letter_quad(char32_t c) const;
 
     /**
+     * \brief Sets whether this text object should use vertex caches or not.
+     * \note If vertex caches are not supported on the current rendering back end,
+     * this function has no effect.
+     */
+    void set_use_vertex_cache(bool use_vertex_cache);
+
+    /**
+     * \brief Checks if this text object is using vertex cache or not.
+     * \see set_use_vertex_cache()
+     */
+    bool get_use_vertex_cache() const;
+
+    /**
      * \brief Returns the renderer used to render this text.
      * \return The renderer used to render this text
      */
@@ -355,7 +423,10 @@ public:
 
 private:
     void update_() const;
+    void update_vertex_cache_() const;
+    bool use_vertex_cache_() const;
     void notify_cache_dirty_() const;
+    void notify_vertex_cache_dirty_() const;
 
     float round_to_pixel_(
         float value, utils::rounding_method method = utils::rounding_method::nearest) const;
@@ -391,6 +462,8 @@ private:
     mutable float       height_            = 0.0f;
     mutable std::size_t num_lines_         = 0u;
 
+    bool                                       use_vertex_cache_flag_    = false;
+    mutable bool                               update_vertex_cache_flag_ = false;
     mutable std::vector<std::array<vertex, 4>> quad_list_;
     mutable std::shared_ptr<vertex_cache>      vertex_cache_;
     mutable std::vector<std::array<vertex, 4>> outline_quad_list_;

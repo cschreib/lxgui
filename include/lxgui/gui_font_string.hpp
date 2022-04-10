@@ -9,6 +9,20 @@
 namespace lxgui::gui {
 
 /**
+ * \brief Strategy for using a vertex cache
+ */
+enum class vertex_cache_strategy {
+    /// Never use vertex cache.
+    always_disabled,
+    /// Use vertex cache if renderer supports and allows.
+    prefer_enabled,
+    /// Use vertex cache if renderer supports, even if not allowed.
+    always_enabled,
+    /// Choose automatically to maximize performance on common case.
+    automatic
+};
+
+/**
  * \brief A #layered_region that can draw text on the screen.
  * \details This class holds a string and a reference to a font, which
  * is used to draw the string on the screen. The appearance of
@@ -69,11 +83,11 @@ public:
 
     /**
      * \brief Adds or remove the outline around the text.
-     * \param is_outlined 'true' to enable the outline
+     * \param outlined 'true' to enable the outline
      * \note The thickness of this outline is constant and
      * does not depend on the font's size.
      */
-    void set_outlined(bool is_outlined);
+    void set_outlined(bool outlined);
 
     /**
      * \brief Check if this font_string is outlined.
@@ -192,11 +206,11 @@ public:
     void set_text_color(const color& text_color);
 
     /**
-     * \brief Checks is large text is truncated or wrapped.
+     * \brief Checks if large text is truncated or wrapped.
      * \return 'true' if large text is truncated
-     * \note See set_non_space_wrap for more information.
+     * \note See set_non_space_wrap_enabled for more information.
      */
-    bool can_non_space_wrap() const;
+    bool is_non_space_wrap_enabled() const;
 
     /**
      * \brief Returns the height of the string if no format or wrapping is applied.
@@ -224,53 +238,159 @@ public:
     const utils::ustring& get_text() const;
 
     /**
-     * \brief Sets whether large text is truncated or wrapped.
-     * \param can_non_space_wrap 'true' to truncate the text
-     * \note This applies to large chunks of text with no
-     * spaces. When truncated, "..." is appended at
-     * the line's end. Else, the "word" is cut and
-     * continues on the next line.
+     * \brief Sets whether large text without whitespace is truncated or wrapped.
+     * \param enabled 'true' to wrap, 'false' to truncate
+     * \note This applies to large chunks of text with no spaces. When truncated, "..." is appended
+     * at the line's end. Else, the word is cut and continues on the next line.
      */
-    void set_non_space_wrap(bool can_non_space_wrap);
+    void set_non_space_wrap_enabled(bool enabled);
+
+    /**
+     * \brief Allows large text without whitespace to wrap.
+     * \see set_non_space_wrap_enabled
+     */
+    void enable_non_space_wrap() {
+        set_non_space_wrap_enabled(true);
+    }
+
+    /**
+     * \brief Does not allow large text without whitespace to wrap.
+     * \see set_non_space_wrap_enabled
+     */
+    void disable_non_space_wrap() {
+        set_non_space_wrap_enabled(false);
+    }
 
     /**
      * \brief Checks if this font_string draws a shadow under its text.
      * \return 'true' if this font_string draws a shadow under its text
      */
-    bool has_shadow() const;
+    bool is_shadow_enabled() const;
 
     /**
      * \brief Sets whether this font_string should draw a shadow under its text.
-     * \param has_shadow 'true' to enable shadow
+     * \param enabled 'true' to enable shadow
      */
-    void set_shadow(bool has_shadow);
+    void set_shadow_enabled(bool enabled);
+
+    /**
+     * \brief Makes this font_string draw a shadow under its text.
+     * \see set_shadow_enabled
+     */
+    void enable_shadow() {
+        set_shadow_enabled(true);
+    }
+
+    /**
+     * \brief Makes this font_string draw a shadow under its text.
+     * \see set_shadow_enabled
+     */
+    void disable_shadow() {
+        set_shadow_enabled(false);
+    }
+
+    /**
+     * \brief Enables/disables word wrap.
+     * \param enabled 'true' to enable word wrap
+     * \note Enabled by default.
+     */
+    void set_word_wrap_enabled(bool enabled);
 
     /**
      * \brief Enables word wrap.
-     * \param can_word_wrap 'true' to enable word wrap
-     * \param add_ellipsis 'true' to put "..." at the end of a truncated line
-     * \note Enabled by default.
      */
-    void set_word_wrap(bool can_word_wrap, bool add_ellipsis);
+    void enable_word_wrap() {
+        set_word_wrap_enabled(true);
+    }
+
+    /**
+     * \brief Disables word wrap.
+     */
+    void disable_word_wrap() {
+        set_word_wrap_enabled(false);
+    }
 
     /**
      * \brief Checks if word wrap is enabled.
      * \return 'true' if word wrap is enabled
      */
-    bool can_word_wrap() const;
+    bool is_word_wrap_enabled() const;
+
+    /**
+     * \brief Sets whether to show an ellipsis "..." if words don't fit in the text box.
+     * \param enabled 'true' to put "..." at the end of a truncated line
+     * \note Disabled by default.
+     */
+    void set_word_ellipsis_enabled(bool enabled);
+
+    /**
+     * \brief Show an ellipsis "..." if words don't fit in the text box.
+     */
+    void enable_word_ellipsis() {
+        set_word_ellipsis_enabled(true);
+    }
+
+    /**
+     * \brief Do not show an ellipsis "..." if words don't fit in the text box.
+     */
+    void disable_word_ellipsis() {
+        set_word_ellipsis_enabled(false);
+    }
+
+    /**
+     * \brief Checks if word ellipsis is enabled.
+     * \return 'true' if word ellipsis is enabled
+     */
+    bool is_word_ellipsis_enabled() const;
 
     /**
      * \brief Enables color formatting.
-     * \param formatting 'true' to enable color formatting
-     * \note Enabled by default. See text::enable_formatting().
+     * \param enabled 'true' to enable color formatting
+     * \note Enabled by default. See text::set_formatting_enabled().
      */
-    void enable_formatting(bool formatting);
+    void set_formatting_enabled(bool enabled);
+
+    /**
+     * \brief Enables color formatting.
+     * \see set_formatting_enabled
+     */
+    void enable_formatting() {
+        set_formatting_enabled(true);
+    }
+
+    /**
+     * \brief Disables color formatting.
+     * \see set_formatting_enabled
+     */
+    void disable_formatting() {
+        set_formatting_enabled(false);
+    }
 
     /**
      * \brief Checks if color formatting is enabled.
      * \return 'true' if color formatting is enabled
      */
     bool is_formatting_enabled() const;
+
+    /**
+     * \brief Selects the strategy for using vertex caches.
+     * \param strategy The new strategy
+     * \note The recommended value is the default, vertex_cache_strategy::automatic.
+     * This will automatically decide whether vertex caches should be used or not, based
+     * on what is expected to give the best performance for the common use case of mostly static
+     * text. If the displayed text changes very frequently, it is best to use the strategy
+     * vertex_cache_strategy::always_disabled. If the displayed text changes rarely and contains a
+     * large number of characters, it is best to use the strategy
+     * vertex_cache_strategy::prefer_enabled, or vertex_cache_strategy::always_enabled if you want
+     * to completely bypass the preferences set in the renderer configuration.
+     */
+    void set_vertex_cache_strategy(vertex_cache_strategy strategy);
+
+    /**
+     * \brief Gets the strategy for using vertex caches.
+     * \return The strategy for using vertex caches
+     */
+    vertex_cache_strategy get_vertex_cache_strategy() const;
 
     /**
      * \brief Sets the rendered text.
@@ -312,6 +432,7 @@ private:
     const std::vector<std::string>& get_type_list_() const override;
 
     void create_text_object_();
+    bool is_vertex_cache_used_() const;
 
     void update_borders_() override;
 
@@ -334,9 +455,11 @@ private:
     bool  formatting_enabled_     = true;
     color text_color_             = color::white;
 
-    bool     has_shadow_    = false;
-    color    shadow_color_  = color::black;
-    vector2f shadow_offset_ = vector2f::zero;
+    vertex_cache_strategy vertex_cache_strategy_ = vertex_cache_strategy::automatic;
+
+    bool     is_shadow_enabled_ = false;
+    color    shadow_color_      = color::black;
+    vector2f shadow_offset_     = vector2f::zero;
 };
 
 } // namespace lxgui::gui

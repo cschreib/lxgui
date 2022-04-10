@@ -59,9 +59,9 @@ namespace lxgui::gui {
 
 void edit_box::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<edit_box>(
-        "EditBox", sol::base_classes, sol::bases<region, frame>(), sol::meta_function::index,
-        member_function<&edit_box::get_lua_member_>(), sol::meta_function::new_index,
-        member_function<&edit_box::set_lua_member_>());
+        edit_box::class_name, sol::base_classes, sol::bases<region, frame>(),
+        sol::meta_function::index, member_function<&edit_box::get_lua_member_>(),
+        sol::meta_function::new_index, member_function<&edit_box::set_lua_member_>());
 
     /** @function add_history_line
      */
@@ -69,13 +69,21 @@ void edit_box::register_on_lua(sol::state& lua) {
         self.add_history_line(utils::utf8_to_unicode(line));
     });
 
-    /** @function clear_history
+    /** @function clear_history_lines
      */
-    type.set_function("clear_history", member_function<&edit_box::clear_history>());
+    type.set_function("clear_history_lines", member_function<&edit_box::clear_history_lines>());
 
-    /** @function get_blink_period
+    /** @function disable_password_mode
      */
-    type.set_function("get_blink_period", member_function<&edit_box::get_blink_period>());
+    type.set_function("disable_password_mode", member_function<&edit_box::disable_password_mode>());
+
+    /** @function enable_password_mode
+     */
+    type.set_function("enable_password_mode", member_function<&edit_box::enable_password_mode>());
+
+    /** @function get_blink_time
+     */
+    type.set_function("get_blink_time", member_function<&edit_box::get_blink_time>());
 
     /** @function get_cursor_position
      */
@@ -98,9 +106,8 @@ void edit_box::register_on_lua(sol::state& lua) {
     /** @function get_number
      */
     type.set_function("get_number", [](const edit_box& self) {
-        // TODO: use localizer's locale for that
-        // https://github.com/cschreib/lxgui/issues/88
-        return utils::from_string<double>(self.get_text()).value_or(0.0);
+        const auto& locale = self.get_manager().get_localizer().get_locale();
+        return utils::from_string<double>(locale, self.get_text()).value_or(0.0);
     });
 
     /** @function get_text
@@ -138,13 +145,14 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("is_numeric", member_function<&edit_box::is_numeric_only>());
 
-    /** @function is_password
+    /** @function is_password_mode_enabled
      */
-    type.set_function("is_password", member_function<&edit_box::is_password_mode_enabled>());
+    type.set_function(
+        "is_password_mode_enabled", member_function<&edit_box::is_password_mode_enabled>());
 
-    /** @function set_blink_period
+    /** @function set_blink_time
      */
-    type.set_function("set_blink_period", member_function<&edit_box::set_blink_period>());
+    type.set_function("set_blink_time", member_function<&edit_box::set_blink_time>());
 
     /** @function set_cursor_position
      */
@@ -204,9 +212,10 @@ void edit_box::register_on_lua(sol::state& lua) {
      */
     type.set_function("set_numeric", member_function<&edit_box::set_numeric_only>());
 
-    /** @function set_password
+    /** @function set_password_mode_enabled
      */
-    type.set_function("set_password", member_function<&edit_box::enable_password_mode>());
+    type.set_function(
+        "set_password_mode_enabled", member_function<&edit_box::set_password_mode_enabled>());
 
     /** @function set_text
      */

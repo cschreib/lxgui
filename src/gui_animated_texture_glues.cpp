@@ -19,7 +19,7 @@ namespace lxgui::gui {
 
 void animated_texture::register_on_lua(sol::state& lua) {
     auto type = lua.new_usertype<animated_texture>(
-        "AnimatedTexture", sol::base_classes, sol::bases<region, layered_region>(),
+        animated_texture::class_name, sol::base_classes, sol::bases<region, layered_region>(),
         sol::meta_function::index, member_function<&animated_texture::get_lua_member_>(),
         sol::meta_function::new_index, member_function<&animated_texture::set_lua_member_>());
 

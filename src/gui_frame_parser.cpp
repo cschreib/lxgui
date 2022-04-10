@@ -44,34 +44,36 @@ void frame::parse_attributes_(const layout_node& node) {
         set_movable(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("resizable"))
         set_resizable(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("frameStrata"))
-        set_frame_strata(attr->get_value<frame_strata>());
+    if (const layout_attribute* attr = node.try_get_attribute("strata"))
+        set_strata(attr->get_value<strata>());
 
-    if (const layout_attribute* attr = node.try_get_attribute("frameLevel")) {
+    if (const layout_attribute* attr = node.try_get_attribute("level")) {
         if (!is_virtual_) {
-            std::string frame_level = attr->get_value<std::string>();
-            if (frame_level != "PARENT")
+            std::string level = attr->get_value<std::string>();
+            if (level != "PARENT")
                 set_level(attr->get_value<int>());
         } else {
             gui::out << gui::warning << node.get_location() << ": "
-                     << "\"frameLevel\" is not allowed for virtual regions. Ignored." << std::endl;
+                     << "\"level\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
 
     if (const layout_attribute* attr = node.try_get_attribute("enableMouse"))
-        enable_mouse(attr->get_value<bool>());
+        set_mouse_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseMove"))
-        enable_mouse_move(attr->get_value<bool>());
+        set_mouse_move_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseClick"))
-        enable_mouse_click(attr->get_value<bool>());
+        set_mouse_click_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableMouseWheel"))
-        enable_mouse_wheel(attr->get_value<bool>());
+        set_mouse_wheel_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("enableKeyboard"))
-        enable_keyboard(attr->get_value<bool>());
+        set_keyboard_enabled(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("clampedToScreen"))
         set_clamped_to_screen(attr->get_value<bool>());
     if (const layout_attribute* attr = node.try_get_attribute("autoFocus"))
         enable_auto_focus(attr->get_value<bool>());
+    if (const layout_attribute* attr = node.try_get_attribute("updateRate"))
+        set_update_rate(attr->get_value<float>());
 }
 
 void frame::parse_resize_bounds_node_(const layout_node& node) {

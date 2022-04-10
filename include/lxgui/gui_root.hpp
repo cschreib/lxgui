@@ -287,7 +287,7 @@ public:
 
 private:
     void create_caching_render_target_();
-    void create_strata_cache_render_target_(strata& strata_obj);
+    void create_strata_cache_render_target_(strata_data& strata_obj);
 
     void clear_hovered_frame_();
     void update_hovered_frame_();

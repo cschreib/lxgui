@@ -167,13 +167,13 @@ float scroll_frame::get_vertical_scroll_range() const {
     return scroll_range_.y;
 }
 
-void scroll_frame::update(float delta) {
+void scroll_frame::update_(float delta) {
     vector2f old_child_size;
     if (scroll_child_)
         old_child_size = scroll_child_->get_apparent_dimensions();
 
     alive_checker checker(*this);
-    base::update(delta);
+    base::update_(delta);
     if (!checker.is_alive())
         return;
 
@@ -272,7 +272,7 @@ scroll_frame::find_topmost_frame(const std::function<bool(const frame&)>& predic
     return nullptr;
 }
 
-void scroll_frame::notify_strata_needs_redraw(frame_strata strata_id) {
+void scroll_frame::notify_strata_needs_redraw(strata strata_id) {
     frame_renderer::notify_strata_needs_redraw(strata_id);
 
     redraw_scroll_render_target_flag_ = true;

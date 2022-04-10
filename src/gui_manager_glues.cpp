@@ -21,7 +21,7 @@
  * for creating or destroying @{Frame}s, and accessing a few
  * other global properties or objects.
  *
- * @module Manager
+ * @module GUI
  */
 
 namespace lxgui::gui {

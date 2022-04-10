@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <locale>
 #include <magic_enum.hpp>
 #include <optional>
 #include <string>
@@ -50,6 +51,60 @@ void replace(string& s, string_view pattern, string_view replacement);
 [[nodiscard]] std::size_t hex_to_uint(string_view s);
 
 namespace impl {
+
+template<typename T>
+std::optional<T> from_string(const std::locale&, string_view);
+
+template<>
+std::optional<int> from_string<int>(const std::locale&, string_view);
+
+template<>
+std::optional<long> from_string<long>(const std::locale&, string_view);
+
+template<>
+std::optional<long long> from_string<long long>(const std::locale&, string_view);
+
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale&, string_view);
+
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale&, string_view);
+
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(const std::locale&, string_view);
+
+template<>
+std::optional<float> from_string<float>(const std::locale&, string_view);
+
+template<>
+std::optional<double> from_string<double>(const std::locale&, string_view);
+
+template<typename T>
+std::optional<T> from_string(const std::locale&, ustring_view);
+
+template<>
+std::optional<int> from_string<int>(const std::locale&, ustring_view);
+
+template<>
+std::optional<long> from_string<long>(const std::locale&, ustring_view);
+
+template<>
+std::optional<long long> from_string<long long>(const std::locale&, ustring_view);
+
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale&, ustring_view);
+
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale&, ustring_view);
+
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(const std::locale&, ustring_view);
+
+template<>
+std::optional<float> from_string<float>(const std::locale&, ustring_view);
+
+template<>
+std::optional<double> from_string<double>(const std::locale&, ustring_view);
 
 template<typename T>
 std::optional<T> from_string(string_view);
@@ -120,6 +175,24 @@ std::optional<ustring> from_string<ustring>(ustring_view);
 } // namespace impl
 
 template<typename T>
+[[nodiscard]] std::optional<T> from_string(const std::locale& loc, string_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(s, magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(loc, s);
+    }
+}
+
+template<typename T>
+[[nodiscard]] std::optional<T> from_string(const std::locale& loc, ustring_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(unicode_to_utf8(s), magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(loc, s);
+    }
+}
+
+template<typename T>
 [[nodiscard]] std::optional<T> from_string(string_view s) {
     if constexpr (std::is_enum_v<T>) {
         return magic_enum::enum_cast<T>(s, magic_enum::case_insensitive);
@@ -137,14 +210,21 @@ template<typename T>
     }
 }
 
+[[nodiscard]] bool is_number(const std::locale& loc, string_view s);
+[[nodiscard]] bool is_number(const std::locale& loc, ustring_view s);
+[[nodiscard]] bool is_integer(const std::locale& loc, string_view s);
+[[nodiscard]] bool is_integer(const std::locale& loc, ustring_view s);
+
 [[nodiscard]] bool is_number(string_view s);
 [[nodiscard]] bool is_number(ustring_view s);
-[[nodiscard]] bool is_number(char s);
-[[nodiscard]] bool is_number(char32_t s);
 [[nodiscard]] bool is_integer(string_view s);
 [[nodiscard]] bool is_integer(ustring_view s);
+
+[[nodiscard]] bool is_number(char s);
+[[nodiscard]] bool is_number(char32_t s);
 [[nodiscard]] bool is_integer(char s);
 [[nodiscard]] bool is_integer(char32_t s);
+
 [[nodiscard]] bool is_boolean(string_view s);
 [[nodiscard]] bool is_boolean(ustring_view s);
 
