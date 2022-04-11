@@ -35,7 +35,10 @@ int main(int argc, char* argv[]) {
         const std::size_t window_width  = 800u;
         const std::size_t window_height = 600u;
 
-        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        // Prevent SDL from capturing Ctrl+C SIGINT
+        SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) != 0) {
             throw gui::exception(
                 "SDL_Init", "Could not initialise SDL: " + std::string(SDL_GetError()) + ".");
         }
