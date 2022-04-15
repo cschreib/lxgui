@@ -31,43 +31,82 @@ root::root(utils::control_block& block, manager& mgr) :
     auto& input_dispatcher = get_manager().get_input_dispatcher();
 
     connections_.push_back(
-        input_dispatcher.on_mouse_moved.connect([&](auto... args) { on_mouse_moved_(args...); }));
-
-    connections_.push_back(
-        input_dispatcher.on_mouse_wheel.connect([&](auto... args) { on_mouse_wheel_(args...); }));
-
-    connections_.push_back(input_dispatcher.on_mouse_drag_start.connect(
-        [&](auto... args) { on_drag_start_(args...); }));
-
-    connections_.push_back(
-        input_dispatcher.on_mouse_drag_stop.connect([&](auto... args) { on_drag_stop_(args...); }));
-
-    connections_.push_back(
-        input_dispatcher.on_text_entered.connect([&](auto... args) { on_text_entered_(args...); }));
-
-    connections_.push_back(input_dispatcher.on_mouse_pressed.connect(
-        [&](input::mouse_button button, const vector2f& mouse_pos) {
-            on_mouse_button_state_changed_(button, true, false, mouse_pos);
+        input_dispatcher.on_mouse_moved.connect([&](const input::mouse_moved_data& args) {
+            if (!on_mouse_moved_(args)) {
+                world_input_dispatcher_.on_mouse_moved(args);
+            }
         }));
 
-    connections_.push_back(input_dispatcher.on_mouse_released.connect(
-        [&](input::mouse_button button, const vector2f& mouse_pos) {
-            on_mouse_button_state_changed_(button, false, false, mouse_pos);
+    connections_.push_back(
+        input_dispatcher.on_mouse_wheel.connect([&](const input::mouse_wheel_data& args) {
+            if (!on_mouse_wheel_(args)) {
+                world_input_dispatcher_.on_mouse_wheel(args);
+            }
+        }));
+
+    connections_.push_back(
+        input_dispatcher.on_mouse_drag_start.connect([&](const input::mouse_drag_start_data& args) {
+            if (!on_drag_start_(args)) {
+                world_input_dispatcher_.on_mouse_drag_start(args);
+            }
+        }));
+
+    connections_.push_back(
+        input_dispatcher.on_mouse_drag_stop.connect([&](const input::mouse_drag_stop_data& args) {
+            if (!on_drag_stop_(args)) {
+                world_input_dispatcher_.on_mouse_drag_stop(args);
+            }
+        }));
+
+    connections_.push_back(
+        input_dispatcher.on_text_entered.connect([&](const input::text_entered_data& args) {
+            if (!on_text_entered_(args)) {
+                world_input_dispatcher_.on_text_entered(args);
+            }
+        }));
+
+    connections_.push_back(
+        input_dispatcher.on_mouse_pressed.connect([&](const input::mouse_pressed_data& args) {
+            if (!on_mouse_button_state_changed_(args.button, true, false, false, args.position)) {
+                world_input_dispatcher_.on_mouse_pressed(args);
+            }
+        }));
+
+    connections_.push_back(
+        input_dispatcher.on_mouse_released.connect([&](const input::mouse_released_data& args) {
+            if (!on_mouse_button_state_changed_(
+                    args.button, false, false, args.was_dragged, args.position)) {
+                world_input_dispatcher_.on_mouse_released(args);
+            }
         }));
 
     connections_.push_back(input_dispatcher.on_mouse_double_clicked.connect(
-        [&](input::mouse_button button, const vector2f& mouse_pos) {
-            on_mouse_button_state_changed_(button, true, true, mouse_pos);
+        [&](const input::mouse_double_clicked_data& args) {
+            if (!on_mouse_button_state_changed_(args.button, true, true, false, args.position)) {
+                world_input_dispatcher_.on_mouse_double_clicked(args);
+            }
         }));
 
-    connections_.push_back(input_dispatcher.on_key_pressed.connect(
-        [&](input::key key) { on_key_state_changed_(key, true, false); }));
+    connections_.push_back(
+        input_dispatcher.on_key_pressed.connect([&](const input::key_pressed_data& args) {
+            if (!on_key_state_changed_(args.key, true, false)) {
+                world_input_dispatcher_.on_key_pressed(args);
+            }
+        }));
 
     connections_.push_back(input_dispatcher.on_key_pressed_repeat.connect(
-        [&](input::key key) { on_key_state_changed_(key, true, true); }));
+        [&](const input::key_pressed_repeat_data& args) {
+            if (!on_key_state_changed_(args.key, true, true)) {
+                world_input_dispatcher_.on_key_pressed_repeat(args);
+            }
+        }));
 
-    connections_.push_back(input_dispatcher.on_key_released.connect(
-        [&](input::key key) { on_key_state_changed_(key, false, false); }));
+    connections_.push_back(
+        input_dispatcher.on_key_released.connect([&](const input::key_released_data& args) {
+            if (!on_key_state_changed_(args.key, false, false)) {
+                world_input_dispatcher_.on_key_released(args);
+            }
+        }));
 }
 
 root::~root() {
@@ -496,12 +535,12 @@ void root::on_window_resized_(const vector2ui& dimensions) {
     notify_hovered_frame_dirty();
 }
 
-void root::on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos) {
+bool root::on_mouse_moved_(const input::mouse_moved_data& args) {
     notify_hovered_frame_dirty();
 
     if (moved_object_ || sized_object_) {
         DEBUG_LOG(" Moved object...");
-        mouse_movement_ += movement;
+        mouse_movement_ += args.motion;
     }
 
     if (moved_object_) {
@@ -548,74 +587,77 @@ void root::on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos) 
 
     if (dragged_frame_) {
         event_data data;
-        data.add(movement.x);
-        data.add(movement.y);
-        data.add(mouse_pos.x);
-        data.add(mouse_pos.y);
+        data.add(args.motion.x);
+        data.add(args.motion.y);
+        data.add(args.position.x);
+        data.add(args.position.y);
         dragged_frame_->fire_script("OnDragMove", data);
     }
 
     if (hovered_frame_) {
         event_data data;
-        data.add(movement.x);
-        data.add(movement.y);
-        data.add(mouse_pos.x);
-        data.add(mouse_pos.y);
+        data.add(args.motion.x);
+        data.add(args.motion.y);
+        data.add(args.position.x);
+        data.add(args.position.y);
         hovered_frame_->fire_script("OnMouseMove", data);
-    } else {
-        // Forward to the world
-        world_input_dispatcher_.on_mouse_moved(movement, mouse_pos);
+        return true;
     }
+
+    // Forward to the world
+    return false;
 }
 
-void root::on_mouse_wheel_(float wheel_scroll, const vector2f& mouse_pos) {
+bool root::on_mouse_wheel_(const input::mouse_wheel_data& args) {
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& obj) {
-        return obj.is_in_region(mouse_pos) && obj.is_mouse_wheel_enabled();
+        return obj.is_in_region(args.position) && obj.is_mouse_wheel_enabled();
+    });
+
+    if (hovered_frame) {
+        event_data data;
+        data.add(args.motion);
+        data.add(args.position.x);
+        data.add(args.position.y);
+        hovered_frame->fire_script("OnMouseWheel", data);
+        return true;
+    }
+
+    // Forward to the world
+    return false;
+}
+
+bool root::on_drag_start_(const input::mouse_drag_start_data& args) {
+    utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& obj) {
+        return obj.is_in_region(args.position) && obj.is_mouse_click_enabled();
     });
 
     if (!hovered_frame) {
         // Forward to the world
-        world_input_dispatcher_.on_mouse_wheel(wheel_scroll, mouse_pos);
-        return;
+        return false;
     }
 
-    event_data data;
-    data.add(wheel_scroll);
-    data.add(mouse_pos.x);
-    data.add(mouse_pos.y);
-    hovered_frame->fire_script("OnMouseWheel", data);
-}
-
-void root::on_drag_start_(input::mouse_button button_id, const vector2f& mouse_pos) {
-    utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& obj) {
-        return obj.is_in_region(mouse_pos) && obj.is_mouse_click_enabled();
-    });
-
-    if (!hovered_frame) {
-        // Forward to the world
-        world_input_dispatcher_.on_mouse_drag_start(button_id, mouse_pos);
-        return;
-    }
-
-    if (auto* reg = hovered_frame->get_title_region().get(); reg && reg->is_in_region(mouse_pos)) {
+    if (auto* reg = hovered_frame->get_title_region().get();
+        reg && reg->is_in_region(args.position)) {
         hovered_frame->start_moving();
     }
 
-    std::string mouse_button = std::string(input::get_mouse_button_codename(button_id));
+    std::string button_name = std::string(input::get_mouse_button_codename(args.button));
 
-    if (hovered_frame->is_drag_enabled(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(button_name)) {
         event_data data;
-        data.add(static_cast<std::underlying_type_t<input::key>>(button_id));
-        data.add(mouse_button);
-        data.add(mouse_pos.x);
-        data.add(mouse_pos.y);
+        data.add(static_cast<std::underlying_type_t<input::key>>(args.button));
+        data.add(button_name);
+        data.add(args.position.x);
+        data.add(args.position.y);
 
         dragged_frame_ = std::move(hovered_frame);
         dragged_frame_->fire_script("OnDragStart", data);
     }
+
+    return true;
 }
 
-void root::on_drag_stop_(input::mouse_button button_id, const vector2f& mouse_pos) {
+bool root::on_drag_stop_(const input::mouse_drag_stop_data& args) {
     stop_moving();
     stop_sizing();
 
@@ -625,39 +667,41 @@ void root::on_drag_stop_(input::mouse_button button_id, const vector2f& mouse_po
     }
 
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& obj) {
-        return obj.is_in_region(mouse_pos) && obj.is_mouse_click_enabled();
+        return obj.is_in_region(args.position) && obj.is_mouse_click_enabled();
     });
 
     if (!hovered_frame) {
         // Forward to the world
-        world_input_dispatcher_.on_mouse_drag_stop(button_id, mouse_pos);
-        return;
+        return false;
     }
 
-    std::string mouse_button = std::string(input::get_mouse_button_codename(button_id));
+    std::string button_name = std::string(input::get_mouse_button_codename(args.button));
 
-    if (hovered_frame->is_drag_enabled(mouse_button)) {
+    if (hovered_frame->is_drag_enabled(button_name)) {
         event_data data;
-        data.add(static_cast<std::underlying_type_t<input::key>>(button_id));
-        data.add(mouse_button);
-        data.add(mouse_pos.x);
-        data.add(mouse_pos.y);
+        data.add(static_cast<std::underlying_type_t<input::key>>(args.button));
+        data.add(button_name);
+        data.add(args.position.x);
+        data.add(args.position.y);
 
         hovered_frame->fire_script("OnReceiveDrag", data);
     }
+
+    return true;
 }
 
-void root::on_text_entered_(std::uint32_t c) {
+bool root::on_text_entered_(const input::text_entered_data& args) {
     if (auto focus = get_focused_frame()) {
         event_data data;
-        data.add(utils::unicode_to_utf8(utils::ustring(1, c)));
-        data.add(c);
+        data.add(utils::unicode_to_utf8(utils::ustring(1, args.character)));
+        data.add(args.character);
 
         focus->fire_script("OnChar", data);
-    } else {
-        // Forward to the world
-        world_input_dispatcher_.on_text_entered(c);
+        return true;
     }
+
+    // Forward to the world
+    return false;
 }
 
 std::string
@@ -680,7 +724,7 @@ get_key_name(input::key key_id, bool is_shift_pressed, bool is_ctrl_pressed, boo
     return name;
 }
 
-void root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat) {
+bool root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat) {
     const auto& input_dispatcher = get_manager().get_input_dispatcher();
     bool        is_shift_pressed = input_dispatcher.shift_is_pressed();
     bool        is_ctrl_pressed  = input_dispatcher.ctrl_is_pressed();
@@ -717,7 +761,7 @@ void root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat
             topmost_frame->fire_script("OnKeyUp", data);
         }
 
-        return;
+        return true;
     }
 
     if (is_down && !is_repeat) {
@@ -725,30 +769,26 @@ void root::on_key_state_changed_(input::key key_id, bool is_down, bool is_repeat
         try {
             if (get_key_binder().on_key_down(
                     key_id, is_shift_pressed, is_ctrl_pressed, is_alt_pressed)) {
-                return;
+                return true;
             }
         } catch (const std::exception& e) {
             std::string err = e.what();
             gui::out << gui::error << err << std::endl;
             get_manager().get_event_emitter().fire_event("LUA_ERROR", {err});
-            return;
+            return true;
         }
     }
 
     // Forward to the world
-    if (is_down) {
-        if (is_repeat) {
-            world_input_dispatcher_.on_key_pressed_repeat(key_id);
-        } else {
-            world_input_dispatcher_.on_key_pressed(key_id);
-        }
-    } else {
-        world_input_dispatcher_.on_key_released(key_id);
-    }
+    return false;
 }
 
-void root::on_mouse_button_state_changed_(
-    input::mouse_button button_id, bool is_down, bool is_double_click, const vector2f& mouse_pos) {
+bool root::on_mouse_button_state_changed_(
+    input::mouse_button button_id,
+    bool                is_down,
+    bool                is_double_click,
+    bool                was_dragged,
+    const vector2f&     mouse_pos) {
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& frame) {
         return frame.is_in_region(mouse_pos) && frame.is_mouse_click_enabled();
     });
@@ -760,13 +800,7 @@ void root::on_mouse_button_state_changed_(
 
     if (!hovered_frame) {
         // Forward to the world
-        if (is_double_click)
-            world_input_dispatcher_.on_mouse_double_clicked(button_id, mouse_pos);
-        else if (is_down)
-            world_input_dispatcher_.on_mouse_pressed(button_id, mouse_pos);
-        else
-            world_input_dispatcher_.on_mouse_released(button_id, mouse_pos);
-        return;
+        return false;
     }
 
     event_data data;
@@ -783,8 +817,11 @@ void root::on_mouse_button_state_changed_(
 
         hovered_frame->fire_script("OnMouseDown", data);
     } else {
+        data.add(was_dragged);
         hovered_frame->fire_script("OnMouseUp", data);
     }
+
+    return true;
 }
 
 } // namespace lxgui::gui

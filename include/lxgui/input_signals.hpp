@@ -7,6 +7,71 @@
 
 namespace lxgui::input {
 
+/// Data for on_mouse_moved signal
+struct mouse_moved_data {
+    gui::vector2f motion; /// Mouse motion that generated this event, in points
+    gui::vector2f position; /// Mouse position, in points
+};
+
+/// Data for on_mouse_wheel signal
+struct mouse_wheel_data {
+    float         motion; /// Mouse wheel motion that generated this event
+    gui::vector2f position; /// Mouse position, in points
+};
+
+/// Data for on_mouse_pressed signal
+struct mouse_pressed_data {
+    input::mouse_button button; /// Mouse button that generated this event
+    gui::vector2f       position; /// Mouse position, in points
+};
+
+/// Data for on_mouse_released signal
+struct mouse_released_data {
+    input::mouse_button button; /// Mouse button that generated this event
+    gui::vector2f       position; /// Mouse position, in points
+    bool                was_dragged; /// Was mouse dragged before release?
+};
+
+/// Data for on_mouse_double_clicked signal
+struct mouse_double_clicked_data {
+    input::mouse_button button; /// Mouse button that generated this event
+    gui::vector2f       position; /// Mouse position, in points
+};
+
+/// Data for on_mouse_drag_start signal
+struct mouse_drag_start_data {
+    input::mouse_button button; /// Mouse button that generated this event (if more than one, only
+                                /// the first pressed)
+    gui::vector2f position; /// Mouse position, in points
+};
+
+/// Data for on_mouse_drag_stop signal
+struct mouse_drag_stop_data {
+    input::mouse_button button; /// Mouse button that generated this event (if more than one, only
+                                /// the first pressed)
+    gui::vector2f position; /// Mouse position, in points
+};
+
+/// Data for on_key_pressed signal
+struct key_pressed_data {
+    input::key key; /// Keyboard key that generated this event
+};
+
+/// Data for on_key_pressed_repeat signal
+struct key_pressed_repeat_data {
+    input::key key; /// Keyboard key that generated this event
+};
+
+/// Data for on_key_released signal
+struct key_released_data {
+    input::key key; /// Keyboard key that generated this event
+};
+
+/// Data for on_text_entered signal
+struct text_entered_data {
+    std::uint32_t character; /// Unicode UTF-32 code point of the typed character
+};
+
 /// Stores signals for input events.
 class signals {
 public:
@@ -21,88 +86,59 @@ public:
 
     /**
      * \brief Signal triggered when the mouse moves
-     * \details Arguments:
-     *  - mouse motion that generated this event, in points
-     *  - mouse position, in points
      */
-    utils::signal<void(const gui::vector2f&, const gui::vector2f&)> on_mouse_moved;
+    utils::signal<void(const mouse_moved_data&)> on_mouse_moved;
 
     /**
      * \brief Signal triggered when the mouse wheel is moved
-     * \details Arguments:
-     *  - mouse wheel motion that generated this event
-     *  - mouse position, in points
      */
-    utils::signal<void(float, const gui::vector2f&)> on_mouse_wheel;
+    utils::signal<void(const mouse_wheel_data&)> on_mouse_wheel;
 
     /**
      * \brief Signal triggered when a mouse button is pressed
-     * \details Arguments:
-     *  - mouse button that generated this event
-     *  - mouse position, in points
      */
-    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_pressed;
+    utils::signal<void(const mouse_pressed_data&)> on_mouse_pressed;
 
     /**
      * \brief Signal triggered when a mouse button is released
-     * \details Arguments:
-     *  - mouse button that generated this event
-     *  - mouse position, in points
      */
-    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_released;
+    utils::signal<void(const mouse_released_data&)> on_mouse_released;
 
     /**
      * \brief Signal triggered when a mouse button is double clicked
-     * \details Arguments:
-     *  - mouse button that generated this event
-     *  - mouse position, in points
      */
-    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_double_clicked;
+    utils::signal<void(const mouse_double_clicked_data&)> on_mouse_double_clicked;
 
     /**
      * \brief Signal triggered when the mouse starts a drag operation
-     * \details Arguments:
-     *  - mouse button that is pressed (if more than one, only the first pressed)
-     *  - mouse position, in points
      */
-    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_drag_start;
+    utils::signal<void(const mouse_drag_start_data&)> on_mouse_drag_start;
 
     /**
      * \brief Signal triggered when the mouse ends a drag operation
-     * \details Arguments:
-     *  - mouse button that was pressed (if more than one, only the first pressed)
-     *  - mouse position, in points
      */
-    utils::signal<void(input::mouse_button, const gui::vector2f&)> on_mouse_drag_stop;
+    utils::signal<void(const mouse_drag_stop_data&)> on_mouse_drag_stop;
 
     /**
      * \brief Signal triggered when a keyboard key is pressed
-     * \details Arguments:
-     *  - keyboard key that generated this event
      */
-    utils::signal<void(input::key)> on_key_pressed;
+    utils::signal<void(const key_pressed_data&)> on_key_pressed;
 
     /**
      * \brief Signal triggered when a keyboard key is long-pressed and repeats
-     * \details Arguments:
-     *  - keyboard key that generated this event
      */
-    utils::signal<void(input::key)> on_key_pressed_repeat;
+    utils::signal<void(const key_pressed_repeat_data&)> on_key_pressed_repeat;
 
     /**
      * \brief Signal triggered when a keyboard key is released
-     * \details Arguments:
-     *  - keyboard key that generated this event
      */
-    utils::signal<void(input::key)> on_key_released;
+    utils::signal<void(const key_released_data&)> on_key_released;
 
     /**
      * \brief Signal triggered when text is entered
-     * \details Arguments:
-     *  - Unicode UTF-32 code point of the typed character
      * \note The event will trigger repeatedly if more than one character is generated.
      */
-    utils::signal<void(std::uint32_t)> on_text_entered;
+    utils::signal<void(const text_entered_data&)> on_text_entered;
 };
 
 } // namespace lxgui::input

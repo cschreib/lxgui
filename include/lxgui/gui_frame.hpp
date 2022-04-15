@@ -191,7 +191,9 @@ using script_list_view = script_signal::slot_list_view;
  * last call to `OnMouseMove` (or since the last position before the mouse
  * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
- * is released.
+ * is released. This event provides one extra argument compared to `OnMouseDown`:
+ * a boolean flag indicating whether the mouse was released after a drag
+ * operation (true) or not (false).
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
  * the topmost mouse-wheel-enabled frame under the mouse pointer. This event
  * provides three arguments to the registered callback. The first is a number

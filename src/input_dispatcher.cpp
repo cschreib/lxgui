@@ -17,22 +17,22 @@ dispatcher::dispatcher(source& src) : source_(src) {
         // Record press time
         key_pressed_time_[static_cast<std::size_t>(key_id)] = timer::now();
         // Forward
-        on_key_pressed(key_id);
+        on_key_pressed(key_pressed_data{key_id});
     }));
 
     connections_.push_back(src.on_key_pressed_repeat.connect([&](key key_id) {
         // Forward
-        on_key_pressed_repeat(key_id);
+        on_key_pressed_repeat(key_pressed_repeat_data{key_id});
     }));
 
     connections_.push_back(src.on_key_released.connect([&](key key_id) {
         // Forward
-        on_key_released(key_id);
+        on_key_released(key_released_data{key_id});
     }));
 
     connections_.push_back(src.on_text_entered.connect([&](std::uint32_t c) {
         // Forward
-        on_text_entered(c);
+        on_text_entered(text_entered_data{c});
     }));
 
     connections_.push_back(
@@ -47,10 +47,10 @@ dispatcher::dispatcher(source& src) : source_(src) {
             double click_time = std::chrono::duration<double>(time_now - time_last).count();
 
             // Forward
-            on_mouse_pressed(button_id, mouse_pos);
+            on_mouse_pressed(mouse_pressed_data{button_id, mouse_pos});
 
             if (click_time < double_click_time_)
-                on_mouse_double_clicked(button_id, mouse_pos);
+                on_mouse_double_clicked(mouse_double_clicked_data{button_id, mouse_pos});
         }));
 
     connections_.push_back(
@@ -59,11 +59,12 @@ dispatcher::dispatcher(source& src) : source_(src) {
             mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_released(button_id, mouse_pos);
+            bool was_dragged = is_mouse_dragged_ && button_id == mouse_drag_button_;
+            on_mouse_released(mouse_released_data{button_id, mouse_pos, was_dragged});
 
-            if (is_mouse_dragged_ && button_id == mouse_drag_button_) {
+            if (was_dragged) {
                 is_mouse_dragged_ = false;
-                on_mouse_drag_stop(button_id, mouse_pos);
+                on_mouse_drag_stop(mouse_drag_stop_data{button_id, mouse_pos});
             }
         }));
 
@@ -71,7 +72,7 @@ dispatcher::dispatcher(source& src) : source_(src) {
         // Apply scaling factor to mouse coordinates
         mouse_pos /= scaling_factor_;
         // Forward
-        on_mouse_wheel(wheel, mouse_pos);
+        on_mouse_wheel(mouse_wheel_data{wheel, mouse_pos});
     }));
 
     connections_.push_back(
@@ -81,7 +82,7 @@ dispatcher::dispatcher(source& src) : source_(src) {
             mouse_pos /= scaling_factor_;
 
             // Forward
-            on_mouse_moved(movement, mouse_pos);
+            on_mouse_moved(mouse_moved_data{movement, mouse_pos});
 
             if (!is_mouse_dragged_) {
                 std::size_t mouse_button_pressed = std::numeric_limits<std::size_t>::max();
@@ -95,7 +96,7 @@ dispatcher::dispatcher(source& src) : source_(src) {
                 if (mouse_button_pressed != std::numeric_limits<std::size_t>::max()) {
                     is_mouse_dragged_  = true;
                     mouse_drag_button_ = static_cast<mouse_button>(mouse_button_pressed);
-                    on_mouse_drag_start(mouse_drag_button_, mouse_pos);
+                    on_mouse_drag_start(mouse_drag_start_data{mouse_drag_button_, mouse_pos});
                 }
             }
         }));
