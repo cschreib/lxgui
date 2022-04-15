@@ -54,8 +54,8 @@ int main(int argc, char* argv[]) {
 
         // Register a callback on Escape to terminate the program.
         // Doing it this way, we only react to keyboard input that is not captured by the GUI.
-        world_input_dispatcher.on_key_pressed.connect([&](input::key key_id) {
-            if (key_id == input::key::k_escape)
+        world_input_dispatcher.on_key_pressed.connect([&](const input::key_pressed_data& args) {
+            if (args.key == input::key::k_escape)
                 running = false;
         });
 

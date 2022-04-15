@@ -552,9 +552,9 @@ int main(int /*argc*/, char* /*argv*/[]) {
         //    Use this if you need the raw inputs. Usage:
         //    Usage: manager->get_input_dispatcher().get_source().
         input::world_dispatcher& world_input_dispatcher = manager->get_world_input_dispatcher();
-        world_input_dispatcher.on_key_pressed.connect([&](input::key key_code) {
+        world_input_dispatcher.on_key_pressed.connect([&](const input::key_pressed_data& args) {
             // Process keyboard inputs for the game...
-            switch (key_code) {
+            switch (args.key) {
             case input::key::k_escape: {
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
@@ -580,8 +580,8 @@ int main(int /*argc*/, char* /*argv*/[]) {
             }
         });
 
-        world_input_dispatcher.on_mouse_pressed.connect(
-            [&](input::mouse_button /*button_code*/, const gui::vector2f& /*mouse_pos*/) {
+        world_input_dispatcher.on_mouse_released.connect(
+            [&](const input::mouse_released_data& /*args*/) {
                 // Process mouse inputs for the game...
             });
 

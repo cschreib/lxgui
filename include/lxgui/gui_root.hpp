@@ -7,6 +7,7 @@
 #include "lxgui/gui_key_binder.hpp"
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_vector2.hpp"
+#include "lxgui/input_signals.hpp"
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils_observer.hpp"
 #include "lxgui/utils_signal.hpp"
@@ -295,16 +296,17 @@ private:
     set_hovered_frame_(utils::observer_ptr<frame> obj, const vector2f& mouse_pos = vector2f::zero);
 
     void on_window_resized_(const vector2ui& dimensions);
-    void on_mouse_moved_(const vector2f& movement, const vector2f& mouse_pos);
-    void on_mouse_wheel_(float wheel_scroll, const vector2f& mouse_pos);
-    void on_drag_start_(input::mouse_button button_id, const vector2f& mouse_pos);
-    void on_drag_stop_(input::mouse_button button_id, const vector2f& mouse_pos);
-    void on_text_entered_(std::uint32_t c);
-    void on_key_state_changed_(input::key key, bool is_down, bool is_repeat);
-    void on_mouse_button_state_changed_(
+    bool on_mouse_moved_(const input::mouse_moved_data& args);
+    bool on_mouse_wheel_(const input::mouse_wheel_data& args);
+    bool on_drag_start_(const input::mouse_drag_start_data& args);
+    bool on_drag_stop_(const input::mouse_drag_stop_data& args);
+    bool on_text_entered_(const input::text_entered_data& args);
+    bool on_key_state_changed_(input::key key, bool is_down, bool is_repeat);
+    bool on_mouse_button_state_changed_(
         input::mouse_button button_id,
         bool                is_down,
         bool                is_double_click,
+        bool                was_dragged,
         const vector2f&     mouse_pos);
 
     manager&                 manager_;

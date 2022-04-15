@@ -195,9 +195,9 @@ void examples_setup_gui(gui::manager& manager) {
     //    Usage: manager.get_input_dispatcher().get_source().
 
     input::world_dispatcher& world_input_dispatcher = manager.get_world_input_dispatcher();
-    world_input_dispatcher.on_key_pressed.connect([&](input::key key_code) {
+    world_input_dispatcher.on_key_pressed.connect([&](const input::key_pressed_data& args) {
         // Process keyboard inputs for the game...
-        switch (key_code) {
+        switch (args.key) {
         case input::key::k_p: gui::out << manager.print_ui() << std::endl; break;
         case input::key::k_c: manager.get_root().toggle_caching(); break;
         case input::key::k_r: manager.reload_ui(); break;
@@ -213,8 +213,7 @@ void examples_setup_gui(gui::manager& manager) {
         }
     });
 
-    world_input_dispatcher.on_mouse_pressed.connect(
-        [&](input::mouse_button button_code, const gui::vector2f& mouse_pos) {
-            // Process mouse inputs for the game...
-        });
+    world_input_dispatcher.on_mouse_released.connect([&](const input::mouse_released_data& args) {
+        // Process mouse inputs for the game...
+    });
 }
