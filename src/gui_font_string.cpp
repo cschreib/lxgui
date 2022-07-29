@@ -128,9 +128,11 @@ void font_string::set_outlined(bool is_outlined) {
 
     is_outlined_ = is_outlined;
 
-    create_text_object_();
+    if (!is_virtual_) {
+        create_text_object_();
 
-    notify_renderer_need_redraw();
+        notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_outlined() const {
@@ -345,6 +347,7 @@ void font_string::set_non_space_wrap_enabled(bool is_non_space_wrap_enabled) {
         return;
 
     non_space_wrap_enabled_ = is_non_space_wrap_enabled;
+
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
@@ -358,14 +361,22 @@ void font_string::set_shadow_enabled(bool is_shadow_enabled) {
         return;
 
     is_shadow_enabled_ = is_shadow_enabled;
+
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
 
 void font_string::set_word_wrap_enabled(bool enabled) {
+    if (word_wrap_enabled_ == enabled)
+        return;
+
     word_wrap_enabled_ = enabled;
-    if (text_)
+
+    if (text_) {
         text_->set_word_wrap_enabled(word_wrap_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_word_wrap_enabled() const {
@@ -373,9 +384,16 @@ bool font_string::is_word_wrap_enabled() const {
 }
 
 void font_string::set_word_ellipsis_enabled(bool enabled) {
+    if (ellipsis_enabled_ == enabled)
+        return;
+
     ellipsis_enabled_ = enabled;
-    if (text_)
+
+    if (text_) {
         text_->set_word_ellipsis_enabled(ellipsis_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_word_ellipsis_enabled() const {
@@ -383,9 +401,16 @@ bool font_string::is_word_ellipsis_enabled() const {
 }
 
 void font_string::set_formatting_enabled(bool formatting) {
+    if (formatting_enabled_ == formatting)
+        return;
+
     formatting_enabled_ = formatting;
-    if (text_)
+
+    if (text_) {
         text_->set_formatting_enabled(formatting_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_formatting_enabled() const {
@@ -400,8 +425,10 @@ void font_string::set_text(const utils::ustring& content) {
 
     if (text_) {
         text_->set_text(content_);
-        if (!is_virtual_)
+        if (!is_virtual_) {
             notify_borders_need_update();
+            notify_renderer_need_redraw();
+        }
     }
 }
 
