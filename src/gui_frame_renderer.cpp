@@ -75,12 +75,8 @@ frame_renderer::frame_renderer() {
     }
 }
 
-void frame_renderer::notify_strata_needs_redraw_(strata_data& strata_obj) {
-    strata_obj.redraw_flag = true;
-}
-
 void frame_renderer::notify_strata_needs_redraw(strata strata_id) {
-    notify_strata_needs_redraw_(strata_list_[static_cast<std::size_t>(strata_id)]);
+    strata_list_[static_cast<std::size_t>(strata_id)].redraw_flag = true;
 }
 
 void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) {
@@ -109,7 +105,7 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
     auto&      strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
 
     frame_list_updated_ = true;
-    notify_strata_needs_redraw_(strata_obj);
+    notify_strata_needs_redraw(strata_id);
 }
 
 void frame_renderer::notify_strata_changed(
@@ -122,12 +118,9 @@ void frame_renderer::notify_strata_changed(
         strata_list_[i].range = get_strata_range_(static_cast<strata>(i));
     }
 
-    auto& old_strata = strata_list_[static_cast<std::size_t>(old_strata_id)];
-    auto& new_strata = strata_list_[static_cast<std::size_t>(new_strata_id)];
-
     frame_list_updated_ = true;
-    notify_strata_needs_redraw_(old_strata);
-    notify_strata_needs_redraw_(new_strata);
+    notify_strata_needs_redraw(old_strata_id);
+    notify_strata_needs_redraw(new_strata_id);
 }
 
 std::pair<std::size_t, std::size_t> frame_renderer::get_strata_range_(strata strata_id) const {
@@ -150,7 +143,7 @@ void frame_renderer::notify_level_changed(
     std::stable_sort(begin, last, sorted_frame_list_.comparator());
 
     frame_list_updated_ = true;
-    notify_strata_needs_redraw_(strata_obj);
+    notify_strata_needs_redraw(strata_id);
 }
 
 utils::observer_ptr<const frame>

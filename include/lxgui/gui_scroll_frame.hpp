@@ -143,13 +143,6 @@ public:
     void notify_strata_needs_redraw(strata strata_id) override;
 
     /**
-     * \brief Tells this renderer that it should (or not) render another frame.
-     * \param obj The frame to render
-     * \param rendered 'true' if this renderer needs to render that new object
-     */
-    void notify_rendered_frame(const utils::observer_ptr<frame>& obj, bool rendered) override;
-
-    /**
      * \brief Returns the width and height of of this renderer's main render target (e.g., screen).
      * \return The render target dimensions
      */

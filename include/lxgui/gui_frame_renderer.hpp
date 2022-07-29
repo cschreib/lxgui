@@ -95,7 +95,6 @@ protected:
     void clear_strata_list_();
     bool has_strata_list_changed_() const;
     void reset_strata_list_changed_flag_();
-    void notify_strata_needs_redraw_(strata_data& strata_obj);
 
     void render_strata_(const strata_data& strata_obj) const;
 
