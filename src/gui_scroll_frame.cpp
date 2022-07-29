@@ -43,7 +43,11 @@ void scroll_frame::fire_script(const std::string& script_name, const event_data&
         return;
 
     if (script_name == "OnSizeChanged") {
-        rebuild_scroll_render_target_flag_ = true;
+        rebuild_scroll_render_target_();
+
+        update_scroll_range_();
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -75,8 +79,7 @@ void scroll_frame::copy_from(const region& obj) {
 
 void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
     if (scroll_child_) {
-        // TODO: is this really needed now?
-        scroll_child_->set_frame_renderer(nullptr);
+        scroll_child_on_resize_connection_.disconnect();
         clear_strata_list_();
     } else if (!is_virtual() && !scroll_texture_) {
         // Create the scroll texture
@@ -94,8 +97,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
 
         scroll_texture->notify_loaded();
         scroll_texture_ = scroll_texture;
-
-        rebuild_scroll_render_target_flag_ = true;
     }
 
     scroll_child_ = obj;
@@ -111,10 +112,13 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> obj) {
         if (!is_virtual())
             scroll_child_->set_anchor(point::top_left, get_name(), -scroll_);
 
+        scroll_child_on_resize_connection_ = scroll_child_->add_script(
+            "OnSizeChanged", [&](frame&, const event_data&) { update_scroll_range_(); });
+
         update_scroll_range_();
     }
 
-    redraw_scroll_render_target_flag_ = true;
+    rebuild_scroll_render_target_();
 }
 
 void scroll_frame::set_horizontal_scroll(float horizontal_scroll) {
@@ -168,24 +172,12 @@ float scroll_frame::get_vertical_scroll_range() const {
 }
 
 void scroll_frame::update_(float delta) {
-    vector2f old_child_size;
-    if (scroll_child_)
-        old_child_size = scroll_child_->get_apparent_dimensions();
-
     alive_checker checker(*this);
     base::update_(delta);
     if (!checker.is_alive())
         return;
 
-    update_scroll_range_();
-
     if (is_visible()) {
-        if (rebuild_scroll_render_target_flag_ && scroll_texture_) {
-            rebuild_scroll_render_target_();
-            rebuild_scroll_render_target_flag_ = false;
-            redraw_scroll_render_target_flag_  = true;
-        }
-
         if (scroll_child_ && scroll_render_target_ && redraw_scroll_render_target_flag_) {
             render_scroll_strata_list_();
             redraw_scroll_render_target_flag_ = false;
@@ -216,10 +208,13 @@ void scroll_frame::update_scroll_range_() {
 void scroll_frame::notify_scaling_factor_updated() {
     base::notify_scaling_factor_updated();
 
-    rebuild_scroll_render_target_flag_ = true;
+    rebuild_scroll_render_target_();
 }
 
 void scroll_frame::rebuild_scroll_render_target_() {
+    if (!scroll_texture_)
+        return;
+
     const vector2f apparent_size = get_apparent_dimensions();
 
     if (apparent_size.x <= 0 || apparent_size.y <= 0)
@@ -239,6 +234,9 @@ void scroll_frame::rebuild_scroll_render_target_() {
         if (scroll_render_target_)
             scroll_texture_->set_texture(scroll_render_target_);
     }
+
+    render_scroll_strata_list_();
+    redraw_scroll_render_target_flag_ = false;
 }
 
 void scroll_frame::render_scroll_strata_list_() {
