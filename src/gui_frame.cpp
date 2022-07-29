@@ -1550,7 +1550,7 @@ void frame::update_(float delta) {
             layer.region_list.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
-        // TODO: This is bad; the frame class should not know about font_string, see #.
+        // TODO: This is bad; the frame class should not know about font_string, see #112.
         for (const auto& reg : region_list_) {
             if (reg && !reg->is_region_type<font_string>()) {
                 layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
