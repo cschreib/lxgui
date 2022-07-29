@@ -4,6 +4,7 @@
 #include "lxgui/impl/gui_sdl_renderer.hpp"
 
 #include <SDL.h>
+#include <SDL_image.h>
 #include <iostream>
 
 namespace lxgui::gui::sdl {
@@ -41,6 +42,20 @@ vector2ui render_target::get_canvas_dimensions() const {
 
 bool render_target::set_dimensions(const vector2ui& dimensions) {
     return texture_->set_dimensions(dimensions);
+}
+
+void render_target::save_to_file(std::string filename) const {
+    SDL_Renderer* renderer = texture_->get_renderer();
+    SDL_Texture*  target   = SDL_GetRenderTarget(renderer);
+    SDL_SetRenderTarget(renderer, texture_->get_render_texture());
+
+    SDL_Surface* surface = SDL_CreateRGBSurface(
+        0, texture_->get_rect().width(), texture_->get_rect().height(), 32, 0, 0, 0, 0);
+    SDL_RenderReadPixels(renderer, NULL, surface->format->format, surface->pixels, surface->pitch);
+    IMG_SavePNG(surface, filename.c_str());
+    SDL_FreeSurface(surface);
+
+    SDL_SetRenderTarget(renderer, target);
 }
 
 std::weak_ptr<sdl::material> render_target::get_material() {

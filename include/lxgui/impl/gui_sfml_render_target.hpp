@@ -56,6 +56,14 @@ public:
     bool set_dimensions(const vector2ui& dimensions) override;
 
     /**
+     * \brief Saves the content of this render target into a file.
+     * \param filename The path of the file to save to
+     * \note The file format will be detected based on the extension.
+     * Not all renderer backends support all extensions.
+     */
+    void save_to_file(std::string filename) const override;
+
+    /**
      * \brief Returns this render target's canvas dimension.
      * \return This render target's canvas dimension
      * \note This is the physical size of the render target.

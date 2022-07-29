@@ -34,6 +34,10 @@ bool render_target::set_dimensions(const vector2ui& dimensions) {
     return texture_->set_dimensions(dimensions);
 }
 
+void render_target::save_to_file(std::string filename) const {
+    render_texture_->getTexture().copyToImage().saveToFile(filename);
+}
+
 std::weak_ptr<sfml::material> render_target::get_material() {
     return texture_;
 }

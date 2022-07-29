@@ -67,6 +67,14 @@ public:
      * for example.
      */
     virtual vector2ui get_canvas_dimensions() const = 0;
+
+    /**
+     * \brief Saves the content of this render target into a file.
+     * \param filename The path of the file to save to
+     * \note The file format will be detected based on the extension.
+     * Not all renderer backends support all extensions.
+     */
+    virtual void save_to_file(std::string filename) const = 0;
 };
 
 } // namespace lxgui::gui
