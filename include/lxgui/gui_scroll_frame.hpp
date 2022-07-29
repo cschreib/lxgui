@@ -172,7 +172,7 @@ protected:
     vector2f scroll_range_;
 
     utils::observer_ptr<frame> scroll_child_ = nullptr;
-    utils::connection          scroll_child_on_resize_connection_;
+    utils::scoped_connection   scroll_child_on_resize_connection_;
 
     bool                           redraw_scroll_render_target_flag_ = false;
     std::shared_ptr<render_target> scroll_render_target_;
