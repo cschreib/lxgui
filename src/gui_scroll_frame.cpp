@@ -256,6 +256,8 @@ void scroll_frame::render_scroll_strata_list_() {
     }
 
     renderer.end();
+
+    notify_renderer_need_redraw();
 }
 
 utils::observer_ptr<const frame>
