@@ -102,6 +102,8 @@ Other changes:
  - gui: added frame::enable_mouse_click and frame::enable_mouse_move
  - gui: added font_string::set_vertex_cache_strategy
  - gui: added frame::set_update_rate
+ - gui: added render_target::save_to_file
+ - gui: added region::is_valid
  - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
