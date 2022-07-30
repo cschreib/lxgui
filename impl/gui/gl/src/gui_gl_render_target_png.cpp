@@ -41,7 +41,7 @@ void render_target::save_rgba_to_png_(
     png_infop   info_struct  = nullptr;
 
     try {
-        write_struct = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+        write_struct = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, raise_error, NULL);
         if (!write_struct)
             throw gui::exception("gui::gl::manager", "'png_create_write_struct' failed.");
 
