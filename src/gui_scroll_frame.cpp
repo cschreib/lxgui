@@ -178,7 +178,7 @@ void scroll_frame::update_(float delta) {
         return;
 
     if (is_visible()) {
-        if (scroll_child_ && scroll_render_target_ && redraw_scroll_render_target_flag_) {
+        if (scroll_render_target_ && redraw_scroll_render_target_flag_) {
             render_scroll_strata_list_();
             redraw_scroll_render_target_flag_ = false;
         }
@@ -186,6 +186,9 @@ void scroll_frame::update_(float delta) {
 }
 
 void scroll_frame::update_scroll_range_() {
+    if (!scroll_child_)
+        return;
+
     const vector2f apparent_size       = get_apparent_dimensions();
     const vector2f child_apparent_size = scroll_child_->get_apparent_dimensions();
     const auto     old_scroll_range    = scroll_range_;
