@@ -63,7 +63,7 @@ frame::~frame() {
 void frame::render() const {
     base::render();
 
-    if (!is_visible() || !is_ready_)
+    if (!is_visible() || !is_valid_)
         return;
 
     if (backdrop_) {
@@ -1500,14 +1500,14 @@ void frame::notify_mouse_in_frame(bool mouse_in_frame, const vector2f& /*positio
 }
 
 void frame::update_borders_() {
-    const bool old_ready       = is_ready_;
+    const bool old_valid       = is_valid_;
     const auto old_border_list = borders_;
 
     base::update_borders_();
 
     check_position_();
 
-    if (borders_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_valid_ != old_valid) {
         if (borders_.width() != old_border_list.width() ||
             borders_.height() != old_border_list.height()) {
             alive_checker checker(*this);

@@ -92,7 +92,7 @@ std::string region::serialize(const std::string& tab) const {
     std::ostringstream str;
 
     str << tab << "  # Name       : " << name_ << " ("
-        << std::string(is_ready_ ? "ready" : "not ready")
+        << std::string(is_valid_ ? "valid" : "not valid")
         << std::string(is_manually_inherited_ ? ", manually inherited" : "") << ")\n";
     str << tab << "  # Raw name   : " << raw_name_ << "\n";
     str << tab << "  # Type       : " << get_region_type() << "\n";
@@ -206,6 +206,10 @@ bool region::is_shown() const {
 
 bool region::is_visible() const {
     return is_visible_;
+}
+
+bool region::is_valid() const {
+    return is_valid_;
 }
 
 void region::set_dimensions(const vector2f& dimensions) {
@@ -668,10 +672,10 @@ void region::update_borders_() {
 
     DEBUG_LOG("  Update anchors for " + lua_name_);
 
-    const bool old_is_ready    = is_ready_;
+    const bool old_is_ready    = is_valid_;
     const auto old_border_list = borders_;
 
-    is_ready_ = true;
+    is_valid_ = true;
 
     if (!anchor_list_.empty()) {
         float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
@@ -693,14 +697,14 @@ void region::update_borders_() {
 
         DEBUG_LOG("  Make borders");
         if (!make_borders_(top, bottom, y_center, rounded_height)) {
-            is_ready_ = false;
+            is_valid_ = false;
         }
 
         if (!make_borders_(left, right, x_center, rounded_width)) {
-            is_ready_ = false;
+            is_valid_ = false;
         }
 
-        if (is_ready_) {
+        if (is_valid_) {
             if (right < left) {
                 right = left + 1;
             }
@@ -714,7 +718,7 @@ void region::update_borders_() {
         }
     } else {
         borders_  = bounds2f(0.0, 0.0, dimensions_.x, dimensions_.y);
-        is_ready_ = false;
+        is_valid_ = false;
     }
 
     DEBUG_LOG("  Final borders");
@@ -728,7 +732,7 @@ void region::update_borders_() {
     DEBUG_LOG("    top=" + utils::to_string(borders_.top));
     DEBUG_LOG("    bottom=" + utils::to_string(borders_.bottom));
 
-    if (borders_ != old_border_list || is_ready_ != old_is_ready) {
+    if (borders_ != old_border_list || is_valid_ != old_is_ready) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }
@@ -741,12 +745,12 @@ void region::notify_borders_need_update() {
     if (is_virtual())
         return;
 
-    const bool old_ready       = is_ready_;
+    const bool old_valid       = is_valid_;
     const auto old_border_list = borders_;
 
     update_borders_();
 
-    if (borders_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_valid_ != old_valid) {
         for (const auto& object : anchored_object_list_)
             object->notify_borders_need_update();
     }

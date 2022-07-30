@@ -437,7 +437,6 @@ private:
 
     renderer& renderer_;
 
-    bool        is_ready_               = false;
     float       scaling_factor_         = 1.0f;
     float       tracking_               = 0.0f;
     float       line_spacing_           = 1.0f;

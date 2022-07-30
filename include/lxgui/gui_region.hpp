@@ -306,6 +306,17 @@ public:
     bool is_visible() const;
 
     /**
+     * \brief Checks if this region has all its borders correctly defined.
+     * \return 'true' if this region has all its borders correctly defined
+     * \note To be valid, a region needs to have a defined position and size along
+     * both the X and Y dimensions. This means either one anchor and a set size,
+     * or two opposite anchors. For example, any anchor plus a call to set_dimensions().
+     * Or a top_left plus a bottom_right anchors. Or a left plus a right anchors plus a
+     * call to set_height().
+     */
+    bool is_valid() const;
+
+    /**
      * \brief Changes this region's absolute dimensions (in pixels).
      * \param dimensions The new dimensions
      */
@@ -794,7 +805,7 @@ protected:
     bool is_manually_inherited_ = false;
     bool is_virtual_            = false;
     bool is_loaded_             = false;
-    bool is_ready_              = true;
+    bool is_valid_              = true;
 
     std::array<std::optional<anchor>, 9> anchor_list_;
     bounds2<bool>                        defined_borders_;
