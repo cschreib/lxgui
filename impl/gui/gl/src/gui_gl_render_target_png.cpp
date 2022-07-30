@@ -52,7 +52,13 @@ void render_target::save_rgba_to_png_(
         png_write_info(write_struct, info_struct);
 
         for (std::size_t y = 0; y < height; ++y) {
+#if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR < 5
+            // Older versions of libpng were not const-correct
+            color32* non_const_data = const_cast<color32*>(data);
+            png_write_row(write_struct, reinterpret_cast<png_byte*>(non_const_data + y * width));
+#else
             png_write_row(write_struct, reinterpret_cast<const png_byte*>(data + y * width));
+#endif
         }
 
         png_write_end(write_struct, NULL);
