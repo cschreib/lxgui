@@ -38,7 +38,16 @@
  * when the frame is clicked, which effectively brings the frame to the
  * front.
  *
- * __Children and layered regions.__ See the @{Region} documentation.
+ * __Children and layered regions.__ See the @{Region} documentation for
+ * details about parent-child relationships. Note that, when reading from
+ * a layout file, @{LayeredRegion}s are parsed before children @{Frame}s.
+ * Therefore, a @{LayeredRegion} cannot specify an anchor to a child
+ * in the layout file. Likewise, children are parsed in order of
+ * declaration; a child may only anchor to another child if that other
+ * child was declared first. This type of anchor must be set programmatically,
+ * for example in the `OnLoad` event of the parent frame. This does not
+ * affect regions created in C++ or Lua, only regions defined in layout
+ * files.
  *
  * __Events.__ Frames can react to events. For this to happen, a callback
  * function must be registered to handle the corresponding event. There are
