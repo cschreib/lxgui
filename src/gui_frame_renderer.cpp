@@ -101,8 +101,7 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& obj
         strata_list_[i].range = get_strata_range_(static_cast<strata>(i));
     }
 
-    const auto strata_id  = obj->get_effective_strata();
-    auto&      strata_obj = strata_list_[static_cast<std::size_t>(strata_id)];
+    const auto strata_id = obj->get_effective_strata();
 
     frame_list_updated_ = true;
     notify_strata_needs_redraw(strata_id);
