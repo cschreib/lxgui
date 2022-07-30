@@ -1,6 +1,7 @@
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/impl/gui_gl_render_target.hpp"
+#include "lxgui/utils_string.hpp"
 
 #include <fstream>
 #include <png.h>
@@ -25,6 +26,11 @@ namespace lxgui::gui::gl {
 
 void render_target::save_rgba_to_png_(
     const std::string& file_name, const color32* data, std::size_t width, std::size_t height) {
+
+    if (!utils::ends_with(utils::to_lower(file_name), ".png")) {
+        throw gui::exception(
+            "gui::gl::manager", "Only PNG format is supported when saving images.");
+    }
 
     std::ofstream file(file_name, std::ios::binary);
     if (!file.is_open()) {
