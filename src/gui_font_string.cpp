@@ -21,7 +21,7 @@ font_string::font_string(
 void font_string::render() const {
     base::render();
 
-    if (!text_ || !is_ready_ || !is_visible())
+    if (!text_ || !is_valid_ || !is_visible())
         return;
 
     text_->set_use_vertex_cache(is_vertex_cache_used_());
@@ -128,9 +128,11 @@ void font_string::set_outlined(bool is_outlined) {
 
     is_outlined_ = is_outlined;
 
-    create_text_object_();
+    if (!is_virtual_) {
+        create_text_object_();
 
-    notify_renderer_need_redraw();
+        notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_outlined() const {
@@ -345,6 +347,7 @@ void font_string::set_non_space_wrap_enabled(bool is_non_space_wrap_enabled) {
         return;
 
     non_space_wrap_enabled_ = is_non_space_wrap_enabled;
+
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
@@ -358,14 +361,22 @@ void font_string::set_shadow_enabled(bool is_shadow_enabled) {
         return;
 
     is_shadow_enabled_ = is_shadow_enabled;
+
     if (!is_virtual_)
         notify_renderer_need_redraw();
 }
 
 void font_string::set_word_wrap_enabled(bool enabled) {
+    if (word_wrap_enabled_ == enabled)
+        return;
+
     word_wrap_enabled_ = enabled;
-    if (text_)
+
+    if (text_) {
         text_->set_word_wrap_enabled(word_wrap_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_word_wrap_enabled() const {
@@ -373,9 +384,16 @@ bool font_string::is_word_wrap_enabled() const {
 }
 
 void font_string::set_word_ellipsis_enabled(bool enabled) {
+    if (ellipsis_enabled_ == enabled)
+        return;
+
     ellipsis_enabled_ = enabled;
-    if (text_)
+
+    if (text_) {
         text_->set_word_ellipsis_enabled(ellipsis_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_word_ellipsis_enabled() const {
@@ -383,9 +401,16 @@ bool font_string::is_word_ellipsis_enabled() const {
 }
 
 void font_string::set_formatting_enabled(bool formatting) {
+    if (formatting_enabled_ == formatting)
+        return;
+
     formatting_enabled_ = formatting;
-    if (text_)
+
+    if (text_) {
         text_->set_formatting_enabled(formatting_enabled_);
+        if (!is_virtual_)
+            notify_renderer_need_redraw();
+    }
 }
 
 bool font_string::is_formatting_enabled() const {
@@ -400,8 +425,10 @@ void font_string::set_text(const utils::ustring& content) {
 
     if (text_) {
         text_->set_text(content_);
-        if (!is_virtual_)
+        if (!is_virtual_) {
             notify_borders_need_update();
+            notify_renderer_need_redraw();
+        }
     }
 }
 
@@ -439,9 +466,9 @@ void font_string::update_borders_() {
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
-    const bool old_ready       = is_ready_;
+    const bool old_valid       = is_valid_;
     const auto old_border_list = borders_;
-    is_ready_                  = true;
+    is_valid_                  = true;
 
     if (!anchor_list_.empty()) {
         float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
@@ -474,14 +501,14 @@ void font_string::update_borders_() {
             box_width = text_->get_width();
 
         if (!make_borders_(top, bottom, y_center, box_height)) {
-            is_ready_ = false;
+            is_valid_ = false;
         }
 
         if (!make_borders_(left, right, x_center, box_width)) {
-            is_ready_ = false;
+            is_valid_ = false;
         }
 
-        if (is_ready_) {
+        if (is_valid_) {
             if (right < left) {
                 right = left + 1.0f;
             }
@@ -508,7 +535,7 @@ void font_string::update_borders_() {
         }
 
         borders_  = bounds2f(0.0, 0.0, box_width, box_height);
-        is_ready_ = false;
+        is_valid_ = false;
     }
 
     borders_.left   = round_to_pixel(borders_.left);
@@ -516,7 +543,7 @@ void font_string::update_borders_() {
     borders_.top    = round_to_pixel(borders_.top);
     borders_.bottom = round_to_pixel(borders_.bottom);
 
-    if (borders_ != old_border_list || is_ready_ != old_ready) {
+    if (borders_ != old_border_list || is_valid_ != old_valid) {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();
     }

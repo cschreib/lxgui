@@ -261,6 +261,10 @@ void region::register_on_lua(sol::state& lua) {
      */
     type.set_function("is_visible", member_function<&region::is_visible>());
 
+    /** @function is_valid
+     */
+    type.set_function("is_valid", member_function<&region::is_valid>());
+
     /** @function set_all_anchors
      */
     type.set_function(

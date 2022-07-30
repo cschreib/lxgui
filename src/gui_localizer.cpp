@@ -16,12 +16,6 @@
 namespace lxgui::gui {
 
 namespace {
-std::string to_lower(std::string str) {
-    for (char& c : str)
-        c = static_cast<char>(std::tolower(c));
-
-    return str;
-}
 
 std::string get_environment_variable(const std::string& name) {
 #if defined(LXGUI_PLATFORM_WINDOWS)
@@ -460,7 +454,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& unicode_gro
         {"supplementary private use area-a", {0xf0000, 0xfffff}},
         {"supplementary private use area-b", {0x100000, 0x10ffff}}};
 
-    auto iter = unicode_groups.find(to_lower(unicode_group));
+    auto iter = unicode_groups.find(utils::to_lower(unicode_group));
     if (iter == unicode_groups.end())
         throw gui::exception("gui::localizer", "unknown Unicode group '" + unicode_group + "'");
 

@@ -133,7 +133,7 @@ void material::update_texture(const color32* data) {
 void material::premultiply_alpha(sf::Image& data) {
     const std::size_t width  = data.getSize().x;
     const std::size_t height = data.getSize().y;
-    for (std::size_t x = 0; x < width; ++x)
+    for (std::size_t x = 0; x < width; ++x) {
         for (std::size_t y = 0; y < height; ++y) {
             sf::Color c = data.getPixel(x, y);
             float     a = c.a / 255.0f;
@@ -142,6 +142,7 @@ void material::premultiply_alpha(sf::Image& data) {
             c.b *= a;
             data.setPixel(x, y, c);
         }
+    }
 }
 
 bounds2f material::get_rect() const {

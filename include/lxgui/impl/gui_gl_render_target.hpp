@@ -59,6 +59,14 @@ public:
     vector2ui get_canvas_dimensions() const override;
 
     /**
+     * \brief Saves the content of this render target into a file.
+     * \param filename The path of the file to save to
+     * \note The file format will be detected based on the extension.
+     * Not all renderer backends support all extensions.
+     */
+    void save_to_file(std::string filename) const override;
+
+    /**
      * \brief Returns the associated texture for rendering.
      * \return The underlying pixel buffer, that you can use to render its content
      */
@@ -77,6 +85,9 @@ public:
     static void check_availability();
 
 private:
+    static void save_rgba_to_png_(
+        const std::string& filename, const color32* data, std::size_t width, std::size_t height);
+
     std::uint32_t                 fbo_handle_ = 0;
     std::shared_ptr<gl::material> texture_;
 

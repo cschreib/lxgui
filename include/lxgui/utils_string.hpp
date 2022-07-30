@@ -265,6 +265,8 @@ template<typename... Args>
     return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
 }
 
+[[nodiscard]] string to_lower(string str);
+
 } // namespace lxgui::utils
 
 /** \endcond

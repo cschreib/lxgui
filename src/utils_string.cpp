@@ -525,7 +525,7 @@ string to_string(const void* p) {
     return stream.str();
 }
 
-std::string to_string(const utils::variant& value) {
+string to_string(const utils::variant& value) {
     return std::visit(
         [&](const auto& inner_value) -> std::string {
             using inner_type = std::decay_t<decltype(inner_value)>;
@@ -535,6 +535,13 @@ std::string to_string(const utils::variant& value) {
                 return to_string(inner_value);
         },
         value);
+}
+
+string to_lower(string str) {
+    for (char& c : str)
+        c = static_cast<char>(std::tolower(c));
+
+    return str;
 }
 
 } // namespace lxgui::utils

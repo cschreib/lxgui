@@ -8,16 +8,18 @@
 #include <memory>
 #include <png.h>
 
-namespace lxgui::gui::gl {
-
+namespace {
 [[noreturn]] void raise_error(png_struct* /*png*/, char const* message) {
-    throw gui::exception("gui::gl::manager", message);
+    throw lxgui::gui::exception("gui::gl::manager", message);
 }
 
 void read_data(png_structp read_struct, png_bytep data, png_size_t length) {
     png_voidp p = png_get_io_ptr(read_struct);
     static_cast<std::ifstream*>(p)->read(reinterpret_cast<char*>(data), length);
 }
+} // namespace
+
+namespace lxgui::gui::gl {
 
 std::shared_ptr<gui::material>
 renderer::create_material_png_(const std::string& file_name, material::filter filt) const {

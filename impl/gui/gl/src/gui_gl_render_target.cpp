@@ -91,6 +91,28 @@ bool render_target::set_dimensions(const vector2ui& dimensions) {
     return false;
 }
 
+void render_target::save_to_file(std::string filename) const {
+    const auto width  = texture_->get_rect().width();
+    const auto height = texture_->get_rect().height();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_handle_);
+    std::vector<color32> data(width * height);
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // De-multiply alpha
+    for (auto& c : data) {
+        float a = c.a / 255.0f;
+        if (a > 0) {
+            c.r /= a;
+            c.g /= a;
+            c.b /= a;
+        }
+    }
+
+    save_rgba_to_png_(filename, data.data(), width, height);
+}
+
 std::weak_ptr<gl::material> render_target::get_material() {
     return texture_;
 }

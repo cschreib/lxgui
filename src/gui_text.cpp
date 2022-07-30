@@ -282,13 +282,7 @@ float get_string_width(const text& txt, const std::vector<item>& content) {
 
 text::text(
     renderer& rdr, std::shared_ptr<const font> fnt, std::shared_ptr<const font> outline_font) :
-    renderer_(rdr), font_(std::move(fnt)), outline_font_(std::move(outline_font)) {
-
-    if (!font_)
-        return;
-
-    is_ready_ = true;
-}
+    renderer_(rdr), font_(std::move(fnt)), outline_font_(std::move(outline_font)) {}
 
 float text::get_line_height() const {
     if (font_)
@@ -400,7 +394,7 @@ float text::get_text_width() const {
 }
 
 float text::get_text_height() const {
-    if (!is_ready_)
+    if (!font_)
         return 0.0f;
 
     std::size_t count  = std::count(unicode_text_.begin(), unicode_text_.end(), U'\n');
@@ -419,7 +413,7 @@ float text::get_string_width(const std::string& content) const {
 }
 
 float text::get_string_width(const utils::ustring& content) const {
-    if (!is_ready_)
+    if (!font_)
         return 0.0f;
 
     return parser::get_string_width(
@@ -427,7 +421,7 @@ float text::get_string_width(const utils::ustring& content) const {
 }
 
 float text::get_character_width(char32_t c) const {
-    if (!is_ready_)
+    if (!font_)
         return 0.0f;
     else if (c == U'\t')
         return 4.0f * font_->get_character_width(U' ') * scaling_factor_;
@@ -552,7 +546,7 @@ bool text::use_vertex_cache_() const {
 }
 
 void text::render(const matrix4f& transform) const {
-    if (!is_ready_ || unicode_text_.empty())
+    if (!font_ || unicode_text_.empty())
         return;
 
     update_();
@@ -624,7 +618,7 @@ float text::round_to_pixel_(float value, utils::rounding_method method) const {
 }
 
 void text::update_() const {
-    if (!is_ready_ || !update_cache_flag_)
+    if (!font_ || !update_cache_flag_)
         return;
 
     // Update the line list, read format tags, do word wrapping, ...

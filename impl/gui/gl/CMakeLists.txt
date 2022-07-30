@@ -8,6 +8,7 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_renderer_png.cpp
     ${SRCROOT}/gui_gl_material.cpp
     ${SRCROOT}/gui_gl_render_target.cpp
+    ${SRCROOT}/gui_gl_render_target_png.cpp
     ${SRCROOT}/gui_gl_vertex_cache.cpp
 )
 

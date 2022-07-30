@@ -288,9 +288,6 @@ void texture::set_texture(const std::string& file_name) {
     std::string parsed_file = parse_file_name(file_name);
     content_                = parsed_file;
 
-    if (parsed_file.empty())
-        return;
-
     auto& renderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> mat;
@@ -310,7 +307,7 @@ void texture::set_texture(const std::string& file_name) {
 
         if (!is_apparent_height_defined())
             set_height(quad_.mat->get_rect().height());
-    } else {
+    } else if (!parsed_file.empty()) {
         gui::out << gui::error << "gui::" << get_region_type() << ": "
                  << "Cannot load file \"" << parsed_file << "\" for \"" << name_
                  << "\". Using white texture instead." << std::endl;
