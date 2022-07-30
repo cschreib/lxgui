@@ -235,8 +235,12 @@ void scroll_frame::rebuild_scroll_render_target_() {
             scroll_texture_->set_texture(scroll_render_target_);
     }
 
-    render_scroll_strata_list_();
-    redraw_scroll_render_target_flag_ = false;
+    if (scroll_render_target_) {
+        render_scroll_strata_list_();
+        redraw_scroll_render_target_flag_ = false;
+    } else {
+        notify_renderer_need_redraw();
+    }
 }
 
 void scroll_frame::render_scroll_strata_list_() {
