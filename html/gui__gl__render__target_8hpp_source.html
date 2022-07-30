@@ -99,22 +99,27 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abb67798facfd9ec46ccb13e71a720fe1">get_canvas_dimensions</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::weak_ptr&lt;gl::material&gt; <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac2479d0bf3e96827c558cbfa7fb5f8b0">get_material</a>();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#accbe313d69fa1770441393553de53c65">get_view_matrix</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ae73f487b14f670c41caed2dee7f954fc">check_availability</a>();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::uint32_t                 fbo_handle_ = 0;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::shared_ptr&lt;gl::material&gt; texture_;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> view_matrix_;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace lxgui::gui::gl</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">save_to_file</a>(std::string filename) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::weak_ptr&lt;gl::material&gt; <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac2479d0bf3e96827c558cbfa7fb5f8b0">get_material</a>();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#accbe313d69fa1770441393553de53c65">get_view_matrix</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ae73f487b14f670c41caed2dee7f954fc">check_availability</a>();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> save_rgba_to_png_(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">const</span> std::string&amp; filename, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1color32.html">color32</a>* data, std::size_t width, std::size_t height);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    std::uint32_t                 fbo_handle_ = 0;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    std::shared_ptr&lt;gl::material&gt; texture_;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> view_matrix_;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace lxgui::gui::gl</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00020">gui_material.hpp:20</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">Holds a single color (float RGBA, 128 bits)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00012">gui_color.hpp:12</a></div></div>
@@ -128,6 +133,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_ae73f487b14f670c41caed2dee7f954fc"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ae73f487b14f670c41caed2dee7f954fc">lxgui::gui::gl::render_target::check_availability</a></div><div class="ttdeci">static void check_availability()</div><div class="ttdoc">Checks if the machine is capable of using render targets.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_a5d9c13c0305b99b5d982435e6ec7e5cb"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a5d9c13c0305b99b5d982435e6ec7e5cb">lxgui::gui::gl::render_target::~render_target</a></div><div class="ttdeci">~render_target() override</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_a59cc6af14a073df53a741305133f7ecd"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a59cc6af14a073df53a741305133f7ecd">lxgui::gui::gl::render_target::set_dimensions</a></div><div class="ttdeci">bool set_dimensions(const vector2ui &amp;dimensions) override</div><div class="ttdoc">Sets this render target's dimensions.</div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1color32_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1color32.html">lxgui::gui::color32</a></div><div class="ttdoc">Holds a single color (byte RGBA, 32 bits)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00075">gui_color.hpp:75</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_abb67798facfd9ec46ccb13e71a720fe1"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abb67798facfd9ec46ccb13e71a720fe1">lxgui::gui::gl::render_target::get_canvas_dimensions</a></div><div class="ttdeci">vector2ui get_canvas_dimensions() const override</div><div class="ttdoc">Returns this render target's canvas dimension.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a9c157fba4d2376633d3a018c79d70412"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">lxgui::gui::render_target::render_target</a></div><div class="ttdeci">render_target()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html">lxgui::gui::gl::render_target</a></div><div class="ttdoc">A place to render things (the screen, a texture, ...)</div><div class="ttdef"><b>Definition:</b> <a href="gui__gl__render__target_8hpp_source.html#l00014">gui_gl_render_target.hpp:14</a></div></div>
@@ -135,10 +141,11 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_a762d7b0e51da17205d042a0778595440"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a762d7b0e51da17205d042a0778595440">lxgui::gui::gl::render_target::get_rect</a></div><div class="ttdeci">bounds2f get_rect() const override</div><div class="ttdoc">Returns this render target's pixel rect.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">lxgui::gui::material::filter::none</a></div><div class="ttdeci">@ none</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1gl_1_1render__target_html_ac559d56c828ca75979db04424dc02a6a"><div class="ttname"><a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">lxgui::gui::gl::render_target::save_to_file</a></div><div class="ttdeci">void save_to_file(std::string filename) const override</div><div class="ttdoc">Saves the content of this render target into a file.</div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_1_1gl_html"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1gl.html">lxgui::gui::gl</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__gl__atlas_8hpp_source.html#l00011">gui_gl_atlas.hpp:11</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:26 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

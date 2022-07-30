@@ -127,6 +127,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5807ce6408ff20031930e62629d5fc80"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#a5807ce6408ff20031930e62629d5fc80">get_canvas_dimensions</a> () const =0</td></tr>
 <tr class="memdesc:a5807ce6408ff20031930e62629d5fc80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's canvas dimension.  <a href="classlxgui_1_1gui_1_1render__target.html#a5807ce6408ff20031930e62629d5fc80">More...</a><br /></td></tr>
 <tr class="separator:a5807ce6408ff20031930e62629d5fc80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20449f7735071db39189a752f81f36a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">save_to_file</a> (std::string filename) const =0</td></tr>
+<tr class="memdesc:aa20449f7735071db39189a752f81f36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the content of this render target into a file.  <a href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">More...</a><br /></td></tr>
+<tr class="separator:aa20449f7735071db39189a752f81f36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A place to render things (the screen, a texture, ...) </p>
@@ -458,6 +461,43 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aa20449f7735071db39189a752f81f36a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa20449f7735071db39189a752f81f36a">&#9670;&nbsp;</a></span>save_to_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void lxgui::gui::render_target::save_to_file </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Saves the content of this render target into a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>The path of the file to save to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The file format will be detected based on the extension. Not all renderer backends support all extensions. </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a0ead5fdb59afe0350c17a0d6f4222d77">lxgui::gui::sdl::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a55761b3b73e4f24744eb8ce4f19da9b9">lxgui::gui::sfml::render_target</a>.</p>
+
+</div>
+</div>
 <a id="a6dd3b9582f65f7d1b6f229cef2974e50"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6dd3b9582f65f7d1b6f229cef2974e50">&#9670;&nbsp;</a></span>set_dimensions()</h2>
 
@@ -501,7 +541,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:27 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

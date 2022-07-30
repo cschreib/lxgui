@@ -99,22 +99,24 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#af0899485956c4a47314babdb0a223cb2">set_dimensions</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; dimensions) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#afe4a57c6ab87307c00be2d4ff92affde">get_canvas_dimensions</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::weak_ptr&lt;sfml::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a09b6cc79b21b703332702ed585cdde86">get_material</a>();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    sf::RenderTexture* <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a29c19d51cfc5ce0edbc8d3d3df701b63">get_render_texture</a>();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> update_view_matrix_() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::shared_ptr&lt;sfml::material&gt; texture_;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    sf::RenderTexture*              render_texture_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace lxgui::gui::sfml</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a55761b3b73e4f24744eb8ce4f19da9b9">save_to_file</a>(std::string filename) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#afe4a57c6ab87307c00be2d4ff92affde">get_canvas_dimensions</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::weak_ptr&lt;sfml::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a09b6cc79b21b703332702ed585cdde86">get_material</a>();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    sf::RenderTexture* <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a29c19d51cfc5ce0edbc8d3d3df701b63">get_render_texture</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> update_view_matrix_() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    std::shared_ptr&lt;sfml::material&gt; texture_;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    sf::RenderTexture*              render_texture_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;} <span class="comment">// namespace lxgui::gui::sfml</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00020">gui_material.hpp:20</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_af0899485956c4a47314babdb0a223cb2"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#af0899485956c4a47314babdb0a223cb2">lxgui::gui::sfml::render_target::set_dimensions</a></div><div class="ttdeci">bool set_dimensions(const vector2ui &amp;dimensions) override</div><div class="ttdoc">Sets this render target's dimensions.</div></div>
@@ -129,13 +131,14 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_a6a2085770db97f5ccf26bc3bf235078b"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a6a2085770db97f5ccf26bc3bf235078b">lxgui::gui::sfml::render_target::begin</a></div><div class="ttdeci">void begin() override</div><div class="ttdoc">Begins rendering on this target.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_afe4a57c6ab87307c00be2d4ff92affde"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#afe4a57c6ab87307c00be2d4ff92affde">lxgui::gui::sfml::render_target::get_canvas_dimensions</a></div><div class="ttdeci">vector2ui get_canvas_dimensions() const override</div><div class="ttdoc">Returns this render target's canvas dimension.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a9c157fba4d2376633d3a018c79d70412"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">lxgui::gui::render_target::render_target</a></div><div class="ttdeci">render_target()=default</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_a55761b3b73e4f24744eb8ce4f19da9b9"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a55761b3b73e4f24744eb8ce4f19da9b9">lxgui::gui::sfml::render_target::save_to_file</a></div><div class="ttdeci">void save_to_file(std::string filename) const override</div><div class="ttdoc">Saves the content of this render target into a file.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_a29c19d51cfc5ce0edbc8d3d3df701b63"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a29c19d51cfc5ce0edbc8d3d3df701b63">lxgui::gui::sfml::render_target::get_render_texture</a></div><div class="ttdeci">sf::RenderTexture * get_render_texture()</div><div class="ttdoc">Returns the underlying SFML render texture object. return The underlying SFML render texture object.</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1render__target_html_a2c7901339f5963a0a4a1f43a56bed622"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a2c7901339f5963a0a4a1f43a56bed622">lxgui::gui::sfml::render_target::end</a></div><div class="ttdeci">void end() override</div><div class="ttdoc">Ends rendering on this target.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6a334c4a4c42fdb79d7ebc3e73b517e6f8">lxgui::gui::material::filter::none</a></div><div class="ttdeci">@ none</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:26 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

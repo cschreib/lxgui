@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb67798facfd9ec46ccb13e71a720fe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a4029a09f3c3b57c27d605eae4057c5b1">vector2ui</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abb67798facfd9ec46ccb13e71a720fe1">get_canvas_dimensions</a> () const override</td></tr>
 <tr class="memdesc:abb67798facfd9ec46ccb13e71a720fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's canvas dimension.  <a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abb67798facfd9ec46ccb13e71a720fe1">More...</a><br /></td></tr>
 <tr class="separator:abb67798facfd9ec46ccb13e71a720fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac559d56c828ca75979db04424dc02a6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">save_to_file</a> (std::string filename) const override</td></tr>
+<tr class="memdesc:ac559d56c828ca75979db04424dc02a6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the content of this render target into a file.  <a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">More...</a><br /></td></tr>
+<tr class="separator:ac559d56c828ca75979db04424dc02a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">gl::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac2479d0bf3e96827c558cbfa7fb5f8b0">get_material</a> ()</td></tr>
 <tr class="memdesc:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac2479d0bf3e96827c558cbfa7fb5f8b0">More...</a><br /></td></tr>
 <tr class="separator:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -422,6 +425,43 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac559d56c828ca75979db04424dc02a6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac559d56c828ca75979db04424dc02a6a">&#9670;&nbsp;</a></span>save_to_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::gl::render_target::save_to_file </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Saves the content of this render target into a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>The path of the file to save to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The file format will be detected based on the extension. Not all renderer backends support all extensions. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">lxgui::gui::render_target</a>.</p>
+
+</div>
+</div>
 <a id="a59cc6af14a073df53a741305133f7ecd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59cc6af14a073df53a741305133f7ecd">&#9670;&nbsp;</a></span>set_dimensions()</h2>
 
@@ -465,7 +505,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:28 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

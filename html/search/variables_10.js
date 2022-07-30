@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['s_2613',['s',['../structlxgui_1_1gui_1_1color_1_1hls.html#a7ecfaa84727bbbd092ed1955c075b0d9',1,'lxgui::gui::color::hls::s()'],['../structlxgui_1_1gui_1_1color_1_1hsv.html#a1e73930fc83fc0be2728d5103d7ed074',1,'lxgui::gui::color::hsv::s()']]],
-  ['saved_5fvariable_5flist_2614',['saved_variable_list',['../structlxgui_1_1gui_1_1addon.html#a9325345ae6c2af9f96a0014a5f9219d4',1,'lxgui::gui::addon']]],
-  ['scale_5f_2615',['scale_',['../classlxgui_1_1gui_1_1frame.html#a2137a04db060ed50f2e7bc652089b4ae',1,'lxgui::gui::frame']]],
-  ['scroll_5f_2616',['scroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a815d3fb89b2bc5eec55450521256f082',1,'lxgui::gui::scroll_frame']]],
-  ['scroll_5fchild_5f_2617',['scroll_child_',['../classlxgui_1_1gui_1_1scroll__frame.html#a7d748f03fb0aedb5d5d13ed6d3f7a59c',1,'lxgui::gui::scroll_frame']]],
+  ['s_2612',['s',['../structlxgui_1_1gui_1_1color_1_1hls.html#a7ecfaa84727bbbd092ed1955c075b0d9',1,'lxgui::gui::color::hls::s()'],['../structlxgui_1_1gui_1_1color_1_1hsv.html#a1e73930fc83fc0be2728d5103d7ed074',1,'lxgui::gui::color::hsv::s()']]],
+  ['saved_5fvariable_5flist_2613',['saved_variable_list',['../structlxgui_1_1gui_1_1addon.html#a9325345ae6c2af9f96a0014a5f9219d4',1,'lxgui::gui::addon']]],
+  ['scale_5f_2614',['scale_',['../classlxgui_1_1gui_1_1frame.html#a2137a04db060ed50f2e7bc652089b4ae',1,'lxgui::gui::frame']]],
+  ['scroll_5f_2615',['scroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a815d3fb89b2bc5eec55450521256f082',1,'lxgui::gui::scroll_frame']]],
+  ['scroll_5fchild_5f_2616',['scroll_child_',['../classlxgui_1_1gui_1_1scroll__frame.html#a7d748f03fb0aedb5d5d13ed6d3f7a59c',1,'lxgui::gui::scroll_frame']]],
+  ['scroll_5fchild_5fon_5fresize_5fconnection_5f_2617',['scroll_child_on_resize_connection_',['../classlxgui_1_1gui_1_1scroll__frame.html#aadca16ebd04519d73c6f06276607bca2',1,'lxgui::gui::scroll_frame']]],
   ['scroll_5frange_5f_2618',['scroll_range_',['../classlxgui_1_1gui_1_1scroll__frame.html#a19b46a758af934e6e4b537732cdcc54d',1,'lxgui::gui::scroll_frame']]],
   ['scroll_5frender_5ftarget_5f_2619',['scroll_render_target_',['../classlxgui_1_1gui_1_1scroll__frame.html#a05d4d852a8e58ee6a7f9aa60504624b6',1,'lxgui::gui::scroll_frame']]],
   ['scroll_5ftexture_5f_2620',['scroll_texture_',['../classlxgui_1_1gui_1_1scroll__frame.html#a66243e06b5732d89547253ba9e63a726',1,'lxgui::gui::scroll_frame']]],

@@ -104,11 +104,13 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1render__target.html#a6dd3b9582f65f7d1b6f229cef2974e50">set_dimensions</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a>&amp; dimensions) = 0;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2ui</a> <a class="code" href="classlxgui_1_1gui_1_1render__target.html#a5807ce6408ff20031930e62629d5fc80">get_canvas_dimensions</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">save_to_file</a>(std::string filename) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace lxgui::gui</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_aa1f3d15bdaf06d6afeb5765a3c3ecd46"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#aa1f3d15bdaf06d6afeb5765a3c3ecd46">lxgui::gui::render_target::get_rect</a></div><div class="ttdeci">virtual bounds2f get_rect() const =0</div><div class="ttdoc">Returns this render target's pixel rect.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">Holds a single color (float RGBA, 128 bits)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00012">gui_color.hpp:12</a></div></div>
@@ -119,6 +121,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html"><div class="ttname"><a href="namespacelxgui_1_1gui.html">lxgui::gui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__addon__registry_8cpp_source.html#l00020">gui_addon_registry.cpp:20</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a133ea1702093fa3ffcfe71d78574ed4c"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a133ea1702093fa3ffcfe71d78574ed4c">lxgui::gui::render_target::clear</a></div><div class="ttdeci">virtual void clear(const color &amp;c)=0</div><div class="ttdoc">Clears the content of this render_target.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a9c157fba4d2376633d3a018c79d70412"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">lxgui::gui::render_target::render_target</a></div><div class="ttdeci">render_target()=default</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_aa20449f7735071db39189a752f81f36a"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">lxgui::gui::render_target::save_to_file</a></div><div class="ttdeci">virtual void save_to_file(std::string filename) const =0</div><div class="ttdoc">Saves the content of this render target into a file.</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a5807ce6408ff20031930e62629d5fc80"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a5807ce6408ff20031930e62629d5fc80">lxgui::gui::render_target::get_canvas_dimensions</a></div><div class="ttdeci">virtual vector2ui get_canvas_dimensions() const =0</div><div class="ttdoc">Returns this render target's canvas dimension.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a30a00efcd9c59bf8aa7c4e1a999ea344"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a30a00efcd9c59bf8aa7c4e1a999ea344">lxgui::gui::render_target::operator=</a></div><div class="ttdeci">render_target &amp; operator=(const render_target &amp;)=delete</div><div class="ttdoc">Non-copiable.</div></div>
@@ -126,7 +129,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1render__target_html_a0dc82748740006f2579a386c208576db"><div class="ttname"><a href="classlxgui_1_1gui_1_1render__target.html#a0dc82748740006f2579a386c208576db">lxgui::gui::render_target::~render_target</a></div><div class="ttdeci">virtual ~render_target()=default</div><div class="ttdoc">Destructor.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:26 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:13 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

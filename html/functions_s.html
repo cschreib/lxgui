@@ -68,6 +68,12 @@ $(function() {
 : <a class="el" href="structlxgui_1_1gui_1_1color_1_1hls.html#a7ecfaa84727bbbd092ed1955c075b0d9">lxgui::gui::color::hls</a>
 , <a class="el" href="structlxgui_1_1gui_1_1color_1_1hsv.html#a1e73930fc83fc0be2728d5103d7ed074">lxgui::gui::color::hsv</a>
 </li>
+<li>save_to_file()
+: <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac559d56c828ca75979db04424dc02a6a">lxgui::gui::gl::render_target</a>
+, <a class="el" href="classlxgui_1_1gui_1_1render__target.html#aa20449f7735071db39189a752f81f36a">lxgui::gui::render_target</a>
+, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a0ead5fdb59afe0350c17a0d6f4222d77">lxgui::gui::sdl::render_target</a>
+, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a55761b3b73e4f24744eb8ce4f19da9b9">lxgui::gui::sfml::render_target</a>
+</li>
 <li>save_variables()
 : <a class="el" href="classlxgui_1_1gui_1_1addon__registry.html#a7ec73da354a488e51f64956631debac9">lxgui::gui::addon_registry</a>
 </li>
@@ -81,13 +87,16 @@ $(function() {
 : <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html#a044fe47b99afc1578318ac0ee5aabde8">lxgui::gui::matrix4f</a>
 </li>
 <li>scoped_connection()
-: <a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#a6249024dc191d9fbd3b49cebd921499b">lxgui::utils::scoped_connection</a>
+: <a class="el" href="classlxgui_1_1utils_1_1scoped__connection.html#ae65e171843c6824f55ef283fb77bc327">lxgui::utils::scoped_connection</a>
 </li>
 <li>scroll_
 : <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a815d3fb89b2bc5eec55450521256f082">lxgui::gui::scroll_frame</a>
 </li>
 <li>scroll_child_
 : <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a7d748f03fb0aedb5d5d13ed6d3f7a59c">lxgui::gui::scroll_frame</a>
+</li>
+<li>scroll_child_on_resize_connection_
+: <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#aadca16ebd04519d73c6f06276607bca2">lxgui::gui::scroll_frame</a>
 </li>
 <li>scroll_frame()
 : <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ae3932494bd85328f5b99937c1f26139e">lxgui::gui::scroll_frame</a>
@@ -490,7 +499,7 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1text.html#a4905bd86cf3ea29ebbe5b708baac03df">lxgui::gui::text</a>
 </li>
 <li>set_script()
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#ac37da70ecfd3c050f094415db4bc7a67">lxgui::gui::frame</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a3c17389b9e13bd7b39307b1650edbdcc">lxgui::gui::frame</a>
 </li>
 <li>set_scroll_child()
 : <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a272629fc55c36b7c84e8941f1ff8b022">lxgui::gui::scroll_frame</a>
@@ -660,11 +669,11 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a68d092e5bd372505b09359ccd1a20210">lxgui::gui::frame_renderer</a>
 </li>
 <li>sorted_vector()
-: <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#aa57555c300f6d189342cf53c45a4dece">lxgui::utils::sorted_vector&lt; T, Cmp &gt;</a>
+: <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#a0448a48e6264edff40bd957b2895be5c">lxgui::utils::sorted_vector&lt; T, Cmp &gt;</a>
 </li>
 <li>source()
-: <a class="el" href="classlxgui_1_1input_1_1sdl_1_1source.html#af7d43c32f6625f2bd54667e7f9671f7a">lxgui::input::sdl::source</a>
-, <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a6c41398c6728b5f2d1028cae3ddc960f">lxgui::input::sfml::source</a>
+: <a class="el" href="classlxgui_1_1input_1_1sdl_1_1source.html#aae03d0b5078b5d7287a6137e155a3400">lxgui::input::sdl::source</a>
+, <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#aeefb0e77e22eff84310d0435566e9e1c">lxgui::input::sfml::source</a>
 , <a class="el" href="classlxgui_1_1input_1_1source.html#ad644be536d4852fc105ee4623123389e">lxgui::input::source</a>
 </li>
 <li>start()
@@ -711,7 +720,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2022 08:45:28 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 30 2022 10:51:14 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
