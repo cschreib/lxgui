@@ -52,6 +52,20 @@ void render_target::save_to_file(std::string filename) const {
     SDL_Surface* surface = SDL_CreateRGBSurface(
         0, texture_->get_rect().width(), texture_->get_rect().height(), 32, 0, 0, 0, 0);
     SDL_RenderReadPixels(renderer, NULL, surface->format->format, surface->pixels, surface->pitch);
+
+    // De-multiply alpha
+    color32* pixel_data = reinterpret_cast<color32*>(surface->pixels);
+
+    const std::size_t area = surface->w * surface->h;
+    for (std::size_t i = 0; i < area; ++i) {
+        float a = pixel_data[i].a / 255.0f;
+        if (a > 0.0f) {
+            pixel_data[i].r /= a;
+            pixel_data[i].g /= a;
+            pixel_data[i].b /= a;
+        }
+    }
+
     IMG_SavePNG(surface, filename.c_str());
     SDL_FreeSurface(surface);
 

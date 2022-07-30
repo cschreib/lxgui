@@ -100,9 +100,9 @@ void render_target::save_to_file(std::string filename) const {
     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    // De-multiply alpha
     for (auto& c : data) {
         float a = c.a / 255.0f;
-        // De-multiply alpha
         if (a > 0) {
             c.r /= a;
             c.g /= a;
