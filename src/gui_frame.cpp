@@ -488,7 +488,23 @@ void frame::notify_loaded() {
 }
 
 void frame::notify_layers_need_update() {
-    build_layer_list_flag_ = true;
+    // Clear layers' content
+    for (auto& layer : layer_list_)
+        layer.region_list.clear();
+
+    // Fill layers with regions (with font_string rendered last within the same layer)
+    // TODO: This is bad; the frame class should not know about font_string, see #112.
+    for (const auto& reg : region_list_) {
+        if (reg && !reg->is_region_type<font_string>()) {
+            layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(reg);
+        }
+    }
+
+    for (const auto& reg : region_list_) {
+        if (reg && reg->is_region_type<font_string>()) {
+            layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(reg);
+        }
+    }
 }
 
 void frame::set_parent_(utils::observer_ptr<frame> parent) {
@@ -1543,30 +1559,6 @@ void frame::update(float delta) {
 
 void frame::update_(float delta) {
     alive_checker checker(*this);
-
-    if (build_layer_list_flag_) {
-        // Clear layers' content
-        for (auto& layer : layer_list_)
-            layer.region_list.clear();
-
-        // Fill layers with regions (with font_string rendered last within the same layer)
-        // TODO: This is bad; the frame class should not know about font_string, see #112.
-        for (const auto& reg : region_list_) {
-            if (reg && !reg->is_region_type<font_string>()) {
-                layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
-                    reg);
-            }
-        }
-
-        for (const auto& reg : region_list_) {
-            if (reg && reg->is_region_type<font_string>()) {
-                layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(
-                    reg);
-            }
-        }
-
-        build_layer_list_flag_ = false;
-    }
 
     if (is_visible()) {
         fire_script("OnUpdate", {delta});

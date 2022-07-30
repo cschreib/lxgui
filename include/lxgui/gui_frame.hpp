@@ -1822,8 +1822,6 @@ protected:
     bool is_resizable_           = false;
     bool is_user_placed_         = false;
 
-    bool build_layer_list_flag_ = false;
-
     bounds2f abs_hit_rect_inset_list_ = bounds2f::zero;
     bounds2f rel_hit_rect_inset_list_ = bounds2f::zero;
 
