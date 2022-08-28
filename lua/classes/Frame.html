@@ -142,8 +142,8 @@
 <p> Hard-coded events available to all <a href="../classes/Frame.html#">Frame</a>s:</p>
 
 <ul>
-    <li><code>OnChar</code>: Triggered whenever a character is typed into the frame, and
-    the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>).</li>
+    <li><code>OnChar</code>: Triggered whenever a character is typed and the frame has focus
+    (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>).</li>
     <li><code>OnDragStart</code>: Triggered when one of the mouse button registered for
     dragging (see frame::enable_drag) has been pressed inside the
     area of the screen occupied by the frame, and a mouse movement is first
@@ -175,15 +175,15 @@
     is hidden indirectly (for example if its parent is itself hidden). This
     will only fire if the frame was previously shown.</li>
     <li><code>OnKeyDown</code>: Triggered when a keyboard key is pressed. Will only
-    trigger if the frame has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or if the key has
-    been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>. If no
-    keyboard-enabled frame is focused, only the topmost frame with
+    trigger if the frame is shown and either has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or
+    if the key has been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>.
+    If no keyboard-enabled frame is focused, only the topmost frame with
     <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
     captured the key, then the key is tested for existing key bindings (see
     <a href="../modules/GUI.html#register_key_binding">GUI.register_key_binding</a>). This event provides five arguments to the registered
     callback: a number identifying the main key being pressed, three boolean flags
     for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
-    key combination being pressed (e.g., Shift+A).</li>
+    key combination being pressed (e.g., "Shift+A").</li>
     <li><code>OnKeyRepeat</code>: Similar to <code>OnKeyDown</code>, but triggered when a key has been
     long-pressed and the operating system generated repeat events.</li>
     <li><code>OnKeyUp</code>: Similar to <code>OnKeyDown</code>, but triggered when a keyboard key is
@@ -222,11 +222,11 @@
     would normally scroll <em>up</em> in a document). The other two arguments
     are the mouse X and Y position.</li>
     <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved and this frame is
-    the topmost mouse-wheel-enabled frame under the mouse pointer. This event
-    provides one argument to the registered callback: a number indicating by
-    how many "notches" the wheel has turned in this event. A positive value
-    means the wheel has been moved "away" from the user (this would normally
-    scroll <em>up</em> in a document).</li>
+    the topmost mouse-wheel-enabled frame under the mouse pointer. Will not
+    trigger if the frame is hidden. This event provides one argument to the
+    registered callback: a number indicating by how many "notches" the wheel has
+    turned in this event. A positive value means the wheel has been moved "away"
+    from the user (this would normally scroll <em>up</em> in a document).</li>
     <li><code>OnReceiveDrag</code>: Triggered when the mouse pointer was previously
     dragged onto the frame, and when one of the mouse button registered for
     dragging (see <a href="../classes/Frame.html#Frame:enable_drag">Frame:enable_drag</a>) is released. This enables
@@ -238,16 +238,14 @@
     directly or indirectly. Be very careful not to call any function that could
     change the size of the frame inside this callback, as this would generate
     an infinite loop.</li>
-    <li><code>OnUpdate</code>: Triggered on every tick of the game loop. This event provides
-    one argument to the registered callback: a floating point number indicating
-    how much time has passed since the last call to <code>OnUpdate</code> (in seconds).
-    For optimal performance, prefer using other events types whenever possible.
-    <code>OnUpdate</code> callbacks will be executed over and over again, and can quickly
-    consume a lot of resources if user unreasonably. If you have to use
-    <code>OnUpdate</code>, you can mitigate performance problems by artificially reducing
-    the update rate: let the callback function only accumulate the time passed,
-    and wait until enough time has passed (say, half a second) to execute any
-    expensive operation. Then reset the accumulated time, and wait again.</li>
+    <li><code>OnUpdate</code>: Triggered on every tick of the game loop, if the frame is shown.
+    This event provides one argument to the registered callback: a floating point
+    number indicating how much time has passed since the last call to <code>OnUpdate</code>
+    (in seconds). For optimal performance, prefer using other events types
+    whenever possible. <code>OnUpdate</code> callbacks will be executed over and over again,
+    and can quickly consume a lot of resources if user unreasonably. If you have
+    to use <code>OnUpdate</code>, you can mitigate performance problems by reducing the
+    update rate using <a href="../classes/Frame.html#Frame:set_update_rate">Frame:set_update_rate</a>.</li>
 </ul>
 
 <p> Generic events fired natively by lxgui:</p>
@@ -2215,7 +2213,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-07-31 09:42:58 </i>
+<i style="float:right;">Last updated 2022-08-28 13:29:53 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
