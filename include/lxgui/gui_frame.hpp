@@ -131,8 +131,8 @@ using script_list_view = script_signal::slot_list_view;
  *
  * Hard-coded events available to all frames:
  *
- * - `OnChar`: Triggered whenever a character is typed into the frame, and
- * the frame has focus (see @ref frame::set_focus).
+ * - `OnChar`: Triggered whenever a character is typed and the frame has focus
+ * (see @ref frame::set_focus).
  * - `OnDragStart`: Triggered when one of the mouse button registered for
  * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
@@ -164,15 +164,15 @@ using script_list_view = script_signal::slot_list_view;
  * is hidden indirectly (for example if its parent is itself hidden). This
  * will only fire if the frame was previously shown.
  * - `OnKeyDown`: Triggered when a keyboard key is pressed. Will only
- * trigger if the frame has focus (see @ref frame::set_focus) or if the key has
- * been registered for capture using @ref frame::enable_key_capture. If no
- * keyboard-enabled frame is focused, only the topmost frame with
- * @ref frame::enable_key_capture will receive the event. If no frame has
- * captured the key, then the key is tested for existing key bindings (see
- * @ref key_binder). This event provides five arguments to the registered
- * callback: a number identifying the main key being pressed, three boolean flags
- * for "Shift", "Ctrl", and "Alt, and finally the human-readable name of the
- * key combination being pressed (e.g., Shift+A).
+ * trigger if the frame is shown and either has focus (see @ref frame::set_focus)
+ * or if the key has been registered for capture using
+ * @ref frame::enable_key_capture. If no keyboard-enabled frame is focused,
+ * only the topmost frame with @ref frame::enable_key_capture will receive the
+ * event. If no frame has captured the key, then the key is tested for existing
+ * key bindings (see @ref key_binder). This event provides five arguments to the
+ * registered callback: a number identifying the main key being pressed, three
+ * boolean flags for "Shift", "Ctrl", and "Alt, and finally the human-readable
+ * name of the key combination being pressed (e.g., "Shift+A").
  * - `OnKeyRepeat`: Similar to `OnKeyDown`, but triggered when a key has been
  * long-pressed and the operating system generated repeat events.
  * - `OnKeyUp`: Similar to `OnKeyDown`, but triggered when a keyboard key is
@@ -204,12 +204,12 @@ using script_list_view = script_signal::slot_list_view;
  * a boolean flag indicating whether the mouse was released after a drag
  * operation (true) or not (false).
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
- * the topmost mouse-wheel-enabled frame under the mouse pointer. This event
- * provides three arguments to the registered callback. The first is a number
- * indicating by how many "notches" the wheel has turned in this event. A
- * positive value means the wheel has been moved "away" from the user (this
- * would normally scroll *up* in a document). The other two arguments
- * are the mouse X and Y position.
+ * the topmost mouse-wheel-enabled frame under the mouse pointer. Will not
+ * trigger if the frame is hidden. This event provides three arguments to the
+ * registered callback. The first is a number indicating by how many "notches"
+ * the wheel has turned in this event. A positive value means the wheel has
+ * been moved "away" from the user (this would normally scroll *up* in a
+ * document). The other two arguments are the mouse X and Y position.
  * - `OnReceiveDrag`: Triggered when the mouse pointer was previously
  * dragged onto the frame, and when one of the mouse button registered for
  * dragging (see frame::enable_drag) is released. This enables
@@ -221,16 +221,14 @@ using script_list_view = script_signal::slot_list_view;
  * directly or indirectly. Be very careful not to call any function that could
  * change the size of the frame inside this callback, as this would generate
  * an infinite loop.
- * - `OnUpdate`: Triggered on every tick of the game loop. This event provides
- * one argument to the registered callback: a floating point number indicating
- * how much time has passed since the last call to `OnUpdate` (in seconds).
- * For optimal performance, prefer using other events types whenever possible.
- * `OnUpdate` callbacks will be executed over and over again, and can quickly
- * consume a lot of resources if user unreasonably. If you have to use
- * `OnUpdate`, you can mitigate performance problems by artificially reducing
- * the update rate: let the callback function only accumulate the time passed,
- * and wait until enough time has passed (say, half a second) to execute any
- * expensive operation. Then reset the accumulated time, and wait again.
+ * - `OnUpdate`: Triggered on every tick of the game loop, if the frame is shown.
+ * This event provides one argument to the registered callback: a floating point
+ * number indicating how much time has passed since the last call to `OnUpdate`
+ * (in seconds). For optimal performance, prefer using other events types
+ * whenever possible. `OnUpdate` callbacks will be executed over and over again,
+ * and can quickly consume a lot of resources if user unreasonably. If you have
+ * to use `OnUpdate`, you can mitigate performance problems by reducing the
+ * update rate using @ref frame::set_update_rate().
  *
  * Generic events fired natively by lxgui:
  *
