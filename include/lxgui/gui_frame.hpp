@@ -221,16 +221,14 @@ using script_list_view = script_signal::slot_list_view;
  * directly or indirectly. Be very careful not to call any function that could
  * change the size of the frame inside this callback, as this would generate
  * an infinite loop.
- * - `OnUpdate`: Triggered on every tick of the game loop. This event provides
- * one argument to the registered callback: a floating point number indicating
- * how much time has passed since the last call to `OnUpdate` (in seconds).
- * For optimal performance, prefer using other events types whenever possible.
- * `OnUpdate` callbacks will be executed over and over again, and can quickly
- * consume a lot of resources if user unreasonably. If you have to use
- * `OnUpdate`, you can mitigate performance problems by artificially reducing
- * the update rate: let the callback function only accumulate the time passed,
- * and wait until enough time has passed (say, half a second) to execute any
- * expensive operation. Then reset the accumulated time, and wait again.
+ * - `OnUpdate`: Triggered on every tick of the game loop, if the frame is shown.
+ * This event provides one argument to the registered callback: a floating point
+ * number indicating how much time has passed since the last call to `OnUpdate`
+ * (in seconds). For optimal performance, prefer using other events types
+ * whenever possible. `OnUpdate` callbacks will be executed over and over again,
+ * and can quickly consume a lot of resources if user unreasonably. If you have
+ * to use `OnUpdate`, you can mitigate performance problems by reducing the
+ * update rate using @ref frame::set_update_rate().
  *
  * Generic events fired natively by lxgui:
  *
