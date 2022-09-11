@@ -8,8 +8,8 @@
 namespace lxgui::gui {
 
 color region::parse_color_node_(const layout_node& node) {
-    if (const layout_attribute* attr = node.try_get_attribute("c")) {
-        std::string s = attr->get_value<std::string>();
+    if (const auto attr = node.try_get_attribute_value<std::string>("c")) {
+        const std::string& s = attr.value();
         if (!s.empty() && s[0] == '#')
             return color(s);
     }
@@ -21,8 +21,18 @@ color region::parse_color_node_(const layout_node& node) {
         node.get_attribute_value_or<float>("a", 1.0f));
 }
 
+vector2<std::optional<float>> region::parse_offset_node_(const layout_node& node) {
+    return {node.try_get_attribute_value<float>("x"), node.try_get_attribute_value<float>("y")};
+}
+
+vector2<float> region::parse_offset_node_or_(const layout_node& node, float fallback) {
+    return {
+        node.get_attribute_value_or<float>("x", fallback),
+        node.get_attribute_value_or<float>("y", fallback)};
+}
+
 std::pair<anchor_type, vector2<std::optional<float>>>
-region::parse_dimension_(const layout_node& node) {
+region::parse_dimension_node_(const layout_node& node) {
     const layout_node* abs_dim_node = node.try_get_child("AbsDimension");
     const layout_node* rel_dim_node = node.try_get_child("RelDimension");
 
@@ -49,23 +59,12 @@ region::parse_dimension_(const layout_node& node) {
         chosen_node = rel_dim_node;
     }
 
-    vector2<std::optional<float>> vec;
-    if (const layout_attribute* attr = chosen_node->try_get_attribute("x"))
-        vec.x = attr->get_value<float>();
-    else
-        vec.x = std::nullopt;
-
-    if (const layout_attribute* attr = chosen_node->try_get_attribute("y"))
-        vec.y = attr->get_value<float>();
-    else
-        vec.y = std::nullopt;
-
-    return std::make_pair(type, vec);
+    return std::make_pair(type, parse_offset_node_(*chosen_node));
 }
 
 void region::parse_size_node_(const layout_node& node) {
     if (const layout_node* size_block = node.try_get_child("Size")) {
-        auto dimensions = parse_dimension_(*size_block);
+        auto dimensions = parse_dimension_node_(*size_block);
         bool has_x      = dimensions.second.x.has_value();
         bool has_y      = dimensions.second.y.has_value();
         if (dimensions.first == anchor_type::abs) {
@@ -114,7 +113,7 @@ void region::parse_anchor_node_(const layout_node& node) {
             anchor_data a(pt, parent, relative_point);
 
             if (const layout_node* offset_node = anchor_node.try_get_child("Offset")) {
-                auto dimensions = parse_dimension_(*offset_node);
+                auto dimensions = parse_dimension_node_(*offset_node);
                 a.type          = dimensions.first;
                 a.offset        = vector2f(
                     dimensions.second.x.value_or(0.0f), dimensions.second.y.value_or(0.0f));

@@ -7,6 +7,7 @@
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_root.hpp"
 #include "lxgui/gui_virtual_root.hpp"
+#include "lxgui/utils_string.hpp"
 
 namespace lxgui::gui {
 
@@ -30,56 +31,58 @@ void frame::parse_layout(const layout_node& node) {
 }
 
 void frame::parse_attributes_(const layout_node& node) {
-    if (const layout_attribute* attr = node.try_get_attribute("hidden"))
-        set_shown(!attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("hidden"))
+        set_shown(!attr.value());
 
     if (node.get_attribute_value_or<bool>("setAllAnchors", false))
         set_all_anchors("$parent");
 
-    if (const layout_attribute* attr = node.try_get_attribute("alpha"))
-        set_alpha(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("topLevel"))
-        set_top_level(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("movable"))
-        set_movable(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("resizable"))
-        set_resizable(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("strata"))
-        set_strata(attr->get_value<strata>());
+    if (const auto attr = node.try_get_attribute_value<float>("alpha"))
+        set_alpha(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("topLevel"))
+        set_top_level(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("movable"))
+        set_movable(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("resizable"))
+        set_resizable(attr.value());
+    if (const auto attr = node.try_get_attribute_value<strata>("strata"))
+        set_strata(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("level")) {
+    if (const auto* attr = node.try_get_attribute("level")) {
         if (!is_virtual_) {
-            std::string level = attr->get_value<std::string>();
-            if (level != "PARENT")
-                set_level(attr->get_value<int>());
+            std::string level = utils::to_lower(std::string(attr->get_value()));
+            if (level != "parent") {
+                if (const auto val = attr->try_get_value<int>())
+                    set_level(val.value());
+            }
         } else {
             gui::out << gui::warning << node.get_location() << ": "
                      << "\"level\" is not allowed for virtual regions. Ignored." << std::endl;
         }
     }
 
-    if (const layout_attribute* attr = node.try_get_attribute("enableMouse"))
-        set_mouse_enabled(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("enableMouseMove"))
-        set_mouse_move_enabled(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("enableMouseClick"))
-        set_mouse_click_enabled(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("enableMouseWheel"))
-        set_mouse_wheel_enabled(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("enableKeyboard"))
-        set_keyboard_enabled(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("clampedToScreen"))
-        set_clamped_to_screen(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("autoFocus"))
-        enable_auto_focus(attr->get_value<bool>());
-    if (const layout_attribute* attr = node.try_get_attribute("updateRate"))
-        set_update_rate(attr->get_value<float>());
+    if (const auto attr = node.try_get_attribute_value<bool>("enableMouse"))
+        set_mouse_enabled(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("enableMouseMove"))
+        set_mouse_move_enabled(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("enableMouseClick"))
+        set_mouse_click_enabled(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("enableMouseWheel"))
+        set_mouse_wheel_enabled(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("enableKeyboard"))
+        set_keyboard_enabled(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("clampedToScreen"))
+        set_clamped_to_screen(attr.value());
+    if (const auto attr = node.try_get_attribute_value<bool>("autoFocus"))
+        enable_auto_focus(attr.value());
+    if (const auto attr = node.try_get_attribute_value<float>("updateRate"))
+        set_update_rate(attr.value());
 }
 
 void frame::parse_resize_bounds_node_(const layout_node& node) {
     if (const layout_node* resize_bounds_node = node.try_get_child("ResizeBounds")) {
         if (const layout_node* min_node = resize_bounds_node->try_get_child("Min")) {
-            auto dimensions = parse_dimension_(*min_node);
+            auto dimensions = parse_dimension_node_(*min_node);
             bool has_x      = dimensions.second.x.has_value();
             bool has_y      = dimensions.second.y.has_value();
             if (dimensions.first == anchor_type::abs) {
@@ -98,7 +101,7 @@ void frame::parse_resize_bounds_node_(const layout_node& node) {
         }
 
         if (const layout_node* max_node = resize_bounds_node->try_get_child("Max")) {
-            auto dimensions = parse_dimension_(*max_node);
+            auto dimensions = parse_dimension_node_(*max_node);
             bool has_x      = dimensions.second.x.has_value();
             bool has_y      = dimensions.second.y.has_value();
             if (dimensions.first == anchor_type::abs) {

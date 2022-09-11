@@ -11,10 +11,8 @@ namespace lxgui::gui {
 void button::parse_attributes_(const layout_node& node) {
     frame::parse_attributes_(node);
 
-    if (const layout_attribute* attr = node.try_get_attribute("text")) {
-        set_text(utils::utf8_to_unicode(
-            get_manager().get_localizer().localize(attr->get_value<std::string>())));
-    }
+    if (const auto attr = node.try_get_attribute_value<std::string>("text"))
+        set_text(utils::utf8_to_unicode(get_manager().get_localizer().localize(attr.value())));
 }
 
 void button::parse_all_nodes_before_children_(const layout_node& node) {
@@ -140,7 +138,7 @@ void button::parse_all_nodes_before_children_(const layout_node& node) {
     }
 
     if (const layout_node* offset_block = node.try_get_child("PushedTextOffset")) {
-        auto dimensions = parse_dimension_(*offset_block);
+        auto dimensions = parse_dimension_node_(*offset_block);
         if (dimensions.first == anchor_type::abs) {
             set_pushed_text_offset(
                 vector2f(dimensions.second.x.value_or(0.0f), dimensions.second.y.value_or(0.0f)));

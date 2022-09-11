@@ -1,6 +1,7 @@
 build
 build_wasm
 build_clang
+build_examples
 bin/lxgui-test*
 bin/cout.txt
 bin/gui.txt

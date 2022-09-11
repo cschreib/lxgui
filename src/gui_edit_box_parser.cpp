@@ -8,32 +8,32 @@ namespace lxgui::gui {
 void edit_box::parse_attributes_(const layout_node& node) {
     base::parse_attributes_(node);
 
-    if (const layout_attribute* attr = node.try_get_attribute("letters"))
-        set_max_letters(attr->get_value<std::size_t>());
+    if (const auto attr = node.try_get_attribute_value<std::size_t>("letters"))
+        set_max_letters(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("blinkTime"))
-        set_blink_time(attr->get_value<float>());
+    if (const auto attr = node.try_get_attribute_value<float>("blinkTime"))
+        set_blink_time(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("numeric"))
-        set_numeric_only(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("numeric"))
+        set_numeric_only(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("positive"))
-        set_positive_only(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("positive"))
+        set_positive_only(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("integer"))
-        set_integer_only(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("integer"))
+        set_integer_only(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("password"))
-        set_password_mode_enabled(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("password"))
+        set_password_mode_enabled(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("multiLine"))
-        set_multi_line(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("multiLine"))
+        set_multi_line(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("historyLines"))
-        set_max_history_lines(attr->get_value<std::size_t>());
+    if (const auto attr = node.try_get_attribute_value<std::size_t>("historyLines"))
+        set_max_history_lines(attr.value());
 
-    if (const layout_attribute* attr = node.try_get_attribute("ignoreArrows"))
-        set_arrows_ignored(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("ignoreArrows"))
+        set_arrows_ignored(attr.value());
 }
 
 void edit_box::parse_all_nodes_before_children_(const layout_node& node) {

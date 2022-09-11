@@ -736,11 +736,15 @@ public:
 
 protected:
     // Layout parsing
-    virtual void parse_attributes_(const layout_node& node);
-    virtual void parse_size_node_(const layout_node& node);
-    virtual void parse_anchor_node_(const layout_node& node);
-    color        parse_color_node_(const layout_node& node);
-    std::pair<anchor_type, vector2<std::optional<float>>> parse_dimension_(const layout_node& node);
+    virtual void                  parse_attributes_(const layout_node& node);
+    virtual void                  parse_size_node_(const layout_node& node);
+    virtual void                  parse_anchor_node_(const layout_node& node);
+    color                         parse_color_node_(const layout_node& node);
+    vector2<std::optional<float>> parse_offset_node_(const layout_node& node);
+    vector2<float>                parse_offset_node_or_(const layout_node& node, float fallback);
+
+    std::pair<anchor_type, vector2<std::optional<float>>>
+    parse_dimension_node_(const layout_node& node);
 
     void read_anchors_(
         float& left, float& right, float& top, float& bottom, float& x_center, float& y_center)

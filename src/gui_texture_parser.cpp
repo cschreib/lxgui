@@ -19,19 +19,10 @@ void texture::parse_layout(const layout_node& node) {
 void texture::parse_attributes_(const layout_node& node) {
     layered_region::parse_attributes_(node);
 
-    if (const layout_attribute* attr = node.try_get_attribute("filter")) {
-        std::string filter_name = attr->get_value<std::string>();
-        if (auto converted = utils::from_string<material::filter>(filter_name);
-            converted.has_value()) {
-            set_filter_mode(converted.value());
-        } else {
-            gui::out << gui::warning << node.get_location() << ": Unknown Texture filter type: \""
-                     << filter_name << "\". Attribute ignored." << std::endl;
-        }
-    }
-
-    if (const layout_attribute* attr = node.try_get_attribute("file"))
-        set_texture(attr->get_value<std::string>());
+    if (const auto attr = node.try_get_attribute_value<material::filter>("filter"))
+        set_filter_mode(attr.value());
+    if (const auto attr = node.try_get_attribute_value<std::string>("file"))
+        set_texture(attr.value());
 }
 
 void texture::parse_tex_coords_node_(const layout_node& node) {

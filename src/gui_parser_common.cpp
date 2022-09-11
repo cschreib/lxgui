@@ -35,8 +35,8 @@ region_core_attributes parse_core_attributes(
     } else {
         attr.is_virtual = node.get_attribute_value_or<bool>("virtual", false);
 
-        if (const layout_attribute* parent_attr = node.try_get_attribute("parent")) {
-            std::string parent_name = parent_attr->get_value<std::string>();
+        if (const auto parent_attr = node.try_get_attribute_value<std::string>("parent")) {
+            std::string parent_name = parent_attr.value();
             auto        parent_obj  = reg.get_region_by_name(parent_name);
             if (!parent_name.empty() && !parent_obj) {
                 gui::out << gui::warning << node.get_location() << ": "
@@ -53,8 +53,8 @@ region_core_attributes parse_core_attributes(
         }
     }
 
-    if (const layout_attribute* inh_attr = node.try_get_attribute("inherits")) {
-        attr.inheritance = vreg.get_virtual_region_list(inh_attr->get_value<std::string>());
+    if (const auto inh_attr = node.try_get_attribute_value<std::string>("inherits")) {
+        attr.inheritance = vreg.get_virtual_region_list(inh_attr.value());
     }
 
     return attr;
