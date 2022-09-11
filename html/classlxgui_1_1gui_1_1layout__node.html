@@ -150,20 +150,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4bc358aba357ba659dc74ef454f3c8ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a4bc358aba357ba659dc74ef454f3c8ca">has_attribute</a> (std::string_view name) const noexcept</td></tr>
 <tr class="memdesc:a4bc358aba357ba659dc74ef454f3c8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given attribute has been specified.  <a href="classlxgui_1_1gui_1_1layout__node.html#a4bc358aba357ba659dc74ef454f3c8ca">More...</a><br /></td></tr>
 <tr class="separator:a4bc358aba357ba659dc74ef454f3c8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d73dbe89fa7b0244e6a53b69ec83c85"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::string_view &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a2d73dbe89fa7b0244e6a53b69ec83c85">try_get_attribute_value</a> (std::string_view name) const noexcept</td></tr>
+<tr class="memdesc:a2d73dbe89fa7b0244e6a53b69ec83c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, nullopt if not found.  <a href="classlxgui_1_1gui_1_1layout__node.html#a2d73dbe89fa7b0244e6a53b69ec83c85">More...</a><br /></td></tr>
+<tr class="separator:a2d73dbe89fa7b0244e6a53b69ec83c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae796e82015b53557251af5e4d779b757"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae796e82015b53557251af5e4d779b757"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ae796e82015b53557251af5e4d779b757">try_get_attribute_value</a> (std::string_view name) const noexcept</td></tr>
+<tr class="memdesc:ae796e82015b53557251af5e4d779b757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, nullopt if not found or parsing failed.  <a href="classlxgui_1_1gui_1_1layout__node.html#ae796e82015b53557251af5e4d779b757">More...</a><br /></td></tr>
+<tr class="separator:ae796e82015b53557251af5e4d779b757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339">get_attribute_value_or</a> (std::string_view name, T fallback) const noexcept</td></tr>
+<tr class="memdesc:ade881d5f5d57950a146dcaf3ea3d7339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, or a default if not found or parsing failed.  <a href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339">More...</a><br /></td></tr>
+<tr class="separator:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f16ac24f8c5f74aef52fa990215af21"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a7f16ac24f8c5f74aef52fa990215af21">get_attribute_value</a> (std::string_view name) const</td></tr>
 <tr class="memdesc:a7f16ac24f8c5f74aef52fa990215af21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, throws if none.  <a href="classlxgui_1_1gui_1_1layout__node.html#a7f16ac24f8c5f74aef52fa990215af21">More...</a><br /></td></tr>
 <tr class="separator:a7f16ac24f8c5f74aef52fa990215af21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a960e5b6f3a68f4692eb5db74e68e5349"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a960e5b6f3a68f4692eb5db74e68e5349"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a960e5b6f3a68f4692eb5db74e68e5349">get_attribute_value</a> (std::string_view name) const</td></tr>
-<tr class="memdesc:a960e5b6f3a68f4692eb5db74e68e5349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, throws if none.  <a href="classlxgui_1_1gui_1_1layout__node.html#a960e5b6f3a68f4692eb5db74e68e5349">More...</a><br /></td></tr>
+<tr class="memdesc:a960e5b6f3a68f4692eb5db74e68e5349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, throws if not found or parsing failed.  <a href="classlxgui_1_1gui_1_1layout__node.html#a960e5b6f3a68f4692eb5db74e68e5349">More...</a><br /></td></tr>
 <tr class="separator:a960e5b6f3a68f4692eb5db74e68e5349"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a532517b8c73733a2f070204445649284"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284">get_attribute_value_or</a> (std::string_view name, std::string_view fallback) const noexcept</td></tr>
-<tr class="memdesc:a532517b8c73733a2f070204445649284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, or a default value if none.  <a href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284">More...</a><br /></td></tr>
-<tr class="separator:a532517b8c73733a2f070204445649284"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339">get_attribute_value_or</a> (std::string_view name, T fallback) const noexcept</td></tr>
-<tr class="memdesc:ade881d5f5d57950a146dcaf3ea3d7339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the attribute with the provided name, or a default value if none.  <a href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339">More...</a><br /></td></tr>
-<tr class="separator:ade881d5f5d57950a146dcaf3ea3d7339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e57c3295be077950d3b7e26b1284521"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a25c1b143e6e90e4d070492b5ce0fb46d">attribute_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a7e57c3295be077950d3b7e26b1284521">get_attributes</a> () const noexcept</td></tr>
 <tr class="memdesc:a7e57c3295be077950d3b7e26b1284521"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a view to the list of attributes.  <a href="classlxgui_1_1gui_1_1layout__node.html#a7e57c3295be077950d3b7e26b1284521">More...</a><br /></td></tr>
 <tr class="separator:a7e57c3295be077950d3b7e26b1284521"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +187,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7ac62849dfe937db9e4734ce693dbff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this node's value location in the file as {file}:{line}.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a7ac62849dfe937db9e4734ce693dbff2">More...</a><br /></td></tr>
 <tr class="separator:a7ac62849dfe937db9e4734ce693dbff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f5c8bf85a5f1e99802ecc7ce0aa28c5"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a7f5c8bf85a5f1e99802ecc7ce0aa28c5">get_filename</a> () const noexcept</td></tr>
-<tr class="memdesc:a7f5c8bf85a5f1e99802ecc7ce0aa28c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the file from in which this node is located.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a7f5c8bf85a5f1e99802ecc7ce0aa28c5">More...</a><br /></td></tr>
+<tr class="memdesc:a7f5c8bf85a5f1e99802ecc7ce0aa28c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the file in which this node is located.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a7f5c8bf85a5f1e99802ecc7ce0aa28c5">More...</a><br /></td></tr>
 <tr class="separator:a7f5c8bf85a5f1e99802ecc7ce0aa28c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae107fd6f40243ef1db78633034779763"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#ae107fd6f40243ef1db78633034779763">get_line_number</a> () const noexcept</td></tr>
 <tr class="memdesc:ae107fd6f40243ef1db78633034779763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the line number on which this node is located.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#ae107fd6f40243ef1db78633034779763">More...</a><br /></td></tr>
@@ -201,9 +205,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35f3ae84719feaab7f2e61111496a502"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a35f3ae84719feaab7f2e61111496a502">get_value</a> () const</td></tr>
 <tr class="memdesc:a35f3ae84719feaab7f2e61111496a502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this node's value converted to a specific type.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a35f3ae84719feaab7f2e61111496a502">More...</a><br /></td></tr>
 <tr class="separator:a35f3ae84719feaab7f2e61111496a502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfc3b6f6980e52d79a851f604f719a27"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:acfc3b6f6980e52d79a851f604f719a27"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#acfc3b6f6980e52d79a851f604f719a27">get_value</a> () const</td></tr>
-<tr class="separator:acfc3b6f6980e52d79a851f604f719a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcec73ce78d3c1e9c63119de3430ea55"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:afcec73ce78d3c1e9c63119de3430ea55"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#afcec73ce78d3c1e9c63119de3430ea55">try_get_value</a> () const noexcept</td></tr>
+<tr class="memdesc:afcec73ce78d3c1e9c63119de3430ea55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this node's value converted to a specific type, or nullopt if conversion failed.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#afcec73ce78d3c1e9c63119de3430ea55">More...</a><br /></td></tr>
+<tr class="separator:afcec73ce78d3c1e9c63119de3430ea55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99abe4b3b5a01ec1cf766830ed2e470b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a99abe4b3b5a01ec1cf766830ed2e470b"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a99abe4b3b5a01ec1cf766830ed2e470b">get_value_or</a> (T fallback) const noexcept</td></tr>
 <tr class="memdesc:a99abe4b3b5a01ec1cf766830ed2e470b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this node's value converted to a specific type, or a default value.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a99abe4b3b5a01ec1cf766830ed2e470b">More...</a><br /></td></tr>
@@ -220,18 +225,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a658a2540376eb6599d9309d539f2528a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a658a2540376eb6599d9309d539f2528a">set_value</a> (std::string value) noexcept</td></tr>
 <tr class="memdesc:a658a2540376eb6599d9309d539f2528a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set this node's value.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a658a2540376eb6599d9309d539f2528a">More...</a><br /></td></tr>
 <tr class="separator:a658a2540376eb6599d9309d539f2528a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff7f28bcd43b882d3272caf576035aec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#aff7f28bcd43b882d3272caf576035aec">mark_as_not_accessed</a> () const</td></tr>
-<tr class="memdesc:aff7f28bcd43b882d3272caf576035aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag this node as "not accessed" for later warnings.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#aff7f28bcd43b882d3272caf576035aec">More...</a><br /></td></tr>
-<tr class="separator:aff7f28bcd43b882d3272caf576035aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125652c64af3066104cf01766a6ebe79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a125652c64af3066104cf01766a6ebe79">bypass_access_check</a> () const</td></tr>
-<tr class="memdesc:a125652c64af3066104cf01766a6ebe79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag this node as "fully accessed" for later warnings; no check will be done.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a125652c64af3066104cf01766a6ebe79">More...</a><br /></td></tr>
-<tr class="separator:a125652c64af3066104cf01766a6ebe79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c1321a459bd016d0b695b74bd5d0efd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a2c1321a459bd016d0b695b74bd5d0efd">was_accessed</a> () const</td></tr>
-<tr class="memdesc:a2c1321a459bd016d0b695b74bd5d0efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node was accessed by the parser.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a2c1321a459bd016d0b695b74bd5d0efd">More...</a><br /></td></tr>
-<tr class="separator:a2c1321a459bd016d0b695b74bd5d0efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5287130378bc06b3fae24bc7f9431bb8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a5287130378bc06b3fae24bc7f9431bb8">is_access_check_bypassed</a> () const</td></tr>
-<tr class="memdesc:a5287130378bc06b3fae24bc7f9431bb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node should be bypassed for access checks.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a5287130378bc06b3fae24bc7f9431bb8">More...</a><br /></td></tr>
-<tr class="separator:a5287130378bc06b3fae24bc7f9431bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a25315e32a68dc017f00dab6c57c9e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a3a25315e32a68dc017f00dab6c57c9e4">mark_as_not_accessed</a> () const noexcept</td></tr>
+<tr class="memdesc:a3a25315e32a68dc017f00dab6c57c9e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag this node as "not accessed" for later warnings.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a3a25315e32a68dc017f00dab6c57c9e4">More...</a><br /></td></tr>
+<tr class="separator:a3a25315e32a68dc017f00dab6c57c9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b20960fea34e4ac7f08958351c6002"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#aa4b20960fea34e4ac7f08958351c6002">bypass_access_check</a> () const noexcept</td></tr>
+<tr class="memdesc:aa4b20960fea34e4ac7f08958351c6002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag this node as "fully accessed" for later warnings; no check will be done.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#aa4b20960fea34e4ac7f08958351c6002">More...</a><br /></td></tr>
+<tr class="separator:aa4b20960fea34e4ac7f08958351c6002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8335a72251a3d7624aad739c59e904"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a6a8335a72251a3d7624aad739c59e904">was_accessed</a> () const noexcept</td></tr>
+<tr class="memdesc:a6a8335a72251a3d7624aad739c59e904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node was accessed by the parser.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a6a8335a72251a3d7624aad739c59e904">More...</a><br /></td></tr>
+<tr class="separator:a6a8335a72251a3d7624aad739c59e904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c270f332488a1f3eebf33760ebc5a0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a50c270f332488a1f3eebf33760ebc5a0">is_access_check_bypassed</a> () const noexcept</td></tr>
+<tr class="memdesc:a50c270f332488a1f3eebf33760ebc5a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this node should be bypassed for access checks.  <a href="classlxgui_1_1gui_1_1layout__attribute.html#a50c270f332488a1f3eebf33760ebc5a0">More...</a><br /></td></tr>
+<tr class="separator:a50c270f332488a1f3eebf33760ebc5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -252,7 +257,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>An node in a layout file. </p>
 <p>This is a format-agnostic representation of a GUI layout, as read for example from an XML or YAML file. The GUI uses this class to de-couple the layout parsing format (XML, YAML, etc) from the actual parsed layout. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00212">212</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00229">229</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a245657c6ad88e28e0ed1890b31a001a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a245657c6ad88e28e0ed1890b31a001a1">&#9670;&nbsp;</a></span>attribute_list</h2>
@@ -266,7 +271,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00413">413</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00436">436</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -282,7 +287,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00415">415</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -298,7 +303,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00220">220</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00237">237</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -314,7 +319,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00222">222</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00239">239</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +335,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00261">261</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00278">278</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -439,7 +444,7 @@ Protected Attributes</h2></td></tr>
 <p>Add a new attribute to this node. </p>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the added attribute </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00461">461</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -469,12 +474,12 @@ Protected Attributes</h2></td></tr>
 <p>Add a new child to this node. </p>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the added child </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00430">430</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00453">453</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a125652c64af3066104cf01766a6ebe79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125652c64af3066104cf01766a6ebe79">&#9670;&nbsp;</a></span>bypass_access_check()</h2>
+<a id="aa4b20960fea34e4ac7f08958351c6002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4b20960fea34e4ac7f08958351c6002">&#9670;&nbsp;</a></span>bypass_access_check()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,14 +496,14 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Flag this node as "fully accessed" for later warnings; no check will be done. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00176">176</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00193">193</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -536,7 +541,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The value of the first child with the provided name. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will throw if no attribute is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a681f5495d898144550a0b4033e3150a1" title="Returns the attribute with the provided name, or null if none.">try_get_attribute()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00338">338</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00351">351</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -572,9 +577,9 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Will throw if no attribute is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284" title="Returns the value of the attribute with the provided name, or a default value if none.">get_attribute_value_or()</a> to avoid throwing. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Will throw if no attribute is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339" title="Returns the value of the attribute with the provided name, or a default if not found or parsing faile...">get_attribute_value_or()</a> or <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a2d73dbe89fa7b0244e6a53b69ec83c85" title="Returns the value of the attribute with the provided name, nullopt if not found.">try_get_attribute_value()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00365">365</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00419">419</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -604,7 +609,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the value of the attribute with the provided name, throws if none. </p>
+<p>Returns the value of the attribute with the provided name, throws if not found or parsing failed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name to look for </td></tr>
@@ -612,62 +617,14 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Will throw if no attribute is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284" title="Returns the value of the attribute with the provided name, or a default value if none.">get_attribute_value_or()</a> to avoid throwing. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Will throw if no attribute is found with this name or if parsing failed. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339" title="Returns the value of the attribute with the provided name, or a default if not found or parsing faile...">get_attribute_value_or()</a> or <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a2d73dbe89fa7b0244e6a53b69ec83c85" title="Returns the value of the attribute with the provided name, nullopt if not found.">try_get_attribute_value()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00378">378</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a532517b8c73733a2f070204445649284"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a532517b8c73733a2f070204445649284">&#9670;&nbsp;</a></span>get_attribute_value_or() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string_view lxgui::gui::layout_node::get_attribute_value_or </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>fallback</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the value of the attribute with the provided name, or a default value if none. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The name to look for </td></tr>
-    <tr><td class="paramname">fallback</td><td>The fallback value </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name, or a default value if none </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00390">390</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00432">432</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
 <a id="ade881d5f5d57950a146dcaf3ea3d7339"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade881d5f5d57950a146dcaf3ea3d7339">&#9670;&nbsp;</a></span>get_attribute_value_or() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ade881d5f5d57950a146dcaf3ea3d7339">&#9670;&nbsp;</a></span>get_attribute_value_or()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -702,7 +659,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the value of the attribute with the provided name, or a default value if none. </p>
+<p>Returns the value of the attribute with the provided name, or a default if not found or parsing failed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name to look for </td></tr>
@@ -710,7 +667,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name, or a default value if none </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name, or a default if not found or parsing failed. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00405">405</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
@@ -742,7 +699,7 @@ template&lt;typename T &gt; </div>
 <p>Returns a view to the list of attributes. </p>
 <dl class="section return"><dt>Returns</dt><dd>A view to the list of attributes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00421">421</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00444">444</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -779,7 +736,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The child at the specified index </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00237">237</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00254">254</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -817,7 +774,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The first child with a given name, and throws if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will throw if no child is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a712a2dfcc4bd45d204d7421a56f8870e" title="Returns the first child with a given name, or null if none.">try_get_child()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00294">294</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00311">311</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -847,7 +804,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the number of children of this node. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of children of this node </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00228">228</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00245">245</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -877,7 +834,7 @@ template&lt;typename T &gt; </div>
 <p>Returns a view to the list of children. </p>
 <dl class="section return"><dt>Returns</dt><dd>A view to the list of children </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00246">246</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00263">263</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -914,7 +871,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A view to the list of children with a given name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00268">268</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00285">285</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -941,10 +898,10 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the file from in which this node is located. </p>
-<dl class="section return"><dt>Returns</dt><dd>The file from in which this node is located </dd></dl>
+<p>Returns the file in which this node is located. </p>
+<dl class="section return"><dt>Returns</dt><dd>The file in which this node is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00051">51</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00052">52</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -974,7 +931,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the line number on which this node is located. </p>
 <dl class="section return"><dt>Returns</dt><dd>The line number on which this node is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00060">60</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00061">61</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1004,7 +961,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this node's location in the file as {file}:{line}. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's location in the file as {file}:{line} </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00035">35</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00036">36</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +991,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this node's name. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00086">86</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00087">87</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1081,14 +1038,14 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This will modify the layout node object if the value is missing. If you need a non-modifying alternative, use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284" title="Returns the value of the attribute with the provided name, or a default value if none.">get_attribute_value_or()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This will modify the layout node object if the value is missing. If you need a non-modifying alternative, use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#ade881d5f5d57950a146dcaf3ea3d7339" title="Returns the value of the attribute with the provided name, or a default if not found or parsing faile...">get_attribute_value_or()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00450">450</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00473">473</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a35f3ae84719feaab7f2e61111496a502"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35f3ae84719feaab7f2e61111496a502">&#9670;&nbsp;</a></span>get_value() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f3ae84719feaab7f2e61111496a502">&#9670;&nbsp;</a></span>get_value() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1116,41 +1073,12 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value converted to a specific type </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will throw if the value could not be converted. Use <a class="el" href="classlxgui_1_1gui_1_1layout__attribute.html#a99abe4b3b5a01ec1cf766830ed2e470b" title="Returns this node&#39;s value converted to a specific type, or a default value.">get_value_or()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00107">107</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
-
-</div>
-</div>
-<a id="acfc3b6f6980e52d79a851f604f719a27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfc3b6f6980e52d79a851f604f719a27">&#9670;&nbsp;</a></span>get_value() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool lxgui::gui::layout_attribute::get_value </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00473">473</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00124">124</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
 <a id="a354cb25d43774faefb87155881d144ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a354cb25d43774faefb87155881d144ca">&#9670;&nbsp;</a></span>get_value() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a354cb25d43774faefb87155881d144ca">&#9670;&nbsp;</a></span>get_value() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1176,7 +1104,7 @@ template&lt;&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value as string </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns an empty string if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00095">95</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00096">96</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1206,7 +1134,7 @@ template&lt;&gt; </div>
 <p>Returns the line number on which this node's value is located. </p>
 <dl class="section return"><dt>Returns</dt><dd>The line number on which this node's value is located </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00073">73</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00074">74</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1236,7 +1164,7 @@ template&lt;&gt; </div>
 <p>Returns this node's value location in the file as {file}:{line}. </p>
 <dl class="section return"><dt>Returns</dt><dd>This node's value location in the file as {file}:{line} </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00043">43</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00044">44</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1270,7 +1198,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This node's value converted to a specific type, or a default value </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Will return the default value if the value could not be converted. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00125">125</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00142">142</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1307,7 +1235,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if attribute is specified, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00353">353</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00365">365</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1344,12 +1272,12 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if at least one child exists, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00309">309</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00325">325</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a5287130378bc06b3fae24bc7f9431bb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5287130378bc06b3fae24bc7f9431bb8">&#9670;&nbsp;</a></span>is_access_check_bypassed()</h2>
+<a id="a50c270f332488a1f3eebf33760ebc5a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50c270f332488a1f3eebf33760ebc5a0">&#9670;&nbsp;</a></span>is_access_check_bypassed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1366,7 +1294,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1374,12 +1302,12 @@ template&lt;typename T &gt; </div>
 <p>Check if this node should be bypassed for access checks. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this node should be bypassed, 'false' otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00192">192</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00209">209</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aff7f28bcd43b882d3272caf576035aec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff7f28bcd43b882d3272caf576035aec">&#9670;&nbsp;</a></span>mark_as_not_accessed()</h2>
+<a id="a3a25315e32a68dc017f00dab6c57c9e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a25315e32a68dc017f00dab6c57c9e4">&#9670;&nbsp;</a></span>mark_as_not_accessed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1396,14 +1324,14 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Flag this node as "not accessed" for later warnings. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00171">171</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00188">188</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1419,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00142">142</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00159">159</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1527,7 +1455,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00158">158</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00175">175</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1491,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00166">166</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00183">183</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1527,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00150">150</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00167">167</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1635,9 +1563,84 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The attribute with the provided name, or null if none </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Will throw if no child is found with this name. Use <a class="el" href="classlxgui_1_1gui_1_1layout__node.html#a532517b8c73733a2f070204445649284" title="Returns the value of the attribute with the provided name, or a default value if none.">get_attribute_value_or()</a> to avoid throwing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00321">321</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00334">334</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2d73dbe89fa7b0244e6a53b69ec83c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d73dbe89fa7b0244e6a53b69ec83c85">&#9670;&nbsp;</a></span>try_get_attribute_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;std::string_view&gt; lxgui::gui::layout_node::try_get_attribute_value </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the value of the attribute with the provided name, nullopt if not found. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name to look for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name, or nullopt if not found. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00374">374</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae796e82015b53557251af5e4d779b757"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae796e82015b53557251af5e4d779b757">&#9670;&nbsp;</a></span>try_get_attribute_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;T&gt; lxgui::gui::layout_node::try_get_attribute_value </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the value of the attribute with the provided name, nullopt if not found or parsing failed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name to look for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the attribute with the provided name, nullopt if not found or parsing failed. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00389">389</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1674,12 +1677,44 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The first child with a given name, or null if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00278">278</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00295">295</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a2c1321a459bd016d0b695b74bd5d0efd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c1321a459bd016d0b695b74bd5d0efd">&#9670;&nbsp;</a></span>was_accessed()</h2>
+<a id="afcec73ce78d3c1e9c63119de3430ea55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcec73ce78d3c1e9c63119de3430ea55">&#9670;&nbsp;</a></span>try_get_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;T&gt; lxgui::gui::layout_attribute::try_get_value </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns this node's value converted to a specific type, or nullopt if conversion failed. </p>
+<dl class="section return"><dt>Returns</dt><dd>This node's value converted to a specific type, or nullopt if conversion failed </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00106">106</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a6a8335a72251a3d7624aad739c59e904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8335a72251a3d7624aad739c59e904">&#9670;&nbsp;</a></span>was_accessed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1696,7 +1731,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1704,7 +1739,7 @@ template&lt;typename T &gt; </div>
 <p>Check if this node was accessed by the parser. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this node was accessed by the parser, 'false' otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00184">184</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00201">201</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1729,7 +1764,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00203">203</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00220">220</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1753,7 +1788,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00202">202</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00219">219</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1777,7 +1812,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00199">199</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00216">216</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1801,7 +1836,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00197">197</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00214">214</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1825,7 +1860,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00198">198</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00215">215</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1849,7 +1884,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00200">200</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__layout__node_8hpp_source.html#l00217">217</a> of file <a class="el" href="gui__layout__node_8hpp_source.html">gui_layout_node.hpp</a>.</p>
 
 </div>
 </div>
@@ -1859,7 +1894,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 28 2022 13:29:52 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 11 2022 11:11:01 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

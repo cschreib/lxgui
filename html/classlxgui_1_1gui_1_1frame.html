@@ -860,8 +860,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ae33ce6cb2c5fefa3586932f012a0fcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e094fedef431dc902c2a5c84075cf6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a1e094fedef431dc902c2a5c84075cf6c">parse_color_node_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
 <tr class="separator:a1e094fedef431dc902c2a5c84075cf6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13c0bafbfd9999ad266164d154e6454d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbe">anchor_type</a>, <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a13c0bafbfd9999ad266164d154e6454d">parse_dimension_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
-<tr class="separator:a13c0bafbfd9999ad266164d154e6454d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9119d084adadae91c584c9ad3afd7b55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a9119d084adadae91c584c9ad3afd7b55">parse_offset_node_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
+<tr class="separator:a9119d084adadae91c584c9ad3afd7b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdc3685decde39275554854ed27b4ae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#acdc3685decde39275554854ed27b4ae8">parse_offset_node_or_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node, float fallback)</td></tr>
+<tr class="separator:acdc3685decde39275554854ed27b4ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40237a4bede4516e64a40016307cdc4e"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbe">anchor_type</a>, <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a40237a4bede4516e64a40016307cdc4e">parse_dimension_node_</a> (const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;node)</td></tr>
+<tr class="separator:a40237a4bede4516e64a40016307cdc4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a599ff3502fc5894cb1504fd845273c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a599ff3502fc5894cb1504fd845273c58">read_anchors_</a> (float &amp;left, float &amp;right, float &amp;top, float &amp;bottom, float &amp;x_center, float &amp;y_center) const</td></tr>
 <tr class="separator:a599ff3502fc5894cb1504fd845273c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb985f1935dfb72b3399e868158ed92d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#acb985f1935dfb72b3399e868158ed92d">make_borders_</a> (float &amp;min, float &amp;max, float center, float size) const</td></tr>
@@ -6493,7 +6497,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1button.html#afe468095a0f8499492820bfb4c9aae89">lxgui::gui::button</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#aedf796d4c5094ac540ab468f0c8f21f1">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#a6080e1bb21065199b81659b34c40223c">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#aa6f7f9c165673c0cdaf3d945cd2b477c">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#afe6addbf7742d0539237a0b3aa939f58">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1check__button.html#ac826afee97301cf537a8024f04fe28c9">lxgui::gui::check_button</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00013">13</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00014">14</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6521,7 +6525,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00090">90</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00089">89</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6553,7 +6557,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a11dcd784265a3a92232a20e0574ecc29">lxgui::gui::slider</a>, and <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ac5393df385018f025f3674e0f88c4be1">lxgui::gui::status_bar</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00032">32</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00033">33</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6581,7 +6585,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00130">130</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6619,7 +6623,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00357">357</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00360">360</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6651,8 +6655,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a13c0bafbfd9999ad266164d154e6454d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13c0bafbfd9999ad266164d154e6454d">&#9670;&nbsp;</a></span>parse_dimension_()</h2>
+<a id="a40237a4bede4516e64a40016307cdc4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40237a4bede4516e64a40016307cdc4e">&#9670;&nbsp;</a></span>parse_dimension_node_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6661,7 +6665,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbe">anchor_type</a>, <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt; &gt; lxgui::gui::region::parse_dimension_ </td>
+          <td class="memname">std::pair&lt; <a class="el" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbe">anchor_type</a>, <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt; &gt; lxgui::gui::region::parse_dimension_node_ </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em></td><td>)</td>
@@ -6675,7 +6679,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00025">25</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00035">35</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6741,7 +6745,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00386">386</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00389">389</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6769,7 +6773,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00268">268</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00271">271</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6797,7 +6801,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00339">339</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00342">342</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6836,7 +6840,73 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a1ea3cc86426a7364d20216b57d6bcea8">lxgui::gui::region</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00026">26</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00027">27</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a9119d084adadae91c584c9ad3afd7b55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9119d084adadae91c584c9ad3afd7b55">&#9670;&nbsp;</a></span>parse_offset_node_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; std::optional&lt; float &gt; &gt; lxgui::gui::region::parse_offset_node_ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00024">24</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acdc3685decde39275554854ed27b4ae8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdc3685decde39275554854ed27b4ae8">&#9670;&nbsp;</a></span>parse_offset_node_or_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; float &gt; lxgui::gui::region::parse_offset_node_or_ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1layout__node.html">layout_node</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fallback</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00028">28</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6880,7 +6950,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00303">303</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00306">306</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6908,7 +6978,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00079">79</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00082">82</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6936,7 +7006,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00394">394</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00397">397</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6964,7 +7034,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00066">66</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region__parser_8cpp_source.html#l00065">65</a> of file <a class="el" href="gui__region__parser_8cpp_source.html">gui_region_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -6992,7 +7062,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00121">121</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame__parser_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__frame__parser_8cpp_source.html">gui_frame_parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -9629,7 +9699,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00802">802</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9653,7 +9723,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00814">814</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00818">818</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9677,7 +9747,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00814">814</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9701,7 +9771,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00820">820</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00824">824</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9749,7 +9819,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00812">812</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00816">816</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9821,7 +9891,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00811">811</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00815">815</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -9845,7 +9915,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00818">818</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00822">822</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10061,7 +10131,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00807">807</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00811">811</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10085,7 +10155,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00805">805</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00809">809</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10253,7 +10323,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00815">815</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00819">819</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10325,7 +10395,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00808">808</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00812">812</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10349,7 +10419,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00806">806</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10373,7 +10443,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00816">816</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00820">820</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10445,7 +10515,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00796">796</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10565,7 +10635,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00804">804</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10613,7 +10683,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00807">807</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10637,7 +10707,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00801">801</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__region_8hpp_source.html#l00805">805</a> of file <a class="el" href="gui__region_8hpp_source.html">gui_region.hpp</a>.</p>
 
 </div>
 </div>
@@ -10890,7 +10960,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a90cfb6df37829a326d709c3aa2dc311d"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a90cfb6df37829a326d709c3aa2dc311d">lxgui::gui::frame::add_script</a></div><div class="ttdeci">utils::connection add_script(const std::string &amp;script_name, std::string content, script_info info=script_info{})</div><div class="ttdoc">Adds an additional handler script to this frame (executed after existing scripts).</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l01124">gui_frame.hpp:1124</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 28 2022 13:29:52 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 11 2022 11:11:01 for lxgui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
