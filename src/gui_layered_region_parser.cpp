@@ -14,8 +14,8 @@ void layered_region::parse_layout(const layout_node& node) {
 }
 
 void layered_region::parse_attributes_(const layout_node& node) {
-    if (const layout_attribute* attr = node.try_get_attribute("hidden"))
-        set_shown(attr->get_value<bool>());
+    if (const auto attr = node.try_get_attribute_value<bool>("hidden"))
+        set_shown(!attr.value());
 
     if (node.get_attribute_value_or<bool>("setAllAnchors", false))
         set_all_anchors("$parent");

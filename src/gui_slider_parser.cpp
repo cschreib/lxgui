@@ -9,35 +9,18 @@ namespace lxgui::gui {
 void slider::parse_attributes_(const layout_node& node) {
     frame::parse_attributes_(node);
 
-    if (const layout_attribute* attr = node.try_get_attribute("valueStep"))
-        set_value_step(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("minValue"))
-        set_min_value(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("maxValue"))
-        set_max_value(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("defaultValue"))
-        set_value(attr->get_value<float>());
-    if (const layout_attribute* attr = node.try_get_attribute("drawLayer")) {
-        std::string layer_name = attr->get_value<std::string>();
-        if (auto converted = utils::from_string<layer>(layer_name); converted.has_value()) {
-            set_thumb_draw_layer(converted.value());
-        } else {
-            gui::out << gui::warning << node.get_location() << ": Unknown Slider draw layer: \""
-                     << layer_name << "\". Attribute ignored." << std::endl;
-        }
-    }
-
-    if (const layout_attribute* attr = node.try_get_attribute("orientation")) {
-        std::string orient = attr->get_value<std::string>();
-        if (auto converted = utils::from_string<orientation>(orient); converted.has_value()) {
-            set_orientation(converted.value());
-        } else {
-            gui::out << gui::warning << node.get_location() << ": Unknown Slider orientation: \""
-                     << orient
-                     << "\". Expecting either \"HORIZONTAL\" or \"VERTICAL\". Attribute ignored."
-                     << std::endl;
-        }
-    }
+    if (const auto attr = node.try_get_attribute_value<float>("valueStep"))
+        set_value_step(attr.value());
+    if (const auto attr = node.try_get_attribute_value<float>("minValue"))
+        set_min_value(attr.value());
+    if (const auto attr = node.try_get_attribute_value<float>("maxValue"))
+        set_max_value(attr.value());
+    if (const auto attr = node.try_get_attribute_value<float>("defaultValue"))
+        set_value(attr.value());
+    if (const auto attr = node.try_get_attribute_value<layer>("drawLayer"))
+        set_thumb_draw_layer(attr.value());
+    if (const auto attr = node.try_get_attribute_value<orientation>("orientation"))
+        set_orientation(attr.value());
 }
 
 void slider::parse_all_nodes_before_children_(const layout_node& node) {
