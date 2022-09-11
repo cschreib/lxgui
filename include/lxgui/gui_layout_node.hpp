@@ -8,6 +8,7 @@
 #include "lxgui/utils_string.hpp"
 #include "lxgui/utils_view.hpp"
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -45,8 +46,8 @@ public:
     }
 
     /**
-     * \brief Returns the file from in which this node is located.
-     * \return The file from in which this node is located
+     * \brief Returns the file in which this node is located.
+     * \return The file in which this node is located
      */
     std::string_view get_filename() const noexcept {
         auto pos = location_.find(':');
@@ -95,6 +96,22 @@ public:
     std::string_view get_value() const noexcept {
         accessed_ = true;
         return value_;
+    }
+
+    /**
+     * \brief Returns this node's value converted to a specific type, or nullopt if conversion failed.
+     * \return This node's value converted to a specific type, or nullopt if conversion failed
+     */
+    template<typename T>
+    std::optional<T> try_get_value() const noexcept {
+        accessed_  = true;
+        auto value = utils::from_string<T>(value_);
+        if (!value.has_value()) {
+            gui::out << gui::warning << std::string(get_location())
+                     << ": could not parse value for '" << std::string(name_) << "': '"
+                     << std::string(value_) << "'; ignoring" << std::endl;
+        }
+        return value;
     }
 
     /**
@@ -168,12 +185,12 @@ public:
     }
 
     /// Flag this node as "not accessed" for later warnings.
-    void mark_as_not_accessed() const {
+    void mark_as_not_accessed() const noexcept {
         accessed_ = false;
     }
 
     /// Flag this node as "fully accessed" for later warnings; no check will be done.
-    void bypass_access_check() const {
+    void bypass_access_check() const noexcept {
         access_bypass_ = true;
     }
 
@@ -181,7 +198,7 @@ public:
      * \brief Check if this node was accessed by the parser.
      * \return 'true' if this node was accessed by the parser, 'false' otherwise.
      */
-    bool was_accessed() const {
+    bool was_accessed() const noexcept {
         return accessed_;
     }
 
@@ -189,7 +206,7 @@ public:
      * \brief Check if this node should be bypassed for access checks.
      * \return 'true' if this node should be bypassed, 'false' otherwise.
      */
-    bool is_access_check_bypassed() const {
+    bool is_access_check_bypassed() const noexcept {
         return access_bypass_;
     }
 
@@ -252,7 +269,7 @@ public:
     struct name_filter {
         std::string_view filter;
 
-        bool is_included(const BaseIterator& iter) const {
+        bool is_included(const BaseIterator& iter) const noexcept {
             return iter->get_name() == filter;
         }
     };
@@ -292,13 +309,12 @@ public:
      * to avoid throwing.
      */
     const layout_node& get_child(std::string_view name) const {
-        accessed_ = true;
-        if (const layout_node* child = try_get_child(name))
+        if (const auto* child = try_get_child(name))
             return *child;
-        else
-            throw utils::exception(
-                std::string(get_location()) + ": no child found with name '" + std::string(name) +
-                "' in '" + std::string(name_) + "'");
+
+        throw utils::exception(
+            std::string(get_location()) + ": no child found with name '" + std::string(name) +
+            "' in '" + std::string(name_) + "'");
     }
 
     /**
@@ -307,7 +323,6 @@ public:
      * \return 'true' if at least one child exists, 'false' otherwise
      */
     bool has_child(std::string_view name) const noexcept {
-        accessed_ = true;
         return try_get_child(name) != nullptr;
     }
 
@@ -315,8 +330,6 @@ public:
      * \brief Returns the attribute with the provided name, or null if none.
      * \param name The name to look for
      * \return The attribute with the provided name, or null if none
-     * \note Will throw if no child is found with this name. Use get_attribute_value_or()
-     * to avoid throwing.
      */
     const layout_attribute* try_get_attribute(std::string_view name) const noexcept {
         accessed_ = true;
@@ -336,13 +349,12 @@ public:
      * to avoid throwing.
      */
     const layout_attribute& get_attribute(std::string_view name) const {
-        accessed_ = true;
-        if (const layout_attribute* attr = try_get_attribute(name))
+        if (const auto* attr = try_get_attribute(name))
             return *attr;
-        else
-            throw utils::exception(
-                std::string(get_location()) + ": no attribute found with name '" +
-                std::string(name) + "' in '" + std::string(name_) + "'");
+
+        throw utils::exception(
+            std::string(get_location()) + ": no attribute found with name '" + std::string(name) +
+            "' in '" + std::string(name_) + "'");
     }
 
     /**
@@ -351,63 +363,74 @@ public:
      * \return 'true' if attribute is specified, 'false' otherwise
      */
     bool has_attribute(std::string_view name) const noexcept {
-        accessed_ = true;
         return try_get_attribute(name) != nullptr;
     }
 
     /**
+     * \brief Returns the value of the attribute with the provided name, nullopt if not found.
+     * \param name The name to look for
+     * \return The value of the attribute with the provided name, or nullopt if not found.
+     */
+    std::optional<std::string_view> try_get_attribute_value(std::string_view name) const noexcept {
+        if (const auto* attr = try_get_attribute(name))
+            return attr->get_value();
+
+        return std::nullopt;
+    }
+
+    /**
+     * \brief Returns the value of the attribute with the provided name,
+     * nullopt if not found or parsing failed.
+     * \param name The name to look for
+     * \return The value of the attribute with the provided name,
+     * nullopt if not found or parsing failed.
+     */
+    template<typename T>
+    std::optional<T> try_get_attribute_value(std::string_view name) const noexcept {
+        if (const auto* attr = try_get_attribute(name))
+            return attr->try_get_value<T>();
+
+        return std::nullopt;
+    }
+
+    /**
+     * \brief Returns the value of the attribute with the provided name,
+     * or a default if not found or parsing failed.
+     * \param name The name to look for
+     * \param fallback The fallback value
+     * \return The value of the attribute with the provided name,
+     * or a default if not found or parsing failed.
+     */
+    template<typename T>
+    T get_attribute_value_or(std::string_view name, T fallback) const noexcept {
+        if (const auto* attr = try_get_attribute(name))
+            return attr->get_value_or<T>(fallback);
+
+        return fallback;
+    }
+
+    /**
      * \brief Returns the value of the attribute with the provided name, throws if none.
      * \param name The name to look for
      * \return The value of the attribute with the provided name.
-     * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     * to avoid throwing.
+     * \note Will throw if no attribute is found with this name.
+     * Use get_attribute_value_or() or try_get_attribute_value() to avoid throwing.
      */
     std::string_view get_attribute_value(std::string_view name) const {
-        accessed_ = true;
         return get_attribute(name).get_value();
     }
 
     /**
-     * \brief Returns the value of the attribute with the provided name, throws if none.
+     * \brief Returns the value of the attribute with the provided name,
+     * throws if not found or parsing failed.
      * \param name The name to look for
      * \return The value of the attribute with the provided name.
-     * \note Will throw if no attribute is found with this name. Use get_attribute_value_or()
-     * to avoid throwing.
+     * \note Will throw if no attribute is found with this name or if parsing failed.
+     * Use get_attribute_value_or() or try_get_attribute_value() to avoid throwing.
      */
     template<typename T>
     T get_attribute_value(std::string_view name) const {
-        accessed_ = true;
         return get_attribute(name).get_value<T>();
-    }
-
-    /**
-     * \brief Returns the value of the attribute with the provided name, or a default value if none.
-     * \param name The name to look for
-     * \param fallback The fallback value
-     * \return The value of the attribute with the provided name, or a default value if none
-     */
-    std::string_view
-    get_attribute_value_or(std::string_view name, std::string_view fallback) const noexcept {
-        accessed_ = true;
-        if (const auto* attr = try_get_attribute(name))
-            return attr->get_value();
-        else
-            return fallback;
-    }
-
-    /**
-     * \brief Returns the value of the attribute with the provided name, or a default value if none.
-     * \param name The name to look for
-     * \param fallback The fallback value
-     * \return The value of the attribute with the provided name, or a default value if none
-     */
-    template<typename T>
-    T get_attribute_value_or(std::string_view name, T fallback) const noexcept {
-        accessed_ = true;
-        if (const auto* attr = try_get_attribute(name))
-            return attr->get_value_or<T>(fallback);
-        else
-            return fallback;
     }
 
     using attribute_list = std::vector<layout_attribute>;
@@ -464,23 +487,21 @@ private:
 };
 
 template<>
+inline std::optional<std::string> layout_attribute::try_get_value<std::string>() const noexcept {
+    accessed_ = true;
+    return value_;
+}
+
+template<>
 inline std::string layout_attribute::get_value<std::string>() const {
     accessed_ = true;
     return value_;
 }
 
 template<>
-inline bool layout_attribute::get_value<bool>() const {
+inline std::string layout_attribute::get_value_or<std::string>(std::string) const noexcept {
     accessed_ = true;
-    if (value_ == "true")
-        return true;
-    else if (value_ == "false")
-        return false;
-    else {
-        throw utils::exception(
-            std::string(get_location()) + ": could not parse value for '" + std::string(name_) +
-            "': '" + std::string(value_) + "'");
-    }
+    return value_;
 }
 
 } // namespace lxgui::gui

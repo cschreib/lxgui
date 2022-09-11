@@ -49,18 +49,10 @@ region::parse_dimension_(const layout_node& node) {
         chosen_node = rel_dim_node;
     }
 
-    vector2<std::optional<float>> vec;
-    if (const layout_attribute* attr = chosen_node->try_get_attribute("x"))
-        vec.x = attr->get_value<float>();
-    else
-        vec.x = std::nullopt;
-
-    if (const layout_attribute* attr = chosen_node->try_get_attribute("y"))
-        vec.y = attr->get_value<float>();
-    else
-        vec.y = std::nullopt;
-
-    return std::make_pair(type, vec);
+    return std::make_pair(
+        type, vector2<std::optional<float>>(
+                  chosen_node->try_get_attribute_value<float>("x"),
+                  chosen_node->try_get_attribute_value<float>("y")));
 }
 
 void region::parse_size_node_(const layout_node& node) {
