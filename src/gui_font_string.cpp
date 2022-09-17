@@ -16,6 +16,9 @@ font_string::font_string(
     layered_region(block, mgr, attr) {
 
     initialize_(*this, attr);
+
+    // Render font_string above other regions
+    region_level_ = 1;
 }
 
 void font_string::render() const {
@@ -440,6 +443,7 @@ bool font_string::is_vertex_cache_used_() const {
     case vertex_cache_strategy::always_enabled: return true;
     case vertex_cache_strategy::automatic:
         return renderer.is_vertex_cache_enabled() && !renderer.is_quad_batching_enabled();
+    default: return false;
     }
 }
 

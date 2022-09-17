@@ -5,7 +5,6 @@
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event_emitter.hpp"
 #include "lxgui/gui_factory.hpp"
-#include "lxgui/gui_font_string.hpp"
 #include "lxgui/gui_frame_renderer.hpp"
 #include "lxgui/gui_layered_region.hpp"
 #include "lxgui/gui_manager.hpp"
@@ -492,19 +491,23 @@ void frame::notify_layers_need_update() {
     for (auto& layer : layer_list_)
         layer.region_list.clear();
 
-    // Fill layers with regions (with font_string rendered last within the same layer)
-    // TODO: This is bad; the frame class should not know about font_string, see #112.
+    // Fill layers with regions (sorted by region level within the same layer)
     for (const auto& reg : region_list_) {
-        if (reg && !reg->is_region_type<font_string>()) {
+        if (reg) {
             layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(reg);
         }
     }
 
-    for (const auto& reg : region_list_) {
-        if (reg && reg->is_region_type<font_string>()) {
-            layer_list_[static_cast<std::size_t>(reg->get_draw_layer())].region_list.push_back(reg);
-        }
+    // Sort each layer by region level (this enables rendering text above textures)
+    for (auto& layer : layer_list_) {
+        std::stable_sort(
+            layer.region_list.begin(), layer.region_list.end(),
+            [](const auto& reg1, const auto& reg2) {
+                return reg1->get_region_level() < reg2->get_region_level();
+            });
     }
+
+    notify_renderer_need_redraw();
 }
 
 void frame::set_parent_(utils::observer_ptr<frame> parent) {
@@ -596,7 +599,6 @@ utils::observer_ptr<layered_region> frame::add_region(utils::owner_ptr<layered_r
     region_list_.push_back(std::move(reg));
 
     notify_layers_need_update();
-    notify_renderer_need_redraw();
 
     if (!is_virtual_) {
         // Add shortcut to region as entry in Lua table
@@ -631,7 +633,6 @@ frame::remove_region(const utils::observer_ptr<layered_region>& reg) {
     auto removed_region = std::move(*iter);
 
     notify_layers_need_update();
-    notify_renderer_need_redraw();
     removed_region->set_parent_(nullptr);
 
     if (!is_virtual_) {
