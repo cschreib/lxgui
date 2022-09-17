@@ -16,6 +16,9 @@ font_string::font_string(
     layered_region(block, mgr, attr) {
 
     initialize_(*this, attr);
+
+    // Render font_string above other regions
+    region_level_ = 1;
 }
 
 void font_string::render() const {

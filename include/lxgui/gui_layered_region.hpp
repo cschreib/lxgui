@@ -15,7 +15,9 @@ enum class layer { background, border, artwork, overlay, highlight, special_high
  * \details Layered regions can display content on the screen (texture,
  * texts, 3D models, ...) and must be contained inside a layer,
  * within a #lxgui::gui::frame object. The frame will then render all
- * its layered regions, sorted by layers.
+ * its layered regions, sorted by layers. Within a layer, regions are
+ * further sorted by region level. Finally, within a region level, regions are
+ * sorted by definition order (last on top).
  *
  * Layered regions cannot themselves react to events; this
  * must be taken care of by the parent frame.
@@ -51,7 +53,19 @@ public:
      * \brief Sets this layered_region's draw layer.
      * \param layer_id The new layer
      */
-    virtual void set_draw_layer(layer layer_id);
+    void set_draw_layer(layer layer_id);
+
+    /**
+     * \brief Sets the region level.
+     * \return The region level
+     */
+    int get_region_level() const;
+
+    /**
+     * \brief Sets this layered_region's region level.
+     * \param region_level The new level
+     */
+    void set_region_level(int region_level);
 
     /**
      * \brief Notifies the renderer of this region that it needs to be redrawn.
@@ -75,7 +89,8 @@ protected:
 
     const std::vector<std::string>& get_type_list_() const override;
 
-    layer layer_ = layer::artwork;
+    layer layer_        = layer::artwork;
+    int   region_level_ = 0;
 };
 
 } // namespace lxgui::gui

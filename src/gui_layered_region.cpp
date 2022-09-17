@@ -37,11 +37,25 @@ layer layered_region::get_draw_layer() const {
 }
 
 void layered_region::set_draw_layer(layer layer_id) {
-    if (layer_ != layer_id) {
-        layer_ = layer_id;
-        notify_renderer_need_redraw();
+    if (layer_ == layer_id)
+        return;
+
+    layer_ = layer_id;
+    if (parent_)
         parent_->notify_layers_need_update();
-    }
+}
+
+int layered_region::get_region_level() const {
+    return region_level_;
+}
+
+void layered_region::set_region_level(int region_level) {
+    if (region_level_ == region_level)
+        return;
+
+    region_level = region_level_;
+    if (parent_)
+        parent_->notify_layers_need_update();
 }
 
 void layered_region::notify_renderer_need_redraw() {
