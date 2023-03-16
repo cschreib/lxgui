@@ -67,6 +67,10 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     }
 }
 
+std::size_t vertex_cache::get_vertex_count() const {
+    return buffer_.getVertexCount();
+}
+
 const sf::VertexBuffer& vertex_cache::get_impl() const {
     return buffer_;
 }

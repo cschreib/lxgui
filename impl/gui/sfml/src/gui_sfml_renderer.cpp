@@ -86,6 +86,12 @@ void renderer::render_quads_(
 
     const sfml::material* sf_mat = static_cast<const sfml::material*>(mat);
 
+#if !defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+    vector2f tex_dims(1.0f, 1.0f);
+    if (sf_mat)
+        tex_dims = vector2f(sf_mat->get_canvas_dimensions());
+#endif
+
     sf::VertexArray array(sf::PrimitiveType::Triangles, ids.size() * quad_list.size());
     for (std::size_t k = 0; k < quad_list.size(); ++k) {
         const std::array<vertex, 4>& vertices = quad_list[k];
@@ -96,10 +102,15 @@ void renderer::render_quads_(
             const vertex& vertex    = vertices[j];
             const float   a         = vertex.col.a;
 
-            sf_vertex.position.x  = vertex.pos.x;
-            sf_vertex.position.y  = vertex.pos.y;
+            sf_vertex.position.x = vertex.pos.x;
+            sf_vertex.position.y = vertex.pos.y;
+#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
             sf_vertex.texCoords.x = vertex.uvs.x;
             sf_vertex.texCoords.y = vertex.uvs.y;
+#else
+            sf_vertex.texCoords.x = vertex.uvs.x * tex_dims.x;
+            sf_vertex.texCoords.y = vertex.uvs.y * tex_dims.y;
+#endif
             // Premultipled alpha
             sf_vertex.color.r = vertex.col.r * a * 255;
             sf_vertex.color.g = vertex.col.g * a * 255;
@@ -113,7 +124,7 @@ void renderer::render_quads_(
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
     // UV coordinates and not pixel coordinates
-    state.coordinateType = sf::Normalized;
+    state.coordinateType = sf::CoordinateType::Normalized;
 #endif
     // Texture
     if (sf_mat)
@@ -141,7 +152,7 @@ void renderer::render_cache_(
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
     // UV coordinates and not pixel coordinates
-    state.coordinateType = sf::Normalized;
+    state.coordinateType = sf::CoordinateType::Normalized;
     // Texture
     if (sf_mat)
         state.texture = sf_mat->get_texture();
