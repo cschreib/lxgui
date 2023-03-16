@@ -33,7 +33,8 @@ int main(int argc, char* argv[]) {
         const std::size_t window_width  = 800u;
         const std::size_t window_height = 600u;
 
-        sf::RenderWindow window(sf::VideoMode(window_width, window_height, 32), window_title);
+        sf::RenderWindow window(
+            sf::VideoMode(sf::Vector2u(window_width, window_height), 32), window_title);
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;

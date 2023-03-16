@@ -10,7 +10,7 @@ namespace lxgui::gui::sfml {
 atlas_page::atlas_page(gui::renderer& rdr, material::filter filt) : gui::atlas_page(filt) {
     const std::size_t size = rdr.get_texture_atlas_page_size();
 
-    if (!texture_.create(size, size)) {
+    if (!texture_.create(sf::Vector2u(size, size))) {
         throw gui::exception(
             "gui::sfml::atlas_page", "Could not create texture with dimensions " +
                                          utils::to_string(size) + " x " + utils::to_string(size) +
@@ -25,7 +25,7 @@ atlas_page::add_material_(const gui::material& mat, const bounds2f& location) {
     const sfml::material& sf_mat = static_cast<const sfml::material&>(mat);
 
     const sf::Image image = sf_mat.get_texture()->copyToImage();
-    texture_.update(image, location.left, location.top);
+    texture_.update(image, sf::Vector2u(location.left, location.top));
 
     return std::make_shared<sfml::material>(texture_, location, filter_);
 }

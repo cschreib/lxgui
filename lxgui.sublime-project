@@ -249,6 +249,42 @@
 					"shell_cmd": "make -j12 src/gui_anchor.s",
 				},
 				{
+					"name": "src/gui_animated_texture.o",
+					"shell_cmd": "make -j12 src/gui_animated_texture.o",
+				},
+				{
+					"name": "src/gui_animated_texture.i",
+					"shell_cmd": "make -j12 src/gui_animated_texture.i",
+				},
+				{
+					"name": "src/gui_animated_texture.s",
+					"shell_cmd": "make -j12 src/gui_animated_texture.s",
+				},
+				{
+					"name": "src/gui_animated_texture_glues.o",
+					"shell_cmd": "make -j12 src/gui_animated_texture_glues.o",
+				},
+				{
+					"name": "src/gui_animated_texture_glues.i",
+					"shell_cmd": "make -j12 src/gui_animated_texture_glues.i",
+				},
+				{
+					"name": "src/gui_animated_texture_glues.s",
+					"shell_cmd": "make -j12 src/gui_animated_texture_glues.s",
+				},
+				{
+					"name": "src/gui_animated_texture_parser.o",
+					"shell_cmd": "make -j12 src/gui_animated_texture_parser.o",
+				},
+				{
+					"name": "src/gui_animated_texture_parser.i",
+					"shell_cmd": "make -j12 src/gui_animated_texture_parser.i",
+				},
+				{
+					"name": "src/gui_animated_texture_parser.s",
+					"shell_cmd": "make -j12 src/gui_animated_texture_parser.s",
+				},
+				{
 					"name": "src/gui_atlas.o",
 					"shell_cmd": "make -j12 src/gui_atlas.o",
 				},
@@ -1018,23 +1054,23 @@
 				},
 				{
 					"name": "src/utils_maths.o",
-					"shell_cmd": "make -j12 src/utils_maths.o",
+					"shell_cmd": "make -j12 src/utils_maths.o"
 				},
 				{
 					"name": "src/utils_maths.i",
-					"shell_cmd": "make -j12 src/utils_maths.i",
+					"shell_cmd": "make -j12 src/utils_maths.i"
 				},
 				{
 					"name": "src/utils_maths.s",
-					"shell_cmd": "make -j12 src/utils_maths.s",
+					"shell_cmd": "make -j12 src/utils_maths.s"
 				},
 				{
 					"name": "src/utils_periodic_timer.o",
-					"shell_cmd": "make -j12 src/utils_periodic_timer.o",
+					"shell_cmd": "make -j12 src/utils_periodic_timer.o"
 				},
 				{
 					"name": "src/utils_periodic_timer.i",
-					"shell_cmd": "make -j12 src/utils_periodic_timer.i",
+					"shell_cmd": "make -j12 src/utils_periodic_timer.i"
 				},
 				{
 					"name": "src/utils_periodic_timer.s",

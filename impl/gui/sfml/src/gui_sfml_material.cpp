@@ -24,7 +24,7 @@ material::material(const vector2ui& dimensions, bool is_render_target, wrap wrp,
     is_render_target_ = is_render_target;
 
     if (is_render_target_) {
-        if (!render_texture_.create(dimensions_.x, dimensions_.y)) {
+        if (!render_texture_.create(sf::Vector2u(dimensions_.x, dimensions_.y))) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create render target with dimensions " +
                                            utils::to_string(dimensions_.x) + " x " +
@@ -33,7 +33,7 @@ material::material(const vector2ui& dimensions, bool is_render_target, wrap wrp,
         render_texture_.setSmooth(filt == filter::linear);
         render_texture_.setRepeated(wrp == wrap::repeat);
     } else {
-        if (!texture_.create(dimensions_.x, dimensions_.y)) {
+        if (!texture_.create(sf::Vector2u(dimensions_.x, dimensions_.y))) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create texture with dimensions " +
                                            utils::to_string(dimensions_.x) + " x " +
@@ -48,7 +48,9 @@ material::material(const vector2ui& dimensions, bool is_render_target, wrap wrp,
 
 material::material(const sf::Image& data, wrap wrp, filter filt) : gui::material(false) {
     is_render_target_ = false;
-    texture_.loadFromImage(data);
+    if (!texture_.loadFromImage(data))
+        throw gui::exception("gui::sfml::material", "Could not load texture from image data.");
+
     texture_.setSmooth(filt == filter::linear);
     texture_.setRepeated(wrp == wrap::repeat);
 
@@ -67,7 +69,9 @@ material::material(const std::string& file_name, wrap wrp, filter filt) : gui::m
         throw utils::exception("gui::sfml::material", "loading failed: '" + file_name + "'.");
 
     premultiply_alpha(data);
-    texture_.loadFromImage(data);
+    if (!texture_.loadFromImage(data))
+        throw gui::exception("gui::sfml::material", "Could not load texture from image data.");
+
     texture_.setSmooth(filt == filter::linear);
     texture_.setRepeated(wrp == wrap::repeat);
 
@@ -126,8 +130,8 @@ void material::update_texture(const color32* data) {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be updated.");
 
     texture_.update(
-        reinterpret_cast<const sf::Uint8*>(data), rect_.width(), rect_.height(), rect_.left,
-        rect_.top);
+        reinterpret_cast<const std::uint8_t*>(data), sf::Vector2u(rect_.width(), rect_.height()),
+        sf::Vector2u(rect_.left, rect_.top));
 }
 
 void material::premultiply_alpha(sf::Image& data) {
@@ -135,12 +139,12 @@ void material::premultiply_alpha(sf::Image& data) {
     const std::size_t height = data.getSize().y;
     for (std::size_t x = 0; x < width; ++x) {
         for (std::size_t y = 0; y < height; ++y) {
-            sf::Color c = data.getPixel(x, y);
+            sf::Color c = data.getPixel(sf::Vector2u(x, y));
             float     a = c.a / 255.0f;
             c.r *= a;
             c.g *= a;
             c.b *= a;
-            data.setPixel(x, y, c);
+            data.setPixel(sf::Vector2u(x, y), c);
         }
     }
 }
@@ -184,7 +188,7 @@ bool material::set_dimensions(const vector2ui& dimensions) {
         if (dimensions_.y > canvas_dimensions_.y)
             canvas_dimensions_.y = dimensions_.y + dimensions_.y / 2;
 
-        if (!render_texture_.create(canvas_dimensions_.x, canvas_dimensions_.y)) {
+        if (!render_texture_.create(sf::Vector2u(canvas_dimensions_.x, canvas_dimensions_.y))) {
             throw gui::exception(
                 "gui::sfml::material", "Could not create render target with dimensions " +
                                            utils::to_string(canvas_dimensions_.x) + " x " +

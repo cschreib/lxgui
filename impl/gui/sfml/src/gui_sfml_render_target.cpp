@@ -1,5 +1,6 @@
 #include "lxgui/impl/gui_sfml_render_target.hpp"
 
+#include "lxgui/gui_out.hpp"
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 
 #include <iostream>
@@ -42,18 +43,21 @@ void render_target::save_to_file(std::string filename) const {
     const std::size_t height = image.getSize().y;
     for (std::size_t x = 0; x < width; ++x) {
         for (std::size_t y = 0; y < height; ++y) {
-            sf::Color c = image.getPixel(x, y);
+            sf::Color c = image.getPixel(sf::Vector2u(x, y));
             float     a = c.a / 255.0f;
             if (a > 0.0f) {
                 c.r /= a;
                 c.g /= a;
                 c.b /= a;
             }
-            image.setPixel(x, y, c);
+            image.setPixel(sf::Vector2u(x, y), c);
         }
     }
 
-    image.saveToFile(filename);
+    if (!image.saveToFile(filename)) {
+        gui::out << gui::warning << "sfml::render_target: "
+                 << "Could not save render target to '" << filename << "'." << std::endl;
+    }
 }
 
 std::weak_ptr<sfml::material> render_target::get_material() {

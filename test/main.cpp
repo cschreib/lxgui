@@ -19,10 +19,10 @@
 
 #include <lxgui/extern_sol2_state.hpp>
 
-//#define GLSFML_GUI
-//#define GLSDL_GUI
-//#define SDL_GUI
-//#define SFML_GUI
+// #define GLSFML_GUI
+// #define GLSDL_GUI
+// #define SDL_GUI
+// #define SFML_GUI
 
 #if defined(GLSFML_GUI)
 // OpenGL + SFML input
@@ -333,10 +333,11 @@ int main(int /*argc*/, char* /*argv*/[]) {
 #if defined(GLSFML_GUI) || defined(SFML_GUI)
         if (full_screen)
             window.create(
-                sf::VideoMode(window_width, window_height, 32), window_title,
+                sf::VideoMode(sf::Vector2u(window_width, window_height), 32), window_title,
                 sf::Style::Fullscreen);
         else
-            window.create(sf::VideoMode(window_width, window_height, 32), window_title);
+            window.create(
+                sf::VideoMode(sf::Vector2u(window_width, window_height), 32), window_title);
 #endif
 
         // -------------------------------------------------

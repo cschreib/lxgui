@@ -34,7 +34,8 @@ void renderer::begin_(std::shared_ptr<gui::render_target> target) {
         current_target_->begin();
         current_sfml_target_ = current_target_->get_render_texture();
     } else {
-        sf::FloatRect visible_area(0, 0, window_dimensions_.x, window_dimensions_.y);
+        sf::FloatRect visible_area(
+            sf::Vector2f(0, 0), sf::Vector2f(window_dimensions_.x, window_dimensions_.y));
         window_.setView(sf::View(visible_area));
         current_sfml_target_ = &window_;
     }
@@ -59,7 +60,7 @@ void renderer::set_view_(const matrix4f& view_matrix) {
 
     sf::View view;
     view.setCenter(sf::Vector2f(-view_matrix(3, 0) / scale_x, -view_matrix(3, 1) / scale_y));
-    view.rotate(angle);
+    view.rotate(sf::radians(angle));
     view.setSize(sf::Vector2f(2.0f / scale_x, 2.0 / scale_y));
 
     current_sfml_target_->setView(view);
