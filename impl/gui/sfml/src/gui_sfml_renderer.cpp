@@ -85,10 +85,6 @@ void renderer::render_quads_(
 
     const sfml::material* sf_mat = static_cast<const sfml::material*>(mat);
 
-    vector2f tex_dims(1.0f, 1.0f);
-    if (sf_mat)
-        tex_dims = vector2f(sf_mat->get_canvas_dimensions());
-
     sf::VertexArray array(sf::PrimitiveType::Triangles, ids.size() * quad_list.size());
     for (std::size_t k = 0; k < quad_list.size(); ++k) {
         const std::array<vertex, 4>& vertices = quad_list[k];
@@ -101,8 +97,8 @@ void renderer::render_quads_(
 
             sf_vertex.position.x  = vertex.pos.x;
             sf_vertex.position.y  = vertex.pos.y;
-            sf_vertex.texCoords.x = vertex.uvs.x * tex_dims.x;
-            sf_vertex.texCoords.y = vertex.uvs.y * tex_dims.y;
+            sf_vertex.texCoords.x = vertex.uvs.x;
+            sf_vertex.texCoords.y = vertex.uvs.y;
             // Premultipled alpha
             sf_vertex.color.r = vertex.col.r * a * 255;
             sf_vertex.color.g = vertex.col.g * a * 255;
@@ -114,8 +110,14 @@ void renderer::render_quads_(
     sf::RenderStates state;
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
+#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+    // UV coordinates and not pixel coordinates
+    state.coordinateType = sf::Normalized;
+#endif
+    // Texture
     if (sf_mat)
         state.texture = sf_mat->get_texture();
+
     current_sfml_target_->draw(array, state);
 }
 
@@ -129,19 +131,22 @@ void renderer::render_cache_(
     const gui::material*     mat [[maybe_unused]],
     const gui::vertex_cache& cache [[maybe_unused]],
     const matrix4f&          model_transform [[maybe_unused]]) {
+
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
     const sfml::material*     sf_mat   = static_cast<const sfml::material*>(mat);
     const sfml::vertex_cache& sf_cache = static_cast<const sfml::vertex_cache&>(cache);
 
-    // Note: the following will not work correctly, as vertex_cache has texture coordinates
-    // normalized, but sf::RenderTarget::draw assumes coordinates in pixels.
-    // Requires https://github.com/SFML/SFML/pull/1807
     sf::RenderStates state;
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
+    // UV coordinates and not pixel coordinates
+    state.coordinateType = sf::Normalized;
+    // Texture
     if (sf_mat)
         state.texture = sf_mat->get_texture();
+    // Transform
     state.transform = to_sfml(model_transform);
+
     current_sfml_target_->draw(sf_cache.get_impl(), 0, sf_cache.get_vertex_count(), state);
 #else
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
@@ -206,7 +211,6 @@ std::shared_ptr<gui::font> renderer::create_font_(
 
 bool renderer::is_vertex_cache_supported() const {
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
-    // Requires https://github.com/SFML/SFML/pull/1807
     return sf::VertexBuffer::isAvailable();
 #else
     return false;
@@ -216,7 +220,6 @@ bool renderer::is_vertex_cache_supported() const {
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type
                                                                  [[maybe_unused]]) {
 #if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
-    // Requires https://github.com/SFML/SFML/pull/1807
     return std::make_shared<sfml::vertex_cache>(type);
 #else
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
