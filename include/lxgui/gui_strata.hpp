@@ -1,53 +1,29 @@
 #ifndef LXGUI_GUI_STRATA_HPP
 #define LXGUI_GUI_STRATA_HPP
 
-#include <lxgui/lxgui.hpp>
-#include "lxgui/gui_rendertarget.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
+#include "lxgui/gui_render_target.hpp"
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_observer.hpp"
 
-#include <lxgui/utils.hpp>
-
-#include <vector>
 #include <map>
 #include <memory>
+#include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    class frame;
+namespace lxgui::gui {
 
-    enum class frame_strata
-    {
-        PARENT = -1,
-        BACKGROUND = 0,
-        LOW,
-        MEDIUM,
-        HIGH,
-        DIALOG,
-        FULLSCREEN,
-        FULLSCREEN_DIALOG,
-        TOOLTIP
-    };
+enum class strata { background, low, medium, high, dialog, fullscreen, fullscreen_dialog, tooltip };
 
-    struct strata;
+/// Contains frames sorted by level
+struct strata_data {
+    strata                              id;
+    std::pair<std::size_t, std::size_t> range;
+    bool                                redraw_flag = true;
+    std::shared_ptr<render_target>      target;
+    quad                                target_quad;
+};
 
-    /// Contains gui::frame
-    struct level
-    {
-        std::vector<frame*> lFrameList;
-        strata*             pStrata = nullptr;
-    };
-
-    /// Contains gui::level
-    struct strata
-    {
-        std::map<int, level>           lLevelList;
-        mutable bool                   bRedraw = true;
-        std::shared_ptr<render_target> pRenderTarget;
-        sprite                         mSprite;
-        mutable uint                   uiRedrawCount = 0u;
-    };
-}
-}
+} // namespace lxgui::gui
 
 #endif

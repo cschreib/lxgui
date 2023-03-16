@@ -1,0 +1,8 @@
+## Interface: 0001
+## Title: Scroll test
+## Version: 1.0
+## Author: Kalith
+## SavedVariables:
+
+templates.xml
+addon.xml

@@ -1,0 +1,206 @@
+<Ui>
+    <Frame name="ColorSelector" inherits="FrameTemplate_ResizableDialog">
+        <Size>
+            <AbsDimension x="350" y="130"/>
+        </Size>
+        <ResizeBounds>
+            <Min>
+                <AbsDimension x="230" y="130"/>
+            </Min>
+            <Max>
+                <AbsDimension y="130"/>
+            </Max>
+        </ResizeBounds>
+        <Anchors>
+            <Anchor point="TOP_LEFT"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad>
+                self.Title.TitleString:set_text("Color picker");
+                self:register_event("ADDON_LOADED");
+            </OnLoad>
+            <OnEvent>
+                if (arg1 == "ADDON_LOADED") then
+                    ColorSelectorAddon:set_color(Color(1,1,1,1));
+                end
+            </OnEvent>
+        </Scripts>
+        <Frames>
+            <Frame name="$parentSwatch">
+                <Size>
+                    <AbsDimension x="60" y="40"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP_RIGHT">
+                        <Offset>
+                            <AbsDimension x="-16" y="32"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Frames>
+                    <Frame name="$parentColorZone" setAllAnchors="true">
+                        <Backdrop edgeFile="|border_2px.png">
+                            <BackgroundInsets>
+                                <AbsInset left="2" right="2" top="2" bottom="2"/>
+                            </BackgroundInsets>
+                            <BackgroundColor r="1" g="1" b="1" a="1"/>
+                        </Backdrop>
+                    </Frame>
+                </Frames>
+                <Backdrop bgFile="|checker_8px.png" tile="true">
+                    <BackgroundInsets>
+                        <AbsInset left="2" right="2" top="2" bottom="2"/>
+                    </BackgroundInsets>
+                </Backdrop>
+            </Frame>
+            <Button name="$parentCopy" inherits="ButtonTemplate_Button">
+                <Anchors>
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentSwatch" relativePoint="BOTTOM_RIGHT">
+                        <Offset>
+                            <AbsDimension y="5"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="TOP_LEFT" relativeTo="$parentSwatch" relativePoint="BOTTOM_LEFT">
+                        <Offset>
+                            <AbsDimension y="5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        ColorSelectorCopy:set_text("Copy");
+                        self:set_text("Copy");
+                    </OnLoad>
+                    <OnClick>
+                        ColorSelectorAddon.savedColor = Color(ColorSelectorAddon.currentColor);
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentPaste" inherits="ButtonTemplate_Button">
+                <Anchors>
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentCopy" relativePoint="BOTTOM_RIGHT">
+                        <Offset>
+                            <AbsDimension y="3"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="TOP_LEFT" relativeTo="$parentCopy" relativePoint="BOTTOM_LEFT">
+                        <Offset>
+                            <AbsDimension y="3"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:set_text("Paste");
+                    </OnLoad>
+                    <OnClick>
+                        if (ColorSelectorAddon.savedColor) then
+                            ColorSelectorAddon:set_color(ColorSelectorAddon.savedColor);
+                            ColorSelectorAddon:on_color_update();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Frame name="$parentSliderA" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset>
+                            <AbsDimension y="28"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Alpha");
+                        self.chanel = "a";
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderR" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderA" relativePoint="BOTTOM"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Red");
+                        self.chanel = "r";
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderG" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderR" relativePoint="BOTTOM"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Green");
+                        self.chanel = "g";
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderB" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderG" relativePoint="BOTTOM"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Blue");
+                        self.chanel = "b";
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderH" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderB" relativePoint="BOTTOM">
+                        <Offset>
+                            <AbsDimension y="5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Hue");
+                        self.chanel = "h";
+
+                        local backdrop = {
+                            ["bgFile"] = "|rainbow.png",
+                            ["edgeFile"] = "|border_1px.png"
+                        }
+                        self.Slider:set_backdrop(backdrop);
+
+                        self.Slider:set_min_max_values(0, 360);
+                        self.Slider:set_value(0);
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderS" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderH" relativePoint="BOTTOM"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Sat.");
+                        self.chanel = "s";
+
+                        self.Slider:set_min_max_values(0, 100);
+                        self.Slider:set_value(0);
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSliderL" inherits="FrameTemplate_ColorSlider">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parentSliderS" relativePoint="BOTTOM"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.TitleString:set_text("Lum.");
+                        self.chanel = "l";
+
+                        self.Slider:set_min_max_values(0, 100);
+                        self.Slider:set_value(100);
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+        </Frames>
+    </Frame>
+</Ui>

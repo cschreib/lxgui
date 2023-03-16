@@ -1,0 +1,245 @@
+<Ui>
+    <Frame name="ScrollTest" inherits="FrameTemplate_ResizableDialog" hidden="true">
+        <Size>
+            <AbsDimension x="500" y="300"/>
+        </Size>
+        <ResizeBounds>
+            <Min><AbsDimension x="16" y="80"/></Min>
+        </ResizeBounds>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad>
+                dofile("interface/scroll_test/addon.lua");
+                self.on_close = function (self)
+                    if (self.on_cancel ~= nil) then
+                        self:on_cancel();
+                    end
+                end;
+
+                self.Title.TitleString:set_text("File browser");
+                self:set_min_width(225);
+
+                self:show();
+                self:raise();
+                self:init_root_folder();
+                self:set_folder(1);
+            </OnLoad>
+            <OnShow>
+                self.Splitter.FolderFrame:on_size_changed();
+                self.Splitter.FileFrame:on_size_changed();
+            </OnShow>
+        </Scripts>
+        <Frames>
+            <Button name="$parentCancelButton" inherits="ButtonTemplate_Button">
+                <Anchors>
+                    <Anchor point="BOTTOM_RIGHT">
+                        <Offset>
+                            <AbsDimension x="-12" y="-12"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:set_text("Cancel");
+                    </OnLoad>
+                    <OnClick>
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentOkButton" inherits="ButtonTemplate_Button">
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentCancelButton" relativePoint="LEFT">
+                        <Offset>
+                            <AbsDimension x="-3"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self:set_text("Ok");
+                    </OnLoad>
+                    <OnClick>
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <EditBox name="$parentFile" inherits="EditBoxTemplate_EditBox">
+                <Anchors>
+                    <Anchor point="BOTTOM_LEFT">
+                        <Offset>
+                            <AbsDimension x="12" y="-12"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="TOP_RIGHT" relativeTo="$parentOkButton" relativePoint="TOP_LEFT">
+                        <Offset>
+                            <AbsDimension x="-5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </EditBox>
+            <Slider name="$parentSplitter" maxValue="376" defaultValue="100" valueStep="1" orientation="HORIZONTAL">
+                <ThumbTexture>
+                    <Size>
+                        <AbsDimension x="5" y="100"/>
+                    </Size>
+                    <Color a="0.5" r="1" g="1" b="1"/>
+                </ThumbTexture>
+                <Anchors>
+                    <Anchor point="TOP_LEFT">
+                        <Offset>
+                            <AbsDimension x="112" y="30"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="BOTTOM_RIGHT" relativeTo="$parentCancelButton" relativePoint="TOP_RIGHT">
+                        <Offset>
+                            <AbsDimension x="-100" y="-4"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        self.ThumbTexture:set_anchor("TOP", self, "TOP");
+                        self.ThumbTexture:set_anchor("BOTTOM", self, "BOTTOM");
+                    </OnLoad>
+                </Scripts>
+                <Frames>
+                    <ScrollFrame name="$parentFolderFrame" enableMouse="true" enableMouseWheel="true">
+                        <Anchors>
+                            <Anchor point="TOP_LEFT">
+                                <Offset>
+                                    <AbsDimension x="-100"/>
+                                </Offset>
+                            </Anchor>
+                            <Anchor point="BOTTOM_RIGHT" relativeTo="$parentThumbTexture" relativePoint="BOTTOM_LEFT">
+                                <Offset>
+                                    <AbsDimension x="-16"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <ScrollChild>
+                            <Frame name="$parentScroll">
+                                <Size>
+                                    <AbsDimension x="200" y="200"/>
+                                </Size>
+                            </Frame>
+                        </ScrollChild>
+                        <Backdrop edgeFile="|border_1px.png"/>
+                        <Scripts>
+                            <OnShow>
+                                self:on_size_changed();
+                            </OnShow>
+                            <OnSizeChanged>
+                                if (self.Scroll:get_height() and self:get_height()) then
+                                    self.Slider:set_min_max_values(0, math.max(0, self.Scroll:get_height() - self:get_height()));
+                                end
+                                if (self:get_width()) then
+                                    self.Scroll:set_width(self:get_width());
+                                end
+                            </OnSizeChanged>
+                            <OnMouseWheel>
+                                self.Slider:set_value(self.Slider:get_value()-18*arg1);
+                            </OnMouseWheel>
+                        </Scripts>
+                        <Frames>
+                            <Slider name="$parentSlider" minValue="0" maxValue="255" defaultValue="0" valueStep="1" orientation="VERTICAL">
+                                <Size>
+                                    <AbsDimension x="6"/>
+                                </Size>
+                                <Anchors>
+                                    <Anchor point="TOP_LEFT" relativePoint="TOP_RIGHT">
+                                        <Offset>
+                                            <AbsDimension x="5" y="8"/>
+                                        </Offset>
+                                    </Anchor>
+                                    <Anchor point="BOTTOM">
+                                        <Offset>
+                                            <AbsDimension y="-8"/>
+                                        </Offset>
+                                    </Anchor>
+                                </Anchors>
+                                <HitRectInsets>
+                                    <AbsInset left="-5" right="-5" top="-8" bottom="-8"/>
+                                </HitRectInsets>
+                                <Backdrop edgeFile="|border_1px.png"/>
+                                <ThumbTexture file="|slider_thumb.png">
+                                    <Size>
+                                        <AbsDimension x="8" y="8"/>
+                                    </Size>
+                                </ThumbTexture>
+                                <Scripts>
+                                    <OnValueChanged>
+                                        self:get_parent():set_vertical_scroll(self:get_value());
+                                    </OnValueChanged>
+                                </Scripts>
+                            </Slider>
+                        </Frames>
+                    </ScrollFrame>
+                    <ScrollFrame name="$parentFileFrame" enableMouse="true" enableMouseWheel="true">
+                        <Anchors>
+                            <Anchor point="TOP_LEFT" relativeTo="$parentThumbTexture" relativePoint="TOP_RIGHT"/>
+                            <Anchor point="BOTTOM_RIGHT">
+                                <Offset>
+                                    <AbsDimension x="84"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <ScrollChild>
+                            <Frame name="$parentScroll">
+                                <Size>
+                                    <AbsDimension x="200" y="200"/>
+                                </Size>
+                            </Frame>
+                        </ScrollChild>
+                        <Backdrop edgeFile="|border_1px.png"/>
+                        <Scripts>
+                            <OnShow>
+                                self:on_size_changed();
+                            </OnShow>
+                            <OnSizeChanged>
+                                self.Slider:set_min_max_values(0, math.max(0, self.Scroll:get_height() - self:get_height()));
+                                self.Scroll:set_width(self:get_width());
+                            </OnSizeChanged>
+                            <OnMouseWheel>
+                                self.Slider:set_value(self.Slider:get_value()-18*arg1);
+                            </OnMouseWheel>
+                        </Scripts>
+                        <Frames>
+                            <Slider name="$parentSlider" minValue="0" maxValue="255" defaultValue="0" valueStep="1" orientation="VERTICAL">
+                                <Size>
+                                    <AbsDimension x="6"/>
+                                </Size>
+                                <Anchors>
+                                    <Anchor point="TOP_LEFT" relativePoint="TOP_RIGHT">
+                                        <Offset>
+                                            <AbsDimension x="5" y="8"/>
+                                        </Offset>
+                                    </Anchor>
+                                    <Anchor point="BOTTOM">
+                                        <Offset>
+                                            <AbsDimension y="-8"/>
+                                        </Offset>
+                                    </Anchor>
+                                </Anchors>
+                                <HitRectInsets>
+                                    <AbsInset left="-5" right="-5" top="-5" bottom="-5"/>
+                                </HitRectInsets>
+                                <Backdrop edgeFile="|border_1px.png"/>
+                                <ThumbTexture file="|slider_thumb.png">
+                                    <Size>
+                                        <AbsDimension x="8" y="8"/>
+                                    </Size>
+                                </ThumbTexture>
+                                <Scripts>
+                                    <OnValueChanged>
+                                        self:get_parent():set_vertical_scroll(self:get_value());
+                                    </OnValueChanged>
+                                </Scripts>
+                            </Slider>
+                        </Frames>
+                    </ScrollFrame>
+                </Frames>
+            </Slider>
+        </Frames>
+    </Frame>
+</Ui>

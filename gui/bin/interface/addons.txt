@@ -1,7 +1,0 @@
-#Core
-texture_test:1
-fontstring_test:1
-statusbar_test:1
-slider_test:1
-scroll_test:1
-#Others

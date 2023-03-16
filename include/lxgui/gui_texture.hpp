@@ -1,276 +1,261 @@
 #ifndef LXGUI_GUI_TEXTURE_HPP
 #define LXGUI_GUI_TEXTURE_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
-#include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_gradient.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_layered_region.hpp"
+#include "lxgui/gui_quad.hpp"
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 
-namespace lxgui {
-namespace gui
-{
-    /// A layered_region that can draw images and colored rectangles.
-    /** This object contains either a texture taken from a file,
-    *   or a plain color (possibly with a different color on each corner).
-    */
-    class texture : public layered_region
-    {
-    public :
+#include <limits>
+#include <variant>
 
-        enum class blend_mode
-        {
-            NONE,
-            BLEND,
-            KEY,
-            ADD,
-            MOD
-        };
+namespace lxgui::gui {
 
-        /// Constructor.
-        explicit texture(manager* pManager);
+class renderer;
+class render_target;
 
-        /// Prints all relevant information about this widget in a string.
-        /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
-        */
-        std::string serialize(const std::string& sTab) const override;
+/**
+ * \brief A layered_region that can draw images and colored rectangles.
+ * \details This object contains either a texture taken from a file,
+ * or a plain color (possibly with a different color on each corner).
+ */
+class texture : public layered_region {
+public:
+    using base = layered_region;
 
-        /// Renders this widget on the current render target.
-        void render() override;
+    enum class blend_mode { none, blend, key, add, mod };
 
-        /// Copies an uiobject's parameters into this texture (inheritance).
-        /** \param pObj The uiobject to copy
-        */
-        void copy_from(uiobject* pObj) override;
+    /// Constructor.
+    explicit texture(utils::control_block& block, manager& mgr, const region_core_attributes& attr);
 
-        /// Returns this texture's blending mode.
-        /** \return This texture's blending mode
-        */
-        blend_mode get_blend_mode() const;
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
+     * \return All relevant information about this region
+     */
+    std::string serialize(const std::string& tab) const override;
 
-        /// Returns this texture's filtering algorithm.
-        /** \return This texture's filtering algorithm
-        */
-        material::filter get_filter_mode() const;
+    /// Renders this region on the current render target.
+    void render() const override;
 
-        /// Returns this texture's color.
-        /** \return This texture's color (color::EMPTY if none)
-        */
-        const color& get_color() const;
+    /**
+     * \brief Copies a region's parameters into this texture (inheritance).
+     * \param obj The region to copy
+     */
+    void copy_from(const region& obj) override;
 
-        /// Returns this texture's gradient.
-        /** \return This texture's gradient (Gradient::NONE if none)
-        */
-        const gradient& get_gradient() const;
+    /**
+     * \brief Returns this texture's blending mode.
+     * \return This texture's blending mode
+     */
+    blend_mode get_blend_mode() const;
 
-        /// Returns this texture's texture coordinates.
-        /** \return This texture's texture coordinates
-        *   \note The texture coordinates are arranged as a rectangle, which is made
-        *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
-        *         4 (bottom left).<br>
-        *         The returned array is composed like this :
-        *         (x1, y1, x2, y2, x3, y3, x4, y4).
-        */
-        const std::array<float,8>& get_tex_coord() const;
+    /**
+     * \brief Returns this texture's filtering algorithm.
+     * \return This texture's filtering algorithm
+     */
+    material::filter get_filter_mode() const;
 
-        /// Checks if this texture's dimensions are affected by texture coordinates.
-        /** \return 'true' if this texture's dimensions are affected by texture
-        *           coordinates
-        */
-        bool get_tex_coord_modifies_rect() const;
+    /**
+     * \brief Checks if this texture is defined as solid color.
+     * \return 'true' if the texture is defined as solid color, 'false' otherwise
+     */
+    bool has_solid_color() const;
 
-        /// Returns this textures's texture file.
-        /** \return This textures's texture file (empty string if none).
-        */
-        const std::string& get_texture() const;
+    /**
+     * \brief Returns this texture's color.
+     * \return This texture's color (color::EMPTY if none)
+     */
+    const color& get_solid_color() const;
 
-        /// Returns this textures's vertex color.
-        /** \param uiIndex The vertex index (0 to 3 included)
-        *   \return This textures's vertex color
-        *   \note This color is used to filter the texture's colors :
-        *         for each pixel, the original color is multiplied
-        *         by this vertex color.
-        */
-        color get_vertex_color(uint uiIndex) const;
+    /**
+     * \brief Checks if this texture is defined as a gradient.
+     * \return 'true' if the texture is defined a gradient, 'false' otherwise
+     */
+    bool has_gradient() const;
 
-        /// Checks if this texture is desaturated.
-        /** \return 'true' if the texture is desaturated
-        *   \note Only available on certain graphic cards (most of modern ones
-        *         are capable of this).
-        */
-        bool is_desaturated() const;
+    /**
+     * \brief Returns this texture's gradient.
+     * \return This texture's gradient (Gradient::NONE if none)
+     */
+    const gradient& get_gradient() const;
 
-        /// Sets this texture's blending mode.
-        /** \param mBlendMode The new blending mode
-        */
-        void set_blend_mode(blend_mode mBlendMode);
+    /**
+     * \brief Returns this texture's texture coordinates.
+     * \return This texture's texture coordinates
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     * of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     * 4 (bottom left). The returned array is composed like this:
+     * `(x1, y1, x2, y2, x3, y3, x4, y4)`.
+     */
+    std::array<float, 8> get_tex_coord() const;
 
-        /// Sets this texture's blending mode.
-        /** \param sBlendMode The new blending mode
-        */
-        void set_blend_mode(const std::string& sBlendMode);
+    /**
+     * \brief Checks if this texture can stretch to match the region dimensions
+     * \return 'true' if this texture can stretch to match the region dimensions
+     */
+    bool get_texture_stretching() const;
 
-        /// Sets this texture's filtering mode.
-        /** \param mFilter The new filtering mode
-        */
-        void set_filter_mode(material::filter mFilter);
+    /**
+     * \brief Checks if this texture is defined as a texture file.
+     * \return 'true' if the texture is defined a texture file, 'false' otherwise
+     */
+    bool has_texture_file() const;
 
-        /// Sets this texture's blending mode.
-        /** \param sFilter The new filtering mode
-        */
-        void set_filter_mode(const std::string& sFilter);
+    /**
+     * \brief Returns this texture's texture file.
+     * \return This texture's texture file (empty string if none).
+     */
+    const std::string& get_texture_file() const;
 
-        /// Makes this texture appear without any color.
-        /** \param bIsDesaturated 'true' if you want to remove colors
-        */
-        void set_desaturated(bool bIsDesaturated);
+    /**
+     * \brief Returns this texture's vertex color.
+     * \param index The vertex index (0 to 3 included)
+     * \return This texture's vertex color
+     * \note This color is used to filter the texture's colors:
+     * for each pixel, the original color is multiplied by this vertex color.
+     */
+    color get_vertex_color(std::size_t index) const;
 
-        /// Adds a gradient effect to this texture.
-        /** \param mGradient The gradient to add
-        *   \note To remove a gradient, call set_gradient(Gradient::NONE).
-        */
-        void set_gradient(const gradient& mGradient);
+    /**
+     * \brief Checks if this texture is desaturated.
+     * \return 'true' if the texture is desaturated
+     * \note Only available on certain graphic cards (most of modern ones
+     * are capable of this).
+     */
+    bool is_desaturated() const;
 
-        /// Sets this texture's texture coordinates.
-        /** \param lCoordinates This texture's texture coordinates
-        *   \note The texture coordinates are arranged as a rectangle, which is made
-        *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
-        *         4 (bottom left).<br>
-        *         The array must be arranged like this : (x1, y1, x3, y3), or (left,
-        *         top, right, bottom). Other corners are calculated using these coordinates.
-        *   \note This function only allows horizontal/rectangle texture coordinates.
-        */
-        void set_tex_coord(const std::array<float,4>& lCoordinates);
+    /**
+     * \brief Sets this texture's blending mode.
+     * \param mode The new blending mode
+     */
+    void set_blend_mode(blend_mode mode);
 
-        /// Sets this texture's texture coordinates.
-        /** \param lCoordinates This texture's texture coordinates
-        *   \note The texture coordinates are arranged as a rectangle, which is made
-        *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
-        *         4 (bottom left).<br>
-        *         The array must be arranged like this :
-        *         (x1, y1, x2, y2, x3, y3, x4, y4).
-        *   \note This function allows rotated/deformed texture coordinates.
-        */
-        void set_tex_coord(const std::array<float,8>& lCoordinates);
+    /**
+     * \brief Sets this texture's filtering mode.
+     * \param filt The new filtering mode
+     */
+    void set_filter_mode(material::filter filt);
 
-        /// Sets whether this texture's dimensions are affected by texture coordinates.
-        /** \param bTexCoordModifiesRect 'true' to make dimensions change with tex coords
-        */
-        void set_tex_coord_modifies_rect(bool bTexCoordModifiesRect);
+    /**
+     * \brief Makes this texture appear without any color.
+     * \param is_desaturated 'true' if you want to remove colors
+     */
+    void set_desaturated(bool is_desaturated);
 
-        /// Sets this texture's texture file.
-        /** \param sFile The file from which to read data
-        *   \note This function takes care of checking that the file can be opened.
-        *   \note This function is not compatible with set_color() : only the latest
-        *         you have called will apply.
-        */
-        void set_texture(const std::string& sFile);
+    /**
+     * \brief Adds a gradient effect to this texture.
+     * \param g The gradient to add
+     * \note To remove a gradient, call set_gradient(Gradient::NONE).
+     */
+    void set_gradient(const gradient& g);
 
-        /// Reads texture data from a render_target.
-        /** \param pRenderTarget The render_target from which to read the data
-        *   \note This function is only meant for internal use and is not available
-        *         to the Lua API.
-        *   \note This function is not compatible with set_color() : only the latest
-        *         you have called will apply.
-        */
-        void set_texture(std::shared_ptr<render_target> pRenderTarget);
+    /**
+     * \brief Sets this texture's texture coordinates.
+     * \param texture_rect This texture's texture coordinates
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     * of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     * 4 (bottom left). The array must be arranged like this: `(x1, y1, x3, y3)`, or
+     * `(left, top, right, bottom)`. Other corners are calculated using these coordinates.
+     * \note This function only allows horizontal/rectangle texture coordinates.
+     */
+    void set_tex_rect(const std::array<float, 4>& texture_rect);
 
-        /// Sets this texture's color.
-        /** \param mColor The color to use
-        *   \note This function is not compatible with set_texture() : only the latest
-        *         you have called will apply.
-        */
-        void set_color(const color& mColor);
+    /**
+     * \brief Sets this texture's texture coordinates.
+     * \param texture_coords This texture's texture coordinates
+     * \note The texture coordinates are arranged as a rectangle, which is made
+     * of four points: 1 (top left), 2 (top right), 3 (bottom right) and
+     * 4 (bottom left). The array must be arranged like this:
+     * `(x1, y1, x2, y2, x3, y3, x4, y4)`.
+     * \note This function allows rotated/deformed texture coordinates.
+     */
+    void set_tex_coord(const std::array<float, 8>& texture_coords);
 
-        /// Directly sets this texture's underlying sprite.
-        /** \param mSprite The new sprite to use
-        *   \note The texture's dimensions will be adjusted to fit those
-        *         of the provided sprite, and same goes for texture
-        *         coordinates.
-        *   \note Be sure to know what you're doing when you call this
-        *         function.
-        */
-        void set_sprite(sprite mSprite);
+    /**
+     * \brief Sets whether this texture can stretch to match the region dimensions.
+     * \param texture_stretching 'true' to allow texture stretching change with tex coords
+     */
+    void set_texture_stretching(bool texture_stretching);
 
-        /// Sets this texture's vertex color.
-        /** \param mColor This textures's new vertex color
-        *   \param uiIndex The vertex index (-1: all vertices)
-        *   \note This color is used to filter the texture's colors:
-        *         for each pixel, the original color is multiplied
-        *         by this vertex color.
-        */
-        void set_vertex_color(const color& mColor, uint uiIndex = (uint)-1);
+    /**
+     * \brief Sets this texture's texture file.
+     * \param file_name The file from which to read data
+     * \note This function takes care of checking that the file can be opened.
+     * \note This function will replace the solid color set by set_solid_color(). If you need
+     * to blend the texture with a color, use set_vertex_color() instead.
+     */
+    void set_texture(const std::string& file_name);
 
-        /// Creates the associated Lua glue.
-        void create_glue() override;
+    /**
+     * \brief Reads texture data from a render_target.
+     * \param target The render_target from which to read the data
+     * \note This function will replace the solid color set by set_solid_color(). If you need
+     * to blend the texture with a color, use set_vertex_color() instead.
+     */
+    void set_texture(std::shared_ptr<render_target> target);
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The texture's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
+    /**
+     * \brief Sets this texture's color.
+     * \param c The color to use
+     * \note This function will replace the texture set by set_texture() with a solid color.
+     * If you need to blend the texture with a color, use set_vertex_color() instead.
+     */
+    void set_solid_color(const color& c);
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+    /**
+     * \brief Directly sets this texture's underlying quad (vertices and material).
+     * \param q The new quad to use
+     * \note The texture's dimensions will be adjusted to fit those
+     * of the provided quad, and same goes for texture coordinates.
+     */
+    void set_quad(const quad& q);
 
-        static constexpr const char* CLASS_NAME = "Texture";
+    /**
+     * \brief Sets this texture's vertex color.
+     * \param c This texture's new vertex color
+     * \param index The vertex index (-1: all vertices)
+     * \note This color is used to filter the texture's colors:
+     * for each pixel, the original color is multiplied
+     * by this vertex color.
+     */
+    void
+    set_vertex_color(const color& c, std::size_t index = std::numeric_limits<std::size_t>::max());
 
-    private :
+    /**
+     * \brief Parses data from a layout_node.
+     * \param node The layout node
+     */
+    void parse_layout(const layout_node& node) override;
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_tex_coords_block_(xml::block* pBlock);
-        void parse_gradient_block_(xml::block* pBlock);
+    /// Registers this region class to the provided Lua state
+    static void register_on_lua(sol::state& lua);
 
-        bool        bHasSprite_ = false;
-        sprite      mSprite_;
-        std::string sTextureFile_;
+    static constexpr const char* class_name = "Texture";
 
-        blend_mode       mBlendMode_ = blend_mode::NONE;
-        material::filter mFilter_ = material::filter::NONE;
-        bool             bIsDesaturated_ = false;
-        gradient         mGradient_;
-        color            mColor_ = color::WHITE;
+private:
+    void parse_attributes_(const layout_node& node) override;
+    void parse_tex_coords_node_(const layout_node& node);
+    void parse_gradient_node_(const layout_node& node);
 
-        std::array<float,8> lTexCoord_ = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-        bool                bTexCoordModifiesRect_ = false;
-    };
+    const std::vector<std::string>& get_type_list_() const override;
 
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
+    void update_dimensions_from_tex_coord_();
+    void update_borders_() override;
 
-    class lua_texture : public lua_layered_region
-    {
-    public :
+    using content    = std::variant<color, std::string, gradient>;
+    content content_ = color::white;
 
-        explicit lua_texture(lua_State* pLua);
-        texture* get_object() { return static_cast<texture*>(pObject_); }
+    blend_mode       blend_mode_                    = blend_mode::blend;
+    material::filter filter_                        = material::filter::none;
+    bool             is_desaturated_                = false;
+    bool             is_texture_stretching_enabled_ = true;
 
-        // texture
-        int _set_vertex_color(lua_State*);
-        int _get_blend_mode(lua_State*);
-        int _get_filter_mode(lua_State*);
-        int _get_tex_coord(lua_State*);
-        int _get_tex_coord_modifies_rect(lua_State*);
-        int _get_texture(lua_State*);
-        int _get_vertex_color(lua_State*);
-        int _is_desaturated(lua_State*);
-        int _set_blend_mode(lua_State*);
-        int _set_filter_mode(lua_State*);
-        int _set_desaturated(lua_State*);
-        int _set_gradient(lua_State*);
-        int _set_gradient_alpha(lua_State*);
-        int _set_tex_coord(lua_State*);
-        int _set_tex_coord_modifies_rect(lua_State*);
-        int _set_texture(lua_State*);
+    renderer& renderer_;
+    quad      quad_;
+};
 
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_texture> methods[];
-    };
-
-    /** \endcond
-    */
-}
-}
+} // namespace lxgui::gui
 
 #endif

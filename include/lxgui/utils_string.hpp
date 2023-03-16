@@ -1,241 +1,275 @@
 #ifndef LXGUI_UTILS_STRING_HPP
 #define LXGUI_UTILS_STRING_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_variant.hpp"
 
-#include <string>
-#include <vector>
+#include <algorithm>
 #include <array>
 #include <iostream>
-#include <algorithm>
+#include <locale>
+#include <magic_enum.hpp>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
 
-/** \cond NOT_REMOVE_FROM_DOC
-*/
-namespace lxgui {
-namespace utils
-{
-    using string = std::string;
-    using ustring = std::u32string;
+/** \cond INCLUDE_INTERNALS_IN_DOC
+ */
+namespace lxgui::utils {
 
-    void trim(string& s, char cPattern);
-    void trim(string& s, const string& sPatterns);
-    void replace(string& s, const string& sPattern, const string& sReplacement);
+using string       = std::string;
+using string_view  = std::string_view;
+using ustring      = std::u32string;
+using ustring_view = std::u32string_view;
 
-    uint count_occurrences(const string& s, const string& sPattern);
+[[nodiscard]] string_view trim(string_view s, char c_pattern);
+[[nodiscard]] string_view trim(string_view s, string_view patterns);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
+void replace(string& s, string_view pattern, string_view replacement);
 
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            if (uiCurSize != 0)
-                lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-        }
+[[nodiscard]] std::size_t count_occurrences(string_view s, string_view pattern);
 
-        lPieces.push_back(s.substr(uiLastPos));
+[[nodiscard]] std::vector<string_view>  cut(string_view s, string_view delim);
+[[nodiscard]] std::vector<ustring_view> cut(ustring_view s, ustring_view delim);
 
-        return lPieces;
-    }
+[[nodiscard]] std::vector<string_view>  cut_each(string_view s, string_view delim);
+[[nodiscard]] std::vector<ustring_view> cut_each(ustring_view s, ustring_view delim);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim)
-    {
-        return cut(s, std::basic_string<T>(sDelim));
-    }
+[[nodiscard]] std::pair<string_view, string_view>   cut_first(string_view s, string_view delim);
+[[nodiscard]] std::pair<ustring_view, ustring_view> cut_first(ustring_view s, ustring_view delim);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
-        uint uiCount = 0u;
+[[nodiscard]] bool starts_with(string_view s, string_view pattern);
+[[nodiscard]] bool ends_with(string_view s, string_view pattern);
 
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            if (uiCurSize != 0)
-                lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-            ++uiCount;
+[[nodiscard]] bool has_no_content(string_view s);
 
-            if (uiCount >= uiMaxCut)
-                break;
-        }
+[[nodiscard]] ustring utf8_to_unicode(string_view s);
+[[nodiscard]] string  unicode_to_utf8(ustring_view s);
 
-        lPieces.push_back(s.substr(uiLastPos));
+[[nodiscard]] std::size_t hex_to_uint(string_view s);
 
-        return lPieces;
-    }
+namespace impl {
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
-    {
-        return cut(s, std::basic_string<T>(sDelim), uiMaxCut);
-    }
+template<typename T>
+std::optional<T> from_string(const std::locale&, string_view);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
+template<>
+std::optional<int> from_string<int>(const std::locale&, string_view);
 
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-        }
+template<>
+std::optional<long> from_string<long>(const std::locale&, string_view);
 
-        lPieces.push_back(s.substr(uiLastPos));
+template<>
+std::optional<long long> from_string<long long>(const std::locale&, string_view);
 
-        return lPieces;
-    }
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale&, string_view);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim)
-    {
-        return cut_each(s, std::basic_string<T>(sDelim));
-    }
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale&, string_view);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
-        uint uiCount = 0u;
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(const std::locale&, string_view);
 
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
+template<>
+std::optional<float> from_string<float>(const std::locale&, string_view);
 
-            if (uiCount >= uiMaxCut)
-                break;
-        }
+template<>
+std::optional<double> from_string<double>(const std::locale&, string_view);
 
-        lPieces.push_back(s.substr(uiLastPos));
+template<typename T>
+std::optional<T> from_string(const std::locale&, ustring_view);
 
-        return lPieces;
-    }
+template<>
+std::optional<int> from_string<int>(const std::locale&, ustring_view);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
-    {
-        return cut_each(s, std::basic_string<T>(sDelim), uiMaxCut);
-    }
+template<>
+std::optional<long> from_string<long>(const std::locale&, ustring_view);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::vector<T>& lDelims)
-    {
-        std::vector<std::basic_string<T>> lPieces;
+template<>
+std::optional<long long> from_string<long long>(const std::locale&, ustring_view);
 
-        std::basic_string<T> sTemp;
-        for (auto c : s)
-        {
-            if (std::find(lDelims.begin(), lDelims.end(), c) != lDelims.end())
-            {
-                if (!sTemp.empty())
-                {
-                    lPieces.push_back(sTemp);
-                    sTemp.clear();
-                }
-            }
-            else
-                sTemp.push_back(c);
-        }
+template<>
+std::optional<unsigned> from_string<unsigned>(const std::locale&, ustring_view);
 
-        if (!sTemp.empty())
-            lPieces.push_back(sTemp);
+template<>
+std::optional<unsigned long> from_string<unsigned long>(const std::locale&, ustring_view);
 
-        return lPieces;
-    }
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(const std::locale&, ustring_view);
 
-    bool starts_with(const string& s, const string& sPattern);
-    bool ends_with(const string& s, const string& sPattern);
+template<>
+std::optional<float> from_string<float>(const std::locale&, ustring_view);
 
-    bool has_no_content(const string& s);
+template<>
+std::optional<double> from_string<double>(const std::locale&, ustring_view);
 
-    ustring utf8_to_unicode(const string& s);
-    string  unicode_to_utf8(const ustring& s);
+template<typename T>
+std::optional<T> from_string(string_view);
 
-    uint    hex_to_uint(const string& s);
+template<>
+std::optional<int> from_string<int>(string_view);
 
-    int string_to_int(const string& s);
-    int string_to_int(const ustring& s);
+template<>
+std::optional<long> from_string<long>(string_view);
 
-    uint string_to_uint(const string& s);
-    uint string_to_uint(const ustring& s);
+template<>
+std::optional<long long> from_string<long long>(string_view);
 
-    float string_to_float(const string& s);
-    float string_to_float(const ustring& s);
+template<>
+std::optional<unsigned> from_string<unsigned>(string_view);
 
-    double string_to_double(const string& s);
-    double string_to_double(const ustring& s);
+template<>
+std::optional<unsigned long> from_string<unsigned long>(string_view);
 
-    bool string_to_bool(const string& s);
-    bool string_to_bool(const ustring& s);
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(string_view);
 
-    bool is_number(const string& s);
-    bool is_number(const ustring& s);
-    bool is_number(char s);
-    bool is_integer(const string& s);
-    bool is_integer(const ustring& s);
-    bool is_integer(char s);
-    bool is_boolean(const string& s);
-    bool is_boolean(const ustring& s);
+template<>
+std::optional<float> from_string<float>(string_view);
 
-    bool is_whitespace(char c);
-    bool is_whitespace(char32_t c);
+template<>
+std::optional<double> from_string<double>(string_view);
 
-    string to_string(int i);
-    string to_string(uint ui);
-    string to_string(long i);
-    string to_string(ulong ui);
-    string to_string(float f);
-    string to_string(double f);
-    string to_string(bool b);
-    string to_string(void* p);
+template<>
+std::optional<bool> from_string<bool>(string_view);
 
-    template<typename T>
-    string to_string(T* p)
-    {
-        if (p != nullptr)
-            return to_string(static_cast<void*>(p));
-        else
-            return "NULL";
-    }
+template<>
+std::optional<string> from_string<string>(string_view);
 
-    string to_string(const utils::variant& mValue);
+template<typename T>
+std::optional<T> from_string(ustring_view);
 
-    template<typename ... Args>
-    ustring to_ustring(Args&& ... args)
-    {
-        return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
+template<>
+std::optional<int> from_string<int>(ustring_view);
+
+template<>
+std::optional<long> from_string<long>(ustring_view);
+
+template<>
+std::optional<long long> from_string<long long>(ustring_view);
+
+template<>
+std::optional<unsigned> from_string<unsigned>(ustring_view);
+
+template<>
+std::optional<unsigned long> from_string<unsigned long>(ustring_view);
+
+template<>
+std::optional<unsigned long long> from_string<unsigned long long>(ustring_view);
+
+template<>
+std::optional<float> from_string<float>(ustring_view);
+
+template<>
+std::optional<double> from_string<double>(ustring_view);
+
+template<>
+std::optional<bool> from_string<bool>(ustring_view);
+
+template<>
+std::optional<ustring> from_string<ustring>(ustring_view);
+
+} // namespace impl
+
+template<typename T>
+[[nodiscard]] std::optional<T> from_string(const std::locale& loc, string_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(s, magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(loc, s);
     }
 }
+
+template<typename T>
+[[nodiscard]] std::optional<T> from_string(const std::locale& loc, ustring_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(unicode_to_utf8(s), magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(loc, s);
+    }
 }
+
+template<typename T>
+[[nodiscard]] std::optional<T> from_string(string_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(s, magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(s);
+    }
+}
+
+template<typename T>
+[[nodiscard]] std::optional<T> from_string(ustring_view s) {
+    if constexpr (std::is_enum_v<T>) {
+        return magic_enum::enum_cast<T>(unicode_to_utf8(s), magic_enum::case_insensitive);
+    } else {
+        return impl::from_string<T>(s);
+    }
+}
+
+[[nodiscard]] bool is_number(const std::locale& loc, string_view s);
+[[nodiscard]] bool is_number(const std::locale& loc, ustring_view s);
+[[nodiscard]] bool is_integer(const std::locale& loc, string_view s);
+[[nodiscard]] bool is_integer(const std::locale& loc, ustring_view s);
+
+[[nodiscard]] bool is_number(string_view s);
+[[nodiscard]] bool is_number(ustring_view s);
+[[nodiscard]] bool is_integer(string_view s);
+[[nodiscard]] bool is_integer(ustring_view s);
+
+[[nodiscard]] bool is_number(char s);
+[[nodiscard]] bool is_number(char32_t s);
+[[nodiscard]] bool is_integer(char s);
+[[nodiscard]] bool is_integer(char32_t s);
+
+[[nodiscard]] bool is_boolean(string_view s);
+[[nodiscard]] bool is_boolean(ustring_view s);
+
+[[nodiscard]] bool is_whitespace(char c);
+[[nodiscard]] bool is_whitespace(char32_t c);
+
+[[nodiscard]] string to_string(int v);
+[[nodiscard]] string to_string(long v);
+[[nodiscard]] string to_string(long long v);
+[[nodiscard]] string to_string(unsigned v);
+[[nodiscard]] string to_string(unsigned long v);
+[[nodiscard]] string to_string(unsigned long long v);
+[[nodiscard]] string to_string(float v);
+[[nodiscard]] string to_string(double v);
+[[nodiscard]] string to_string(bool v);
+[[nodiscard]] string to_string(bool b);
+[[nodiscard]] string to_string(const void* p);
+
+template<typename T, typename enable = std::enable_if_t<std::is_enum_v<T>>>
+[[nodiscard]] string to_string(T v) {
+    return string{magic_enum::enum_name(v)};
+}
+
+template<typename T>
+[[nodiscard]] string to_string(const T* p) {
+    return p != nullptr ? to_string(static_cast<const void*>(p)) : "null";
+}
+
+template<typename T>
+[[nodiscard]] string to_string(T* p) {
+    return p != nullptr ? to_string(static_cast<void*>(p)) : "null";
+}
+
+[[nodiscard]] string to_string(const utils::variant& value);
+
+template<typename... Args>
+[[nodiscard]] ustring to_ustring(Args&&... args) {
+    return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
+}
+
+[[nodiscard]] string to_lower(string str);
+
+} // namespace lxgui::utils
 
 /** \endcond
-*/
+ */
 
 #endif

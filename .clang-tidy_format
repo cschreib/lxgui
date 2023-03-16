@@ -1,0 +1,111 @@
+Checks: >
+  -*,
+  readability-identifier-naming
+
+HeaderFilterRegex: ".*include/lxgui/.*"
+
+CheckOptions:
+  - key: readability-identifier-naming.AbstractClassCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ClassCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ClassConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ClassMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ClassMethodCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstantMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstantParameterCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstantPointerParameterCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstexprFunctionCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstexprMethodCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.EnumCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.EnumConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.FunctionCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.GlobalConstantPointerCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.GlobalFunctionCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.GlobalPointerCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.InlineNamespaceCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.LocalConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.LocalConstantPointerCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.LocalPointerCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.LocalVariableCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: 'UPPER_CASE'
+  - key: readability-identifier-naming.MemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.NamespaceCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ParameterCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ParameterPackCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PointerParameterCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.PrivateMethodCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PrivateMethodSuffix
+    value: '_'
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ProtectedMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.ProtectedMethodCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ProtectedMethodSuffix
+    value: '_'
+  - key: readability-identifier-naming.PublicMemberCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.PublicMethodCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.ScopedEnumConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.StaticConstantCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.StaticVariableCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.StructCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: 'CamelCase'
+  - key: readability-identifier-naming.TemplateTemplateParameterCase
+    value: 'CamelCase'
+  - key: readability-identifier-naming.TypeAliasCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.TypedefCase
+    value: 'lower_case'
+  - key: readability-identifier-naming.TypeTemplateParameterCase
+    value: 'CamelCase'
+  - key: readability-identifier-naming.ValueTemplateParameterCase
+    value: 'CamelCase'
+  - key: readability-identifier-naming.VariableCase
+    value: 'lower_case'

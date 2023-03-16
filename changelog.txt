@@ -4,6 +4,8 @@ Major changes:
  - general: switched to MIT license
  - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3)
  - general: dropped support for C++ version earlier than C++17
+ - general: switched to observable_unique_ptr for ownership and observable pointers
+ - general: return references (&) instead of pointers (*) if an object cannot be null
  - input: added SDL input implementation
  - input: removed OIS input implementation
  - input: removed GLFW input implementation
@@ -13,13 +15,25 @@ Major changes:
  - gui: added documentation for the Lua API
  - gui: added support for high-DPI systems using a global scaling factor (with hints from OS)
  - gui: added vertex_cache to speed up rendering (only available with OpenGL renderer)
- - gui: added texture atlases to speed up rendering (best enabled only if vertex cache is supported)
+ - gui: added texture atlases to speed up rendering
+ - gui: added quad batching to speed up rendering
+ - gui: added localizer class for handling languages, translations, and string formatting
+ - gui: added animated_texture region type for animated textures
+ - gui: font_string can now render icons/smileys mixed with the rendered text
+ - gui: fonts are no longer limited to the first 255 unicode characters
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:
     - the frame itself is created (without any of its regions or children)
-    - the special regions are parsed (e.g., slider thumb texture, button texture, etc.)
+    - the special regions are created (e.g., slider thumb texture, button texture, etc.)
     - the regions are created, in order of declaration in the XML file
-    - the special frames are parsed (e.g., scroll child)
+    - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
+ - gui: scripts are now handled with signals and slots in C++, for better control of lifetime
+ - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
+ - gui: focus is now handled as a stack rather than binary
+ - gui: keyboard input is now given to topmost frame registered for the pressed key
+ - lua: removed custom lua wrapper, using sol2 instead
+ - xml: removed custom xml parser, using pugixml instead
+ - yaml: added yaml parser for GUI layout
 
 Other changes:
  - general: various fixes and improvements to the build system
@@ -37,53 +51,158 @@ Other changes:
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
  - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
+ - utils: string conversion functions are now locale-independent; use localizer class otherwise
+ - utils: added observer/owner smart pointers
+ - utils: added signal
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
- - lua: starting switching to sol2 to manage the Lua state
  - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
- - input: get_key_name() is now platform-independent, and only returns English
+ - input: renamed input::manager into input::dispatcher
+ - input: get_key_name() is now a free function renamed to get_key_code_name()
+ - input: get_key_code_name() is now platform-independent, and only returns English
  - input: added set_mouse_cursor() and reset_mouse_cursor()
  - input: added get_interface_scaling_factor_hint()
  - input: added set_interface_scaling_factor()
- - gui: added error message when trying to anchor to an object managed by another renderer
+ - input: removed key_is_down_long() and mouse_is_down_long()
+ - input: added world_dispatcher
+ - input: added window
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: added renderer::set_view() to allow arbitrary view transforms
  - gui: added color::from_hsv and color::to_hsv
  - gui: added support for custom frame/layered_region factory functions
  - gui: added EditBox:set_font Lua function
+ - gui: added FontString:set_line_spacing and get_line_spacing Lua functions
+ - gui: added explicit =delete for copy and move constructors when appropriate
+ - gui: added event_data class
+ - gui: added frame::get_rough_num_children and get_rough_num_regions
+ - gui: added root to hold root frames
+ - gui: added virtual_uiroot to hold virtual root frames
+ - gui: added factory to manage region creation functions
+ - gui: added registry and virtual_registry to handle gion lookup by name
+ - gui: added addon_registry to load and manage addons
+ - gui: added keybinder to manage Lua key bindings
+ - gui: added gion::is_loaded() and clarify the semantic
+ - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
+ - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
+ - gui: added frame::enable_key_capture
+ - gui: added OnKeyRepeat frame event
+ - gui: added OnReceiveDrag for frame
+ - gui: added OnCursorChanged for edit_box
+ - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
+ - gui: added set_cursor_position()/get_cursor_position() to edit_box
+ - gui: added clear_history_lines() to edit_box
+ - gui: added clipboard support to edit_box
+ - gui: added automatic un-focus of edit_box when clicking outside of the box
+ - gui: added frame::get_script
+ - gui: added slider::set_orientation(const std::string&)
+ - gui: added status_bar::set_orientation(const std::string&)
+ - gui: added manager::close_ui_now and made close_ui safer
+ - gui: added frame::enable_mouse_click and frame::enable_mouse_move
+ - gui: added font_string::set_vertex_cache_strategy
+ - gui: added frame::set_update_rate
+ - gui: added render_target::save_to_file
+ - gui: added region::is_valid
+ - gui: renamed gui::uiobject into gui::region, and merged with previous gui::region
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
- - gui: renamed frame::on into frame::on_script
+ - gui: renamed frame::on into frame::fire_script
  - gui: renamed frame::fire_build_layer_list into frame::notify_layers_need_update
  - gui: renamed frame_renderer::fire_redraw into notify_strata_needs_redraw
- - gui: renamed uiobject::fire_udpate_borders to uiobject::notify_borders_need_update
+ - gui: renamed region::fire_udpate_borders to region::notify_borders_need_update
  - gui: renamed color::chanel to color::channel
+ - gui: renamed quad2 to bounds2
+ - gui: renamed font_string::set_offsets to set_offset
+ - gui: renamed font_string::get_offsets to get_offset
+ - gui: renamed font_string::set_shadow_offsets to set_shadow_offset
+ - gui: renamed font_string::get_shadow_offsets to get_shadow_offset
+ - gui: renamed region::set_abs_width/height/dimensions to set_width/height/dimensions
+ - gui: renamed region::set_rel_width/height/dimensions to set_relative_width/height/dimensions
+ - gui: renamed frame::get/set_min/max_resize to get/set_min/max_dimensions
+ - gui: renamed manager::update to update_ui
+ - gui: renamed manager::read_files to load_ui
+ - gui: renamed manager::create_lua to register_lua_glues
+ - gui: renamed event_manager to event_emitter
+ - gui: renamed input::manager::get_key_name into input::get_key_codename
+ - gui: renamed input::manager::get_mouse_button_string into input::get_mouse_button_codename
+ - gui: renamed input::manager::get_key_name overloads with modifiers
+ - gui: renamed input::manager to input::dispatcher
+ - gui: renamed layer to layer_container
+ - gui: renamed layer_type to layer
+ - gui: renamed TOPLEFT to TOP_LEFT, BOTTOMRIGHT to BOTTOM_RIGHT, etc.
+ - gui: renamed justifyH to alignX, justifyV to alignY
+ - gui: renamed anchor_point to point
+ - gui: renamed register_for_drag to enable_drag
+ - gui: renamed get_object_type to get_region_type
+ - gui: renamed clear_all_points to clear_all_anchors
+ - gui: renamed [get/set/modify]_point to [get/set/modify]_anchor
+ - gui: renamed any function of the form "get_num_[...]()" into "get_[...]_count()"
+ - gui: renamed set_all_points/clear_all_points to set_all_anchors/clear_all_anchors
+ - gui: renamed strata to strata_data
+ - gui: renamed frame_level/frameLevel to level
+ - gui: renamed frame_strata/frameStrata to strata
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_non_space_wrap_enabled
+ - gui: renamed has_shadow to is_shadow_enabled
+ - gui: renamed set_shadow to set_shadow_enabled
+ - gui: renamed set_word_wrap to set_word_wrap_enabled
+ - gui: renamed can_word_wrap to is_word_wrap_enabled
+ - gui: renamed can_non_space_wrap to is_non_space_wrap_enabled
+ - gui: renamed set_non_space_wrap to set_word_wrap_enabled
+ - gui: renamed nonspacewrap to nonSpaceWrap
+ - gui: renamed enable_mouse* to set_mouse*_enabled
+ - gui: renamed enable_key* to set_key*_enabled
+ - gui: renamed is_password to is_password_mode_enabled
+ - gui: renamed set_password to set_password_mode_enabled
+ - gui: renamed blink_period/blinkPeriod to blink_time/blinkTime
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
+ - gui: removed the sprite class
+ - gui: removed region::get_base()
+ - gui: removed region::push_on_lua()
+ - gui: removed region::get_id() and set_id()
+ - gui: removed anchor::set_object() (now a reference, cannot change)
+ - gui: removed font_string::get_shadow_x_offset()
+ - gui: removed font_string::get_shadow_y_offset()
+ - gui: removed region::set_abs_point and region::set_rel_point, use set_point() instead
+ - gui: removed anchor::get_abs_x/get_abs_y and added anchor::get_point
+ - gui: removed region::get_abs_width/height and added region::get_dimensions()
+ - gui: removed region::get_apparent_width/height and added region::get_apparent_dimensions()
+ - gui: removed region::set_newly_created/is_newly_created (no longer necessary)
+ - gui: removed manager::is_loading_ui() (no longer necessary)
+ - gui: removed manager::begin() and end()
+ - gui: removed frame::is_mouse_enabled; use is_mouse_click_enabled and is_mouse_move_enabled
+ - gui: removed frame::is_in_frame; use is_in_region instead
+ - gui: removed frame::register_all_events and unregister_all_events
+ - gui: removed event class; generic events are now only using event_data
+ - gui: removed get_frame_type, use get_region_type instead
+ - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
- - gui: sprite is now a value type
+ - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument
+ - gui: font_string::set_offset now takes a single vector2f argument
+ - gui: font_string::set_shadow_offset now takes a single vector2f argument
  - gui: the GUI will now properly handle render window being resized
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added frame_renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a frame_renderer
- - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
- - gui: added OnReceiveDrag for frame
- - gui: added OnCursorChanged for edit_box
- - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
- - gui: added set_cursor_position()/get_cursor_position() to edit_box
- - gui: added clear_history() to edit_box
- - gui: added clipboard support to edit_box
- - gui: added automatic un-focus of edit_box when clicking outside of the box
+ - gui: split anchor into anchor (logic) + anchor_data (data)
+ - gui: region::set_parent() and region::set_name() are no longer public
+ - gui: Lua key binding functions now expect Lua functions as handlers, not strings
+ - gui: renamed OnEditFocusGained to OnFocusGained (now available for FocusFrame too)
+ - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
+ - gui: key and mouse events no longer contain string names of buttons and keys
+ - gui: objects inside a scroll_frame can now correctly anchor to other objects
  - gui: render targets can now have texture filtering other than nearest
+ - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications
- - gui: improved peformance of generating new object IDs
+ - gui: improved peformance of font outline rendering
+ - gui: improved quality and consistency of font rendering in OpenGL back-end
  - gui: fixed rare crash in edit_box
  - gui: fixed crash when calling Lua delete_frame() twice on same frame
  - gui: fixed Lua get_width()/get_height() returning incorrect values
@@ -102,13 +221,23 @@ Other changes:
  - gui: fixed edit_box getting stuck when pressing Backspace to delete all partially-displayed text
  - gui: fixed edit_box integer_only setting not always checking for validity of the current content
  - gui: fixed edit_box numeric-only mode not accepting input correctly
+ - gui: fixed edit_box key repeat duplicating low-level repetitions from the OS
  - gui: fixed FontString:set_font() outline flags not handled correctly
  - gui: fixed scroll_frame not propagating all size updates to its scroll child
  - gui: fixed is_visible() for layered_regions always returning false
  - gui: fixed hovered frame not updated when hide/show is called
- - gui: fixed OnEnter/OnLeave not always triggered hide/show is called
+ - gui: fixed OnEnter/OnLeave not always triggered when hide/show is called
  - gui: fixed set_alpha() not doing anything
- - xml: now parsing standard XML comments
+ - gui: fixed focus_frame::set_auto_focus() not doing anything
+ - gui: fixed button text not updated when changing font objects after creation
+ - gui: fixed frame title region not having a .TitleRegion shortcut in Lua
+ - gui: fixed shortcut to frame children and regions in Lua not removed if child/region removed
+ - gui: fixed frame::get_num_children and get_num_regions not accurate
+ - gui: fixed Frame:on_* Lua handlers not set to nil if handler removed in C++
+ - gui: fixed frame not marked as "user placed" when moved or resized
+ - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
+ - gui: fixed missing 'const' for region::render()
+ - gui: fixed status_bar not firing OnValueChanged
 
 v1.2.0:
  - added support for MSVC 2010

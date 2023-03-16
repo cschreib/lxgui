@@ -1,0 +1,11 @@
+## Interface: 0001
+## Title: Slider test
+## Version: 1.0
+## Author: Kalith
+## SavedVariables: 
+
+class_helper.lua
+color.lua
+addon.lua
+templates.xml
+addon.xml

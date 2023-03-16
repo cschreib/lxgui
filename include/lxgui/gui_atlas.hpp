@@ -1,143 +1,213 @@
 #ifndef LXGUI_GUI_ATLAS_HPP
 #define LXGUI_GUI_ATLAS_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
+#include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 
-#include <vector>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
-#include <optional>
+#include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    class renderer;
+namespace lxgui::gui {
 
-    /// A single texture holding multiple materials for efficient rendering
-    /** This is an abstract class that must be implemented
-    *   and created by the corresponding gui::renderer.
-    */
-    class atlas_page
-    {
-    public :
+class renderer;
+class font;
 
-        /// Constructor.
-        explicit atlas_page(material::filter mFilter);
+/**
+ * \brief A single texture holding multiple materials for efficient rendering
+ * \details This is an abstract class that must be implemented
+ * and created by the corresponding gui::renderer.
+ */
+class atlas_page {
+public:
+    /**
+     * \brief Constructor.
+     * \param filt Use texture filtering or not (see material::set_filter())
+     */
+    explicit atlas_page(material::filter filt);
 
-        /// Destructor.
-        virtual ~atlas_page() = default;
+    /// Destructor.
+    virtual ~atlas_page() = default;
 
-        /// Find a material in this page (nullptr if not found).
-        /** \param sFileName The name of the file
-        *   \return The material (nullptr if not found)
-        */
-        std::shared_ptr<material> fetch_material(const std::string& sFileName) const;
+    /// Non-copiable
+    atlas_page(const atlas_page&) = delete;
 
-        /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file
-        *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
-        */
-        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat);
+    /// Non-movable
+    atlas_page(atlas_page&&) = delete;
 
-        /// Checks if this page is empty (contains no materials).
-        /** \return 'true' if the page is empty, 'false' otherwise
-        */
-        bool empty() const;
+    /// Non-copiable
+    atlas_page& operator=(const atlas_page&) = delete;
 
-    protected :
+    /// Non-movable
+    atlas_page& operator=(atlas_page&&) = delete;
 
-        /// Adds a new material to this page, at the provided location
-        /** \param mMat      The material to add
-        *   \param mLocation The position at which to insert this material
-        *   \return A new material pointing to inside this page
-        */
-        virtual std::shared_ptr<material> add_material_(const material& mMat,
-            const quad2f& mLocation) = 0;
+    /**
+     * \brief Find a material in this page (nullptr if not found).
+     * \param file_name The name of the file
+     * \return The material (nullptr if not found)
+     */
+    std::shared_ptr<material> fetch_material(const std::string& file_name) const;
 
-        /// Return the width of this page (in pixels).
-        /** \return The width of this page (in pixels)
-        */
-        virtual float get_width() const = 0;
+    /**
+     * \brief Creates a new material from a texture file.
+     * \param file_name The name of the file
+     * \param mat The material to add to this page
+     * \return The new material (or nullptr if the material could not fit)
+     */
+    std::shared_ptr<material> add_material(const std::string& file_name, const material& mat);
 
-        /// Return the height of this page (in pixels).
-        /** \return The height of this page (in pixels)
-        */
-        virtual float get_height() const = 0;
+    /**
+     * \brief Find a font in this page (nullptr if not found).
+     * \param font_name The name+size of the font
+     * \return The font (nullptr if not found)
+     */
+    std::shared_ptr<font> fetch_font(const std::string& font_name) const;
 
-        material::filter mFilter_ = material::filter::NONE;
+    /**
+     * \brief Creates a new font from a texture file.
+     * \param font_name The name of the file
+     * \param fnt The font to add to this page
+     * \return The new font (or nullptr if the font could not fit)
+     */
+    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt);
 
-    private :
+    /**
+     * \brief Checks if this page is empty (contains no materials).
+     * \return 'true' if the page is empty, 'false' otherwise
+     */
+    bool empty() const;
 
-        /// Try to insert a new texture into this page, and return the best position if any
-        /** \param fWidth  The width of the texture to insert
-        *   \param fHeight The height of the texture to insert
-        *   \return The new position for this texture, or std::nullopt if it does not fit
-        */
-        std::optional<quad2f> find_location_(float fWidth, float fHeight) const;
+protected:
+    /**
+     * \brief Adds a new material to this page, at the provided location
+     * \param mat The material to add
+     * \param location The position at which to insert this material
+     * \return A new material pointing to inside this page
+     */
+    virtual std::shared_ptr<material>
+    add_material_(const material& mat, const bounds2f& location) = 0;
 
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+    /**
+     * \brief Return the width of this page (in pixels).
+     * \return The width of this page (in pixels)
+     */
+    virtual float get_width_() const = 0;
+
+    /**
+     * \brief Return the height of this page (in pixels).
+     * \return The height of this page (in pixels)
+     */
+    virtual float get_height_() const = 0;
+
+    material::filter filter_ = material::filter::none;
+
+private:
+    /**
+     * \brief Try to insert a new texture into this page, and return the best position if any
+     * \param width The width of the texture to insert
+     * \param height The height of the texture to insert
+     * \return The new position for this texture, or std::nullopt if it does not fit
+     */
+    std::optional<bounds2f> find_location_(float width, float height) const;
+
+    std::unordered_map<std::string, std::weak_ptr<gui::material>> texture_list_;
+    std::unordered_map<std::string, std::weak_ptr<gui::font>>     font_list_;
+};
+
+/**
+ * \brief A class that holds multiple materials for efficient rendering
+ * \details This is an abstract class that must be implemented
+ * and created by the corresponding gui::renderer.
+ */
+class atlas {
+public:
+    /**
+     * \brief Constructor.
+     * \param rdr The renderer with witch to create this atlas
+     * \param filt Use texture filtering or not (see material::set_filter())
+     */
+    explicit atlas(renderer& rdr, material::filter filt);
+
+    /// Destructor.
+    virtual ~atlas() = default;
+
+    /// Non-copiable
+    atlas(const atlas&) = delete;
+
+    /// Non-movable
+    atlas(atlas&&) = delete;
+
+    /// Non-copiable
+    atlas& operator=(const atlas&) = delete;
+
+    /// Non-movable
+    atlas& operator=(atlas&&) = delete;
+
+    /**
+     * \brief Find a material in this atlas (nullptr if not found).
+     * \param file_name The name of the file
+     * \return The material (nullptr if not found)
+     */
+    std::shared_ptr<material> fetch_material(const std::string& file_name) const;
+
+    /**
+     * \brief Add a new material to the atlas.
+     * \param file_name The name of the file
+     * \param mat The material to add to this atlas
+     * \return The new material
+     */
+    std::shared_ptr<material> add_material(const std::string& file_name, const material& mat);
+
+    /**
+     * \brief Find a font in this atlas (nullptr if not found).
+     * \param font_name The name of the font+size
+     * \return The font (nullptr if not found)
+     */
+    std::shared_ptr<font> fetch_font(const std::string& font_name) const;
+
+    /**
+     * \brief Add a new font to the atlas.
+     * \param font_name The name of the font+size
+     * \param fnt The font to add to this atlas
+     * \return 'true' if the font was added to this atlas, 'false' otherwise
+     */
+    bool add_font(const std::string& font_name, std::shared_ptr<gui::font> fnt);
+
+    /**
+     * \brief Return the number of pages in this atlas.
+     * \return The number of pages in this atlas
+     */
+    std::size_t get_page_count() const;
+
+protected:
+    /**
+     * \brief Create a new page in this atlas.
+     * \return The new page, added at the back of the page list
+     */
+    virtual std::unique_ptr<atlas_page> create_page_() = 0;
+
+    renderer&        renderer_;
+    material::filter filter_ = material::filter::none;
+
+private:
+    /**
+     * \brief Create a new page in this atlas.
+     * \return The new page, added at the back of the page list
+     */
+    void add_page_();
+
+    struct page_item {
+        std::unique_ptr<atlas_page> page;
+        std::shared_ptr<material>   no_texture_mat;
     };
 
-    /// A class that holds multiple materials for efficient rendering
-    /** This is an abstract class that must be implemented
-    *   and created by the corresponding gui::renderer.
-    */
-    class atlas
-    {
-    public :
+    std::vector<page_item> page_list_;
+};
 
-        /// Constructor.
-        explicit atlas(const renderer& mRenderer, material::filter mFilter);
-
-        /// Destructor.
-        virtual ~atlas() = default;
-
-        /// Find a material in this atlas (nullptr if not found).
-        /** \param sFileName The name of the file
-        *   \return The material (nullptr if not found)
-        */
-        std::shared_ptr<material> fetch_material(const std::string& sFileName) const;
-
-        /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file from which the
-        *   \param mMat The material to add to this atlas
-        *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
-        */
-        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat) const;
-
-        /// Return the number of pages in this atlas.
-        /** \return The number of pages in this atlas
-        */
-        uint get_num_pages() const;
-
-    protected :
-
-        /// Create a new page in this atlas.
-        /** \return The new page, added at the back of the page list
-        */
-        virtual std::unique_ptr<atlas_page> create_page_() const = 0;
-
-        const renderer&  mRenderer_;
-        material::filter mFilter_ = material::filter::NONE;
-
-    private :
-
-        /// Create a new page in this atlas.
-        /** \return The new page, added at the back of the page list
-        */
-        void add_page_() const;
-
-        mutable std::vector<std::unique_ptr<atlas_page>> lPageList_;
-    };
-}
-}
+} // namespace lxgui::gui
 
 #endif

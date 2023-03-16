@@ -1,69 +1,58 @@
 #ifndef LXGUI_INPUT_SFML_SOURCE_HPP
 #define LXGUI_INPUT_SFML_SOURCE_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/input_source.hpp>
-#include <lxgui/gui_vector2.hpp>
-#include <SFML/System/Clock.hpp>
+#include "lxgui/gui_vector2.hpp"
+#include "lxgui/input_source.hpp"
+#include "lxgui/utils.hpp"
+
 #include <SFML/Window/Cursor.hpp>
-
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+ */
 namespace sf {
-    class Window;
-    class Event;
-}
 
-namespace lxgui {
-namespace input {
-namespace sfml
-{
-    class source final : public input::source
-    {
-    public :
+class Window;
+class Event;
 
-        /// Initializes this input source.
-        /** \param pWindow The window from which to receive input
-        */
-        explicit source(sf::Window& pWindow, bool bMouseGrab = false);
+} // namespace sf
+/** \endcond
+ */
 
-        source(const source&) = delete;
-        source& operator = (const source&) = delete;
+namespace lxgui::input { namespace sfml {
 
-        void toggle_mouse_grab() override;
-        std::string get_key_name(key mKey) const;
+/// SFML implementation of input::source
+class source final : public input::source {
+public:
+    /**
+     * \brief Initializes this input source.
+     * \param win The window from which to receive input
+     */
+    explicit source(sf::Window& win);
 
-        utils::ustring get_clipboard_content() override;
-        void set_clipboard_content(const utils::ustring& sContent) override;
+    source(const source&) = delete;
+    source& operator=(const source&) = delete;
 
-        void on_sfml_event(const sf::Event& mEvent);
+    utils::ustring get_clipboard_content() override;
+    void           set_clipboard_content(const utils::ustring& content) override;
 
-        void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
-        void reset_mouse_cursor() override;
+    void on_sfml_event(const sf::Event& event);
 
-    protected :
+    void set_mouse_cursor(const std::string& file_name, const gui::vector2i& hot_spot) override;
+    void reset_mouse_cursor() override;
 
-        void update_() override;
+private:
+    input::key from_sfml_(int sf_key) const;
 
-    private :
+    sf::Window& window_;
 
-        input::key from_sfml_(int uiSFKey) const;
+    gui::vector2i old_mouse_pos_;
+    bool          first_mouse_move_ = true;
 
-        sf::Window& mWindow_;
+    std::unordered_map<std::string, std::unique_ptr<sf::Cursor>> cursor_map_;
+};
 
-        bool bMouseGrab_ = false;
-        bool bFirst_ = true;
-
-        float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
-        float fWheelCache_ = 0.0f;
-
-        std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
-
-        std::unordered_map<std::string,std::unique_ptr<sf::Cursor>> lCursorMap_;
-    };
-}
-}
-}
+}} // namespace lxgui::input::sfml
 
 #endif

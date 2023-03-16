@@ -1,68 +1,64 @@
 #ifndef LXGUI_GUI_MATRIX4_HPP
 #define LXGUI_GUI_MATRIX4_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/gui_vector2.hpp>
+#include "lxgui/gui_vector2.hpp"
+#include "lxgui/lxgui.hpp"
+
 #include <initializer_list>
 #include <iosfwd>
 
-namespace lxgui {
-namespace gui
-{
-    struct matrix4f
-    {
-        using element_type = float;
+namespace lxgui::gui {
 
-        matrix4f() = default;
-        matrix4f(std::initializer_list<element_type> mList);
-        explicit matrix4f(const element_type* mat);
+/// A 4x4 matrix, used for coordinate transformations
+struct matrix4f {
+    using element_type = float;
 
-        element_type& operator () (uint row, uint col)
-        {
-            return data[col+row*4];
-        }
+    matrix4f() noexcept = default;
+    matrix4f(std::initializer_list<element_type> list) noexcept;
+    explicit matrix4f(const element_type* mat) noexcept;
 
-        element_type operator () (uint row, uint col) const
-        {
-            return data[col+row*4];
-        }
+    element_type& operator()(std::size_t row, std::size_t col) noexcept {
+        return data[col + row * 4];
+    }
 
-        element_type& operator () (uint i)
-        {
-            return data[i];
-        }
+    element_type operator()(std::size_t row, std::size_t col) const noexcept {
+        return data[col + row * 4];
+    }
 
-        element_type operator () (uint i) const
-        {
-            return data[i];
-        }
+    element_type& operator()(std::size_t i) noexcept {
+        return data[i];
+    }
 
-        void transpose();
-        void invert();
+    element_type operator()(std::size_t i) const noexcept {
+        return data[i];
+    }
 
-        static matrix4f translation(const vector2f& dx);
-        static matrix4f scaling(const vector2f& scale);
-        static matrix4f rotation(float rot);
-        static matrix4f transformation(const vector2f& dx, const vector2f& scale, float rot);
-        static matrix4f view(const vector2f& window);
-        static matrix4f view(const vector2f& window, const vector2f& center);
+    void transpose() noexcept;
+    void invert() noexcept;
 
-        static matrix4f transpose(const matrix4f& m);
-        static matrix4f invert(const matrix4f& m);
+    static matrix4f translation(const vector2f& dx) noexcept;
+    static matrix4f scaling(const vector2f& scale) noexcept;
+    static matrix4f rotation(float rot) noexcept;
+    static matrix4f transformation(const vector2f& dx, const vector2f& scale, float rot) noexcept;
+    static matrix4f view(const vector2f& window) noexcept;
+    static matrix4f view(const vector2f& window, const vector2f& center) noexcept;
 
-        element_type data[16];
+    static matrix4f transpose(const matrix4f& m) noexcept;
+    static matrix4f invert(const matrix4f& m) noexcept;
 
-        static const matrix4f IDENTITY;
-    };
+    element_type data[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 
-    matrix4f operator + (const matrix4f& m1, const matrix4f& m2);
-    matrix4f operator - (const matrix4f& m1, const matrix4f& m2);
-    matrix4f operator * (const matrix4f& m1, const matrix4f& m2);
-    vector2f operator * (const matrix4f& m,  const vector2f& v);
-    vector2f operator * (const vector2f& v,  const matrix4f& m);
+    static const matrix4f identity;
+};
 
-    std::ostream& operator << (std::ostream& o, const matrix4f& m);
-}
-}
+matrix4f operator+(const matrix4f& m1, const matrix4f& m2) noexcept;
+matrix4f operator-(const matrix4f& m1, const matrix4f& m2) noexcept;
+matrix4f operator*(const matrix4f& m1, const matrix4f& m2) noexcept;
+vector2f operator*(const matrix4f& m, const vector2f& v) noexcept;
+vector2f operator*(const vector2f& v, const matrix4f& m) noexcept;
+
+std::ostream& operator<<(std::ostream& o, const matrix4f& m);
+
+} // namespace lxgui::gui
 
 #endif

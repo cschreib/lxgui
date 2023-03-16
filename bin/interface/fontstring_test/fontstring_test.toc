@@ -1,0 +1,7 @@
+## Interface: 0001
+## Title: Fontstring test
+## Version: 1.0
+## Author: Kalith
+## SavedVariables: 
+
+addon.xml

@@ -1,153 +1,164 @@
 #ifndef LXGUI_GUI_SFML_MATERIAL_HPP
 #define LXGUI_GUI_SFML_MATERIAL_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/gui_material.hpp>
-#include <lxgui/gui_quad2.hpp>
-#include <lxgui/gui_color.hpp>
+#include "lxgui/gui_bounds2.hpp"
+#include "lxgui/gui_color.hpp"
+#include "lxgui/gui_material.hpp"
+#include "lxgui/utils.hpp"
 
+#include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Image.hpp>
-
-#include <vector>
 #include <memory>
+#include <vector>
 
-namespace lxgui {
-namespace gui {
-namespace sfml
-{
-    /// A class that holds rendering data
-    /** This implementation can contain either a plain color
-    *   or a real sf::Texture. It is also used by the
-    *   gui::sfml::render_target class to store the output data.
-    */
-    class material final : public gui::material
-    {
-    public :
+namespace lxgui::gui::sfml {
 
-        /// Constructor for textures.
-        /** \param uiWidth       The requested texture width
-        *   \param uiHeight      The requested texture height
-        *   \param bRenderTarget Create the material for a render target or only for display
-        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter       Use texture filtering or not (see set_filter())
-        */
-        material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE);
+/**
+ * \brief A class that holds rendering data
+ * This implementation can contain either a plain color
+ * or a real sf::Texture. It is also used by the
+ * gui::sfml::render_target class to store the output data.
+ */
+class material final : public gui::material {
+public:
+    /**
+     * \brief Constructor for textures.
+     * \param dimensions The requested texture dimensions
+     * \param is_render_target Create the material for a render target or only for display
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
+     * \param filt Use texture filtering or not (see set_filter())
+     */
+    material(
+        const vector2ui& dimensions,
+        bool             is_render_target,
+        wrap             wrp  = wrap::repeat,
+        filter           filt = filter::none);
 
-        /// Constructor for textures.
-        /** \param mData         The image data to use as texture
-        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter       Use texture filtering or not (see set_filter())
-        */
-        explicit material(const sf::Image& mData, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE);
+    /**
+     * \brief Constructor for textures.
+     * \param data The image data to use as texture
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
+     * \param filt Use texture filtering or not (see set_filter())
+     */
+    explicit material(const sf::Image& data, wrap wrp = wrap::repeat, filter filt = filter::none);
 
-        /// Constructor for textures.
-        /** \param sFileName     The file from which the texture data is loaded
-        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter       Use texture filtering or not (see set_filter())
-        */
-        explicit material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE);
+    /**
+     * \brief Constructor for textures.
+     * \param file_name The file from which the texture data is loaded
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
+     * \param filt Use texture filtering or not (see set_filter())
+     */
+    explicit material(
+        const std::string& file_name, wrap wrp = wrap::repeat, filter filt = filter::none);
 
-        /// Constructor for atlas textures.
-        /** \param mTexture  The atlas texture holding this material's texture
-        *   \param mLocation The location of the texture inside the atlas texture (in pixels)
-        *   \param mFilter   Use texture filtering or not (see set_filter())
-        */
-        explicit material(const sf::Texture& mTexture, const quad2f& mLocation,
-            filter mFilter = filter::NONE);
+    /**
+     * \brief Constructor for atlas textures.
+     * \param texture The atlas texture holding this material's texture
+     * \param location The location of the texture inside the atlas texture (in pixels)
+     * \param filt Use texture filtering or not (see set_filter())
+     */
+    explicit material(
+        const sf::Texture& texture, const bounds2f& location, filter filt = filter::none);
 
-        material(const material& tex) = delete;
-        material(material&& tex) = delete;
-        material& operator = (const material& tex) = delete;
-        material& operator = (material&& tex) = delete;
+    material(const material& tex) = delete;
+    material(material&& tex)      = delete;
+    material& operator=(const material& tex) = delete;
+    material& operator=(material&& tex) = delete;
 
-        /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
-        /** \return The pixel rect in pixels of the canvas containing this texture (if any)
-        */
-        quad2f get_rect() const override;
+    /**
+     * \brief Returns the pixel rect in pixels of the canvas containing this texture (if any).
+     * \return The pixel rect in pixels of the canvas containing this texture (if any)
+     */
+    bounds2f get_rect() const override;
 
-        /// Returns the physical width in pixels of the canvas containing this texture (if any).
-        /** \return The physical width in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
-        */
-        float get_canvas_width() const override;
+    /**
+     * \brief Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
+     * \return The physical dimensions (in pixels) of the canvas containing this (if any)
+     * \note When a texture is loaded, most of the time it will fill the entire "canvas",
+     * namely, the 2D pixel array containing the texture data. However, some old
+     * hardware don't support textures that have non power-of-two dimensions.
+     * If the user creates a material for such a texture, the gui::renderer will
+     * create a bigger canvas that has power-of-two dimensions, and store the
+     * texture in it. Likewise, if a texture is placed in a wider texture atlas,
+     * the canvas will contain more than one texture.
+     */
+    vector2ui get_canvas_dimensions() const override;
 
-        /// Returns the physical height in pixels of the canvas containing this texture (if any).
-        /** \return The physical height in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
-        */
-        float get_canvas_height() const override;
+    /**
+     * \brief Checks if another material is based on the same texture as the current material.
+     * \return 'true' if both materials use the same texture, 'false' otherwise
+     */
+    bool uses_same_texture(const gui::material& other) const override;
 
-        /// Resizes this texture.
-        /** \param uiWidth  The new texture width
-        *   \param uiHeight The new texture height
-        *   \return 'true' if the function had to re-create a new texture object
-        *   \note All the previous data that was stored in this texture will be lost.
-        */
-        bool set_dimensions(uint uiWidth, uint uiHeight);
+    /**
+     * \brief Resizes this texture.
+     * \param dimensions The new texture dimensions
+     * \return 'true' if the function had to re-create a new texture object
+     * \note All the previous data that was stored in this texture will be lost.
+     */
+    bool set_dimensions(const vector2ui& dimensions);
 
-        /// Premultiplies an image by its alpha component.
-        /** \note Premultiplied alpha is a rendering technique that allows perfect
-        *         alpha blending when using render targets.
-        */
-        static void premultiply_alpha(sf::Image& mData);
+    /**
+     * \brief Premultiplies an image by its alpha component.
+     * \note Premultiplied alpha is a rendering technique that allows perfect
+     * alpha blending when using render targets.
+     */
+    static void premultiply_alpha(sf::Image& data);
 
-        /// Sets the wrap mode of this texture.
-        /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
-        */
-        void set_wrap(wrap mWrap);
+    /**
+     * \brief Sets the wrap mode of this texture.
+     * \param wrp How to adjust texture coordinates that are outside the [0,1] range
+     */
+    void set_wrap(wrap wrp);
 
-        /// Sets the filter mode of this texture.
-        /** \param mFilter Use texture filtering or not
-        *   \note When texture filtering is disabled, enlarged textures get pixelated.
-        *         Else, the GPU uses an averaging algorithm to blur the pixels.
-        */
-        void set_filter(filter mFilter);
+    /**
+     * \brief Sets the filter mode of this texture.
+     * \param filt Use texture filtering or not
+     * \note When texture filtering is disabled, enlarged textures get pixelated.
+     * Else, the GPU uses an averaging algorithm to blur the pixels.
+     */
+    void set_filter(filter filt);
 
-        /// Returns the filter mode of this texture.
-        /** \return The filter mode of this texture
-        */
-        filter get_filter() const;
+    /**
+     * \brief Returns the filter mode of this texture.
+     * \return The filter mode of this texture
+     */
+    filter get_filter() const;
 
-        /// Returns the underlying SFML render texture object.
-        /** return The underlying SFML render texture object
-        */
-        sf::RenderTexture* get_render_texture();
+    /**
+     * \brief Updates the texture that is in GPU memory.
+     * \param data The new pixel data
+     */
+    void update_texture(const color32* data);
 
-        /// Returns the underlying SFML texture object.
-        /** return The underlying SFML texture object
-        */
-        const sf::Texture* get_texture() const;
+    /**
+     * \brief Returns the underlying SFML render texture object.
+     * return The underlying SFML render texture object
+     */
+    sf::RenderTexture* get_render_texture();
 
-    private:
+    /**
+     * \brief Returns the underlying SFML texture object.
+     * return The underlying SFML texture object
+     */
+    const sf::Texture* get_texture() const;
 
-        uint   uiWidth_ = 0u, uiHeight_ = 0u;
-        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        quad2f mRect_;
-        wrap   mWrap_ = wrap::REPEAT;
-        filter mFilter_ = filter::NONE;
+private:
+    vector2ui dimensions_;
+    vector2ui canvas_dimensions_;
+    bounds2f  rect_;
+    wrap      wrap_   = wrap::repeat;
+    filter    filter_ = filter::none;
 
-        bool               bRenderTarget_ = false;
-        sf::RenderTexture  mRenderTexture_;
-        sf::Texture        mTexture_;
-        const sf::Texture* pAtlasTexture_ = nullptr;
+    bool               is_render_target_ = false;
+    sf::RenderTexture  render_texture_;
+    sf::Texture        texture_;
+    const sf::Texture* atlas_texture_ = nullptr;
 
-        static const uint MAXIMUM_SIZE;
-    };
-}
-}
-}
+    static const std::size_t maximum_size;
+};
+
+} // namespace lxgui::gui::sfml
 
 #endif

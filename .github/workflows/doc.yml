@@ -3,7 +3,7 @@ name: Doc
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -23,17 +23,17 @@ jobs:
         sudo luarocks install markdown
 
     - name: Build C++ documentation
-      working-directory: ${{github.workspace}}/gui/doc
+      working-directory: ${{github.workspace}}/doc
       shell: bash
       run: doxygen dox.conf
 
     - name: Build Lua documentation
-      working-directory: ${{github.workspace}}/gui/doc
+      working-directory: ${{github.workspace}}/doc
       shell: bash
       run: ldoc .
 
     - name: Create deployment folder
-      working-directory: ${{github.workspace}}/gui/doc
+      working-directory: ${{github.workspace}}/doc
       shell: bash
       run: |
         mkdir deploy
@@ -43,4 +43,4 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
-        folder: ${{github.workspace}}/gui/doc/deploy
+        folder: ${{github.workspace}}/doc/deploy

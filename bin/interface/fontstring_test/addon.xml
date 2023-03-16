@@ -1,0 +1,67 @@
+<Ui>
+    <Script file="addon.lua"/>
+
+    <Frame name="FontstringTestFrame">
+        <Anchors>
+            <Anchor point="TOP_LEFT"/>
+            <Anchor point="BOTTOM_RIGHT"/>
+        </Anchors>
+        <Layers>
+            <Layer>
+                <FontString name="$parentText4" font="interface/fonts/main.ttf" fontHeight="11" alignX="RIGHT" alignY="TOP">
+                    <Size><AbsDimension x="200"/></Size>
+                    <Anchors>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="-5"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText3" font="interface/fonts/main.ttf" fontHeight="11" alignX="LEFT" alignY="TOP">
+                    <Size><AbsDimension x="200"/></Size>
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="5"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentText2" font="interface/fonts/main.ttf" text="Shadow" fontHeight="38" alignX="RIGHT" alignY="BOTTOM">
+                    <Anchors>
+                        <Anchor point="TOP_RIGHT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="1" g="0" b="0"/>
+                    <Shadow>
+                        <Color r="1" g="1" b="0"/>
+                        <Offset x="2" y="2"/>
+                    </Shadow>
+                </FontString>
+                <FontString name="$parentText" font="interface/fonts/main.ttf" text="FPS : ---\n(created by XML)" fontHeight="15" alignX="RIGHT" alignY="BOTTOM" outline="NORMAL">
+                    <Anchors>
+                        <Anchor point="BOTTOM_RIGHT">
+                            <Offset>
+                                <AbsDimension x="-5" y="-5"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Color g="1"/>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                self.Text3:set_text(FSTest.big_text);
+                self.Text4:set_text(FSTest.controls);
+            </OnLoad>
+            <OnUpdate>
+                FSTest.on_update(arg1);
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+</Ui>

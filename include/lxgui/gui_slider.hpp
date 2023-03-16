@@ -1,268 +1,227 @@
 #ifndef LXGUI_GUI_SLIDER_HPP
 #define LXGUI_GUI_SLIDER_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_orientation.hpp"
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
 
-namespace lxgui {
-namespace gui
-{
-    class texture;
+namespace lxgui::gui {
 
-    /// A #frame with a movable texture.
-    /** This frame contains a special texture, the "slider thumb".
-    *   It can be moved along a single axis (X or Y) and its position
-    *   can be used to represent a value (for configuration menus, or
-    *   scroll bars).
-    *
-    *   __Events.__ Hard-coded events available to all sliders,
-    *   in addition to those from #frame:
-    *
-    *   - `OnValueChanged`: Triggered whenever the value controlled by
-    *   the slider changes. This is triggered whenever the user moves
-    *   the slider thumb, and by slider::set_value. This can also be
-    *   triggered by slider::set_min_value, slider::set_max_value,
-    *   slider::set_min_max_values, and slider::set_value_step if the
-    *   previous value would not satisfy the new constraints.
-    */
-    class slider : public frame
-    {
-    public :
+class texture;
 
-        enum class orientation
-        {
-            VERTICAL,
-            HORIZONTAL
-        };
+/**
+ * \brief A #frame with a movable texture.
+ * \details This frame contains a special texture, the "slider thumb".
+ * It can be moved along a single axis (X or Y) and its position
+ * can be used to represent a value (for configuration menus, or
+ * scroll bars).
+ *
+ * __Events.__ Hard-coded events available to all sliders,
+ * in addition to those from #frame:
+ *
+ * - `OnValueChanged`: Triggered whenever the value controlled by
+ * the slider changes. This is triggered whenever the user moves
+ * the slider thumb, and by slider::set_value. This can also be
+ * triggered by slider::set_min_value, slider::set_max_value,
+ * slider::set_min_max_values, and slider::set_value_step if the
+ * previous value would not satisfy the new constraints.
+ */
+class slider : public frame {
+public:
+    using base = frame;
 
-        /// Constructor.
-        explicit slider(manager* pManager);
+    /// Constructor.
+    explicit slider(utils::control_block& block, manager& mgr, const frame_core_attributes& attr);
 
-        /// Prints all relevant information about this widget in a string.
-        /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this widget
-        */
-        std::string serialize(const std::string& sTab) const override;
+    /**
+     * \brief Prints all relevant information about this region in a string.
+     * \param tab The offset to give to all lines
+     * \return All relevant information about this region
+     */
+    std::string serialize(const std::string& tab) const override;
 
-        /// Returns 'true' if this slider can use a script.
-        /** \param sScriptName The name of the script
-        *   \note This method can be overriden if needed.
-        */
-        bool can_use_script(const std::string& sScriptName) const override;
+    /**
+     * \brief Returns 'true' if this slider can use a script.
+     * \param script_name The name of the script
+     * \note This method can be overridden if needed.
+     */
+    bool can_use_script(const std::string& script_name) const override;
 
-        /// Calls a script.
-        /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+    /**
+     * \brief Calls a script.
+     * \param script_name The name of the script
+     * \param data Stores scripts arguments
+     * \note Triggered callbacks could destroy the frame. If you need
+     * to use the frame again after calling this function, use
+     * the helper class alive_checker.
+     */
+    void
+    fire_script(const std::string& script_name, const event_data& data = event_data{}) override;
 
-        /// Copies an uiobject's parameters into this slider (inheritance).
-        /** \param pObj The uiobject to copy
-        */
-        void copy_from(uiobject* pObj) override;
+    /**
+     * \brief Copies a region's parameters into this slider (inheritance).
+     * \param obj The region to copy
+     */
+    void copy_from(const region& obj) override;
 
-        /// Sets the texture to use for the thumb.
-        /** \param pTexture The new texture
-        */
-        void set_thumb_texture(texture* pTexture);
+    /**
+     * \brief Sets the texture to use for the thumb.
+     * \param tex The new texture
+     */
+    void set_thumb_texture(utils::observer_ptr<texture> tex);
 
-        /// Returns the texture used for the thumb.
-        /** \return The texture used for the thumb
-        */
-        texture* get_thumb_texture() const;
+    /**
+     * \brief Returns the texture used for the thumb.
+     * \return The texture used for the thumb
+     */
+    const utils::observer_ptr<texture>& get_thumb_texture() {
+        return thumb_texture_;
+    }
 
-        /// Sets the orientation of this slider.
-        /** \param mOrientation The orientation of this slider
-        */
-        void set_orientation(orientation mOrientation);
+    /**
+     * \brief Returns the texture used for the thumb.
+     * \return The texture used for the thumb
+     */
+    utils::observer_ptr<const texture> get_thumb_texture() const {
+        return thumb_texture_;
+    }
 
-        /// Returns the orientation of this slider.
-        /** \return The orientation of this slider
-        */
-        orientation get_orientation() const;
+    /**
+     * \brief Sets the orientation of this slider.
+     * \param orient The orientation of this slider
+     */
+    void set_orientation(orientation orient);
 
-        /// Sets the slider's value range.
-        /** \param fMin The minimum value
-        *   \param fMax The maximum value
-        */
-        void set_min_max_values(float fMin, float fMax);
+    /**
+     * \brief Returns the orientation of this slider.
+     * \return The orientation of this slider
+     */
+    orientation get_orientation() const;
 
-        /// Sets this slider's minimum value.
-        /** \param fMin The minimum value
-        */
-        void set_min_value(float fMin);
+    /**
+     * \brief Sets the slider's value range.
+     * \param min_value The minimum value
+     * \param max_value The maximum value
+     */
+    void set_min_max_values(float min_value, float max_value);
 
-        /// Sets this slider's maximum value.
-        /** \param fMax The maximum value
-        */
-        void set_max_value(float fMax);
+    /**
+     * \brief Sets this slider's minimum value.
+     * \param min_value The minimum value
+     */
+    void set_min_value(float min_value);
 
-        /// Returns this slider's minimum value.
-        /** \return This slider's minimum value
-        */
-        float get_min_value() const;
+    /**
+     * \brief Sets this slider's maximum value.
+     * \param max_value The maximum value
+     */
+    void set_max_value(float max_value);
 
-        /// Returns this slider's maximum value.
-        /** \return This slider's maximum value
-        */
-        float get_max_value() const;
+    /**
+     * \brief Returns this slider's minimum value.
+     * \return This slider's minimum value
+     */
+    float get_min_value() const;
 
-        /// Sets this slider's value.
-        /** \param fValue  The value
-        *   \param bSilent 'true' to prevent OnValueChanged to be fired
-        */
-        void set_value(float fValue, bool bSilent = false);
+    /**
+     * \brief Returns this slider's maximum value.
+     * \return This slider's maximum value
+     */
+    float get_max_value() const;
 
-        /// Returns this slider's value.
-        /** \return This slider's value
-        */
-        float get_value() const;
+    /**
+     * \brief Sets this slider's value.
+     * \param value The value
+     * \param silent 'true' to prevent OnValueChanged to be fired
+     */
+    void set_value(float value, bool silent = false);
 
-        /// Sets this slider's value step.
-        /** \param fValueStep The new step
-        */
-        void set_value_step(float fValueStep);
+    /**
+     * \brief Returns this slider's value.
+     * \return This slider's value
+     */
+    float get_value() const;
 
-        /// Returns this slider's value step.
-        /** \return This slider's value step
-        */
-        float get_value_step() const;
+    /**
+     * \brief Sets this slider's value step.
+     * \param value_step The new step
+     */
+    void set_value_step(float value_step);
 
-        /// Sets the draw layer of this slider's thumb texture.
-        /** \param mThumbLayer The layer
-        */
-        void set_thumb_draw_layer(layer_type mThumbLayer);
+    /**
+     * \brief Returns this slider's value step.
+     * \return This slider's value step
+     */
+    float get_value_step() const;
 
-        /// Sets the draw layer of this slider's thumb texture.
-        /** \param sBarLayer The layer
-        */
-        void set_thumb_draw_layer(const std::string& sBarLayer);
+    /**
+     * \brief Sets the draw layer of this slider's thumb texture.
+     * \param thumb_layer The layer
+     */
+    void set_thumb_draw_layer(layer thumb_layer);
 
-        /// Returns the draw layer of this slider's thumb texture.
-        /** \return The draw layer of this slider's thumb texture
-        */
-        layer_type get_thumb_draw_layer() const;
+    /**
+     * \brief Returns the draw layer of this slider's thumb texture.
+     * \return The draw layer of this slider's thumb texture
+     */
+    layer get_thumb_draw_layer() const;
 
-        /// Allows the user to click anywhere in the slider to relocate the thumb.
-        /** \param bAllow 'true' to allow it, 'false' to allow clicks on the thumb only
-        */
-        void set_allow_clicks_outside_thumb(bool bAllow);
+    /**
+     * \brief Allows the user to click anywhere in the slider to relocate the thumb.
+     * \param allow 'true' to allow it, 'false' to allow clicks on the thumb only
+     */
+    void set_allow_clicks_outside_thumb(bool allow);
 
-        /// Checks if clicks are allowed outside of the thumb.
-        /** \return 'true' if it is the case
-        *   \note See set_allow_clicks_outside_thumb().
-        */
-        bool are_clicks_outside_thumb_allowed();
+    /**
+     * \brief Checks if clicks are allowed outside of the thumb.
+     * \return 'true' if it is the case
+     * \note See set_allow_clicks_outside_thumb().
+     */
+    bool are_clicks_outside_thumb_allowed() const;
 
-        /// Checks if the provided coordinates are in the frame.
-        /** \param fX The horizontal coordinate
-        *   \param fY The vertical coordinate
-        *   \return 'true' if the provided coordinates are in the frame
-        *   \note The slider version of this function also checks if the
-        *         mouse is over the thumb texture.
-        */
-        bool is_in_frame(float fX, float fY) const override;
+    /**
+     * \brief Checks if the provided coordinates are in the slider.
+     * \param position The coordinate to test
+     * \return 'true' if the provided coordinates are in the slider, its title region,
+     * or its thumb texture
+     */
+    bool is_in_region(const vector2f& position) const override;
 
-        /// Tells this frame it is being overed by the mouse.
-        /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param fX            The horizontal mouse coordinate
-        *   \param fY            The vertical mouse coordinate
-        */
-        void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY) override;
+    /// Tells this region that its borders need updating.
+    void notify_borders_need_update() override;
 
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
+    /// Registers this region class to the provided Lua state
+    static void register_on_lua(sol::state& lua);
 
-        /// Returns this widget's Lua glue.
-        void create_glue() override;
+    static constexpr const char* class_name = "Slider";
 
-        /// Tells this widget that its borders need updating.
-        void notify_borders_need_update() const override;
+protected:
+    void constrain_thumb_();
+    void update_thumb_texture_();
 
-        /// Updates this widget's logic.
-        /** \param fDelta Time spent since last update
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void update(float fDelta) override;
+    void notify_thumb_texture_needs_update_();
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+    void parse_attributes_(const layout_node& node) override;
+    void parse_all_nodes_before_children_(const layout_node& node) override;
 
-        static constexpr const char* CLASS_NAME = "Slider";
+    const std::vector<std::string>& get_type_list_() const override;
 
-    protected :
+    orientation orientation_ = orientation::vertical;
 
-        void constrain_thumb_();
+    float value_      = 0.0f;
+    float min_value_  = 0.0f;
+    float max_value_  = 1.0f;
+    float value_step_ = 0.1f;
 
-        std::unique_ptr<texture> create_thumb_texture_();
-        void                     notify_thumb_texture_needs_update_() const;
+    bool allow_clicks_outside_thumb_ = true;
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_all_blocks_before_children_(xml::block* pBlock) override;
+    layer                        thumb_layer_   = layer::overlay;
+    utils::observer_ptr<texture> thumb_texture_ = nullptr;
 
-        mutable bool bUpdateThumbTexture_ = false;
+    bool is_thumb_dragged_ = false;
+};
 
-        orientation mOrientation_ = orientation::VERTICAL;
-
-        float fValue_ = 0.0f;
-        float fMinValue_ = 0.0f;
-        float fMaxValue_ = 1.0f;
-        float fValueStep_ = 0.1f;
-
-        bool bAllowClicksOutsideThumb_ = true;
-
-        layer_type mThumbLayer_ = layer_type::OVERLAY;
-        texture*   pThumbTexture_ = nullptr;
-        bool       bThumbMoved_ = false;
-        bool       bMouseInThumb_ = false;
-    };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_slider : public lua_frame
-    {
-    public :
-
-        explicit lua_slider(lua_State* pLua);
-        slider* get_object() { return static_cast<slider*>(pObject_); }
-
-        // Glues
-        int _allow_clicks_outside_thumb(lua_State*);
-        int _get_max_value(lua_State*);
-        int _get_min_value(lua_State*);
-        int _get_min_max_values(lua_State*);
-        int _get_orientation(lua_State*);
-        int _get_thumb_texture(lua_State*);
-        int _get_value(lua_State*);
-        int _get_value_step(lua_State*);
-        int _set_max_value(lua_State*);
-        int _set_min_value(lua_State*);
-        int _set_min_max_values(lua_State*);
-        int _set_orientation(lua_State*);
-        int _set_thumb_texture(lua_State*);
-        int _set_value(lua_State*);
-        int _set_value_step(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_slider> methods[];
-    };
-
-    /** \endcond
-    */
-}
-}
+} // namespace lxgui::gui
 
 #endif

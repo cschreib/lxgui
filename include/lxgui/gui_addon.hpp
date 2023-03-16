@@ -1,31 +1,29 @@
 #ifndef LXGUI_GUI_ADDON_HPP
 #define LXGUI_GUI_ADDON_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
 
 #include <string>
 #include <vector>
 
-namespace lxgui {
-namespace gui
-{
-    /// A piece of the user interface
-    struct addon
-    {
-        std::string sName;
-        std::string sVersion;
-        std::string sUIVersion;
-        std::string sAuthor;
+namespace lxgui::gui {
 
-        bool bEnabled = true;
+/// A piece of the user interface
+struct addon {
+    std::string name;
+    std::string version;
+    std::string ui_version;
+    std::string author;
 
-        std::string sMainDirectory;
-        std::string sDirectory;
+    bool enabled = true;
 
-        std::vector<std::string> lFileList;
-        std::vector<std::string> lSavedVariableList;
-    };
-}
-}
+    std::string main_directory;
+    std::string directory;
+
+    std::vector<std::string> file_list;
+    std::vector<std::string> saved_variable_list;
+};
+
+} // namespace lxgui::gui
 
 #endif

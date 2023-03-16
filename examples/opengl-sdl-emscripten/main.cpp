@@ -1,0 +1,198 @@
+#include "examples_common.hpp"
+
+#include <emscripten.h>
+#include <iostream>
+#include <lxgui/gui_exception.hpp>
+#include <lxgui/gui_out.hpp>
+#include <lxgui/impl/gui_gl_renderer.hpp>
+#include <lxgui/impl/input_sdl_source.hpp>
+#include <lxgui/input_dispatcher.hpp>
+#include <lxgui/input_world_dispatcher.hpp>
+#include <lxgui/lxgui.hpp>
+#include <thread>
+#define SDL_MAIN_HANDLED
+#include <GL/gl.h>
+#include <SDL.h>
+
+using namespace lxgui;
+
+// Emscripten needs us to specify a main loop function.
+// This structure will hold the data we need from main().
+struct main_loop_context {
+    bool                     focus = true;
+    float                    delta = 0.1f;
+    timing_clock::time_point prev_time;
+
+    gui::manager* manager    = nullptr;
+    SDL_Window*   window     = nullptr;
+    SDL_GLContext gl_context = nullptr;
+};
+
+void main_loop(void* type_erased_data) try {
+    main_loop_context& context          = *reinterpret_cast<main_loop_context*>(type_erased_data);
+    input::dispatcher& input_dispatcher = context.manager->get_input_dispatcher();
+
+    // Get events from SDL
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_WINDOWEVENT) {
+            if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+                emscripten_cancel_main_loop();
+                return;
+            } else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                context.focus = false;
+            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                context.focus = true;
+        }
+
+        // Feed events to the GUI.
+        // NB: Do not use raw keyboard/mouse events from SDL directly. See below.
+        static_cast<input::sdl::source&>(input_dispatcher.get_source()).on_sdl_event(event);
+    }
+
+    // If the window is not focused, do nothing and wait until focus comes back
+    if (!context.focus) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
+    }
+
+    // Reset batch count (for analytics only, optional)
+    context.manager->get_renderer().reset_counters();
+
+    // Update the gui
+    SDL_GL_MakeCurrent(context.window, context.gl_context);
+    context.manager->update_ui(context.delta);
+
+    // Your own rendering would go here!
+    // For this example, we just clear the window
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Render the gui on top of the world
+    context.manager->render_ui();
+
+    // Display the window
+    SDL_GL_SwapWindow(context.window);
+
+    // Compute time delta since last frame
+    timing_clock::time_point current_time = timing_clock::now();
+    context.delta                         = get_time_delta(context.prev_time, current_time);
+    context.prev_time                     = current_time;
+} catch (const std::exception& e) {
+    std::cout << e.what() << std::endl;
+    emscripten_cancel_main_loop();
+    return;
+} catch (...) {
+    std::cout << "# Error #: Unhandled exception !" << std::endl;
+    emscripten_cancel_main_loop();
+    return;
+}
+
+// Helper class to manage the OpenGL context from SDL
+struct GLContext {
+    SDL_GLContext context = nullptr;
+
+    explicit GLContext(SDL_Window* window) : context(SDL_GL_CreateContext(window)) {
+        if (context == nullptr)
+            throw gui::exception("SDL_GL_CreateContext", "Could not create OpenGL context.");
+    }
+
+    ~GLContext() noexcept {
+        SDL_GL_DeleteContext(context);
+    }
+};
+
+int main(int argc, char* argv[]) {
+    try {
+        // Redirect output from the gui library to the standard output.
+        // You can redirect it to a file, or your own logger, etc.
+        gui::out.rdbuf(std::cout.rdbuf());
+
+        // Create a window
+        std::cout << "Creating window..." << std::endl;
+        const std::string window_title  = "test";
+        const std::size_t window_width  = 800u;
+        const std::size_t window_height = 600u;
+
+        // Prevent SDL from capturing Ctrl+C SIGINT
+        SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) != 0) {
+            throw gui::exception(
+                "SDL_Init", "Could not initialise SDL: " + std::string(SDL_GetError()) + ".");
+        }
+
+        const std::uint32_t flags =
+            SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window(
+            SDL_CreateWindow(
+                window_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                window_width, window_height, flags),
+            &SDL_DestroyWindow);
+
+        if (!window)
+            throw gui::exception("SDL_Window", "Could not create window.");
+
+        // Create OpenGL context
+        GLContext gl_context(window.get());
+        SDL_GL_SetSwapInterval(0);
+
+        // Initialize the gui
+        std::cout << "Creating gui manager..." << std::endl;
+
+        // Define the input manager
+        std::unique_ptr<input::source> input_source;
+        {
+            bool          initialise_sdl_image = true;
+            SDL_Renderer* renderer             = nullptr;
+            input_source =
+                std::make_unique<input::sdl::source>(window.get(), renderer, initialise_sdl_image);
+        }
+
+        // Define the GUI renderer
+        std::unique_ptr<gui::renderer> renderer =
+            std::make_unique<gui::gl::renderer>(input_source->get_window_dimensions());
+
+        // Create the GUI manager
+        utils::owner_ptr<gui::manager> manager = utils::make_owned<gui::manager>(
+            // Provide the input source
+            std::move(input_source),
+            // Provide the GUI renderer implementation
+            std::move(renderer));
+
+        // Setup the GUI (see examples_common.cpp)
+        examples_setup_gui(*manager);
+
+        // Start the main loop
+        main_loop_context context;
+        context.prev_time  = timing_clock::now();
+        context.manager    = manager.get();
+        context.window     = window.get();
+        context.gl_context = gl_context.context;
+
+        // Register a callback on Escape to terminate the program.
+        // Doing it this way, we only react to keyboard input that is not captured by the GUI.
+        input::world_dispatcher& world_input_dispatcher = manager->get_world_input_dispatcher();
+        world_input_dispatcher.on_key_pressed.connect([&](const input::key_pressed_data& args) {
+            if (args.key == input::key::k_escape)
+                emscripten_cancel_main_loop();
+        });
+
+        std::cout << "Entering loop..." << std::endl;
+
+        emscripten_set_main_loop_arg(main_loop, &context, -1, 1);
+
+        std::cout << "End of loop." << std::endl;
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    } catch (...) {
+        std::cout << "# Error #: Unhandled exception !" << std::endl;
+        return 1;
+    }
+
+    std::cout << "End of program." << std::endl;
+
+    return 0;
+}

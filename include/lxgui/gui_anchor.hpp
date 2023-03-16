@@ -1,203 +1,167 @@
 #ifndef LXGUI_GUI_ANCHOR_HPP
 #define LXGUI_GUI_ANCHOR_HPP
 
-#include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
 #include "lxgui/gui_vector2.hpp"
+#include "lxgui/lxgui.hpp"
+#include "lxgui/utils.hpp"
+#include "lxgui/utils_observer.hpp"
 
 #include <string>
 
-namespace lxgui {
-namespace gui
-{
-    class uiobject;
+namespace lxgui::gui {
 
-    enum class anchor_type
-    {
-        ABS,
-        REL
-    };
+class region;
 
-    enum class anchor_point
-    {
-        TOPLEFT = 0,
-        TOP,
-        TOPRIGHT,
-        RIGHT,
-        BOTTOMRIGHT,
-        BOTTOM,
-        BOTTOMLEFT,
-        LEFT,
-        CENTER
-    };
+enum class anchor_type { abs, rel };
 
-    enum class constraint
-    {
-        NONE,
-        X,
-        Y
-    };
+enum class point {
+    top_left = 0,
+    top,
+    top_right,
+    right,
+    bottom_right,
+    bottom,
+    bottom_left,
+    left,
+    center
+};
 
-    /// Stores a position for a UI widget
-    class anchor
-    {
-    public :
+enum class constraint { none, x, y };
 
-        /// Default constructor.
-        anchor() = default;
+/// Raw data of an anchor (value type)
+struct anchor_data {
+    anchor_data(point input_point) :
+        object_point(input_point), parent_name("$default"), parent_point(input_point) {}
 
-        /// Constructor.
-        anchor(uiobject* pObj, anchor_point mPoint, const std::string& pParent, anchor_point mParentPoint);
+    anchor_data(point input_point, const std::string& input_parent) :
+        object_point(input_point), parent_name(input_parent), parent_point(input_point) {}
 
-        /// Returns this anchor absolute X (in pixel).
-        /** \return This anchor absolute X.
-        */
-        float get_abs_x() const;
+    anchor_data(point input_point, const std::string& input_parent, point input_parent_point) :
+        object_point(input_point), parent_name(input_parent), parent_point(input_parent_point) {}
 
-        /// Returns this anchor absolute Y (in pixel).
-        /** \return This anchor absolute Y.
-        */
-        float get_abs_y() const;
+    anchor_data(
+        point              input_point,
+        const std::string& input_parent,
+        point              input_parent_point,
+        const vector2f&    input_offset,
+        anchor_type        input_type = anchor_type::abs) :
+        object_point(input_point),
+        parent_name(input_parent),
+        parent_point(input_parent_point),
+        offset(input_offset),
+        type(input_type) {}
 
-        /// Returns this anchor's base widget.
-        /** \return This anchor's base widget
-        */
-        const uiobject* get_object() const;
+    anchor_data(
+        point              input_point,
+        const std::string& input_parent,
+        const vector2f&    input_offset,
+        anchor_type        input_type = anchor_type::abs) :
+        object_point(input_point),
+        parent_name(input_parent),
+        parent_point(input_point),
+        offset(input_offset),
+        type(input_type) {}
 
-        /// Returns this anchor's parent widget.
-        /** \return This anchor's parent widget
-        */
-        const uiobject* get_parent() const;
+    anchor_data(
+        point           input_point,
+        const vector2f& input_offset,
+        anchor_type     input_type = anchor_type::abs) :
+        object_point(input_point),
+        parent_name("$default"),
+        parent_point(input_point),
+        offset(input_offset),
+        type(input_type) {}
 
-        /// Returns this anchor's parent's raw name (unmodified).
-        /** \return This anchor's parent's raw name (unmodified)
-        */
-        const std::string& get_parent_raw_name() const;
+    anchor_data(
+        point           input_point,
+        point           input_parent_point,
+        const vector2f& input_offset,
+        anchor_type     input_type = anchor_type::abs) :
+        object_point(input_point),
+        parent_name("$default"),
+        parent_point(input_parent_point),
+        offset(input_offset),
+        type(input_type) {}
 
-        /// Returns this anchor's point.
-        /** \return This anchor's point
-        */
-        anchor_point get_point() const;
+    anchor_data(point input_point, point input_parent_point) :
+        object_point(input_point), parent_name("$default"), parent_point(input_parent_point) {}
 
-        /// Returns this anchor's parent point.
-        /** \return This anchor's parent point
-        */
-        anchor_point get_parent_point() const;
+    point       object_point = point::top_left;
+    std::string parent_name;
+    point       parent_point = point::top_left;
+    vector2f    offset;
+    anchor_type type = anchor_type::abs;
+};
 
-        /// Returns the type of this anchor (abs or rel).
-        /** \return The type of this anchor (abs or rel)
-        */
-        anchor_type get_type() const;
+/// Stores a position for a UI region
+class anchor : private anchor_data {
+public:
+    using anchor_data::object_point;
+    using anchor_data::offset;
+    using anchor_data::parent_point;
+    using anchor_data::type;
 
-        /// Returns this anchor's absolute horizontal offset.
-        /** \return This anchor's absolute horizontal offset
-        */
-        float get_abs_offset_x() const;
+    /**
+     * \brief Constructor.
+     * \param object The object to which this anchor belongs
+     * \param data The data about the anchor
+     */
+    anchor(region& object, const anchor_data& data);
 
-        /// Returns this anchor's absolute vertical offset.
-        /** \return This anchor's absolute vertical offset
-        */
-        float get_abs_offset_y() const;
+    // Non-copiable, non-movable
+    anchor(const anchor&) = delete;
+    anchor(anchor&&)      = delete;
+    anchor& operator=(const anchor&) = delete;
+    anchor& operator=(anchor&&) = delete;
 
-        /// Returns this anchor's absolute offset.
-        /** \return This anchor's absolute offset
-        */
-        vector2f get_abs_offset() const;
+    /**
+     * \brief Returns this anchor's absolute coordinates (in pixels).
+     * \param object The object owning this anchor
+     * \return The absolute coordinates of this anchor.
+     */
+    vector2f get_point(const region& object) const;
 
-        /// Returns this anchor's relative horizontal offset.
-        /** \return This anchor's relative horizontal offset
-        */
-        float get_rel_offset_x() const;
+    /**
+     * \brief Returns this anchor's parent region.
+     * \return This anchor's parent region
+     */
+    const utils::observer_ptr<region>& get_parent() {
+        return parent_;
+    }
 
-        /// Returns this anchor's relative vertical offset.
-        /** \return This anchor's relative vertical offset
-        */
-        float get_rel_offset_y() const;
+    /**
+     * \brief Returns this anchor's parent region.
+     * \return This anchor's parent region
+     */
+    utils::observer_ptr<const region> get_parent() const {
+        return parent_;
+    }
 
-        /// Returns this anchor's relative offset.
-        /** \return This anchor's relative offset
-        */
-        vector2f get_rel_offset() const;
+    /**
+     * \brief Prints all relevant information about this anchor in a string.
+     * \param tab The offset to give to all lines
+     * \return All relevant information about this anchor
+     */
+    std::string serialize(const std::string& tab) const;
 
-        /// Sets this anchor's base widget.
-        /** \param pObj The new base widget
-        */
-        void set_object(uiobject* pObj);
+    /**
+     * \brief Returns the raw data used for this anchor.
+     * \return The raw data used for this anchor
+     */
+    const anchor_data& get_data() const {
+        return *this;
+    }
 
-        /// Sets this anchor's parent's raw name.
-        /** \param sName The parent's raw name
-        */
-        void set_parent_raw_name(const std::string& sName);
+private:
+    /**
+     * \brief Update the anchor parent object from the parent string.
+     * \param object The object owning this anchor
+     */
+    void update_parent_(region& object);
 
-        /// Sets this anchor's point.
-        /** \param mPoint The new point
-        */
-        void set_point(anchor_point mPoint);
+    utils::observer_ptr<region> parent_ = nullptr;
+};
 
-        /// Sets this anchor's parent point.
-        /** \param mParentPoint The new parent point
-        */
-        void set_parent_point(anchor_point mParentPoint);
-
-        /// Sets this anchor's absolute offset.
-        /** \param iX The new horizontal offset
-        *   \param iY The new vertical offset
-        */
-        void set_abs_offset(float fX, float fY);
-
-        /// Sets this anchor's absolute offset.
-        /** \param mOffset The new offset
-        */
-        void set_abs_offset(const vector2f& mOffset);
-
-        /// Sets this anchor's relative offset.
-        /** \param fX The new horizontal offset
-        *   \param fY The new vertical offset
-        */
-        void set_rel_offset(float fX, float fY);
-
-        /// Sets this anchor's relative offset.
-        /** \param mOffset The new offset
-        */
-        void set_rel_offset(const vector2f& mOffset);
-
-        /// Prints all relevant information about this anchor in a string.
-        /** \param sTab The offset to give to all lines
-        *   \return All relevant information about this anchor
-        */
-        std::string serialize(const std::string& sTab) const;
-
-        /// Update the anchor parent object from the parent string.
-        void update_parent() const;
-
-        /// Returns the name of an anchor point.
-        /** \param mPoint The anchor point
-        */
-        static std::string get_string_point(anchor_point mPoint);
-
-        /// Returns the anchor point from its name.
-        /** \param sPoint The name of the anchor point
-        */
-        static anchor_point get_anchor_point(const std::string& sPoint);
-
-    private :
-
-        const uiobject* pObj_ = nullptr;
-
-        anchor_point    mParentPoint_ = anchor_point::TOPLEFT;
-        anchor_point    mPoint_       = anchor_point::TOPLEFT;
-        anchor_type     mType_        = anchor_type::ABS;
-
-        float fAbsOffX_ = 0.0f, fAbsOffY_ = 0.0f;
-        float fRelOffX_ = 0.0f, fRelOffY_ = 0.0f;
-
-        mutable float fParentWidth_ = 0.0f, fParentHeight_ = 0.0f;
-
-        mutable const uiobject* pParent_ = nullptr;
-        mutable std::string     sParent_;
-        mutable bool            bParentUpdated_ = false;
-    };
-}
-}
+} // namespace lxgui::gui
 
 #endif
