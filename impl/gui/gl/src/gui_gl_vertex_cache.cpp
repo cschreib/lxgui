@@ -103,7 +103,7 @@ void vertex_cache::update_indices_if_grow(
 
 void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     if (type_ == type::quads) {
-        static constexpr std::array<std::uint32_t, 6>  quad_i_ds = {{0, 1, 2, 2, 3, 0}};
+        static constexpr std::array<std::uint32_t, 6>  quad_ids = {{0, 1, 2, 2, 3, 0}};
         static thread_local std::vector<std::uint32_t> repeated_ids;
 
         if (num_vertex % 4 != 0) {
@@ -122,7 +122,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
             std::size_t old_size = repeated_ids.size();
             repeated_ids.resize(num_indices);
             for (std::size_t i = old_size; i < num_indices; ++i) {
-                repeated_ids[i] = (i / 6) * 4 + quad_i_ds[i % 6];
+                repeated_ids[i] = (i / 6) * 4 + quad_ids[i % 6];
             }
         }
 

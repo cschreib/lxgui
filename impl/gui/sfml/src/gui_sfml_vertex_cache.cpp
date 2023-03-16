@@ -23,7 +23,7 @@ void to_sfml(const vertex& v, sf::Vertex& sv) {
 
 void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     if (type_ == type::quads) {
-        static constexpr std::array<std::size_t, 6> quad_i_ds = {{0, 1, 2, 2, 3, 0}};
+        static constexpr std::array<std::size_t, 6> quad_ids = {{0, 1, 2, 2, 3, 0}};
 
         std::size_t num_quads           = num_vertex / 4u;
         std::size_t num_vertex_expanded = num_quads * 6u;
@@ -36,7 +36,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
         std::vector<sf::Vertex> vertices(num_vertex_expanded);
         for (std::size_t i = 0; i < num_vertex_expanded; ++i) {
             auto&       sv = vertices[i];
-            const auto& v  = vertex_data[(i / 6u) * 4u + quad_i_ds[i % 6u]];
+            const auto& v  = vertex_data[(i / 6u) * 4u + quad_ids[i % 6u]];
             to_sfml(v, sv);
         }
 
