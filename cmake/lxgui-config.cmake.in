@@ -32,7 +32,7 @@ if (@LXGUI_BUILD_GUI_GL_IMPL@)
 endif ()
 
 if (@LXGUI_BUILD_GUI_SFML_IMPL@ OR @LXGUI_BUILD_INPUT_SFML_IMPL@)
-  find_dependency(SFML 2 COMPONENTS graphics system window)
+  find_dependency(SFML 3 COMPONENTS graphics system window)
   if (NOT TARGET sfml::graphics)
       add_library(sfml::graphics UNKNOWN IMPORTED)
       set_target_properties(sfml::graphics PROPERTIES INTERFACE_LINK_LIBRARIES sfml-graphics)

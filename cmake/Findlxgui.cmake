@@ -271,7 +271,7 @@ if(LXGUI_FOUND)
     endif()
 
     if(NOT LXGUI_EMSCRIPTEN)
-        find_package(SFML 2 COMPONENTS graphics system window)
+        find_package(SFML 3 COMPONENTS graphics system window)
     endif()
 
     if(LXGUI_GUI_SFML_LIBRARY)
