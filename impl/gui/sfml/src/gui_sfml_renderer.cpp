@@ -86,7 +86,7 @@ void renderer::render_quads_(
 
     const sfml::material* sf_mat = static_cast<const sfml::material*>(mat);
 
-#if !defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if !defined(SFML_HAS_NORMALISED_COORDINATES)
     vector2f tex_dims(1.0f, 1.0f);
     if (sf_mat)
         tex_dims = vector2f(sf_mat->get_canvas_dimensions());
@@ -104,7 +104,7 @@ void renderer::render_quads_(
 
             sf_vertex.position.x = vertex.pos.x;
             sf_vertex.position.y = vertex.pos.y;
-#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if defined(SFML_HAS_NORMALISED_COORDINATES)
             sf_vertex.texCoords.x = vertex.uvs.x;
             sf_vertex.texCoords.y = vertex.uvs.y;
 #else
@@ -122,7 +122,7 @@ void renderer::render_quads_(
     sf::RenderStates state;
     // Premultiplied alpha
     state.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha);
-#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if defined(SFML_HAS_NORMALISED_COORDINATES)
     // UV coordinates and not pixel coordinates
     state.coordinateType = sf::CoordinateType::Normalized;
 #endif
@@ -144,7 +144,7 @@ void renderer::render_cache_(
     const gui::vertex_cache& cache [[maybe_unused]],
     const matrix4f&          model_transform [[maybe_unused]]) {
 
-#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if defined(SFML_HAS_NORMALISED_COORDINATES)
     const sfml::material*     sf_mat   = static_cast<const sfml::material*>(mat);
     const sfml::vertex_cache& sf_cache = static_cast<const sfml::vertex_cache&>(cache);
 
@@ -159,7 +159,8 @@ void renderer::render_cache_(
     // Transform
     state.transform = to_sfml(model_transform);
 
-    current_sfml_target_->draw(sf_cache.get_impl(), 0, sf_cache.get_vertex_count(), state);
+    // NB: Don't use draw(sf_cache.get_impl(), state); the SFML vertex cache never shrinks.
+    current_sfml_target_->draw(sf_cache.get_impl(), 0, cache.get_vertex_count(), state);
 #else
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 #endif
@@ -222,7 +223,7 @@ std::shared_ptr<gui::font> renderer::create_font_(
 }
 
 bool renderer::is_vertex_cache_supported() const {
-#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if defined(SFML_HAS_NORMALISED_COORDINATES)
     return sf::VertexBuffer::isAvailable();
 #else
     return false;
@@ -231,7 +232,7 @@ bool renderer::is_vertex_cache_supported() const {
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type type
                                                                  [[maybe_unused]]) {
-#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+#if defined(SFML_HAS_NORMALISED_COORDINATES)
     return std::make_shared<sfml::vertex_cache>(type);
 #else
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");

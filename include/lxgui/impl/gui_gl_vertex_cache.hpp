@@ -80,7 +80,17 @@ public:
      */
     void render() const;
 
+    /**
+     * \brief Returns the number of vertices stored in this cache.
+     * \return The number of vertices stored in this cache
+     * \note This may be different from the number of vertices that were input
+     * into the cache, if the chosen primitive type isn't natively supported.
+     */
+    std::size_t get_vertex_count() const override;
+
 private:
+    type          type_                    = type::triangles;
+    std::size_t   num_vertex_              = 0;
     std::size_t   current_size_vertex_     = 0u;
     std::size_t   current_size_index_      = 0u;
     std::size_t   current_capacity_vertex_ = 0u;

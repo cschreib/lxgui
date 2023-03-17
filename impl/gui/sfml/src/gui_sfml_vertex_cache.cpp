@@ -8,7 +8,11 @@
 
 namespace lxgui::gui::sfml {
 
-vertex_cache::vertex_cache(type t) : gui::vertex_cache(t), buffer_(sf::PrimitiveType::Triangles) {}
+vertex_cache::vertex_cache(type t) : type_(t), buffer_(sf::PrimitiveType::Triangles) {
+    // Needed to initialise the buffer; will resize automatically later.
+    if (!buffer_.create(0u))
+        throw gui::exception("sfml::vertex_cache", "Could not initialise buffer");
+}
 
 void to_sfml(const vertex& v, sf::Vertex& sv) {
     sv.position.x  = v.pos.x;
@@ -25,41 +29,43 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     if (type_ == type::quads) {
         static constexpr std::array<std::size_t, 6> quad_ids = {{0, 1, 2, 2, 3, 0}};
 
-        std::size_t num_quads           = num_vertex / 4u;
-        std::size_t num_vertex_expanded = num_quads * 6u;
-        if (num_vertex_expanded > buffer_.getVertexCount()) {
-            if (!buffer_.create(num_vertex_expanded)) {
-                throw gui::exception("sfml::vertex_cache", "Could not create expanded cache");
-            }
+        if (num_vertex % 4u != 0u) {
+            throw gui::exception(
+                "gui::gl::vertex_cache",
+                "Number of vertices in quad array must be a multiple of 4 (got " +
+                    utils::to_string(num_vertex) + ").");
         }
 
-        std::vector<sf::Vertex> vertices(num_vertex_expanded);
+        const std::size_t       num_quads           = num_vertex / 4u;
+        const std::size_t       num_vertex_expanded = num_quads * 6u;
+        std::vector<sf::Vertex> sf_vertices(num_vertex_expanded);
         for (std::size_t i = 0; i < num_vertex_expanded; ++i) {
-            auto&       sv = vertices[i];
+            auto&       sv = sf_vertices[i];
             const auto& v  = vertex_data[(i / 6u) * 4u + quad_ids[i % 6u]];
             to_sfml(v, sv);
         }
 
-        if (!buffer_.update(vertices.data(), num_vertex_expanded, 0)) {
+        if (!buffer_.update(sf_vertices.data(), num_vertex_expanded, 0)) {
             throw gui::exception("sfml::vertex_cache", "Could not update cache");
         }
 
         num_vertex_ = num_vertex_expanded;
     } else {
-        if (num_vertex > buffer_.getVertexCount()) {
-            if (!buffer_.create(num_vertex)) {
-                throw gui::exception("sfml::vertex_cache", "Could not create expanded cache");
-            }
+        if (num_vertex % 3u != 0u) {
+            throw gui::exception(
+                "gui::gl::vertex_cache",
+                "Number of vertices in triangle array must be a multiple of 3 (got " +
+                    utils::to_string(num_vertex) + ").");
         }
 
-        std::vector<sf::Vertex> vertices(num_vertex);
+        std::vector<sf::Vertex> sf_vertices(num_vertex);
         for (std::size_t i = 0; i < num_vertex; ++i) {
-            auto&       sv = vertices[i];
+            auto&       sv = sf_vertices[i];
             const auto& v  = vertex_data[i];
             to_sfml(v, sv);
         }
 
-        if (!buffer_.update(vertices.data(), num_vertex, 0)) {
+        if (!buffer_.update(sf_vertices.data(), num_vertex, 0)) {
             throw gui::exception("sfml::vertex_cache", "Could not update cache");
         }
 
@@ -68,7 +74,8 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
 }
 
 std::size_t vertex_cache::get_vertex_count() const {
-    return buffer_.getVertexCount();
+    // NB: Don't use buffer_.getVertexCount(). This is the capacity, not the size.
+    return num_vertex_;
 }
 
 const sf::VertexBuffer& vertex_cache::get_impl() const {

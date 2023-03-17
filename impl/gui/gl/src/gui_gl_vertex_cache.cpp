@@ -27,7 +27,7 @@
 
 namespace lxgui::gui::gl {
 
-vertex_cache::vertex_cache(type t) : gui::vertex_cache(t) {
+vertex_cache::vertex_cache(type t) : type_(t) {
     glGenVertexArrays(1, &vertex_array_);
 
     std::array<std::uint32_t, 2> buffers;
@@ -106,7 +106,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
         static constexpr std::array<std::uint32_t, 6>  quad_ids = {{0, 1, 2, 2, 3, 0}};
         static thread_local std::vector<std::uint32_t> repeated_ids;
 
-        if (num_vertex % 4 != 0) {
+        if (num_vertex % 4u != 0u) {
             throw gui::exception(
                 "gui::gl::vertex_cache",
                 "Number of vertices in quad array must be a multiple of 4 (got " +
@@ -122,7 +122,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
             std::size_t old_size = repeated_ids.size();
             repeated_ids.resize(num_indices);
             for (std::size_t i = old_size; i < num_indices; ++i) {
-                repeated_ids[i] = (i / 6) * 4 + quad_ids[i % 6];
+                repeated_ids[i] = (i / 6u) * 4u + quad_ids[i % 6u];
             }
         }
 
@@ -131,7 +131,7 @@ void vertex_cache::update(const vertex* vertex_data, std::size_t num_vertex) {
     } else {
         static thread_local std::vector<std::uint32_t> repeated_ids;
 
-        if (num_vertex % 3 != 0) {
+        if (num_vertex % 3u != 0u) {
             throw gui::exception(
                 "gui::gl::vertex_cache",
                 "Number of vertices in triangle array must be a multiple of 3 (got " +
@@ -160,6 +160,10 @@ void vertex_cache::render() const {
     glBindVertexArray(vertex_array_);
     glDrawElements(GL_TRIANGLES, current_size_index_, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+std::size_t vertex_cache::get_vertex_count() const {
+    return num_vertex_;
 }
 
 } // namespace lxgui::gui::gl

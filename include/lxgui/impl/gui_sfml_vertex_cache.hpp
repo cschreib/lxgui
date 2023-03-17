@@ -48,8 +48,10 @@ public:
     /**
      * \brief Returns the number of vertices currently stored in the cache.
      * \return The number of vertices currently stored in the cache
+     * \note This may be different from the number of vertices that were input
+     * into the cache, if the chosen primitive type isn't natively supported.
      */
-    std::size_t get_vertex_count() const;
+    std::size_t get_vertex_count() const override;
 
     /**
      * \brief Returns the SFML vertex buffer object.
@@ -58,6 +60,8 @@ public:
     const sf::VertexBuffer& get_impl() const;
 
 private:
+    type             type_       = type::triangles;
+    std::size_t      num_vertex_ = 0;
     sf::VertexBuffer buffer_;
 };
 

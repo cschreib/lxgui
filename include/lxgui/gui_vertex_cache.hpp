@@ -34,13 +34,8 @@ public:
         quads /// 4 vertices per element
     };
 
-    /**
-     * \brief Constructor.
-     * \param t The type of data this cache will hold
-     * \details A default constructed vertex cache holds no data. Use update()
-     * to store vertices to be rendered.
-     */
-    explicit vertex_cache(type t);
+    /// Constructor.
+    vertex_cache() = default;
 
     /// Destructor.
     virtual ~vertex_cache() = default;
@@ -69,14 +64,10 @@ public:
     /**
      * \brief Returns the number of vertices stored in this cache.
      * \return The number of vertices stored in this cache
+     * \note This may be different from the number of vertices that were input
+     * into the cache, if the chosen primitive type isn't natively supported.
      */
-    std::size_t get_vertex_count() const {
-        return num_vertex_;
-    }
-
-protected:
-    type        type_       = type::triangles;
-    std::size_t num_vertex_ = 0;
+    virtual std::size_t get_vertex_count() const = 0;
 };
 
 } // namespace lxgui::gui
