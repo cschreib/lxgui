@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['object_5fpoint_2588',['object_point',['../structlxgui_1_1gui_1_1anchor__data.html#a284a722e15e9b7e5acb147f78497c0b9',1,'lxgui::gui::anchor_data']]],
+  ['object_5fpoint_2588',['object_point',['../classlxgui_1_1gui_1_1anchor.html#a284a722e15e9b7e5acb147f78497c0b9',1,'lxgui::gui::anchor::object_point()'],['../structlxgui_1_1gui_1_1anchor__data.html#a284a722e15e9b7e5acb147f78497c0b9',1,'lxgui::gui::anchor_data::object_point()']]],
   ['object_5ftype_2589',['object_type',['../structlxgui_1_1gui_1_1region__core__attributes.html#a6f365b0a579aa9a0a082a89409a77c8b',1,'lxgui::gui::region_core_attributes']]],
-  ['offset_2590',['offset',['../structlxgui_1_1gui_1_1anchor__data.html#a4609cf52ec0d91ba54a6fb92f789a8a6',1,'lxgui::gui::anchor_data']]],
+  ['offset_2590',['offset',['../structlxgui_1_1gui_1_1anchor__data.html#a4609cf52ec0d91ba54a6fb92f789a8a6',1,'lxgui::gui::anchor_data::offset()'],['../classlxgui_1_1gui_1_1anchor.html#a4609cf52ec0d91ba54a6fb92f789a8a6',1,'lxgui::gui::anchor::offset()']]],
   ['on_5fcreate_5flua_2591',['on_create_lua',['../classlxgui_1_1gui_1_1manager.html#a4bb12eed6a41dadf416acc3ec9627166',1,'lxgui::gui::manager']]],
   ['on_5fkey_5fpressed_2592',['on_key_pressed',['../classlxgui_1_1input_1_1signals.html#a4fb39f38c35438eed6df871c661068e3',1,'lxgui::input::signals::on_key_pressed()'],['../classlxgui_1_1input_1_1source.html#a06798cc5a36105ad97c270b3885e06ea',1,'lxgui::input::source::on_key_pressed()']]],
   ['on_5fkey_5fpressed_5frepeat_2593',['on_key_pressed_repeat',['../classlxgui_1_1input_1_1signals.html#aa6193fda040cac1ab779f5075d972fa7',1,'lxgui::input::signals::on_key_pressed_repeat()'],['../classlxgui_1_1input_1_1source.html#a81fa18ed8b702096a63a57859d04a22b',1,'lxgui::input::source::on_key_pressed_repeat()']]],

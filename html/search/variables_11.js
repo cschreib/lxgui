@@ -9,6 +9,6 @@ var searchData=
   ['time_5fsince_5flast_5fupdate_5f_2652',['time_since_last_update_',['../classlxgui_1_1gui_1_1frame.html#aebc6f1fa92ed3a1f2f5eebb5582b8468',1,'lxgui::gui::frame']]],
   ['title_5fregion_5f_2653',['title_region_',['../classlxgui_1_1gui_1_1frame.html#adbd3295fcddb0913852abb5eeded0280',1,'lxgui::gui::frame']]],
   ['top_2654',['top',['../structlxgui_1_1gui_1_1bounds2.html#a8840eca7c5fce9973a04e20d01564fe6',1,'lxgui::gui::bounds2']]],
-  ['type_2655',['type',['../structlxgui_1_1gui_1_1anchor__data.html#a10d90eee91f820a487334ef4b8070340',1,'lxgui::gui::anchor_data']]],
+  ['type_2655',['type',['../structlxgui_1_1gui_1_1anchor__data.html#a10d90eee91f820a487334ef4b8070340',1,'lxgui::gui::anchor_data::type()'],['../classlxgui_1_1gui_1_1anchor.html#a10d90eee91f820a487334ef4b8070340',1,'lxgui::gui::anchor::type()']]],
   ['type_5f_2656',['type_',['../classlxgui_1_1gui_1_1vertex__cache.html#acce997d264c98e25820951eaf3aa7a69',1,'lxgui::gui::vertex_cache']]]
 ];

@@ -26,6 +26,7 @@
 <br/>
 <h1>lxgui</h1>
 
+
 <ul>
   <li><a href="../index.html">Index</a></li>
 </ul>
@@ -83,7 +84,7 @@
  anchors, the text will simply word wrap (if allowed) and be cut to fit
  in the specified area.</p>
 
-<p> <strong>Formatting.</strong> If <a href="../classes/FontString.html#FontString:is_formatting_enabled">FontString:is_formatting_enabled</a> is true (default),
+<p> <strong>Formatting.</strong> If <a href="../classes/FontString.html#fontstring:is_formatting_enabled">FontString:is_formatting_enabled</a> is true (default),
  the string displayed by the <a href="../classes/FontString.html#">FontString</a> class can have special
  formatting. This is done by entering the pipe <code>|</code> character, followed by
  a command:</p>
@@ -100,7 +101,7 @@
     the word <code>hello</code> would be displayed in red, <code>world</code> in blue,
     <code>example</code> in red again, and <code>formatting</code> would be of whatever color
     is the default for the <a href="../classes/FontString.html#">FontString</a> object (see
-    <a href="../classes/FontString.html#FontString:get_text_color">FontString:get_text_color</a>).</p></li>
+    <a href="../classes/FontString.html#fontstring:get_text_color">FontString:get_text_color</a>).</p></li>
     <li><p><code>|Tpath/to/texture.png:w:h|t</code> displays a texture. The command
     parameters must be contained within an opening <code>|T</code> and a closing
     <code>|t</code>. The parameters are separated by colons <code>:</code>. The first parameter
@@ -122,235 +123,235 @@
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#FontString:disable_formatting">FontString:disable_formatting()</a></td>
+	<td class="name" nowrap><a href="#fontstring:disable_formatting">fontstring:disable_formatting()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:disable_non_space_wrap">FontString:disable_non_space_wrap()</a></td>
+	<td class="name" nowrap><a href="#fontstring:disable_non_space_wrap">fontstring:disable_non_space_wrap()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:disable_shadow">FontString:disable_shadow()</a></td>
+	<td class="name" nowrap><a href="#fontstring:disable_shadow">fontstring:disable_shadow()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:disable_word_ellipsis">FontString:disable_word_ellipsis()</a></td>
+	<td class="name" nowrap><a href="#fontstring:disable_word_ellipsis">fontstring:disable_word_ellipsis()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:disable_word_wrap">FontString:disable_word_wrap()</a></td>
+	<td class="name" nowrap><a href="#fontstring:disable_word_wrap">fontstring:disable_word_wrap()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_formatting">FontString:enable_formatting()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_formatting">fontstring:enable_formatting()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_non_space_wrap">FontString:enable_non_space_wrap()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_non_space_wrap">fontstring:enable_non_space_wrap()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_shadow">FontString:enable_shadow()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_shadow">fontstring:enable_shadow()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_word_ellipsis">FontString:enable_word_ellipsis()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_word_ellipsis">fontstring:enable_word_ellipsis()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_word_wrap">FontString:enable_word_wrap()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_word_wrap">fontstring:enable_word_wrap()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_font">FontString:get_font()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_font">fontstring:get_font()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_alignment_x">FontString:get_alignment_x()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_alignment_x">fontstring:get_alignment_x()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_alignment_y">FontString:get_alignment_y()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_alignment_y">fontstring:get_alignment_y()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_shadow_color">FontString:get_shadow_color()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_shadow_color">fontstring:get_shadow_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_shadow_offset">FontString:get_shadow_offset()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_shadow_offset">fontstring:get_shadow_offset()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_spacing">FontString:get_spacing()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_spacing">fontstring:get_spacing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_line_spacing">FontString:get_line_spacing()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_line_spacing">fontstring:get_line_spacing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_text_color">FontString:get_text_color()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_text_color">fontstring:get_text_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_font">FontString:set_font()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_font">fontstring:set_font()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_alignment_x">FontString:set_alignment_x()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_alignment_x">fontstring:set_alignment_x()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_alignment_y">FontString:set_alignment_y()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_alignment_y">fontstring:set_alignment_y()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_shadow_color">FontString:set_shadow_color()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_shadow_color">fontstring:set_shadow_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_shadow_offset">FontString:set_shadow_offset()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_shadow_offset">fontstring:set_shadow_offset()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_spacing">FontString:set_spacing()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_spacing">fontstring:set_spacing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_line_spacing">FontString:set_line_spacing()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_line_spacing">fontstring:set_line_spacing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_text_color">FontString:set_text_color()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_text_color">fontstring:set_text_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:is_non_space_wrap_enabled">FontString:is_non_space_wrap_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:is_non_space_wrap_enabled">fontstring:is_non_space_wrap_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:is_word_wrap_enabled">FontString:is_word_wrap_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:is_word_wrap_enabled">fontstring:is_word_wrap_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:enable_formatting">FontString:enable_formatting()</a></td>
+	<td class="name" nowrap><a href="#fontstring:enable_formatting">fontstring:enable_formatting()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_string_height">FontString:get_string_height()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_string_height">fontstring:get_string_height()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_string_width">FontString:get_string_width()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_string_width">fontstring:get_string_width()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_text">FontString:get_text()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_text">fontstring:get_text()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:get_vertex_cache_strategy">FontString:get_vertex_cache_strategy()</a></td>
+	<td class="name" nowrap><a href="#fontstring:get_vertex_cache_strategy">fontstring:get_vertex_cache_strategy()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:is_formatting_enabled">FontString:is_formatting_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:is_formatting_enabled">fontstring:is_formatting_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_non_space_wrap_enabled">FontString:set_non_space_wrap_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_non_space_wrap_enabled">fontstring:set_non_space_wrap_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_word_wrap_enabled">FontString:set_word_wrap_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_word_wrap_enabled">fontstring:set_word_wrap_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_word_ellipsis_enabled">FontString:set_word_ellipsis_enabled()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_word_ellipsis_enabled">fontstring:set_word_ellipsis_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_text">FontString:set_text()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_text">fontstring:set_text()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#FontString:set_vertex_cache_strategy">FontString:set_vertex_cache_strategy()</a></td>
+	<td class="name" nowrap><a href="#fontstring:set_vertex_cache_strategy">fontstring:set_vertex_cache_strategy()</a></td>
 	<td class="summary">
 
 </td>
@@ -365,8 +366,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "FontString:disable_formatting"></a>
-    <strong>FontString:disable_formatting()</strong>
+    <a name = "fontstring:disable_formatting"></a>
+    <strong>fontstring:disable_formatting()</strong>
     </dt>
     <dd>
 
@@ -381,8 +382,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:disable_non_space_wrap"></a>
-    <strong>FontString:disable_non_space_wrap()</strong>
+    <a name = "fontstring:disable_non_space_wrap"></a>
+    <strong>fontstring:disable_non_space_wrap()</strong>
     </dt>
     <dd>
 
@@ -397,8 +398,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:disable_shadow"></a>
-    <strong>FontString:disable_shadow()</strong>
+    <a name = "fontstring:disable_shadow"></a>
+    <strong>fontstring:disable_shadow()</strong>
     </dt>
     <dd>
 
@@ -413,8 +414,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:disable_word_ellipsis"></a>
-    <strong>FontString:disable_word_ellipsis()</strong>
+    <a name = "fontstring:disable_word_ellipsis"></a>
+    <strong>fontstring:disable_word_ellipsis()</strong>
     </dt>
     <dd>
 
@@ -429,8 +430,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:disable_word_wrap"></a>
-    <strong>FontString:disable_word_wrap()</strong>
+    <a name = "fontstring:disable_word_wrap"></a>
+    <strong>fontstring:disable_word_wrap()</strong>
     </dt>
     <dd>
 
@@ -445,8 +446,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_formatting"></a>
-    <strong>FontString:enable_formatting()</strong>
+    <a name = "fontstring:enable_formatting"></a>
+    <strong>fontstring:enable_formatting()</strong>
     </dt>
     <dd>
 
@@ -461,8 +462,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_non_space_wrap"></a>
-    <strong>FontString:enable_non_space_wrap()</strong>
+    <a name = "fontstring:enable_non_space_wrap"></a>
+    <strong>fontstring:enable_non_space_wrap()</strong>
     </dt>
     <dd>
 
@@ -477,8 +478,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_shadow"></a>
-    <strong>FontString:enable_shadow()</strong>
+    <a name = "fontstring:enable_shadow"></a>
+    <strong>fontstring:enable_shadow()</strong>
     </dt>
     <dd>
 
@@ -493,8 +494,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_word_ellipsis"></a>
-    <strong>FontString:enable_word_ellipsis()</strong>
+    <a name = "fontstring:enable_word_ellipsis"></a>
+    <strong>fontstring:enable_word_ellipsis()</strong>
     </dt>
     <dd>
 
@@ -509,8 +510,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_word_wrap"></a>
-    <strong>FontString:enable_word_wrap()</strong>
+    <a name = "fontstring:enable_word_wrap"></a>
+    <strong>fontstring:enable_word_wrap()</strong>
     </dt>
     <dd>
 
@@ -525,8 +526,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_font"></a>
-    <strong>FontString:get_font()</strong>
+    <a name = "fontstring:get_font"></a>
+    <strong>fontstring:get_font()</strong>
     </dt>
     <dd>
 
@@ -541,8 +542,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_alignment_x"></a>
-    <strong>FontString:get_alignment_x()</strong>
+    <a name = "fontstring:get_alignment_x"></a>
+    <strong>fontstring:get_alignment_x()</strong>
     </dt>
     <dd>
 
@@ -557,8 +558,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_alignment_y"></a>
-    <strong>FontString:get_alignment_y()</strong>
+    <a name = "fontstring:get_alignment_y"></a>
+    <strong>fontstring:get_alignment_y()</strong>
     </dt>
     <dd>
 
@@ -573,8 +574,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_shadow_color"></a>
-    <strong>FontString:get_shadow_color()</strong>
+    <a name = "fontstring:get_shadow_color"></a>
+    <strong>fontstring:get_shadow_color()</strong>
     </dt>
     <dd>
 
@@ -589,8 +590,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_shadow_offset"></a>
-    <strong>FontString:get_shadow_offset()</strong>
+    <a name = "fontstring:get_shadow_offset"></a>
+    <strong>fontstring:get_shadow_offset()</strong>
     </dt>
     <dd>
 
@@ -605,8 +606,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_spacing"></a>
-    <strong>FontString:get_spacing()</strong>
+    <a name = "fontstring:get_spacing"></a>
+    <strong>fontstring:get_spacing()</strong>
     </dt>
     <dd>
 
@@ -621,8 +622,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_line_spacing"></a>
-    <strong>FontString:get_line_spacing()</strong>
+    <a name = "fontstring:get_line_spacing"></a>
+    <strong>fontstring:get_line_spacing()</strong>
     </dt>
     <dd>
 
@@ -637,8 +638,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_text_color"></a>
-    <strong>FontString:get_text_color()</strong>
+    <a name = "fontstring:get_text_color"></a>
+    <strong>fontstring:get_text_color()</strong>
     </dt>
     <dd>
 
@@ -653,8 +654,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_font"></a>
-    <strong>FontString:set_font()</strong>
+    <a name = "fontstring:set_font"></a>
+    <strong>fontstring:set_font()</strong>
     </dt>
     <dd>
 
@@ -669,8 +670,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_alignment_x"></a>
-    <strong>FontString:set_alignment_x()</strong>
+    <a name = "fontstring:set_alignment_x"></a>
+    <strong>fontstring:set_alignment_x()</strong>
     </dt>
     <dd>
 
@@ -685,8 +686,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_alignment_y"></a>
-    <strong>FontString:set_alignment_y()</strong>
+    <a name = "fontstring:set_alignment_y"></a>
+    <strong>fontstring:set_alignment_y()</strong>
     </dt>
     <dd>
 
@@ -701,8 +702,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_shadow_color"></a>
-    <strong>FontString:set_shadow_color()</strong>
+    <a name = "fontstring:set_shadow_color"></a>
+    <strong>fontstring:set_shadow_color()</strong>
     </dt>
     <dd>
 
@@ -717,8 +718,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_shadow_offset"></a>
-    <strong>FontString:set_shadow_offset()</strong>
+    <a name = "fontstring:set_shadow_offset"></a>
+    <strong>fontstring:set_shadow_offset()</strong>
     </dt>
     <dd>
 
@@ -733,8 +734,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_spacing"></a>
-    <strong>FontString:set_spacing()</strong>
+    <a name = "fontstring:set_spacing"></a>
+    <strong>fontstring:set_spacing()</strong>
     </dt>
     <dd>
 
@@ -749,8 +750,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_line_spacing"></a>
-    <strong>FontString:set_line_spacing()</strong>
+    <a name = "fontstring:set_line_spacing"></a>
+    <strong>fontstring:set_line_spacing()</strong>
     </dt>
     <dd>
 
@@ -765,8 +766,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_text_color"></a>
-    <strong>FontString:set_text_color()</strong>
+    <a name = "fontstring:set_text_color"></a>
+    <strong>fontstring:set_text_color()</strong>
     </dt>
     <dd>
 
@@ -781,8 +782,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:is_non_space_wrap_enabled"></a>
-    <strong>FontString:is_non_space_wrap_enabled()</strong>
+    <a name = "fontstring:is_non_space_wrap_enabled"></a>
+    <strong>fontstring:is_non_space_wrap_enabled()</strong>
     </dt>
     <dd>
 
@@ -797,8 +798,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:is_word_wrap_enabled"></a>
-    <strong>FontString:is_word_wrap_enabled()</strong>
+    <a name = "fontstring:is_word_wrap_enabled"></a>
+    <strong>fontstring:is_word_wrap_enabled()</strong>
     </dt>
     <dd>
 
@@ -813,8 +814,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:enable_formatting"></a>
-    <strong>FontString:enable_formatting()</strong>
+    <a name = "fontstring:enable_formatting"></a>
+    <strong>fontstring:enable_formatting()</strong>
     </dt>
     <dd>
 
@@ -829,8 +830,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_string_height"></a>
-    <strong>FontString:get_string_height()</strong>
+    <a name = "fontstring:get_string_height"></a>
+    <strong>fontstring:get_string_height()</strong>
     </dt>
     <dd>
 
@@ -845,8 +846,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_string_width"></a>
-    <strong>FontString:get_string_width()</strong>
+    <a name = "fontstring:get_string_width"></a>
+    <strong>fontstring:get_string_width()</strong>
     </dt>
     <dd>
 
@@ -861,8 +862,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_text"></a>
-    <strong>FontString:get_text()</strong>
+    <a name = "fontstring:get_text"></a>
+    <strong>fontstring:get_text()</strong>
     </dt>
     <dd>
 
@@ -877,8 +878,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:get_vertex_cache_strategy"></a>
-    <strong>FontString:get_vertex_cache_strategy()</strong>
+    <a name = "fontstring:get_vertex_cache_strategy"></a>
+    <strong>fontstring:get_vertex_cache_strategy()</strong>
     </dt>
     <dd>
 
@@ -893,8 +894,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:is_formatting_enabled"></a>
-    <strong>FontString:is_formatting_enabled()</strong>
+    <a name = "fontstring:is_formatting_enabled"></a>
+    <strong>fontstring:is_formatting_enabled()</strong>
     </dt>
     <dd>
 
@@ -909,8 +910,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_non_space_wrap_enabled"></a>
-    <strong>FontString:set_non_space_wrap_enabled()</strong>
+    <a name = "fontstring:set_non_space_wrap_enabled"></a>
+    <strong>fontstring:set_non_space_wrap_enabled()</strong>
     </dt>
     <dd>
 
@@ -925,8 +926,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_word_wrap_enabled"></a>
-    <strong>FontString:set_word_wrap_enabled()</strong>
+    <a name = "fontstring:set_word_wrap_enabled"></a>
+    <strong>fontstring:set_word_wrap_enabled()</strong>
     </dt>
     <dd>
 
@@ -941,8 +942,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_word_ellipsis_enabled"></a>
-    <strong>FontString:set_word_ellipsis_enabled()</strong>
+    <a name = "fontstring:set_word_ellipsis_enabled"></a>
+    <strong>fontstring:set_word_ellipsis_enabled()</strong>
     </dt>
     <dd>
 
@@ -957,8 +958,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_text"></a>
-    <strong>FontString:set_text()</strong>
+    <a name = "fontstring:set_text"></a>
+    <strong>fontstring:set_text()</strong>
     </dt>
     <dd>
 
@@ -973,8 +974,8 @@
 
 </dd>
     <dt>
-    <a name = "FontString:set_vertex_cache_strategy"></a>
-    <strong>FontString:set_vertex_cache_strategy()</strong>
+    <a name = "fontstring:set_vertex_cache_strategy"></a>
+    <strong>fontstring:set_vertex_cache_strategy()</strong>
     </dt>
     <dd>
 
@@ -994,8 +995,8 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-09-21 08:40:33 </i>
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-10 15:26:14 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

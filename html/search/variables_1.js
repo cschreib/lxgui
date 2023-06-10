@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_2458',['b',['../classlxgui_1_1gui_1_1color.html#a8346db2fda5f218a3aac2616d532699c',1,'lxgui::gui::color::b()'],['../structlxgui_1_1gui_1_1color32.html#a09f404bafd8e98844eafc34bf603abc8',1,'lxgui::gui::color32::b()']]],
+  ['b_2458',['b',['../structlxgui_1_1gui_1_1color32.html#a09f404bafd8e98844eafc34bf603abc8',1,'lxgui::gui::color32::b()'],['../classlxgui_1_1gui_1_1color.html#a8346db2fda5f218a3aac2616d532699c',1,'lxgui::gui::color::b()']]],
   ['backdrop_5f_2459',['backdrop_',['../classlxgui_1_1gui_1_1frame.html#ad7aeca50785dca8702fd09d21c5e8f36',1,'lxgui::gui::frame']]],
   ['bar_5fcolor_5f_2460',['bar_color_',['../classlxgui_1_1gui_1_1status__bar.html#a5d79c20005e809d7df76f5d0b5e1aa03',1,'lxgui::gui::status_bar']]],
   ['bar_5flayer_5f_2461',['bar_layer_',['../classlxgui_1_1gui_1_1status__bar.html#acf7e63cf3284badf2ae952e6fe2f83ac',1,'lxgui::gui::status_bar']]],

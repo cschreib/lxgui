@@ -26,6 +26,7 @@
 <br/>
 <h1>lxgui</h1>
 
+
 <ul>
   <li><a href="../index.html">Index</a></li>
 </ul>
@@ -110,31 +111,31 @@
  <code>&quot;UNDER_ATTACK&quot;</code> event).</p>
 
 <p> To use the first type of events (hard-coded events), all you have to
- do in general is register a callback function using <a href="../classes/Frame.html#Frame:add_script">Frame:add_script</a>
- or <a href="../classes/Frame.html#Frame:set_script">Frame:set_script</a>. However, some hard-coded events require explicit
+ do in general is register a callback function using <a href="../classes/Frame.html#frame:add_script">Frame:add_script</a>
+ or <a href="../classes/Frame.html#frame:set_script">Frame:set_script</a>. However, some hard-coded events require explicit
  enabling. In particular:</p>
 
 <ul>
     <li>Events related to keyboard input (<code>OnKeyDown</code>, <code>OnKeyRepeat</code>, <code>OnKeyUp</code>)
-    require <a href="../classes/Frame.html#Frame:enable_keyboard">Frame:enable_keyboard</a>, and either focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or
-    explicit key capture (see <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>).</li>
+    require <a href="../classes/Frame.html#frame:enable_keyboard">Frame:enable_keyboard</a>, and either focus (see <a href="../classes/Frame.html#frame:set_focus">Frame:set_focus</a>) or
+    explicit key capture (see <a href="../classes/Frame.html#frame:enable_key_capture">Frame:enable_key_capture</a>).</li>
     <li>Events related to mouse click input (<code>OnDragStart</code>, <code>OnDragStop</code>,
-    <code>OnMouseUp</code>, <code>OnMouseDown</code>) require <a href="../classes/Frame.html#Frame:enable_mouse_click">Frame:enable_mouse_click</a>.</li>
+    <code>OnMouseUp</code>, <code>OnMouseDown</code>) require <a href="../classes/Frame.html#frame:enable_mouse_click">Frame:enable_mouse_click</a>.</li>
     <li>Events related to mouse move input (<code>OnEnter</code>, <code>OnLeave</code>, <code>OnMouseMove</code>)
-    require <a href="../classes/Frame.html#Frame:enable_mouse_move">Frame:enable_mouse_move</a>.</li>
+    require <a href="../classes/Frame.html#frame:enable_mouse_move">Frame:enable_mouse_move</a>.</li>
     <li>Events related to mouse wheel input (<code>OnMouseWheel</code>) require
-    <a href="../classes/Frame.html#Frame:enable_mouse_wheel">Frame:enable_mouse_wheel</a>.</li>
+    <a href="../classes/Frame.html#frame:enable_mouse_wheel">Frame:enable_mouse_wheel</a>.</li>
 </ul>
 
 <p> To use the second type of events (generic events), you have to register
  a callback for <code>OnEvent</code> <em>and</em> register the frame for each generic event
- you wish to listen to. This is done with <a href="../classes/Frame.html#Frame:register_event">Frame:register_event</a>.</p>
+ you wish to listen to. This is done with <a href="../classes/Frame.html#frame:register_event">Frame:register_event</a>.</p>
 
 <p> Some events provide arguments to the registered callback function. For
  example, the application can fire a <code>&quot;UNIT_ATTACKED&quot;</code> event when a unit
  is under attack, and pass the ID of the attacked unit as a first argument,
  and the ID of the attacker as a second argument. If a callback
- function is registered using <a href="../classes/Frame.html#Frame:add_script">Frame:add_script</a> or <a href="../classes/Frame.html#Frame:set_script">Frame:set_script</a>,
+ function is registered using <a href="../classes/Frame.html#frame:add_script">Frame:add_script</a> or <a href="../classes/Frame.html#frame:set_script">Frame:set_script</a>,
  these arguments can be handled and named like regular function parameters.
  In layout files "scripts" handlers, they can be accessed with the
  hard-coded generic names <code>arg1</code>, <code>arg2</code>, etc.</p>
@@ -143,7 +144,7 @@
 
 <ul>
     <li><code>OnChar</code>: Triggered whenever a character is typed and the frame has focus
-    (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>).</li>
+    (see <a href="../classes/Frame.html#frame:set_focus">Frame:set_focus</a>).</li>
     <li><code>OnDragStart</code>: Triggered when one of the mouse button registered for
     dragging (see frame::enable_drag) has been pressed inside the
     area of the screen occupied by the frame, and a mouse movement is first
@@ -163,22 +164,22 @@
     occupied by its children or layered regions. Will not trigger if the
     frame is hidden.</li>
     <li><code>OnEvent</code>: Triggered when a registered generic event occurs. See
-    <a href="../classes/Frame.html#Frame:register_event">Frame:register_event</a>. To allow distinguishing which event has just
+    <a href="../classes/Frame.html#frame:register_event">Frame:register_event</a>. To allow distinguishing which event has just
     been fired, the registered callback function is always provided with a
     first argument that is set to a string matching the event name. Further
     arguments can be passed to the callback and are handled as for other events.</li>
     <li><code>OnFocusGained</code>: Triggered when the frame gains focus, see
-    <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>.</li>
+    <a href="../classes/Frame.html#frame:set_focus">Frame:set_focus</a>.</li>
     <li><code>OnFocusLost</code>: Triggered when the frame looses focus, see
-    <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>.</li>
-    <li><code>OnHide</code>: Triggered when <a href="../classes/Region.html#Region:hide">Region:hide</a> is called, or when the frame
+    <a href="../classes/Frame.html#frame:set_focus">Frame:set_focus</a>.</li>
+    <li><code>OnHide</code>: Triggered when <a href="../classes/Region.html#region:hide">Region:hide</a> is called, or when the frame
     is hidden indirectly (for example if its parent is itself hidden). This
     will only fire if the frame was previously shown.</li>
     <li><code>OnKeyDown</code>: Triggered when a keyboard key is pressed. Will only
-    trigger if the frame is shown and either has focus (see <a href="../classes/Frame.html#Frame:set_focus">Frame:set_focus</a>) or
-    if the key has been registered for capture using <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a>.
+    trigger if the frame is shown and either has focus (see <a href="../classes/Frame.html#frame:set_focus">Frame:set_focus</a>) or
+    if the key has been registered for capture using <a href="../classes/Frame.html#frame:enable_key_capture">Frame:enable_key_capture</a>.
     If no keyboard-enabled frame is focused, only the topmost frame with
-    <a href="../classes/Frame.html#Frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
+    <a href="../classes/Frame.html#frame:enable_key_capture">Frame:enable_key_capture</a> will receive the event. If no frame has
     captured the key, then the key is tested for existing key bindings (see
     <a href="../modules/GUI.html#register_key_binding">GUI.register_key_binding</a>). This event provides five arguments to the registered
     callback: a number identifying the main key being pressed, three boolean flags
@@ -229,9 +230,9 @@
     from the user (this would normally scroll <em>up</em> in a document).</li>
     <li><code>OnReceiveDrag</code>: Triggered when the mouse pointer was previously
     dragged onto the frame, and when one of the mouse button registered for
-    dragging (see <a href="../classes/Frame.html#Frame:enable_drag">Frame:enable_drag</a>) is released. This enables
+    dragging (see <a href="../classes/Frame.html#frame:enable_drag">Frame:enable_drag</a>) is released. This enables
     the "drop" in "drag and drop" operations.</li>
-    <li><code>OnShow</code>: Triggered when <a href="../classes/Region.html#Region:show">Region:show</a> is called, or when the frame
+    <li><code>OnShow</code>: Triggered when <a href="../classes/Region.html#region:show">Region:show</a> is called, or when the frame
     is shown indirectly (for example if its parent is itself shown). This
     will only fire if the frame was previously hidden.</li>
     <li><code>OnSizeChanged</code>: Triggered whenever the size of the frame changes, either
@@ -245,7 +246,7 @@
     whenever possible. <code>OnUpdate</code> callbacks will be executed over and over again,
     and can quickly consume a lot of resources if user unreasonably. If you have
     to use <code>OnUpdate</code>, you can mitigate performance problems by reducing the
-    update rate using <a href="../classes/Frame.html#Frame:set_update_rate">Frame:set_update_rate</a>.</li>
+    update rate using <a href="../classes/Frame.html#frame:set_update_rate">Frame:set_update_rate</a>.</li>
 </ul>
 
 <p> Generic events fired natively by lxgui:</p>
@@ -284,523 +285,523 @@
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Frame:add_script">Frame:add_script()</a></td>
+	<td class="name" nowrap><a href="#frame:add_script">frame:add_script()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:clear_focus">Frame:clear_focus()</a></td>
+	<td class="name" nowrap><a href="#frame:clear_focus">frame:clear_focus()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:create_font_string">Frame:create_font_string()</a></td>
+	<td class="name" nowrap><a href="#frame:create_font_string">frame:create_font_string()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:create_texture">Frame:create_texture()</a></td>
+	<td class="name" nowrap><a href="#frame:create_texture">frame:create_texture()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:create_title_region">Frame:create_title_region()</a></td>
+	<td class="name" nowrap><a href="#frame:create_title_region">frame:create_title_region()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_drag">Frame:disable_drag()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_drag">frame:disable_drag()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_draw_layer">Frame:disable_draw_layer()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_draw_layer">frame:disable_draw_layer()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_key_capture">Frame:disable_key_capture()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_key_capture">frame:disable_key_capture()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_keyboard">Frame:disable_keyboard()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_keyboard">frame:disable_keyboard()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_mouse">Frame:disable_mouse()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_mouse">frame:disable_mouse()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_mouse_click">Frame:disable_mouse_click()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_mouse_click">frame:disable_mouse_click()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_mouse_move">Frame:disable_mouse_move()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_mouse_move">frame:disable_mouse_move()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:disable_mouse_wheel">Frame:disable_mouse_wheel()</a></td>
+	<td class="name" nowrap><a href="#frame:disable_mouse_wheel">frame:disable_mouse_wheel()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_drag">Frame:enable_drag()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_drag">frame:enable_drag()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_draw_layer">Frame:enable_draw_layer()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_draw_layer">frame:enable_draw_layer()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_key_capture">Frame:enable_key_capture()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_key_capture">frame:enable_key_capture()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_keyboard">Frame:enable_keyboard()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_keyboard">frame:enable_keyboard()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_mouse">Frame:enable_mouse()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_mouse">frame:enable_mouse()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_mouse_click">Frame:enable_mouse_click()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_mouse_click">frame:enable_mouse_click()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_mouse_move">Frame:enable_mouse_move()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_mouse_move">frame:enable_mouse_move()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:enable_mouse_wheel">Frame:enable_mouse_wheel()</a></td>
+	<td class="name" nowrap><a href="#frame:enable_mouse_wheel">frame:enable_mouse_wheel()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_backdrop">Frame:get_backdrop()</a></td>
+	<td class="name" nowrap><a href="#frame:get_backdrop">frame:get_backdrop()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_backdrop_border_color">Frame:get_backdrop_border_color()</a></td>
+	<td class="name" nowrap><a href="#frame:get_backdrop_border_color">frame:get_backdrop_border_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_backdrop_color">Frame:get_backdrop_color()</a></td>
+	<td class="name" nowrap><a href="#frame:get_backdrop_color">frame:get_backdrop_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_children">Frame:get_children()</a></td>
+	<td class="name" nowrap><a href="#frame:get_children">frame:get_children()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_effective_alpha">Frame:get_effective_alpha()</a></td>
+	<td class="name" nowrap><a href="#frame:get_effective_alpha">frame:get_effective_alpha()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_effective_scale">Frame:get_effective_scale()</a></td>
+	<td class="name" nowrap><a href="#frame:get_effective_scale">frame:get_effective_scale()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_level">Frame:get_level()</a></td>
+	<td class="name" nowrap><a href="#frame:get_level">frame:get_level()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_strata">Frame:get_strata()</a></td>
+	<td class="name" nowrap><a href="#frame:get_strata">frame:get_strata()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_strata">Frame:get_strata()</a></td>
+	<td class="name" nowrap><a href="#frame:get_strata">frame:get_strata()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_hit_rect_insets">Frame:get_hit_rect_insets()</a></td>
+	<td class="name" nowrap><a href="#frame:get_hit_rect_insets">frame:get_hit_rect_insets()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_max_dimensions">Frame:get_max_dimensions()</a></td>
+	<td class="name" nowrap><a href="#frame:get_max_dimensions">frame:get_max_dimensions()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_min_dimensions">Frame:get_min_dimensions()</a></td>
+	<td class="name" nowrap><a href="#frame:get_min_dimensions">frame:get_min_dimensions()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_child_count">Frame:get_child_count()</a></td>
+	<td class="name" nowrap><a href="#frame:get_child_count">frame:get_child_count()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_layered_region_count">Frame:get_layered_region_count()</a></td>
+	<td class="name" nowrap><a href="#frame:get_layered_region_count">frame:get_layered_region_count()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_scale">Frame:get_scale()</a></td>
+	<td class="name" nowrap><a href="#frame:get_scale">frame:get_scale()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_script">Frame:get_script()</a></td>
+	<td class="name" nowrap><a href="#frame:get_script">frame:get_script()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_title_region">Frame:get_title_region()</a></td>
+	<td class="name" nowrap><a href="#frame:get_title_region">frame:get_title_region()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:get_update_rate">Frame:get_update_rate()</a></td>
+	<td class="name" nowrap><a href="#frame:get_update_rate">frame:get_update_rate()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:has_script">Frame:has_script()</a></td>
+	<td class="name" nowrap><a href="#frame:has_script">frame:has_script()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_auto_focus">Frame:is_auto_focus()</a></td>
+	<td class="name" nowrap><a href="#frame:is_auto_focus">frame:is_auto_focus()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_clamped_to_screen">Frame:is_clamped_to_screen()</a></td>
+	<td class="name" nowrap><a href="#frame:is_clamped_to_screen">frame:is_clamped_to_screen()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_mouse_click_enabled">Frame:is_mouse_click_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:is_mouse_click_enabled">frame:is_mouse_click_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_mouse_move_enabled">Frame:is_mouse_move_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:is_mouse_move_enabled">frame:is_mouse_move_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_mouse_wheel_enabled">Frame:is_mouse_wheel_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:is_mouse_wheel_enabled">frame:is_mouse_wheel_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_keyboard_enabled">Frame:is_keyboard_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:is_keyboard_enabled">frame:is_keyboard_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_key_capture_enabled">Frame:is_key_capture_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:is_key_capture_enabled">frame:is_key_capture_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_movable">Frame:is_movable()</a></td>
+	<td class="name" nowrap><a href="#frame:is_movable">frame:is_movable()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_resizable">Frame:is_resizable()</a></td>
+	<td class="name" nowrap><a href="#frame:is_resizable">frame:is_resizable()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_top_level">Frame:is_top_level()</a></td>
+	<td class="name" nowrap><a href="#frame:is_top_level">frame:is_top_level()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:is_user_placed">Frame:is_user_placed()</a></td>
+	<td class="name" nowrap><a href="#frame:is_user_placed">frame:is_user_placed()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:raise">Frame:raise()</a></td>
+	<td class="name" nowrap><a href="#frame:raise">frame:raise()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:register_event">Frame:register_event()</a></td>
+	<td class="name" nowrap><a href="#frame:register_event">frame:register_event()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_auto_focus">Frame:set_auto_focus()</a></td>
+	<td class="name" nowrap><a href="#frame:set_auto_focus">frame:set_auto_focus()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_backdrop">Frame:set_backdrop()</a></td>
+	<td class="name" nowrap><a href="#frame:set_backdrop">frame:set_backdrop()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_backdrop_border_color">Frame:set_backdrop_border_color()</a></td>
+	<td class="name" nowrap><a href="#frame:set_backdrop_border_color">frame:set_backdrop_border_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_backdrop_color">Frame:set_backdrop_color()</a></td>
+	<td class="name" nowrap><a href="#frame:set_backdrop_color">frame:set_backdrop_color()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_clamped_to_screen">Frame:set_clamped_to_screen()</a></td>
+	<td class="name" nowrap><a href="#frame:set_clamped_to_screen">frame:set_clamped_to_screen()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_drag_enabled">Frame:set_drag_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_drag_enabled">frame:set_drag_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_draw_layer_enabled">Frame:set_draw_layer_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_draw_layer_enabled">frame:set_draw_layer_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_focus">Frame:set_focus()</a></td>
+	<td class="name" nowrap><a href="#frame:set_focus">frame:set_focus()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_keyboard_enabled">Frame:set_keyboard_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_keyboard_enabled">frame:set_keyboard_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_key_capture_enabled">Frame:set_key_capture_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_key_capture_enabled">frame:set_key_capture_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_level">Frame:set_level()</a></td>
+	<td class="name" nowrap><a href="#frame:set_level">frame:set_level()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_mouse_wheel_enabled">Frame:set_mouse_wheel_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_mouse_wheel_enabled">frame:set_mouse_wheel_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_mouse_enabled">Frame:set_mouse_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_mouse_enabled">frame:set_mouse_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_mouse_click_enabled">Frame:set_mouse_click_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_mouse_click_enabled">frame:set_mouse_click_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_mouse_move_enabled">Frame:set_mouse_move_enabled()</a></td>
+	<td class="name" nowrap><a href="#frame:set_mouse_move_enabled">frame:set_mouse_move_enabled()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_strata">Frame:set_strata()</a></td>
+	<td class="name" nowrap><a href="#frame:set_strata">frame:set_strata()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_hit_rect_insets">Frame:set_hit_rect_insets()</a></td>
+	<td class="name" nowrap><a href="#frame:set_hit_rect_insets">frame:set_hit_rect_insets()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_max_dimensions">Frame:set_max_dimensions()</a></td>
+	<td class="name" nowrap><a href="#frame:set_max_dimensions">frame:set_max_dimensions()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_min_dimensions">Frame:set_min_dimensions()</a></td>
+	<td class="name" nowrap><a href="#frame:set_min_dimensions">frame:set_min_dimensions()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_max_width">Frame:set_max_width()</a></td>
+	<td class="name" nowrap><a href="#frame:set_max_width">frame:set_max_width()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_max_height">Frame:set_max_height()</a></td>
+	<td class="name" nowrap><a href="#frame:set_max_height">frame:set_max_height()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_min_width">Frame:set_min_width()</a></td>
+	<td class="name" nowrap><a href="#frame:set_min_width">frame:set_min_width()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_min_height">Frame:set_min_height()</a></td>
+	<td class="name" nowrap><a href="#frame:set_min_height">frame:set_min_height()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_movable">Frame:set_movable()</a></td>
+	<td class="name" nowrap><a href="#frame:set_movable">frame:set_movable()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_resizable">Frame:set_resizable()</a></td>
+	<td class="name" nowrap><a href="#frame:set_resizable">frame:set_resizable()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_scale">Frame:set_scale()</a></td>
+	<td class="name" nowrap><a href="#frame:set_scale">frame:set_scale()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_script">Frame:set_script()</a></td>
+	<td class="name" nowrap><a href="#frame:set_script">frame:set_script()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_top_level">Frame:set_top_level()</a></td>
+	<td class="name" nowrap><a href="#frame:set_top_level">frame:set_top_level()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_update_rate">Frame:set_update_rate()</a></td>
+	<td class="name" nowrap><a href="#frame:set_update_rate">frame:set_update_rate()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:set_user_placed">Frame:set_user_placed()</a></td>
+	<td class="name" nowrap><a href="#frame:set_user_placed">frame:set_user_placed()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:start_moving">Frame:start_moving()</a></td>
+	<td class="name" nowrap><a href="#frame:start_moving">frame:start_moving()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:start_sizing">Frame:start_sizing()</a></td>
+	<td class="name" nowrap><a href="#frame:start_sizing">frame:start_sizing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:stop_moving_or_sizing">Frame:stop_moving_or_sizing()</a></td>
+	<td class="name" nowrap><a href="#frame:stop_moving_or_sizing">frame:stop_moving_or_sizing()</a></td>
 	<td class="summary">
 
 </td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Frame:unregister_event">Frame:unregister_event()</a></td>
+	<td class="name" nowrap><a href="#frame:unregister_event">frame:unregister_event()</a></td>
 	<td class="summary">
 
 </td>
@@ -815,8 +816,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "Frame:add_script"></a>
-    <strong>Frame:add_script()</strong>
+    <a name = "frame:add_script"></a>
+    <strong>frame:add_script()</strong>
     </dt>
     <dd>
 
@@ -831,8 +832,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:clear_focus"></a>
-    <strong>Frame:clear_focus()</strong>
+    <a name = "frame:clear_focus"></a>
+    <strong>frame:clear_focus()</strong>
     </dt>
     <dd>
 
@@ -847,8 +848,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:create_font_string"></a>
-    <strong>Frame:create_font_string()</strong>
+    <a name = "frame:create_font_string"></a>
+    <strong>frame:create_font_string()</strong>
     </dt>
     <dd>
 
@@ -863,8 +864,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:create_texture"></a>
-    <strong>Frame:create_texture()</strong>
+    <a name = "frame:create_texture"></a>
+    <strong>frame:create_texture()</strong>
     </dt>
     <dd>
 
@@ -879,8 +880,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:create_title_region"></a>
-    <strong>Frame:create_title_region()</strong>
+    <a name = "frame:create_title_region"></a>
+    <strong>frame:create_title_region()</strong>
     </dt>
     <dd>
 
@@ -895,8 +896,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_drag"></a>
-    <strong>Frame:disable_drag()</strong>
+    <a name = "frame:disable_drag"></a>
+    <strong>frame:disable_drag()</strong>
     </dt>
     <dd>
 
@@ -911,8 +912,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_draw_layer"></a>
-    <strong>Frame:disable_draw_layer()</strong>
+    <a name = "frame:disable_draw_layer"></a>
+    <strong>frame:disable_draw_layer()</strong>
     </dt>
     <dd>
 
@@ -927,8 +928,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_key_capture"></a>
-    <strong>Frame:disable_key_capture()</strong>
+    <a name = "frame:disable_key_capture"></a>
+    <strong>frame:disable_key_capture()</strong>
     </dt>
     <dd>
 
@@ -943,8 +944,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_keyboard"></a>
-    <strong>Frame:disable_keyboard()</strong>
+    <a name = "frame:disable_keyboard"></a>
+    <strong>frame:disable_keyboard()</strong>
     </dt>
     <dd>
 
@@ -959,8 +960,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_mouse"></a>
-    <strong>Frame:disable_mouse()</strong>
+    <a name = "frame:disable_mouse"></a>
+    <strong>frame:disable_mouse()</strong>
     </dt>
     <dd>
 
@@ -975,8 +976,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_mouse_click"></a>
-    <strong>Frame:disable_mouse_click()</strong>
+    <a name = "frame:disable_mouse_click"></a>
+    <strong>frame:disable_mouse_click()</strong>
     </dt>
     <dd>
 
@@ -991,8 +992,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_mouse_move"></a>
-    <strong>Frame:disable_mouse_move()</strong>
+    <a name = "frame:disable_mouse_move"></a>
+    <strong>frame:disable_mouse_move()</strong>
     </dt>
     <dd>
 
@@ -1007,8 +1008,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:disable_mouse_wheel"></a>
-    <strong>Frame:disable_mouse_wheel()</strong>
+    <a name = "frame:disable_mouse_wheel"></a>
+    <strong>frame:disable_mouse_wheel()</strong>
     </dt>
     <dd>
 
@@ -1023,8 +1024,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_drag"></a>
-    <strong>Frame:enable_drag()</strong>
+    <a name = "frame:enable_drag"></a>
+    <strong>frame:enable_drag()</strong>
     </dt>
     <dd>
 
@@ -1039,8 +1040,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_draw_layer"></a>
-    <strong>Frame:enable_draw_layer()</strong>
+    <a name = "frame:enable_draw_layer"></a>
+    <strong>frame:enable_draw_layer()</strong>
     </dt>
     <dd>
 
@@ -1055,8 +1056,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_key_capture"></a>
-    <strong>Frame:enable_key_capture()</strong>
+    <a name = "frame:enable_key_capture"></a>
+    <strong>frame:enable_key_capture()</strong>
     </dt>
     <dd>
 
@@ -1071,8 +1072,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_keyboard"></a>
-    <strong>Frame:enable_keyboard()</strong>
+    <a name = "frame:enable_keyboard"></a>
+    <strong>frame:enable_keyboard()</strong>
     </dt>
     <dd>
 
@@ -1087,8 +1088,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_mouse"></a>
-    <strong>Frame:enable_mouse()</strong>
+    <a name = "frame:enable_mouse"></a>
+    <strong>frame:enable_mouse()</strong>
     </dt>
     <dd>
 
@@ -1103,8 +1104,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_mouse_click"></a>
-    <strong>Frame:enable_mouse_click()</strong>
+    <a name = "frame:enable_mouse_click"></a>
+    <strong>frame:enable_mouse_click()</strong>
     </dt>
     <dd>
 
@@ -1119,8 +1120,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_mouse_move"></a>
-    <strong>Frame:enable_mouse_move()</strong>
+    <a name = "frame:enable_mouse_move"></a>
+    <strong>frame:enable_mouse_move()</strong>
     </dt>
     <dd>
 
@@ -1135,8 +1136,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:enable_mouse_wheel"></a>
-    <strong>Frame:enable_mouse_wheel()</strong>
+    <a name = "frame:enable_mouse_wheel"></a>
+    <strong>frame:enable_mouse_wheel()</strong>
     </dt>
     <dd>
 
@@ -1151,8 +1152,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_backdrop"></a>
-    <strong>Frame:get_backdrop()</strong>
+    <a name = "frame:get_backdrop"></a>
+    <strong>frame:get_backdrop()</strong>
     </dt>
     <dd>
 
@@ -1167,8 +1168,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_backdrop_border_color"></a>
-    <strong>Frame:get_backdrop_border_color()</strong>
+    <a name = "frame:get_backdrop_border_color"></a>
+    <strong>frame:get_backdrop_border_color()</strong>
     </dt>
     <dd>
 
@@ -1183,8 +1184,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_backdrop_color"></a>
-    <strong>Frame:get_backdrop_color()</strong>
+    <a name = "frame:get_backdrop_color"></a>
+    <strong>frame:get_backdrop_color()</strong>
     </dt>
     <dd>
 
@@ -1199,8 +1200,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_children"></a>
-    <strong>Frame:get_children()</strong>
+    <a name = "frame:get_children"></a>
+    <strong>frame:get_children()</strong>
     </dt>
     <dd>
 
@@ -1215,8 +1216,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_effective_alpha"></a>
-    <strong>Frame:get_effective_alpha()</strong>
+    <a name = "frame:get_effective_alpha"></a>
+    <strong>frame:get_effective_alpha()</strong>
     </dt>
     <dd>
 
@@ -1231,8 +1232,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_effective_scale"></a>
-    <strong>Frame:get_effective_scale()</strong>
+    <a name = "frame:get_effective_scale"></a>
+    <strong>frame:get_effective_scale()</strong>
     </dt>
     <dd>
 
@@ -1247,8 +1248,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_level"></a>
-    <strong>Frame:get_level()</strong>
+    <a name = "frame:get_level"></a>
+    <strong>frame:get_level()</strong>
     </dt>
     <dd>
 
@@ -1263,8 +1264,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_strata"></a>
-    <strong>Frame:get_strata()</strong>
+    <a name = "frame:get_strata"></a>
+    <strong>frame:get_strata()</strong>
     </dt>
     <dd>
 
@@ -1279,8 +1280,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_strata"></a>
-    <strong>Frame:get_strata()</strong>
+    <a name = "frame:get_strata"></a>
+    <strong>frame:get_strata()</strong>
     </dt>
     <dd>
 
@@ -1295,8 +1296,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_hit_rect_insets"></a>
-    <strong>Frame:get_hit_rect_insets()</strong>
+    <a name = "frame:get_hit_rect_insets"></a>
+    <strong>frame:get_hit_rect_insets()</strong>
     </dt>
     <dd>
 
@@ -1311,8 +1312,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_max_dimensions"></a>
-    <strong>Frame:get_max_dimensions()</strong>
+    <a name = "frame:get_max_dimensions"></a>
+    <strong>frame:get_max_dimensions()</strong>
     </dt>
     <dd>
 
@@ -1327,8 +1328,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_min_dimensions"></a>
-    <strong>Frame:get_min_dimensions()</strong>
+    <a name = "frame:get_min_dimensions"></a>
+    <strong>frame:get_min_dimensions()</strong>
     </dt>
     <dd>
 
@@ -1343,8 +1344,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_child_count"></a>
-    <strong>Frame:get_child_count()</strong>
+    <a name = "frame:get_child_count"></a>
+    <strong>frame:get_child_count()</strong>
     </dt>
     <dd>
 
@@ -1359,8 +1360,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_layered_region_count"></a>
-    <strong>Frame:get_layered_region_count()</strong>
+    <a name = "frame:get_layered_region_count"></a>
+    <strong>frame:get_layered_region_count()</strong>
     </dt>
     <dd>
 
@@ -1375,8 +1376,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_scale"></a>
-    <strong>Frame:get_scale()</strong>
+    <a name = "frame:get_scale"></a>
+    <strong>frame:get_scale()</strong>
     </dt>
     <dd>
 
@@ -1391,8 +1392,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_script"></a>
-    <strong>Frame:get_script()</strong>
+    <a name = "frame:get_script"></a>
+    <strong>frame:get_script()</strong>
     </dt>
     <dd>
 
@@ -1407,8 +1408,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_title_region"></a>
-    <strong>Frame:get_title_region()</strong>
+    <a name = "frame:get_title_region"></a>
+    <strong>frame:get_title_region()</strong>
     </dt>
     <dd>
 
@@ -1423,8 +1424,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:get_update_rate"></a>
-    <strong>Frame:get_update_rate()</strong>
+    <a name = "frame:get_update_rate"></a>
+    <strong>frame:get_update_rate()</strong>
     </dt>
     <dd>
 
@@ -1439,8 +1440,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:has_script"></a>
-    <strong>Frame:has_script()</strong>
+    <a name = "frame:has_script"></a>
+    <strong>frame:has_script()</strong>
     </dt>
     <dd>
 
@@ -1455,8 +1456,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_auto_focus"></a>
-    <strong>Frame:is_auto_focus()</strong>
+    <a name = "frame:is_auto_focus"></a>
+    <strong>frame:is_auto_focus()</strong>
     </dt>
     <dd>
 
@@ -1471,8 +1472,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_clamped_to_screen"></a>
-    <strong>Frame:is_clamped_to_screen()</strong>
+    <a name = "frame:is_clamped_to_screen"></a>
+    <strong>frame:is_clamped_to_screen()</strong>
     </dt>
     <dd>
 
@@ -1487,8 +1488,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_mouse_click_enabled"></a>
-    <strong>Frame:is_mouse_click_enabled()</strong>
+    <a name = "frame:is_mouse_click_enabled"></a>
+    <strong>frame:is_mouse_click_enabled()</strong>
     </dt>
     <dd>
 
@@ -1503,8 +1504,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_mouse_move_enabled"></a>
-    <strong>Frame:is_mouse_move_enabled()</strong>
+    <a name = "frame:is_mouse_move_enabled"></a>
+    <strong>frame:is_mouse_move_enabled()</strong>
     </dt>
     <dd>
 
@@ -1519,8 +1520,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_mouse_wheel_enabled"></a>
-    <strong>Frame:is_mouse_wheel_enabled()</strong>
+    <a name = "frame:is_mouse_wheel_enabled"></a>
+    <strong>frame:is_mouse_wheel_enabled()</strong>
     </dt>
     <dd>
 
@@ -1535,8 +1536,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_keyboard_enabled"></a>
-    <strong>Frame:is_keyboard_enabled()</strong>
+    <a name = "frame:is_keyboard_enabled"></a>
+    <strong>frame:is_keyboard_enabled()</strong>
     </dt>
     <dd>
 
@@ -1551,8 +1552,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_key_capture_enabled"></a>
-    <strong>Frame:is_key_capture_enabled()</strong>
+    <a name = "frame:is_key_capture_enabled"></a>
+    <strong>frame:is_key_capture_enabled()</strong>
     </dt>
     <dd>
 
@@ -1567,8 +1568,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_movable"></a>
-    <strong>Frame:is_movable()</strong>
+    <a name = "frame:is_movable"></a>
+    <strong>frame:is_movable()</strong>
     </dt>
     <dd>
 
@@ -1583,8 +1584,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_resizable"></a>
-    <strong>Frame:is_resizable()</strong>
+    <a name = "frame:is_resizable"></a>
+    <strong>frame:is_resizable()</strong>
     </dt>
     <dd>
 
@@ -1599,8 +1600,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_top_level"></a>
-    <strong>Frame:is_top_level()</strong>
+    <a name = "frame:is_top_level"></a>
+    <strong>frame:is_top_level()</strong>
     </dt>
     <dd>
 
@@ -1615,8 +1616,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:is_user_placed"></a>
-    <strong>Frame:is_user_placed()</strong>
+    <a name = "frame:is_user_placed"></a>
+    <strong>frame:is_user_placed()</strong>
     </dt>
     <dd>
 
@@ -1631,8 +1632,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:raise"></a>
-    <strong>Frame:raise()</strong>
+    <a name = "frame:raise"></a>
+    <strong>frame:raise()</strong>
     </dt>
     <dd>
 
@@ -1647,8 +1648,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:register_event"></a>
-    <strong>Frame:register_event()</strong>
+    <a name = "frame:register_event"></a>
+    <strong>frame:register_event()</strong>
     </dt>
     <dd>
 
@@ -1663,8 +1664,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_auto_focus"></a>
-    <strong>Frame:set_auto_focus()</strong>
+    <a name = "frame:set_auto_focus"></a>
+    <strong>frame:set_auto_focus()</strong>
     </dt>
     <dd>
 
@@ -1679,8 +1680,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_backdrop"></a>
-    <strong>Frame:set_backdrop()</strong>
+    <a name = "frame:set_backdrop"></a>
+    <strong>frame:set_backdrop()</strong>
     </dt>
     <dd>
 
@@ -1695,8 +1696,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_backdrop_border_color"></a>
-    <strong>Frame:set_backdrop_border_color()</strong>
+    <a name = "frame:set_backdrop_border_color"></a>
+    <strong>frame:set_backdrop_border_color()</strong>
     </dt>
     <dd>
 
@@ -1711,8 +1712,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_backdrop_color"></a>
-    <strong>Frame:set_backdrop_color()</strong>
+    <a name = "frame:set_backdrop_color"></a>
+    <strong>frame:set_backdrop_color()</strong>
     </dt>
     <dd>
 
@@ -1727,8 +1728,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_clamped_to_screen"></a>
-    <strong>Frame:set_clamped_to_screen()</strong>
+    <a name = "frame:set_clamped_to_screen"></a>
+    <strong>frame:set_clamped_to_screen()</strong>
     </dt>
     <dd>
 
@@ -1743,8 +1744,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_drag_enabled"></a>
-    <strong>Frame:set_drag_enabled()</strong>
+    <a name = "frame:set_drag_enabled"></a>
+    <strong>frame:set_drag_enabled()</strong>
     </dt>
     <dd>
 
@@ -1759,8 +1760,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_draw_layer_enabled"></a>
-    <strong>Frame:set_draw_layer_enabled()</strong>
+    <a name = "frame:set_draw_layer_enabled"></a>
+    <strong>frame:set_draw_layer_enabled()</strong>
     </dt>
     <dd>
 
@@ -1775,8 +1776,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_focus"></a>
-    <strong>Frame:set_focus()</strong>
+    <a name = "frame:set_focus"></a>
+    <strong>frame:set_focus()</strong>
     </dt>
     <dd>
 
@@ -1791,8 +1792,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_keyboard_enabled"></a>
-    <strong>Frame:set_keyboard_enabled()</strong>
+    <a name = "frame:set_keyboard_enabled"></a>
+    <strong>frame:set_keyboard_enabled()</strong>
     </dt>
     <dd>
 
@@ -1807,8 +1808,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_key_capture_enabled"></a>
-    <strong>Frame:set_key_capture_enabled()</strong>
+    <a name = "frame:set_key_capture_enabled"></a>
+    <strong>frame:set_key_capture_enabled()</strong>
     </dt>
     <dd>
 
@@ -1823,8 +1824,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_level"></a>
-    <strong>Frame:set_level()</strong>
+    <a name = "frame:set_level"></a>
+    <strong>frame:set_level()</strong>
     </dt>
     <dd>
 
@@ -1839,8 +1840,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_mouse_wheel_enabled"></a>
-    <strong>Frame:set_mouse_wheel_enabled()</strong>
+    <a name = "frame:set_mouse_wheel_enabled"></a>
+    <strong>frame:set_mouse_wheel_enabled()</strong>
     </dt>
     <dd>
 
@@ -1855,8 +1856,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_mouse_enabled"></a>
-    <strong>Frame:set_mouse_enabled()</strong>
+    <a name = "frame:set_mouse_enabled"></a>
+    <strong>frame:set_mouse_enabled()</strong>
     </dt>
     <dd>
 
@@ -1871,8 +1872,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_mouse_click_enabled"></a>
-    <strong>Frame:set_mouse_click_enabled()</strong>
+    <a name = "frame:set_mouse_click_enabled"></a>
+    <strong>frame:set_mouse_click_enabled()</strong>
     </dt>
     <dd>
 
@@ -1887,8 +1888,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_mouse_move_enabled"></a>
-    <strong>Frame:set_mouse_move_enabled()</strong>
+    <a name = "frame:set_mouse_move_enabled"></a>
+    <strong>frame:set_mouse_move_enabled()</strong>
     </dt>
     <dd>
 
@@ -1903,8 +1904,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_strata"></a>
-    <strong>Frame:set_strata()</strong>
+    <a name = "frame:set_strata"></a>
+    <strong>frame:set_strata()</strong>
     </dt>
     <dd>
 
@@ -1919,8 +1920,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_hit_rect_insets"></a>
-    <strong>Frame:set_hit_rect_insets()</strong>
+    <a name = "frame:set_hit_rect_insets"></a>
+    <strong>frame:set_hit_rect_insets()</strong>
     </dt>
     <dd>
 
@@ -1935,8 +1936,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_max_dimensions"></a>
-    <strong>Frame:set_max_dimensions()</strong>
+    <a name = "frame:set_max_dimensions"></a>
+    <strong>frame:set_max_dimensions()</strong>
     </dt>
     <dd>
 
@@ -1951,8 +1952,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_min_dimensions"></a>
-    <strong>Frame:set_min_dimensions()</strong>
+    <a name = "frame:set_min_dimensions"></a>
+    <strong>frame:set_min_dimensions()</strong>
     </dt>
     <dd>
 
@@ -1967,8 +1968,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_max_width"></a>
-    <strong>Frame:set_max_width()</strong>
+    <a name = "frame:set_max_width"></a>
+    <strong>frame:set_max_width()</strong>
     </dt>
     <dd>
 
@@ -1983,8 +1984,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_max_height"></a>
-    <strong>Frame:set_max_height()</strong>
+    <a name = "frame:set_max_height"></a>
+    <strong>frame:set_max_height()</strong>
     </dt>
     <dd>
 
@@ -1999,8 +2000,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_min_width"></a>
-    <strong>Frame:set_min_width()</strong>
+    <a name = "frame:set_min_width"></a>
+    <strong>frame:set_min_width()</strong>
     </dt>
     <dd>
 
@@ -2015,8 +2016,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_min_height"></a>
-    <strong>Frame:set_min_height()</strong>
+    <a name = "frame:set_min_height"></a>
+    <strong>frame:set_min_height()</strong>
     </dt>
     <dd>
 
@@ -2031,8 +2032,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_movable"></a>
-    <strong>Frame:set_movable()</strong>
+    <a name = "frame:set_movable"></a>
+    <strong>frame:set_movable()</strong>
     </dt>
     <dd>
 
@@ -2047,8 +2048,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_resizable"></a>
-    <strong>Frame:set_resizable()</strong>
+    <a name = "frame:set_resizable"></a>
+    <strong>frame:set_resizable()</strong>
     </dt>
     <dd>
 
@@ -2063,8 +2064,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_scale"></a>
-    <strong>Frame:set_scale()</strong>
+    <a name = "frame:set_scale"></a>
+    <strong>frame:set_scale()</strong>
     </dt>
     <dd>
 
@@ -2079,8 +2080,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_script"></a>
-    <strong>Frame:set_script()</strong>
+    <a name = "frame:set_script"></a>
+    <strong>frame:set_script()</strong>
     </dt>
     <dd>
 
@@ -2095,8 +2096,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_top_level"></a>
-    <strong>Frame:set_top_level()</strong>
+    <a name = "frame:set_top_level"></a>
+    <strong>frame:set_top_level()</strong>
     </dt>
     <dd>
 
@@ -2111,8 +2112,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_update_rate"></a>
-    <strong>Frame:set_update_rate()</strong>
+    <a name = "frame:set_update_rate"></a>
+    <strong>frame:set_update_rate()</strong>
     </dt>
     <dd>
 
@@ -2127,8 +2128,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:set_user_placed"></a>
-    <strong>Frame:set_user_placed()</strong>
+    <a name = "frame:set_user_placed"></a>
+    <strong>frame:set_user_placed()</strong>
     </dt>
     <dd>
 
@@ -2143,8 +2144,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:start_moving"></a>
-    <strong>Frame:start_moving()</strong>
+    <a name = "frame:start_moving"></a>
+    <strong>frame:start_moving()</strong>
     </dt>
     <dd>
 
@@ -2159,8 +2160,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:start_sizing"></a>
-    <strong>Frame:start_sizing()</strong>
+    <a name = "frame:start_sizing"></a>
+    <strong>frame:start_sizing()</strong>
     </dt>
     <dd>
 
@@ -2175,8 +2176,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:stop_moving_or_sizing"></a>
-    <strong>Frame:stop_moving_or_sizing()</strong>
+    <a name = "frame:stop_moving_or_sizing"></a>
+    <strong>frame:stop_moving_or_sizing()</strong>
     </dt>
     <dd>
 
@@ -2191,8 +2192,8 @@
 
 </dd>
     <dt>
-    <a name = "Frame:unregister_event"></a>
-    <strong>Frame:unregister_event()</strong>
+    <a name = "frame:unregister_event"></a>
+    <strong>frame:unregister_event()</strong>
     </dt>
     <dd>
 
@@ -2212,8 +2213,8 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-09-21 08:40:33 </i>
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-10 15:26:14 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

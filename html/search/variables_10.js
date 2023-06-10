@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['s_2630',['s',['../structlxgui_1_1gui_1_1color_1_1hls.html#a7ecfaa84727bbbd092ed1955c075b0d9',1,'lxgui::gui::color::hls::s()'],['../structlxgui_1_1gui_1_1color_1_1hsv.html#a1e73930fc83fc0be2728d5103d7ed074',1,'lxgui::gui::color::hsv::s()']]],
+  ['s_2630',['s',['../structlxgui_1_1gui_1_1color_1_1hsv.html#a1e73930fc83fc0be2728d5103d7ed074',1,'lxgui::gui::color::hsv::s()'],['../structlxgui_1_1gui_1_1color_1_1hls.html#a7ecfaa84727bbbd092ed1955c075b0d9',1,'lxgui::gui::color::hls::s()']]],
   ['saved_5fvariable_5flist_2631',['saved_variable_list',['../structlxgui_1_1gui_1_1addon.html#a9325345ae6c2af9f96a0014a5f9219d4',1,'lxgui::gui::addon']]],
   ['scale_5f_2632',['scale_',['../classlxgui_1_1gui_1_1frame.html#a2137a04db060ed50f2e7bc652089b4ae',1,'lxgui::gui::frame']]],
   ['scroll_5f_2633',['scroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a815d3fb89b2bc5eec55450521256f082',1,'lxgui::gui::scroll_frame']]],

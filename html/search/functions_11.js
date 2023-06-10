@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['text_2379',['text',['../classlxgui_1_1gui_1_1text.html#ae272f9c419987c12898b8e1ea3c14a6c',1,'lxgui::gui::text::text(renderer &amp;rdr, std::shared_ptr&lt; const font &gt; fnt, std::shared_ptr&lt; const font &gt; outline_fnt=nullptr)'],['../classlxgui_1_1gui_1_1text.html#aaaf9335c9284de87e2cc81398cd8dcda',1,'lxgui::gui::text::text(const text &amp;)=delete'],['../classlxgui_1_1gui_1_1text.html#a1df4c6d1777376df8ce12ed49c34d964',1,'lxgui::gui::text::text(text &amp;&amp;)=delete']]],
+  ['text_2379',['text',['../classlxgui_1_1gui_1_1text.html#aaaf9335c9284de87e2cc81398cd8dcda',1,'lxgui::gui::text::text(const text &amp;)=delete'],['../classlxgui_1_1gui_1_1text.html#a1df4c6d1777376df8ce12ed49c34d964',1,'lxgui::gui::text::text(text &amp;&amp;)=delete'],['../classlxgui_1_1gui_1_1text.html#ae272f9c419987c12898b8e1ea3c14a6c',1,'lxgui::gui::text::text(renderer &amp;rdr, std::shared_ptr&lt; const font &gt; fnt, std::shared_ptr&lt; const font &gt; outline_fnt=nullptr)']]],
   ['texture_2380',['texture',['../classlxgui_1_1gui_1_1texture.html#a641f38cf29c217ac8e1017fd89377b7b',1,'lxgui::gui::texture']]],
   ['ticks_2381',['ticks',['../classlxgui_1_1utils_1_1periodic__timer.html#a8044f196bb733f2b43da7d00c5137739',1,'lxgui::utils::periodic_timer']]],
   ['to_5fhls_2382',['to_hls',['../classlxgui_1_1gui_1_1color.html#ad3faffabb5cf5b3bad1e3260dcb176a8',1,'lxgui::gui::color']]],

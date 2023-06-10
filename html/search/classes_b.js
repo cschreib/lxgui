@@ -1,7 +1,7 @@
 var searchData=
 [
   ['manager_1480',['manager',['../classlxgui_1_1gui_1_1manager.html',1,'lxgui::gui']]],
-  ['material_1481',['material',['../classlxgui_1_1gui_1_1gl_1_1material.html',1,'lxgui::gui::gl::material'],['../classlxgui_1_1gui_1_1sdl_1_1material.html',1,'lxgui::gui::sdl::material'],['../classlxgui_1_1gui_1_1sfml_1_1material.html',1,'lxgui::gui::sfml::material'],['../classlxgui_1_1gui_1_1material.html',1,'lxgui::gui::material']]],
+  ['material_1481',['material',['../classlxgui_1_1gui_1_1gl_1_1material.html',1,'lxgui::gui::gl::material'],['../classlxgui_1_1gui_1_1material.html',1,'lxgui::gui::material'],['../classlxgui_1_1gui_1_1sdl_1_1material.html',1,'lxgui::gui::sdl::material'],['../classlxgui_1_1gui_1_1sfml_1_1material.html',1,'lxgui::gui::sfml::material']]],
   ['matrix4f_1482',['matrix4f',['../structlxgui_1_1gui_1_1matrix4f.html',1,'lxgui::gui']]],
   ['mouse_5fdouble_5fclicked_5fdata_1483',['mouse_double_clicked_data',['../structlxgui_1_1input_1_1mouse__double__clicked__data.html',1,'lxgui::input']]],
   ['mouse_5fdrag_5fstart_5fdata_1484',['mouse_drag_start_data',['../structlxgui_1_1input_1_1mouse__drag__start__data.html',1,'lxgui::input']]],

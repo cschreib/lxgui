@@ -26,6 +26,7 @@
 <br/>
 <h1>lxgui</h1>
 
+
 <ul>
   <li><a href="../index.html">Index</a></li>
 </ul>
@@ -100,7 +101,7 @@
 
 
 <pre>
-button:set_text(localize_string(<span class="string">"{button_cancel}"</span>))
+button:<span class="function-name">set_text</span>(<span class="function-name">localize_string</span>(<span class="string">"{button_cancel}"</span>))
 </pre>
 
 <p> <strong>Creating translations.</strong> Once all the GUI code uses translatable string codes, all
@@ -147,7 +148,7 @@ button:set_text(localize_string(<span class="string">"{button_cancel}"</span>))
 <pre>
 <span class="keyword">local</span> player = <span class="string">"Player1"</span>
 <span class="keyword">local</span> hp_lost = <span class="number">10</span>
-message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>, player, hp_lost))
+message:<span class="function-name">set_text</span>(<span class="function-name">localize_string</span>(<span class="string">"{player_lost_hp}"</span>, player, hp_lost))
 </pre>
 
 <p> The translation must then refer to these dynamic elements to include them in the
@@ -229,13 +230,13 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 <pre>
 [<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
     <span class="keyword">if</span> hp_lost &gt; <span class="number">10</span> <span class="keyword">then</span>
-        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
+        <span class="keyword">return</span> <span class="function-name">format_string</span>(<span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
                player, hp_lost)
     <span class="keyword">elseif</span> hp_lost == <span class="number">0</span> <span class="keyword">then</span>
-        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost no HP. This had no effect."</span>,
+        <span class="keyword">return</span> <span class="function-name">format_string</span>(<span class="string">"{0} has lost no HP. This had no effect."</span>,
                player)
     <span class="keyword">else</span>
-        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP."</span>, player, hp_lost)
+        <span class="keyword">return</span> <span class="function-name">format_string</span>(<span class="string">"{0} has lost {1:L} HP."</span>, player, hp_lost)
     <span class="keyword">end</span>
 <span class="keyword">end</span>,
 </pre>
@@ -252,7 +253,7 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     <span class="comment">-- etc...
 </span>}
 
-<span class="keyword">function</span> plural_modifier(word, quantity)
+<span class="keyword">function</span> <span class="function-name">plural_modifier</span>(word, quantity)
     <span class="keyword">if</span> quantity &gt; <span class="number">1</span> <span class="keyword">then</span>
         <span class="keyword">local</span> special = special_plurals[word]
         <span class="keyword">if</span> special ~= <span class="keyword">nil</span>
@@ -271,13 +272,13 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     [<span class="string">"object_horse"</span>] = <span class="string">"cheval"</span>,
     [<span class="string">"object_cabbage"</span>] = <span class="string">"choux"</span>,
     [<span class="string">"player_ate_objects"</span>] = <span class="keyword">function</span> (player, quantity, object)
-        <span class="keyword">local</span> object_name = localize_string(object)
+        <span class="keyword">local</span> object_name = <span class="function-name">localize_string</span>(object)
         <span class="keyword">if</span> quantity == <span class="number">0</span> <span class="keyword">then</span>
-            <span class="keyword">return</span> format_string(<span class="string">"{0} n'a pas mangé de {1}."</span>,
+            <span class="keyword">return</span> <span class="function-name">format_string</span>(<span class="string">"{0} n'a pas mangé de {1}."</span>,
                 player, object_name)
         <span class="keyword">else</span>
-            object_name = plural_modifier(object_name, quantity)
-            <span class="keyword">return</span> format_string(<span class="string">"{0} a mangé {1} {2}."</span>,
+            object_name = <span class="function-name">plural_modifier</span>(object_name, quantity)
+            <span class="keyword">return</span> <span class="function-name">format_string</span>(<span class="string">"{0} a mangé {1} {2}."</span>,
                 player, quantity, object_name)
         <span class="keyword">end</span>
     <span class="keyword">end</span>,
@@ -668,8 +669,8 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2022-09-21 08:40:33 </i>
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-06-10 15:26:14 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
