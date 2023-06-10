@@ -23,10 +23,10 @@ public:
     localizer();
 
     // Non-copiable, non-movable
-    localizer(const localizer&) = delete;
-    localizer(localizer&&)      = delete;
+    localizer(const localizer&)            = delete;
+    localizer(localizer&&)                 = delete;
     localizer& operator=(const localizer&) = delete;
-    localizer& operator=(localizer&&) = delete;
+    localizer& operator=(localizer&&)      = delete;
 
     /**
      * \brief Changes the current locale (used to format numbers).
@@ -234,10 +234,12 @@ public:
                 constexpr bool is_string =
                     std::is_same_v<std::decay_t<decltype(item)>, std::string>;
                 if constexpr (is_string) {
-                    if constexpr (sizeof...(Args) == 0)
+                    if constexpr (sizeof...(Args) == 0) {
                         return item;
-                    else
-                        return fmt::format(locale_, item, std::forward<Args>(args)...);
+                    } else {
+                        return fmt::format(
+                            locale_, fmt::runtime(item), std::forward<Args>(args)...);
+                    }
                 } else {
                     auto result = item(std::forward<Args>(args)...);
                     if (result.valid() && result.begin() != result.end()) {
