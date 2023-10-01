@@ -10,6 +10,8 @@ namespace lxgui::input {
 
 enum class mouse_button : std::uint8_t { left = 0, right, middle };
 
+enum class mouse_button_event : std::uint8_t { up = 0, down = 1, double_click = 2 };
+
 enum class key : std::uint8_t {
     k_unassigned   = 0x00,
     k_escape       = 0x01,
@@ -176,6 +178,24 @@ std::string_view get_mouse_button_codename(mouse_button button_id);
  * button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
 std::string_view get_localizable_mouse_button_name(mouse_button button_id);
+
+/**
+ * \brief Returns a standard English name for the provided mouse button event.
+ * \param button_event The ID code of the mouse button event
+ * \note This will return a standard English button name, e.g., "Up" for the mouse up event.
+ * This can be used for string-based key identification in scripts, where key
+ * integer codes would be less usable, or for displaying debug or error messages.
+ */
+std::string_view get_mouse_button_event_codename(mouse_button_event button_event);
+
+/**
+ * \brief Returns the localizable name of the provided mouse button event.
+ * \param button_event The ID code of the mouse button event
+ * \return The localizable name of the provided mouse button event
+ * \note This will return localizable button names, e.g., "{mouse_event_up}" for the mouse up event.
+ * Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
+ */
+std::string_view get_localizable_mouse_button_event_name(mouse_button_event button_event);
 
 /**
  * \brief Returns a standard English name for the provided key.

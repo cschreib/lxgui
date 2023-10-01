@@ -20,6 +20,24 @@ std::string_view get_localizable_mouse_button_name(mouse_button button_id) {
     }
 }
 
+std::string_view get_mouse_button_event_codename(mouse_button_event button_event) {
+    switch (button_event) {
+    case mouse_button_event::up: return "Up";
+    case mouse_button_event::down: return "Down";
+    case mouse_button_event::double_click: return "DoubleClick";
+    default: return "";
+    }
+}
+
+std::string_view get_localizable_mouse_button_event_name(mouse_button_event button_event) {
+    switch (button_event) {
+    case mouse_button_event::up: return "{mouse_event_up}";
+    case mouse_button_event::down: return "{mouse_event_down}";
+    case mouse_button_event::double_click: return "{mouse_event_double_click}";
+    default: return "{mouse_event_unknown}";
+    }
+}
+
 std::string_view get_key_codename(key key_id) {
     switch (key_id) {
     case key::k_escape: return "Escape";
