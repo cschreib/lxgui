@@ -810,7 +810,7 @@ bool root::on_mouse_button_state_changed_(
     data.add(mouse_pos.y);
 
     if (is_double_click) {
-        hovered_frame->fire_script("OnDoubleClicked", data);
+        hovered_frame->fire_script("OnDoubleClick", data);
     } else if (is_down) {
         if (auto* top_level = hovered_frame->get_top_level_parent().get())
             top_level->raise();
