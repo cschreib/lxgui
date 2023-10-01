@@ -200,9 +200,10 @@ using script_list_view = script_signal::slot_list_view;
  * last call to `OnMouseMove` (or since the last position before the mouse
  * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
- * is released. This event provides one extra argument compared to `OnMouseDown`:
+ * is released. This event provides two extra argument compared to `OnMouseDown`:
  * a boolean flag indicating whether the mouse was released after a drag
- * operation (true) or not (false).
+ * operation (true) or not (false), and another boolean flag indicating whether
+ * the mouse button was initially pressed on this frame (true) or not (false).
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
  * the topmost mouse-wheel-enabled frame under the mouse pointer. Will not
  * trigger if the frame is hidden. This event provides three arguments to the
@@ -557,7 +558,6 @@ public:
 
     /**
      * \brief Marks this frame as unable to receive keyboard input from any key.
-     * \param key_name The key to capture
      * \see enable_key_capture()
      * \see is_key_capture_enabled()
      * \see set_keyboard_enabled()

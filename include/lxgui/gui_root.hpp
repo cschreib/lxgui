@@ -49,10 +49,10 @@ public:
     ~root() override;
 
     // Non-copiable, non-movable
-    root(const root&) = delete;
-    root(root&&)      = delete;
+    root(const root&)            = delete;
+    root(root&&)                 = delete;
     root& operator=(const root&) = delete;
-    root& operator=(root&&) = delete;
+    root& operator=(root&&)      = delete;
 
     /**
      * \brief Returns the width and height of this renderer's main render target (e.g., screen).
@@ -327,8 +327,9 @@ private:
     std::vector<utils::scoped_connection> connections_;
 
     // Mouse IO
-    utils::observer_ptr<frame> hovered_frame_ = nullptr;
-    utils::observer_ptr<frame> dragged_frame_ = nullptr;
+    utils::observer_ptr<frame> hovered_frame_     = nullptr;
+    utils::observer_ptr<frame> dragged_frame_     = nullptr;
+    utils::observer_ptr<frame> start_click_frame_ = nullptr;
 
     utils::observer_ptr<region> moved_object_ = nullptr;
     utils::observer_ptr<region> sized_object_ = nullptr;
