@@ -20,16 +20,25 @@
  * case, the "normal" font is rendered with a slight offset that you
  * are free to define.
  *
- * Note that a @{Button} has @{Frame:enable_mouse} set to `true` by
+ * The button "click" event will be triggered by all registered combinations
+ * of mouse button events configured with @{Button:enable_button_clicks}.
+ *
+ * Note that a @{Button} has @{Frame:enable_mouse} set to `true` and
+ * @{Button:enable_button_clicks} set to `true` for `"LeftMouseUp"` by
  * default.
  *
  * __Events.__ Hard-coded events available to all @{Button}s, in
  * addition to those from @{Frame}:
  *
  * - `OnClick`: Triggered when the button is clicked, either when
- * @{Button:click} is called, or just when a mouse button is pressed
- * when the cursor is over the button.
- * - `OnDoubleClick`: Triggered when the button is double-clicked.
+ * @{Button:click} is called, or just when a mouse button is released or
+ * pressed when the cursor is over the button (depending on whether clicks
+ * are enabled for the mouse button and mouse button state, see
+ * @{Button:enable_button_clicks}). This event provides five arguments to
+ * the registered callback: a number identifying the mouse button, a number
+ * identifying the mouse button event, a string containing the human-readable
+ * name of this button event (e.g., `"LeftButtonUp"`, `"RightButtonDown"`, ...),
+ * and the mouse X and Y position.
  * - `OnEnable`: Triggered by @{Button:enable}.
  * - `OnDisable`: Triggered by @{Button:disable}.
  *
@@ -293,6 +302,40 @@ void button::register_on_lua(sol::state& lua) {
     /** @function unlock_highlight
      */
     type.set_function("unlock_highlight", member_function<&button::unlock_highlight>());
+
+    /** @function disable_button_clicks
+     */
+    type.set_function(
+        "disable_button_clicks", [](button& self, sol::optional<std::string> mouse_event_name) {
+            if (mouse_event_name.has_value()) {
+                self.disable_button_clicks(mouse_event_name.value());
+            } else {
+                self.disable_button_clicks();
+            }
+        });
+
+    /** @function enable_button_clicks
+     */
+    type.set_function(
+        "enable_button_clicks",
+        member_function< // select the right overload for Lua
+            static_cast<void (button::*)(const std::string&)>(&button::enable_button_clicks)>());
+
+    /** @function is_button_clicks_enabled
+     */
+    type.set_function(
+        "is_button_clicks_enabled",
+        member_function< // select the right overload for Lua
+            static_cast<bool (button::*)(const std::string&) const>(
+                &button::is_button_clicks_enabled)>());
+
+    /** @function set_button_clicks_enabled
+     */
+    type.set_function(
+        "set_button_clicks_enabled",
+        member_function< // select the right overload for Lua
+            static_cast<void (button::*)(const std::string&, bool)>(
+                &button::set_button_clicks_enabled)>());
 }
 
 } // namespace lxgui::gui

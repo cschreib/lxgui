@@ -16,6 +16,7 @@ button::button(utils::control_block& block, manager& mgr, const frame_core_attri
     initialize_(*this, attr);
 
     enable_mouse();
+    enable_button_clicks(input::mouse_button::left, input::mouse_button_event::up);
 }
 
 std::string button::serialize(const std::string& tab) const {
@@ -44,15 +45,35 @@ void button::fire_script(const std::string& script_name, const event_data& data)
                 release();
         }
 
-        if (script_name == "OnMouseDown") {
-            push();
-            fire_script("OnClick");
-            if (!checker.is_alive())
-                return;
-        }
+        if (script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
+            script_name == "OnDoubleClick") {
 
-        if (script_name == "OnMouseUp")
-            release();
+            const input::mouse_button_event event_id =
+                script_name == "OnMouseDown" ? input::mouse_button_event::down
+                : script_name == "OnMouseUp" ? input::mouse_button_event::up
+                                             : input::mouse_button_event::double_click;
+
+            const auto event_name = data.get<std::string>(1) +
+                                    std::string{input::get_mouse_button_event_codename(event_id)};
+
+            if (is_button_clicks_enabled(event_name)) {
+                if (event_id == input::mouse_button_event::down)
+                    push();
+                else if (event_id == input::mouse_button_event::up)
+                    release();
+
+                event_data new_data;
+                new_data.add(data.get(0)); // Mouse button ID
+                new_data.add(static_cast<std::underlying_type_t<input::mouse_button_event>>(
+                    event_id)); // Mouse button event
+                new_data.add(event_name); // Mouse button event name
+                new_data.add(data.get(2)); // Mouse pos X
+                new_data.add(data.get(3)); // Mouse pos Y
+                fire_script("OnClick", new_data);
+                if (!checker.is_alive())
+                    return;
+            }
+        }
     }
 }
 
@@ -434,6 +455,44 @@ void button::set_pushed_text_offset(const vector2f& offset) {
 
 const vector2f& button::get_pushed_text_offset() const {
     return pushed_text_offset_;
+}
+
+void button::enable_button_clicks(const std::string& mouse_state) {
+    reg_click_list_.insert(mouse_state);
+}
+
+void button::enable_button_clicks(
+    input::mouse_button button_id, input::mouse_button_event button_event) {
+    reg_click_list_.insert(
+        std::string{input::get_mouse_button_codename(button_id)} +
+        std::string{input::get_mouse_button_event_codename(button_event)});
+}
+
+void button::disable_button_clicks(const std::string& mouse_state) {
+    reg_click_list_.erase(mouse_state);
+}
+
+void button::disable_button_clicks(
+    input::mouse_button button_id, input::mouse_button_event button_event) {
+    reg_click_list_.erase(
+        std::string{input::get_mouse_button_codename(button_id)} +
+        std::string{input::get_mouse_button_event_codename(button_event)});
+}
+
+void button::disable_button_clicks() {
+    reg_click_list_.clear();
+}
+
+bool button::is_button_clicks_enabled(const std::string& mouse_event) const {
+    return reg_click_list_.find(mouse_event) != reg_click_list_.end();
+}
+
+bool button::is_button_clicks_enabled(
+    input::mouse_button button_id, input::mouse_button_event button_event) const {
+    return reg_click_list_.find(
+               std::string{input::get_mouse_button_codename(button_id)} +
+               std::string{input::get_mouse_button_event_codename(button_event)}) !=
+           reg_click_list_.end();
 }
 
 const std::vector<std::string>& button::get_type_list_() const {

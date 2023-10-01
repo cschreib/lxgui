@@ -27,16 +27,25 @@ class font_string;
  * case, the "normal" font is rendered with a slight offset that you
  * are free to define.
  *
- * Note that a button has frame::enable_mouse set to `true` by
+ * The button "click" event will be triggered by all registered combinations
+ * of mouse events configured with button::enable_button_clicks.
+ *
+ * Note that a button has frame::enable_mouse set to `true` and
+ * button::enable_button_clicks set to `true` for `"LeftMouseUp"` by
  * default.
  *
  * __Events.__ Hard-coded events available to all buttons, in
  * addition to those from frame:
  *
  * - `OnClick`: Triggered when the button is clicked, either when
- * button::click is called, or just when a mouse button is pressed
- * when the cursor is over the button.
- * - `OnDoubleClick`: Triggered when the button is double-clicked.
+ * button::click is called, or just when a mouse button is released or
+ * pressed when the cursor is over the button (depending on whether clicks
+ * are enabled for the mouse button and mouse button state, see
+ * button::enable_button_clicks). This event provides five arguments to
+ * the registered callback: a number identifying the mouse button, a number
+ * identifying the mouse button event, a string containing the human-readable
+ * name of this button event (e.g., `"LeftButtonUp"`, `"RightButtonDown"`, ...),
+ * and the mouse X and Y position.
  * - `OnEnable`: Triggered by button::enable.
  * - `OnDisable`: Triggered by button::disable.
  */
@@ -345,6 +354,99 @@ public:
      */
     const vector2f& get_pushed_text_offset() const;
 
+    /**
+     * \brief Make this button generate OnClick events when a specific mouse event occurs over the button.
+     * \param mouse_event The mouse event for which to enable or disable OnClick events
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_button_clicks()
+     * \see disable_button_clicks()
+     */
+    void set_button_clicks_enabled(const std::string& mouse_event, bool enable) {
+        if (enable) {
+            enable_button_clicks(mouse_event);
+        } else {
+            disable_button_clicks(mouse_event);
+        }
+    }
+
+    /**
+     * \brief Make this button generate OnClick events when a specific mouse event occurs over the button.
+     * \param button_id The mouse button for which to enable or disable OnClick events
+     * \param button_event The mouse button event for which to enable or disable OnClick events
+     * \param enable 'true' to enable, 'false' to disable
+     * \see enable_button_clicks()
+     * \see disable_button_clicks()
+     */
+    void set_button_clicks_enabled(
+        input::mouse_button button_id, input::mouse_button_event button_event, bool enable) {
+        if (enable) {
+            enable_button_clicks(button_id, button_event);
+        } else {
+            disable_button_clicks(button_id, button_event);
+        }
+    }
+
+    /**
+     * \brief Make this button generate OnClick events when a specific mouse event occurs over the button.
+     * \param mouse_event The mouse event for which to enable OnClick events
+     * \note The mouse event string must be of the form "<button>Up" or "<button>Down". For
+     * example, "LeftButtonUp".
+     * \see disable_button_clicks()
+     */
+    void enable_button_clicks(const std::string& mouse_event);
+
+    /**
+     * \brief Make this button generate OnClick events when a specific mouse event occurs over the button.
+     * \param button_id The mouse button for which to enable OnClick events
+     * \param button_event The mouse button event for which to enable OnClick events
+     * \note See @ref enable_button_clicks(const std::string&) for more information.
+     * \see disable_button_clicks()
+     */
+    void
+    enable_button_clicks(input::mouse_button button_id, input::mouse_button_event button_event);
+
+    /**
+     * \brief Stop this button from generating OnClick events when a specific mouse event occurs over the button.
+     * \param mouse_event The mouse event for which to stop generating OnClick events
+     * \see enable_button_clicks()
+     */
+    void disable_button_clicks(const std::string& mouse_event);
+
+    /**
+     * \brief Stop this button from generating OnClick events when a specific mouse event occurs over the button.
+     * \param button_id The mouse button for which to stop generating OnClick events
+     * \param button_event The state of the button for which to stop generating OnClick events
+     * \note See @ref disable_button_clicks(const std::string&) for more information.
+     * \see enable_button_clicks()
+     */
+    void
+    disable_button_clicks(input::mouse_button button_id, input::mouse_button_event button_event);
+
+    /**
+     * \brief Stop this button from generating OnClick events.
+     * \see enable_button_clicks()
+     * \see is_button_clicks_enabled()
+     */
+    void disable_button_clicks();
+
+    /**
+     * \brief Checks if this button can generate OnClick events when a specific mouse event occurs over the button.
+     * \param mouse_event The mouse event to check
+     * \return 'true' if this button can generate OnClick events from this mouse event
+     * \see enable_button_clicks()
+     */
+    bool is_button_clicks_enabled(const std::string& mouse_event) const;
+
+    /**
+     * \brief Checks if this button can generate OnClick events when a specific mouse event occurs over the button.
+     * \param button_id The mouse button for which to check
+     * \param button_event The mouse button event for which to check
+     * \return 'true' if this button can generate OnClick events from this mouse event
+     * \see enable_button_clicks()
+     */
+    bool is_button_clicks_enabled(
+        input::mouse_button button_id, input::mouse_button_event button_event) const;
+
     /// Registers this region class to the provided Lua state
     static void register_on_lua(sol::state& lua);
 
@@ -373,6 +475,8 @@ protected:
     utils::observer_ptr<font_string> current_font_string_ = nullptr;
 
     vector2f pushed_text_offset_ = vector2f::zero;
+
+    std::set<std::string> reg_click_list_;
 };
 
 } // namespace lxgui::gui
