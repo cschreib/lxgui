@@ -133,6 +133,7 @@ using script_list_view = script_signal::slot_list_view;
  *
  * - `OnChar`: Triggered whenever a character is typed and the frame has focus
  * (see @ref frame::set_focus).
+ * - `OnDoubleClick`: Triggered when the frame is double-clicked.
  * - `OnDragStart`: Triggered when one of the mouse button registered for
  * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
