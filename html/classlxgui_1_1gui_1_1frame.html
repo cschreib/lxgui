@@ -1030,6 +1030,7 @@ Static Protected Attributes</h2></td></tr>
 <p>Hard-coded events available to all frames:</p>
 <ul>
 <li><code>OnChar</code>: Triggered whenever a character is typed and the frame has focus (see <a class="el" href="classlxgui_1_1gui_1_1frame.html#ad6a5f804376219c37ae7ad6d3d995144">frame::set_focus</a>).</li>
+<li><code>OnDoubleClick</code>: Triggered when the frame is double-clicked.</li>
 <li><code>OnDragStart</code>: Triggered when one of the mouse button registered for dragging (see <a class="el" href="classlxgui_1_1gui_1_1frame.html#afc76135757dcc149573158f541d20c8c" title="Tells this frame to react to mouse drag.">frame::enable_drag</a>) has been pressed inside the area of the screen occupied by the frame, and a mouse movement is first recorded. This event provides four argument to the registered callback: a number identifying the mouse button that started the drag, the human-readable name of this button, and the mouse X and Y position.</li>
 <li><code>OnDragMove</code>: Triggered after <code>OnDragStart</code>, each time the mouse moves, until <code>OnDragStop</code> is triggered. This event provides four argument to the registered callback: the amount of mouse movement in X and Y since the last call to <code>OnDragMove</code> (or since <code>OnDragStart</code> if this is the first call), and the mouse X and Y position.</li>
 <li><code>OnDragStop</code>: Similar to <code>OnDragStart</code>, but triggered when the mouse button is released after <code>OnDragStart</code>.</li>
@@ -1046,7 +1047,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
 <li><code>OnLoad</code>: Triggered just after the frame is created. This is where you would normally register for events and specific inputs, set up initial states for extra logic, or do localization.</li>
 <li><code>OnMouseDown</code>: Triggered when a mouse button is pressed and this frame is the topmost mouse-click-enabled frame under the mouse pointer. Will not trigger if the frame is hidden. This event provides four arguments to the registered callback: a number identifying the mouse button, a string containing the human-readable name of this button (<code>"LeftButton"</code>, <code>"RightButton"</code>, or <code>"MiddleButton"</code>), and the mouse X and Y position.</li>
 <li><code>OnMouseMove</code>: Triggered when the mouse moves over this frame, after <code>OnEnter</code> and until <code>OnLeave</code>. This event provides four argument to the registered callback: the amount of mouse movement in X and Y since the last call to <code>OnMouseMove</code> (or since the last position before the mouse entered this frame), and the mouse X and Y position.</li>
-<li><code>OnMouseUp</code>: Similar to <code>OnMouseDown</code>, but triggered when the mouse button is released. This event provides one extra argument compared to <code>OnMouseDown</code>: a boolean flag indicating whether the mouse was released after a drag operation (true) or not (false).</li>
+<li><code>OnMouseUp</code>: Similar to <code>OnMouseDown</code>, but triggered when the mouse button is released. This event provides two extra argument compared to <code>OnMouseDown</code>: a boolean flag indicating whether the mouse was released after a drag operation (true) or not (false), and another boolean flag indicating whether the mouse button was initially pressed on this frame (true) or not (false).</li>
 <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved and this frame is the topmost mouse-wheel-enabled frame under the mouse pointer. Will not trigger if the frame is hidden. This event provides three arguments to the registered callback. The first is a number indicating by how many "notches" the wheel has turned in this event. A positive value means the wheel has been moved "away" from the user (this would normally scroll <em>up</em> in a document). The other two arguments are the mouse X and Y position.</li>
 <li><code>OnReceiveDrag</code>: Triggered when the mouse pointer was previously dragged onto the frame, and when one of the mouse button registered for dragging (see <a class="el" href="classlxgui_1_1gui_1_1frame.html#afc76135757dcc149573158f541d20c8c" title="Tells this frame to react to mouse drag.">frame::enable_drag</a>) is released. This enables the "drop" in "drag and drop" operations.</li>
 <li><code>OnShow</code>: Triggered when <a class="el" href="classlxgui_1_1gui_1_1region.html#a64cb80aa3c7770da0568bc861e50204f" title="shows this region.">region::show</a> is called, or when the frame is shown indirectly (for example if its parent is itself shown). This will only fire if the frame was previously hidden.</li>
@@ -1061,7 +1062,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
 </ul>
 <p><b>Virtual frames.</b> Virtual frames are not displayed on the screen, and technically are not part of the interface. They are only available as "templates" that can be reused by other (virtual or non-virtual) frames. This is useful for defining a few frame templates with a particular style, and then reuse these templates across the interface to ensure a consistent look. When inheriting from a virtual frame, the inheriting frame will copy all the registered callbacks, all the child frames, and all the layered regions of the virtual frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00253">253</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00255">255</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a92e7da5c084e2b5b8cab59e58b03b1ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92e7da5c084e2b5b8cab59e58b03b1ae">&#9670;&nbsp;</a></span>base</h2>
@@ -1075,7 +1076,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00255">255</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00257">257</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1101,7 +1102,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00266">266</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00268">268</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1118,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00267">267</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00269">269</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1133,7 +1134,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00269">269</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00271">271</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1149,7 +1150,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00286">286</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00288">288</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1176,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00283">283</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00285">285</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1191,7 +1192,7 @@ name of the key combination being pressed (e.g., "Shift+A").</li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00284">284</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00286">286</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1371,7 +1372,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00730">730</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00731">731</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1465,7 +1466,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00589">589</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00590">590</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1524,11 +1525,11 @@ template&lt;typename DerivedType  = void, typename Function &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This defines a C++ function to be called for the event specified in <code>script_name</code>. This provides the best performance, but lacks direct access to the Lua environment. If this is required, prefer the other overload taking a Lua function instead.</dd>
 <dd>
 This overload enables taking handler scripts with a <code>self</code> parameter of type other than <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>, for example: <div class="fragment"><div class="line"><a class="code" href="classlxgui_1_1gui_1_1frame.html#a90cfb6df37829a326d709c3aa2dc311d">add_script</a>([](button&amp; <span class="keyword">self</span>, <span class="keyword">const</span> event_data&amp; data) { ... });</div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a90cfb6df37829a326d709c3aa2dc311d"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a90cfb6df37829a326d709c3aa2dc311d">lxgui::gui::frame::add_script</a></div><div class="ttdeci">utils::connection add_script(const std::string &amp;script_name, std::string content, script_info info=script_info{})</div><div class="ttdoc">Adds an additional handler script to this frame (executed after existing scripts).</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l01124">gui_frame.hpp:1124</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a90cfb6df37829a326d709c3aa2dc311d"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a90cfb6df37829a326d709c3aa2dc311d">lxgui::gui::frame::add_script</a></div><div class="ttdeci">utils::connection add_script(const std::string &amp;script_name, std::string content, script_info info=script_info{})</div><div class="ttdoc">Adds an additional handler script to this frame (executed after existing scripts).</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8hpp_source.html#l01125">gui_frame.hpp:1125</a></div></div>
 </div><!-- fragment --> For maximum safety, by default this is done using a <code>dynamic_cast</code>, so that incorrect types will be reported. However this has a cost; if you are sure of the type and want to bypass this cost, just supply the <code>self</code> type as the first template argument to this function: <div class="fragment"><div class="line">add_script&lt;button&gt;([](button&amp; <span class="keyword">self</span>, <span class="keyword">const</span> event_data&amp; data) { ... });</div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01196">1196</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01197">1197</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1584,7 +1585,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This defines a C++ function to be called for the event specified in <code>script_name</code>. This provides the best performance, but lacks direct access to the Lua environment. If this is required, prefer the other overload taking a Lua function instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01164">1164</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01165">1165</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1641,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This defines a Lua function to be called for the event specified in script_name. This provides more flexibility compared to using C++ function, but also has a larger overhead. If performance is a concern, prefer the other overload taking a C++ function instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01143">1143</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01144">1144</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1696,7 +1697,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The <a class="el" href="structlxgui_1_1gui_1_1script__info.html" title="Holds file/line information for a script.">script_info</a> parameter is used only for displaying error messages. This function is meant to be used by the layout file parser. If you want to manually define your own script handlers, prefer the other overloads. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01124">1124</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01125">1125</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1874,7 +1875,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01758">1758</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01759">1759</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1983,7 +1984,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dd>
 This function takes care of the basic initializing: you can directly use the created frame. However, you still need to call <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046" title="Notifies this region that it has been fully loaded.">notify_loaded()</a> when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00708">708</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00709">709</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2057,7 +2058,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dd>
 This function takes care of the basic initializing: you can directly use the created frame. However, you still need to call <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046" title="Notifies this region that it has been fully loaded.">notify_loaded()</a> when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00687">687</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00688">688</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2140,7 +2141,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 <dd>
 This function takes care of the basic initializing: you can directly use the created region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00650">650</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00651">651</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2236,7 +2237,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 <dd>
 This function takes care of the basic initializing: you can directly use the created region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00629">629</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00630">630</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2600,12 +2601,6 @@ This function takes care of the basic initializing: you can directly use the cre
 </div><div class="memdoc">
 
 <p>Marks this frame as unable to receive keyboard input from any key. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key_name</td><td>The key to capture </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#a5ed2f09b6a51c550285ec2f75de8f2cd" title="Marks this frame as able to receive keyboard input from a specific key.">enable_key_capture()</a> </dd>
 <dd>
 <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7ad97fc7b099c79db8a1567f48af75de" title="Checks if this frame can receive keyboard input from a specific key.">is_key_capture_enabled()</a> </dd>
@@ -2715,7 +2710,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as unable to receive any keyboard input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa95e4fbac4c59dd9efdae5c0e5af1daa" title="Sets if this frame can receive any keyboard input.">set_keyboard_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00473">473</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00475">475</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2745,7 +2740,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as unable to receive mouse input (click &amp; move). </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#a98e9e61d56705670c8e903746cfeb0cb" title="Sets if this frame can receive mouse input (click &amp; move).">set_mouse_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00378">378</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00380">380</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2775,7 +2770,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as unable to receive mouse click input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#ad0b01e407c9a4f32de7ed6a1b732367c" title="Sets if this frame can receive mouse click input.">set_mouse_click_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00400">400</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00402">402</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2805,7 +2800,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as unable to receive mouse move input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#a8b70cd9fad855a2cf1b689ab13b35edc" title="Sets if this frame can receive mouse move input.">set_mouse_move_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00422">422</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00424">424</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2835,7 +2830,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as unable to receive mouse wheel input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#ae3ada6a6a602a1ef8bb2ee4418f60052" title="Sets if this frame can receive mouse wheel input.">set_mouse_wheel_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00444">444</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00446">446</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3049,7 +3044,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as able to receive any keyboard input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa95e4fbac4c59dd9efdae5c0e5af1daa" title="Sets if this frame can receive any keyboard input.">set_keyboard_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00465">465</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00467">467</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3079,7 +3074,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as able to receive mouse input (click &amp; move). </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#a98e9e61d56705670c8e903746cfeb0cb" title="Sets if this frame can receive mouse input (click &amp; move).">set_mouse_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00370">370</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00372">372</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3109,7 +3104,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as able to receive mouse click input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#ad0b01e407c9a4f32de7ed6a1b732367c" title="Sets if this frame can receive mouse click input.">set_mouse_click_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00392">392</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00394">394</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3139,7 +3134,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as able to receive mouse move input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#a8b70cd9fad855a2cf1b689ab13b35edc" title="Sets if this frame can receive mouse move input.">set_mouse_move_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00414">414</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00416">416</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3169,7 +3164,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <p>Marks this frame as able to receive mouse wheel input. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1frame.html#ae3ada6a6a602a1ef8bb2ee4418f60052" title="Sets if this frame can receive mouse wheel input.">set_mouse_wheel_enabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00436">436</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3207,7 +3202,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <dl class="section return"><dt>Returns</dt><dd>The topmost frame, if any, and nullptr otherwise. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For most frames, this can either return 'this' or 'nullptr'. For frames responsible for rendering other frames (such as <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a>), this can return other frames. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01033">1033</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01034">1034</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3747,7 +3742,7 @@ This function takes care of the basic initializing: you can directly use the cre
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00774">774</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00775">775</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3787,7 +3782,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00808">808</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00809">809</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3857,7 +3852,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00791">791</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00792">792</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4040,7 +4035,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object or its parents, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626">set_frame_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01644">1644</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01645">1645</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4148,7 +4143,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626">set_frame_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01628">1628</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01629">1629</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4179,7 +4174,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more information, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a784ab5e4ca16021bd494f194f5bc6626">set_frame_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01619">1619</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01620">1620</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4642,7 +4637,7 @@ template&lt;typename FrameType , typename Enable  = typename std::enable_if&lt;s
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's region </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no region is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00844">844</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00845">845</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4682,7 +4677,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's region </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no region is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00862">862</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00863">863</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -5002,7 +4997,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 
 <p>Returns this frame's title region. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00996">996</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00997">997</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -5031,7 +5026,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 
 <p>Returns this frame's title region. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00991">991</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00992">992</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -5091,7 +5086,7 @@ template&lt;typename RegionType , typename Enable  = typename std::enable_if&lt;
 <p>Returns this frame's top-level parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's top-level parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00901">901</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00902">902</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -7960,7 +7955,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01390">1390</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01391">1391</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -8007,7 +8002,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01403">1403</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01404">1404</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -8054,7 +8049,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00340">340</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00342">342</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -8204,7 +8199,7 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
 <dd>
 <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7d11da21de933c4c3882aac3fae93a65" title="Marks this frame as unable to receive keyboard input from any key.">disable_key_capture()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00484">484</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00486">486</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -8254,7 +8249,7 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
 <dd>
 <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7d11da21de933c4c3882aac3fae93a65" title="Marks this frame as unable to receive keyboard input from any key.">disable_key_capture()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00499">499</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00501">501</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9026,7 +9021,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </div><!-- fragment --> For maximum safety, by default this is done using a <code>dynamic_cast</code>, so that incorrect types will be reported. However this has a cost; if you are sure of the type and want to bypass this cost, just supply the <code>self</code> type as the first template argument to this function: <div class="fragment"><div class="line">add_script&lt;button&gt;([](button&amp; <span class="keyword">self</span>, <span class="keyword">const</span> event_data&amp; data) { ... });</div>
 </div><!-- fragment --> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01304">1304</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01305">1305</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9082,7 +9077,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This defines a C++ function to be called for the event specified in script_name. This provides the best performance, but lacks direct access to the Lua environment. If this is required, prefer the other overload taking a Lua function instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01272">1272</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01273">1273</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9138,7 +9133,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This defines a Lua function to be called for the event specified in script_name. This provides more flexibility compared to using C++ function, but also has a larger overhead. If performance is a concern, prefer the other overload taking a C++ function instead. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01251">1251</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01252">1252</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9194,7 +9189,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 <dl class="section return"><dt>Returns</dt><dd>A connection object, to disable the script if needed.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The <a class="el" href="structlxgui_1_1gui_1_1script__info.html" title="Holds file/line information for a script.">script_info</a> parameter is used only for displaying error messages. This function is meant to be used by the layout file parser. If you want to manually define your own script handlers, prefer the other overloads. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01232">1232</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01233">1233</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9686,7 +9681,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01832">1832</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01833">1833</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9806,7 +9801,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01821">1821</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01822">1822</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9854,7 +9849,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01800">1800</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01801">1801</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9878,7 +9873,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01729">1729</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01730">1730</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9950,7 +9945,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01819">1819</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01820">1820</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9974,7 +9969,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01815">1815</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01816">1816</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9998,7 +9993,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01808">1808</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01809">1809</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10022,7 +10017,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01818">1818</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01819">1819</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10046,7 +10041,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01850">1850</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01851">1851</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10070,7 +10065,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01828">1828</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01829">1829</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10094,7 +10089,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01849">1849</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01850">1850</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10118,7 +10113,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01826">1826</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01827">1827</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10190,7 +10185,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01823">1823</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01824">1824</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10214,7 +10209,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01845">1845</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01846">1846</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10238,7 +10233,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01824">1824</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01825">1825</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10262,7 +10257,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01825">1825</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01826">1826</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10286,7 +10281,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01827">1827</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01828">1828</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10310,7 +10305,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01829">1829</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01830">1830</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10358,7 +10353,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01816">1816</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01817">1817</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10382,7 +10377,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01830">1830</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01831">1831</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10478,7 +10473,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01805">1805</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01806">1806</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10502,7 +10497,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01813">1813</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01814">1814</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10550,7 +10545,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01838">1838</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01839">1839</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10574,7 +10569,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01836">1836</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01837">1837</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10598,7 +10593,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01837">1837</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01838">1838</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10622,7 +10617,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01835">1835</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01836">1836</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10670,7 +10665,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01803">1803</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01804">1804</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10742,7 +10737,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01810">1810</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01811">1811</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10766,7 +10761,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01811">1811</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01812">1812</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10790,7 +10785,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01801">1801</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01802">1802</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10814,7 +10809,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01833">1833</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01834">1834</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10838,7 +10833,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01840">1840</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01841">1841</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10862,7 +10857,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01807">1807</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01808">1808</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10886,7 +10881,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01814">1814</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01815">1815</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10910,7 +10905,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01843">1843</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01844">1844</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10934,7 +10929,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01847">1847</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01848">1848</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10958,7 +10953,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01842">1842</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01843">1843</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10970,7 +10965,7 @@ This overload enables taking handler scripts with a <code>self</code> parameter 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jun 10 2023 15:26:13 for lxgui by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Fri Oct 6 2023 15:02:06 for lxgui by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
