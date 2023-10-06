@@ -1,5 +1,7 @@
 #include "lxgui/input_keys.hpp"
 
+#include "lxgui/utils_string.hpp"
+
 namespace lxgui::input {
 
 std::string_view get_mouse_button_codename(mouse_button button_id) {
@@ -36,6 +38,53 @@ std::string_view get_localizable_mouse_button_event_name(mouse_button_event butt
     case mouse_button_event::double_click: return "{mouse_event_double_click}";
     default: return "{mouse_event_unknown}";
     }
+}
+
+std::string_view
+get_mouse_button_and_event_codename(mouse_button button_id, mouse_button_event button_event) {
+    switch (button_id) {
+    case mouse_button::left:
+        switch (button_event) {
+        case mouse_button_event::up: return "LeftButton:Up";
+        case mouse_button_event::down: return "LeftButton:Down";
+        case mouse_button_event::double_click: return "LeftButton:DoubleClick";
+        default: return "";
+        }
+    case mouse_button::right:
+        switch (button_event) {
+        case mouse_button_event::up: return "RightButton:Up";
+        case mouse_button_event::down: return "RightButton:Down";
+        case mouse_button_event::double_click: return "RightButton:DoubleClick";
+        default: return "";
+        };
+    case mouse_button::middle:
+        switch (button_event) {
+        case mouse_button_event::up: return "MiddleButton:Up";
+        case mouse_button_event::down: return "MiddleButton:Down";
+        case mouse_button_event::double_click: return "MiddleButton:DoubleClick";
+        default: return "";
+        };
+    default: return "";
+    }
+}
+
+std::optional<std::pair<mouse_button, mouse_button_event>>
+get_mouse_button_and_event_from_codename(std::string_view button_and_event_name) {
+    const auto pos = button_and_event_name.find_first_of(':');
+    if (pos == std::string_view::npos)
+        return {};
+
+    auto button_name = button_and_event_name.substr(0, pos);
+    auto event_name  = button_and_event_name.substr(pos + 1);
+
+    auto button_id = utils::from_string<mouse_button>(button_name);
+    auto event_id  = utils::from_string<mouse_button_event>(event_name);
+
+    if (!button_id.has_value() || !event_id.has_value()) {
+        return {};
+    }
+
+    return std::make_pair(button_id.value(), event_id.value());
 }
 
 std::string_view get_key_codename(key key_id) {

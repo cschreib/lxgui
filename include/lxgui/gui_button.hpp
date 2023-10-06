@@ -311,6 +311,21 @@ public:
     virtual void release();
 
     /**
+     * \brief Handle a mouse click over this button.
+     * \param mouse_event The mouse event with which to generate a click
+     * \note This calls the OnClick() handler only if the event is registered for clicks.
+     */
+    void click(const std::string& mouse_event);
+
+    /**
+     * \brief Handle a mouse click over this button.
+     * \param button_id The mouse button with which to generate a click
+     * \param button_event The mouse button event with which to generate a click
+     * \note This calls the OnClick() handler only if the event is registered for clicks.
+     */
+    void click(input::mouse_button button_id, input::mouse_button_event button_event);
+
+    /**
      * \brief Highlights this button.
      * \note The button will be highlighted even if the
      * mouse is not over it. It will stop when the
@@ -455,6 +470,11 @@ public:
 protected:
     void parse_attributes_(const layout_node& node) override;
     void parse_all_nodes_before_children_(const layout_node& node) override;
+
+    bool is_button_clicks_enabled_(input::mouse_button button_id) const;
+
+    virtual void click_(
+        input::mouse_button button_id, input::mouse_button_event button_event, float mx, float my);
 
     const std::vector<std::string>& get_type_list_() const override;
 

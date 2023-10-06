@@ -58,7 +58,9 @@ void button::register_on_lua(sol::state& lua) {
 
     /** @function click
      */
-    type.set_function("click", [](button& self) { self.fire_script("OnClick"); });
+    type.set_function(
+        "click", member_function< // select the right overload for Lua
+                     static_cast<void (button::*)(const std::string&)>(&button::click)>());
 
     /** @function disable
      */

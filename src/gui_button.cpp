@@ -34,46 +34,52 @@ void button::fire_script(const std::string& script_name, const event_data& data)
     if (!checker.is_alive())
         return;
 
-    if (is_enabled()) {
-        if (script_name == "OnEnter")
-            highlight();
+    if (!is_enabled())
+        return;
 
-        if (script_name == "OnLeave") {
-            unlight();
+    if (script_name == "OnEnter")
+        highlight();
 
-            if (state_ == state::down)
+    if (script_name == "OnLeave") {
+        unlight();
+
+        if (state_ == state::down)
+            release();
+    }
+
+    bool try_handle_click = false;
+    if (script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
+        script_name == "OnDoubleClick") {
+
+        try_handle_click = true;
+
+        // If reacting to a "mouse up" event, only handle as a click if
+        // the mouse was pressed down on this button.
+        if (script_name == "OnMouseUp" && !data.get<bool>(5)) {
+            try_handle_click = false;
+        }
+    }
+
+    if (try_handle_click) {
+        const input::mouse_button       button_id = data.get<input::mouse_button>(0);
+        const input::mouse_button_event event_id =
+            script_name == "OnMouseDown" ? input::mouse_button_event::down
+            : script_name == "OnMouseUp" ? input::mouse_button_event::up
+                                         : input::mouse_button_event::double_click;
+
+        if (is_button_clicks_enabled_(button_id)) {
+            if (event_id == input::mouse_button_event::down)
+                push();
+            else if (event_id == input::mouse_button_event::up)
                 release();
         }
 
-        if (script_name == "OnMouseDown" || script_name == "OnMouseUp" ||
-            script_name == "OnDoubleClick") {
+        float mx = data.get<float>(2);
+        float my = data.get<float>(3);
 
-            const input::mouse_button_event event_id =
-                script_name == "OnMouseDown" ? input::mouse_button_event::down
-                : script_name == "OnMouseUp" ? input::mouse_button_event::up
-                                             : input::mouse_button_event::double_click;
-
-            const auto event_name = data.get<std::string>(1) +
-                                    std::string{input::get_mouse_button_event_codename(event_id)};
-
-            if (is_button_clicks_enabled(event_name)) {
-                if (event_id == input::mouse_button_event::down)
-                    push();
-                else if (event_id == input::mouse_button_event::up)
-                    release();
-
-                event_data new_data;
-                new_data.add(data.get(0)); // Mouse button ID
-                new_data.add(static_cast<std::underlying_type_t<input::mouse_button_event>>(
-                    event_id)); // Mouse button event
-                new_data.add(event_name); // Mouse button event name
-                new_data.add(data.get(2)); // Mouse pos X
-                new_data.add(data.get(3)); // Mouse pos Y
-                fire_script("OnClick", new_data);
-                if (!checker.is_alive())
-                    return;
-            }
-        }
+        click_(button_id, event_id, mx, my);
+        if (!checker.is_alive())
+            return;
     }
 }
 
@@ -389,6 +395,39 @@ void button::release() {
     state_ = state::up;
 }
 
+void button::click(const std::string& mouse_event) {
+    auto mouse_event_id = input::get_mouse_button_and_event_from_codename(mouse_event);
+    if (!mouse_event_id.has_value()) {
+        return;
+    }
+
+    click(mouse_event_id.value().first, mouse_event_id.value().second);
+}
+
+void button::click(input::mouse_button button_id, input::mouse_button_event button_event) {
+    vector2f center = get_center();
+    click_(button_id, button_event, center.x, center.y);
+}
+
+void button::click_(
+    input::mouse_button button_id, input::mouse_button_event button_event, float mx, float my) {
+
+    if (!is_button_clicks_enabled(button_id, button_event)) {
+        return;
+    }
+
+    std::string event_name =
+        std::string{input::get_mouse_button_and_event_codename(button_id, button_event)};
+
+    event_data new_data;
+    new_data.add(static_cast<std::underlying_type_t<input::mouse_button>>(button_id));
+    new_data.add(static_cast<std::underlying_type_t<input::mouse_button_event>>(button_event));
+    new_data.add(event_name);
+    new_data.add(mx);
+    new_data.add(my);
+    fire_script("OnClick", new_data);
+}
+
 void button::highlight() {
     if (is_highlighted_)
         return;
@@ -464,8 +503,7 @@ void button::enable_button_clicks(const std::string& mouse_state) {
 void button::enable_button_clicks(
     input::mouse_button button_id, input::mouse_button_event button_event) {
     reg_click_list_.insert(
-        std::string{input::get_mouse_button_codename(button_id)} +
-        std::string{input::get_mouse_button_event_codename(button_event)});
+        std::string{input::get_mouse_button_and_event_codename(button_id, button_event)});
 }
 
 void button::disable_button_clicks(const std::string& mouse_state) {
@@ -475,8 +513,7 @@ void button::disable_button_clicks(const std::string& mouse_state) {
 void button::disable_button_clicks(
     input::mouse_button button_id, input::mouse_button_event button_event) {
     reg_click_list_.erase(
-        std::string{input::get_mouse_button_codename(button_id)} +
-        std::string{input::get_mouse_button_event_codename(button_event)});
+        std::string{input::get_mouse_button_and_event_codename(button_id, button_event)});
 }
 
 void button::disable_button_clicks() {
@@ -489,10 +526,19 @@ bool button::is_button_clicks_enabled(const std::string& mouse_event) const {
 
 bool button::is_button_clicks_enabled(
     input::mouse_button button_id, input::mouse_button_event button_event) const {
-    return reg_click_list_.find(
-               std::string{input::get_mouse_button_codename(button_id)} +
-               std::string{input::get_mouse_button_event_codename(button_event)}) !=
-           reg_click_list_.end();
+    return reg_click_list_.find(std::string{input::get_mouse_button_and_event_codename(
+               button_id, button_event)}) != reg_click_list_.end();
+}
+
+bool button::is_button_clicks_enabled_(input::mouse_button button_id) const {
+    auto button_name = input::get_mouse_button_codename(button_id);
+    for (const auto& click : reg_click_list_) {
+        if (click.find(button_name) == 0) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 const std::vector<std::string>& button::get_type_list_() const {
