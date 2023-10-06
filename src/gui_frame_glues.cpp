@@ -92,6 +92,7 @@
  *
  * - `OnChar`: Triggered whenever a character is typed and the frame has focus
  * (see @{Frame:set_focus}).
+ * - `OnDoubleClick`: Triggered when the frame is double-clicked.
  * - `OnDragStart`: Triggered when one of the mouse button registered for
  * dragging (see frame::enable_drag) has been pressed inside the
  * area of the screen occupied by the frame, and a mouse movement is first
@@ -159,9 +160,10 @@
  * last call to `OnMouseMove` (or since the last position before the mouse
  * entered this frame), and the mouse X and Y position.
  * - `OnMouseUp`: Similar to `OnMouseDown`, but triggered when the mouse button
- * is released. This event provides one extra argument compared to `OnMouseDown`:
+ * is released. This event provides two extra argument compared to `OnMouseDown`:
  * a boolean flag indicating whether the mouse was released after a drag
- * operation (true) or not (false).
+ * operation (true) or not (false), and another boolean flag indicating whether
+ * the mouse button was initially pressed on this frame (true) or not (false).
  * - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
  * the topmost mouse-wheel-enabled frame under the mouse pointer. This event
  * provides three arguments to the registered callback. The first is a number

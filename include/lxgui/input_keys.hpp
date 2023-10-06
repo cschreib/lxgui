@@ -4,11 +4,14 @@
 #include "lxgui/lxgui.hpp"
 
 #include <cstdint>
+#include <optional>
 #include <string_view>
 
 namespace lxgui::input {
 
 enum class mouse_button : std::uint8_t { left = 0, right, middle };
+
+enum class mouse_button_event : std::uint8_t { up = 0, down = 1, double_click = 2 };
 
 enum class key : std::uint8_t {
     k_unassigned   = 0x00,
@@ -162,6 +165,7 @@ enum class key : std::uint8_t {
 /**
  * \brief Returns a standard English name for the provided mouse button.
  * \param button_id The ID code of the mouse button
+ * \return The corresponding code name in English
  * \note This will return a standard English button name, e.g., "LeftButton" for the left mouse
  * button. This can be used for string-based key identification in scripts, where key
  * integer codes would be less usable, or for displaying debug or error messages.
@@ -176,6 +180,45 @@ std::string_view get_mouse_button_codename(mouse_button button_id);
  * button. Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
  */
 std::string_view get_localizable_mouse_button_name(mouse_button button_id);
+
+/**
+ * \brief Returns a standard English name for the provided mouse button event.
+ * \param button_event The ID code of the mouse button event
+ * \return The corresponding code name in English
+ * \note This will return a standard English button name, e.g., "Up" for the mouse up event.
+ * This can be used for string-based key identification in scripts, where key
+ * integer codes would be less usable, or for displaying debug or error messages.
+ */
+std::string_view get_mouse_button_event_codename(mouse_button_event button_event);
+
+/**
+ * \brief Returns the localizable name of the provided mouse button event.
+ * \param button_event The ID code of the mouse button event
+ * \return The localizable name of the provided mouse button event
+ * \note This will return localizable button names, e.g., "{mouse_event_up}" for the mouse up event.
+ * Use a @ref lxgui::gui::localizer to transform this into a user-friendly name.
+ */
+std::string_view get_localizable_mouse_button_event_name(mouse_button_event button_event);
+
+/**
+ * \brief Returns a standard Engilsh name for the provided mouse button and event.
+ * \param button_id The ID code of the mouse button
+ * \param button_event The ID code of the mouse button event
+ * \return The corresponding code name in English
+ * \note This will return a string with the format "<button>:<event>".
+ * \see get_mouse_button_codename()
+ * \see get_mouse_button_event_codename()
+ */
+std::string_view
+get_mouse_button_and_event_codename(mouse_button button_id, mouse_button_event button_event);
+
+/**
+ * \brief Returns a mouse button and a button event ID from a string formatted as "<button>:<event>".
+ * \param event_name The name of the mouse button event, as "<button>:<event>"
+ * \return The pair of decoded button and event ID, or std::nullopt if parsing failed.
+ */
+std::optional<std::pair<mouse_button, mouse_button_event>>
+get_mouse_button_and_event_from_codename(std::string_view button_and_event_name);
 
 /**
  * \brief Returns a standard English name for the provided key.

@@ -789,6 +789,7 @@ bool root::on_mouse_button_state_changed_(
     bool                is_double_click,
     bool                was_dragged,
     const vector2f&     mouse_pos) {
+
     utils::observer_ptr<frame> hovered_frame = find_topmost_frame([&](const frame& frame) {
         return frame.is_in_region(mouse_pos) && frame.is_mouse_click_enabled();
     });
@@ -796,6 +797,10 @@ bool root::on_mouse_button_state_changed_(
     if (is_down && !is_double_click) {
         if (!hovered_frame || hovered_frame != get_focused_frame())
             clear_focus();
+    }
+
+    if (is_down) {
+        start_click_frame_ = hovered_frame;
     }
 
     if (!hovered_frame) {
@@ -810,7 +815,7 @@ bool root::on_mouse_button_state_changed_(
     data.add(mouse_pos.y);
 
     if (is_double_click) {
-        hovered_frame->fire_script("OnDoubleClicked", data);
+        hovered_frame->fire_script("OnDoubleClick", data);
     } else if (is_down) {
         if (auto* top_level = hovered_frame->get_top_level_parent().get())
             top_level->raise();
@@ -818,7 +823,9 @@ bool root::on_mouse_button_state_changed_(
         hovered_frame->fire_script("OnMouseDown", data);
     } else {
         data.add(was_dragged);
+        data.add(start_click_frame_ == hovered_frame);
         hovered_frame->fire_script("OnMouseUp", data);
+        start_click_frame_ = nullptr;
     }
 
     return true;
