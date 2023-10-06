@@ -77,14 +77,29 @@ get_mouse_button_and_event_from_codename(std::string_view button_and_event_name)
     auto button_name = button_and_event_name.substr(0, pos);
     auto event_name  = button_and_event_name.substr(pos + 1);
 
-    auto button_id = utils::from_string<mouse_button>(button_name);
-    auto event_id  = utils::from_string<mouse_button_event>(event_name);
-
-    if (!button_id.has_value() || !event_id.has_value()) {
+    mouse_button button_id{};
+    if (button_name == "LeftButton") {
+        button_id = mouse_button::left;
+    } else if (button_name == "MiddleButton") {
+        button_id = mouse_button::middle;
+    } else if (button_name == "RightButton") {
+        button_id = mouse_button::right;
+    } else {
         return {};
     }
 
-    return std::make_pair(button_id.value(), event_id.value());
+    mouse_button_event event_id{};
+    if (event_name == "Up") {
+        event_id = mouse_button_event::up;
+    } else if (event_name == "Down") {
+        event_id = mouse_button_event::down;
+    } else if (event_name == "DoubleClick") {
+        event_id = mouse_button_event::double_click;
+    } else {
+        return {};
+    }
+
+    return std::make_pair(button_id, event_id);
 }
 
 std::string_view get_key_codename(key key_id) {
