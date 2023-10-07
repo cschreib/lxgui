@@ -99,7 +99,6 @@ public:
      * \brief Play this animated_texture.
      * \note Has no effect if already playing
      */
-
     void play() {
         set_paused(false);
     }
