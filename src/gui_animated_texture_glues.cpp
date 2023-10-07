@@ -46,6 +46,18 @@ void animated_texture::register_on_lua(sol::state& lua) {
         return std::make_tuple(color.r, color.g, color.b, color.a);
     });
 
+    /** @function pause
+     */
+    type.set_function("pause", member_function<&animated_texture::pause>());
+
+    /** @function play
+     */
+    type.set_function("play", member_function<&animated_texture::play>());
+
+    /** @function stop
+     */
+    type.set_function("stop", member_function<&animated_texture::stop>());
+
     /** @function set_speed
      */
     type.set_function("set_speed", member_function<&animated_texture::set_speed>());
