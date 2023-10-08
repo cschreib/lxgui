@@ -57,7 +57,7 @@ public:
     float get_state() const;
 
     /**
-     * \brief Check if this animated_texture is paused
+     * \brief Check if this animated_texture is paused.
      * \return 'true' if paused, 'false' otherwise
      */
     float is_paused() const;
@@ -90,10 +90,34 @@ public:
     void set_state(float state);
 
     /**
-     * \brief Check if this animated_texture is paused
-     * \return 'true' if paused, 'false' otherwise
+     * \brief Play or pause this animated_texture.
+     * \param is_paused 'true' to pause, 'false' to play
      */
     void set_paused(bool is_paused);
+
+    /**
+     * \brief Play this animated_texture.
+     * \note Has no effect if already playing
+     */
+    void play() {
+        set_paused(false);
+    }
+
+    /**
+     * \brief Pause this animated_texture.
+     * \note Has no effect if already paused
+     */
+    void pause() {
+        set_paused(true);
+    }
+
+    /**
+     * \brief Stop this animated_texture (stop playing and reset to start).
+     */
+    void stop() {
+        set_paused(true);
+        set_state(0.0f);
+    }
 
     /**
      * \brief Sets this texture's texture file.
