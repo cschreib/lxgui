@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['orientation_2762',['orientation',['../namespacelxgui_1_1gui.html#a92748aae7ab8c6c9236a5d40ce00f965',1,'lxgui::gui']]]
+  ['orientation_2764',['orientation',['../namespacelxgui_1_1gui.html#a92748aae7ab8c6c9236a5d40ce00f965',1,'lxgui::gui']]]
 ];
