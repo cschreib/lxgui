@@ -4,7 +4,7 @@ on: push
 
 env:
   BUILD_TYPE: Release
-  EM_VERSION: 2.0.34
+  EM_VERSION: 3.1.35
   EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -36,14 +36,14 @@ jobs:
     - name: Setup Emscripten cache
       if: matrix.platform.compiler == 'em++'
       id: cache-system-libraries
-      uses: actions/cache@v2.1.7
+      uses: actions/cache@v4
       with:
         path: ${{env.EM_CACHE_FOLDER}}
-        key: ${{env.EM_VERSION}}-${{ runner.os }}
+        key: ${{env.EM_VERSION}}-${{matrix.platform.name}}-${{matrix.build-type}}
 
     - name: Setup Emscripten
       if: matrix.platform.compiler == 'em++'
-      uses: mymindstorm/setup-emsdk@v11
+      uses: mymindstorm/setup-emsdk@v14
       with:
         version: ${{env.EM_VERSION}}
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
@@ -135,7 +135,7 @@ jobs:
 
     - name: Publish
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/main'
-      uses: JamesIves/github-pages-deploy-action@4.1.0
+      uses: JamesIves/github-pages-deploy-action@v4.7.3
       with:
         branch: gh-pages
         folder: ${{github.workspace}}/bin/demo
