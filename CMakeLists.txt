@@ -1,12 +1,13 @@
 ##############################################################################
 # Base setup
 ##############################################################################
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.14..3.31)
 cmake_policy(SET CMP0048 "NEW")
 cmake_policy(SET CMP0072 "NEW")
 cmake_policy(SET CMP0077 "NEW")
 cmake_policy(SET CMP0083 "NEW")
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
