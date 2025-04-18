@@ -16,7 +16,7 @@ target_include_directories(lxgui-input-sfml PUBLIC
 
 # needed dependencies
 target_link_libraries(lxgui-input-sfml PUBLIC lxgui::lxgui)
-target_link_libraries(lxgui-input-sfml PUBLIC sfml::graphics)
+target_link_libraries(lxgui-input-sfml PUBLIC sfml-graphics)
 
 install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/input_sfml_source.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lxgui/impl)
