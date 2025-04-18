@@ -4,6 +4,7 @@
 #include "lxgui/lxgui.hpp"
 #include "lxgui/utils.hpp"
 
+#include <cstdint>
 #include <string>
 #include <type_traits>
 #include <utility>
