@@ -6,6 +6,7 @@ add_library(lxgui-input-sdl
 )
 
 add_library(lxgui::input::sdl ALIAS lxgui-input-sdl)
+set_target_properties(lxgui-input-sdl PROPERTIES EXPORT_NAME input::sdl)
 
 # need C++17
 target_compile_features(lxgui-input-sdl PRIVATE cxx_std_17)

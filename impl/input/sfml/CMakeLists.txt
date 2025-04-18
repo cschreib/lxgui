@@ -6,6 +6,7 @@ add_library(lxgui-input-sfml
 )
 
 add_library(lxgui::input::sfml ALIAS lxgui-input-sfml)
+set_target_properties(lxgui-input-sfml PROPERTIES EXPORT_NAME input::sfml)
 
 # need C++17
 target_compile_features(lxgui-input-sfml PRIVATE cxx_std_17)

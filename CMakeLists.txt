@@ -164,9 +164,6 @@ endif()
 # Dependencies
 ##############################################################################
 
-# configure dependencies
-set(SDL2_BUILDING_LIBRARY TRUE)
-
 # find dependencies
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
 
