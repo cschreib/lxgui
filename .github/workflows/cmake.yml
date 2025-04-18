@@ -74,7 +74,7 @@ jobs:
 
     - name: Get MacOS dependencies
       if: runner.os == 'macOS'
-      run: brew install sfml lua zlib libpng freetype glew sdl2 sdl2_ttf sdl2_image
+      run: brew install sfml@2 lua zlib libpng freetype glew sdl2 sdl2_ttf sdl2_image
 
     - name: Configure CMake
       shell: bash
