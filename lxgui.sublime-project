@@ -1,314 +1,314 @@
 {
-	"build_systems":
-	[
-		{
-			"config": "Release",
-			"env":
-			{
-			},
-			"generator": "Unix Makefiles",
-			"name": "Release",
-			"target": "cmake_build",
-			"variants":
-			[
-				{
-					"build_target": "Continuous",
-					"name": "Continuous"
-				},
-				{
-					"build_target": "ContinuousBuild",
-					"name": "ContinuousBuild"
-				},
-				{
-					"build_target": "ContinuousConfigure",
-					"name": "ContinuousConfigure"
-				},
-				{
-					"build_target": "ContinuousCoverage",
-					"name": "ContinuousCoverage"
-				},
-				{
-					"build_target": "ContinuousMemCheck",
-					"name": "ContinuousMemCheck"
-				},
-				{
-					"build_target": "ContinuousStart",
-					"name": "ContinuousStart"
-				},
-				{
-					"build_target": "ContinuousSubmit",
-					"name": "ContinuousSubmit"
-				},
-				{
-					"build_target": "ContinuousTest",
-					"name": "ContinuousTest"
-				},
-				{
-					"build_target": "ContinuousUpdate",
-					"name": "ContinuousUpdate"
-				},
-				{
-					"build_target": "Experimental",
-					"name": "Experimental"
-				},
-				{
-					"build_target": "ExperimentalBuild",
-					"name": "ExperimentalBuild"
-				},
-				{
-					"build_target": "ExperimentalConfigure",
-					"name": "ExperimentalConfigure"
-				},
-				{
-					"build_target": "ExperimentalCoverage",
-					"name": "ExperimentalCoverage"
-				},
-				{
-					"build_target": "ExperimentalMemCheck",
-					"name": "ExperimentalMemCheck"
-				},
-				{
-					"build_target": "ExperimentalStart",
-					"name": "ExperimentalStart"
-				},
-				{
-					"build_target": "ExperimentalSubmit",
-					"name": "ExperimentalSubmit"
-				},
-				{
-					"build_target": "ExperimentalTest",
-					"name": "ExperimentalTest"
-				},
-				{
-					"build_target": "ExperimentalUpdate",
-					"name": "ExperimentalUpdate"
-				},
-				{
-					"build_target": "Nightly",
-					"name": "Nightly"
-				},
-				{
-					"build_target": "NightlyBuild",
-					"name": "NightlyBuild"
-				},
-				{
-					"build_target": "NightlyConfigure",
-					"name": "NightlyConfigure"
-				},
-				{
-					"build_target": "NightlyCoverage",
-					"name": "NightlyCoverage"
-				},
-				{
-					"build_target": "NightlyMemCheck",
-					"name": "NightlyMemCheck"
-				},
-				{
-					"build_target": "NightlyMemoryCheck",
-					"name": "NightlyMemoryCheck"
-				},
-				{
-					"build_target": "NightlyStart",
-					"name": "NightlyStart"
-				},
-				{
-					"build_target": "NightlySubmit",
-					"name": "NightlySubmit"
-				},
-				{
-					"build_target": "NightlyTest",
-					"name": "NightlyTest"
-				},
-				{
-					"build_target": "NightlyUpdate",
-					"name": "NightlyUpdate"
-				},
-				{
-					"build_target": "c4core",
-					"name": "c4core"
-				},
-				{
-					"build_target": "c4core-amalgamate",
-					"name": "c4core-amalgamate"
-				},
-				{
-					"build_target": "fmt",
-					"name": "fmt"
-				},
-				{
-					"build_target": "lxgui",
-					"name": "lxgui"
-				},
-				{
-					"build_target": "lxgui-gl",
-					"name": "lxgui-gl"
-				},
-				{
-					"build_target": "lxgui-input-sdl",
-					"name": "lxgui-input-sdl"
-				},
-				{
-					"build_target": "lxgui-input-sfml",
-					"name": "lxgui-input-sfml"
-				},
-				{
-					"build_target": "lxgui-sdl",
-					"name": "lxgui-sdl"
-				},
-				{
-					"build_target": "lxgui-sfml",
-					"name": "lxgui-sfml"
-				},
-				{
-					"build_target": "lxgui-test",
-					"name": "lxgui-test"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
-					"build_target": "lxgui-test",
-					"name": "Run: lxgui-test",
-					"target": "cmake_run"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
-					"build_target": "lxgui-test",
-					"debug": true,
-					"name": "Run under GDB: lxgui-test",
-					"target": "cmake_run"
-				},
-				{
-					"build_target": "lxgui-test-opengl-sdl",
-					"name": "lxgui-test-opengl-sdl"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
-					"build_target": "lxgui-test-opengl-sdl",
-					"name": "Run: lxgui-test-opengl-sdl",
-					"target": "cmake_run"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
-					"build_target": "lxgui-test-opengl-sdl",
-					"debug": true,
-					"name": "Run under GDB: lxgui-test-opengl-sdl",
-					"target": "cmake_run"
-				},
-				{
-					"build_target": "lxgui-test-opengl-sfml",
-					"name": "lxgui-test-opengl-sfml"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
-					"build_target": "lxgui-test-opengl-sfml",
-					"name": "Run: lxgui-test-opengl-sfml",
-					"target": "cmake_run"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
-					"build_target": "lxgui-test-opengl-sfml",
-					"debug": true,
-					"name": "Run under GDB: lxgui-test-opengl-sfml",
-					"target": "cmake_run"
-				},
-				{
-					"build_target": "lxgui-test-sdl",
-					"name": "lxgui-test-sdl"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
-					"build_target": "lxgui-test-sdl",
-					"name": "Run: lxgui-test-sdl",
-					"target": "cmake_run"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
-					"build_target": "lxgui-test-sdl",
-					"debug": true,
-					"name": "Run under GDB: lxgui-test-sdl",
-					"target": "cmake_run"
-				},
-				{
-					"build_target": "lxgui-test-sfml",
-					"name": "lxgui-test-sfml"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
-					"build_target": "lxgui-test-sfml",
-					"name": "Run: lxgui-test-sfml",
-					"target": "cmake_run"
-				},
-				{
-					"artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
-					"build_target": "lxgui-test-sfml",
-					"debug": true,
-					"name": "Run under GDB: lxgui-test-sfml",
-					"target": "cmake_run"
-				},
-				{
-					"build_target": "pugixml-static",
-					"name": "pugixml-static"
-				},
-				{
-					"build_target": "ryml",
-					"name": "ryml"
-				},
-				{
-					"build_target": "ryml-uninstall",
-					"name": "ryml-uninstall"
-				},
-				{
-					"name": "ctest",
-					"target": "ctest_run"
-				}
-			],
-			"working_dir": "$folder/build"
-		},
-	],
-	"folders":
-	[
-		{
-			"file_exclude_patterns":
-			[
-				"*.html",
-				"*.json",
-				".travis.yml",
-				"travis_key*",
-				"lxgui-test*"
-			],
-			"folder_exclude_patterns":
-			[
-				".git",
-				".ci"
-			],
-			"index_exclude_patterns":
-			[
-				"build/*",
-				"dependencies/*",
-				".ci/*",
-				"doc/html/*",
-				"doc/lua/*",
-				"test/lxgui-test*",
-				"*.html"
-			],
-			"path": ".",
-		}
-	],
-	"settings":
-	{
-		"cmake":
-		{
-			"build_folder": "$folder/build",
-		},
-		"ClangFormat":
-		{
-		    "format_on_save": true,
-		},
-		"LSP": {
-			"clangd": {
-				"initializationOptions": {
-					"clangd.compile-commands-dir": "build_clang"
-				}
-			}
-		}
-	},
+    "build_systems":
+    [
+        {
+            "config": "Release",
+            "env":
+            {
+            },
+            "generator": "Unix Makefiles",
+            "name": "Release",
+            "target": "cmake_build",
+            "variants":
+            [
+                {
+                    "build_target": "Continuous",
+                    "name": "Continuous"
+                },
+                {
+                    "build_target": "ContinuousBuild",
+                    "name": "ContinuousBuild"
+                },
+                {
+                    "build_target": "ContinuousConfigure",
+                    "name": "ContinuousConfigure"
+                },
+                {
+                    "build_target": "ContinuousCoverage",
+                    "name": "ContinuousCoverage"
+                },
+                {
+                    "build_target": "ContinuousMemCheck",
+                    "name": "ContinuousMemCheck"
+                },
+                {
+                    "build_target": "ContinuousStart",
+                    "name": "ContinuousStart"
+                },
+                {
+                    "build_target": "ContinuousSubmit",
+                    "name": "ContinuousSubmit"
+                },
+                {
+                    "build_target": "ContinuousTest",
+                    "name": "ContinuousTest"
+                },
+                {
+                    "build_target": "ContinuousUpdate",
+                    "name": "ContinuousUpdate"
+                },
+                {
+                    "build_target": "Experimental",
+                    "name": "Experimental"
+                },
+                {
+                    "build_target": "ExperimentalBuild",
+                    "name": "ExperimentalBuild"
+                },
+                {
+                    "build_target": "ExperimentalConfigure",
+                    "name": "ExperimentalConfigure"
+                },
+                {
+                    "build_target": "ExperimentalCoverage",
+                    "name": "ExperimentalCoverage"
+                },
+                {
+                    "build_target": "ExperimentalMemCheck",
+                    "name": "ExperimentalMemCheck"
+                },
+                {
+                    "build_target": "ExperimentalStart",
+                    "name": "ExperimentalStart"
+                },
+                {
+                    "build_target": "ExperimentalSubmit",
+                    "name": "ExperimentalSubmit"
+                },
+                {
+                    "build_target": "ExperimentalTest",
+                    "name": "ExperimentalTest"
+                },
+                {
+                    "build_target": "ExperimentalUpdate",
+                    "name": "ExperimentalUpdate"
+                },
+                {
+                    "build_target": "Nightly",
+                    "name": "Nightly"
+                },
+                {
+                    "build_target": "NightlyBuild",
+                    "name": "NightlyBuild"
+                },
+                {
+                    "build_target": "NightlyConfigure",
+                    "name": "NightlyConfigure"
+                },
+                {
+                    "build_target": "NightlyCoverage",
+                    "name": "NightlyCoverage"
+                },
+                {
+                    "build_target": "NightlyMemCheck",
+                    "name": "NightlyMemCheck"
+                },
+                {
+                    "build_target": "NightlyMemoryCheck",
+                    "name": "NightlyMemoryCheck"
+                },
+                {
+                    "build_target": "NightlyStart",
+                    "name": "NightlyStart"
+                },
+                {
+                    "build_target": "NightlySubmit",
+                    "name": "NightlySubmit"
+                },
+                {
+                    "build_target": "NightlyTest",
+                    "name": "NightlyTest"
+                },
+                {
+                    "build_target": "NightlyUpdate",
+                    "name": "NightlyUpdate"
+                },
+                {
+                    "build_target": "c4core",
+                    "name": "c4core"
+                },
+                {
+                    "build_target": "c4core-amalgamate",
+                    "name": "c4core-amalgamate"
+                },
+                {
+                    "build_target": "fmt",
+                    "name": "fmt"
+                },
+                {
+                    "build_target": "lxgui",
+                    "name": "lxgui"
+                },
+                {
+                    "build_target": "lxgui-gl",
+                    "name": "lxgui-gl"
+                },
+                {
+                    "build_target": "lxgui-input-sdl",
+                    "name": "lxgui-input-sdl"
+                },
+                {
+                    "build_target": "lxgui-input-sfml",
+                    "name": "lxgui-input-sfml"
+                },
+                {
+                    "build_target": "lxgui-sdl",
+                    "name": "lxgui-sdl"
+                },
+                {
+                    "build_target": "lxgui-sfml",
+                    "name": "lxgui-sfml"
+                },
+                {
+                    "build_target": "lxgui-test",
+                    "name": "lxgui-test"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
+                    "build_target": "lxgui-test",
+                    "name": "Run: lxgui-test",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
+                    "build_target": "lxgui-test",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "name": "lxgui-test-opengl-sdl"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "name": "Run: lxgui-test-opengl-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-opengl-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "name": "lxgui-test-opengl-sfml"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "name": "Run: lxgui-test-opengl-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-opengl-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-sdl",
+                    "name": "lxgui-test-sdl"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
+                    "build_target": "lxgui-test-sdl",
+                    "name": "Run: lxgui-test-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
+                    "build_target": "lxgui-test-sdl",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-sfml",
+                    "name": "lxgui-test-sfml"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
+                    "build_target": "lxgui-test-sfml",
+                    "name": "Run: lxgui-test-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
+                    "build_target": "lxgui-test-sfml",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "pugixml-static",
+                    "name": "pugixml-static"
+                },
+                {
+                    "build_target": "ryml",
+                    "name": "ryml"
+                },
+                {
+                    "build_target": "ryml-uninstall",
+                    "name": "ryml-uninstall"
+                },
+                {
+                    "name": "ctest",
+                    "target": "ctest_run"
+                }
+            ],
+            "working_dir": "$folder/build"
+        },
+    ],
+    "folders":
+    [
+        {
+            "file_exclude_patterns":
+            [
+                "*.html",
+                "*.json",
+                ".travis.yml",
+                "travis_key*",
+                "lxgui-test*"
+            ],
+            "folder_exclude_patterns":
+            [
+                ".git",
+                ".ci"
+            ],
+            "index_exclude_patterns":
+            [
+                "build/*",
+                "dependencies/*",
+                ".ci/*",
+                "doc/html/*",
+                "doc/lua/*",
+                "test/lxgui-test*",
+                "*.html"
+            ],
+            "path": ".",
+        }
+    ],
+    "settings":
+    {
+        "cmake":
+        {
+            "build_folder": "$folder/build",
+        },
+        "ClangFormat":
+        {
+            "format_on_save": true,
+        },
+        "LSP": {
+            "clangd": {
+                "initializationOptions": {
+                    "clangd.compile-commands-dir": "build_clang"
+                }
+            }
+        }
+    },
 }
