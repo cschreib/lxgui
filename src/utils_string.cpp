@@ -1,8 +1,7 @@
 #include "lxgui/utils_string.hpp"
 
-#include "utf8.h"
-
 #include <sstream>
+#include <utf8.h>
 
 /** \cond NOT_REMOVE_FROM_DOC
  */

@@ -9,7 +9,7 @@
 #include <array>
 #include <iostream>
 #include <locale>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 #include <optional>
 #include <string>
 #include <string_view>

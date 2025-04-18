@@ -138,7 +138,7 @@ void set_node(
     const file_line_mappings& file,
     const ryml::Tree&         tree,
     layout_node&              node,
-    const ryml::NodeRef&      yaml_node) {
+    const ryml::ConstNodeRef& yaml_node) {
     std::string location;
     if (yaml_node.has_key())
         location = file.get_location(yaml_node.key().data() - tree.arena().data());
@@ -225,7 +225,8 @@ void addon_registry::parse_layout_file_(const std::string& file_name, const addo
 
 #if defined(LXGUI_ENABLE_YAML_PARSER)
     if (extension == ".yml" || extension == ".yaml") {
-        ryml::Tree tree = ryml::parse(ryml::to_csubstr(file.get_content()));
+        ryml::Tree tree;
+        ryml::parse_in_arena(ryml::to_csubstr(file.get_content()), &tree);
         set_node(file, tree, root, tree.rootref().first_child());
         parsed = true;
     }

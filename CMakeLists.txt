@@ -188,10 +188,11 @@ if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_
 endif()
 
 # add the subdirectories for dependencies
-set(UTF8_INSTALL 1)
-set(MAGIC_ENUM_OPT_INSTALL 1)
 add_subdirectory(extern/utfcpp)
+
 add_subdirectory(extern/observable_unique_ptr)
+
+set(MAGIC_ENUM_OPT_INSTALL 1)
 add_subdirectory(extern/magic_enum)
 
 if(LXGUI_BUILD_FMT)
@@ -333,7 +334,7 @@ target_link_libraries(lxgui PUBLIC fmt::fmt)
 target_link_libraries(lxgui PUBLIC oup::oup)
 target_link_libraries(lxgui PUBLIC magic_enum::magic_enum)
 target_compile_definitions(lxgui PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
-target_link_libraries(lxgui PRIVATE utf8::cpp)
+target_link_libraries(lxgui PRIVATE utf8cpp)
 if(LXGUI_ENABLE_XML_PARSER)
     target_link_libraries(lxgui PRIVATE pugixml::pugixml)
 endif()
@@ -362,7 +363,7 @@ file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/*.hpp)
 install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 install(FILES "${PROJECT_BINARY_DIR}/lxgui/lxgui.hpp" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 
-set(LXGUI_INSTALL_TARGETS lxgui)
+set(LXGUI_INSTALL_TARGETS lxgui utf8cpp)
 
 ##############################################################################
 # Back-ends

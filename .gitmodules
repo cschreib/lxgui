@@ -1,10 +1,10 @@
-[submodule "sol2"]
+[submodule "extern/sol2"]
 	path = extern/sol2
-	url = https://github.com/cschreib/sol2.git
-[submodule "utfcpp"]
+	url = https://github.com/ThePhD/sol2.git
+[submodule "extern/utfcpp"]
 	path = extern/utfcpp
 	url = https://github.com/nemtrif/utfcpp.git
-[submodule "fmt"]
+[submodule "extern/fmt"]
 	path = extern/fmt
 	url = https://github.com/fmtlib/fmt.git
 [submodule "extern/observable_unique_ptr"]
