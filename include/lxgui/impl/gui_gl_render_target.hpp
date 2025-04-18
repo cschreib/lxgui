@@ -6,6 +6,7 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/utils.hpp"
 
+#include <cstdint>
 #include <memory>
 
 namespace lxgui::gui::gl {

@@ -11,6 +11,7 @@
 #include "lxgui/utils.hpp"
 
 #include <array>
+#include <cstdint>
 #include <limits>
 #include <memory>
 

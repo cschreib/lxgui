@@ -6,6 +6,7 @@
 #include "lxgui/gui_material.hpp"
 #include "lxgui/utils.hpp"
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -40,10 +41,10 @@ public:
         const bounds2f   rect,
         filter           filt = filter::none);
 
-    material(const material& tex) = delete;
-    material(material&& tex)      = delete;
+    material(const material& tex)            = delete;
+    material(material&& tex)                 = delete;
     material& operator=(const material& tex) = delete;
-    material& operator=(material&& tex) = delete;
+    material& operator=(material&& tex)      = delete;
 
     /// Destructor.
     ~material() override;
