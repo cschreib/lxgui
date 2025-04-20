@@ -4,8 +4,6 @@ on: push
 
 env:
   BUILD_TYPE: Release
-  EM_VERSION: 3.1.35
-  EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:
   build:
@@ -13,12 +11,36 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Ubuntu GCC,   os: ubuntu-latest,  compiler: g++,     arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_CXX_COMPILER=g++"}
-        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_CXX_COMPILER=clang++"}
-        - { name: Windows 32,   os: windows-latest, compiler: vs2019,  arch: "32", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=`pwd`/../dependencies -A Win32"}
-        - { name: Windows 64,   os: windows-latest, compiler: vs2019,  arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=`pwd`/../dependencies -A x64"}
-        - { name: MacOS,        os: macos-latest,   compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=/opt/homebrew/opt/sfml@2"}
-        - { name: WebAssembly,  os: ubuntu-latest,  compiler: em++,    arch: "32", cmakepp: "emcmake", suffix: "-emscripten", flags: "-DCMAKE_PREFIX_PATH=`pwd`/../dependencies -DCMAKE_FIND_ROOT_PATH=/ -DLXGUI_TEST_IMPLEMENTATION=OPENGL_SDL"}
+        - name: Ubuntu GCC
+          os: ubuntu-latest
+          compiler: g++
+          arch: "64"
+          suffix: ""
+          cmake-flags: ""
+        - name: Ubuntu Clang
+          os: ubuntu-latest
+          compiler: clang++
+          arch: "64"
+          suffix: ""
+          cmake-flags: ""
+        - name: Windows
+          os: windows-latest
+          compiler: msvc
+          arch: "64"
+          suffix: ""
+          cmake-flags: ""
+        - name: MacOS
+          os: macos-latest
+          compiler: clang++
+          arch: "64"
+          suffix: ""
+          cmake-flags: ""
+        - name: WebAssembly
+          os: ubuntu-latest
+          compiler: em++
+          arch: "32"
+          suffix: "-emscripten"
+          cmake-flags: "-DLXGUI_BUILD_GUI_SFML_IMPL=OFF -DLXGUI_BUILD_INPUT_SFML_IMPL=OFF -DLXGUI_TEST_IMPLEMENTATION=OPENGL_SDL"
 
     name: ${{matrix.platform.name}}
     runs-on: ${{matrix.platform.os}}
@@ -31,72 +53,82 @@ jobs:
 
     - name: Setup Clang
       if: matrix.platform.compiler == 'clang++' && matrix.platform.os == 'ubuntu-latest'
-      run: sudo apt install clang
+      run: |
+        sudo apt install clang
+        echo "CC=clang" >> $GITHUB_ENV
+        echo "CXX=clang++" >> $GITHUB_ENV
 
-    - name: Setup Emscripten cache
-      if: matrix.platform.compiler == 'em++'
-      id: cache-system-libraries
+    - name: Setup Conan
+      shell: bash
+      working-directory: ${{github.workspace}}
+      run: |
+        pip install conan
+        echo "CONAN_HOME=`pwd`/conan-cache" >> $GITHUB_ENV
+
+    - name: Setup Conan cache
+      id: cache-conan-packages
       uses: actions/cache@v4
       with:
-        path: ${{env.EM_CACHE_FOLDER}}
-        key: ${{env.EM_VERSION}}-${{matrix.platform.name}}-${{matrix.build-type}}
+        path: ${{env.CONAN_HOME}}
+        key: ${{matrix.platform.name}}-${{matrix.platform.compiler}}
 
-    - name: Setup Emscripten
-      if: matrix.platform.compiler == 'em++'
-      uses: mymindstorm/setup-emsdk@v14
-      with:
-        version: ${{env.EM_VERSION}}
-        actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+    - name: Get Conan dependencies
+      shell: bash
+      working-directory: ${{github.workspace}}
+      run: |
+        conan profile detect --force
+        conan create conan/observable_unique_ptr \
+          -pr default \
+          -pr ./conan/profiles/${{matrix.platform.os}}-${{matrix.platform.arch}}-${{matrix.platform.compiler}}
+        conan install . \
+          --build=missing \
+          -c tools.system.package_manager:mode=install \
+          -c tools.system.package_manager:sudo=true \
+          --output-folder dependencies \
+          -pr:b default \
+          -pr:h default \
+          -pr:h ./conan/profiles/${{matrix.platform.os}}-${{matrix.platform.arch}}-${{matrix.platform.compiler}}
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
 
-    - name: Get Linux dependencies
-      if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
-      run: |
-        sudo apt-get update
-        sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
-
-    - name: Get Emscripten dependencies
-      if: matrix.platform.compiler == 'em++'
-      shell: bash
-      working-directory: ${{github.workspace}}/dependencies
-      run: unzip wasm.zip
-
-    - name: Get Windows dependencies
-      if: runner.os == 'Windows'
-      # Ideally (but too slow):
-      #run: vcpkg install sfml lua zlib libpng freetype glew sdl2 sdl2-ttf sdl2-image
-      # Pre-compiled dependencies:
-      shell: bash
-      working-directory: ${{github.workspace}}/dependencies
-      run: unzip windows-dependencies-${{matrix.platform.compiler}}-${{matrix.platform.arch}}.zip
-
-    - name: Get MacOS dependencies
-      if: runner.os == 'macOS'
-      run: brew install sfml@2 lua libpng freetype glew sdl2 sdl2_ttf sdl2_image
-
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: ${{matrix.platform.cmakepp}} cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DLXGUI_BUILD_EXAMPLES=0 -DCMAKE_INSTALL_PREFIX=`pwd`/../dependencies ${{matrix.platform.flags}}
+      run: |
+        source ../dependencies/conanbuild.sh
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
+          -DLXGUI_BUILD_EXAMPLES=OFF \
+          -DLXGUI_DEV=ON \
+          -DCMAKE_INSTALL_PREFIX=`pwd`/../install \
+          ${{matrix.platform.cmake-flags}}
 
     - name: Build
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake --build . --config ${BUILD_TYPE} --parallel 2
+      run: |
+        source ../dependencies/conanbuild.sh
+        cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Install
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake --install . --config ${BUILD_TYPE}
+      run: |
+        source ../dependencies/conanbuild.sh
+        cmake --install . --config ${BUILD_TYPE}
 
     - name: Build example SDL
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        source ../dependencies/conanbuild.sh
+        cmake ../examples/sdl${{matrix.platform.suffix}} \
+          -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
+          -DCMAKE_PREFIX_PATH=`pwd`/../install
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SDL
@@ -104,7 +136,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        source ../dependencies/conanbuild.sh
+        cmake ../examples/opengl-sdl${{matrix.platform.suffix}} \
+          -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
+          -DCMAKE_PREFIX_PATH=`pwd`/../install
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example SFML
@@ -113,7 +149,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        source ../dependencies/conanbuild.sh
+        cmake ../examples/sfml${{matrix.platform.suffix}} \
+          -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
+          -DCMAKE_PREFIX_PATH=`pwd`/../install
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SFML
@@ -122,7 +162,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        source ../dependencies/conanbuild.sh
+        cmake ../examples/opengl-sfml${{matrix.platform.suffix}} \
+          -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+          -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
+          -DCMAKE_PREFIX_PATH=`pwd`/../install
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package

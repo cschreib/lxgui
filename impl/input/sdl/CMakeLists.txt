@@ -19,17 +19,14 @@ target_include_directories(lxgui-input-sdl PUBLIC
 target_link_libraries(lxgui-input-sdl PUBLIC lxgui::lxgui)
 if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-input-sdl PUBLIC SDL2::SDL2)
-    target_link_libraries(lxgui-input-sdl PRIVATE SDL2::image)
+    target_link_libraries(lxgui-input-sdl PRIVATE SDL2_image::SDL2_image)
 else()
     target_compile_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL=2")
     target_compile_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL_IMAGE=2")
     target_compile_options(lxgui-input-sdl PUBLIC "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
-    target_compile_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL_TTF=2")
     target_link_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL=2")
     target_link_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL_IMAGE=2")
     target_link_options(lxgui-input-sdl PUBLIC "SHELL:-s SDL2_IMAGE_FORMATS='[\"png\"]'")
-    target_link_options(lxgui-input-sdl PUBLIC "SHELL:-s USE_SDL_TTF=2")
-    target_link_options(lxgui-input-sdl PUBLIC "SHELL:-s MIN_WEBGL_VERSION=1")
 endif()
 
 install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/input_sdl_source.hpp

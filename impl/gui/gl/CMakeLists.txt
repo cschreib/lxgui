@@ -24,15 +24,18 @@ target_include_directories(lxgui-gui-gl PUBLIC
 
 # needed dependencies
 target_link_libraries(lxgui-gui-gl PUBLIC lxgui::lxgui)
-target_link_libraries(lxgui-gui-gl PRIVATE Freetype::Freetype)
 if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-gui-gl PUBLIC OpenGL::GL)
+    target_link_libraries(lxgui-gui-gl PRIVATE Freetype::Freetype)
     target_link_libraries(lxgui-gui-gl PRIVATE PNG::PNG)
     target_link_libraries(lxgui-gui-gl PRIVATE GLEW::GLEW)
 else()
     target_compile_options(lxgui-gui-gl PUBLIC "SHELL:-s USE_LIBPNG=1")
+    target_compile_options(lxgui-gui-gl PUBLIC "SHELL:-s USE_FREETYPE=1")
     target_link_options(lxgui-gui-gl PUBLIC "SHELL:-s USE_LIBPNG=1")
+    target_link_options(lxgui-gui-gl PUBLIC "SHELL:-s USE_FREETYPE=1")
     target_link_options(lxgui-gui-gl PUBLIC "SHELL:-s MIN_WEBGL_VERSION=2")
+    target_link_options(lxgui-gui-gl PUBLIC "SHELL:-s MAX_WEBGL_VERSION=2")
 endif()
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_gl*.hpp)
