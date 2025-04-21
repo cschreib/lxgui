@@ -57,6 +57,9 @@ void backdrop::set_background(const std::string& background_file) {
 
     auto& renderer      = parent_.get_manager().get_renderer();
     background_texture_ = renderer.create_atlas_material("GUI", background_file);
+    if (!background_texture_) {
+        return;
+    }
 
     tile_size_ = original_tile_size_ = static_cast<float>(background_texture_->get_rect().width());
     background_file_                 = background_file;
@@ -157,6 +160,9 @@ void backdrop::set_edge(const std::string& edge_file) {
 
     auto& renderer = parent_.get_manager().get_renderer();
     edge_texture_  = renderer.create_atlas_material("GUI", edge_file);
+    if (!edge_texture_) {
+        return;
+    }
 
     if (edge_texture_->get_rect().width() / edge_texture_->get_rect().height() != 8.0f) {
         edge_texture_ = nullptr;
