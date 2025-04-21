@@ -56,14 +56,14 @@ get_mouse_button_and_event_codename(mouse_button button_id, mouse_button_event b
         case mouse_button_event::down: return "RightButton:Down";
         case mouse_button_event::double_click: return "RightButton:DoubleClick";
         default: return "";
-        };
+        }
     case mouse_button::middle:
         switch (button_event) {
         case mouse_button_event::up: return "MiddleButton:Up";
         case mouse_button_event::down: return "MiddleButton:Down";
         case mouse_button_event::double_click: return "MiddleButton:DoubleClick";
         default: return "";
-        };
+        }
     default: return "";
     }
 }

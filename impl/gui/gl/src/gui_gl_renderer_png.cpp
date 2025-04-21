@@ -34,7 +34,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
     if (!file.good() || png_sig_cmp(signature, 0, pngsigsize) != 0) {
         throw gui::exception(
             "gui::gl::manager", file_name + "' is not a valid PNG image: '" +
-                                    std::string(signature, signature + pngsigsize) + "'.");
+                                    std::string(std::begin(signature), std::end(signature)) + "'.");
     }
 
     png_structp read_struct = nullptr;
@@ -81,7 +81,7 @@ renderer::create_material_png_(const std::string& file_name, material::filter fi
         std::vector<png_bytep> rows(height);
 
         for (std::size_t i = 0; i < height; ++i)
-            rows[i] = reinterpret_cast<png_bytep>(data.data() + i * width);
+            rows[i] = reinterpret_cast<png_bytep>(&data[i * width]);
 
         png_read_image(read_struct, rows.data());
 

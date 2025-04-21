@@ -1,12 +1,13 @@
 ##############################################################################
 # Base setup
 ##############################################################################
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.14..3.31)
 cmake_policy(SET CMP0048 "NEW")
 cmake_policy(SET CMP0072 "NEW")
 cmake_policy(SET CMP0077 "NEW")
 cmake_policy(SET CMP0083 "NEW")
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
@@ -35,6 +36,7 @@ lxgui_set_option(LXGUI_BUILD_RAPIDYAML TRUE BOOL "Build the rapidyaml dependency
 lxgui_set_option(LXGUI_ENABLE_XML_PARSER TRUE BOOL "Enable the XML layout parser (if false, XML layout files cannot be read)")
 lxgui_set_option(LXGUI_ENABLE_YAML_PARSER TRUE BOOL "Enable the YAML layout parser (if false, YAML layout files cannot be read)")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
+lxgui_set_option(LXGUI_DEV FALSE BOOL "Enable compiler options for development (warnings etc), not recommended for release")
 
 # project name
 project(lxgui LANGUAGES CXX VERSION 2.0)
@@ -47,36 +49,10 @@ project(lxgui LANGUAGES CXX VERSION 2.0)
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
-                    OUTPUT_VARIABLE GCC_VERSION)
-
-    string(REGEX MATCHALL "[0-9]+" GCC_VERSION_COMPONENTS ${GCC_VERSION})
-    list(GET GCC_VERSION_COMPONENTS 0 GCC_MAJOR)
-    list(GET GCC_VERSION_COMPONENTS 1 GCC_MINOR)
-    set(GCC_VERSION ${GCC_MAJOR}.${GCC_MINOR})
-
-    if(GCC_VERSION VERSION_LESS 8.0)
-        message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with gcc 8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
-    endif()
-
     set(LXGUI_COMPILER_GCC TRUE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    if(MSVC_VERSION VERSION_LESS 1910)
-        message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with MSVC 2017 or higher (version 1910, your version: ${MSVC_VERSION}). Please upgrade your compiler.")
-    endif()
-
     set(LXGUI_COMPILER_MSVC TRUE)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11)
-            message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with Xcode 11 or higher (your version: ${CMAKE_CXX_COMPILER_VERSION}). Please upgrade your compiler.")
-        endif()
-    else()
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
-            message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with clang 7 or higher (your version: ${CMAKE_CXX_COMPILER_VERSION}). Please upgrade your compiler.")
-        endif()
-    endif()
-
     set(LXGUI_COMPILER_CLANG TRUE)
 else()
     message(WARNING "Warning: your compiler has not been setup by the CMake script, do not expect it to work")
@@ -135,6 +111,7 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE -Wno-missing-noreturn)
         target_compile_options(${target} PRIVATE -Wno-shadow-uncaptured-local)
         target_compile_options(${target} PRIVATE -Wno-undefined-func-template)
+        target_compile_options(${target} PRIVATE -Wno-unsafe-buffer-usage)
         target_compile_options(${target} PRIVATE -fno-limit-debug-info)
 
         if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
@@ -163,16 +140,23 @@ endif()
 # Dependencies
 ##############################################################################
 
-# configure dependencies
-set(SDL2_BUILDING_LIBRARY TRUE)
-
 # find dependencies
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
-
 find_package(Lua REQUIRED)
-find_package(Freetype)
+find_package(sol2 REQUIRED)
+find_package(utf8cpp REQUIRED)
+find_package(oup REQUIRED)
+find_package(fmt REQUIRED)
+find_package(magic_enum REQUIRED)
+
+if(LXGUI_ENABLE_XML_PARSER)
+    find_package(pugixml REQUIRED)
+endif()
+if(LXGUI_ENABLE_YAML_PARSER)
+    find_package(ryml REQUIRED)
+endif()
 
 if(NOT LXGUI_COMPILER_EMSCRIPTEN)
+    find_package(Freetype)
     find_package(PNG)
     find_package(ZLIB)
     find_package(SFML 2 COMPONENTS system window graphics)
@@ -183,57 +167,13 @@ if(NOT LXGUI_COMPILER_EMSCRIPTEN)
     find_package(SDL2_ttf)
 endif()
 
+# configure
 if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_LESS 5.2)
     set(LXGUI_LUA51 TRUE)
 endif()
 
-# add the subdirectories for dependencies
-set(UTF8_INSTALL 1)
-set(MAGIC_ENUM_OPT_INSTALL 1)
-add_subdirectory(extern/utfcpp)
-add_subdirectory(extern/observable_unique_ptr)
-add_subdirectory(extern/magic_enum)
-
-if(LXGUI_BUILD_FMT)
-    set(FMT_INSTALL TRUE)
-    add_subdirectory(extern/fmt)
-else()
-    find_package(fmt REQUIRED)
-endif()
-
-if(LXGUI_ENABLE_XML_PARSER)
-    if(LXGUI_BUILD_PUGIXML)
-        add_subdirectory(extern/pugixml)
-    else()
-        find_package(pugixml)
-        if(NOT TARGET pugixml::pugixml)
-            message(ERROR ": the XML parser requires pugixml, which is missing. XML parsing will be disabled.")
-            set(LXGUI_ENABLE_XML_PARSER FALSE)
-        endif()
-    endif()
-endif()
-
-if(LXGUI_ENABLE_YAML_PARSER)
-    if(LXGUI_BUILD_RAPIDYAML)
-        add_subdirectory(extern/rapidyaml)
-    else()
-        find_package(ryml)
-        if(NOT TARGET ryml::ryml)
-            message(ERROR ": the YAML parser requires rapidyaml, which is missing. YAML parsing will be disabled.")
-            set(LXGUI_ENABLE_YAML_PARSER FALSE)
-        endif()
-    endif()
-endif()
-
 set(SOL_ALL_SAFETIES_ON TRUE)
 set(SOL_PRINT_ERRORS FALSE)
-if(LXGUI_BUILD_SOL2)
-    set(SOL2_BUILD_LUA FALSE)
-    set(SOL2_ENABLE_INSTALL TRUE)
-    add_subdirectory(extern/sol2)
-else()
-    find_package(sol2 REQUIRED)
-endif()
 
 ##############################################################################
 # Main library
@@ -321,19 +261,20 @@ add_library(lxgui::lxgui ALIAS lxgui)
 target_compile_features(lxgui PUBLIC cxx_std_17)
 
 # compilation options
-lxgui_set_warning_level(lxgui)
+if(LXGUI_DEV)
+    lxgui_set_warning_level(lxgui)
+endif()
 target_include_directories(lxgui PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>)
 
 # needed dependencies
-target_link_libraries(lxgui PUBLIC Lua::Lua)
 target_link_libraries(lxgui PUBLIC sol2::sol2)
 target_link_libraries(lxgui PUBLIC fmt::fmt)
 target_link_libraries(lxgui PUBLIC oup::oup)
 target_link_libraries(lxgui PUBLIC magic_enum::magic_enum)
 target_compile_definitions(lxgui PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
-target_link_libraries(lxgui PRIVATE utf8::cpp)
+target_link_libraries(lxgui PRIVATE utf8cpp)
 if(LXGUI_ENABLE_XML_PARSER)
     target_link_libraries(lxgui PRIVATE pugixml::pugixml)
 endif()
@@ -345,12 +286,18 @@ if(LXGUI_PLATFORM_LINUX)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
-    # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
-    # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
-    # -g -fsanitize=address -s INITIAL_MEMORY=200MB
     target_compile_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
+    # Debugging options that can be added:
+    # target_compile_options(lxgui PUBLIC "SHELL:-s STRICT=1")
+    # target_compile_options(lxgui PUBLIC "-g")
+    # target_compile_options(lxgui PUBLIC "-fsanitize=address")
+    # target_compile_options(lxgui PUBLIC "SHELL:-s INITIAL_MEMORY=200MB")
+
     target_link_options(lxgui PUBLIC "SHELL:-s DISABLE_EXCEPTION_CATCHING=0")
-    target_link_options(lxgui PUBLIC "SHELL:-s MAX_WEBGL_VERSION=3")
+    # Debugging options that can be added:
+    # target_link_options(lxgui PUBLIC "SHELL:-s ASSERTIONS=2")
+    # target_link_options(lxgui PUBLIC "SHELL:-s SAFE_HEAP=1")
+    # target_link_options(lxgui PUBLIC "SHELL:-s GL_ASSERTIONS=1")
 endif()
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
@@ -372,46 +319,39 @@ if(LXGUI_BUILD_GUI_GL_IMPL)
     if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
         add_subdirectory(impl/gui/gl)
     else()
-        message(ERROR ": the OpenGL implementation of the GUI requires OpenGL, GLEW, freetype, libpng and zlib")
-        set(LXGUI_BUILD_GUI_GL_IMPL FALSE)
+        message(SEND_ERROR ": the OpenGL implementation of the GUI requires OpenGL, GLEW, freetype, libpng and zlib")
     endif()
 endif()
 if(LXGUI_BUILD_GUI_SFML_IMPL)
     if(LXGUI_COMPILER_EMSCRIPTEN)
-        message(ERROR ": the SFML implementation of the GUI is not supported with Emscripten")
-        set(LXGUI_BUILD_GUI_SFML_IMPL FALSE)
+        message(SEND_ERROR ": the SFML implementation of the GUI is not supported with Emscripten")
     elseif(SFML_FOUND)
         add_subdirectory(impl/gui/sfml)
     else()
-        message(ERROR ": the SFML implementation of the GUI requires the SFML library")
-        set(LXGUI_BUILD_GUI_SFML_IMPL FALSE)
+        message(SEND_ERROR ": the SFML implementation of the GUI requires the SFML library")
     endif()
 endif()
 if(LXGUI_BUILD_INPUT_SFML_IMPL)
     if(LXGUI_COMPILER_EMSCRIPTEN)
-        message(ERROR ": the SFML implementation of the input is not supported with Emscripten")
-        set(LXGUI_BUILD_INPUT_SFML_IMPL FALSE)
+        message(SEND_ERROR ": the SFML implementation of the input is not supported with Emscripten")
     elseif(SFML_FOUND)
         add_subdirectory(impl/input/sfml)
     else()
-        message(ERROR ": the SFML implementation of the input requires the SFML library")
-        set(LXGUI_BUILD_INPUT_SFML_IMPL FALSE)
+        message(SEND_ERROR ": the SFML implementation of the input requires the SFML library")
     endif()
 endif()
 if(LXGUI_BUILD_GUI_SDL_IMPL)
-    if((SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
+    if((SDL2_FOUND AND SDL2_ttf_FOUND AND SDL2_image_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
         add_subdirectory(impl/gui/sdl)
     else()
-        message(ERROR ": the SDL implementation of the GUI requires the SDL2, SDL2_ttf, and SDL2_image libraries")
-        set(LXGUI_BUILD_GUI_SDL_IMPL FALSE)
+        message(SEND_ERROR ": the SDL implementation of the GUI requires the SDL2, SDL2_ttf, and SDL2_image libraries")
     endif()
 endif()
 if(LXGUI_BUILD_INPUT_SDL_IMPL)
     if(SDL2_FOUND OR LXGUI_COMPILER_EMSCRIPTEN)
         add_subdirectory(impl/input/sdl)
     else()
-        message(ERROR ": the SDL implementation of the input requires the SDL library")
-        set(LXGUI_BUILD_INPUT_SDL_IMPL FALSE)
+        message(SEND_ERROR ": the SDL implementation of the input requires the SDL library")
     endif()
 endif()
 
@@ -475,9 +415,6 @@ write_basic_package_version_file(
 install(FILES
   "${PROJECT_BINARY_DIR}/lxgui-config.cmake"
   "${PROJECT_BINARY_DIR}/lxgui-config-version.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/FindLua.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/FindSDL2_image.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/FindSDL2_ttf.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lxgui COMPONENT Development)
 
 ##############################################################################
@@ -486,34 +423,35 @@ install(FILES
 
 if(LXGUI_BUILD_TEST)
     if(LXGUI_COMPILER_EMSCRIPTEN AND NOT (LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL" OR LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL"))
-        message(WARNING "Warning: the test program only supports SDL or OPENGL_SDL when compiled with Emscripten")
+        message(WARNING ": the test program only supports SDL or OPENGL_SDL when compiled with Emscripten")
         set(LXGUI_TEST_IMPLEMENTATION "SDL")
     endif()
+
     if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
         if(OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SFML_FOUND)
             add_subdirectory(test)
         else()
-            message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SFML.")
+            message(SEND_ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SFML.")
         endif()
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
         if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SDL2_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
             add_subdirectory(test)
         else()
-            message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SDL.")
+            message(SEND_ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SDL.")
         endif()
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL")
         if((SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
             add_subdirectory(test)
         else()
-            message(ERROR ": the test program requires SDL2, SDL2_ttf, and SDL2_image.")
+            message(SEND_ERROR ": the test program requires SDL2, SDL2_ttf, and SDL2_image.")
         endif()
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SFML")
         if(SFML_FOUND)
             add_subdirectory(test)
         else()
-            message(ERROR ": the test program requires SFML.")
+            message(SEND_ERROR ": the test program requires SFML.")
         endif()
     else()
-        message(ERROR ": unknown implementation ${LXGUI_TEST_IMPLEMENTATION}")
+        message(SEND_ERROR ": unknown implementation ${LXGUI_TEST_IMPLEMENTATION}")
     endif()
 endif()

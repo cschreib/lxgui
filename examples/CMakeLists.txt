@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14..3.31)
 
 project(lxgui-examples LANGUAGES CXX VERSION 2.0)
 

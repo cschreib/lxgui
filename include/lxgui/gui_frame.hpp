@@ -18,7 +18,7 @@
 #include <limits>
 #include <list>
 #include <lxgui/extern_sol2_protected_function.hpp>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 #include <optional>
 #include <set>
 #include <unordered_map>

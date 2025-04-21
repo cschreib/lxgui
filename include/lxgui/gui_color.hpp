@@ -3,6 +3,7 @@
 
 #include "lxgui/lxgui.hpp"
 
+#include <cstdint>
 #include <iosfwd>
 #include <string>
 

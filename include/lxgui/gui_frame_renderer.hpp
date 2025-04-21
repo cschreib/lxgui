@@ -8,7 +8,7 @@
 #include "lxgui/utils_sorted_vector.hpp"
 
 #include <functional>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 namespace lxgui::gui {
 
@@ -26,10 +26,10 @@ public:
     virtual ~frame_renderer() = default;
 
     // Non-copiable, non-movable
-    frame_renderer(const frame_renderer&) = delete;
-    frame_renderer(frame_renderer&&)      = delete;
+    frame_renderer(const frame_renderer&)            = delete;
+    frame_renderer(frame_renderer&&)                 = delete;
     frame_renderer& operator=(const frame_renderer&) = delete;
-    frame_renderer& operator=(frame_renderer&&) = delete;
+    frame_renderer& operator=(frame_renderer&&)      = delete;
 
     /// Tells this renderer that one of its region requires redraw.
     virtual void notify_strata_needs_redraw(strata strata_id);

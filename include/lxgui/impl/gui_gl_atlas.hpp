@@ -5,6 +5,7 @@
 #include "lxgui/gui_material.hpp"
 #include "lxgui/utils.hpp"
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -71,10 +72,10 @@ public:
      */
     explicit atlas(renderer& rdr, material::filter filt);
 
-    atlas(const atlas& tex) = delete;
-    atlas(atlas&& tex)      = delete;
+    atlas(const atlas& tex)            = delete;
+    atlas(atlas&& tex)                 = delete;
     atlas& operator=(const atlas& tex) = delete;
-    atlas& operator=(atlas&& tex) = delete;
+    atlas& operator=(atlas&& tex)      = delete;
 
 protected:
     /**

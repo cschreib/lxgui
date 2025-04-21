@@ -4,6 +4,7 @@
 #include "lxgui/gui_vertex_cache.hpp"
 #include "lxgui/utils.hpp"
 
+#include <cstdint>
 #include <limits>
 #include <memory>
 

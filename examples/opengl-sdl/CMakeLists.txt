@@ -1,13 +1,12 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14..3.31)
 
 # Start new project
 project(lxgui-test-opengl-sdl LANGUAGES CXX VERSION 2.0)
 
-# Add the directory containing Findlxgui.cmake to the model path
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake" ${CMAKE_MODULE_PATH})
-
-# Find lxgui and dependencies
-find_package(lxgui 2)
+if(NOT TARGET lxgui::lxgui)
+    # Find lxgui and dependencies
+    find_package(lxgui 2)
+endif()
 
 # Set output directory to ../bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../bin)

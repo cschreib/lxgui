@@ -190,10 +190,13 @@ font::font(
     if (pre_multiplied_alpha_supported) {
         const std::size_t area = canvas_dimensions.x * canvas_dimensions.y;
         for (std::size_t i = 0; i < area; ++i) {
-            float a = texture_pixels[i].a / 255.0f;
-            texture_pixels[i].r *= a;
-            texture_pixels[i].g *= a;
-            texture_pixels[i].b *= a;
+            float a = static_cast<float>(texture_pixels[i].a) / 255.0f;
+            texture_pixels[i].r =
+                static_cast<unsigned char>(static_cast<float>(texture_pixels[i].r) * a);
+            texture_pixels[i].g =
+                static_cast<unsigned char>(static_cast<float>(texture_pixels[i].g) * a);
+            texture_pixels[i].b =
+                static_cast<unsigned char>(static_cast<float>(texture_pixels[i].b) * a);
         }
     }
 

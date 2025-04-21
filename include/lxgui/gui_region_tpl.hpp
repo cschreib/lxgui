@@ -151,8 +151,8 @@ const std::vector<std::string>& region::get_type_list_impl_() {
         return type;
     } else {
         static const std::vector<std::string> type = []() {
-            using base = typename T::base;
-            auto list  = get_type_list_impl_<base>();
+            using child_base = typename T::base;
+            auto list        = get_type_list_impl_<child_base>();
             list.push_back(T::class_name);
             return list;
         }();

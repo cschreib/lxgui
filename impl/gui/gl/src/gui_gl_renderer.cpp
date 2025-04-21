@@ -53,7 +53,12 @@ renderer::renderer(const vector2ui& window_dimensions, bool init_glew [[maybe_un
 }
 
 std::string renderer::get_name() const {
-    std::string full_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    const char* gl_version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    if (gl_version == nullptr) {
+        throw gui::exception("Cannot get OpenGL version; check that an OpenGL context exists");
+    }
+
+    std::string full_version = gl_version;
 #if defined(LXGUI_OPENGL3)
 #    if defined(LXGUI_COMPILER_EMSCRIPTEN)
     return "WebGL (" + full_version + ")";
@@ -332,15 +337,15 @@ GLuint create_shader(GLenum type, const char* shader_source) {
     glCompileShader(shader);
 
     // Check sucess
-    GLint compiled = 0;
+    GLint compiled = GL_FALSE;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (compiled == 0) {
+    if (compiled == GL_FALSE) {
         GLint info_length = 0;
-        glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &info_length);
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_length);
 
         std::vector<char> error_message(std::max(1, info_length), '\0');
         if (info_length > 1) {
-            glGetProgramInfoLog(shader, info_length, NULL, error_message.data());
+            glGetShaderInfoLog(shader, info_length, NULL, error_message.data());
         }
 
         glDeleteShader(shader);

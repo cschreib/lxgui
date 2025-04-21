@@ -1,1104 +1,315 @@
 {
-	"build_systems":
-	[
-		{
-			"file_regex": "(.+[^:]):(\\d+):(\\d+): (?:fatal )?((?:error|warning): .+)$",
-			"name": "lxgui (Linux)",
-			"shell_cmd": "make -j12",
-			"syntax": "Packages/CMakeBuilder/Syntax/Make.sublime-syntax",
-			"variants":
-			[
-				{
-					"name": "clean",
-					"shell_cmd": "make -j12 clean",
-				},
-				{
-					"name": "install",
-					"shell_cmd": "make -j12 install",
-				},
-				{
-					"name": "install/local",
-					"shell_cmd": "make -j12 install/local",
-				},
-				{
-					"name": "install/strip",
-					"shell_cmd": "make -j12 install/strip",
-				},
-				{
-					"name": "list_install_components",
-					"shell_cmd": "make -j12 list_install_components",
-				},
-				{
-					"name": "rebuild_cache",
-					"shell_cmd": "make -j12 rebuild_cache",
-				},
-				{
-					"name": "Continuous",
-					"shell_cmd": "make -j12 Continuous",
-				},
-				{
-					"name": "ContinuousBuild",
-					"shell_cmd": "make -j12 ContinuousBuild",
-				},
-				{
-					"name": "ContinuousConfigure",
-					"shell_cmd": "make -j12 ContinuousConfigure",
-				},
-				{
-					"name": "ContinuousCoverage",
-					"shell_cmd": "make -j12 ContinuousCoverage",
-				},
-				{
-					"name": "ContinuousMemCheck",
-					"shell_cmd": "make -j12 ContinuousMemCheck",
-				},
-				{
-					"name": "ContinuousStart",
-					"shell_cmd": "make -j12 ContinuousStart",
-				},
-				{
-					"name": "ContinuousSubmit",
-					"shell_cmd": "make -j12 ContinuousSubmit",
-				},
-				{
-					"name": "ContinuousTest",
-					"shell_cmd": "make -j12 ContinuousTest",
-				},
-				{
-					"name": "ContinuousUpdate",
-					"shell_cmd": "make -j12 ContinuousUpdate",
-				},
-				{
-					"name": "Experimental",
-					"shell_cmd": "make -j12 Experimental",
-				},
-				{
-					"name": "ExperimentalBuild",
-					"shell_cmd": "make -j12 ExperimentalBuild",
-				},
-				{
-					"name": "ExperimentalConfigure",
-					"shell_cmd": "make -j12 ExperimentalConfigure",
-				},
-				{
-					"name": "ExperimentalCoverage",
-					"shell_cmd": "make -j12 ExperimentalCoverage",
-				},
-				{
-					"name": "ExperimentalMemCheck",
-					"shell_cmd": "make -j12 ExperimentalMemCheck",
-				},
-				{
-					"name": "ExperimentalStart",
-					"shell_cmd": "make -j12 ExperimentalStart",
-				},
-				{
-					"name": "ExperimentalSubmit",
-					"shell_cmd": "make -j12 ExperimentalSubmit",
-				},
-				{
-					"name": "ExperimentalTest",
-					"shell_cmd": "make -j12 ExperimentalTest",
-				},
-				{
-					"name": "ExperimentalUpdate",
-					"shell_cmd": "make -j12 ExperimentalUpdate",
-				},
-				{
-					"name": "Nightly",
-					"shell_cmd": "make -j12 Nightly",
-				},
-				{
-					"name": "NightlyBuild",
-					"shell_cmd": "make -j12 NightlyBuild",
-				},
-				{
-					"name": "NightlyConfigure",
-					"shell_cmd": "make -j12 NightlyConfigure",
-				},
-				{
-					"name": "NightlyCoverage",
-					"shell_cmd": "make -j12 NightlyCoverage",
-				},
-				{
-					"name": "NightlyMemCheck",
-					"shell_cmd": "make -j12 NightlyMemCheck",
-				},
-				{
-					"name": "NightlyMemoryCheck",
-					"shell_cmd": "make -j12 NightlyMemoryCheck",
-				},
-				{
-					"name": "NightlyStart",
-					"shell_cmd": "make -j12 NightlyStart",
-				},
-				{
-					"name": "NightlySubmit",
-					"shell_cmd": "make -j12 NightlySubmit",
-				},
-				{
-					"name": "NightlyTest",
-					"shell_cmd": "make -j12 NightlyTest",
-				},
-				{
-					"name": "NightlyUpdate",
-					"shell_cmd": "make -j12 NightlyUpdate",
-				},
-				{
-					"name": "c4core-amalgamate",
-					"shell_cmd": "make -j12 c4core-amalgamate",
-				},
-				{
-					"name": "ryml-uninstall",
-					"shell_cmd": "make -j12 ryml-uninstall",
-				},
-				{
-					"name": "c4core",
-					"shell_cmd": "make -j12 c4core",
-				},
-				{
-					"name": "fmt",
-					"shell_cmd": "make -j12 fmt",
-				},
-				{
-					"name": "lxgui",
-					"shell_cmd": "make -j12 lxgui",
-				},
-				{
-					"name": "lxgui-gl",
-					"shell_cmd": "make -j12 lxgui-gl",
-				},
-				{
-					"name": "lxgui-input-sdl",
-					"shell_cmd": "make -j12 lxgui-input-sdl",
-				},
-				{
-					"name": "lxgui-input-sfml",
-					"shell_cmd": "make -j12 lxgui-input-sfml",
-				},
-				{
-					"name": "lxgui-sdl",
-					"shell_cmd": "make -j12 lxgui-sdl",
-				},
-				{
-					"name": "lxgui-sfml",
-					"shell_cmd": "make -j12 lxgui-sfml",
-				},
-				{
-					"name": "lxgui-test",
-					"shell_cmd": "make -j12 lxgui-test",
-				},
-				{
-					"name": "lxgui-test-opengl-sdl",
-					"shell_cmd": "make -j12 lxgui-test-opengl-sdl",
-				},
-				{
-					"name": "lxgui-test-opengl-sfml",
-					"shell_cmd": "make -j12 lxgui-test-opengl-sfml",
-				},
-				{
-					"name": "lxgui-test-sdl",
-					"shell_cmd": "make -j12 lxgui-test-sdl",
-				},
-				{
-					"name": "lxgui-test-sfml",
-					"shell_cmd": "make -j12 lxgui-test-sfml",
-				},
-				{
-					"name": "pugixml-static",
-					"shell_cmd": "make -j12 pugixml-static",
-				},
-				{
-					"name": "ryml",
-					"shell_cmd": "make -j12 ryml",
-				},
-				{
-					"name": "src/gui_addon_registry.o",
-					"shell_cmd": "make -j12 src/gui_addon_registry.o",
-				},
-				{
-					"name": "src/gui_addon_registry.i",
-					"shell_cmd": "make -j12 src/gui_addon_registry.i",
-				},
-				{
-					"name": "src/gui_addon_registry.s",
-					"shell_cmd": "make -j12 src/gui_addon_registry.s",
-				},
-				{
-					"name": "src/gui_addon_registry_parser.o",
-					"shell_cmd": "make -j12 src/gui_addon_registry_parser.o",
-				},
-				{
-					"name": "src/gui_addon_registry_parser.i",
-					"shell_cmd": "make -j12 src/gui_addon_registry_parser.i",
-				},
-				{
-					"name": "src/gui_addon_registry_parser.s",
-					"shell_cmd": "make -j12 src/gui_addon_registry_parser.s",
-				},
-				{
-					"name": "src/gui_anchor.o",
-					"shell_cmd": "make -j12 src/gui_anchor.o",
-				},
-				{
-					"name": "src/gui_anchor.i",
-					"shell_cmd": "make -j12 src/gui_anchor.i",
-				},
-				{
-					"name": "src/gui_anchor.s",
-					"shell_cmd": "make -j12 src/gui_anchor.s",
-				},
-				{
-					"name": "src/gui_atlas.o",
-					"shell_cmd": "make -j12 src/gui_atlas.o",
-				},
-				{
-					"name": "src/gui_atlas.i",
-					"shell_cmd": "make -j12 src/gui_atlas.i",
-				},
-				{
-					"name": "src/gui_atlas.s",
-					"shell_cmd": "make -j12 src/gui_atlas.s",
-				},
-				{
-					"name": "src/gui_backdrop.o",
-					"shell_cmd": "make -j12 src/gui_backdrop.o",
-				},
-				{
-					"name": "src/gui_backdrop.i",
-					"shell_cmd": "make -j12 src/gui_backdrop.i",
-				},
-				{
-					"name": "src/gui_backdrop.s",
-					"shell_cmd": "make -j12 src/gui_backdrop.s",
-				},
-				{
-					"name": "src/gui_button.o",
-					"shell_cmd": "make -j12 src/gui_button.o",
-				},
-				{
-					"name": "src/gui_button.i",
-					"shell_cmd": "make -j12 src/gui_button.i",
-				},
-				{
-					"name": "src/gui_button.s",
-					"shell_cmd": "make -j12 src/gui_button.s",
-				},
-				{
-					"name": "src/gui_button_glues.o",
-					"shell_cmd": "make -j12 src/gui_button_glues.o",
-				},
-				{
-					"name": "src/gui_button_glues.i",
-					"shell_cmd": "make -j12 src/gui_button_glues.i",
-				},
-				{
-					"name": "src/gui_button_glues.s",
-					"shell_cmd": "make -j12 src/gui_button_glues.s",
-				},
-				{
-					"name": "src/gui_button_parser.o",
-					"shell_cmd": "make -j12 src/gui_button_parser.o",
-				},
-				{
-					"name": "src/gui_button_parser.i",
-					"shell_cmd": "make -j12 src/gui_button_parser.i",
-				},
-				{
-					"name": "src/gui_button_parser.s",
-					"shell_cmd": "make -j12 src/gui_button_parser.s",
-				},
-				{
-					"name": "src/gui_check_button.o",
-					"shell_cmd": "make -j12 src/gui_check_button.o",
-				},
-				{
-					"name": "src/gui_check_button.i",
-					"shell_cmd": "make -j12 src/gui_check_button.i",
-				},
-				{
-					"name": "src/gui_check_button.s",
-					"shell_cmd": "make -j12 src/gui_check_button.s",
-				},
-				{
-					"name": "src/gui_check_button_glues.o",
-					"shell_cmd": "make -j12 src/gui_check_button_glues.o",
-				},
-				{
-					"name": "src/gui_check_button_glues.i",
-					"shell_cmd": "make -j12 src/gui_check_button_glues.i",
-				},
-				{
-					"name": "src/gui_check_button_glues.s",
-					"shell_cmd": "make -j12 src/gui_check_button_glues.s",
-				},
-				{
-					"name": "src/gui_check_button_parser.o",
-					"shell_cmd": "make -j12 src/gui_check_button_parser.o",
-				},
-				{
-					"name": "src/gui_check_button_parser.i",
-					"shell_cmd": "make -j12 src/gui_check_button_parser.i",
-				},
-				{
-					"name": "src/gui_check_button_parser.s",
-					"shell_cmd": "make -j12 src/gui_check_button_parser.s",
-				},
-				{
-					"name": "src/gui_color.o",
-					"shell_cmd": "make -j12 src/gui_color.o",
-				},
-				{
-					"name": "src/gui_color.i",
-					"shell_cmd": "make -j12 src/gui_color.i",
-				},
-				{
-					"name": "src/gui_color.s",
-					"shell_cmd": "make -j12 src/gui_color.s",
-				},
-				{
-					"name": "src/gui_edit_box.o",
-					"shell_cmd": "make -j12 src/gui_edit_box.o",
-				},
-				{
-					"name": "src/gui_edit_box.i",
-					"shell_cmd": "make -j12 src/gui_edit_box.i",
-				},
-				{
-					"name": "src/gui_edit_box.s",
-					"shell_cmd": "make -j12 src/gui_edit_box.s",
-				},
-				{
-					"name": "src/gui_edit_box_glues.o",
-					"shell_cmd": "make -j12 src/gui_edit_box_glues.o",
-				},
-				{
-					"name": "src/gui_edit_box_glues.i",
-					"shell_cmd": "make -j12 src/gui_edit_box_glues.i",
-				},
-				{
-					"name": "src/gui_edit_box_glues.s",
-					"shell_cmd": "make -j12 src/gui_edit_box_glues.s",
-				},
-				{
-					"name": "src/gui_edit_box_parser.o",
-					"shell_cmd": "make -j12 src/gui_edit_box_parser.o",
-				},
-				{
-					"name": "src/gui_edit_box_parser.i",
-					"shell_cmd": "make -j12 src/gui_edit_box_parser.i",
-				},
-				{
-					"name": "src/gui_edit_box_parser.s",
-					"shell_cmd": "make -j12 src/gui_edit_box_parser.s",
-				},
-				{
-					"name": "src/gui_event_data.o",
-					"shell_cmd": "make -j12 src/gui_event_data.o",
-				},
-				{
-					"name": "src/gui_event_data.i",
-					"shell_cmd": "make -j12 src/gui_event_data.i",
-				},
-				{
-					"name": "src/gui_event_data.s",
-					"shell_cmd": "make -j12 src/gui_event_data.s",
-				},
-				{
-					"name": "src/gui_event_emitter.o",
-					"shell_cmd": "make -j12 src/gui_event_emitter.o",
-				},
-				{
-					"name": "src/gui_event_emitter.i",
-					"shell_cmd": "make -j12 src/gui_event_emitter.i",
-				},
-				{
-					"name": "src/gui_event_emitter.s",
-					"shell_cmd": "make -j12 src/gui_event_emitter.s",
-				},
-				{
-					"name": "src/gui_event_receiver.o",
-					"shell_cmd": "make -j12 src/gui_event_receiver.o",
-				},
-				{
-					"name": "src/gui_event_receiver.i",
-					"shell_cmd": "make -j12 src/gui_event_receiver.i",
-				},
-				{
-					"name": "src/gui_event_receiver.s",
-					"shell_cmd": "make -j12 src/gui_event_receiver.s",
-				},
-				{
-					"name": "src/gui_factory.o",
-					"shell_cmd": "make -j12 src/gui_factory.o",
-				},
-				{
-					"name": "src/gui_factory.i",
-					"shell_cmd": "make -j12 src/gui_factory.i",
-				},
-				{
-					"name": "src/gui_factory.s",
-					"shell_cmd": "make -j12 src/gui_factory.s",
-				},
-				{
-					"name": "src/gui_font_string.o",
-					"shell_cmd": "make -j12 src/gui_font_string.o",
-				},
-				{
-					"name": "src/gui_font_string.i",
-					"shell_cmd": "make -j12 src/gui_font_string.i",
-				},
-				{
-					"name": "src/gui_font_string.s",
-					"shell_cmd": "make -j12 src/gui_font_string.s",
-				},
-				{
-					"name": "src/gui_font_string_glues.o",
-					"shell_cmd": "make -j12 src/gui_font_string_glues.o",
-				},
-				{
-					"name": "src/gui_font_string_glues.i",
-					"shell_cmd": "make -j12 src/gui_font_string_glues.i",
-				},
-				{
-					"name": "src/gui_font_string_glues.s",
-					"shell_cmd": "make -j12 src/gui_font_string_glues.s",
-				},
-				{
-					"name": "src/gui_font_string_parser.o",
-					"shell_cmd": "make -j12 src/gui_font_string_parser.o",
-				},
-				{
-					"name": "src/gui_font_string_parser.i",
-					"shell_cmd": "make -j12 src/gui_font_string_parser.i",
-				},
-				{
-					"name": "src/gui_font_string_parser.s",
-					"shell_cmd": "make -j12 src/gui_font_string_parser.s",
-				},
-				{
-					"name": "src/gui_frame.o",
-					"shell_cmd": "make -j12 src/gui_frame.o",
-				},
-				{
-					"name": "src/gui_frame.i",
-					"shell_cmd": "make -j12 src/gui_frame.i",
-				},
-				{
-					"name": "src/gui_frame.s",
-					"shell_cmd": "make -j12 src/gui_frame.s",
-				},
-				{
-					"name": "src/gui_frame_container.o",
-					"shell_cmd": "make -j12 src/gui_frame_container.o",
-				},
-				{
-					"name": "src/gui_frame_container.i",
-					"shell_cmd": "make -j12 src/gui_frame_container.i",
-				},
-				{
-					"name": "src/gui_frame_container.s",
-					"shell_cmd": "make -j12 src/gui_frame_container.s",
-				},
-				{
-					"name": "src/gui_frame_glues.o",
-					"shell_cmd": "make -j12 src/gui_frame_glues.o",
-				},
-				{
-					"name": "src/gui_frame_glues.i",
-					"shell_cmd": "make -j12 src/gui_frame_glues.i",
-				},
-				{
-					"name": "src/gui_frame_glues.s",
-					"shell_cmd": "make -j12 src/gui_frame_glues.s",
-				},
-				{
-					"name": "src/gui_frame_parser.o",
-					"shell_cmd": "make -j12 src/gui_frame_parser.o",
-				},
-				{
-					"name": "src/gui_frame_parser.i",
-					"shell_cmd": "make -j12 src/gui_frame_parser.i",
-				},
-				{
-					"name": "src/gui_frame_parser.s",
-					"shell_cmd": "make -j12 src/gui_frame_parser.s",
-				},
-				{
-					"name": "src/gui_frame_renderer.o",
-					"shell_cmd": "make -j12 src/gui_frame_renderer.o",
-				},
-				{
-					"name": "src/gui_frame_renderer.i",
-					"shell_cmd": "make -j12 src/gui_frame_renderer.i",
-				},
-				{
-					"name": "src/gui_frame_renderer.s",
-					"shell_cmd": "make -j12 src/gui_frame_renderer.s",
-				},
-				{
-					"name": "src/gui_key_binder.o",
-					"shell_cmd": "make -j12 src/gui_key_binder.o",
-				},
-				{
-					"name": "src/gui_key_binder.i",
-					"shell_cmd": "make -j12 src/gui_key_binder.i",
-				},
-				{
-					"name": "src/gui_key_binder.s",
-					"shell_cmd": "make -j12 src/gui_key_binder.s",
-				},
-				{
-					"name": "src/gui_layered_region.o",
-					"shell_cmd": "make -j12 src/gui_layered_region.o",
-				},
-				{
-					"name": "src/gui_layered_region.i",
-					"shell_cmd": "make -j12 src/gui_layered_region.i",
-				},
-				{
-					"name": "src/gui_layered_region.s",
-					"shell_cmd": "make -j12 src/gui_layered_region.s",
-				},
-				{
-					"name": "src/gui_layered_region_glues.o",
-					"shell_cmd": "make -j12 src/gui_layered_region_glues.o",
-				},
-				{
-					"name": "src/gui_layered_region_glues.i",
-					"shell_cmd": "make -j12 src/gui_layered_region_glues.i",
-				},
-				{
-					"name": "src/gui_layered_region_glues.s",
-					"shell_cmd": "make -j12 src/gui_layered_region_glues.s",
-				},
-				{
-					"name": "src/gui_layered_region_parser.o",
-					"shell_cmd": "make -j12 src/gui_layered_region_parser.o",
-				},
-				{
-					"name": "src/gui_layered_region_parser.i",
-					"shell_cmd": "make -j12 src/gui_layered_region_parser.i",
-				},
-				{
-					"name": "src/gui_layered_region_parser.s",
-					"shell_cmd": "make -j12 src/gui_layered_region_parser.s",
-				},
-				{
-					"name": "src/gui_localizer.o",
-					"shell_cmd": "make -j12 src/gui_localizer.o",
-				},
-				{
-					"name": "src/gui_localizer.i",
-					"shell_cmd": "make -j12 src/gui_localizer.i",
-				},
-				{
-					"name": "src/gui_localizer.s",
-					"shell_cmd": "make -j12 src/gui_localizer.s",
-				},
-				{
-					"name": "src/gui_localizer_glues.o",
-					"shell_cmd": "make -j12 src/gui_localizer_glues.o",
-				},
-				{
-					"name": "src/gui_localizer_glues.i",
-					"shell_cmd": "make -j12 src/gui_localizer_glues.i",
-				},
-				{
-					"name": "src/gui_localizer_glues.s",
-					"shell_cmd": "make -j12 src/gui_localizer_glues.s",
-				},
-				{
-					"name": "src/gui_manager.o",
-					"shell_cmd": "make -j12 src/gui_manager.o",
-				},
-				{
-					"name": "src/gui_manager.i",
-					"shell_cmd": "make -j12 src/gui_manager.i",
-				},
-				{
-					"name": "src/gui_manager.s",
-					"shell_cmd": "make -j12 src/gui_manager.s",
-				},
-				{
-					"name": "src/gui_manager_glues.o",
-					"shell_cmd": "make -j12 src/gui_manager_glues.o",
-				},
-				{
-					"name": "src/gui_manager_glues.i",
-					"shell_cmd": "make -j12 src/gui_manager_glues.i",
-				},
-				{
-					"name": "src/gui_manager_glues.s",
-					"shell_cmd": "make -j12 src/gui_manager_glues.s",
-				},
-				{
-					"name": "src/gui_material.o",
-					"shell_cmd": "make -j12 src/gui_material.o",
-				},
-				{
-					"name": "src/gui_material.i",
-					"shell_cmd": "make -j12 src/gui_material.i",
-				},
-				{
-					"name": "src/gui_material.s",
-					"shell_cmd": "make -j12 src/gui_material.s",
-				},
-				{
-					"name": "src/gui_matrix4.o",
-					"shell_cmd": "make -j12 src/gui_matrix4.o",
-				},
-				{
-					"name": "src/gui_matrix4.i",
-					"shell_cmd": "make -j12 src/gui_matrix4.i",
-				},
-				{
-					"name": "src/gui_matrix4.s",
-					"shell_cmd": "make -j12 src/gui_matrix4.s",
-				},
-				{
-					"name": "src/gui_out.o",
-					"shell_cmd": "make -j12 src/gui_out.o",
-				},
-				{
-					"name": "src/gui_out.i",
-					"shell_cmd": "make -j12 src/gui_out.i",
-				},
-				{
-					"name": "src/gui_out.s",
-					"shell_cmd": "make -j12 src/gui_out.s",
-				},
-				{
-					"name": "src/gui_parser_common.o",
-					"shell_cmd": "make -j12 src/gui_parser_common.o",
-				},
-				{
-					"name": "src/gui_parser_common.i",
-					"shell_cmd": "make -j12 src/gui_parser_common.i",
-				},
-				{
-					"name": "src/gui_parser_common.s",
-					"shell_cmd": "make -j12 src/gui_parser_common.s",
-				},
-				{
-					"name": "src/gui_region.o",
-					"shell_cmd": "make -j12 src/gui_region.o",
-				},
-				{
-					"name": "src/gui_region.i",
-					"shell_cmd": "make -j12 src/gui_region.i",
-				},
-				{
-					"name": "src/gui_region.s",
-					"shell_cmd": "make -j12 src/gui_region.s",
-				},
-				{
-					"name": "src/gui_region_glues.o",
-					"shell_cmd": "make -j12 src/gui_region_glues.o",
-				},
-				{
-					"name": "src/gui_region_glues.i",
-					"shell_cmd": "make -j12 src/gui_region_glues.i",
-				},
-				{
-					"name": "src/gui_region_glues.s",
-					"shell_cmd": "make -j12 src/gui_region_glues.s",
-				},
-				{
-					"name": "src/gui_region_parser.o",
-					"shell_cmd": "make -j12 src/gui_region_parser.o",
-				},
-				{
-					"name": "src/gui_region_parser.i",
-					"shell_cmd": "make -j12 src/gui_region_parser.i",
-				},
-				{
-					"name": "src/gui_region_parser.s",
-					"shell_cmd": "make -j12 src/gui_region_parser.s",
-				},
-				{
-					"name": "src/gui_registry.o",
-					"shell_cmd": "make -j12 src/gui_registry.o",
-				},
-				{
-					"name": "src/gui_registry.i",
-					"shell_cmd": "make -j12 src/gui_registry.i",
-				},
-				{
-					"name": "src/gui_registry.s",
-					"shell_cmd": "make -j12 src/gui_registry.s",
-				},
-				{
-					"name": "src/gui_renderer.o",
-					"shell_cmd": "make -j12 src/gui_renderer.o",
-				},
-				{
-					"name": "src/gui_renderer.i",
-					"shell_cmd": "make -j12 src/gui_renderer.i",
-				},
-				{
-					"name": "src/gui_renderer.s",
-					"shell_cmd": "make -j12 src/gui_renderer.s",
-				},
-				{
-					"name": "src/gui_root.o",
-					"shell_cmd": "make -j12 src/gui_root.o",
-				},
-				{
-					"name": "src/gui_root.i",
-					"shell_cmd": "make -j12 src/gui_root.i",
-				},
-				{
-					"name": "src/gui_root.s",
-					"shell_cmd": "make -j12 src/gui_root.s",
-				},
-				{
-					"name": "src/gui_scroll_frame.o",
-					"shell_cmd": "make -j12 src/gui_scroll_frame.o",
-				},
-				{
-					"name": "src/gui_scroll_frame.i",
-					"shell_cmd": "make -j12 src/gui_scroll_frame.i",
-				},
-				{
-					"name": "src/gui_scroll_frame.s",
-					"shell_cmd": "make -j12 src/gui_scroll_frame.s",
-				},
-				{
-					"name": "src/gui_scroll_frame_glues.o",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_glues.o",
-				},
-				{
-					"name": "src/gui_scroll_frame_glues.i",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_glues.i",
-				},
-				{
-					"name": "src/gui_scroll_frame_glues.s",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_glues.s",
-				},
-				{
-					"name": "src/gui_scroll_frame_parser.o",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_parser.o",
-				},
-				{
-					"name": "src/gui_scroll_frame_parser.i",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_parser.i",
-				},
-				{
-					"name": "src/gui_scroll_frame_parser.s",
-					"shell_cmd": "make -j12 src/gui_scroll_frame_parser.s",
-				},
-				{
-					"name": "src/gui_slider.o",
-					"shell_cmd": "make -j12 src/gui_slider.o",
-				},
-				{
-					"name": "src/gui_slider.i",
-					"shell_cmd": "make -j12 src/gui_slider.i",
-				},
-				{
-					"name": "src/gui_slider.s",
-					"shell_cmd": "make -j12 src/gui_slider.s",
-				},
-				{
-					"name": "src/gui_slider_glues.o",
-					"shell_cmd": "make -j12 src/gui_slider_glues.o",
-				},
-				{
-					"name": "src/gui_slider_glues.i",
-					"shell_cmd": "make -j12 src/gui_slider_glues.i",
-				},
-				{
-					"name": "src/gui_slider_glues.s",
-					"shell_cmd": "make -j12 src/gui_slider_glues.s",
-				},
-				{
-					"name": "src/gui_slider_parser.o",
-					"shell_cmd": "make -j12 src/gui_slider_parser.o",
-				},
-				{
-					"name": "src/gui_slider_parser.i",
-					"shell_cmd": "make -j12 src/gui_slider_parser.i",
-				},
-				{
-					"name": "src/gui_slider_parser.s",
-					"shell_cmd": "make -j12 src/gui_slider_parser.s",
-				},
-				{
-					"name": "src/gui_status_bar.o",
-					"shell_cmd": "make -j12 src/gui_status_bar.o",
-				},
-				{
-					"name": "src/gui_status_bar.i",
-					"shell_cmd": "make -j12 src/gui_status_bar.i",
-				},
-				{
-					"name": "src/gui_status_bar.s",
-					"shell_cmd": "make -j12 src/gui_status_bar.s",
-				},
-				{
-					"name": "src/gui_status_bar_glues.o",
-					"shell_cmd": "make -j12 src/gui_status_bar_glues.o",
-				},
-				{
-					"name": "src/gui_status_bar_glues.i",
-					"shell_cmd": "make -j12 src/gui_status_bar_glues.i",
-				},
-				{
-					"name": "src/gui_status_bar_glues.s",
-					"shell_cmd": "make -j12 src/gui_status_bar_glues.s",
-				},
-				{
-					"name": "src/gui_status_bar_parser.o",
-					"shell_cmd": "make -j12 src/gui_status_bar_parser.o",
-				},
-				{
-					"name": "src/gui_status_bar_parser.i",
-					"shell_cmd": "make -j12 src/gui_status_bar_parser.i",
-				},
-				{
-					"name": "src/gui_status_bar_parser.s",
-					"shell_cmd": "make -j12 src/gui_status_bar_parser.s",
-				},
-				{
-					"name": "src/gui_text.o",
-					"shell_cmd": "make -j12 src/gui_text.o",
-				},
-				{
-					"name": "src/gui_text.i",
-					"shell_cmd": "make -j12 src/gui_text.i",
-				},
-				{
-					"name": "src/gui_text.s",
-					"shell_cmd": "make -j12 src/gui_text.s",
-				},
-				{
-					"name": "src/gui_texture.o",
-					"shell_cmd": "make -j12 src/gui_texture.o",
-				},
-				{
-					"name": "src/gui_texture.i",
-					"shell_cmd": "make -j12 src/gui_texture.i",
-				},
-				{
-					"name": "src/gui_texture.s",
-					"shell_cmd": "make -j12 src/gui_texture.s",
-				},
-				{
-					"name": "src/gui_texture_glues.o",
-					"shell_cmd": "make -j12 src/gui_texture_glues.o",
-				},
-				{
-					"name": "src/gui_texture_glues.i",
-					"shell_cmd": "make -j12 src/gui_texture_glues.i",
-				},
-				{
-					"name": "src/gui_texture_glues.s",
-					"shell_cmd": "make -j12 src/gui_texture_glues.s",
-				},
-				{
-					"name": "src/gui_texture_parser.o",
-					"shell_cmd": "make -j12 src/gui_texture_parser.o",
-				},
-				{
-					"name": "src/gui_texture_parser.i",
-					"shell_cmd": "make -j12 src/gui_texture_parser.i",
-				},
-				{
-					"name": "src/gui_texture_parser.s",
-					"shell_cmd": "make -j12 src/gui_texture_parser.s",
-				},
-				{
-					"name": "src/gui_vertex_cache.o",
-					"shell_cmd": "make -j12 src/gui_vertex_cache.o",
-				},
-				{
-					"name": "src/gui_vertex_cache.i",
-					"shell_cmd": "make -j12 src/gui_vertex_cache.i",
-				},
-				{
-					"name": "src/gui_vertex_cache.s",
-					"shell_cmd": "make -j12 src/gui_vertex_cache.s",
-				},
-				{
-					"name": "src/gui_virtual_registry.o",
-					"shell_cmd": "make -j12 src/gui_virtual_registry.o",
-				},
-				{
-					"name": "src/gui_virtual_registry.i",
-					"shell_cmd": "make -j12 src/gui_virtual_registry.i",
-				},
-				{
-					"name": "src/gui_virtual_registry.s",
-					"shell_cmd": "make -j12 src/gui_virtual_registry.s",
-				},
-				{
-					"name": "src/gui_virtual_root.o",
-					"shell_cmd": "make -j12 src/gui_virtual_root.o",
-				},
-				{
-					"name": "src/gui_virtual_root.i",
-					"shell_cmd": "make -j12 src/gui_virtual_root.i",
-				},
-				{
-					"name": "src/gui_virtual_root.s",
-					"shell_cmd": "make -j12 src/gui_virtual_root.s",
-				},
-				{
-					"name": "src/input_dispatcher.o",
-					"shell_cmd": "make -j12 src/input_dispatcher.o",
-				},
-				{
-					"name": "src/input_dispatcher.i",
-					"shell_cmd": "make -j12 src/input_dispatcher.i",
-				},
-				{
-					"name": "src/input_dispatcher.s",
-					"shell_cmd": "make -j12 src/input_dispatcher.s",
-				},
-				{
-					"name": "src/input_keys.o",
-					"shell_cmd": "make -j12 src/input_keys.o",
-				},
-				{
-					"name": "src/input_keys.i",
-					"shell_cmd": "make -j12 src/input_keys.i",
-				},
-				{
-					"name": "src/input_keys.s",
-					"shell_cmd": "make -j12 src/input_keys.s",
-				},
-				{
-					"name": "src/input_source.o",
-					"shell_cmd": "make -j12 src/input_source.o",
-				},
-				{
-					"name": "src/input_source.i",
-					"shell_cmd": "make -j12 src/input_source.i",
-				},
-				{
-					"name": "src/input_source.s",
-					"shell_cmd": "make -j12 src/input_source.s",
-				},
-				{
-					"name": "src/input_window.o",
-					"shell_cmd": "make -j12 src/input_window.o",
-				},
-				{
-					"name": "src/input_window.i",
-					"shell_cmd": "make -j12 src/input_window.i",
-				},
-				{
-					"name": "src/input_window.s",
-					"shell_cmd": "make -j12 src/input_window.s",
-				},
-				{
-					"name": "src/utils_exception.o",
-					"shell_cmd": "make -j12 src/utils_exception.o",
-				},
-				{
-					"name": "src/utils_exception.i",
-					"shell_cmd": "make -j12 src/utils_exception.i",
-				},
-				{
-					"name": "src/utils_exception.s",
-					"shell_cmd": "make -j12 src/utils_exception.s",
-				},
-				{
-					"name": "src/utils_file_system.o",
-					"shell_cmd": "make -j12 src/utils_file_system.o",
-				},
-				{
-					"name": "src/utils_file_system.i",
-					"shell_cmd": "make -j12 src/utils_file_system.i",
-				},
-				{
-					"name": "src/utils_file_system.s",
-					"shell_cmd": "make -j12 src/utils_file_system.s",
-				},
-				{
-					"name": "src/utils_maths.o",
-					"shell_cmd": "make -j12 src/utils_maths.o",
-				},
-				{
-					"name": "src/utils_maths.i",
-					"shell_cmd": "make -j12 src/utils_maths.i",
-				},
-				{
-					"name": "src/utils_maths.s",
-					"shell_cmd": "make -j12 src/utils_maths.s",
-				},
-				{
-					"name": "src/utils_periodic_timer.o",
-					"shell_cmd": "make -j12 src/utils_periodic_timer.o",
-				},
-				{
-					"name": "src/utils_periodic_timer.i",
-					"shell_cmd": "make -j12 src/utils_periodic_timer.i",
-				},
-				{
-					"name": "src/utils_periodic_timer.s",
-					"shell_cmd": "make -j12 src/utils_periodic_timer.s"
-				},
-				{
-					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o"
-				},
-				{
-					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i"
-				},
-				{
-					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s"
-				},
-			],
-			"working_dir": "$folder/build",
-		}
-	],
-	"folders":
-	[
-		{
-			"file_exclude_patterns":
-			[
-				"*.html",
-				"*.json",
-				".gitignore",
-				".gitmodules",
-				".travis.yml",
-				"travis_key*",
-				"lxgui-test*"
-			],
-			"folder_exclude_patterns":
-			[
-				"build",
-				"doc/html",
-				"doc/lua",
-				".git",
-				".ci"
-			],
-			"index_exclude_patterns":
-			[
-				"build/*",
-				"dependencies/*",
-				".ci/*",
-				"doc/html/*",
-				"doc/lua/*",
-				"test/lxgui-test*",
-				"*.html"
-			],
-			"path": ".",
-		}
-	],
-	"settings":
-	{
-		"cmake":
-		{
-			"build_folder": "$folder/build",
-		},
-		"ClangFormat":
-		{
-		    "format_on_save": true,
-		},
-	},
+    "build_systems":
+    [
+        {
+            "config": "Release",
+            "env":
+            {
+                "CMAKE_BUILD_PARALLEL_LEVEL": "12"
+            },
+            "generator": "Unix Makefiles",
+            "name": "Release",
+            "target": "cmake_build",
+            "variants":
+            [
+                {
+                    "build_target": "Continuous",
+                    "name": "Continuous"
+                },
+                {
+                    "build_target": "ContinuousBuild",
+                    "name": "ContinuousBuild"
+                },
+                {
+                    "build_target": "ContinuousConfigure",
+                    "name": "ContinuousConfigure"
+                },
+                {
+                    "build_target": "ContinuousCoverage",
+                    "name": "ContinuousCoverage"
+                },
+                {
+                    "build_target": "ContinuousMemCheck",
+                    "name": "ContinuousMemCheck"
+                },
+                {
+                    "build_target": "ContinuousStart",
+                    "name": "ContinuousStart"
+                },
+                {
+                    "build_target": "ContinuousSubmit",
+                    "name": "ContinuousSubmit"
+                },
+                {
+                    "build_target": "ContinuousTest",
+                    "name": "ContinuousTest"
+                },
+                {
+                    "build_target": "ContinuousUpdate",
+                    "name": "ContinuousUpdate"
+                },
+                {
+                    "build_target": "Experimental",
+                    "name": "Experimental"
+                },
+                {
+                    "build_target": "ExperimentalBuild",
+                    "name": "ExperimentalBuild"
+                },
+                {
+                    "build_target": "ExperimentalConfigure",
+                    "name": "ExperimentalConfigure"
+                },
+                {
+                    "build_target": "ExperimentalCoverage",
+                    "name": "ExperimentalCoverage"
+                },
+                {
+                    "build_target": "ExperimentalMemCheck",
+                    "name": "ExperimentalMemCheck"
+                },
+                {
+                    "build_target": "ExperimentalStart",
+                    "name": "ExperimentalStart"
+                },
+                {
+                    "build_target": "ExperimentalSubmit",
+                    "name": "ExperimentalSubmit"
+                },
+                {
+                    "build_target": "ExperimentalTest",
+                    "name": "ExperimentalTest"
+                },
+                {
+                    "build_target": "ExperimentalUpdate",
+                    "name": "ExperimentalUpdate"
+                },
+                {
+                    "build_target": "Nightly",
+                    "name": "Nightly"
+                },
+                {
+                    "build_target": "NightlyBuild",
+                    "name": "NightlyBuild"
+                },
+                {
+                    "build_target": "NightlyConfigure",
+                    "name": "NightlyConfigure"
+                },
+                {
+                    "build_target": "NightlyCoverage",
+                    "name": "NightlyCoverage"
+                },
+                {
+                    "build_target": "NightlyMemCheck",
+                    "name": "NightlyMemCheck"
+                },
+                {
+                    "build_target": "NightlyMemoryCheck",
+                    "name": "NightlyMemoryCheck"
+                },
+                {
+                    "build_target": "NightlyStart",
+                    "name": "NightlyStart"
+                },
+                {
+                    "build_target": "NightlySubmit",
+                    "name": "NightlySubmit"
+                },
+                {
+                    "build_target": "NightlyTest",
+                    "name": "NightlyTest"
+                },
+                {
+                    "build_target": "NightlyUpdate",
+                    "name": "NightlyUpdate"
+                },
+                {
+                    "build_target": "c4core",
+                    "name": "c4core"
+                },
+                {
+                    "build_target": "c4core-amalgamate",
+                    "name": "c4core-amalgamate"
+                },
+                {
+                    "build_target": "fmt",
+                    "name": "fmt"
+                },
+                {
+                    "build_target": "lxgui",
+                    "name": "lxgui"
+                },
+                {
+                    "build_target": "lxgui-gl",
+                    "name": "lxgui-gl"
+                },
+                {
+                    "build_target": "lxgui-input-sdl",
+                    "name": "lxgui-input-sdl"
+                },
+                {
+                    "build_target": "lxgui-input-sfml",
+                    "name": "lxgui-input-sfml"
+                },
+                {
+                    "build_target": "lxgui-sdl",
+                    "name": "lxgui-sdl"
+                },
+                {
+                    "build_target": "lxgui-sfml",
+                    "name": "lxgui-sfml"
+                },
+                {
+                    "build_target": "lxgui-test",
+                    "name": "lxgui-test"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
+                    "build_target": "lxgui-test",
+                    "name": "Run: lxgui-test",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test",
+                    "build_target": "lxgui-test",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "name": "lxgui-test-opengl-sdl"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "name": "Run: lxgui-test-opengl-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sdl",
+                    "build_target": "lxgui-test-opengl-sdl",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-opengl-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "name": "lxgui-test-opengl-sfml"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "name": "Run: lxgui-test-opengl-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-opengl-sfml",
+                    "build_target": "lxgui-test-opengl-sfml",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-opengl-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-sdl",
+                    "name": "lxgui-test-sdl"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
+                    "build_target": "lxgui-test-sdl",
+                    "name": "Run: lxgui-test-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sdl",
+                    "build_target": "lxgui-test-sdl",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-sdl",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "lxgui-test-sfml",
+                    "name": "lxgui-test-sfml"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
+                    "build_target": "lxgui-test-sfml",
+                    "name": "Run: lxgui-test-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "artifact": "/home/cschreib/programming/lxgui/bin/lxgui-test-sfml",
+                    "build_target": "lxgui-test-sfml",
+                    "debug": true,
+                    "name": "Run under GDB: lxgui-test-sfml",
+                    "target": "cmake_run"
+                },
+                {
+                    "build_target": "pugixml-static",
+                    "name": "pugixml-static"
+                },
+                {
+                    "build_target": "ryml",
+                    "name": "ryml"
+                },
+                {
+                    "build_target": "ryml-uninstall",
+                    "name": "ryml-uninstall"
+                },
+                {
+                    "name": "ctest",
+                    "target": "ctest_run"
+                }
+            ],
+            "working_dir": "$folder/build"
+        },
+    ],
+    "folders":
+    [
+        {
+            "file_exclude_patterns":
+            [
+                "*.html",
+                "*.json",
+                ".travis.yml",
+                "travis_key*",
+                "lxgui-test*"
+            ],
+            "folder_exclude_patterns":
+            [
+                ".git",
+                ".ci"
+            ],
+            "index_exclude_patterns":
+            [
+                "build/*",
+                "dependencies/*",
+                ".ci/*",
+                "doc/html/*",
+                "doc/lua/*",
+                "test/lxgui-test*",
+                "*.html"
+            ],
+            "path": ".",
+        }
+    ],
+    "settings":
+    {
+        "cmake":
+        {
+            "build_folder": "$folder/build",
+        },
+        "ClangFormat":
+        {
+            "format_on_save": true,
+        },
+        "LSP": {
+            "clangd": {
+                "initializationOptions": {
+                    "clangd.compile-commands-dir": "build_clang"
+                }
+            }
+        }
+    },
 }

@@ -82,13 +82,13 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself depends on:
  - [Lua](http://www.lua.org/) (>5.1),
- - [sol2](https://github.com/ThePhD/sol2) (included as a submodule),
- - [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule),
- - [magic_enum](https://github.com/Neargye/magic_enum) (included as a submodule),
- - [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule),
- - [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+ - [sol2](https://github.com/ThePhD/sol2),
+ - [utfcpp](https://github.com/nemtrif/utfcpp),
+ - [magic_enum](https://github.com/Neargye/magic_enum),
+ - [oup](https://github.com/cschreib/observable_unique_ptr),
+ - [fmtlib](https://github.com/fmtlib/fmt).
 
-To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
+To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml), and [rapidyaml](https://github.com/biojppm/rapidyaml). These are optional dependencies; you can use both if you want to support both XML and YAML layout files, or just one if you need only XML or YAML, or even neither if you want to write your UI in pure C++.
 
 Available rendering back-ends:
 
@@ -96,7 +96,7 @@ Available rendering back-ends:
 
  - SFML2. This back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML. It runs a little bit slower than the OpenGL back-end, as the extra layer from SFML adds a bit of overhead. At present, some limitations in the SFML API also prevents using VBOs.
 
- - SDL2. This back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading. It is the slowest available back-end, but also the one that supports the largest number of platforms (including platforms lacking a GPU). VBOs are not supported, and neither is per-vertex color. Text rendering is limited to Unicode code points which fit in a 16bit integer.
+ - SDL2. This back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading. It is the slowest available back-end, but also the one that supports the largest number of platforms (including platforms lacking a GPU). VBOs are not supported, and neither is per-vertex color. Text rendering is limited to Unicode code points that fit in a 16bit integer.
 
 Available input back-ends:
 
@@ -263,9 +263,9 @@ vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 
 ## Build for WebAssembly / Emscripten
 
-The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering (programmable pipeline only; the legacy fixed pipeline is not supported in WebGL). SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (at the time of writing this guide, the Freetype version in Emscripten was too old). Pre-compiled libraries are provided in `dependencies/wasm.zip`, but you can also build them from source yourself easily.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering (programmable pipeline only; the legacy fixed pipeline is not supported in WebGL). SDL2, OpenGL, Freetype, and libpng can be enabled from Emscripten ports; the rest of the dependencies needs to be built.
 
-The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: earlier in the development of lxgui, and on my desktop machine, the SDL2 back-end was slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both ran at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser.
 
 With Emscripten [installed and sourced](https://emscripten.org/docs/getting_started/downloads.html) in your current terminal, run
 
@@ -273,8 +273,8 @@ With Emscripten [installed and sourced](https://emscripten.org/docs/getting_star
 mkdir build
 cd build
 emcmake cmake ../ <your CMake options here>
-emmake make
-emmake make install
+make
+make install
 ```
 
 

@@ -857,7 +857,7 @@ const ObjectType* down_cast(const region* self) {
 template<typename ObjectType>
 const ObjectType& down_cast(const region& self) {
     const ObjectType* object = dynamic_cast<const ObjectType*>(self);
-    if (self && !object) {
+    if (!object) {
         if (self.is_region_type(ObjectType::class_name)) {
             throw gui::exception(
                 self.get_region_type(), "cannot use down_cast() to " +
