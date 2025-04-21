@@ -160,4 +160,4 @@ var menudata={children:[
 {text:"s",url:"functions_type.html#index_s"},
 {text:"t",url:"functions_type.html#index_t"}]},
 {text:"Enumerations",url:"functions_enum.html"},
-{text:"Related Functions",url:"functions_rela.html"}]}]}]}
+{text:"Related Symbols",url:"functions_rela.html"}]}]}]}
