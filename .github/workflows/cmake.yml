@@ -103,6 +103,7 @@ jobs:
           -DLXGUI_BUILD_EXAMPLES=OFF \
           -DLXGUI_DEV=ON \
           -DCMAKE_INSTALL_PREFIX=`pwd`/../install \
+          -DCMAKE_POLICY_DEFAULT_CMP0091=NEW \
           ${{matrix.platform.cmake-flags}}
 
     - name: Build
@@ -128,7 +129,8 @@ jobs:
         cmake ../examples/sdl${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
-          -DCMAKE_PREFIX_PATH=`pwd`/../install
+          -DCMAKE_PREFIX_PATH=`pwd`/../install \
+          -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SDL
@@ -140,7 +142,8 @@ jobs:
         cmake ../examples/opengl-sdl${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
-          -DCMAKE_PREFIX_PATH=`pwd`/../install
+          -DCMAKE_PREFIX_PATH=`pwd`/../install \
+          -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example SFML
@@ -153,7 +156,8 @@ jobs:
         cmake ../examples/sfml${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
-          -DCMAKE_PREFIX_PATH=`pwd`/../install
+          -DCMAKE_PREFIX_PATH=`pwd`/../install \
+          -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SFML
@@ -166,7 +170,8 @@ jobs:
         cmake ../examples/opengl-sfml${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
-          -DCMAKE_PREFIX_PATH=`pwd`/../install
+          -DCMAKE_PREFIX_PATH=`pwd`/../install \
+          -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package
