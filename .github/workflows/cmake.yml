@@ -96,7 +96,7 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake .. \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
@@ -109,14 +109,14 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Install
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake --install . --config ${BUILD_TYPE}
 
     - name: Build example SDL
@@ -124,7 +124,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake ../examples/sdl${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
@@ -136,7 +136,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake ../examples/opengl-sdl${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
@@ -149,7 +149,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake ../examples/sfml${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
@@ -162,7 +162,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        source ../dependencies/conanbuild.sh
+        test -f ../dependencies/conanbuild.sh && source ../dependencies/conanbuild.sh
         cmake ../examples/opengl-sfml${{matrix.platform.suffix}} \
           -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
           -DCMAKE_TOOLCHAIN_FILE=`pwd`/../dependencies/conan_toolchain.cmake \
