@@ -136,6 +136,7 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE -Wno-missing-noreturn)
         target_compile_options(${target} PRIVATE -Wno-shadow-uncaptured-local)
         target_compile_options(${target} PRIVATE -Wno-undefined-func-template)
+        target_compile_options(${target} PRIVATE -Wno-unsafe-buffer-usage)
         target_compile_options(${target} PRIVATE -fno-limit-debug-info)
 
         if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")

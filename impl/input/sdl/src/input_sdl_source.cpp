@@ -320,6 +320,7 @@ void source::on_sdl_event(const SDL_Event& event) {
         }
         break;
     }
+    default: break;
     }
 }
 

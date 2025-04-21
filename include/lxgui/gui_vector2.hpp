@@ -66,7 +66,8 @@ struct vector2 {
 
     vector2 get_scaled(const vector2& v) const noexcept {
         vector2 vec = *this;
-        vec.scale(v);
+        vec.x *= v.x;
+        vec.y *= v.y;
         return vec;
     }
 
