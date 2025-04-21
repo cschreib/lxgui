@@ -189,10 +189,10 @@ void material::premultiply_alpha(SDL_Surface* surface) {
 
     const std::size_t area = surface->w * surface->h;
     for (std::size_t i = 0; i < area; ++i) {
-        float a = pixel_data[i].a / 255.0f;
-        pixel_data[i].r *= a;
-        pixel_data[i].g *= a;
-        pixel_data[i].b *= a;
+        float a         = static_cast<float>(pixel_data[i].a) / 255.0f;
+        pixel_data[i].r = static_cast<unsigned char>(static_cast<float>(pixel_data[i].r) * a);
+        pixel_data[i].g = static_cast<unsigned char>(static_cast<float>(pixel_data[i].g) * a);
+        pixel_data[i].b = static_cast<unsigned char>(static_cast<float>(pixel_data[i].b) * a);
     }
 }
 

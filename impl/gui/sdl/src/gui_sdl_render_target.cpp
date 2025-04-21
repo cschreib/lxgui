@@ -5,6 +5,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <algorithm>
 #include <iostream>
 
 namespace lxgui::gui::sdl {
@@ -58,11 +59,14 @@ void render_target::save_to_file(std::string filename) const {
 
     const std::size_t area = surface->w * surface->h;
     for (std::size_t i = 0; i < area; ++i) {
-        float a = pixel_data[i].a / 255.0f;
+        float a = static_cast<float>(pixel_data[i].a) / 255.0f;
         if (a > 0.0f) {
-            pixel_data[i].r /= a;
-            pixel_data[i].g /= a;
-            pixel_data[i].b /= a;
+            pixel_data[i].r = static_cast<unsigned char>(
+                std::clamp(static_cast<float>(pixel_data[i].r) / a, 0.0f, 255.0f));
+            pixel_data[i].g = static_cast<unsigned char>(
+                std::clamp(static_cast<float>(pixel_data[i].g) / a, 0.0f, 255.0f));
+            pixel_data[i].b = static_cast<unsigned char>(
+                std::clamp(static_cast<float>(pixel_data[i].b) / a, 0.0f, 255.0f));
         }
     }
 
