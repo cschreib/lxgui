@@ -337,15 +337,15 @@ GLuint create_shader(GLenum type, const char* shader_source) {
     glCompileShader(shader);
 
     // Check sucess
-    GLint compiled = 0;
+    GLint compiled = GL_FALSE;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-    if (compiled == 0) {
+    if (compiled == GL_FALSE) {
         GLint info_length = 0;
-        glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &info_length);
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_length);
 
         std::vector<char> error_message(std::max(1, info_length), '\0');
         if (info_length > 1) {
-            glGetProgramInfoLog(shader, info_length, NULL, error_message.data());
+            glGetShaderInfoLog(shader, info_length, NULL, error_message.data());
         }
 
         glDeleteShader(shader);
